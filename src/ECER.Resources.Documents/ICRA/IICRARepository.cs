@@ -12,6 +12,13 @@ public interface IICRARepository
 
   Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
+  Task<string> ResendIcraWorkExperienceReferenceInvite(ResendIcraReferenceInviteRequest request, CancellationToken cancellationToken);
+
+  Task<EmploymentReference> AddIcraWorkExperienceReference(AddIcraWorkExperienceReferenceRequest request, CancellationToken cancellationToken);
+
+  Task<EmploymentReference> ReplaceIcraWorkExperienceReference(ReplaceIcraWorkExperienceReferenceRequest request, CancellationToken cancellationToken);
+
+  Task<EmploymentReference> GetIcraWorkExperienceReferenceById(string referenceId, string applicantId, CancellationToken cancellationToken);
   Task LinkIcraEligibilityToIcraApplication(string applicationId, string icraEligibilityId, CancellationToken cancellationToken);
 }
 
@@ -35,6 +42,7 @@ public record ICRAEligibility()
   public bool UnderstandAgreesApplication { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
+  public bool AddAdditionalEmploymentExperienceReferences { get; set; }
 }
 public record InternationalCertification
 {
@@ -88,6 +96,11 @@ public record ICRAWorkExperienceReferenceSubmissionRequest
   public bool WillProvideReference { get; set; }
   public DateTime? DateSigned { get; set; }
 }
+
+public record ResendIcraReferenceInviteRequest(string ReferenceId);
+public record AddIcraWorkExperienceReferenceRequest(EmploymentReference employmentReference, string icraEligibilityId, string userId);
+public record DeleteIcraWorkExperienceReferenceRequest(string icraEligibilityId, string referenceId, string userId);
+public record ReplaceIcraWorkExperienceReferenceRequest(EmploymentReference employmentReference, string icraEligibilityId, string referenceId, string userId);
 
 public enum CertificateStatus
 {

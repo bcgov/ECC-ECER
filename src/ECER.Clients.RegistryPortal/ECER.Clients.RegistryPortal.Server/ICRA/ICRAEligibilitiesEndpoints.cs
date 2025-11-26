@@ -115,6 +115,115 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
         .WithOpenApi("Handles icra eligibility status queries", string.Empty, "icra_status_get")
         .RequireAuthorization()
         .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/{referenceId}/resendInvite", async Task<Results<Ok<ResendIcraReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string icraEligibilityId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+
+      bool IdIsNotGuid = !Guid.TryParse(icraEligibilityId, out _);
+      if (IdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "icraEligibilityId is not a valid guid" });
+      }
+
+      bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _);
+      if (ReferenceIdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
+      }
+
+      return TypedResults.Ok(new ResendIcraReferenceInviteResponse(await messageBus.Send(new ResendIcraWorkExperienceReferenceInviteCommand(icraEligibilityId, referenceId, userId!), ct)));
+    })
+    .WithOpenApi("Resend an icra work reference invite", "Changes work reference invite again status to true", "icra_work_reference_resend_invite_post")
+    .RequireAuthorization()
+    .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/add", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string icraEligibilityId, EmploymentReference employmentReference, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+      bool AppIdIsNotGuid = !Guid.TryParse(icraEligibilityId, out _);
+      if (AppIdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+      }
+      var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.ICRA.EmploymentReference>(employmentReference);
+      var cmd = new AddIcraWorkExperienceReferenceCommand(mappedWorkExperienceReference, icraEligibilityId, userId!);
+      var result = await messageBus.Send(cmd, ct);
+
+      if (!result.IsSuccess)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Title = "Icra work experience reference add failed",
+          Extensions = { ["errors"] = result.ErrorMessage }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+      return TypedResults.Ok(mapper.Map<EmploymentReference>(result.EmploymentReference));
+    })
+    .WithOpenApi("Update work experience reference", string.Empty, "icra_work_reference_add_post")
+    .RequireAuthorization()
+    .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/{referenceId}/replace", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string icraEligibilityId, string referenceId, EmploymentReference employmentReference, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+      bool AppIdIsNotGuid = !Guid.TryParse(icraEligibilityId, out _);
+      if (AppIdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+      }
+
+      bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _);
+      if (ReferenceIdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
+      }
+
+      var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.ICRA.EmploymentReference>(employmentReference);
+      var cmd = new ReplaceIcraWorkExperienceReferenceCommand(mappedWorkExperienceReference, icraEligibilityId, referenceId, userId!);
+      var result = await messageBus.Send(cmd, ct);
+
+      if (!result.IsSuccess)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Title = "Icra work experience reference replace failed",
+          Extensions = { ["errors"] = result.ErrorMessage }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+      return TypedResults.Ok(mapper.Map<EmploymentReference>(result.EmploymentReference));
+    })
+    .WithOpenApi("Replace work experience reference", string.Empty, "icra_work_reference_replace_post")
+    .RequireAuthorization()
+    .WithParameterValidation();
+
+    endpointRouteBuilder.MapGet("/api/icra/workReference/{workExperienceReferenceId}", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string workExperienceReferenceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+
+      bool IdIsNotGuid = !Guid.TryParse(workExperienceReferenceId, out _); if (IdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "Work reference id is not a valid guid" });
+      }
+
+      var cmd = new GetIcraWorkExperienceReferenceByIdCommand(workExperienceReferenceId, userId!);
+
+      var result = await messageBus.Send(cmd, ct);
+
+      if (result == null)
+      {
+        return TypedResults.NotFound();
+      }
+      return TypedResults.Ok(mapper.Map<EmploymentReference>(result));
+    })
+
+    .WithOpenApi("Get work experience reference by id", string.Empty, "icra_work_reference_by_id_get")
+    .RequireAuthorization()
+    .WithParameterValidation();
   }
 }
 
@@ -137,6 +246,7 @@ public record ICRAEligibility()
   public bool UnderstandAgreesApplication { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
+  public bool AddAdditionalEmploymentExperienceReferences { get; set; }
 }
 public record InternationalCertification
 {
@@ -211,11 +321,13 @@ public enum IcraEligibilityOrigin
 
 public record ICRAEligibilitySubmissionRequest(string Id);
 public record SubmitICRAEligibilityResponse(ICRAEligibility Eligibility);
+public record ResendIcraReferenceInviteResponse(string referenceId);
 
 public record ICRAEligibilityStatus(string Id, DateTime? CreatedOn, DateTime? SignedDate, ICRAStatus Status)
 {
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReferenceStatus> EmploymentReferencesStatus { get; set; } = Array.Empty<EmploymentReferenceStatus>();
+  public bool AddAdditionalEmploymentExperienceReferences { get; set; }
 }
 
 public record EmploymentReferenceStatus(string Id, Applications.WorkExperienceRefStage? Status, string? FirstName, string? LastName, string? EmailAddress)
