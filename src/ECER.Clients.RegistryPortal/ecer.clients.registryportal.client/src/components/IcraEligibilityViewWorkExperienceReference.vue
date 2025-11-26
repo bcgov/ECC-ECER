@@ -21,23 +21,25 @@
         <div class="mb-6">
           <strong class="d-block mb-1">Phone number</strong>
           <div>
-            {{ phoneNumber || "Not provided" }}
+            {{ employmentReference?.phoneNumber || "Not provided" }}
           </div>
         </div>
 
         <div class="mb-6">
           <strong class="d-block mb-1">Email</strong>
           <div>
-            {{ emailAddress || "Not available" }}
+            {{ employmentReference?.emailAddress || "Not available" }}
           </div>
         </div>
       </v-col>
     </v-row>
 
 
-    <ECEHeader class="mb-6" title="Options" />
+    
 
-    <div class="mb-6"></div>
+    <div class="mb-6">
+      <ECEHeader class="mb-6" title="Options" />
+    </div>
 
     <section class="mb-10">
       <h3 class="mb-3">Resend email</h3>
@@ -146,12 +148,6 @@ export default defineComponent({
         this.employmentReference.firstName,
         this.employmentReference.lastName
       );
-    },
-    phoneNumber(): string | null | undefined {
-      return this.employmentReference?.phoneNumber ?? null;
-    },
-    emailAddress(): string | null | undefined {
-      return this.employmentReference?.emailAddress ?? null;
     },
   },
   methods: {

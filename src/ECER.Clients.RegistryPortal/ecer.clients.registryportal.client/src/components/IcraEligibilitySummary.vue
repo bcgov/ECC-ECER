@@ -202,9 +202,6 @@ export default defineComponent({
         }
       });
 
-      console.log("someReferencesRequireResponse:", someReferencesRequireResponse);
-      console.log("totalReferencesWithoutRejections:", totalReferencesWithoutRejections);
-
       // check if any references still require a response
       if (someReferencesRequireResponse) {
         return true;
