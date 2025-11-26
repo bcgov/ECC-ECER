@@ -24,6 +24,7 @@ public class ApplicationValidationEngineResolver : IApplicationValidationEngineR
       ApplicationTypes.New => _serviceProvider.GetRequiredService<NewApplicationSubmissionValidationEngine>(),
       ApplicationTypes.LabourMobility => _serviceProvider.GetRequiredService<LabourMobilityApplicationSubmissionValidationEngine>(),
       ApplicationTypes.Renewal => _serviceProvider.GetRequiredService<ApplicationRenewalValidationEngine>(),
+      ApplicationTypes.ICRA => _serviceProvider.GetRequiredService<IcraApplicationSubmissionValidationEngine>(),
       _ => throw new ArgumentOutOfRangeException(nameof(appType), appType, null)
     };
   }

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +28,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public Contact AuthenticatedBcscUser { get; set; } = null!;
 
   public Contact AuthenticatedBcscUser2 { get; set; } = null!;
+  public Contact AuthenticatedBcscUser3 { get; set; } = null!;
   public ecer_Province Province { get; set; } = null!;
   public ecer_Country Country { get; set; } = null!;
   public ecer_PostSecondaryInstitute PostSecondaryInstitution { get; set; } = null!;
@@ -86,6 +86,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationICRAWorkExperienceReferenceIdSubmit => testPortalInvitationICRAWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationICRAWorkExperienceReferenceIdOptout => testPortalInvitationICRAWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
   public UserIdentity AuthenticatedBcscUserIdentity2 => AuthenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
+  public UserIdentity AuthenticatedBcscUserIdentity3 => AuthenticatedBcscUser3.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => AuthenticatedBcscUser2.Id.ToString();
   private ecer_Application inProgressTestApplication2 = null!;
   private ecer_Application draftTestApplication2 = null!;
@@ -195,11 +196,16 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     inProgressTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser2, ecer_Application_StatusCode.InProgress);
     draftTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser2, ecer_Application_StatusCode.Draft);
 
+    //load user 3
+    AuthenticatedBcscUser3 = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user3");
+
     context.SaveChanges();
 
     //load dependent properties
     context.Attach(AuthenticatedBcscUser2);
     context.LoadProperty(AuthenticatedBcscUser2, Contact.Fields.ecer_contact_ecer_authentication_455);
+    context.Attach(AuthenticatedBcscUser3);
+    context.LoadProperty(AuthenticatedBcscUser3, Contact.Fields.ecer_contact_ecer_authentication_455);
   }
 
   private bcgov_DocumentUrl GetOrAddDocument(EcerContext context, Contact registrant, string url)

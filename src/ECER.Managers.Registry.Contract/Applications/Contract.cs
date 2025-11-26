@@ -188,6 +188,7 @@ public enum SubmissionError
   DraftApplicationNotFound,
   DraftApplicationValidationFailed,
   SubmittedApplicationAlreadyExists,
+  MissingApprovedIcraEligibility,
 }
 
 public enum ApplicationStatus

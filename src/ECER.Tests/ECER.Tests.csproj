@@ -32,6 +32,7 @@
     <ProjectReference Include="..\ECER.Clients.Api\ECER.Clients.Api.csproj" />
     <ProjectReference Include="..\ECER.Managers.Registry.Contract\ECER.Managers.Registry.Contract.csproj" />
     <ProjectReference Include="..\ECER.Resources.Accounts\ECER.Resources.Accounts.csproj" />
+    <ProjectReference Include="..\ECER.Resources.E2ETests\ECER.Resources.E2ETests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

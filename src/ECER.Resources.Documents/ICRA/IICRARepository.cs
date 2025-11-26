@@ -10,17 +10,9 @@ public interface IICRARepository
 
   Task<string> Submit(string icraEligibilityId, CancellationToken cancellationToken);
 
-  Task<string> SetIneligibleForUnitTests(string icraEligibilityId, CancellationToken cancellationToken);
-
   Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
-  Task<string> ResendIcraWorkExperienceReferenceInvite(ResendIcraReferenceInviteRequest request, CancellationToken cancellationToken);
-
-  Task<EmploymentReference> AddIcraWorkExperienceReference(AddIcraWorkExperienceReferenceRequest request, CancellationToken cancellationToken);
-
-  Task<EmploymentReference> ReplaceIcraWorkExperienceReference(ReplaceIcraWorkExperienceReferenceRequest request, CancellationToken cancellationToken);
-
-  Task<EmploymentReference> GetIcraWorkExperienceReferenceById(string referenceId, string applicantId, CancellationToken cancellationToken);
+  Task LinkIcraEligibilityToIcraApplication(string applicationId, string icraEligibilityId, CancellationToken cancellationToken);
 }
 
 public record ICRAQuery
