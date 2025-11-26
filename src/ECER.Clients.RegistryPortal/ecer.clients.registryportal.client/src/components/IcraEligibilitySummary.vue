@@ -89,6 +89,9 @@
             <v-col cols="12"><h3 :class="currentStep === 3 ? 'white' : ''">Step 3</h3></v-col>
             <v-col cols="12"><h3 :class="currentStep === 3 ? 'white' : ''">ECE Registry assessment</h3></v-col>
           </v-row>
+          <p class="large" :class="currentStep === 3 ? 'white' : ''">
+            {{ stepThreeStatusText }}
+          </p>
         </div>
       </v-card-text>
     </v-card>
@@ -249,6 +252,9 @@ export default defineComponent({
         default:
           return "";
       }
+    },
+    stepThreeStatusText() {
+      return "Not yet started";
     },
     showOtherInformation(): boolean {
       return (
