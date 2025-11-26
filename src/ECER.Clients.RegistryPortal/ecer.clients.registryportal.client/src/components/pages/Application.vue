@@ -69,7 +69,7 @@
                   :loading="loadingStore.isLoading('application_post') || loadingStore.isLoading('draftapplication_put')"
                   @click="handleSubmit"
                 >
-                  Submit application
+                  Submit
                 </v-btn>
               </v-col>
             </v-row>
