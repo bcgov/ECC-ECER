@@ -169,7 +169,9 @@ export default defineComponent({
     certificateNameDisplay(certificate: Components.Schemas.InternationalCertification): string {
       return `${this.configStore.countryName(certificate?.countryId || "")} - ${certificate?.certificateTitle || ""}`;
     },
-    isCertificateReceived(certificate: Components.Schemas.InternationalCertification): boolean {
+    isCertificateReceived(
+      certificate: Components.Schemas.InternationalCertification
+    ): boolean {
       switch (certificate.status) {
         case "ICRAEligibilitySubmitted":
         case "ApplicationSubmitted":
@@ -180,12 +182,15 @@ export default defineComponent({
         case "Approved":
         case "Rejected":
         case "Inactive":
+          // All known statuses are treated as "not received"
           return false;
+
         default:
+          // Any new / unexpected status will be treated as "received"
           console.warn("unhandled certificate status:", certificate.status);
-          return false;
+          return true;
       }
-    },
+    }
   },
   computed: {
     actionNeededWorkReferences(): boolean {
@@ -240,7 +245,7 @@ export default defineComponent({
       }
     },
     stepThreeIcon() {
-      return this.currentStep === 3 ? "mdi-arrow-right" : "";
+      return "mdi-arrow-right";
     },
     stepTwoStatusText() {
       switch (this.currentStep) {
@@ -253,7 +258,7 @@ export default defineComponent({
       }
     },
     stepThreeStatusText() {
-      return this.currentStep === 3 ? "In progress" : "Not yet started";
+      return "Not yet started";
     },
     showOtherInformation(): boolean {
       return (
