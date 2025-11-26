@@ -22,12 +22,23 @@ public interface IPspRepRepository
   /// Saves a Psp representative's profile - Psp representative must exist
   /// </summary>
   Task Save(PspUser user, CancellationToken ct);
+
+  /// <summary>
+  /// Disables portal access for a Psp representative and removes authentication
+  /// </summary>
+  Task Deactivate(string pspUserId, CancellationToken ct);
+
+  /// <summary>
+  /// Sets the specified Psp representative as Primary and others in the same institution to Secondary
+  /// </summary>
+  Task SetPrimary(string pspUserId, CancellationToken ct);
 }
 
 public record PspRepQuery
 {
   public string? ById { get; set; }
   public UserIdentity? ByIdentity { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
 }
 
 public record PspUser
@@ -36,10 +47,13 @@ public record PspUser
   
   public IEnumerable<UserIdentity> Identities { get; set; } = Array.Empty<UserIdentity>();
   public PspUserProfile Profile { get; set; } = null!;
+  public PortalAccessStatus? AccessToPortal { get; set; }
+  public string? PostSecondaryInstituteId { get; set; }
 };
 
 public record PspUserProfile
 {
+  public string? Id { get; set; }
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? PreferredName { get; set; }
@@ -57,4 +71,11 @@ public enum PspUserRole
   Primary,
   /// <summary>Secondary</summary>
   Secondary
+}
+
+public enum PortalAccessStatus
+{
+  Invited,
+  Active,
+  Disabled
 }

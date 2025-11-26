@@ -3,6 +3,7 @@ using ECER.Resources.Accounts.PspReps;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk.Client;
+using System.Linq;
 
 namespace ECER.Resources.Accounts.PSPReps;
 
@@ -26,6 +27,9 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
       ecer_IdentityProvider = identity.IdentityProvider
     };
 
+    // On registration, enable portal access and persist with the authentication link
+    pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Active;
+    context.UpdateObject(pspUser);
     context.AddObject(authentication);
     context.AddLink(pspUser, ecer_Authentication.Fields.ecer_authentication_eceprogramrepresentative, authentication);
 
@@ -36,7 +40,7 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
   public async Task<IEnumerable<PspUser>> Query(PspRepQuery query, CancellationToken ct)
   {
     await Task.CompletedTask;
-    var pspUsers = context.ecer_ECEProgramRepresentativeSet;
+    IQueryable<ecer_ECEProgramRepresentative> pspUsers = context.ecer_ECEProgramRepresentativeSet;
 
     if (query.ById != null)
     {
@@ -50,12 +54,22 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
                 where authentication.ecer_IdentityProvider == query.ByIdentity.IdentityProvider && authentication.ecer_ExternalID == query.ByIdentity.UserId
                 select pspUser;
     }
+
+    if (query.ByPostSecondaryInstituteId != null)
+    {
+      if (!Guid.TryParse(query.ByPostSecondaryInstituteId, out var instituteId))
+      {
+        return Enumerable.Empty<PspUser>();
+      }
+
+      pspUsers = pspUsers.Where(r => r.ecer_PostSecondaryInstitute != null && r.ecer_PostSecondaryInstitute.Id == instituteId);
+    }
     
     var results = context.From(pspUsers).Execute();
     
     return mapper.Map<IEnumerable<PspUser>>(results).ToList();
   }
-
+  
   public async Task Save(PspUser user, CancellationToken ct)
   {
     if(!Guid.TryParse(user.Id, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {user.Id} is not a valid GUID");
@@ -87,5 +101,51 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     context.UpdateObject(pspUser);
     context.SaveChanges();
     await Task.CompletedTask;
+  }
+
+  public async Task Deactivate(string pspUserId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    if (!Guid.TryParse(pspUserId, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {pspUserId} is not a valid GUID");
+
+    var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
+    if (pspUser == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} not found");
+
+    pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Disabled;
+    context.UpdateObject(pspUser);
+
+    var authentications = context.ecer_AuthenticationSet.Where(authentication =>
+      authentication.ecer_eceprogramrepresentative != null && authentication.ecer_eceprogramrepresentative.Id == userId).ToList();
+
+    foreach (var authentication in authentications)
+    {
+      context.DeleteObject(authentication);
+    }
+
+    context.SaveChanges();
+  }
+
+  public async Task SetPrimary(string pspUserId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    if (!Guid.TryParse(pspUserId, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {pspUserId} is not a valid GUID");
+
+    var targetRep = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
+    if (targetRep == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} not found");
+
+    var institutionId = targetRep.ecer_PostSecondaryInstitute?.Id;
+    if (institutionId == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} is not linked to a post secondary institute");
+
+    var reps = context.ecer_ECEProgramRepresentativeSet
+      .Where(r => r.ecer_PostSecondaryInstitute != null && r.ecer_PostSecondaryInstitute.Id == institutionId)
+      .ToList();
+
+    foreach (var rep in reps)
+    {
+      rep.ecer_RepresentativeRole = rep.Id == userId ? ecer_RepresentativeRole.Primary : ecer_RepresentativeRole.Secondary;
+      context.UpdateObject(rep);
+    }
+
+    context.SaveChanges();
   }
 }

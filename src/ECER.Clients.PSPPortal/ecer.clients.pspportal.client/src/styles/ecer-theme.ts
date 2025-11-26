@@ -6,10 +6,12 @@ const ecerTheme: ThemeDefinition = {
     primary: "#013366",
     alternate: "#1976D2",
     secondary: "#38598A",
+    surface: "#ffffff",
     "grey-dark": "#313231",
     "grey-light": "#757575",
     "grey-lightest": "#dee2e6",
     "grey-darkest": "#5F6368",
+    "grey-stepper": "#4F4F4F",
     "grey-pale-background": "#F2F2F2",
     "ash-grey": "#ADB5BD",
     "white-smoke": "#f8f8f8",
@@ -26,6 +28,9 @@ const ecerTheme: ThemeDefinition = {
     "alert-warning": "#FEF1D8",
     "alert-error": "#F4E1E2",
     "alert-success": "#99ff99",
+    "support-surface-info": "#F7F9FC",
+    "support-border-info": "#053662",
+    "surface-border-default": "#D8D8D8",
   },
 };
 

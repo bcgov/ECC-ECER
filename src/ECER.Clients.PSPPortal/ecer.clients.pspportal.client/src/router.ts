@@ -33,22 +33,11 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/manage-users",
-      component: () => import("./components/pages/PageNotFound.vue"),
+      path: "/manage-users/:educationInstitutionName",
+      component: () => import("./components/pages/ManageUsers.vue"),
       name: "manage-users",
       meta: { requiresAuth: true },
-    },
-    {
-      path: "/program-profiles",
-      component: () => import("./components/pages/PageNotFound.vue"),
-      name: "program-profiles",
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/messages",
-      component: () => import("./components/pages/PageNotFound.vue"),
-      name: "messages",
-      meta: { requiresAuth: true },
+      props: true,
     },
     {
       path: "/education-institution/edit",

@@ -21,6 +21,7 @@ public class ProfileEndpoints : IRegisterEndpoints
         if (pspUser == null) return TypedResults.NotFound();
 
         var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
+        
         return TypedResults.Ok(pspUserProfile);
       })
       .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "psp_user_profile_get")
@@ -105,6 +106,7 @@ public record RegisterPspUserRequest([Required] string Token, [Required] string 
 /// </summary>
 public record PspUserProfile
 {
+  public string? Id { get; set; }
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? PreferredName { get; set; }
