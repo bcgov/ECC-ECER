@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -57,6 +56,19 @@ internal sealed partial class ApplicationRepository
         context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_RefCertifiedProvinceId, province);
       }
     }
+    workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Submitted;
+    context.UpdateObject(workExperienceReference);
+    context.SaveChanges();
+    return workExperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
+
+  private async Task<string> SubmitIcraWorkExperienceReference(string referenceId, IcraWorkExperienceReferenceSubmissionRequest request)
+  {
+    await Task.CompletedTask;
+    var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(referenceId));
+
+    mapper.Map(request, workExperienceReference);
+
     workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Submitted;
     context.UpdateObject(workExperienceReference);
     context.SaveChanges();
@@ -148,5 +160,17 @@ internal sealed partial class ApplicationRepository
     context.SaveChanges();
 
     return ecerWorkExperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
+
+  public async Task<WorkExperienceReference> GetWorkExperienceReferenceById(string referenceId, string applicantId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+
+    var reference = context.ecer_WorkExperienceRefSet.Where(
+      t => t.ecer_Applicantid.Id == Guid.Parse(applicantId) &&
+      t.ecer_WorkExperienceRefId == Guid.Parse(referenceId))
+    .FirstOrDefault();
+
+    return mapper.Map<WorkExperienceReference>(reference);
   }
 }

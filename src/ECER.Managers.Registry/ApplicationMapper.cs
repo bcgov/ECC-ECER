@@ -21,7 +21,7 @@ internal class ApplicationMapper : Profile
         .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ProfessionalDevelopments))
         .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
         .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
-        .ForMember(d=>d.FromCertificate, opts => opts.MapFrom(s=>s.FromCertificate))
+        .ForMember(d => d.FromCertificate, opts => opts.MapFrom(s => s.FromCertificate))
         .ReverseMap()
         .ValidateMemberList(MemberList.Destination)
         .ForCtorParam(nameof(Contract.Applications.Application.RegistrantId), opts => opts.MapFrom(s => s.ApplicantId))
@@ -32,7 +32,7 @@ internal class ApplicationMapper : Profile
     CreateMap<Contract.Applications.ProfessionalDevelopment, ProfessionalDevelopment>().ReverseMap();
     CreateMap<Contract.Applications.WorkExperienceReference, WorkExperienceReference>().ReverseMap();
     CreateMap<Contract.Applications.CharacterReference, CharacterReference>().ReverseMap();
-    
+
     CreateMap<Contract.Applications.ReferenceContactInformation, ReferenceContactInformation>();
     CreateMap<Contract.Applications.CharacterReferenceEvaluation, CharacterReferenceEvaluation>();
     CreateMap<Contract.Applications.CharacterReferenceSubmissionRequest, CharacterReferenceSubmissionRequest>()
@@ -42,6 +42,9 @@ internal class ApplicationMapper : Profile
     CreateMap<Contract.Applications.WorkExperienceReferenceDetails, WorkExperienceReferenceDetails>();
     CreateMap<Contract.Applications.WorkExperienceReferenceCompetenciesAssessment, WorkExperienceReferenceCompetenciesAssessment>();
     CreateMap<Contract.Applications.WorkExperienceReferenceSubmissionRequest, WorkExperienceReferenceSubmissionRequest>()
+      .ForMember(d => d.PortalInvitation, opts => opts.Ignore())
+      .ForMember(d => d.DateSigned, opts => opts.Ignore());
+    CreateMap<Contract.Applications.WorkExperienceReferenceSubmissionRequest, IcraWorkExperienceReferenceSubmissionRequest>()
       .ForMember(d => d.PortalInvitation, opts => opts.Ignore())
       .ForMember(d => d.DateSigned, opts => opts.Ignore());
 
