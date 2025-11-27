@@ -264,6 +264,11 @@ public class ApplicationHandlers(
           throw new InvalidOperationException($"portal invite work experience reference id is null");
         }
         var workExperience = await applicationRepository.GetWorkExperienceReferenceById(portalInvitation.WorkexperienceReferenceId, portalInvitation.ApplicantId, cancellationToken);
+
+        if (workExperience is null)
+        {
+          throw new InvalidOperationException($"work experience reference not found for reference id: {portalInvitation.WorkexperienceReferenceId} and applicant id: {portalInvitation.ApplicantId}");
+        }
         if (workExperience.Type == Resources.Documents.Applications.WorkExperienceTypes.ICRA)
         {
           submitReferenceRequest = mapper.Map<IcraWorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
