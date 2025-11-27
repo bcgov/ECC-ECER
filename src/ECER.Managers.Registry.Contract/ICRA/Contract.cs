@@ -24,6 +24,19 @@ public record SubmitICRAEligibilityResult()
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
 
+public record ResendIcraWorkExperienceReferenceInviteCommand(string IcraEligibilityId, string ReferenceId, string UserId) : IRequest<string>;
+
+public record AddIcraWorkExperienceReferenceCommand(EmploymentReference EmploymentReference, string IcraEligibilityId, string UserId) : IRequest<AddOrReplaceIcraWorkExperienceReferenceResult>;
+
+public record ReplaceIcraWorkExperienceReferenceCommand(EmploymentReference EmploymentReference, string IcraEligibilityId, string ReferenceId, string UserId) : IRequest<AddOrReplaceIcraWorkExperienceReferenceResult>;
+public record GetIcraWorkExperienceReferenceByIdCommand(string ReferenceId, string ApplicantId) : IRequest<EmploymentReference>;
+public record AddOrReplaceIcraWorkExperienceReferenceResult()
+{
+  public EmploymentReference EmploymentReference { get; set; } = new EmploymentReference();
+  public bool IsSuccess { get; set; }
+  public string ErrorMessage { get; set; } = string.Empty;
+}
+
 public enum SubmissionError
 {
   DraftIcraEligibilityNotFound,
@@ -43,6 +56,7 @@ public record ICRAEligibility()
   public bool UnderstandAgreesApplication { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
+  public bool AddAdditionalEmploymentExperienceReferences { get; set; }
 }
 public record InternationalCertification
 {
@@ -65,7 +79,6 @@ public record InternationalCertification
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
   public InternationalCertificationStatus status { get; set; }
-
 }
 
 public record EmploymentReference
@@ -129,7 +142,6 @@ public enum InternationalCertificationStatus
   UnderReview,
   WaitingforResponse,
 }
-
 
 public enum WorkExperienceTypesIcra
 {

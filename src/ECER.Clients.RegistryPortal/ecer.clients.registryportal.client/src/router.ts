@@ -347,6 +347,27 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/:referenceId",
+      name: "view-icra-eligibility-work-experience-reference",
+      component: () => import("./components/IcraEligibilityViewWorkExperienceReference.vue"),
+      props: true,
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/add",
+      name: "icra-eligibility-add-work-experience-reference",
+      component: () => import("./components/IcraEligibilityUpsertWorkExperienceReference.vue"),
+      props: (route) => ({ icraEligibilityId: route.params.icraEligibilityId, type: "add" }),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/:referenceId/replace",
+      name: "icra-eligibility-replace-work-experience-reference",
+      component: () => import("./components/IcraEligibilityUpsertWorkExperienceReference.vue"),
+      props: (route) => ({ icraEligibilityId: route.params.icraEligibilityId, type: "replace" }),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
       path: "/lookup/certification/record",
       component: () => import("./components/LookupCertificationRecord.vue"),
       meta: { requiresAuth: false },

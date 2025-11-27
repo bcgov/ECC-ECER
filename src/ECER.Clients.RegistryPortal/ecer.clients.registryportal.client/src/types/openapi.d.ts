@@ -340,6 +340,7 @@ declare namespace Components {
             understandAgreesApplication?: boolean;
             internationalCertifications?: InternationalCertification[] | null;
             employmentReferences?: EmploymentReference[] | null;
+            addAdditionalEmploymentExperienceReferences?: boolean;
         }
         export interface ICRAEligibilityStatus {
             id?: string | null;
@@ -348,6 +349,7 @@ declare namespace Components {
             status?: ICRAStatus;
             internationalCertifications?: InternationalCertification[] | null;
             employmentReferencesStatus?: EmploymentReferenceStatus[] | null;
+            addAdditionalEmploymentExperienceReferences?: boolean;
         }
         export interface ICRAEligibilitySubmissionRequest {
             id?: string | null;
@@ -523,6 +525,9 @@ declare namespace Components {
         }
         export type ReferenceKnownTime = "From1to2years" | "From2to5years" | "From6monthsto1year" | "Lessthan6months" | "Morethan5years";
         export type ReferenceRelationship = "CoWorker" | "Other" | "ParentGuardianofChildinCare" | "Supervisor" | "Teacher";
+        export interface ResendIcraReferenceInviteResponse {
+            referenceId?: string | null;
+        }
         /**
          * Resend reference invite response
          */
@@ -1087,6 +1092,66 @@ declare namespace Paths {
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
         }
     }
+    namespace IcraWorkReferenceAddPost {
+        namespace Parameters {
+            export type IcraEligibilityId = string;
+        }
+        export interface PathParameters {
+            icraEligibilityId: Parameters.IcraEligibilityId;
+        }
+        export type RequestBody = Components.Schemas.EmploymentReference;
+        namespace Responses {
+            export type $200 = Components.Schemas.EmploymentReference;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
+    }
+    namespace IcraWorkReferenceByIdGet {
+        namespace Parameters {
+            export type WorkExperienceReferenceId = string;
+        }
+        export interface PathParameters {
+            workExperienceReferenceId: Parameters.WorkExperienceReferenceId;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.EmploymentReference;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
+    }
+    namespace IcraWorkReferenceReplacePost {
+        namespace Parameters {
+            export type IcraEligibilityId = string;
+            export type ReferenceId = string;
+        }
+        export interface PathParameters {
+            icraEligibilityId: Parameters.IcraEligibilityId;
+            referenceId: Parameters.ReferenceId;
+        }
+        export type RequestBody = Components.Schemas.EmploymentReference;
+        namespace Responses {
+            export type $200 = Components.Schemas.EmploymentReference;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
+    }
+    namespace IcraWorkReferenceResendInvitePost {
+        namespace Parameters {
+            export type IcraEligibilityId = string;
+            export type ReferenceId = string;
+        }
+        export interface PathParameters {
+            icraEligibilityId: Parameters.IcraEligibilityId;
+            referenceId: Parameters.ReferenceId;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ResendIcraReferenceInviteResponse;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+        }
+    }
     namespace IdentificationTypesGet {
         namespace Parameters {
             export type ById = string;
@@ -1445,6 +1510,40 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.IcraStatusGet.Responses.$200>
+  /**
+   * icra_work_reference_resend_invite_post - Resend an icra work reference invite
+   * 
+   * Changes work reference invite again status to true
+   */
+  'icra_work_reference_resend_invite_post'(
+    parameters?: Parameters<Paths.IcraWorkReferenceResendInvitePost.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.IcraWorkReferenceResendInvitePost.Responses.$200>
+  /**
+   * icra_work_reference_add_post - Update work experience reference
+   */
+  'icra_work_reference_add_post'(
+    parameters?: Parameters<Paths.IcraWorkReferenceAddPost.PathParameters> | null,
+    data?: Paths.IcraWorkReferenceAddPost.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.IcraWorkReferenceAddPost.Responses.$200>
+  /**
+   * icra_work_reference_replace_post - Replace work experience reference
+   */
+  'icra_work_reference_replace_post'(
+    parameters?: Parameters<Paths.IcraWorkReferenceReplacePost.PathParameters> | null,
+    data?: Paths.IcraWorkReferenceReplacePost.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.IcraWorkReferenceReplacePost.Responses.$200>
+  /**
+   * icra_work_reference_by_id_get - Get work experience reference by id
+   */
+  'icra_work_reference_by_id_get'(
+    parameters?: Parameters<Paths.IcraWorkReferenceByIdGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.IcraWorkReferenceByIdGet.Responses.$200>
   /**
    * files_certificate_get - Handles fetching certificate PDF's
    */
@@ -1864,6 +1963,48 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.IcraStatusGet.Responses.$200>
   }
+  ['/api/icra/{icraEligibilityId}/workReference/{referenceId}/resendInvite']: {
+    /**
+     * icra_work_reference_resend_invite_post - Resend an icra work reference invite
+     * 
+     * Changes work reference invite again status to true
+     */
+    'post'(
+      parameters?: Parameters<Paths.IcraWorkReferenceResendInvitePost.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.IcraWorkReferenceResendInvitePost.Responses.$200>
+  }
+  ['/api/icra/{icraEligibilityId}/workReference/add']: {
+    /**
+     * icra_work_reference_add_post - Update work experience reference
+     */
+    'post'(
+      parameters?: Parameters<Paths.IcraWorkReferenceAddPost.PathParameters> | null,
+      data?: Paths.IcraWorkReferenceAddPost.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.IcraWorkReferenceAddPost.Responses.$200>
+  }
+  ['/api/icra/{icraEligibilityId}/workReference/{referenceId}/replace']: {
+    /**
+     * icra_work_reference_replace_post - Replace work experience reference
+     */
+    'post'(
+      parameters?: Parameters<Paths.IcraWorkReferenceReplacePost.PathParameters> | null,
+      data?: Paths.IcraWorkReferenceReplacePost.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.IcraWorkReferenceReplacePost.Responses.$200>
+  }
+  ['/api/icra/workReference/{workExperienceReferenceId}']: {
+    /**
+     * icra_work_reference_by_id_get - Get work experience reference by id
+     */
+    'get'(
+      parameters?: Parameters<Paths.IcraWorkReferenceByIdGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.IcraWorkReferenceByIdGet.Responses.$200>
+  }
   ['/api/files/certificate/{certificateId}']: {
     /**
      * files_certificate_get - Handles fetching certificate PDF's
@@ -2180,6 +2321,7 @@ export type Province = Components.Schemas.Province;
 export type ReferenceContactInformation = Components.Schemas.ReferenceContactInformation;
 export type ReferenceKnownTime = Components.Schemas.ReferenceKnownTime;
 export type ReferenceRelationship = Components.Schemas.ReferenceRelationship;
+export type ResendIcraReferenceInviteResponse = Components.Schemas.ResendIcraReferenceInviteResponse;
 export type ResendReferenceInviteResponse = Components.Schemas.ResendReferenceInviteResponse;
 export type SaveDraftApplicationRequest = Components.Schemas.SaveDraftApplicationRequest;
 export type SaveDraftICRAEligibilityRequest = Components.Schemas.SaveDraftICRAEligibilityRequest;

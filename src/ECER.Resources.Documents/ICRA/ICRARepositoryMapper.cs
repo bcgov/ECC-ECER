@@ -15,6 +15,7 @@ internal class ICRARepositoryMapper : Profile
       .ForSourceMember(s => s.InternationalCertifications, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.EmploymentReferences, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Origin, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.AddAdditionalEmploymentExperienceReferences, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ICRAEligibilityAssessmentId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.PortalStage))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
@@ -27,7 +28,8 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.InternationalCertifications, opts => opts.MapFrom(s => s.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment))
       .ForMember(d => d.EmploymentReferences, opts => opts.MapFrom(s => s.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment))
       .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn))
-      .ForMember(d => d.Status, o => o.MapFrom(s => s.StatusCode));
+      .ForMember(d => d.Status, o => o.MapFrom(s => s.StatusCode))
+      .ForMember(d => d.AddAdditionalEmploymentExperienceReferences, o => o.MapFrom(s => s.ecer_AddAdditionalEmploymentExperienceReferences));
 
     CreateMap<InternationalCertification, ecer_InternationalCertification>(MemberList.Source)
       .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())

@@ -1,5 +1,5 @@
 <template>
-  <Loading v-if="loading" />
+  <Loading v-if="loadingStore.isLoading('icra_status_get')" />
   <v-container v-else>
     <Breadcrumb />
     <h1>Apply with international certification</h1>
@@ -90,7 +90,6 @@
             <v-col cols="12"><h3 :class="currentStep === 3 ? 'white' : ''">ECE Registry assessment</h3></v-col>
           </v-row>
           <p class="large" :class="currentStep === 3 ? 'white' : ''">
-            <v-icon v-if="stepThreeIcon" :icon="stepThreeIcon" />
             {{ stepThreeStatusText }}
           </p>
         </div>
@@ -124,6 +123,7 @@ import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem
 import ApplicationSummaryHeader from "./ApplicationSummaryHeader.vue";
 import Loading from "./Loading.vue";
 import { useConfigStore } from "@/store/config";
+import { useLoadingStore } from "@/store/loading";
 
 export default defineComponent({
   name: "IcraEligibilitySummary",
@@ -143,6 +143,7 @@ export default defineComponent({
     const { smAndUp } = useDisplay();
     const userStore = useUserStore();
     const configStore = useConfigStore();
+    const loadingStore = useLoadingStore();
     const router = useRouter();
 
     return {
@@ -150,25 +151,26 @@ export default defineComponent({
       formatDate,
       smAndUp,
       configStore,
+      loadingStore,
       userStore,
       router,
     };
   },
   data() {
     return {
-      loading: true,
       icraEligibilityStatus: {} as Components.Schemas.ICRAEligibilityStatus,
     };
   },
   async mounted() {
     this.icraEligibilityStatus = (await getIcraEligibilityStatus(this.icraEligibilityId))?.data || {};
-    this.loading = false;
   },
   methods: {
     certificateNameDisplay(certificate: Components.Schemas.InternationalCertification): string {
       return `${this.configStore.countryName(certificate?.countryId || "")} - ${certificate?.certificateTitle || ""}`;
     },
-    isCertificateReceived(certificate: Components.Schemas.InternationalCertification): boolean {
+    isCertificateReceived(
+      certificate: Components.Schemas.InternationalCertification
+    ): boolean {
       switch (certificate.status) {
         case "ICRAEligibilitySubmitted":
         case "ApplicationSubmitted":
@@ -176,26 +178,46 @@ export default defineComponent({
         case "InProgress":
         case "UnderReview":
         case "WaitingforResponse":
-          return true;
         case "Approved":
         case "Rejected":
         case "Inactive":
+          // All known statuses are treated as "not received"
           return false;
+
         default:
+          // Any new / unexpected status will be treated as "received"
           console.warn("unhandled certificate status:", certificate.status);
-          return false;
+          return true;
       }
-    },
+    }
   },
   computed: {
     actionNeededWorkReferences(): boolean {
-      return (
-        this.icraEligibilityStatus?.employmentReferencesStatus?.some((reference) => {
-          if (reference.status === "ICRAEligibilitySubmitted" || reference.status === "WaitingforResponse") {
+      const totalReferencesWithoutRejections =
+        this.icraEligibilityStatus?.employmentReferencesStatus?.filter((reference) => {
+          if (reference.status !== "Rejected") {
             return true;
           }
-        }) || false
-      );
+        })?.length || 0;
+
+      const someReferencesRequireResponse = this.icraEligibilityStatus?.employmentReferencesStatus?.some((reference) => {
+        if (reference.status === "ICRAEligibilitySubmitted" || reference.status === "WaitingforResponse") {
+          return true;
+        }
+      });
+
+      // check if any references still require a response
+      if (someReferencesRequireResponse) {
+        return true;
+      }
+
+      //registry asks for more employement references
+      if (this.icraEligibilityStatus?.addAdditionalEmploymentExperienceReferences && totalReferencesWithoutRejections < 6) {
+        return true;
+      }
+
+      //No action needed
+      return false;
     },
     currentStep(): number {
       switch (this.icraEligibilityStatus?.status) {
@@ -220,9 +242,6 @@ export default defineComponent({
         default:
           return "";
       }
-    },
-    stepThreeIcon() {
-      return "mdi-arrow-right";
     },
     stepTwoStatusText() {
       switch (this.currentStep) {
