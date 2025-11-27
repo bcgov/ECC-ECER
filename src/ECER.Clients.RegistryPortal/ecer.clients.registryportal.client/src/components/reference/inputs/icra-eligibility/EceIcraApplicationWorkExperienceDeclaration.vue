@@ -19,16 +19,18 @@
           <br />
           <v-row align="center">
             <v-col cols="auto">
-              <v-chip color="success" size="large" variant="flat"><strong>Complete now</strong></v-chip>
+              <v-chip color="success" size="large" variant="flat">Completed</v-chip>
             </v-col>
-            <v-col><strong>Step 1 of 2: Employment Verification - Confirm the applicant's employment details</strong></v-col>
+            <v-col>Step 1 of 2: Employment Verification - Confirm the applicant's employment details</v-col>
           </v-row>
           <v-row align="center">
             <v-col cols="auto">
-              <v-chip color="warning" size="large" variant="flat">Complete later</v-chip>
+              <v-chip color="warning" size="large" variant="flat"><strong>Complete now</strong></v-chip>
             </v-col>
             <v-col>
-              <div>Step 2 of 2: Competencies Assessment - Evaluate the applicant's knowledge, skills and abilities as an early childhood educator</div>
+              <div>
+                <strong>Step 2 of 2: Competencies Assessment - Evaluate the applicant's knowledge, skills and abilities as an early childhood educator</strong>
+              </div>
             </v-col>
           </v-row>
           <br />
@@ -43,19 +45,19 @@
           <br />
           <h2 class="mb-5">Information you'll need</h2>
           <p>
-            It should take about 5 minutes to complete your employment verification. Make sure you get together all the information you need before you
+            It should take about 5 minutes to complete your competencies assessment. Make sure you get together all the information you need before you
             continue, as you cannot save the form. If you are not ready now, you can come back later using the link in your email.
           </p>
           <br />
-          <p class="mb-3">You'll be asked to provide:</p>
+          <p class="mb-3">You will be asked to provide:</p>
           <ul class="ml-10">
             <li>Your contact information</li>
-            <li>Employer, organization, or child care program name</li>
-            <li>Applicant's job or position title</li>
-            <li>Employment start date and end date</li>
-            <li>Name and type of child care program</li>
-            <li>Age of children the applicant cared for</li>
-            <li>Your relationship to the applicant</li>
+            <li>An assessment of the applicant's competency in:</li>
+            <ul class="ml-3 list-style-dash">
+              <li>Child development, guidance, and health safety and nutrition</li>
+              <li>Developing and implementing early childhood education curriculum</li>
+              <li>Fostering positive relationships with children under their care, the families of children and with co-workers</li>
+            </ul>
           </ul>
           <br />
           <!-- prettier-ignore -->
@@ -128,5 +130,9 @@ export default defineComponent({
 <style scoped>
 ul > li {
   margin-bottom: 10px;
+}
+
+.list-style-dash {
+  list-style-type: "- ";
 }
 </style>
