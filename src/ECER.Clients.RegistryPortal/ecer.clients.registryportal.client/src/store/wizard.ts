@@ -320,6 +320,32 @@ export const useWizardStore = defineStore("wizard", {
         }),
       });
     },
+    initializeWizardForWorkExReferenceIcraApplication(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      this.setWizardData({
+        applicantFirstName: portalInvitation.applicantFirstName,
+        applicantLastName: portalInvitation.applicantLastName,
+        referenceFirstName: portalInvitation.referenceFirstName,
+        referenceLastName: portalInvitation.referenceLastName,
+        workExperienceType: portalInvitation.workExperienceType,
+        inviteType: portalInvitation.inviteType,
+        ...(wizard?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id && {
+          [wizard.steps.contactInformation.form.inputs.icraEligibilityWorkExperienceContactInformation.id]:
+            {} as Components.Schemas.ReferenceContactInformation,
+        }),
+        ...(wizard?.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id && {
+          [wizard.steps.assessment.form.inputs.workExperienceAssessment.id]: {} as Components.Schemas.WorkExperienceReferenceCompetenciesAssessment,
+        }),
+        ...(wizard?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id && {
+          [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
+        }),
+        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
+          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        }),
+      });
+    },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },

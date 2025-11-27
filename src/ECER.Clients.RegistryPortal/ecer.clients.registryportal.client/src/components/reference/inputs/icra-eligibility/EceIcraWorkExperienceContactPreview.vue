@@ -47,7 +47,7 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 
 export default defineComponent({
-  name: "EceIcraEligibilityWorkExperienceContactPreview",
+  name: "EceIcraWorkExperienceContactPreview",
   components: {
     ReferencePreviewCard,
   },

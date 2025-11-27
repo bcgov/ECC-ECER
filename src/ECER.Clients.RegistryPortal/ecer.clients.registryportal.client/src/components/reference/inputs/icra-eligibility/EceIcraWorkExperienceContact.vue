@@ -66,7 +66,7 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
-  name: "EceIcraEligibilityWorkExperienceContact",
+  name: "EceIcraWorkExperienceContact",
   components: { EceTextField },
   props: {
     modelValue: {

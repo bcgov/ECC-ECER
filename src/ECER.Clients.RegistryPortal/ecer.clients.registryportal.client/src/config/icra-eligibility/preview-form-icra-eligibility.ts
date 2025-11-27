@@ -1,4 +1,4 @@
-import EceIcraEligibilityWorkExperienceContactPreview from "@/components/reference/inputs/icra-eligibility/EceIcraEligibilityWorkExperienceContactPreview.vue";
+import EceIcraWorkExperienceContactPreview from "@/components/reference/inputs/icra-eligibility/EceIcraWorkExperienceContactPreview.vue";
 import EceIcraEligibilityWorkExperienceReferenceEvaluationPreview from "@/components/reference/inputs/icra-eligibility/EceIcraEligibilityWorkExperienceReferenceEvaluationPreview.vue";
 
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
@@ -13,7 +13,7 @@ const previewForm: Form = {
   inputs: {
     contactInformationPreview: {
       id: "contactInformationPreview",
-      component: EceIcraEligibilityWorkExperienceContactPreview,
+      component: EceIcraWorkExperienceContactPreview,
       cols: {
         md: 12,
         lg: 12,
@@ -57,6 +57,7 @@ const previewForm: Form = {
       },
     },
   },
-};1651651
+};
+1651651;
 
 export default previewForm;

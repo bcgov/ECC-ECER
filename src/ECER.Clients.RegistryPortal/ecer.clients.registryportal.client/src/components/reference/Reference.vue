@@ -78,6 +78,7 @@ import characterReferenceWizard from "@/config/character-reference-wizard";
 import workExperienceReference400HoursWizard from "@/config/work-experience-reference-400-hours-wizard";
 import workExperienceReferenceWizard from "@/config/work-experience-reference-wizard";
 import IcraEligibilityWorkExperienceReferenceWizard from "@/config/icra-eligibility/icra-eligibility-work-experience-reference-wizard";
+import IcraApplicationWorkExperienceReferenceWizard from "@/config/icra-eligibility/icra-application-work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useWizardStore } from "@/store/wizard";
@@ -109,12 +110,22 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
-      if (data?.portalInvitation?.workExperienceType === WorkExperienceType.IS_400_Hours) {
-        wizardStore.initializeWizardFor400HoursWorkExReference(workExperienceReference400HoursWizard, data.portalInvitation);
-        wizardConfigSetup = workExperienceReference400HoursWizard;
-      } else {
-        wizardStore.initializeWizardForWorkExReference(workExperienceReferenceWizard, data.portalInvitation);
-        wizardConfigSetup = workExperienceReferenceWizard;
+      switch (data.portalInvitation.workExperienceType) {
+        case WorkExperienceType.IS_500_Hours:
+          wizardStore.initializeWizardForWorkExReference(workExperienceReferenceWizard, data.portalInvitation);
+          wizardConfigSetup = workExperienceReferenceWizard;
+          break;
+        case WorkExperienceType.IS_400_Hours:
+          wizardStore.initializeWizardFor400HoursWorkExReference(workExperienceReference400HoursWizard, data.portalInvitation);
+          wizardConfigSetup = workExperienceReference400HoursWizard;
+          break;
+        case WorkExperienceType.ICRA:
+          wizardStore.initializeWizardForWorkExReferenceIcraApplication(IcraApplicationWorkExperienceReferenceWizard, data.portalInvitation);
+          wizardConfigSetup = IcraApplicationWorkExperienceReferenceWizard;
+          break;
+        default:
+          console.error(`Unhandled work experience type ${data.portalInvitation.workExperienceType}`);
+          router.push("/invalid-reference");
       }
     } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
       wizardStore.initializeWizardForCharacterReference(characterReferenceWizard, data.portalInvitation);
@@ -208,8 +219,10 @@ export default defineComponent({
 
       switch (this.wizardStore.wizardData.inviteType) {
         case PortalInviteType.CHARACTER:
+          await this.handleSubmitCharacterReferenceFlow();
+          break;
         case PortalInviteType.WORK_EXPERIENCE:
-          await this.handleSubmitReferenceFlow();
+          await this.handleSubmitWorkReferenceFlow();
           break;
         case PortalInviteType.ICRA_WORK_EXPERIENCE:
           await this.handleSubmitIcraEligibilityReferenceFlow();
@@ -218,66 +231,81 @@ export default defineComponent({
           this.alertStore.setFailureAlert(`Unhandled portal invite type ${this.wizardStore.wizardData?.inviteType}`);
       }
     },
-    async handleSubmitReferenceFlow() {
-      if (this.wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER) {
-        const response = await postCharacterReference({
-          token: this.route.params.token as string,
-          willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
-          referenceContactInformation:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
-          referenceEvaluation:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""],
-          confirmProvidedInformationIsRight:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
-        });
+    async handleSubmitCharacterReferenceFlow() {
+      const response = await postCharacterReference({
+        token: this.route.params.token as string,
+        willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+        referenceContactInformation:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
+        referenceEvaluation:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""],
+        confirmProvidedInformationIsRight:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
+        recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+      });
 
-        if (!response?.error) {
-          this.router.push({ path: "/reference-submitted" });
-        }
-      } else if (
-        this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
-        this.wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_500_Hours
-      ) {
-        const response = await postWorkExperienceReference({
-          token: this.route.params.token as string,
-          workExperienceType: this.wizardStore.wizardData.workExperienceType,
-          willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
-          referenceContactInformation:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
-          workExperienceReferenceDetails:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""],
-          workExperienceReferenceCompetenciesAssessment:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""],
-          confirmProvidedInformationIsRight:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
-        });
-
-        if (!response?.error) {
-          this.router.push({ path: "/reference-submitted" });
-        }
-      } else if (
-        this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
-        this.wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_400_Hours
-      ) {
-        const response = await postWorkExperienceReference({
-          token: this.route.params.token as string,
-          workExperienceType: this.wizardStore.wizardData.workExperienceType,
-          willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
-          referenceContactInformation:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
-          workExperienceReferenceDetails:
-            this.wizardStore.wizardData[
-              this.wizardStore?.wizardConfig?.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
-            ],
-          confirmProvidedInformationIsRight:
-            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
-        });
-        if (!response?.error) {
-          this.router.push({ path: "/reference-submitted" });
-        }
+      if (!response?.error) {
+        this.router.push({ path: "/reference-submitted" });
+      }
+    },
+    async handleSubmitWorkReferenceFlow() {
+      let response;
+      switch (this.wizardStore.wizardData.workExperienceType) {
+        case WorkExperienceType.IS_500_Hours:
+          response = await postWorkExperienceReference({
+            token: this.route.params.token as string,
+            workExperienceType: this.wizardStore.wizardData.workExperienceType,
+            willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+            referenceContactInformation:
+              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
+            workExperienceReferenceDetails:
+              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""],
+            workExperienceReferenceCompetenciesAssessment:
+              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""],
+            confirmProvidedInformationIsRight:
+              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
+            recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+          });
+          break;
+        case WorkExperienceType.IS_400_Hours:
+          response = await postWorkExperienceReference({
+            token: this.route.params.token as string,
+            workExperienceType: this.wizardStore.wizardData.workExperienceType,
+            willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+            referenceContactInformation:
+              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
+            workExperienceReferenceDetails:
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+              ],
+            confirmProvidedInformationIsRight:
+              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
+            recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+          });
+          break;
+        case WorkExperienceType.ICRA:
+          response = await postWorkExperienceReference({
+            token: this.route.params.token as string,
+            workExperienceType: this.wizardStore.wizardData.workExperienceType,
+            willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+            referenceContactInformation:
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
+              ],
+            workExperienceReferenceCompetenciesAssessment:
+              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""],
+            confirmProvidedInformationIsRight:
+              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
+            recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+          });
+          break;
+        default:
+          console.error(`Unhandled work experience type ${this.wizardStore.wizardData.workExperienceType}`);
+          this.alertStore.setFailureAlert(`Unhandled work experience type ${this.wizardStore.wizardData.workExperienceType}`);
+          return;
+      }
+      if (!response?.error) {
+        this.router.push({ path: "/reference-submitted" });
       }
     },
     async handleSubmitIcraEligibilityReferenceFlow() {

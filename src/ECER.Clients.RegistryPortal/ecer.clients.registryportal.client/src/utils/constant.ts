@@ -34,6 +34,7 @@ export enum PortalInviteType {
 export enum WorkExperienceType {
   IS_400_Hours = "Is400Hours",
   IS_500_Hours = "Is500Hours",
+  ICRA = "ICRA",
 }
 
 export enum ProvinceTerritoryType {
