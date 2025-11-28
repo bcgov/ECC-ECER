@@ -255,7 +255,31 @@ public class ApplicationHandlers(
         break;
 
       case InviteType.WorkExperienceReferenceforApplication:
-        submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+        if (portalInvitation.ApplicantId is null)
+        {
+          throw new InvalidOperationException($"portal invite applicant id is null");
+        }
+        if (portalInvitation.WorkexperienceReferenceId is null)
+        {
+          throw new InvalidOperationException($"portal invite work experience reference id is null");
+        }
+        var workExperience = await applicationRepository.GetWorkExperienceReferenceById(portalInvitation.WorkexperienceReferenceId, portalInvitation.ApplicantId, cancellationToken);
+
+        if (workExperience is null)
+        {
+          throw new InvalidOperationException($"work experience reference not found for reference id: {portalInvitation.WorkexperienceReferenceId} and applicant id: {portalInvitation.ApplicantId}");
+        }
+        if (workExperience.Type == Resources.Documents.Applications.WorkExperienceTypes.ICRA)
+        {
+          submitReferenceRequest = mapper.Map<IcraWorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+        }
+        else if (workExperience.Type == Resources.Documents.Applications.WorkExperienceTypes.Is400Hours || workExperience.Type == Resources.Documents.Applications.WorkExperienceTypes.Is500Hours)
+        {
+          submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+        } else {
+          throw new InvalidOperationException($"unknown work experience reference type '{workExperience.Type}'");
+        }
+
         break;
 
       case InviteType.WorkExperienceReferenceforICRA:

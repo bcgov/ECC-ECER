@@ -1,13 +1,13 @@
-import EceIcraEligibilityWorkExperienceContact from "@/components/reference/inputs/icra-eligibility/EceIcraEligibilityWorkExperienceContact.vue";
+import EceIcraWorkExperienceContact from "@/components/reference/inputs/icra-eligibility/EceIcraWorkExperienceContact.vue";
 import type { Form } from "@/types/form";
 
-const icraEligibilityWorkExperienceContactInformationForm: Form = {
-  id: "icraEligiblityWorkExperienceContactInformationForm",
+const icraWorkExperienceContactInformationForm: Form = {
+  id: "icraWorkExperienceContactInformationForm",
   title: "contact information form",
   inputs: {
     icraEligibilityWorkExperienceContactInformation: {
       id: "icraEligibilityWorkExperienceContactInformation",
-      component: EceIcraEligibilityWorkExperienceContact,
+      component: EceIcraWorkExperienceContact,
       cols: {
         md: 12,
         lg: 12,
@@ -17,4 +17,4 @@ const icraEligibilityWorkExperienceContactInformationForm: Form = {
   },
 };
 
-export default icraEligibilityWorkExperienceContactInformationForm;
+export default icraWorkExperienceContactInformationForm;
