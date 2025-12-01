@@ -136,6 +136,14 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace PspUserAdd {
+    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = string;
+      export interface $404 {}
+    }
+  }
   namespace PspUserManageDeactivatePost {
     namespace Parameters {
       export type ProgramRepId = string;
@@ -237,6 +245,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserManageSetPrimaryPost.Responses.$200>;
   /**
+   * psp_user_add - Adds a new psp user to an institution
+   */
+  "psp_user_add"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.PspUserAdd.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserAdd.Responses.$200>;
+  /**
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
   "psp_user_profile_get"(
@@ -324,6 +340,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserManageSetPrimaryPost.Responses.$200>;
+  };
+  ["/api/users/manage/add"]: {
+    /**
+     * psp_user_add - Adds a new psp user to an institution
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.PspUserAdd.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserAdd.Responses.$200>;
   };
   ["/api/users/profile"]: {
     /**

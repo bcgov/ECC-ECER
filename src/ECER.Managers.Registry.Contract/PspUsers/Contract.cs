@@ -89,6 +89,8 @@ public enum RegisterPspUserError
   BceidBusinessIdDoesNotMatch,
 }
 
+public record AddPspRepCommand(PspUserProfile userProfile, string postSecondaryInstitutionId) : IRequest<string>;
+
 public record UpdatePspRepProfileCommand(PspUser User) : IRequest<string>;
 
 /// <summary>

@@ -35,6 +35,14 @@ export default defineComponent({
           { title: "Manage users", disabled: true, href: "/manage-users" },
         ];
       }
+      if (this.route.name === "add-user") {
+        const educationInstitutionName = this.route.params.educationInstitutionName as string;
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          { title: "Manage users", disabled: false, href: `/manage-users/${educationInstitutionName}` },
+          { title: "Invite user", disabled: true, href: this.route.path },
+        ];
+      }
       return [];
     },
   },

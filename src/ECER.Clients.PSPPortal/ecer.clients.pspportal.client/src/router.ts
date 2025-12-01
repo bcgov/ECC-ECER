@@ -40,6 +40,13 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/manage-users/:educationInstitutionName/add-user",
+      component: () => import("./components/pages/AddUser.vue"),
+      name: "add-user",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/education-institution/edit",
       component: () => import("./components/pages/PageNotFound.vue"),
       name: "edit-education-institution",

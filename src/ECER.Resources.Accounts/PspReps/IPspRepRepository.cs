@@ -32,6 +32,11 @@ public interface IPspRepRepository
   /// Sets the specified Psp representative as Primary and others in the same institution to Secondary
   /// </summary>
   Task SetPrimary(string pspUserId, CancellationToken ct);
+  
+  /// <summary>
+  /// Adds a new Psp representative's profile
+  /// </summary>
+  Task Add(PspUserProfile profile, string postSecondaryInstitutionId, CancellationToken ct);
 }
 
 public record PspRepQuery
