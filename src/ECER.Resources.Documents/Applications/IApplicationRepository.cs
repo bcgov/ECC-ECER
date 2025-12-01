@@ -26,6 +26,8 @@ public interface IApplicationRepository
   Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
 
   Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
+
+  Task<WorkExperienceReference> GetWorkExperienceReferenceById(string referenceId, string applicantId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -249,6 +251,7 @@ public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelati
 
 public record WorkExperienceReferenceSubmissionRequest(bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
 
+public record IcraWorkExperienceReferenceSubmissionRequest(bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
 public record WorkExperienceReferenceDetails()
 {
   public int? Hours { get; set; }

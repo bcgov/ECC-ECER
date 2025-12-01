@@ -1,8 +1,8 @@
-import IcraEligibilityDeclarationForm from "./icra-eligibility-work-experience-reference-declaration-form";
+import IcraApplicationWorkReferenceDeclarationForm from "./icra-application-work-experience-reference-declaration-form";
 import icraWorkExperienceContactInformationForm from "./icra-eligibility-work-experience-contact-information-form";
-import icraEligibilityWorkExperienceReferenceEvaluationForm from "./icra-eligibility-work-experience-reference-evaluation-form";
+import workExperienceAssessmentForm from "../work-experience-reference-assessment-form";
 import workExperienceDeclineForm from "@/config/work-experience-reference-decline-form";
-import IcraEligibilityPreviewForm from "./preview-form-icra-eligibility";
+import IcraApplicationPreviewForm from "./preview-form-icra-five-year";
 
 import type { Wizard } from "@/types/wizard";
 
@@ -12,7 +12,7 @@ const workExperienceReferenceWizardConfig: Wizard = {
     declaration: {
       title: "",
       stage: "Declaration",
-      form: IcraEligibilityDeclarationForm,
+      form: IcraApplicationWorkReferenceDeclarationForm,
       key: "item.1",
     },
     contactInformation: {
@@ -21,16 +21,16 @@ const workExperienceReferenceWizardConfig: Wizard = {
       form: icraWorkExperienceContactInformationForm,
       key: "item.2",
     },
-    workExperienceEvaluation: {
+    assessment: {
+      stage: "Assessment",
       title: "",
-      stage: "ReferenceEvaluation",
-      form: icraEligibilityWorkExperienceReferenceEvaluationForm,
+      form: workExperienceAssessmentForm,
       key: "item.3",
     },
     review: {
       title: "Review",
       stage: "Review",
-      form: IcraEligibilityPreviewForm,
+      form: IcraApplicationPreviewForm,
       key: "item.4",
     },
     decline: {

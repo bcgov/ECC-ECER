@@ -32,6 +32,7 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     context.UpdateObject(pspUser);
     context.AddObject(authentication);
     context.AddLink(pspUser, ecer_Authentication.Fields.ecer_authentication_eceprogramrepresentative, authentication);
+    context.SaveChanges();
 
     await Task.CompletedTask;
     return authentication.Id.ToString();

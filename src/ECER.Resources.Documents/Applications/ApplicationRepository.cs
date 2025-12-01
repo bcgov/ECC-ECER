@@ -167,6 +167,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     {
       CharacterReferenceSubmissionRequest req => await SubmitCharacterReference(request.PortalInvitation!.CharacterReferenceId!, req),
       WorkExperienceReferenceSubmissionRequest req => await SubmitWorkexperienceReference(request.PortalInvitation!.WorkexperienceReferenceId!, req),
+      IcraWorkExperienceReferenceSubmissionRequest req => await SubmitIcraWorkExperienceReference(request.PortalInvitation!.WorkexperienceReferenceId!, req),
       _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
     };
   }
