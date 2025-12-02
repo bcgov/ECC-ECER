@@ -33,6 +33,9 @@ declare namespace Components {
       } | null;
     }
     export type InviteType = "PSIProgramRepresentative";
+    export interface NewPspUserResponse {
+      id?: string | null;
+    }
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
@@ -139,7 +142,7 @@ declare namespace Paths {
   namespace PspUserAdd {
     export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
     namespace Responses {
-      export interface $200 {}
+      export type $200 = Components.Schemas.NewPspUserResponse;
       export type $400 = string;
       export interface $404 {}
     }
@@ -408,6 +411,7 @@ export type Auspice = Components.Schemas.Auspice;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type InviteType = Components.Schemas.InviteType;
+export type NewPspUserResponse = Components.Schemas.NewPspUserResponse;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;
 export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;

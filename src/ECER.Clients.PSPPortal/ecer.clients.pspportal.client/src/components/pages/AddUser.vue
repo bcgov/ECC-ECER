@@ -63,6 +63,13 @@ export default defineComponent({
         const loadingStore = useLoadingStore();
         const router = useRouter();
 
+        formStore.setFormData({
+            email: "",
+            firstName: "",
+            lastName: "",
+            jobTitle: "",
+        });
+
         return { inviteUserForm, formStore, alertStore, loadingStore, router };
     },
     methods: {
@@ -72,13 +79,13 @@ export default defineComponent({
             if (!valid) {
                 this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
             } else {
-                const userAdded = await addUser({
+                const response = await addUser({
                     email: this.formStore.formData[inviteUserForm?.components?.email?.id || ""],
                     firstName: this.formStore.formData[inviteUserForm?.components?.firstName?.id || ""],
                     lastName: this.formStore.formData[inviteUserForm?.components?.lastName?.id || ""],
                     jobTitle: this.formStore.formData[inviteUserForm?.components?.jobTitle?.id || ""],
                 });
-                if (userAdded) {
+                if (response?.id) {
                     this.alertStore.setSuccessAlert("User has been successfully invited.");
                     this.router.back();
                 } else {

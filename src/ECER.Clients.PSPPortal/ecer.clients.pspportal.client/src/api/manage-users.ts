@@ -1,5 +1,5 @@
 import { getClient } from "@/api/client";
-import type { PspUserListItem, PspUserProfile } from "@/types/openapi";
+import type { PspUserListItem, PspUserProfile, NewPspUserResponse } from "@/types/openapi";
 import ApiResultHandler from "@/utils/apiResultHandler";
 const apiResultHandler = new ApiResultHandler();
 
@@ -19,10 +19,10 @@ const setPrimaryUser = async (programRepId: string): Promise<void> => {
   await apiResultHandler.execute({ request: client.psp_user_manage_set_primary_post({ programRepId }), key: "psp_user_manage_set_primary_post" });
 };
 
-const addUser = async (userProfile: PspUserProfile): Promise<boolean> => {
+const addUser = async (userProfile: PspUserProfile): Promise<NewPspUserResponse | null> => {
   const client = await getClient();
   const response = await apiResultHandler.execute({ request: client.psp_user_add(null, userProfile), key: "psp_user_add" });
-  return response !== null;
+  return response?.data ?? null;
 };
 
 export { getUsers, deactivateUser, setPrimaryUser, addUser };

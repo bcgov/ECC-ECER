@@ -106,7 +106,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .WithParameterValidation();
     
     endpointRouteBuilder.MapPost("api/users/manage/add", 
-      async Task<Results<Ok, BadRequest<string>, NotFound>> (PspUserProfile userProfile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      async Task<Results<Ok<NewPspUserResponse>, BadRequest<string>, NotFound>> (PspUserProfile userProfile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
       {
         var user = ctx.User.GetUserContext()!;
         var currentRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = user.Identity }, ct)).Items.SingleOrDefault();
@@ -121,13 +121,15 @@ public class ManageUsersEndpoints : IRegisterEndpoints
         
         await bus.Send(new AddPspRepCommand(newPspUser, currentRep.PostSecondaryInstituteId), ct);
         
-        return TypedResults.Ok();
+        return TypedResults.Ok(new NewPspUserResponse(newPspUserId));
       })
       .WithOpenApi("Adds a new psp user to an institution", string.Empty, "psp_user_add")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
   }
 }
+
+public record NewPspUserResponse(string Id);
 
 public record PspUserListItem
 {
