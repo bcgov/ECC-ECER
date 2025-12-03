@@ -6,18 +6,13 @@
     <br />
     <h2>Status</h2>
     <p>It is a 3-step process to apply</p>
-
     <!-- Step 1 start -->
     <v-card elevation="0" color="white-smoke" class="border-top mt-5" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row>
-            <v-col cols="12">
-              <h3 :class="currentStep === 1 ? 'white' : ''">Step 1</h3>
-            </v-col>
-            <v-col cols="12">
-              <h3 :class="currentStep === 1 ? 'white' : ''">Submit application</h3>
-            </v-col>
+            <v-col cols="12"><h3 :class="currentStep === 1 ? 'white' : ''">Step 1</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 1 ? 'white' : ''">Submit application</h3></v-col>
           </v-row>
           <p class="large" :class="currentStep === 1 ? 'white' : ''">
             <v-icon icon="mdi-check" />
@@ -32,24 +27,13 @@
       </v-card-text>
     </v-card>
     <!-- Step 1 End-->
-
     <!-- Step 2 Start-->
-    <v-card
-      elevation="0"
-      :color="currentStep === 2 ? 'primary' : 'white-smoke'"
-      class="mt-5"
-      :class="[{ 'border-top': currentStep !== 2 }]"
-      rounded="0"
-    >
+    <v-card elevation="0" :color="currentStep === 2 ? 'primary' : 'white-smoke'" class="mt-5" :class="[{ 'border-top': currentStep !== 2 }]" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row>
-            <v-col cols="12">
-              <h3 :class="currentStep === 2 ? 'white' : ''">Step 2</h3>
-            </v-col>
-            <v-col cols="12">
-              <h3 :class="currentStep === 2 ? 'white' : ''">References and documents</h3>
-            </v-col>
+            <v-col cols="12"><h3 :class="currentStep === 2 ? 'white' : ''">Step 2</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 2 ? 'white' : ''">References and documents</h3></v-col>
           </v-row>
           <p class="large" :class="currentStep === 2 ? 'white' : ''">
             <v-icon v-if="stepTwoIcon" :icon="stepTwoIcon" />
@@ -58,81 +42,52 @@
         </div>
       </v-card-text>
     </v-card>
-
-    <!-- Education (formerly International certification) -->
-    <ApplicationSummaryHeader text="Education" />
+    <ApplicationSummaryHeader text="International certification" />
     <ApplicationSummaryActionListItem
       v-for="certificate in icraEligibilityStatus?.internationalCertifications"
-      :key="certificate.id"
       :text="certificateNameDisplay(certificate)"
       :active="isCertificateReceived(certificate)"
       :goTo="() => {}"
       :show-link="false"
     />
-
-    <!-- References -->
     <ApplicationSummaryHeader text="References" />
     <ApplicationSummaryActionListItem
       text="Employment experience references"
       :active="actionNeededWorkReferences"
       :goTo="
         () => {
-          router.push({
-            name: 'manage-icra-eligibility-work-experience-references',
-            params: { icraEligibilityId: icraEligibilityId },
-          });
+          router.push({ name: 'manage-icra-eligibility-work-experience-references', params: { icraEligibilityId: icraEligibilityId } });
         }
       "
     />
-    <!-- Competencies assessments (read-only, Step 2 only) -->
-    <ApplicationSummaryActionListItem
-      v-if="currentStep === 2"
-      text="Competencies assessments"
-      :active="competenciesAssessmentsReceived"
-      :goTo="() => {}"
-      :show-link="false"
-    />
-
-    <!-- Other information -->
     <ApplicationSummaryHeader v-if="showOtherInformation" text="Other information" />
     <ApplicationSummaryActionListItem
       v-for="(previousName, index) in userStore.unverifiedPreviousNames"
-      :key="`unverified-${index}`"
+      :key="index"
       :text="`Proof of previous name  ${cleanPreferredName(previousName.firstName, previousName.lastName)}`"
       :go-to="() => router.push({ name: 'profile' })"
     />
     <ApplicationSummaryActionListItem
       v-for="(previousName, index) in userStore.pendingforDocumentsPreviousNames"
-      :key="`pending-${index}`"
+      :key="index"
       :text="`Proof of previous name ${cleanPreferredName(previousName.firstName, previousName.lastName)}`"
       :go-to="() => router.push({ name: 'profile' })"
     />
     <ApplicationSummaryActionListItem
       v-for="(previousName, index) in userStore.readyForVerificationPreviousNames"
-      :key="`ready-${index}`"
+      :key="index"
       :text="`Proof of previous name ${cleanPreferredName(previousName.firstName, previousName.lastName)}`"
       :go-to="() => router.push({ name: 'profile' })"
       :active="false"
     />
     <!-- Step 2 End -->
-
     <!-- Step 3 Start-->
-    <v-card
-      elevation="0"
-      :color="currentStep === 3 ? 'primary' : 'white-smoke'"
-      class="mt-5"
-      :class="[{ 'border-top': currentStep !== 3 }]"
-      rounded="0"
-    >
+    <v-card elevation="0" :color="currentStep === 3 ? 'primary' : 'white-smoke'" class="mt-5" :class="[{ 'border-top': currentStep !== 3 }]" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row>
-            <v-col cols="12">
-              <h3 :class="currentStep === 3 ? 'white' : ''">Step 3</h3>
-            </v-col>
-            <v-col cols="12">
-              <h3 :class="currentStep === 3 ? 'white' : ''">ECE Registry assessment</h3>
-            </v-col>
+            <v-col cols="12"><h3 :class="currentStep === 3 ? 'white' : ''">Step 3</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 3 ? 'white' : ''">ECE Registry assessment</h3></v-col>
           </v-row>
           <p class="large" :class="currentStep === 3 ? 'white' : ''">
             {{ stepThreeStatusText }}
@@ -184,7 +139,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup: async () => {
+  setup: async (props) => {
     const { smAndUp } = useDisplay();
     const userStore = useUserStore();
     const configStore = useConfigStore();
@@ -207,19 +162,14 @@ export default defineComponent({
     };
   },
   async mounted() {
-    this.icraEligibilityStatus =
-      (await getIcraEligibilityStatus(this.icraEligibilityId))?.data || {};
+    this.icraEligibilityStatus = (await getIcraEligibilityStatus(this.icraEligibilityId))?.data || {};
   },
   methods: {
-    certificateNameDisplay(
-      certificate: Components.Schemas.InternationalCertification,
-    ): string {
-      return `${this.configStore.countryName(certificate?.countryId || "")} - ${
-        certificate?.certificateTitle || ""
-      }`;
+    certificateNameDisplay(certificate: Components.Schemas.InternationalCertification): string {
+      return `${this.configStore.countryName(certificate?.countryId || "")} - ${certificate?.certificateTitle || ""}`;
     },
     isCertificateReceived(
-      certificate: Components.Schemas.InternationalCertification,
+      certificate: Components.Schemas.InternationalCertification
     ): boolean {
       switch (certificate.status) {
         case "ICRAEligibilitySubmitted":
@@ -239,62 +189,35 @@ export default defineComponent({
           console.warn("unhandled certificate status:", certificate.status);
           return true;
       }
-    },
+    }
   },
   computed: {
     actionNeededWorkReferences(): boolean {
       const totalReferencesWithoutRejections =
-        this.icraEligibilityStatus?.employmentReferencesStatus?.filter(
-          (reference) => {
-            if (reference.status !== "Rejected") {
-              return true;
-            }
-          },
-        )?.length || 0;
+        this.icraEligibilityStatus?.employmentReferencesStatus?.filter((reference) => {
+          if (reference.status !== "Rejected") {
+            return true;
+          }
+        })?.length || 0;
 
-      const someReferencesRequireResponse =
-        this.icraEligibilityStatus?.employmentReferencesStatus?.some(
-          (reference) => {
-            if (
-              reference.status === "ICRAEligibilitySubmitted" ||
-              reference.status === "WaitingforResponse"
-            ) {
-              return true;
-            }
-          },
-        );
+      const someReferencesRequireResponse = this.icraEligibilityStatus?.employmentReferencesStatus?.some((reference) => {
+        if (reference.status === "ICRAEligibilitySubmitted" || reference.status === "WaitingforResponse") {
+          return true;
+        }
+      });
 
       // check if any references still require a response
       if (someReferencesRequireResponse) {
         return true;
       }
 
-      // registry asks for more employment references
-      if (
-        this.icraEligibilityStatus?.addAdditionalEmploymentExperienceReferences &&
-        totalReferencesWithoutRejections < 6
-      ) {
+      //registry asks for more employement references
+      if (this.icraEligibilityStatus?.addAdditionalEmploymentExperienceReferences && totalReferencesWithoutRejections < 6) {
         return true;
       }
 
-      // No action needed
+      //No action needed
       return false;
-    },
-    competenciesAssessmentsReceived(): boolean {
-      const references =
-        this.icraEligibilityStatus?.employmentReferencesStatus ?? [];
-
-      // No references yet → not received
-      if (!references.length) {
-        return false;
-      }
-
-      // Treat "ICRAEligibilitySubmitted" as "not yet submitted".
-      // Anything else counts as submitted / in progress / completed.
-      return references.every(
-        (reference) =>
-          reference.status && reference.status !== "ICRAEligibilitySubmitted",
-      );
     },
     currentStep(): number {
       switch (this.icraEligibilityStatus?.status) {
@@ -306,10 +229,7 @@ export default defineComponent({
         case "ReadyforAssessment":
           return 2;
         default:
-          console.warn(
-            "unhandled icra eligibility status:",
-            this.icraEligibilityStatus?.status,
-          );
+          console.warn("unhandled icra eligibility status:", this.icraEligibilityStatus?.status);
           return 1;
       }
     },
@@ -334,8 +254,7 @@ export default defineComponent({
       }
     },
     stepThreeStatusText() {
-      // Make this depend on state so Sonar doesn't flag it as invariant
-      return this.currentStep === 3 ? "In progress" : "Not yet started";
+      return "Not yet started";
     },
     showOtherInformation(): boolean {
       return (
@@ -347,7 +266,6 @@ export default defineComponent({
   },
 });
 </script>
-
 <style scoped>
 .border-top {
   border-top: 2px solid black;
