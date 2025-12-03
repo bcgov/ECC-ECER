@@ -10,6 +10,8 @@
   <PageContainer>
     <h2>What to expect next</h2>
     <br />
+    <p>{{ certificationText }}</p>
+    <br />
     <p>It is important to keep your contact information up-to-date in your My ECE Registry profile.</p>
     <br />
     <div v-if="applicationHasTranscripts">
@@ -96,10 +98,33 @@ export default defineComponent({
       return (this.applicationStore.application?.transcripts?.length || 0) > 0;
     },
     applicationHasEducationNotRecognized() {
-      return this.applicationStore.application?.transcripts?.some((transcript) => transcript.educationRecognition === "NotRecognized");
+      return this.applicationStore.application?.transcripts?.some(
+        (transcript) => transcript.educationRecognition === "NotRecognized"
+      );
     },
     applicationIsEceAssistant() {
       return this.applicationStore.application?.certificationTypes?.includes("EceAssistant");
+    },
+    certificationText() {
+      const types = this.applicationStore.application?.certificationTypes || [];
+
+      const hasITE = types.includes("Ite");
+      const hasSNE = types.includes("Sne");
+
+      if (hasITE && hasSNE) {
+        return "We will assess your application for ECE Five Year, Infant and Toddler Educator, and Special Needs Educator certification.";
+      }
+
+      if (hasITE) {
+        return "We will assess your application for ECE Five Year and Infant and Toddler Educator certification.";
+      }
+
+      if (hasSNE) {
+        return "We will assess your application for ECE Five Year and Special Needs Educator certification.";
+      }
+
+      // 5-YR only (FiveYears)
+      return "We will assess your application for ECE Five Year certification.";
     },
   },
 });
