@@ -104,8 +104,32 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .WithOpenApi("Sets the specified PSP representative as Primary for the current user's institution", string.Empty, "psp_user_manage_set_primary_post")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
+    
+    endpointRouteBuilder.MapPost("api/users/manage/add", 
+      async Task<Results<Ok<NewPspUserResponse>, BadRequest<string>, NotFound>> (PspUserProfile userProfile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      {
+        var user = ctx.User.GetUserContext()!;
+        var currentRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = user.Identity }, ct)).Items.SingleOrDefault();
+        if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
+        {
+          return TypedResults.NotFound();
+        }
+        
+        var newPspUser = mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(userProfile)!;
+        var newPspUserId = Guid.NewGuid().ToString();
+        newPspUser.Id = newPspUserId;
+        
+        await bus.Send(new AddPspRepCommand(newPspUser, currentRep.PostSecondaryInstituteId), ct);
+        
+        return TypedResults.Ok(new NewPspUserResponse(newPspUserId));
+      })
+      .WithOpenApi("Adds a new psp user to an institution", string.Empty, "psp_user_add")
+      .RequireAuthorization("psp_user")
+      .WithParameterValidation();
   }
 }
+
+public record NewPspUserResponse(string Id);
 
 public record PspUserListItem
 {

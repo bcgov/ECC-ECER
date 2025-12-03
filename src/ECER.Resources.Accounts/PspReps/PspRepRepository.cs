@@ -149,4 +149,23 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
 
     context.SaveChanges();
   }
+
+  public async Task Add(PspUserProfile profile, string postSecondaryInstitutionId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    
+    if (!Guid.TryParse(postSecondaryInstitutionId, out var institutionId)) throw new InvalidOperationException($"Post Secondary Institution ID {postSecondaryInstitutionId} is not a valid GUID");
+    
+    var institution = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.Id == institutionId);
+    if(institution == null) throw new InvalidOperationException($"Post Secondary Institution with ID {postSecondaryInstitutionId} not found");
+    
+    var pspUser = mapper.Map<ecer_ECEProgramRepresentative>(profile);
+    pspUser.ecer_InvitetoPortal = true;
+    pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Invited;
+    pspUser.ecer_RepresentativeRole = ecer_RepresentativeRole.Secondary;
+    
+    context.AddObject(pspUser);
+    context.AddLink(institution, ecer_PostSecondaryInstitute.Fields.ecer_eceprogramrepresentative_PostSecondaryIns, pspUser);
+    context.SaveChanges();
+  }
 }

@@ -33,6 +33,9 @@ declare namespace Components {
       } | null;
     }
     export type InviteType = "PSIProgramRepresentative";
+    export interface NewPspUserResponse {
+      id?: string | null;
+    }
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
@@ -136,6 +139,14 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace PspUserAdd {
+    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
+    namespace Responses {
+      export type $200 = Components.Schemas.NewPspUserResponse;
+      export type $400 = string;
+      export interface $404 {}
+    }
+  }
   namespace PspUserManageDeactivatePost {
     namespace Parameters {
       export type ProgramRepId = string;
@@ -237,6 +248,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserManageSetPrimaryPost.Responses.$200>;
   /**
+   * psp_user_add - Adds a new psp user to an institution
+   */
+  "psp_user_add"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.PspUserAdd.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserAdd.Responses.$200>;
+  /**
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
   "psp_user_profile_get"(
@@ -325,6 +344,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserManageSetPrimaryPost.Responses.$200>;
   };
+  ["/api/users/manage/add"]: {
+    /**
+     * psp_user_add - Adds a new psp user to an institution
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.PspUserAdd.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserAdd.Responses.$200>;
+  };
   ["/api/users/profile"]: {
     /**
      * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
@@ -382,6 +411,7 @@ export type Auspice = Components.Schemas.Auspice;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type InviteType = Components.Schemas.InviteType;
+export type NewPspUserResponse = Components.Schemas.NewPspUserResponse;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;
 export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
