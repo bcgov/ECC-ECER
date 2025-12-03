@@ -11,7 +11,6 @@
     <h2>What to expect next</h2>
     <br />
     <p>{{ certificationText }}</p>
-    <br />
     <p>It is important to keep your contact information up-to-date in your My ECE Registry profile.</p>
     <br />
     <div v-if="applicationHasTranscripts">
