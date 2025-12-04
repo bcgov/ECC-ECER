@@ -10,6 +10,8 @@ using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
+using RepoPortalAccessStatus = ECER.Resources.Accounts.PspReps.PortalAccessStatus;
+
 namespace ECER.Managers.Registry;
 
 public class PspUserHandlers(
@@ -24,6 +26,7 @@ public class PspUserHandlers(
     IRequestHandler<UpdatePspRepProfileCommand, string>,
     IRequestHandler<RegisterPspUserCommand, RegisterPspUserResult>,
     IRequestHandler<DeactivatePspRepCommand, string>,
+    IRequestHandler<ReactivatePspRepCommand, string>,
     IRequestHandler<SetPrimaryPspRepCommand, string>
 {
   /// <summary>
@@ -82,6 +85,30 @@ public class PspUserHandlers(
 
     ecerContext.BeginTransaction();
     await pspRepRepository.Deactivate(request.ProgramRepresentativeId, cancellationToken);
+    ecerContext.CommitTransaction();
+    return request.ProgramRepresentativeId;
+  }
+
+  /// <summary>
+  /// Handles reactivating a psp user use case
+  /// </summary>
+  public async Task<string> Handle(ReactivatePspRepCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var pspUser = (await pspRepRepository.Query(new PspRepQuery
+    {
+      ById = request.ProgramRepresentativeId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (pspUser == null) throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} not found");
+    if (pspUser.AccessToPortal == RepoPortalAccessStatus.Active || pspUser.AccessToPortal == RepoPortalAccessStatus.Invited)
+    {
+      throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} already has portal access");
+    }
+
+    ecerContext.BeginTransaction();
+    await pspRepRepository.Reactivate(request.ProgramRepresentativeId, cancellationToken);
     ecerContext.CommitTransaction();
     return request.ProgramRepresentativeId;
   }

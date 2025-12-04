@@ -6,6 +6,8 @@ using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
+using ContractPortalAccessStatus = ECER.Managers.Registry.Contract.PspUsers.PortalAccessStatus;
+
 namespace ECER.Clients.PSPPortal.Server.Users;
 
 public class ManageUsersEndpoints : IRegisterEndpoints
@@ -72,6 +74,39 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
 
+    endpointRouteBuilder.MapPost("api/users/manage/{programRepId}/reactivate",
+      async Task<Results<Ok, NotFound, BadRequest<string>>> (string programRepId, HttpContext ctx, CancellationToken ct, IMediator bus) =>
+      {
+        if (!Guid.TryParse(programRepId, out _))
+        {
+          return TypedResults.NotFound();
+        }
+
+        var user = ctx.User.GetUserContext()!;
+        var currentRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = user.Identity }, ct)).Items.SingleOrDefault();
+        if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
+        {
+          return TypedResults.NotFound();
+        }
+
+        var targetRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ById = programRepId }, ct)).Items.SingleOrDefault();
+        if (targetRep == null || targetRep.PostSecondaryInstituteId != currentRep.PostSecondaryInstituteId)
+        {
+          return TypedResults.NotFound();
+        }
+
+        if (targetRep.AccessToPortal == ContractPortalAccessStatus.Active || targetRep.AccessToPortal == ContractPortalAccessStatus.Invited)
+        {
+          return TypedResults.BadRequest("User already has portal access");
+        }
+
+        await bus.Send(new ReactivatePspRepCommand(programRepId), ct);
+        return TypedResults.Ok();
+      })
+      .WithOpenApi("Reactivates a PSP representative for the current user's institution", string.Empty, "psp_user_manage_reactivate_post")
+      .RequireAuthorization("psp_user")
+      .WithParameterValidation();
+
     endpointRouteBuilder.MapPost("api/users/manage/{programRepId}/set-primary",
       async Task<Results<Ok, NotFound, BadRequest<string>>> (string programRepId, HttpContext ctx, CancellationToken ct, IMediator bus) =>
       {
@@ -93,7 +128,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
           return TypedResults.NotFound();
         }
         
-        if(targetRep.AccessToPortal != (Managers.Registry.Contract.PspUsers.PortalAccessStatus?)PortalAccessStatus.Active)
+        if (targetRep.AccessToPortal != ContractPortalAccessStatus.Active)
         {
           return TypedResults.BadRequest("Cannot set a representative who does not have active portal access as primary.");
         }
