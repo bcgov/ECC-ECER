@@ -149,6 +149,19 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace PspUserManageReactivatePost {
+    namespace Parameters {
+      export type ProgramRepId = string;
+    }
+    export interface PathParameters {
+      programRepId: Parameters.ProgramRepId;
+    }
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace PspUserManageGet {
     namespace Responses {
       export type $200 = Components.Schemas.PspUserListItem[];
@@ -228,6 +241,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserManageDeactivatePost.Responses.$200>;
+  /**
+   * psp_user_manage_reactivate_post - Reactivates a PSP representative for the current user's institution
+   */
+  "psp_user_manage_reactivate_post"(
+    parameters?: Parameters<Paths.PspUserManageReactivatePost.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserManageReactivatePost.Responses.$200>;
   /**
    * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
    */
@@ -314,6 +335,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserManageDeactivatePost.Responses.$200>;
+  };
+  ["/api/users/manage/{programRepId}/reactivate"]: {
+    /**
+     * psp_user_manage_reactivate_post - Reactivates a PSP representative for the current user's institution
+     */
+    "post"(
+      parameters?: Parameters<Paths.PspUserManageReactivatePost.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserManageReactivatePost.Responses.$200>;
   };
   ["/api/users/manage/{programRepId}/set-primary"]: {
     /**

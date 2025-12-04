@@ -119,7 +119,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import UserCard from "@/components/UserCard.vue";
 import Loading from "@/components/Loading.vue";
-import { deactivateUser, getUsers, setPrimaryUser } from "@/api/manage-users";
+import { deactivateUser, getUsers, reactivateUser, setPrimaryUser } from "@/api/manage-users";
 import type { PspUserListItem } from "@/types/openapi";
 import { useUserStore } from "@/store/user";
 
@@ -168,9 +168,11 @@ export default defineComponent({
             // TODO: Implement resend invitation handler
             console.log("Resend invitation:", userId);
         },
-        handleReactivate(userId: string | null | undefined) {
-            // TODO: Implement reactivate handler
-            console.log("Reactivate:", userId);
+        async handleReactivate(userId: string | null | undefined) {
+            if (userId) {
+                await reactivateUser(userId);
+                await this.loadUsers();
+            }
         },
     },
     computed: {
