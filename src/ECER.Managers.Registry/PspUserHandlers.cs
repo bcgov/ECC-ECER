@@ -28,6 +28,8 @@ public class PspUserHandlers(
     IRequestHandler<DeactivatePspRepCommand, string>,
     IRequestHandler<ReactivatePspRepCommand, string>,
     IRequestHandler<SetPrimaryPspRepCommand, string>
+    IRequestHandler<SetPrimaryPspRepCommand, string>,
+    IRequestHandler<AddPspRepCommand, string>
 {
   /// <summary>
   /// Handles search psp program rep use case
@@ -133,7 +135,20 @@ public class PspUserHandlers(
     ecerContext.CommitTransaction();
     return request.ProgramRepresentativeId;
   }
-  
+
+  /// <summary>
+  /// Handles adding a new psp user use case
+  /// </summary>
+  /// <returns>the newly created user</returns>
+  public async Task<string> Handle(AddPspRepCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var profile = mapper.Map<Resources.Accounts.PspReps.PspUserProfile>(request.userProfile);
+    await pspRepRepository.Add(profile, request.postSecondaryInstitutionId, cancellationToken);
+    return request.userProfile.Id!;
+  }
+
   /// <summary>
   /// Handles registering a psp user use case
   /// </summary>

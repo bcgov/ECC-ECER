@@ -28,7 +28,10 @@
                             </ol>
 
                         </div>
-                        <v-btn class="mt-4" color="primary"><v-icon class="mr-2">mdi-account-plus</v-icon> Add
+                        <v-btn class="mt-4" color="primary"
+                            @click="router.push({ name: 'add-user', params: { educationInstitutionName: educationInstitutionName } })"><v-icon
+                                class="mr-2">mdi-account-plus</v-icon>
+                            Add
                             user</v-btn>
                     </v-sheet>
                 </v-col>
@@ -122,6 +125,7 @@ import Loading from "@/components/Loading.vue";
 import { deactivateUser, getUsers, reactivateUser, setPrimaryUser } from "@/api/manage-users";
 import type { PspUserListItem } from "@/types/openapi";
 import { useUserStore } from "@/store/user";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     name: "ManageUsers",
@@ -134,8 +138,10 @@ export default defineComponent({
     },
     setup() {
         const userStore = useUserStore();
+        const router = useRouter();
         return {
             userStore,
+            router,
         };
     },
     data() {
