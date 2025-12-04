@@ -35,4 +35,14 @@ internal sealed partial class UnitTestRepository : IUnitTestRepository
     context.UpdateObject(application);
     context.SaveChanges();
   }
+
+  public async Task DeletePspRep(string pspRepId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var pspRep = ((IEnumerable<ecer_ECEProgramRepresentative>)context.ecer_ECEProgramRepresentativeSet)
+      .FirstOrDefault(d => d.ecer_ECEProgramRepresentativeId == Guid.Parse(pspRepId) && d.ecer_EmailAddress.Contains("TEST", StringComparison.OrdinalIgnoreCase));
+    if (pspRep == null) throw new InvalidOperationException($"PSP Program Rep '{pspRepId}' not found or user is not a test account");
+    context.DeleteObject(pspRep);
+    context.SaveChanges();
+  }
 }
