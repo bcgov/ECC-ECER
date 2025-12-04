@@ -29,6 +29,11 @@ public interface IPspRepRepository
   Task Deactivate(string pspUserId, CancellationToken ct);
 
   /// <summary>
+  /// Re-enables portal access for a Psp representative and triggers a new invitation
+  /// </summary>
+  Task Reactivate(string pspUserId, CancellationToken ct);
+
+  /// <summary>
   /// Sets the specified Psp representative as Primary and others in the same institution to Secondary
   /// </summary>
   Task SetPrimary(string pspUserId, CancellationToken ct);

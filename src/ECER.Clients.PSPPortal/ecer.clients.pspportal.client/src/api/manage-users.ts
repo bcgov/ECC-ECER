@@ -14,6 +14,11 @@ const deactivateUser = async (programRepId: string): Promise<void> => {
   await apiResultHandler.execute({ request: client.psp_user_manage_deactivate_post({ programRepId }), key: "psp_user_manage_deactivate_post" });
 };
 
+const reactivateUser = async (programRepId: string): Promise<void> => {
+  const client = await getClient();
+  await apiResultHandler.execute({ request: client.psp_user_manage_reactivate_post({ programRepId }), key: "psp_user_manage_reactivate_post" });
+};
+
 const setPrimaryUser = async (programRepId: string): Promise<void> => {
   const client = await getClient();
   await apiResultHandler.execute({ request: client.psp_user_manage_set_primary_post({ programRepId }), key: "psp_user_manage_set_primary_post" });
@@ -25,4 +30,5 @@ const addUser = async (userProfile: PspUserProfile): Promise<NewPspUserResponse 
   return response?.data ?? null;
 };
 
-export { getUsers, deactivateUser, setPrimaryUser, addUser };
+export { getUsers, deactivateUser, setPrimaryUser, addUser, reactivateUser };
+
