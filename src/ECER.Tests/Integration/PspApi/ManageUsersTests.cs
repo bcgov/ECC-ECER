@@ -1,6 +1,7 @@
 using Alba;
 using ECER.Clients.PSPPortal.Server.Users;
 using ECER.Resources.Accounts.PspReps;
+using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
@@ -114,5 +115,51 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
     var self = (await repo.Query(new PspRepQuery { ById = Fixture.AuthenticatedPspUserId }, CancellationToken.None)).Single();
     self.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Active);
+  }
+
+  [Fact]
+  public async Task ReactivateUser_InSameInstitution_SetsAccessToInvited_AndTriggersInvitation()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Post.Url($"/api/users/manage/{Fixture.InactivePspUserId}/reactivate");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
+    var rep = (await repo.Query(new PspRepQuery { ById = Fixture.InactivePspUserId }, CancellationToken.None)).Single();
+    rep.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Invited);
+
+    using var scope = Fixture.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<EcerContext>();
+    var entity = context.ecer_ECEProgramRepresentativeSet.Single(r => r.Id == Guid.Parse(Fixture.InactivePspUserId));
+    (entity.ecer_InvitetoPortal ?? false).ShouldBeTrue();
+  }
+
+  [Fact]
+  public async Task ReactivateUser_DifferentInstitution_ReturnsNotFound()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Post.Url($"/api/users/manage/{Fixture.OtherInstitutePspUserId}/reactivate");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.NotFound);
+    });
+  }
+
+  [Fact]
+  public async Task ReactivateUser_ActiveUser_ReturnsBadRequest()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Post.Url($"/api/users/manage/{Fixture.TertiaryPspUserId}/reactivate");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
+    });
+
+    var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
+    var target = (await repo.Query(new PspRepQuery { ById = Fixture.TertiaryPspUserId }, CancellationToken.None)).Single();
+    target.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Active);
   }
 }
