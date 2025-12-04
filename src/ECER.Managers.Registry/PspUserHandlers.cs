@@ -27,7 +27,6 @@ public class PspUserHandlers(
     IRequestHandler<RegisterPspUserCommand, RegisterPspUserResult>,
     IRequestHandler<DeactivatePspRepCommand, string>,
     IRequestHandler<ReactivatePspRepCommand, string>,
-    IRequestHandler<SetPrimaryPspRepCommand, string>
     IRequestHandler<SetPrimaryPspRepCommand, string>,
     IRequestHandler<AddPspRepCommand, string>
 {

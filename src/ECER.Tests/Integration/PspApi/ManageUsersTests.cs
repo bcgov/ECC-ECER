@@ -15,7 +15,7 @@ namespace ECER.Tests.Integration.PspApi;
 
 public class ManageUsersTests : PspPortalWebAppScenarioBase
 {
-  
+
   private readonly IUnitTestRepository unitTestRepository;
 
   public ManageUsersTests(ITestOutputHelper output, PspPortalWebAppFixture fixture) : base(output, fixture)
@@ -31,7 +31,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
       .RuleFor(f => f.Email, f => $"test_{f.Internet.Email()}")
       .RuleFor(f => f.JobTitle, f => f.Commerce.Department())
       .Generate();
-    
+
     return profile;
   }
 
@@ -86,8 +86,8 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
       _.Post.Url($"/api/users/manage/{Fixture.AuthenticatedPspUserId}/set-primary");
       _.StatusCodeShouldBeOk();
-    }); 
-    
+    });
+
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
@@ -102,7 +102,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     target.Profile.Role.ShouldBe(RepoPspUserRole.Secondary);
     current.Profile.Role.ShouldBe(RepoPspUserRole.Primary);
   }
-  
+
   [Fact]
   public async Task SetPrimaryUser_SwitchesPrimaryRepresentative()
   {
@@ -120,7 +120,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     target.Profile.Role.ShouldBe(RepoPspUserRole.Primary);
     current.Profile.Role.ShouldBe(RepoPspUserRole.Secondary);
   }
-  
+
   [Fact]
   public async Task DeactivateUser_CannotDeactivateSelf_ReturnsBadRequest()
   {
@@ -180,7 +180,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
     var target = (await repo.Query(new PspRepQuery { ById = Fixture.TertiaryPspUserId }, CancellationToken.None)).Single();
     target.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Active);
-  
+  }
   [Fact]
   public async Task InvitePspRep_SuccessfullyInvitesNewUser()
   {
@@ -195,12 +195,12 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
 
     var result = await response.ReadAsJsonAsync<NewPspUserResponse>();
     result.Id.ShouldNotBeNullOrWhiteSpace();
-    
+
     var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
     var newUser = (await repo.Query(new PspRepQuery { ById = result.Id }, CancellationToken.None)).Single();
     newUser.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Invited);
     newUser.Profile.Role.ShouldBe(RepoPspUserRole.Secondary);
-    
+
     await unitTestRepository.DeletePspRep(result.Id, CancellationToken.None);
   }
 }
