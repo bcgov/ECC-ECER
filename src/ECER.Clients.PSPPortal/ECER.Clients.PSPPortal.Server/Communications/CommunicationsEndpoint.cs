@@ -46,7 +46,7 @@ public class CommunicationsEndpoint : IRegisterEndpoints
 
         return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), TotalMessagesCount = results.TotalMessagesCount });
       })
-      .WithOpenApi("Paginated endpoint to get all user messages", string.Empty, "get_all_messages")
+      .WithOpenApi("Paginated endpoint to get all user messages", string.Empty, "message_get")
       .RequireAuthorization("psp_user");
     
     endpointRouteBuilder.MapPost("/api/messages", 
@@ -84,7 +84,7 @@ public class CommunicationsEndpoint : IRegisterEndpoints
         }
         return TypedResults.Ok(new SendMessageResponse(result.CommunicationId!));
       })
-      .WithOpenApi("Endpoint to reply to an existing message", string.Empty, "post_message_reply")
+      .WithOpenApi("Endpoint to reply to an existing message", string.Empty, "message_post")
       .RequireAuthorization("psp_user");
     
     endpointRouteBuilder.MapPut("/api/messages/{id}/seen",
@@ -93,13 +93,16 @@ public class CommunicationsEndpoint : IRegisterEndpoints
       {
         await Task.CompletedTask;
         return TypedResults.BadRequest("not implemented");
-      }).WithOpenApi("Handles messages status", string.Empty, "message_status_get")
+      }).WithOpenApi("Marks a communication as seen", string.Empty, "communication_put")
         .RequireAuthorization("psp_user");
     
     endpointRouteBuilder.MapGet("/api/messages/status", async (HttpContext httpContext, IMediator messageBus) =>
       {
-        await Task.CompletedTask;
-        return TypedResults.BadRequest("not implemented");
+        var userContext = httpContext.User.GetUserContext();
+        var query = new UserCommunicationsStatusQuery();
+        query.ByProgramRepresentativeId = userContext!.UserId; // TODO may need to adjust to ByPostSecondaryInstituteId?
+        var result = await messageBus.Send(query);
+        return TypedResults.Ok(new CommunicationsStatusResults(result.Status));
       })
       .WithOpenApi("Handles messages status", string.Empty, "message_status_get")
       .RequireAuthorization("psp_user");
