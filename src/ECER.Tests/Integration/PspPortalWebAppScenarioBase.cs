@@ -28,6 +28,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_ECEProgramRepresentative testProgramRepresentative = null!;
   private ecer_ECEProgramRepresentative secondaryProgramRepresentative = null!;
   private ecer_ECEProgramRepresentative tertiaryProgramRepresentative = null!;
+  private ecer_ECEProgramRepresentative inactiveProgramRepresentative = null!;
   private ecer_PostSecondaryInstitute otherPostSecondaryInstitute = null!;
   private ecer_ECEProgramRepresentative otherInstituteRepresentative = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
@@ -39,6 +40,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string PostSecondaryInstituteId => testPostSecondaryInstitute.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty;
   public string SecondaryPspUserId => secondaryProgramRepresentative.Id.ToString();
   public string TertiaryPspUserId => tertiaryProgramRepresentative.Id.ToString();
+  public string InactivePspUserId => inactiveProgramRepresentative.Id.ToString();
   public string OtherInstitutePspUserId => otherInstituteRepresentative.Id.ToString();
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
 
@@ -73,6 +75,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testPspIdentity = GetOrAddProgramRepresentativeIdentity(context, testProgramRepresentative);
     secondaryProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_secondary", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
     tertiaryProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_tertiary", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
+    inactiveProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_inactive", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Disabled);
     otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, $"{TestRunId}psp_institute_other");
     otherInstituteRepresentative = GetOrAddProgramRepresentative(context, otherPostSecondaryInstitute, $"{TestRunId}psp_rep_other", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
