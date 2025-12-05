@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useOidcStore } from "./store/oidc";
 import { useUserStore } from "./store/user";
+import { useFormStore } from "./store/form";
+import { useMessageStore } from "./store/message";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +32,18 @@ const router = createRouter({
       path: "/profile/edit",
       component: () => import("./components/pages/EditProfile.vue"),
       name: "edit-profile",
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/messages",
+      name: "messages",
+      component: () => import("./components/pages/Messages.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/messages/:messageId/reply",
+      name: "replyToMessage",
+      component: () => import("./components/ReplyToMessage.vue"),
       meta: { requiresAuth: true },
     },
     {
@@ -109,8 +123,12 @@ router.beforeEach(async (to, _, next) => {
   const user = await oidcStore.getUser();
 
   if (!user) {
+    const formStore = useFormStore();
+    const messageStore = useMessageStore();
     // Reset user store to clear any stale data
     userStore.setPspUserProfile(null);
+    formStore.$reset();
+    messageStore.$reset();
   }
 
   // instead of having to check every route record with

@@ -9,7 +9,8 @@ public record MarkCommunicationAsSeenCommand(string communicationId, string user
 
 public record UserCommunicationsStatusQuery : IRequest<CommunicationsStatusResults>
 {
-  public string ByRegistrantId { get; set; } = null!;
+  public string? ByRegistrantId { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
 }
 
 public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
@@ -20,7 +21,8 @@ public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
-}
+  public string? ByPostSecondaryInstituteId { get; set; }
+} 
 public record CommunicationsQueryResults(IEnumerable<Communication> Items)
 {
   public int TotalMessagesCount { get; set; }
@@ -49,6 +51,9 @@ public record Communication
   public bool? IsRead { get; set; }
   public string? ApplicationId { get; set; }
   public string? IcraEligibilityId { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
+  public string? ProgramRepresentativeInstituteId { get; set; }
+  public bool? IsPspUser { get; set; }
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }
 

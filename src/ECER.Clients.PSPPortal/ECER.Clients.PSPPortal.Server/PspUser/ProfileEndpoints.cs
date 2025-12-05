@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
+using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -19,8 +20,13 @@ public class ProfileEndpoints : IRegisterEndpoints
 
         var pspUser = results.Items.SingleOrDefault();
         if (pspUser == null) return TypedResults.NotFound();
+        
+        // var query = new UserCommunicationsStatusQuery();
+        // query.ByPostSecondaryInstituteId = pspUser.PostSecondaryInstituteId!;
+        // var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query);
 
         var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
+        pspUserProfile!.UnreadMessagesCount = 0;
         
         return TypedResults.Ok(pspUserProfile);
       })
@@ -114,6 +120,7 @@ public record PspUserProfile
   public string? PhoneExtension { get; set; }
   public string? JobTitle { get; set; }
   public PspUserRole? Role { get; set; }
+  public int UnreadMessagesCount { get; set; }
   public string? Email { get; set; } = null!;
   public bool? HasAcceptedTermsOfUse { get; set; }
 };
