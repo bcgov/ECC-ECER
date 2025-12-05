@@ -1,6 +1,8 @@
+using Amazon.Runtime.Internal;
 using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
+using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.PostSecondaryInstitutes;
 
@@ -68,6 +70,16 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
     }
     
     context.Attach(updatedInstitute);
+
+    if (!string.IsNullOrWhiteSpace(institute.Province))
+    {
+      var existingProvince = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_Name == institute.Province);
+      if (existingProvince != null)
+      {
+        context.AddLink(updatedInstitute, ecer_PostSecondaryInstitute.Fields.ecer_postsecondaryinstitute_ProvinceId, existingProvince);
+      }
+    }
+
     context.UpdateObject(updatedInstitute);
     context.SaveChanges();
     await Task.CompletedTask;

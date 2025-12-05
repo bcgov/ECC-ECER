@@ -5,6 +5,7 @@ export interface UserState {
   pspUserProfile: Components.Schemas.PspUserProfile | null;
   invitedProgramRepresentativeId: string | null;
   invitationToken: string | null;
+  educationInstitution: Components.Schemas.EducationInstitution | null;
 }
 
 export const useUserStore = defineStore("user", {
@@ -13,6 +14,7 @@ export const useUserStore = defineStore("user", {
     pspUserProfile: null,
     invitedProgramRepresentativeId: null,
     invitationToken: null,
+    educationInstitution: null,
   }),
   getters: {
     id: (state): string => state.pspUserProfile?.id ?? "",
@@ -26,6 +28,12 @@ export const useUserStore = defineStore("user", {
     jobTitle: (state): string => state.pspUserProfile?.jobTitle ?? "",
     role: (state): Components.Schemas.PspUserRole => state.pspUserProfile?.role ?? "Primary",
     preferredName: (state): string => state.pspUserProfile?.preferredName ?? "",
+    auspice: (state): string => state.educationInstitution?.auspice ?? "",
+    street1: (state): string => state.educationInstitution?.street1 ?? "",
+    city: (state): string => state.educationInstitution?.city ?? "",
+    province: (state): string => state.educationInstitution?.province ?? "",
+    postalCode: (state): string => state.educationInstitution?.postalCode ?? "",
+    websiteUrl: (state): string => state.educationInstitution?.websiteUrl ?? "",
   },
   actions: {
     setPspUserProfile(pspUserProfile: Components.Schemas.PspUserProfile | null): void {
@@ -39,6 +47,12 @@ export const useUserStore = defineStore("user", {
     },
     setInvitationToken(invitationToken: string | null): void {
       this.$patch({ invitationToken: invitationToken });
+    },
+    setEducationInstitution(educationInstitution: Components.Schemas.EducationInstitution | null): void {
+      this.$patch({ educationInstitution: educationInstitution });
+    },
+    updateEducationInstitution(educationInstitution: Components.Schemas.EducationInstitution | null): void {
+      this.$patch({ educationInstitution: { ...this.educationInstitution, ...educationInstitution } });
     },
   },
 });

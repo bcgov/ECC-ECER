@@ -24,6 +24,7 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
       .ForMember(d => d.ecer_PostSecondaryInstituteId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
       .ForMember(d => d.ecer_BusinessBCeID, opts => opts.MapFrom(s => s.BceidBusinessId))
+      .ForMember(d => d.ecer_ProvinceIdName, opts => opts.MapFrom(s => s.Province))
       .ValidateMemberList(MemberList.Source);
   }
 }
