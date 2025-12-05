@@ -45,7 +45,21 @@ internal class CommunicationRepository : ICommunicationRepository
 
     // Filtering by registrant ID
     if (query.ByRegistrantId != null) communications = communications.Where(item => item.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
-
+    
+    //Filter by ByPostSecondaryInstituteId
+    if (query.ByPostSecondaryInstituteId != null)
+    {
+      if (!Guid.TryParse(query.ByPostSecondaryInstituteId, out var instituteId))
+      {
+        return new CommunicationResult
+        {
+          Communications = Enumerable.Empty<Communication>(),
+          TotalMessagesCount = 0,
+        };
+      }
+      communications = communications.Where(item => item.ecer_EducationInstitutionId.Id == instituteId);
+    }
+    
     // Filtering by status
     if (query.ByStatus != null)
     {
@@ -133,7 +147,7 @@ internal class CommunicationRepository : ICommunicationRepository
     }
     else
     {
-      var registrant = context.ContactSet.SingleOrDefault(r => r.ContactId == Guid.Parse(userId));
+      var registrant = context.ContactSet.SingleOrDefault(r => r.ContactId == Guid.Parse(userId)); //TODO: check needed against repID?
       if (registrant == null)
       {
         throw new InvalidOperationException($"Registrant '{userId}' not found");

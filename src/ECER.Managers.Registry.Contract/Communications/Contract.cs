@@ -20,7 +20,8 @@ public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
-}
+  public string? ByPostSecondaryInstituteId { get; set; }
+} 
 public record CommunicationsQueryResults(IEnumerable<Communication> Items)
 {
   public int TotalMessagesCount { get; set; }
@@ -49,6 +50,7 @@ public record Communication
   public bool? IsRead { get; set; }
   public string? ApplicationId { get; set; }
   public string? IcraEligibilityId { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }
 

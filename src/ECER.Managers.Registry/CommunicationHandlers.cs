@@ -34,6 +34,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
       PageNumber = request.PageNumber,
       PageSize = request.PageSize,
+      ByPostSecondaryInstituteId =  request.ByPostSecondaryInstituteId,
     });
 
     return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communication.Communications)!)
