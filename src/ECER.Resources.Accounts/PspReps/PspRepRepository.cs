@@ -126,6 +126,20 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     context.SaveChanges();
   }
 
+  public async Task Reactivate(string pspUserId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    if (!Guid.TryParse(pspUserId, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {pspUserId} is not a valid GUID");
+
+    var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
+    if (pspUser == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} not found");
+
+    pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Invited;
+    pspUser.ecer_InvitetoPortal = true;
+    context.UpdateObject(pspUser);
+    context.SaveChanges();
+  }
+
   public async Task SetPrimary(string pspUserId, CancellationToken ct)
   {
     await Task.CompletedTask;
