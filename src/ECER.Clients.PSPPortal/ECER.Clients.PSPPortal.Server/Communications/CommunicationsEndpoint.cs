@@ -38,11 +38,11 @@ public class CommunicationsEndpoint : IRegisterEndpoints
           ByPostSecondaryInstituteId = currentRep.PostSecondaryInstituteId,
           ByParentId = parentId,
           ByStatus = [ECER.Managers.Registry.Contract.Communications.CommunicationStatus.NotifiedRecipient, 
-            ECER.Managers.Registry.Contract.Communications.CommunicationStatus.Acknowledged], // will statuses be the same
+            ECER.Managers.Registry.Contract.Communications.CommunicationStatus.Acknowledged],
           PageNumber = pageNumber,
           PageSize = pageSize
         };
-        var results = await messageBus.Send<CommunicationsQueryResults>(query);
+        var results = await messageBus.Send<CommunicationsQueryResults>(query, ct);
 
         return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), TotalMessagesCount = results.TotalMessagesCount });
       })
@@ -90,12 +90,24 @@ public class CommunicationsEndpoint : IRegisterEndpoints
       }).WithOpenApi("Marks a communication as seen", string.Empty, "communication_put")
         .RequireAuthorization("psp_user");
     
-    endpointRouteBuilder.MapGet("/api/messages/status", async (HttpContext httpContext, IMediator messageBus) =>
+    endpointRouteBuilder.MapGet("/api/messages/status", 
+        async Task<Results<Ok<CommunicationsStatusResults>,  NotFound>>(HttpContext httpContext, IMediator messageBus, CancellationToken ct) =>
       {
-        var userContext = httpContext.User.GetUserContext();
-        var query = new UserCommunicationsStatusQuery();
-        query.ByProgramRepresentativeId = userContext!.UserId; // TODO may need to adjust to ByPostSecondaryInstituteId?
-        var result = await messageBus.Send(query);
+        var userContext = httpContext.User.GetUserContext()!;
+        
+        // Get users institute
+        var currentRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
+        {
+          return TypedResults.NotFound();
+        }
+
+        var query = new UserCommunicationsStatusQuery
+        {
+          ByPostSecondaryInstituteId = currentRep.PostSecondaryInstituteId
+        };
+        
+        var result = await messageBus.Send(query, ct);
         return TypedResults.Ok(new CommunicationsStatusResults(result.Status));
       })
       .WithOpenApi("Handles messages status", string.Empty, "message_status_get")

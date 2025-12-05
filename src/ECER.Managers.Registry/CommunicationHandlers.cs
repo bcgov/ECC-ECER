@@ -7,16 +7,20 @@ using MediatR;
 namespace ECER.Managers.Registry;
 
 public class CommunicationHandlers(ICommunicationRepository communicationRepository, IMapper mapper)
-  : IRequestHandler<UserCommunicationsStatusQuery, CommunicationsStatusResults>,
+  : IRequestHandler<Contract.Communications.UserCommunicationsStatusQuery, CommunicationsStatusResults>,
     IRequestHandler<Contract.Communications.UserCommunicationQuery, CommunicationsQueryResults>,
     IRequestHandler<MarkCommunicationAsSeenCommand, string>,
     IRequestHandler<SendMessageCommand, SendMessageResult>
 {
-  public async Task<CommunicationsStatusResults> Handle(UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
+  public async Task<CommunicationsStatusResults> Handle(Contract.Communications.UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var UnreadMessagesCount = await communicationRepository.QueryStatus(request.ByRegistrantId);
-    var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = UnreadMessagesCount > 0, Count = UnreadMessagesCount };
+    var unreadMessagesCount = await communicationRepository.QueryStatus(new Resources.Accounts.Communications.UserCommunicationsStatusQuery
+    {
+      ByRegistrantId = request.ByRegistrantId,
+      ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
+    });
+    var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = unreadMessagesCount > 0, Count = unreadMessagesCount };
     return new CommunicationsStatusResults(communicationsStatus!);
   }
 

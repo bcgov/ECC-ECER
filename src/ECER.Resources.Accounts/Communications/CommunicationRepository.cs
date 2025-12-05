@@ -24,18 +24,34 @@ internal class CommunicationRepository : ICommunicationRepository
     this.configuration = configuration;
   }
 
-  public async Task<int> QueryStatus(string RegistrantId)
+  public async Task<int> QueryStatus(UserCommunicationsStatusQuery query)
   {
     await Task.CompletedTask;
-    var unseenCommunications = context.ecer_CommunicationSet.Where(item => item.ecer_Registrantid.Id == Guid.Parse(RegistrantId) &&
-                                                                     item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry &&
-                                                                     item.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient &&
-                                                                     item.StateCode == ecer_communication_statecode.Active &&
-                                                                     item.ecer_Acknowledged != true
-                                                                     ).Select(item => new { item.Id, parent = item.ecer_IsRoot ?? false, child = item.ecer_ParentCommunicationid != null }).ToList();
-
-    unseenCommunications = unseenCommunications.Where(item => item.parent || item.child).ToList(); // SDK does not support including this condition inside query
-    return unseenCommunications.Count;
+    var unseenCommunications = context.ecer_CommunicationSet;
+    if (query.ByRegistrantId != null)
+    {
+      unseenCommunications = context.ecer_CommunicationSet.Where(item =>
+        item.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId) &&
+        item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry &&
+        item.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient &&
+        item.StateCode == ecer_communication_statecode.Active &&
+        item.ecer_Acknowledged != true
+      );
+    } else if (query.ByPostSecondaryInstituteId != null)
+    {
+      unseenCommunications = context.ecer_CommunicationSet.Where(item =>
+        item.ecer_communication_EducationInstitutionId.Id == Guid.Parse(query.ByPostSecondaryInstituteId) &&
+        item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry &&
+        item.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient &&
+        item.StateCode == ecer_communication_statecode.Active &&
+        item.ecer_Acknowledged != true
+      );
+    }
+    
+    var unseenCommunicationList = unseenCommunications.Select(item => new
+      { item.Id, parent = item.ecer_IsRoot ?? false, child = item.ecer_ParentCommunicationid != null }).ToList();
+    unseenCommunicationList = unseenCommunicationList.Where(item => item.parent || item.child).ToList(); // SDK does not support including this condition inside query
+    return unseenCommunicationList.Count;
   }
 
   public async Task<CommunicationResult> Query(UserCommunicationQuery query)

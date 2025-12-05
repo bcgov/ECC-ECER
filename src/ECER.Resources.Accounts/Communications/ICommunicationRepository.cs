@@ -2,7 +2,7 @@
 
 public interface ICommunicationRepository
 {
-  Task<int> QueryStatus(string RegistrantId);
+  Task<int> QueryStatus(UserCommunicationsStatusQuery query);
 
   Task<CommunicationResult> Query(UserCommunicationQuery query);
 
@@ -19,6 +19,12 @@ public record UserCommunicationQuery
   public string? ByParentId { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
+}
+
+public record UserCommunicationsStatusQuery
+{
+  public string? ByRegistrantId { get; set; }
   public string? ByPostSecondaryInstituteId { get; set; }
 }
 
