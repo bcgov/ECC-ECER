@@ -8,6 +8,12 @@ declare namespace Components {
       } | null;
     }
     export type Auspice = "ContinuingEducation" | "PublicOOP" | "Private" | "Public";
+    export interface Country {
+      countryId?: string | null;
+      countryName?: string | null;
+      countryCode?: string | null;
+      isICRA?: boolean;
+    }
     export interface EducationInstitution {
       id?: string | null;
       name?: string | null;
@@ -58,6 +64,11 @@ declare namespace Components {
       status?: number | null; // int32
       detail?: string | null;
       instance?: string | null;
+    }
+    export interface Province {
+      provinceId?: string | null;
+      provinceName?: string | null;
+      provinceCode?: string | null;
     }
     /**
      * Error codes for PSP user registration failures
@@ -121,10 +132,22 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ApplicationConfiguration;
     }
   }
+  namespace CountryGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.Country[];
+    }
+  }
   namespace EducationInstitutionGet {
     namespace Responses {
       export type $200 = Components.Schemas.EducationInstitution;
       export interface $404 {}
+    }
+  }
+  namespace EducationInstitutionPut {
+    export type RequestBody = Components.Schemas.EducationInstitution;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace PortalInvitationGet {
@@ -137,6 +160,11 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = Components.Schemas.PortalInvitationQueryResult;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace ProvinceGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.Province[];
     }
   }
   namespace PspUserAdd {
@@ -215,6 +243,22 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
+  /**
+   * province_get - Handles province queries
+   */
+  "province_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  /**
+   * country_get - Handles country queries
+   */
+  "country_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CountryGet.Responses.$200>;
   /**
    * version_get - Returns the version information
    */
@@ -295,6 +339,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.EducationInstitutionGet.Responses.$200>;
+  /**
+   * education_institution_put - Updates the education institution
+   */
+  "education_institution_put"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.EducationInstitutionPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -307,6 +359,18 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
+  };
+  ["/api/provincelist"]: {
+    /**
+     * province_get - Handles province queries
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  };
+  ["/api/countrylist"]: {
+    /**
+     * country_get - Handles country queries
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.CountryGet.Responses.$200>;
   };
   ["/api/version"]: {
     /**
@@ -401,6 +465,14 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.EducationInstitutionGet.Responses.$200>;
+    /**
+     * education_institution_put - Updates the education institution
+     */
+    "put"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.EducationInstitutionPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
   };
 }
 
@@ -408,6 +480,7 @@ export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
 
 export type ApplicationConfiguration = Components.Schemas.ApplicationConfiguration;
 export type Auspice = Components.Schemas.Auspice;
+export type Country = Components.Schemas.Country;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type InviteType = Components.Schemas.InviteType;
@@ -417,6 +490,7 @@ export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
+export type Province = Components.Schemas.Province;
 export type PspRegistrationError = Components.Schemas.PspRegistrationError;
 export type PspRegistrationErrorResponse = Components.Schemas.PspRegistrationErrorResponse;
 export type PspUserListItem = Components.Schemas.PspUserListItem;
