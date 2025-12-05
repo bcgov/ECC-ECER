@@ -55,13 +55,6 @@ public class CommunicationsEndpoint : IRegisterEndpoints
       {
         var userContext = httpContext.User.GetUserContext()!;
         
-        // Get users institute
-        // var currentRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
-        // if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
-        // {
-        //   return TypedResults.NotFound();
-        // }
-        
         bool IsNotGuid = !Guid.TryParse(request.Communication.Id, out _);
         if (IsNotGuid)
         {
@@ -69,6 +62,7 @@ public class CommunicationsEndpoint : IRegisterEndpoints
         }
 
         var mappedCommunication = mapper.Map<Managers.Registry.Contract.Communications.Communication>(request.Communication);
+        mappedCommunication.IsPspUser = true;
         var cmd = new SendMessageCommand(mappedCommunication, userContext.UserId);
         var result = await messageBus.Send(cmd, ct);
 
@@ -154,6 +148,7 @@ public record Communication
   public string? ApplicationId { get; set; }
   public string? IcraEligibilityId { get; set; }
   public string? ProgramRepresentativeId { get; set; }
+  public string? ProgramRepresentativeInstituteId { get; set; }
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }
 

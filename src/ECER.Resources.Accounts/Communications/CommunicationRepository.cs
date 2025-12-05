@@ -141,70 +141,85 @@ internal class CommunicationRepository : ICommunicationRepository
   {
     await Task.CompletedTask;
     var existingCommunication = context.ecer_CommunicationSet.SingleOrDefault(d => d.ecer_CommunicationId == Guid.Parse(communication.Id!));
+    var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(userId));
+    var registrant = context.ContactSet.SingleOrDefault(r => r.ContactId == Guid.Parse(userId));
+    var isPspUser = communication.IsPspUser.GetValueOrDefault();
+    
     if (existingCommunication == null)
     {
       throw new InvalidOperationException($"Communication '{communication.Id}' not found");
     }
+
+    if (isPspUser && pspUser == null)
+    {
+      throw new InvalidOperationException($"Psp User '{userId}' not found");
+    }
+
+    if (!isPspUser && registrant == null)
+    {
+      throw new InvalidOperationException($"Registrant '{userId}' not found");
+    }
+    
+
+    existingCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
+    context.UpdateObject(existingCommunication);
+
+    var ecerCommunication = mapper.Map<ecer_Communication>(communication);
+    ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
+    ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
+    ecerCommunication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
+    ecerCommunication.ecer_NotifyRecipient = true;
+    ecerCommunication.ecer_DateNotified = DateTime.UtcNow;
+    ecerCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
+    context.AddObject(ecerCommunication);
+    
+    if (isPspUser)
+    {
+      context.AddLink(pspUser!, ecer_Communication.Fields.ecer_communication_ProgramRepresentativeId, ecerCommunication);
+      ecerCommunication.ecer_communication_EducationInstitutionId = pspUser!.ecer_eceprogramrepresentative_PostSecondaryIns;
+    }
     else
     {
-      var registrant = context.ContactSet.SingleOrDefault(r => r.ContactId == Guid.Parse(userId)); //TODO: check needed against repID?
-      if (registrant == null)
-      {
-        throw new InvalidOperationException($"Registrant '{userId}' not found");
-      }
-
-      existingCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
-      context.UpdateObject(existingCommunication);
-
-      var ecerCommunication = mapper.Map<ecer_Communication>(communication);
-
-      ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
-      ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
-      ecerCommunication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
-      ecerCommunication.ecer_NotifyRecipient = true;
-      ecerCommunication.ecer_DateNotified = DateTime.UtcNow;
-      ecerCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
-
-      context.AddObject(ecerCommunication);
-      context.AddLink(registrant, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
-      var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
-      {
-        PrimaryEntityRole = EntityRole.Referencing
-      };
-      context.AddLink(ecerCommunication, Referencingecer_communication_ParentCommunicationid, existingCommunication);
-
-      foreach (var document in communication.Documents)
-      {
-        if (string.IsNullOrEmpty(document.Id))
-        {
-          throw new InvalidOperationException($"Document '{document.Id}' is not valid");
-        }
-
-        var sourceFolder = "tempfolder";
-        var destinationFolder = "ecer_communication/" + ecerCommunication.ecer_CommunicationId;
-        var fileId = document.Id;
-        await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), cancellationToken);
-
-        var documenturl = new bcgov_DocumentUrl()
-        {
-          bcgov_DocumentUrlId = Guid.Parse(fileId),
-          bcgov_Url = destinationFolder,
-          bcgov_FileName = document.Name,
-          bcgov_FileSize = document.Size,
-          bcgov_FileExtension = document.Extention,
-          StatusCode = bcgov_DocumentUrl_StatusCode.Active,
-          StateCode = bcgov_documenturl_statecode.Active,
-          bcgov_OriginCode = bcgov_OriginCode.Web,
-          ecer_DocumentInternallyReviewed = ecer_YesNoNull.No
-        };
-
-        context.AddObject(documenturl);
-        context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication, ecerCommunication);
-      }
-
-      context.SaveChanges();
-      return ecerCommunication.ecer_CommunicationId.ToString()!;
+      context.AddLink(registrant!, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
     }
+    
+    var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
+    {
+      PrimaryEntityRole = EntityRole.Referencing
+    };
+    context.AddLink(ecerCommunication, Referencingecer_communication_ParentCommunicationid, existingCommunication);
+
+    foreach (var document in communication.Documents)
+    {
+      if (string.IsNullOrEmpty(document.Id))
+      {
+        throw new InvalidOperationException($"Document '{document.Id}' is not valid");
+      }
+
+      var sourceFolder = "tempfolder";
+      var destinationFolder = "ecer_communication/" + ecerCommunication.ecer_CommunicationId;
+      var fileId = document.Id;
+      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), cancellationToken);
+
+      var documenturl = new bcgov_DocumentUrl()
+      {
+        bcgov_DocumentUrlId = Guid.Parse(fileId),
+        bcgov_Url = destinationFolder,
+        bcgov_FileName = document.Name,
+        bcgov_FileSize = document.Size,
+        bcgov_FileExtension = document.Extention,
+        StatusCode = bcgov_DocumentUrl_StatusCode.Active,
+        StateCode = bcgov_documenturl_statecode.Active,
+        bcgov_OriginCode = bcgov_OriginCode.Web,
+        ecer_DocumentInternallyReviewed = ecer_YesNoNull.No
+      };
+
+      context.AddObject(documenturl);
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication, ecerCommunication);
+    }
+
+    context.SaveChanges();
+    return ecerCommunication.ecer_CommunicationId.ToString()!;
   }
 
   private static string GetBucketName(IConfiguration configuration) =>

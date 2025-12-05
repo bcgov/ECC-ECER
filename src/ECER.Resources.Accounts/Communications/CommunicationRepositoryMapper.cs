@@ -25,7 +25,8 @@ internal class CommunicationRepositoryMapper : Profile
      .ForMember(d => d.Documents, opts => opts.MapFrom(s => s.ecer_bcgov_documenturl_CommunicationId_ecer_communication))
      .ForMember(d => d.LatestMessageNotifiedOn, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? (s.ecer_LatestMessageNotifiedDate ?? s.ecer_DateNotified) : s.ecer_DateNotified))
      .ForMember(d => d.IsRead, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? s.ecer_AreAllRead : s.ecer_Acknowledged))
-     .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_ProgramRepresentativeId));
+     .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_ProgramRepresentativeId))
+     .ForMember(d => d.ProgramRepresentativeInstituteId, opts => opts.MapFrom(s => s.ecer_communication_EducationInstitutionId));
 
     CreateMap<Communication, ecer_Communication>(MemberList.Source)
      .ForSourceMember(s => s.Subject, opts => opts.DoNotValidate())
