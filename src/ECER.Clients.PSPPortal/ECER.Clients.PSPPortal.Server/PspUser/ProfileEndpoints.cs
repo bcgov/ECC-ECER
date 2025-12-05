@@ -21,13 +21,12 @@ public class ProfileEndpoints : IRegisterEndpoints
         var pspUser = results.Items.SingleOrDefault();
         if (pspUser == null) return TypedResults.NotFound();
         
-        var query = new UserCommunicationsStatusQuery();
-        query.ByPostSecondaryInstituteId = pspUser.PostSecondaryInstituteId!;
-        var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query);
+        // var query = new UserCommunicationsStatusQuery();
+        // query.ByPostSecondaryInstituteId = pspUser.PostSecondaryInstituteId!;
+        // var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query);
 
         var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
-        pspUserProfile!.UnreadMessagesCount = communicationsStatus.Status.Count;
-
+        pspUserProfile!.UnreadMessagesCount = 0;
         
         return TypedResults.Ok(pspUserProfile);
       })
