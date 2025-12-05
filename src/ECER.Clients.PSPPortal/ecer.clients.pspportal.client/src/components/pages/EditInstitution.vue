@@ -79,9 +79,7 @@ export default defineComponent({
     async saveInstitution() {
       const { valid } = await (this.$refs.editEducationInstitutionFormRef as typeof EceForm).$refs[institutionForm.id].validate();
 
-      if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
-      } else {
+      if (valid) {
         const institutionUpdated = await updateEducationInstitution({
           id: this.institutionId,
           name: this.institutionName,
@@ -111,6 +109,8 @@ export default defineComponent({
         } else {
           this.alertStore.setFailureAlert("Institution save failed");
         }
+      } else {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
     },
   },

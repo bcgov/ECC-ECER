@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import type { Components, Auspice } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useConfigStore } from "@/store/config";

@@ -47,15 +47,15 @@ public class PostSecondaryInstituteHandlers(
     await postSecondaryInstituteRepository.Save(new Resources.Documents.PostSecondaryInstitutes.PostSecondaryInstitute {
       Id = request.Institute.Id,
       Auspice = institute.Auspice,
-      BceidBusinessId = institute?.BceidBusinessId,
-      City = institute?.City,
-      PostalCode = institute?.PostalCode,
-      Name = institute?.Name,
-      Street1 = institute?.Street1,
-      Street2 = institute?.Street2,
-      Street3 = institute?.Street3,
-      Province = institute?.Province,
-      WebsiteUrl = institute?.WebsiteUrl
+      BceidBusinessId = institute.BceidBusinessId,
+      City = institute.City,
+      PostalCode = institute.PostalCode,
+      Name = institute.Name,
+      Street1 = institute.Street1,
+      Street2 = institute.Street2,
+      Street3 = institute.Street3,
+      Province = institute.Province,
+      WebsiteUrl = institute.WebsiteUrl
     }, cancellationToken);
 
     return request.Institute.Id;

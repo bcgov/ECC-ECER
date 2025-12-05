@@ -62,7 +62,7 @@ export default defineComponent({
   },
   methods: {
     provinceChanged(value: string) {
-      var chosenProvince = this.filteredProvinceList.find(province => province.provinceCode === value);
+      let chosenProvince = this.filteredProvinceList.find(province => province.provinceCode === value);
       this.$emit("update:model-value", chosenProvince?.provinceName ?? "");
     },
   },

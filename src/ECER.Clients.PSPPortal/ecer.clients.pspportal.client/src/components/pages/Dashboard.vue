@@ -29,10 +29,10 @@
         </v-col>
         <v-col class="d-flex" cols="12" sm="6" md="4">
           <Card class="d-flex flex-column">
-            <h2>Messsages</h2>
+            <h2>Messages</h2>
             <p class="mt-4">View or send a new message to the ECE Registry.</p>
             <div class="mt-auto">
-              <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnNeedOtherOptions" @click="router.push('/messages')">
+              <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnMessages" @click="router.push('/messages')">
                 Go to messages
               </v-btn>
             </div>
@@ -48,7 +48,7 @@
                 size="large"
                 class="mt-4"
                 color="primary"
-                id="btnNeedOtherOptions"
+                id="btnManageUsers"
                 @click="router.push({ name: 'manage-users', params: { educationInstitutionName: educationInstitution?.name } })"
               >
                 Manage users
@@ -69,7 +69,7 @@ import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { getEducationInstitution, getPspUserProfile, registerPspUser } from "@/api/psp-rep";
-import type { PspUserProfile, PspRegistrationError, PspRegistrationErrorResponse, RegisterPspUserRequest, EducationInstitution } from "@/types/openapi";
+import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Card from "@/components/Card.vue";
@@ -113,7 +113,9 @@ export default defineComponent({
         user = await this.oidcStore.signinCallback();
         this.router.replace("/");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(`Exception while mounting dashboard: ${error}`);
+    }
 
     if (!user) {
       this.router.replace("/login");

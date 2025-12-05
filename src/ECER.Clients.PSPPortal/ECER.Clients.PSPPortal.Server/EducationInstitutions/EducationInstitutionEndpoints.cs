@@ -30,7 +30,7 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapPut("/api/education-institution",
       async Task<Results<Ok, BadRequest<ProblemDetails>>> (EducationInstitution institute, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
       {
-        var results = await bus.Send(new UpdatePostSecondaryInstitutionCommand(mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.PostSecondaryInstitute>(institute)!), ctx.RequestAborted);
+        await bus.Send(new UpdatePostSecondaryInstitutionCommand(mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.PostSecondaryInstitute>(institute)!), ctx.RequestAborted);
         return TypedResults.Ok();
       })
     .WithOpenApi("Updates the education institution", string.Empty, "education_institution_put")
