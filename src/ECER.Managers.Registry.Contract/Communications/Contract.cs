@@ -10,6 +10,8 @@ public record MarkCommunicationAsSeenCommand(string communicationId, string user
 public record UserCommunicationsStatusQuery : IRequest<CommunicationsStatusResults>
 {
   public string ByRegistrantId { get; set; } = null!;
+  public string ByProgramRepresentativeId { get; set; } = null!;
+  public string ByPostSecondaryInstituteId { get; set; } = null!;
 }
 
 public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>

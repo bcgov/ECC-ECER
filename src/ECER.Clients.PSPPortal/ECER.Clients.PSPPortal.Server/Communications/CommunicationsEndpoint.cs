@@ -86,31 +86,54 @@ public class CommunicationsEndpoint : IRegisterEndpoints
       })
       .WithOpenApi("Endpoint to reply to an existing message", string.Empty, "post_message_reply")
       .RequireAuthorization("psp_user");
+    
+    endpointRouteBuilder.MapPut("/api/messages/{id}/seen",
+      async Task<Results<Ok<CommunicationResponse>, BadRequest<string>>> (string? id,
+        CommunicationSeenRequest request, HttpContext ctx, IMediator messageBus, CancellationToken ct) =>
+      {
+        await Task.CompletedTask;
+        return TypedResults.BadRequest("not implemented");
+      }).WithOpenApi("Handles messages status", string.Empty, "message_status_get")
+        .RequireAuthorization("psp_user");
+    
+    endpointRouteBuilder.MapGet("/api/messages/status", async (HttpContext httpContext, IMediator messageBus) =>
+      {
+        await Task.CompletedTask;
+        return TypedResults.BadRequest("not implemented");
+      })
+      .WithOpenApi("Handles messages status", string.Empty, "message_status_get")
+      .RequireAuthorization("psp_user");
   }
 }
 
-public enum CommunicationStatus
-{
-  Draft,
-  NotifiedRecipient,
-  Acknowledged,
-  Inactive
-}
+/// <summary>
+/// Save communication response
+/// </summary>
+/// <param name="CommunicationId">The communication id</param>
+public record CommunicationResponse(string CommunicationId);
 
-public enum InitiatedFrom
-{
-  Investigation,
-  PortalUser,
-  Registry,
-  ProgramRepresentative,
-}
+/// <summary>
+/// Send Message Request
+/// </summary>
+/// <param name="Communication"></param>
+public record SendMessageRequest(Communication Communication);
 
-public record CommunicationDocument(string Id)
+/// <summary>
+/// Send Message Response
+/// </summary>
+/// <param name="CommunicationId"></param>
+public record SendMessageResponse(string CommunicationId);
+
+/// <summary>
+/// Communication seen request
+/// </summary>
+/// <param name="CommunicationId">The communication ID</param>
+public record CommunicationSeenRequest(string CommunicationId);
+
+public record GetMessagesResponse
 {
-  public string Url { get; set; } = null!;
-  public string Extention { get; set; } = null!;
-  public string Name { get; set; } = null!;
-  public string Size { get; set; } = null!;
+  public IEnumerable<Communication>? Communications { get; set; }
+  public int TotalMessagesCount { get; set; }
 }
 
 public record Communication
@@ -131,12 +154,32 @@ public record Communication
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }
 
-public record GetMessagesResponse
+public record CommunicationDocument(string Id)
 {
-  public IEnumerable<Communication>? Communications { get; set; }
-  public int TotalMessagesCount { get; set; }
+  public string Url { get; set; } = null!;
+  public string Extention { get; set; } = null!;
+  public string Name { get; set; } = null!;
+  public string Size { get; set; } = null!;
 }
 
-public record SendMessageRequest(Communication Communication);
+public enum InitiatedFrom
+{
+  Investigation,
+  PortalUser,
+  Registry,
+  ProgramRepresentative,
+}
 
-public record SendMessageResponse(string CommunicationId);
+public enum CommunicationStatus
+{
+  Draft,
+  NotifiedRecipient,
+  Acknowledged,
+  Inactive
+}
+
+public record CommunicationsStatus
+{
+  public int Count { get; set; }
+  public bool HasUnread { get; set; }
+}
