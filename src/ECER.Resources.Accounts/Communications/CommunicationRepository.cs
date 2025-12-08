@@ -192,7 +192,9 @@ internal class CommunicationRepository : ICommunicationRepository
     if (isPspUser)
     {
       context.AddLink(pspUser!, ecer_Communication.Fields.ecer_communication_ProgramRepresentativeId, ecerCommunication);
-      ecerCommunication.ecer_communication_EducationInstitutionId = pspUser!.ecer_eceprogramrepresentative_PostSecondaryIns;
+      
+      var institution = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.Id == pspUser!.ecer_PostSecondaryInstitute.Id);
+      context.AddLink(institution!, ecer_Communication.Fields.ecer_communication_EducationInstitutionId, ecerCommunication);
     }
     else
     {
