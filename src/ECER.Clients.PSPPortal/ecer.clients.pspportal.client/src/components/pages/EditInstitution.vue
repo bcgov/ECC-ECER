@@ -80,7 +80,8 @@ export default defineComponent({
       const { valid } = await (this.$refs.editEducationInstitutionFormRef as typeof EceForm).$refs[institutionForm.id].validate();
 
       if (valid) {
-        const institutionUpdated = await updateEducationInstitution({
+
+        const institution = {
           id: this.institutionId,
           name: this.institutionName,
           auspice: this.formStore.formData[institutionForm?.components?.auspice?.id || ""],
@@ -91,21 +92,12 @@ export default defineComponent({
           province: this.formStore.formData[institutionForm?.components?.province?.id || ""],
           postalCode: this.formStore.formData[institutionForm?.components?.postalCode?.id || ""],
           websiteUrl: this.formStore.formData[institutionForm?.components?.website?.id || ""],
-        });
+        };
+        const institutionUpdated = await updateEducationInstitution(institution);
 
         if (institutionUpdated) {
           this.alertStore.setSuccessAlert("You have successfully edited your institution information.");
-          this.userStore.updateEducationInstitution({
-            name: this.institutionName,
-            auspice: this.formStore.formData[institutionForm?.components?.auspice?.id || ""],
-            street1: this.formStore.formData[institutionForm?.components?.street1?.id || ""],
-            street2: this.formStore.formData[institutionForm?.components?.street2?.id || ""],
-            street3: this.formStore.formData[institutionForm?.components?.street3?.id || ""],
-            city: this.formStore.formData[institutionForm?.components?.city?.id || ""],
-            province: this.formStore.formData[institutionForm?.components?.province?.id || ""],
-            postalCode: this.formStore.formData[institutionForm?.components?.postalCode?.id || ""],
-            websiteUrl: this.formStore.formData[institutionForm?.components?.website?.id || ""],
-          });
+          this.userStore.updateEducationInstitution(institution);
         } else {
           this.alertStore.setFailureAlert("Institution save failed");
         }

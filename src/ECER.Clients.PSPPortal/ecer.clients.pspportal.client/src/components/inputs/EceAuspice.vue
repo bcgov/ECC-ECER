@@ -21,7 +21,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useConfigStore } from "@/store/config";
@@ -31,7 +30,7 @@ export default defineComponent({
   components: { EceTextField },
   props: {
     modelValue: {
-      type: Object as () => Components.Schemas.Auspice,
+      type: String,
       required: true,
     },
   },

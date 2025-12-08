@@ -107,11 +107,14 @@ export default defineComponent({
   async mounted() {
     let user;
 
-    user = await this.oidcStore.getUser();
-
-    if (!user) {
-      user = await this.oidcStore.signinCallback();
-      this.router.replace("/");
+    try {
+      user = await this.oidcStore.getUser();
+      if (!user) {
+        user = await this.oidcStore.signinCallback();
+        this.router.replace("/");
+      }
+    } catch (error) {
+      console.log(`Exception while mounting dashboard: ${error}`);
     }
 
     if (!user) {
@@ -166,15 +169,12 @@ export default defineComponent({
     }
 
     if (this.pspUserProfile) {
-      this.userStore.setPspUserProfile(this.pspUserProfile);
       if (!this.pspUserProfile.hasAcceptedTermsOfUse) {
         this.router.replace("/new-user");
       }
     }
-
-    if (this.educationInstitution) {
-      this.userStore.setEducationInstitution(this.educationInstitution);
-    }
+    
+    this.setUserStoreValues();
 
     this.loading = false;
   },
@@ -188,6 +188,17 @@ export default defineComponent({
         this.loading
       );
     },
+
   },
+  methods: {
+    setUserStoreValues() {
+      if (this.pspUserProfile) {
+        this.userStore.setPspUserProfile(this.pspUserProfile);
+      }
+      if (this.educationInstitution) {
+        this.userStore.setEducationInstitution(this.educationInstitution);
+      }
+    }
+  }
 });
 </script>
