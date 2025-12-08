@@ -106,15 +106,12 @@ export default defineComponent({
   },
   async mounted() {
     let user;
-    try {
-      user = await this.oidcStore.getUser();
 
-      if (!user) {
-        user = await this.oidcStore.signinCallback();
-        this.router.replace("/");
-      }
-    } catch (error) {
-      console.log(`Exception while mounting dashboard: ${error}`);
+    user = await this.oidcStore.getUser();
+
+    if (!user) {
+      user = await this.oidcStore.signinCallback();
+      this.router.replace("/");
     }
 
     if (!user) {
