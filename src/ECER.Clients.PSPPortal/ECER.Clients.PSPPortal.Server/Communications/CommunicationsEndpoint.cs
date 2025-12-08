@@ -82,11 +82,35 @@ public class CommunicationsEndpoint : IRegisterEndpoints
       .RequireAuthorization("psp_user");
     
     endpointRouteBuilder.MapPut("/api/messages/{id}/seen",
-      async Task<Results<Ok<CommunicationResponse>, BadRequest<string>>> (string? id,
+      async Task<Results<Ok<CommunicationResponse>, BadRequest<string>, NotFound>> (string? id,
         CommunicationSeenRequest request, HttpContext ctx, IMediator messageBus, CancellationToken ct) =>
       {
-        await Task.CompletedTask;
-        return TypedResults.BadRequest("not implemented");
+        var userContext = ctx.User.GetUserContext()!;
+        
+        // Get users institute
+        var currentRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
+        {
+          return TypedResults.NotFound();
+        }
+
+        bool IdIsNotGuid = !Guid.TryParse(id, out _);
+        bool CommunicationIdIsNotGuid = !Guid.TryParse(request.CommunicationId, out _);
+
+        if (IdIsNotGuid || CommunicationIdIsNotGuid) return TypedResults.BadRequest("invalid id");
+        if (request.CommunicationId != id) return TypedResults.BadRequest("resource id and payload id do not match");
+
+        var markCommunicationCmd = new MarkCommunicationAsSeenCommand
+        {
+          CommunicationId = request.CommunicationId, 
+          PostSecondaryInstituteId = currentRep.PostSecondaryInstituteId,
+          UserId = userContext.UserId!,
+          IsPspUser = true
+        };
+        
+        var communicationId =
+          await messageBus.Send(markCommunicationCmd, ct);
+        return TypedResults.Ok(new CommunicationResponse(communicationId));
       }).WithOpenApi("Marks a communication as seen", string.Empty, "communication_put")
         .RequireAuthorization("psp_user");
     

@@ -26,22 +26,27 @@ internal class CommunicationRepositoryMapper : Profile
      .ForMember(d => d.LatestMessageNotifiedOn, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? (s.ecer_LatestMessageNotifiedDate ?? s.ecer_DateNotified) : s.ecer_DateNotified))
      .ForMember(d => d.IsRead, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? s.ecer_AreAllRead : s.ecer_Acknowledged))
      .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_ProgramRepresentativeId))
-     .ForMember(d => d.ProgramRepresentativeInstituteId, opts => opts.MapFrom(s => s.ecer_communication_EducationInstitutionId));
+     .ForMember(d => d.ProgramRepresentativeInstituteId, opts => opts.MapFrom(s => s.ecer_communication_EducationInstitutionId))
+     .ForMember(d => d.IsPspUser, opts => opts.Ignore());
 
     CreateMap<Communication, ecer_Communication>(MemberList.Source)
-     .ForSourceMember(s => s.Subject, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.From, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.NotifiedOn, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.Acknowledged, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.Body, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.DoNotReply, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.LatestMessageNotifiedOn, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.IsRead, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.Documents, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.ApplicationId, opts => opts.DoNotValidate())
-     .ForSourceMember(s => s.IcraEligibilityId, opts => opts.DoNotValidate())
-     .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)));
+      .ForSourceMember(s => s.Subject, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.From, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NotifiedOn, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Acknowledged, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Body, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.DoNotReply, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.LatestMessageNotifiedOn, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.IsRead, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Documents, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ApplicationId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.IcraEligibilityId, opts => opts.DoNotValidate())
+      .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)))
+      .ForSourceMember(s => s.IsPspUser, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramRepresentativeId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramRepresentativeInstituteId, opts => opts.DoNotValidate());
+
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true));

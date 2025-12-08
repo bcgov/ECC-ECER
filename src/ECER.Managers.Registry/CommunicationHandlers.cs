@@ -61,19 +61,28 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       Resources.Accounts.Communications.CommunicationStatus.Acknowledged
     };
 
-    var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
-    {
-      ById = request.communicationId,
-      ByRegistrantId = request.userId,
-      ByStatus = statuses
-    });
+    var communications = await communicationRepository.Query(
+      request.IsPspUser == true ? 
+        new Resources.Accounts.Communications.UserCommunicationQuery
+        {
+          ById = request.CommunicationId,
+          ByPostSecondaryInstituteId = request.PostSecondaryInstituteId,
+          ByStatus = statuses
+        }
+      :
+        new Resources.Accounts.Communications.UserCommunicationQuery
+        {
+          ById = request.CommunicationId,
+          ByRegistrantId = request.UserId,
+          ByStatus = statuses
+        });
 
     if (!communications.Communications!.Any())
     {
-      throw new InvalidOperationException($"Communication '{request.communicationId}' not found");
+      throw new InvalidOperationException($"Communication '{request.CommunicationId}' not found");
     }
 
-    var seenCommunicationId = await communicationRepository.MarkAsSeen(request.communicationId, cancellationToken);
+    var seenCommunicationId = await communicationRepository.MarkAsSeen(request.CommunicationId, cancellationToken);
 
     return seenCommunicationId;
   }
