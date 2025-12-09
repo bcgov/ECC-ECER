@@ -1,5 +1,4 @@
-﻿using ECER.Resources.Documents.PostSecondaryInstitutes;
-using MediatR;
+﻿using MediatR;
 
 namespace ECER.Managers.Admin.Contract.Metadatas;
 
