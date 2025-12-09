@@ -48,7 +48,7 @@ const router = createRouter({
     },
     {
       path: "/education-institution/edit",
-      component: () => import("./components/pages/PageNotFound.vue"),
+      component: () => import("./components/pages/EditInstitution.vue"),
       name: "edit-education-institution",
       meta: { requiresAuth: true },
     },
@@ -111,6 +111,7 @@ router.beforeEach(async (to, _, next) => {
   if (!user) {
     // Reset user store to clear any stale data
     userStore.setPspUserProfile(null);
+    userStore.setEducationInstitution(null);
   }
 
   // instead of having to check every route record with
