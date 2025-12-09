@@ -1,3 +1,4 @@
+using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Security;
 using MediatR;
 
@@ -15,6 +16,8 @@ public record SearchPostSecondaryInstitutionQuery : IRequest<PostSecondaryInstit
 /// Container for <see cref="SearchPostSecondaryInstitutionQuery"/> results
 /// </summary>
 public record PostSecondaryInstitutionsQueryResults(IEnumerable<PostSecondaryInstitute> Items);
+
+public record UpdatePostSecondaryInstitutionCommand(PostSecondaryInstitute Institute) : IRequest<string>;
 
 public record PostSecondaryInstitute
 {
