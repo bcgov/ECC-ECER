@@ -13,29 +13,30 @@
         item-value="value"
         clearable
         hide-details="auto"
-        @update:model-value="(value: string) => auspiceChanged(value)"
+        @update:model-value="(value: Auspice) => auspiceChanged(value)"
       ></v-autocomplete>
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import * as Rules from "@/utils/formRules";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useConfigStore } from "@/store/config";
+import type { Auspice, Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "EceAuspice",
   components: { EceTextField },
   props: {
     modelValue: {
-      type: String,
+      type: Object as PropType<Components.Schemas.Auspice>,
       required: true,
     },
   },
   emits: {
-    "update:model-value": (_auspice: string) => true,
+    "update:model-value": (_auspice: Auspice) => true,
   },
   setup() {
     const configStore = useConfigStore();
@@ -65,7 +66,7 @@ export default defineComponent({
     }
   },
   methods: {
-    auspiceChanged(value: string) {
+    auspiceChanged(value: Auspice) {
       this.$emit("update:model-value", value);
     },
   },
