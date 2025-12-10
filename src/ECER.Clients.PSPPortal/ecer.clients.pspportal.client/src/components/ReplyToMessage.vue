@@ -14,7 +14,6 @@
                 :rules="[Rules.required('Enter a message no longer than 1000 characters')]"></v-textarea>
             </v-col>
           </v-row>
-          <!-- <FileUploader ref="FileUploader" :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" /> -->
           <v-row class="mt-10">
             <v-col>
               <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')"
@@ -42,7 +41,6 @@ import type { VForm } from "vuetify/components";
 
 import { getChildMessages, sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
-// import FileUploader from "@/components/FileUploader.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
