@@ -25,11 +25,6 @@
                 <v-icon class="ml-n2">mdi-paperclip</v-icon>
                 Attachments
               </p>
-              <!-- <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
-                <DownloadFileLink :name="file.name" :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
-                  <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
-                </DownloadFileLink>
-              </div> -->
             </div>
             <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey"
               class="mt-10 border-opacity-100"></v-divider>
@@ -64,11 +59,6 @@
           <v-icon class="ml-n2">mdi-paperclip</v-icon>
           Attachments
         </p>
-        <!-- <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
-          <DownloadFileLink :name="file.name" :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
-            <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
-          </DownloadFileLink>
-        </div> -->
       </div>
 
       <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey"
@@ -106,7 +96,6 @@ export default defineComponent({
       loadingStore,
       smAndDown,
       mdAndUp,
-      // getCommunicationFile,
       router,
     };
   },
