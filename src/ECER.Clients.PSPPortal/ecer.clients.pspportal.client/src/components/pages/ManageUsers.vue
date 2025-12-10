@@ -28,7 +28,10 @@
                             </ol>
 
                         </div>
-                        <v-btn class="mt-4" color="primary"><v-icon class="mr-2">mdi-account-plus</v-icon> Add
+                        <v-btn class="mt-4" color="primary"
+                            @click="router.push({ name: 'add-user', params: { educationInstitutionName: educationInstitutionName } })"><v-icon
+                                class="mr-2">mdi-account-plus</v-icon>
+                            Add
                             user</v-btn>
                     </v-sheet>
                 </v-col>
@@ -119,9 +122,10 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import UserCard from "@/components/UserCard.vue";
 import Loading from "@/components/Loading.vue";
-import { deactivateUser, getUsers, setPrimaryUser } from "@/api/manage-users";
+import { deactivateUser, getUsers, reactivateUser, setPrimaryUser } from "@/api/manage-users";
 import type { PspUserListItem } from "@/types/openapi";
 import { useUserStore } from "@/store/user";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     name: "ManageUsers",
@@ -134,8 +138,10 @@ export default defineComponent({
     },
     setup() {
         const userStore = useUserStore();
+        const router = useRouter();
         return {
             userStore,
+            router,
         };
     },
     data() {
@@ -168,9 +174,11 @@ export default defineComponent({
             // TODO: Implement resend invitation handler
             console.log("Resend invitation:", userId);
         },
-        handleReactivate(userId: string | null | undefined) {
-            // TODO: Implement reactivate handler
-            console.log("Reactivate:", userId);
+        async handleReactivate(userId: string | null | undefined) {
+            if (userId) {
+                await reactivateUser(userId);
+                await this.loadUsers();
+            }
         },
     },
     computed: {

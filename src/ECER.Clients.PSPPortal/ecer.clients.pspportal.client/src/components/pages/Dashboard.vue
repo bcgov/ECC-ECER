@@ -1,7 +1,6 @@
 <template>
   <PageContainer :margin-top="false">
-    <Loading v-if="isLoading">
-    </Loading>
+    <Loading v-if="isLoading"></Loading>
     <div v-else>
       <v-row justify="center">
         <v-col cols="12">
@@ -20,12 +19,9 @@
         <v-col class="d-flex" cols="12" sm="6" md="4">
           <Card class="d-flex flex-column">
             <h2>Program profiles</h2>
-            <p class="mt-4">Program profiles
-              View or manage your institution’s annual program profiles.
-              View program profiles.</p>
+            <p class="mt-4">Program profiles View or manage your institution’s annual program profiles. View program profiles.</p>
             <div class="mt-auto">
-              <v-btn variant='outlined' size="large" class="mt-4" color="primary" id="btnNeedOtherOptions"
-                @click="router.push('/program-profiles')">
+              <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnNeedOtherOptions" @click="router.push('/program-profiles')">
                 View program profiles
               </v-btn>
             </div>
@@ -33,11 +29,10 @@
         </v-col>
         <v-col class="d-flex" cols="12" sm="6" md="4">
           <Card class="d-flex flex-column">
-            <h2>Messsages</h2>
+            <h2>Messages</h2>
             <p class="mt-4">View or send a new message to the ECE Registry.</p>
             <div class="mt-auto">
-              <v-btn variant='outlined' size="large" class="mt-4" color="primary" id="btnNeedOtherOptions"
-                @click="router.push('/messages')">
+              <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnMessages" @click="router.push('/messages')">
                 Go to messages
               </v-btn>
             </div>
@@ -48,8 +43,14 @@
             <h2>User management</h2>
             <p class="mt-4">Manage which users at your institution have access to this portal.</p>
             <div class="mt-auto">
-              <v-btn variant='outlined' size="large" class="mt-4" color="primary" id="btnNeedOtherOptions"
-                @click="router.push({ name: 'manage-users', params: { educationInstitutionName: educationInstitution?.name } })">
+              <v-btn
+                variant="outlined"
+                size="large"
+                class="mt-4"
+                color="primary"
+                id="btnManageUsers"
+                @click="router.push({ name: 'manage-users', params: { educationInstitutionName: educationInstitution?.name } })"
+              >
                 Manage users
               </v-btn>
             </div>
@@ -68,7 +69,7 @@ import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { getEducationInstitution, getPspUserProfile, registerPspUser } from "@/api/psp-rep";
-import type { PspUserProfile, PspRegistrationError, PspRegistrationErrorResponse, RegisterPspUserRequest, EducationInstitution } from "@/types/openapi";
+import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Card from "@/components/Card.vue";
@@ -97,19 +98,24 @@ export default defineComponent({
     const router = useRouter();
 
     return {
-      oidcStore, router, userStore, loadingStore
+      oidcStore,
+      router,
+      userStore,
+      loadingStore,
     };
   },
   async mounted() {
     let user;
+
     try {
       user = await this.oidcStore.getUser();
-
       if (!user) {
         user = await this.oidcStore.signinCallback();
         this.router.replace("/");
       }
-    } catch (error) { }
+    } catch (error) {
+      console.log(`Exception while mounting dashboard: ${error}`);
+    }
 
     if (!user) {
       this.router.replace("/login");
@@ -117,10 +123,7 @@ export default defineComponent({
     }
 
     // Check if the user has a profile, if not, register them
-    [this.pspUserProfile, this.educationInstitution] = await Promise.all([
-      getPspUserProfile(),
-      getEducationInstitution(),
-    ]);
+    [this.pspUserProfile, this.educationInstitution] = await Promise.all([getPspUserProfile(), getEducationInstitution()]);
 
     if (!this.pspUserProfile) {
       if (!this.userStore.invitationToken || !this.userStore.invitedProgramRepresentativeId) {
@@ -141,7 +144,7 @@ export default defineComponent({
       };
 
       const registrationResult = await registerPspUser(request);
-      if (registrationResult && 'errorCode' in registrationResult) {
+      if (registrationResult && "errorCode" in registrationResult) {
         // Handle registration errors based on error code from PspRegistrationErrorResponse
         const errorCode: PspRegistrationError | undefined = registrationResult.errorCode;
 
@@ -162,24 +165,39 @@ export default defineComponent({
         return;
       }
 
-      [this.pspUserProfile, this.educationInstitution] = await Promise.all([
-        getPspUserProfile(),
-        getEducationInstitution(),
-      ]);
+      [this.pspUserProfile, this.educationInstitution] = await Promise.all([getPspUserProfile(), getEducationInstitution()]);
     }
 
     if (this.pspUserProfile) {
-      this.userStore.setPspUserProfile(this.pspUserProfile);
       if (!this.pspUserProfile.hasAcceptedTermsOfUse) {
         this.router.replace("/new-user");
       }
     }
+    
+    this.setUserStoreValues();
 
     this.loading = false;
   },
   computed: {
     isLoading(): boolean {
-      return this.loadingStore.isLoading('psp_user_profile_get') || this.loadingStore.isLoading('psp_user_register_post') || this.loadingStore.isLoading('education_institution_get') || this.loading;
+      return (
+        this.loadingStore.isLoading("psp_user_profile_get") ||
+        this.loadingStore.isLoading("psp_user_register_post") ||
+        this.loadingStore.isLoading("education_institution_get") ||
+        this.loadingStore.isLoading("education_institution_put") ||
+        this.loading
+      );
+    },
+
+  },
+  methods: {
+    setUserStoreValues() {
+      if (this.pspUserProfile) {
+        this.userStore.setPspUserProfile(this.pspUserProfile);
+      }
+      if (this.educationInstitution) {
+        this.userStore.setEducationInstitution(this.educationInstitution);
+      }
     }
   }
 });

@@ -89,12 +89,19 @@ public enum RegisterPspUserError
   BceidBusinessIdDoesNotMatch,
 }
 
+public record AddPspRepCommand(PspUserProfile userProfile, string postSecondaryInstitutionId) : IRequest<string>;
+
 public record UpdatePspRepProfileCommand(PspUser User) : IRequest<string>;
 
 /// <summary>
 /// Request to deactivate a PSP program representative
 /// </summary>
 public record DeactivatePspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
+
+/// <summary>
+/// Request to reactivate a PSP program representative
+/// </summary>
+public record ReactivatePspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
 
 /// <summary>
 /// Request to set a PSP program representative as Primary for their institution

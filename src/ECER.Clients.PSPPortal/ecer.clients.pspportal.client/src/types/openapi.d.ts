@@ -8,6 +8,12 @@ declare namespace Components {
       } | null;
     }
     export type Auspice = "ContinuingEducation" | "PublicOOP" | "Private" | "Public";
+    export interface Country {
+      countryId?: string | null;
+      countryName?: string | null;
+      countryCode?: string | null;
+      isICRA?: boolean;
+    }
     export interface EducationInstitution {
       id?: string | null;
       name?: string | null;
@@ -33,6 +39,9 @@ declare namespace Components {
       } | null;
     }
     export type InviteType = "PSIProgramRepresentative";
+    export interface NewPspUserResponse {
+      id?: string | null;
+    }
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
@@ -55,6 +64,11 @@ declare namespace Components {
       status?: number | null; // int32
       detail?: string | null;
       instance?: string | null;
+    }
+    export interface Province {
+      provinceId?: string | null;
+      provinceName?: string | null;
+      provinceCode?: string | null;
     }
     /**
      * Error codes for PSP user registration failures
@@ -118,10 +132,22 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ApplicationConfiguration;
     }
   }
+  namespace CountryGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.Country[];
+    }
+  }
   namespace EducationInstitutionGet {
     namespace Responses {
       export type $200 = Components.Schemas.EducationInstitution;
       export interface $404 {}
+    }
+  }
+  namespace EducationInstitutionPut {
+    export type RequestBody = Components.Schemas.EducationInstitution;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace PortalInvitationGet {
@@ -136,7 +162,33 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace ProvinceGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.Province[];
+    }
+  }
+  namespace PspUserAdd {
+    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
+    namespace Responses {
+      export type $200 = Components.Schemas.NewPspUserResponse;
+      export type $400 = string;
+      export interface $404 {}
+    }
+  }
   namespace PspUserManageDeactivatePost {
+    namespace Parameters {
+      export type ProgramRepId = string;
+    }
+    export interface PathParameters {
+      programRepId: Parameters.ProgramRepId;
+    }
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace PspUserManageReactivatePost {
     namespace Parameters {
       export type ProgramRepId = string;
     }
@@ -205,6 +257,22 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
   /**
+   * province_get - Handles province queries
+   */
+  "province_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  /**
+   * country_get - Handles country queries
+   */
+  "country_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CountryGet.Responses.$200>;
+  /**
    * version_get - Returns the version information
    */
   "version_get"(
@@ -229,6 +297,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserManageDeactivatePost.Responses.$200>;
   /**
+   * psp_user_manage_reactivate_post - Reactivates a PSP representative for the current user's institution
+   */
+  "psp_user_manage_reactivate_post"(
+    parameters?: Parameters<Paths.PspUserManageReactivatePost.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserManageReactivatePost.Responses.$200>;
+  /**
    * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
    */
   "psp_user_manage_set_primary_post"(
@@ -236,6 +312,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserManageSetPrimaryPost.Responses.$200>;
+  /**
+   * psp_user_add - Adds a new psp user to an institution
+   */
+  "psp_user_add"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.PspUserAdd.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserAdd.Responses.$200>;
   /**
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
@@ -276,6 +360,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.EducationInstitutionGet.Responses.$200>;
+  /**
+   * education_institution_put - Updates the education institution
+   */
+  "education_institution_put"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.EducationInstitutionPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -288,6 +380,18 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
+  };
+  ["/api/provincelist"]: {
+    /**
+     * province_get - Handles province queries
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  };
+  ["/api/countrylist"]: {
+    /**
+     * country_get - Handles country queries
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.CountryGet.Responses.$200>;
   };
   ["/api/version"]: {
     /**
@@ -315,6 +419,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserManageDeactivatePost.Responses.$200>;
   };
+  ["/api/users/manage/{programRepId}/reactivate"]: {
+    /**
+     * psp_user_manage_reactivate_post - Reactivates a PSP representative for the current user's institution
+     */
+    "post"(
+      parameters?: Parameters<Paths.PspUserManageReactivatePost.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserManageReactivatePost.Responses.$200>;
+  };
   ["/api/users/manage/{programRepId}/set-primary"]: {
     /**
      * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
@@ -324,6 +438,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserManageSetPrimaryPost.Responses.$200>;
+  };
+  ["/api/users/manage/add"]: {
+    /**
+     * psp_user_add - Adds a new psp user to an institution
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.PspUserAdd.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserAdd.Responses.$200>;
   };
   ["/api/users/profile"]: {
     /**
@@ -372,6 +496,14 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.EducationInstitutionGet.Responses.$200>;
+    /**
+     * education_institution_put - Updates the education institution
+     */
+    "put"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.EducationInstitutionPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
   };
 }
 
@@ -379,14 +511,17 @@ export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
 
 export type ApplicationConfiguration = Components.Schemas.ApplicationConfiguration;
 export type Auspice = Components.Schemas.Auspice;
+export type Country = Components.Schemas.Country;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type InviteType = Components.Schemas.InviteType;
+export type NewPspUserResponse = Components.Schemas.NewPspUserResponse;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;
 export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
+export type Province = Components.Schemas.Province;
 export type PspRegistrationError = Components.Schemas.PspRegistrationError;
 export type PspRegistrationErrorResponse = Components.Schemas.PspRegistrationErrorResponse;
 export type PspUserListItem = Components.Schemas.PspUserListItem;

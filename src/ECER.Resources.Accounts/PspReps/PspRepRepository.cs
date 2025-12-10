@@ -126,6 +126,20 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     context.SaveChanges();
   }
 
+  public async Task Reactivate(string pspUserId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    if (!Guid.TryParse(pspUserId, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {pspUserId} is not a valid GUID");
+
+    var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
+    if (pspUser == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} not found");
+
+    pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Invited;
+    pspUser.ecer_InvitetoPortal = true;
+    context.UpdateObject(pspUser);
+    context.SaveChanges();
+  }
+
   public async Task SetPrimary(string pspUserId, CancellationToken ct)
   {
     await Task.CompletedTask;
@@ -147,6 +161,25 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
       context.UpdateObject(rep);
     }
 
+    context.SaveChanges();
+  }
+
+  public async Task Add(PspUserProfile profile, string postSecondaryInstitutionId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    
+    if (!Guid.TryParse(postSecondaryInstitutionId, out var institutionId)) throw new InvalidOperationException($"Post Secondary Institution ID {postSecondaryInstitutionId} is not a valid GUID");
+    
+    var institution = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.Id == institutionId);
+    if(institution == null) throw new InvalidOperationException($"Post Secondary Institution with ID {postSecondaryInstitutionId} not found");
+    
+    var pspUser = mapper.Map<ecer_ECEProgramRepresentative>(profile);
+    pspUser.ecer_InvitetoPortal = true;
+    pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Invited;
+    pspUser.ecer_RepresentativeRole = ecer_RepresentativeRole.Secondary;
+    
+    context.AddObject(pspUser);
+    context.AddLink(institution, ecer_PostSecondaryInstitute.Fields.ecer_eceprogramrepresentative_PostSecondaryIns, pspUser);
     context.SaveChanges();
   }
 }

@@ -10,6 +10,8 @@ using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
+using RepoPortalAccessStatus = ECER.Resources.Accounts.PspReps.PortalAccessStatus;
+
 namespace ECER.Managers.Registry;
 
 public class PspUserHandlers(
@@ -24,7 +26,9 @@ public class PspUserHandlers(
     IRequestHandler<UpdatePspRepProfileCommand, string>,
     IRequestHandler<RegisterPspUserCommand, RegisterPspUserResult>,
     IRequestHandler<DeactivatePspRepCommand, string>,
-    IRequestHandler<SetPrimaryPspRepCommand, string>
+    IRequestHandler<ReactivatePspRepCommand, string>,
+    IRequestHandler<SetPrimaryPspRepCommand, string>,
+    IRequestHandler<AddPspRepCommand, string>
 {
   /// <summary>
   /// Handles search psp program rep use case
@@ -87,6 +91,30 @@ public class PspUserHandlers(
   }
 
   /// <summary>
+  /// Handles reactivating a psp user use case
+  /// </summary>
+  public async Task<string> Handle(ReactivatePspRepCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var pspUser = (await pspRepRepository.Query(new PspRepQuery
+    {
+      ById = request.ProgramRepresentativeId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (pspUser == null) throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} not found");
+    if (pspUser.AccessToPortal == RepoPortalAccessStatus.Active || pspUser.AccessToPortal == RepoPortalAccessStatus.Invited)
+    {
+      throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} already has portal access");
+    }
+
+    ecerContext.BeginTransaction();
+    await pspRepRepository.Reactivate(request.ProgramRepresentativeId, cancellationToken);
+    ecerContext.CommitTransaction();
+    return request.ProgramRepresentativeId;
+  }
+
+  /// <summary>
   /// Handles setting a PSP user as the primary representative for their institution
   /// </summary>
   public async Task<string> Handle(SetPrimaryPspRepCommand request, CancellationToken cancellationToken)
@@ -106,7 +134,20 @@ public class PspUserHandlers(
     ecerContext.CommitTransaction();
     return request.ProgramRepresentativeId;
   }
-  
+
+  /// <summary>
+  /// Handles adding a new psp user use case
+  /// </summary>
+  /// <returns>the newly created user</returns>
+  public async Task<string> Handle(AddPspRepCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var profile = mapper.Map<Resources.Accounts.PspReps.PspUserProfile>(request.userProfile);
+    await pspRepRepository.Add(profile, request.postSecondaryInstitutionId, cancellationToken);
+    return request.userProfile.Id!;
+  }
+
   /// <summary>
   /// Handles registering a psp user use case
   /// </summary>
