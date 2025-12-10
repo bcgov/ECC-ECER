@@ -43,6 +43,12 @@ export default defineComponent({
           { title: "Invite user", disabled: true, href: this.route.path },
         ];
       }
+      if (this.route.name === "edit-education-institution") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          { title: "Edit Institution", disabled: true, href: "/education-institution/edit" },
+        ];
+      }
       return [];
     },
   },

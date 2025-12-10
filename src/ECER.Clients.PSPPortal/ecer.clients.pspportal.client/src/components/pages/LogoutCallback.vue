@@ -22,6 +22,7 @@ export default {
     async handleCallback() {
       await this.oidcStore.completeLogout();
       this.userStore.setPspUserProfile(null);
+      this.userStore.setEducationInstitution(null);
       this.router.push("/login");
     },
   },
