@@ -33,6 +33,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_ECEProgramRepresentative otherInstituteRepresentative = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private UserIdentity testPspIdentity = null!;
+  private ecer_Communication testCommunication1 = null!;
+  private ecer_Communication testCommunication2 = null!;
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedPspUserIdentity => testPspIdentity;
@@ -43,6 +45,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string InactivePspUserId => inactiveProgramRepresentative.Id.ToString();
   public string OtherInstitutePspUserId => otherInstituteRepresentative.Id.ToString();
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
+  public string communicationOneId => testCommunication1.Id.ToString();
+  public string communicationTwoId => testCommunication2.Id.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -79,6 +83,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, $"{TestRunId}psp_institute_other");
     otherInstituteRepresentative = GetOrAddProgramRepresentative(context, otherPostSecondaryInstitute, $"{TestRunId}psp_rep_other", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
+    
+    testCommunication1 = GetOrAddCommunication(context, "comm1", null);
+    testCommunication2 = GetOrAddCommunication(context, "comm2", null);
 
     context.SaveChanges();
 
@@ -87,6 +94,40 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     context.LoadProperty(testProgramRepresentative, ecer_ECEProgramRepresentative.Fields.ecer_authentication_eceprogramrepresentative);
 
     context.SaveChanges();
+  }
+  
+  private ecer_Communication GetOrAddCommunication(EcerContext context, string message, Guid? parentCommunicationId)
+  {
+    var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_EducationInstitutionId.Id == testPostSecondaryInstitute.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
+
+    if (communication == null)
+    {
+      communication = new ecer_Communication
+      {
+        Id = Guid.NewGuid(),
+        ecer_Message = message,
+        ecer_Acknowledged = false,
+        StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
+      };
+      if (parentCommunicationId == null)
+      {
+        communication.ecer_IsRoot = true;
+      }
+      context.AddObject(communication);
+
+      if (parentCommunicationId != null)
+      {
+        var parent = context.ecer_CommunicationSet.SingleOrDefault(d => d.ecer_CommunicationId == parentCommunicationId);
+        var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
+        {
+          PrimaryEntityRole = EntityRole.Referencing
+        };
+        context.AddLink(communication, Referencingecer_communication_ParentCommunicationid, parent);
+      }
+      
+    }
+
+    return communication;
   }
 
   private ecer_PostSecondaryInstitute GetOrAddPostSecondaryInstitute(EcerContext context, string? nameOverride = null)
