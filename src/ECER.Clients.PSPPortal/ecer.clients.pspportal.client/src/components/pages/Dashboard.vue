@@ -2,7 +2,7 @@
   <PageContainer :margin-top="false">
     <Loading v-if="isLoading"></Loading>
     <div v-else>
-      <v-row v-if="messageStore.unreadMessageCount > 0" justify="center">
+      <v-row v-if="messageStore?.unreadMessageCount > 0" justify="center">
         <v-col>
           <v-row>
             <v-col cols="12">
@@ -98,6 +98,8 @@ export default defineComponent({
     ECEHeader,
     Card,
     EducationInstitutionCard,
+    Alert,
+    UnreadMessages
   },
   data() {
     return {
@@ -119,6 +121,7 @@ export default defineComponent({
       router,
       userStore,
       loadingStore,
+      messageStore
     };
   },
   async mounted() {

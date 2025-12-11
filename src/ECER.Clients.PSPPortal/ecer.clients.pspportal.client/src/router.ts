@@ -127,9 +127,9 @@ router.beforeEach(async (to, _, next) => {
     const messageStore = useMessageStore();
     // Reset user store to clear any stale data
     userStore.setPspUserProfile(null);
+    userStore.setEducationInstitution(null);
     formStore.$reset();
     messageStore.$reset();
-    userStore.setEducationInstitution(null);
   }
 
   // instead of having to check every route record with
