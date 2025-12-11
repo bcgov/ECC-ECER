@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Shared;
+using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Files;
-using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -11,45 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Text;
 
-namespace ECER.Clients.RegistryPortal.Server.Files;
+namespace ECER.Clients.PSPPortal.Server.Files;
 
 public class FilesEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/files/certificate/{certificateId}", async Task<Results<FileStreamHttpResult, BadRequest<ProblemDetails>, NotFound>> (
-        string certificateId,
-        IMediator messageBus,
-        HttpContext httpContext,
-        CancellationToken ct) =>
-    {
-      var userId = httpContext.User.GetUserContext()?.UserId;
-      bool IdIsNotGuid = !Guid.TryParse(certificateId, out _); if (IdIsNotGuid) { return TypedResults.BadRequest(new ProblemDetails { Title = "Invalid GUID" }); }
-
-      var query = new UserCertificationQuery
-      {
-        ById = certificateId,
-        ByApplicantId = userId,
-      };
-
-      var certificateQueryResult = await messageBus.Send<CertificationsQueryResults>(query, ct);
-      if (certificateQueryResult.Items == null || !certificateQueryResult.Items.Any()) return TypedResults.NotFound();
-
-      var certificate = certificateQueryResult.Items.FirstOrDefault();
-      //Filter Certificate Files to get latest certificate where Tag1 is "Certificate"
-      var certificateFile = certificate?.Files.Where(f => f.Tag1Name == "Certificate").OrderByDescending(f => f.CreatedOn).FirstOrDefault();
-      if (certificateFile == null) return TypedResults.NotFound();
-
-      var results = await messageBus.Send(new FileQuery([new FileLocation(certificateFile.Id, certificateFile.Url ?? string.Empty)]), ct);
-      var file = results.Items.SingleOrDefault();
-      if (file == null) return TypedResults.NotFound();
-
-      return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
-    })
-      .WithOpenApi("Handles fetching certificate PDF's", string.Empty, "files_certificate_get")
-      .RequireAuthorization("registry_user")
-      .WithParameterValidation();
-
     endpointRouteBuilder.MapGet("/api/files/communication/{communicationId}/file/{fileId}", async Task<Results<FileStreamHttpResult, BadRequest<ProblemDetails>, NotFound>> (
         string communicationId,
         string fileId,
@@ -57,14 +23,12 @@ public class FilesEndpoints : IRegisterEndpoints
         HttpContext httpContext,
         CancellationToken ct) =>
     {
-      var userId = httpContext.User.GetUserContext()?.UserId;
       bool communicationIdIsNotGuid = !Guid.TryParse(communicationId, out _); if (communicationIdIsNotGuid) { return TypedResults.BadRequest(new ProblemDetails { Title = "Invalid GUID" }); }
       bool fileIdIsNotGuid = !Guid.TryParse(fileId, out _); if (fileIdIsNotGuid) { return TypedResults.BadRequest(new ProblemDetails { Title = "Invalid GUID" }); }
 
       var query = new UserCommunicationQuery
       {
-        ById = communicationId,
-        ByRegistrantId = userId,
+        ById = communicationId
       };
 
       var communicationQueryResult = await messageBus.Send<CommunicationsQueryResults>(query, ct);
@@ -81,7 +45,7 @@ public class FilesEndpoints : IRegisterEndpoints
       return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
     })
       .WithOpenApi("Handles fetching files", string.Empty, "files_communication_get")
-      .RequireAuthorization("registry_user")
+      .RequireAuthorization("psp_user")
       .WithParameterValidation();
 
     // This delete just works for temp folder...
@@ -99,7 +63,7 @@ public class FilesEndpoints : IRegisterEndpoints
     return TypedResults.Ok(new FileResponse(fileId));
   })
     .WithOpenApi("Handles delete uploaded file request", string.Empty, "delete_file")
-    .RequireAuthorization("registry_user")
+    .RequireAuthorization("psp_user")
     .WithParameterValidation()
     .DisableAntiforgery();
 
@@ -138,7 +102,7 @@ public class FilesEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new FileResponse(fileId) { Url = saveResult.FileData.FileLocation.Folder + "/" + fileId });
     })
       .WithOpenApi("Handles upload file request", string.Empty, "upload_file")
-      .RequireAuthorization("registry_user")
+      .RequireAuthorization("psp_user")
       .DisableAntiforgery();
   }
 }

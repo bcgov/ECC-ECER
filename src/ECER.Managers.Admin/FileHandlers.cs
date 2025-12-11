@@ -70,7 +70,11 @@ public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfigur
       };
 
       if (file != null) files.Add(new FileData(fileLocation, fileProperties, file.FileName, file.ContentType, file.Content));
-      await metadataResourceRepository.SetDownloadDate(fileLocation.Id, cancellationToken);
+
+      if (request.TrackDownload)
+      {
+        await metadataResourceRepository.SetDownloadDate(fileLocation.Id, cancellationToken);
+      }
     });
 
     return new FileQueryResults(files.ToList());

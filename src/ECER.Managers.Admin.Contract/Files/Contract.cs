@@ -5,7 +5,7 @@ public record SaveFileCommand(IEnumerable<FileData> Items) : IRequest<SaveFileCo
 public record SaveFileCommandResponse(IEnumerable<SaveFileResult> Items);
 public record DeleteFileCommand(FileData Item) : IRequest;
 
-public record FileQuery(IEnumerable<FileLocation> FileLocations) : IRequest<FileQueryResults>;
+public record FileQuery(IEnumerable<FileLocation> FileLocations, bool TrackDownload = true) : IRequest<FileQueryResults>;
 
 public record FileLocation(string Id, string Folder);
 
