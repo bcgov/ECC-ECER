@@ -28,6 +28,7 @@ declare namespace Components {
             applicationId?: string | null;
             icraEligibilityId?: string | null;
             programRepresentativeId?: string | null;
+            programRepresentativeInstituteId?: string | null;
             documents?: CommunicationDocument[] | null;
         }
         export interface CommunicationDocument {
@@ -62,6 +63,12 @@ declare namespace Components {
         }
         export interface CommunicationsStatusResults {
             status?: CommunicationsStatus;
+        }
+        export interface Country {
+            countryId?: string | null;
+            countryName?: string | null;
+            countryCode?: string | null;
+            isICRA?: boolean;
         }
         export interface EducationInstitution {
             id?: string | null;
@@ -118,6 +125,11 @@ declare namespace Components {
             status?: number | null; // int32
             detail?: string | null;
             instance?: string | null;
+        }
+        export interface Province {
+            provinceId?: string | null;
+            provinceName?: string | null;
+            provinceCode?: string | null;
         }
         /**
          * Error codes for PSP user registration failures
@@ -185,125 +197,7 @@ declare namespace Components {
             commit?: string | null;
         }
     }
-    export type Auspice = "ContinuingEducation" | "PublicOOP" | "Private" | "Public";
-    export interface Country {
-      countryId?: string | null;
-      countryName?: string | null;
-      countryCode?: string | null;
-      isICRA?: boolean;
-    }
-    export interface EducationInstitution {
-      id?: string | null;
-      name?: string | null;
-      auspice?: Auspice;
-      websiteUrl?: string | null;
-      street1?: string | null;
-      street2?: string | null;
-      street3?: string | null;
-      city?: string | null;
-      province?: string | null;
-      country?: string | null;
-      postalCode?: string | null;
-    }
-    export interface HttpValidationProblemDetails {
-      [name: string]: any;
-      type?: string | null;
-      title?: string | null;
-      status?: number | null; // int32
-      detail?: string | null;
-      instance?: string | null;
-      errors?: {
-        [name: string]: string[];
-      } | null;
-    }
-    export type InviteType = "PSIProgramRepresentative";
-    export interface NewPspUserResponse {
-      id?: string | null;
-    }
-    export interface OidcAuthenticationSettings {
-      authority?: string | null;
-      clientId?: string | null;
-      scope?: string | null;
-      idp?: string | null;
-    }
-    export type PortalAccessStatus = "Invited" | "Active" | "Disabled";
-    export interface PortalInvitation {
-      id?: string | null;
-      pspProgramRepresentativeId?: string | null;
-      inviteType?: InviteType;
-    }
-    export interface PortalInvitationQueryResult {
-      portalInvitation?: PortalInvitation;
-    }
-    export interface ProblemDetails {
-      [name: string]: any;
-      type?: string | null;
-      title?: string | null;
-      status?: number | null; // int32
-      detail?: string | null;
-      instance?: string | null;
-    }
-    export interface Province {
-      provinceId?: string | null;
-      provinceName?: string | null;
-      provinceCode?: string | null;
-    }
-    /**
-     * Error codes for PSP user registration failures
-     */
-    export type PspRegistrationError =
-      | "PostSecondaryInstitutionNotFound"
-      | "PortalInvitationTokenInvalid"
-      | "PortalInvitationWrongStatus"
-      | "BceidBusinessIdDoesNotMatch"
-      | "GenericError";
-    /**
-     * Error response for PSP user registration failures. Returns only the error code for frontend handling.
-     */
-    export interface PspRegistrationErrorResponse {
-      errorCode?: /* Error codes for PSP user registration failures */ PspRegistrationError;
-    }
-    export interface PspUserListItem {
-      id?: string | null;
-      profile?: /* User profile information */ PspUserProfile;
-      accessToPortal?: PortalAccessStatus;
-      postSecondaryInstituteId?: string | null;
-    }
-    /**
-     * User profile information
-     */
-    export interface PspUserProfile {
-      id?: string | null;
-      firstName?: string | null;
-      lastName?: string | null;
-      preferredName?: string | null;
-      phone?: string | null;
-      phoneExtension?: string | null;
-      jobTitle?: string | null;
-      role?: /* Role of the PSP user */ PspUserRole;
-      email?: string | null;
-      hasAcceptedTermsOfUse?: boolean | null;
-    }
-    /**
-     * Role of the PSP user
-     */
-    export type PspUserRole = "Primary" | "Secondary";
-    /**
-     * Request to register a new psp user
-     */
-    export interface RegisterPspUserRequest {
-      token?: string | null;
-      programRepresentativeId?: string | null;
-      bceidBusinessId?: string | null;
-      profile: /* User profile information */ PspUserProfile;
-    }
-    export interface VersionMetadata {
-      version?: string | null;
-      timestamp?: string | null;
-      commit?: string | null;
-    }
-  }
-
+}
 declare namespace Paths {
     namespace CommunicationPut {
         namespace Parameters {
@@ -316,11 +210,18 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = /* Save communication response */ Components.Schemas.CommunicationResponse;
             export type $400 = string;
+            export interface $404 {
+            }
         }
     }
     namespace ConfigurationGet {
         namespace Responses {
             export type $200 = Components.Schemas.ApplicationConfiguration;
+        }
+    }
+    namespace CountryGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.Country[];
         }
     }
     namespace EducationInstitutionGet {
@@ -329,28 +230,14 @@ declare namespace Paths {
             export interface $404 {
             }
         }
-  }
-  namespace CountryGet {
-    namespace Responses {
-      export type $200 = Components.Schemas.Country[];
     }
-  }
-  namespace EducationInstitutionGet {
-    namespace Responses {
-      export type $200 = Components.Schemas.EducationInstitution;
-      export interface $404 {}
-    }
-  }
-  namespace EducationInstitutionPut {
-    export type RequestBody = Components.Schemas.EducationInstitution;
-    namespace Responses {
-      export interface $200 {}
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
-    }
-  }
-  namespace PortalInvitationGet {
-    namespace Parameters {
-      export type Token = string;
+    namespace EducationInstitutionPut {
+        export type RequestBody = Components.Schemas.EducationInstitution;
+        namespace Responses {
+            export interface $200 {
+            }
+            export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+        }
     }
     namespace MessageGet {
         namespace Parameters {
@@ -378,19 +265,9 @@ declare namespace Paths {
     namespace MessageStatusGet {
         namespace Responses {
             export type $200 = Components.Schemas.CommunicationsStatusResults;
+            export interface $404 {
+            }
         }
-  }
-  namespace ProvinceGet {
-    namespace Responses {
-      export type $200 = Components.Schemas.Province[];
-    }
-  }
-  namespace PspUserAdd {
-    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
-    namespace Responses {
-      export type $200 = Components.Schemas.NewPspUserResponse;
-      export type $400 = string;
-      export interface $404 {}
     }
     namespace PortalInvitationGet {
         namespace Parameters {
@@ -402,6 +279,11 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = Components.Schemas.PortalInvitationQueryResult;
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
+        }
+    }
+    namespace ProvinceGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.Province[];
         }
     }
     namespace PspUserAdd {
@@ -428,24 +310,27 @@ declare namespace Paths {
             }
         }
     }
-  }
-  namespace PspUserManageReactivatePost {
-    namespace Parameters {
-      export type ProgramRepId = string;
+    namespace PspUserManageGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.PspUserListItem[];
+            export interface $404 {
+            }
+        }
     }
-    export interface PathParameters {
-      programRepId: Parameters.ProgramRepId;
-    }
-    namespace Responses {
-      export interface $200 {}
-      export type $400 = Components.Schemas.HttpValidationProblemDetails;
-      export interface $404 {}
-    }
-  }
-  namespace PspUserManageGet {
-    namespace Responses {
-      export type $200 = Components.Schemas.PspUserListItem[];
-      export interface $404 {}
+    namespace PspUserManageReactivatePost {
+        namespace Parameters {
+            export type ProgramRepId = string;
+        }
+        export interface PathParameters {
+            programRepId: Parameters.ProgramRepId;
+        }
+        namespace Responses {
+            export interface $200 {
+            }
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
     }
     namespace PspUserManageSetPrimaryPost {
         namespace Parameters {
@@ -504,19 +389,19 @@ export interface OperationMethods {
   /**
    * province_get - Handles province queries
    */
-  "province_get"(
+  'province_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ProvinceGet.Responses.$200>
   /**
    * country_get - Handles country queries
    */
-  "country_get"(
+  'country_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.CountryGet.Responses.$200>;
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CountryGet.Responses.$200>
   /**
    * version_get - Returns the version information
    */
@@ -544,11 +429,11 @@ export interface OperationMethods {
   /**
    * psp_user_manage_reactivate_post - Reactivates a PSP representative for the current user's institution
    */
-  "psp_user_manage_reactivate_post"(
+  'psp_user_manage_reactivate_post'(
     parameters?: Parameters<Paths.PspUserManageReactivatePost.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.PspUserManageReactivatePost.Responses.$200>;
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.PspUserManageReactivatePost.Responses.$200>
   /**
    * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
    */
@@ -606,6 +491,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.EducationInstitutionGet.Responses.$200>
   /**
+   * education_institution_put - Updates the education institution
+   */
+  'education_institution_put'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.EducationInstitutionPut.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>
+  /**
    * message_get - Paginated endpoint to get all user messages
    */
   'message_get'(
@@ -636,18 +529,8 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
-
-  /**
-   * education_institution_put - Updates the education institution
-   */
-  "education_institution_put"(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.EducationInstitutionPut.RequestBody,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
+  ): OperationResponse<Paths.MessageStatusGet.Responses.$200>
 }
-  }
 
 export interface PathsDictionary {
   ['/api/configuration']: {
@@ -659,20 +542,28 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ConfigurationGet.Responses.$200>
-  };
-  ["/api/provincelist"]: {
+  }
+  ['/api/provincelist']: {
     /**
      * province_get - Handles province queries
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
-  };
-  ["/api/countrylist"]: {
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  }
+  ['/api/countrylist']: {
     /**
      * country_get - Handles country queries
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.CountryGet.Responses.$200>;
-  };
-  ["/api/version"]: {
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CountryGet.Responses.$200>
+  }
+  ['/api/version']: {
     /**
      * version_get - Returns the version information
      */
@@ -699,20 +590,20 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.PspUserManageDeactivatePost.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.PspUserManageDeactivatePost.Responses.$200>;
-  };
-  ["/api/users/manage/{programRepId}/reactivate"]: {
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.PspUserManageDeactivatePost.Responses.$200>
+  }
+  ['/api/users/manage/{programRepId}/reactivate']: {
     /**
      * psp_user_manage_reactivate_post - Reactivates a PSP representative for the current user's institution
      */
-    "post"(
+    'post'(
       parameters?: Parameters<Paths.PspUserManageReactivatePost.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.PspUserManageReactivatePost.Responses.$200>;
-  };
-  ["/api/users/manage/{programRepId}/set-primary"]: {
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.PspUserManageReactivatePost.Responses.$200>
+  }
+  ['/api/users/manage/{programRepId}/set-primary']: {
     /**
      * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
      */
@@ -779,6 +670,14 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.EducationInstitutionGet.Responses.$200>
+    /**
+     * education_institution_put - Updates the education institution
+     */
+    'put'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.EducationInstitutionPut.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>
   }
   ['/api/messages/{parentId}']: {
     /**
@@ -820,15 +719,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.MessageStatusGet.Responses.$200>
   }
-    /**
-     * education_institution_put - Updates the education institution
-     */
-    "put"(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.EducationInstitutionPut.RequestBody,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
-  };
 }
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
