@@ -77,8 +77,14 @@ public class CommunicationsEndpoints : IRegisterEndpoints
           if (IdIsNotGuid || CommunicationIdIsNotGuid) return TypedResults.BadRequest("invalid id");
           if (request.CommunicationId != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
+          var markCommunicationCmd = new MarkCommunicationAsSeenCommand
+          {
+            CommunicationId = request.CommunicationId, 
+            UserId = userId!
+          };
+          
           var communicationId =
-            await messageBus.Send(new MarkCommunicationAsSeenCommand(request.CommunicationId, userId!), ct);
+            await messageBus.Send(markCommunicationCmd, ct);
           return TypedResults.Ok(new CommunicationResponse(communicationId));
         })
       .WithOpenApi("Marks a communication as seen", string.Empty, "communication_put")
