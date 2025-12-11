@@ -2,6 +2,17 @@
   <PageContainer :margin-top="false">
     <Loading v-if="isLoading"></Loading>
     <div v-else>
+      <v-row v-if="messageStore?.unreadMessageCount > 0" justify="center">
+        <v-col>
+          <v-row>
+            <v-col cols="12">
+              <Alert :rounded="mdAndUp" :class="smAndDown ? 'mt-n4 mx-n4' : ''" icon="mdi-bell">
+                <UnreadMessages />
+              </Alert>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
       <v-row justify="center">
         <v-col cols="12">
           <h1>My PSP dashboard</h1>
@@ -65,6 +76,9 @@
 import { defineComponent } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
+import Alert from "@/components/Alert.vue";
+import UnreadMessages from "@/components/UnreadMessages.vue";
+import { useDisplay } from "vuetify";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
@@ -74,6 +88,7 @@ import { useLoadingStore } from "@/store/loading";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Card from "@/components/Card.vue";
 import EducationInstitutionCard from "@/components/EducationInstitutionCard.vue";
+import { useMessageStore } from "@/store/message";
 
 export default defineComponent({
   name: "Dashboard",
@@ -83,6 +98,8 @@ export default defineComponent({
     ECEHeader,
     Card,
     EducationInstitutionCard,
+    Alert,
+    UnreadMessages
   },
   data() {
     return {
@@ -96,12 +113,17 @@ export default defineComponent({
     const userStore = useUserStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
+    const messageStore = useMessageStore();
 
+    const { smAndDown, mdAndUp } = useDisplay();
     return {
       oidcStore,
       router,
       userStore,
       loadingStore,
+      messageStore,
+      smAndDown,
+      mdAndUp,
     };
   },
   async mounted() {
