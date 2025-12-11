@@ -121,7 +121,9 @@ export default defineComponent({
       router,
       userStore,
       loadingStore,
-      messageStore
+      messageStore,
+      smAndDown,
+      mdAndUp,
     };
   },
   async mounted() {
