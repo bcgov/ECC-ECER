@@ -37,13 +37,19 @@ const router = createRouter({
     {
       path: "/messages",
       name: "messages",
-      component: () => import("./components/pages/Messages.vue"),
+      component: () => import("./components/communication/Messages.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/messages/:messageId/reply",
       name: "replyToMessage",
-      component: () => import("./components/ReplyToMessage.vue"),
+      component: () => import("./components/communication/ReplyToMessage.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/messages/new",
+      name: "newMessage",
+      component: () => import("./components/communication/NewMessage.vue"),
       meta: { requiresAuth: true },
     },
     {

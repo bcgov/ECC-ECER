@@ -83,6 +83,16 @@ declare namespace Components {
             country?: string | null;
             postalCode?: string | null;
         }
+        /**
+         * file Response
+         */
+        export interface FileResponse {
+            /**
+             *
+             */
+            fileId?: string | null;
+            url?: string | null;
+        }
         export interface GetMessagesResponse {
             communications?: Communication[] | null;
             totalMessagesCount?: number; // int32
@@ -224,6 +234,20 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Country[];
         }
     }
+    namespace DeleteFile {
+        namespace Parameters {
+            export type FileId = string;
+        }
+        export interface PathParameters {
+            fileId: Parameters.FileId;
+        }
+        namespace Responses {
+            export type $200 = /* file Response */ Components.Schemas.FileResponse;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
+    }
     namespace EducationInstitutionGet {
         namespace Responses {
             export type $200 = Components.Schemas.EducationInstitution;
@@ -237,6 +261,21 @@ declare namespace Paths {
             export interface $200 {
             }
             export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+        }
+    }
+    namespace FilesCommunicationGet {
+        namespace Parameters {
+            export type CommunicationId = string;
+            export type FileId = string;
+        }
+        export interface PathParameters {
+            communicationId: Parameters.CommunicationId;
+            fileId: Parameters.FileId;
+        }
+        namespace Responses {
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
         }
     }
     namespace MessageGet {
@@ -369,6 +408,23 @@ declare namespace Paths {
             export type $400 = /* Error response for PSP user registration failures. Returns only the error code for frontend handling. */ Components.Schemas.PspRegistrationErrorResponse;
         }
     }
+    namespace UploadFile {
+        namespace Parameters {
+            export type FileId = string;
+        }
+        export interface PathParameters {
+            fileId: Parameters.FileId;
+        }
+        export interface RequestBody {
+            file: string; // binary
+        }
+        namespace Responses {
+            export type $200 = /* file Response */ Components.Schemas.FileResponse;
+            export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
+    }
     namespace VersionGet {
         namespace Responses {
             export type $200 = Components.Schemas.VersionMetadata;
@@ -482,6 +538,30 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.PortalInvitationGet.Responses.$200>
+  /**
+   * files_communication_get - Handles fetching files
+   */
+  'files_communication_get'(
+    parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * upload_file - Handles upload file request
+   */
+  'upload_file'(
+    parameters?: Parameters<Paths.UploadFile.PathParameters> | null,
+    data?: Paths.UploadFile.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UploadFile.Responses.$200>
+  /**
+   * delete_file - Handles delete uploaded file request
+   */
+  'delete_file'(
+    parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeleteFile.Responses.$200>
   /**
    * education_institution_get - Get users education institution
    */
@@ -661,6 +741,34 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.PortalInvitationGet.Responses.$200>
   }
+  ['/api/files/communication/{communicationId}/file/{fileId}']: {
+    /**
+     * files_communication_get - Handles fetching files
+     */
+    'get'(
+      parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/files/{fileId}']: {
+    /**
+     * delete_file - Handles delete uploaded file request
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DeleteFile.Responses.$200>
+    /**
+     * upload_file - Handles upload file request
+     */
+    'post'(
+      parameters?: Parameters<Paths.UploadFile.PathParameters> | null,
+      data?: Paths.UploadFile.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UploadFile.Responses.$200>
+  }
   ['/api/education-institution']: {
     /**
      * education_institution_get - Get users education institution
@@ -735,6 +843,7 @@ export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults = Components.Schemas.CommunicationsStatusResults;
 export type Country = Components.Schemas.Country;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
+export type FileResponse = Components.Schemas.FileResponse;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
