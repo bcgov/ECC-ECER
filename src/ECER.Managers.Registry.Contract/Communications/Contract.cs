@@ -45,7 +45,7 @@ public class SendMessageResult
 
 public record Communication
 {
-  public string Id { get; set; } = null!;
+  public string? Id { get; set; }
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
   public InitiatedFrom From { get; set; }

@@ -58,7 +58,24 @@ public class CommunicationsTests : PspPortalWebAppScenarioBase
   [Fact]
   public async Task SendMessage_ReturnsCommunicationId()
   {
-    var communication = CreateNewReply();
+    var communication = CreateNewCommunication();
+    communication.Id = this.Fixture.communicationOneId;
+
+    var sendMessageResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Post.Json(new SendMessageRequest(communication)).ToUrl($"/api/messages");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var sendMessageResponseId = await sendMessageResponse.ReadAsJsonAsync<SendMessageResponse>();
+    sendMessageResponseId!.CommunicationId.ShouldNotBeEmpty();
+  }
+  
+  [Fact]
+  public async Task InitiateMessage_ReturnsCommunicationId()
+  {
+    var communication = CreateNewCommunication();
 
     var sendMessageResponse = await Host.Scenario(_ =>
     {
@@ -71,15 +88,14 @@ public class CommunicationsTests : PspPortalWebAppScenarioBase
     sendMessageResponseId!.CommunicationId.ShouldNotBeEmpty();
   }
 
-  private Clients.PSPPortal.Server.Communications.Communication CreateNewReply()
+  private Clients.PSPPortal.Server.Communications.Communication CreateNewCommunication()
   {
     var faker = new Faker("en_CA");
     var communication = new Clients.PSPPortal.Server.Communications.Communication()
     {
       Text = faker.Lorem.Paragraph()
     };
-
-    communication.Id = this.Fixture.communicationOneId;
+    
     return communication;
   }
 }
