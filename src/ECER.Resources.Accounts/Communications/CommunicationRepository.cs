@@ -176,7 +176,7 @@ internal class CommunicationRepository : ICommunicationRepository
       // new message initiation from Portal
       ecerCommunication = CreateCommunication(ecerCommunication, pspUser, null);
     }
-    else
+    else if(!string.IsNullOrEmpty(communication.Id))
     {
       var existingCommunication = context.ecer_CommunicationSet.SingleOrDefault(d => d.ecer_CommunicationId == Guid.Parse(communication.Id!));
       if (existingCommunication == null)
@@ -194,6 +194,10 @@ internal class CommunicationRepository : ICommunicationRepository
         PrimaryEntityRole = EntityRole.Referencing
       };
       context.AddLink(ecerCommunication, Referencingecer_communication_ParentCommunicationid, existingCommunication);
+    }
+    else
+    {
+      throw new InvalidOperationException($"Communication not found");
     }
     
     foreach (var document in communication.Documents)
