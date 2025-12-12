@@ -54,11 +54,14 @@ public class CommunicationsEndpoint : IRegisterEndpoints
           CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
         var userContext = httpContext.User.GetUserContext()!;
-        
-        bool IsNotGuid = !Guid.TryParse(request.Communication.Id, out _);
-        if (IsNotGuid)
+
+        if (!string.IsNullOrEmpty(request.Communication.Id))
         {
-          return TypedResults.BadRequest(new ProblemDetails() { Title = "Communication Id is not valid" });
+          bool IsNotGuid = !Guid.TryParse(request.Communication.Id, out _);
+          if (IsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "Communication Id is not valid" });
+          }
         }
 
         var mappedCommunication = mapper.Map<Managers.Registry.Contract.Communications.Communication>(request.Communication);
@@ -171,7 +174,7 @@ public record GetMessagesResponse
 
 public record Communication
 {
-  public string Id { get; set; } = null!;
+  public string? Id { get; set; }
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
   public InitiatedFrom From { get; set; } 
