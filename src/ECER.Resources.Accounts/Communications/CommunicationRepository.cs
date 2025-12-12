@@ -174,7 +174,7 @@ internal class CommunicationRepository : ICommunicationRepository
     if (string.IsNullOrEmpty(communication.Id) && isPspUser)
     {
       // new message initiation from Portal
-      ecerCommunication = CreateCommunication(ecerCommunication, isPspUser, pspUser, null);
+      ecerCommunication = CreateCommunication(ecerCommunication, pspUser, null);
     }
     else
     {
@@ -187,7 +187,7 @@ internal class CommunicationRepository : ICommunicationRepository
       existingCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
       context.UpdateObject(existingCommunication);
       
-      ecerCommunication = CreateCommunication(ecerCommunication, isPspUser, pspUser, registrant);
+      ecerCommunication = CreateCommunication(ecerCommunication, pspUser, registrant);
       
       var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
       {
@@ -229,7 +229,7 @@ internal class CommunicationRepository : ICommunicationRepository
     return ecerCommunication.ecer_CommunicationId.ToString()!;
   }
 
-  private ecer_Communication CreateCommunication(ecer_Communication ecerCommunication, bool isPspUser, ecer_ECEProgramRepresentative? pspUser,  Contact? registrant)
+  private ecer_Communication CreateCommunication(ecer_Communication ecerCommunication, ecer_ECEProgramRepresentative? pspUser,  Contact? registrant)
   {
     ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
     ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
@@ -239,7 +239,7 @@ internal class CommunicationRepository : ICommunicationRepository
     ecerCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
     context.AddObject(ecerCommunication);
     
-    if (isPspUser)
+    if (pspUser != null)
     {
       context.AddLink(pspUser!, ecer_Communication.Fields.ecer_communication_ProgramRepresentativeId, ecerCommunication);
       
