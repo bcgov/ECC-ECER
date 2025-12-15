@@ -81,8 +81,8 @@ const profileForm: Form = {
       id: "jobTitle",
       component: EceTextField,
       props: {
-        label: "Job title",
-        rules: [Rules.required("Enter a job title")],
+        label: "Job title (optional)",
+        rules: [],
       },
       cols: {
         md: 8,
