@@ -156,16 +156,11 @@ internal class CommunicationRepository : ICommunicationRepository
   public async Task<string> SendMessage(Communication communication, string userId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var existingCommunication = context.ecer_CommunicationSet.SingleOrDefault(d => d.ecer_CommunicationId == Guid.Parse(communication.Id!));
     var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(userId));
     var registrant = context.ContactSet.SingleOrDefault(r => r.ContactId == Guid.Parse(userId));
     var isPspUser = communication.IsPspUser.GetValueOrDefault();
+    var ecerCommunication = mapper.Map<ecer_Communication>(communication);
     
-    if (existingCommunication == null)
-    {
-      throw new InvalidOperationException($"Communication '{communication.Id}' not found");
-    }
-
     if (isPspUser && pspUser == null)
     {
       throw new InvalidOperationException($"Psp User '{userId}' not found");
@@ -175,38 +170,36 @@ internal class CommunicationRepository : ICommunicationRepository
     {
       throw new InvalidOperationException($"Registrant '{userId}' not found");
     }
-    
 
-    existingCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
-    context.UpdateObject(existingCommunication);
-
-    var ecerCommunication = mapper.Map<ecer_Communication>(communication);
-    ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
-    ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
-    ecerCommunication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
-    ecerCommunication.ecer_NotifyRecipient = true;
-    ecerCommunication.ecer_DateNotified = DateTime.UtcNow;
-    ecerCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
-    context.AddObject(ecerCommunication);
-    
-    if (isPspUser)
+    if (string.IsNullOrEmpty(communication.Id) && isPspUser)
     {
-      context.AddLink(pspUser!, ecer_Communication.Fields.ecer_communication_ProgramRepresentativeId, ecerCommunication);
+      // new message initiation from Portal
+      ecerCommunication = CreateCommunication(ecerCommunication, pspUser, null);
+    }
+    else if(!string.IsNullOrEmpty(communication.Id))
+    {
+      var existingCommunication = context.ecer_CommunicationSet.SingleOrDefault(d => d.ecer_CommunicationId == Guid.Parse(communication.Id!));
+      if (existingCommunication == null)
+      {
+        throw new InvalidOperationException($"Communication '{communication.Id}' not found");
+      }
       
-      var institution = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.Id == pspUser!.ecer_PostSecondaryInstitute.Id);
-      context.AddLink(institution!, ecer_Communication.Fields.ecer_communication_EducationInstitutionId, ecerCommunication);
+      existingCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
+      context.UpdateObject(existingCommunication);
+      
+      ecerCommunication = CreateCommunication(ecerCommunication, pspUser, registrant);
+      
+      var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
+      {
+        PrimaryEntityRole = EntityRole.Referencing
+      };
+      context.AddLink(ecerCommunication, Referencingecer_communication_ParentCommunicationid, existingCommunication);
     }
     else
     {
-      context.AddLink(registrant!, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
+      throw new InvalidOperationException($"Communication not found");
     }
     
-    var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
-    {
-      PrimaryEntityRole = EntityRole.Referencing
-    };
-    context.AddLink(ecerCommunication, Referencingecer_communication_ParentCommunicationid, existingCommunication);
-
     foreach (var document in communication.Documents)
     {
       if (string.IsNullOrEmpty(document.Id))
@@ -235,9 +228,34 @@ internal class CommunicationRepository : ICommunicationRepository
       context.AddObject(documenturl);
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication, ecerCommunication);
     }
-
+    
     context.SaveChanges();
     return ecerCommunication.ecer_CommunicationId.ToString()!;
+  }
+
+  private ecer_Communication CreateCommunication(ecer_Communication ecerCommunication, ecer_ECEProgramRepresentative? pspUser,  Contact? registrant)
+  {
+    ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
+    ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
+    ecerCommunication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
+    ecerCommunication.ecer_NotifyRecipient = true;
+    ecerCommunication.ecer_DateNotified = DateTime.UtcNow;
+    ecerCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
+    context.AddObject(ecerCommunication);
+    
+    if (pspUser != null)
+    {
+      context.AddLink(pspUser!, ecer_Communication.Fields.ecer_communication_ProgramRepresentativeId, ecerCommunication);
+      
+      var institution = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.Id == pspUser!.ecer_PostSecondaryInstitute.Id);
+      context.AddLink(institution!, ecer_Communication.Fields.ecer_communication_EducationInstitutionId, ecerCommunication);
+    }
+    else
+    {
+      context.AddLink(registrant!, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
+    }
+
+    return ecerCommunication;
   }
 
   private static string GetBucketName(IConfiguration configuration) =>
