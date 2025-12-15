@@ -12,8 +12,8 @@ const institutionForm: Form = {
       id: "auspice",
       component: EceAuspice,
       props: {
-        label: "Auspice",
-        rules: [Rules.required("Select your auspice type")],
+        label: "Institution type",
+        rules: [Rules.required("Select your institution type")],
         maxLength: 50,
       },
       cols: {
