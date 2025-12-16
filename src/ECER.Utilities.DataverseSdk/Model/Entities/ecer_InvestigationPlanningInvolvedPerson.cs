@@ -81,6 +81,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_involvedpersonnumber = "ecer_involvedpersonnumber";
 			public const string ecer_lastname = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_otherrole = "ecer_otherrole";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_Role = "ecer_role";
 			public const string ecer_roleName = "ecer_rolename";
@@ -500,6 +501,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_otherrole")]
+		public string ecer_otherrole
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_otherrole");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_otherrole", value);
 			}
 		}
 		
