@@ -12,8 +12,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p>Provide the user's detauls below to invite them to join you in this ECE Portal. This user will be
-                    associated to your educational institution.</p>
+                <p>Provide the user’s details below to invite them to join you in this PSP Portal. Once the invitation is accepted, this user will have access to the {{educationInstitutionName}} PSP portal.</p>
             </v-col>
         </v-row>
         <v-row>
@@ -87,7 +86,10 @@ export default defineComponent({
                 });
                 if (response?.id) {
                     this.alertStore.setSuccessAlert("User has been successfully invited.");
-                    this.router.back();
+                  await this.router.push({
+                    name: 'manage-users',
+                    params: { educationInstitutionName: this.educationInstitutionName }
+                  });
                 } else {
                     this.alertStore.setFailureAlert("User invitation failed, please try again.");
                 }
