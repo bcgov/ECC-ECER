@@ -25,8 +25,8 @@ internal class CommunicationRepositoryMapper : Profile
      .ForMember(d => d.Documents, opts => opts.MapFrom(s => s.ecer_bcgov_documenturl_CommunicationId_ecer_communication))
      .ForMember(d => d.LatestMessageNotifiedOn, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? (s.ecer_LatestMessageNotifiedDate ?? s.ecer_DateNotified) : s.ecer_DateNotified))
      .ForMember(d => d.IsRead, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? s.ecer_AreAllRead : s.ecer_Acknowledged))
-     .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_ProgramRepresentativeId))
-     .ForMember(d => d.ProgramRepresentativeInstituteId, opts => opts.MapFrom(s => s.ecer_communication_EducationInstitutionId))
+     .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_ProgramRepresentativeId.Id))
+     .ForMember(d => d.EducationInstituteName, opts => opts.MapFrom(s => s.ecer_EducationInstitutionIdName))
      .ForMember(d => d.IsPspUser, opts => opts.Ignore());
 
     CreateMap<Communication, ecer_Communication>(MemberList.Source)
@@ -43,9 +43,10 @@ internal class CommunicationRepositoryMapper : Profile
       .ForSourceMember(s => s.ApplicationId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.IcraEligibilityId, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)))
+      .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Subject, "", null)))
       .ForSourceMember(s => s.IsPspUser, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramRepresentativeId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramRepresentativeInstituteId, opts => opts.DoNotValidate());
+      .ForSourceMember(s => s.EducationInstituteName, opts => opts.DoNotValidate());
 
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
