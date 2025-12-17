@@ -102,8 +102,45 @@ internal class ApplicationRepositoryMapper : Profile
         .ReverseMap();
 
     CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
-        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-        .ReverseMap();
+        .ConvertUsing(status =>
+            status == ApplicationStatus.Draft ? ecer_Application_StatusCode.Draft :
+            status == ApplicationStatus.Submitted ? ecer_Application_StatusCode.Submitted :
+            status == ApplicationStatus.Complete ? ecer_Application_StatusCode.Complete :
+            status == ApplicationStatus.Closed ? ecer_Application_StatusCode.Closed :
+            status == ApplicationStatus.Reconsideration ? ecer_Application_StatusCode.Reconsideration :
+            status == ApplicationStatus.Escalated ? ecer_Application_StatusCode.Escalated :
+            status == ApplicationStatus.Decision ? ecer_Application_StatusCode.Decision :
+            status == ApplicationStatus.Cancelled ? ecer_Application_StatusCode.Withdrawn :
+            status == ApplicationStatus.Pending ? ecer_Application_StatusCode.Pending :
+            status == ApplicationStatus.Ready ? ecer_Application_StatusCode.Ready :
+            status == ApplicationStatus.InProgress ? ecer_Application_StatusCode.InProgress :
+            status == ApplicationStatus.PendingQueue ? ecer_Application_StatusCode.PendingQueue :
+            status == ApplicationStatus.PendingPSPConsultationNeeded ? ecer_Application_StatusCode.PendingPSPConsultationNeeded :
+            status == ApplicationStatus.ReconsiderationDecision ? ecer_Application_StatusCode.ReconsiderationDecision :
+            status == ApplicationStatus.AppealDecision ? ecer_Application_StatusCode.AppealDecision :
+            ecer_Application_StatusCode.Draft);
+
+
+    CreateMap<ecer_Application_StatusCode, ApplicationStatus>()
+        .ConvertUsing(status =>
+            status == ecer_Application_StatusCode.Draft ? ApplicationStatus.Draft :
+            status == ecer_Application_StatusCode.Submitted ? ApplicationStatus.Submitted :
+            status == ecer_Application_StatusCode.Complete ? ApplicationStatus.Complete :
+            status == ecer_Application_StatusCode.Closed ? ApplicationStatus.Closed :
+            status == ecer_Application_StatusCode.Reconsideration ? ApplicationStatus.Reconsideration :
+            status == ecer_Application_StatusCode.Escalated ? ApplicationStatus.Escalated :
+            status == ecer_Application_StatusCode.Decision ? ApplicationStatus.Decision :
+            status == ecer_Application_StatusCode.Withdrawn ? ApplicationStatus.Cancelled :
+            status == ecer_Application_StatusCode.Pending ? ApplicationStatus.Pending :
+            status == ecer_Application_StatusCode.Ready ? ApplicationStatus.Ready :
+            status == ecer_Application_StatusCode.InProgress ? ApplicationStatus.InProgress :
+            status == ecer_Application_StatusCode.PendingQueue ? ApplicationStatus.PendingQueue :
+            status == ecer_Application_StatusCode.PendingPSPConsultationNeeded ? ApplicationStatus.PendingPSPConsultationNeeded :
+            status == ecer_Application_StatusCode.ReconsiderationDecision ? ApplicationStatus.ReconsiderationDecision :
+            status == ecer_Application_StatusCode.AppealDecision ? ApplicationStatus.AppealDecision :
+            status == ecer_Application_StatusCode.NotSubmitted ? ApplicationStatus.Draft :
+            ApplicationStatus.Draft);
+
 
     CreateMap<ApplicationStatusReasonDetail, ecer_ApplicationStatusReasonDetail>()
         .ConvertUsingEnumMapping(opts => opts.MapByName(true))

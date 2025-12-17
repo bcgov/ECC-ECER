@@ -32,7 +32,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await Task.CompletedTask;
 
     var applications = context.ecer_ApplicationSet.Where(
-      a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled &&
+      a => a.StatusCode!.Value != ecer_Application_StatusCode.Withdrawn &&
       a.StatusCode!.Value != ecer_Application_StatusCode.Closed &&
       a.StatusCode!.Value != ecer_Application_StatusCode.Withdrawn);
 
@@ -154,7 +154,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Draft
       );
     if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
-    application.StatusCode = ecer_Application_StatusCode.Cancelled;
+    application.StatusCode = ecer_Application_StatusCode.Withdrawn;
     application.StateCode = ecer_application_statecode.Inactive;
     context.UpdateObject(application);
     context.SaveChanges();
