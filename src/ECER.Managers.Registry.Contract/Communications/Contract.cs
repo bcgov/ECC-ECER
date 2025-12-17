@@ -58,7 +58,7 @@ public record Communication
   public string? ApplicationId { get; set; }
   public string? IcraEligibilityId { get; set; }
   public string? ProgramRepresentativeId { get; set; }
-  public string? ProgramRepresentativeInstituteId { get; set; }
+  public string? EducationInstituteName { get; set; }
   public bool? IsPspUser { get; set; }
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }

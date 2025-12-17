@@ -175,6 +175,7 @@ internal class CommunicationRepository : ICommunicationRepository
     {
       // new message initiation from Portal
       ecerCommunication = CreateCommunication(ecerCommunication, pspUser, null);
+      ecerCommunication.ecer_IsRoot = true;
     }
     else if(!string.IsNullOrEmpty(communication.Id))
     {
