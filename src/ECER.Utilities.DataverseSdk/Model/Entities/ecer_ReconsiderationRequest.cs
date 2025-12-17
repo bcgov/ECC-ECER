@@ -74,17 +74,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantIdYomiName = "ecer_applicantidyominame";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_bcgov_documenturl_ReconsiderationRequestId = "ecer_bcgov_documenturl_ReconsiderationRequestId";
 			public const string ecer_communication_ReconsiderationRequestId = "ecer_communication_ReconsiderationRequestId";
+			public const string ecer_DecisionCallDate = "ecer_decisioncalldate";
+			public const string ecer_DecisionCallDateLongDateText = "ecer_decisioncalldatelongdatetext";
 			public const string ecer_DecisionDate = "ecer_decisiondate";
+			public const string ecer_DecisionDateLongDateText = "ecer_decisiondatelongdatetext";
 			public const string ecer_DecisionOutcome = "ecer_decisionoutcome";
 			public const string ecer_decisionoutcomeName = "ecer_decisionoutcomename";
 			public const string ecer_DeclarationandSubmitteddate = "ecer_declarationandsubmitteddate";
 			public const string ecer_ExplanationandEvidence = "ecer_explanationandevidence";
 			public const string ecer_FromCertificateId = "ecer_fromcertificateid";
 			public const string ecer_FromCertificateIdName = "ecer_fromcertificateidname";
+			public const string ecer_LetterSentDateLongDateText = "ecer_lettersentdatelongdatetext";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_Other = "ecer_other";
 			public const string ecer_ReconsiderationDetails = "ecer_reconsiderationdetails";
+			public const string ecer_ReconsiderationLetterSentDate = "ecer_reconsiderationlettersentdate";
 			public const string ecer_reconsiderationrequest_ApplicantId = "ecer_reconsiderationrequest_ApplicantId";
 			public const string ecer_reconsiderationrequest_ApplicationId = "ecer_reconsiderationrequest_ApplicationId";
 			public const string ecer_reconsiderationrequest_FromCertificateId = "ecer_reconsiderationrequest_FromCertificateId";
@@ -92,6 +98,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Id = "ecer_reconsiderationrequestid";
 			public const string ecer_ReconsiderationRequestReason = "ecer_reconsiderationrequestreason";
 			public const string ecer_reconsiderationrequestreasonName = "ecer_reconsiderationrequestreasonname";
+			public const string ecer_SubmittedDateLongDateText = "ecer_submitteddatelongdatetext";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -349,6 +356,39 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// date when decision phone call is made
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisioncalldate")]
+		public System.Nullable<System.DateTime> ecer_DecisionCallDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_decisioncalldate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisioncalldate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisioncalldatelongdatetext")]
+		public string ecer_DecisionCallDateLongDateText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_decisioncalldatelongdatetext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisioncalldatelongdatetext", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondate")]
 		public System.Nullable<System.DateTime> ecer_DecisionDate
 		{
@@ -361,6 +401,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_decisiondate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondatelongdatetext")]
+		public string ecer_DecisionDateLongDateText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_decisiondatelongdatetext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisiondatelongdatetext", value);
 			}
 		}
 		
@@ -458,6 +513,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lettersentdatelongdatetext")]
+		public string ecer_LetterSentDateLongDateText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_lettersentdatelongdatetext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_lettersentdatelongdatetext", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -500,6 +570,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_reconsiderationdetails", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationlettersentdate")]
+		public System.Nullable<System.DateTime> ecer_ReconsiderationLetterSentDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_reconsiderationlettersentdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationlettersentdate", value);
 			}
 		}
 		
@@ -573,6 +658,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_submitteddatelongdatetext")]
+		public string ecer_SubmittedDateLongDateText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_submitteddatelongdatetext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_submitteddatelongdatetext", value);
 			}
 		}
 		
@@ -954,6 +1054,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_ReconsiderationRequestId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_ReconsiderationRequestId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_ReconsiderationRequestId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_ReconsiderationRequestId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_ReconsiderationRequestId", null, value);
 			}
 		}
 		
