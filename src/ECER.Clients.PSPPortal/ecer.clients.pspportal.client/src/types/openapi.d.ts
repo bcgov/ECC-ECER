@@ -28,7 +28,7 @@ declare namespace Components {
             applicationId?: string | null;
             icraEligibilityId?: string | null;
             programRepresentativeId?: string | null;
-            programRepresentativeInstituteId?: string | null;
+            educationInstituteName?: string | null;
             documents?: CommunicationDocument[] | null;
         }
         export interface CommunicationDocument {

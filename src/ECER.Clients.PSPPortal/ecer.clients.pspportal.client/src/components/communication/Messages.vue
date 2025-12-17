@@ -27,8 +27,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import Message from "@/components/Message.vue";
-import MessageList from "@/components/communication/MessageList.vue";
+import Message from "./Message.vue";
+import MessageList from "./MessageList.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import { useMessageStore } from "@/store/message";

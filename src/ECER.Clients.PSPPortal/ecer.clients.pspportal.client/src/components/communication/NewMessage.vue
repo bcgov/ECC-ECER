@@ -119,7 +119,7 @@ export default defineComponent({
       if (this.isFileUploadInProgress) {
         this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
       } else if (valid) {
-        const { error } = await sendMessage({ communication: { text: this.text, documents: this.attachments } });
+        const { error } = await sendMessage({ communication: { subject: this.subject, text: this.text, documents: this.attachments } });
         if (error) {
           this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
         } else {

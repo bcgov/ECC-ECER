@@ -62,8 +62,8 @@ import { defineComponent, type PropType } from "vue";
 
 import { deleteFile, uploadFile } from "@/api/file";
 import Alert from "@/components/Alert.vue";
-import Callout from "@/components/Callout.vue";
-import UploadFileItem, { type FileItem } from "@/components/UploadFileItem.vue";
+import Callout from "@/components/common/Callout.vue";
+import UploadFileItem, { type FileItem } from "./UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import * as Functions from "@/utils/functions";
 

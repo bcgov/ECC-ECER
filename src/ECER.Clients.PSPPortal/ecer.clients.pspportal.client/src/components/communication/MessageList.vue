@@ -1,5 +1,5 @@
 <template>
-   <v-btn color="primary" size="small" @click="createNewMessage">
+   <v-btn color="primary" size="large" id="newMessageBtn" class="mb-4" @click="createNewMessage">
       New Message
    </v-btn>
   <v-list v-if="messageCount > 0" lines="two" class="flex-grow-1 message-list" style="padding: 0px">
