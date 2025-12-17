@@ -14,6 +14,7 @@
                 :rules="[Rules.required('Enter a message no longer than 1000 characters')]"></v-textarea>
             </v-col>
           </v-row>
+          <FileUploader ref="FileUploader" :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" />
           <v-row class="mt-10">
             <v-col>
               <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')"
@@ -38,7 +39,7 @@ import type { ComponentPublicInstance } from "vue";
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { VForm } from "vuetify/components";
-
+import FileUploader from "@/components/common/FileUploader.vue";
 import { getChildMessages, sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -60,7 +61,7 @@ interface ReplyToMessageData {
 
 export default defineComponent({
   name: "ReplyToMessage",
-  components: { PageContainer, ConfirmationDialog }, // FileUploader },
+  components: { PageContainer, ConfirmationDialog, FileUploader },
   async setup() {
     const messageStore = useMessageStore();
     const loadingStore = useLoadingStore();
