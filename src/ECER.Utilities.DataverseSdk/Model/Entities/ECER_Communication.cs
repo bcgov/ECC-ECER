@@ -125,6 +125,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_MergeContents = "ecer_mergecontents";
 			public const string ecer_mergecontentsName = "ecer_mergecontentsname";
+			public const string ecer_MergeInstruction = "ecer_mergeinstruction";
 			public const string ecer_Message = "ecer_message";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NotifyRecipient = "ecer_notifyrecipient";
@@ -984,6 +985,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_mergeinstruction")]
+		public string ecer_MergeInstruction
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_mergeinstruction");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_mergeinstruction", value);
 			}
 		}
 		

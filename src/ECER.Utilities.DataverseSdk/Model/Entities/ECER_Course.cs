@@ -75,13 +75,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_course_Programid = "ecer_course_Programid";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
 			public const string ecer_coursehourdecimal = "ecer_coursehourdecimal";
-			public const string ecer_CourseHours = "ecer_coursehours";
 			public const string ecer_CourseId = "ecer_courseid";
 			public const string Id = "ecer_courseid";
 			public const string ecer_CourseName = "ecer_coursename";
 			public const string ecer_courseprovincialrequirement_CourseId = "ecer_courseprovincialrequirement_CourseId";
 			public const string ecer_Description = "ecer_description";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
+			public const string ecer_HasChanges = "ecer_haschanges";
+			public const string ecer_haschangesName = "ecer_haschangesname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NewCode = "ecer_newcode";
 			public const string ecer_NewCourseHourDecimal = "ecer_newcoursehourdecimal";
@@ -370,21 +371,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_coursehours")]
-		public System.Nullable<int> ecer_CourseHours
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<int>>("ecer_coursehours");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_coursehours", value);
-			}
-		}
-		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
@@ -456,6 +442,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_description", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_haschanges")]
+		public virtual ecer_HasChanges? ecer_HasChanges
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_HasChanges?)(EntityOptionSetEnum.GetEnum(this, "ecer_haschanges")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_haschanges", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_haschangesname")]
+		public string ecer_haschangesName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_haschanges"))
+				{
+					return this.FormattedValues["ecer_haschanges"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

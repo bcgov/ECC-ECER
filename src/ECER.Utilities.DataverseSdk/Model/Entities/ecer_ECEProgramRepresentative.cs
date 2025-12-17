@@ -90,6 +90,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ModifiedByProgramRepId = "ecer_modifiedbyprogramrepid";
 			public const string ecer_ModifiedByProgramRepIdName = "ecer_modifiedbyprogramrepidname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_NewPortalUser = "ecer_newportaluser";
+			public const string ecer_newportaluserName = "ecer_newportalusername";
 			public const string ecer_PhoneExtension = "ecer_phoneextension";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_portalinvitation_psiprogramrepresentativeid = "ecer_portalinvitation_psiprogramrepresentativeid";
@@ -99,6 +101,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ = "ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ";
 			public const string ecer_postsecondaryinstitutesitevisit_PSIProgramRepresentative_ecer_eceprogramrepresentative = "ecer_postsecondaryinstitutesitevisit_PSIProgramRepresentative_ecer_eceprogramrepresentative";
 			public const string ecer_PreferredFirstName = "ecer_preferredfirstname";
+			public const string ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative = "ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative";
 			public const string ecer_ProgramRepModifiedDate = "ecer_programrepmodifieddate";
 			public const string ecer_PSIProgramRepresentative = "ecer_psiprogramrepresentative";
 			public const string ecer_PSIProgramRepresentativeName = "ecer_psiprogramrepresentativename";
@@ -648,6 +651,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newportaluser")]
+		public System.Nullable<bool> ecer_NewPortalUser
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_newportaluser");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_newportaluser", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newportalusername")]
+		public string ecer_newportaluserName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_newportaluser"))
+				{
+					return this.FormattedValues["ecer_newportaluser"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1371,6 +1406,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstitutesitevisit_PSIProgramRepresentative_ecer_eceprogramrepr" +
 						"esentative", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Program> ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative", null, value);
 			}
 		}
 		

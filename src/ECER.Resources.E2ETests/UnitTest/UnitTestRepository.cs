@@ -30,7 +30,7 @@ internal sealed partial class UnitTestRepository : IUnitTestRepository
       d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_ApplicantidName.Contains("TEST")
       );
     if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found or user is not a test account");
-    application.StatusCode = ecer_Application_StatusCode.Cancelled;
+    application.StatusCode = ecer_Application_StatusCode.Withdrawn;
     application.StateCode = ecer_application_statecode.Inactive;
     context.UpdateObject(application);
     context.SaveChanges();
