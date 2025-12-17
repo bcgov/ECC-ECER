@@ -14,20 +14,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_CommunicationTypes
+	public enum ecer_HasChanges
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		General = 621870002,
+		InformationChanged = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		IncompleteApplicationNotification = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InformationReceivedNotification = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Moreinformationisrequired = 621870003,
+		Reviewed = 621870001,
 	}
 }
 #pragma warning restore CS1591

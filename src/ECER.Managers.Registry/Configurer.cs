@@ -17,6 +17,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<CommunicationHandlers>();
     configurationContext.Services.AddTransient<ICRAEligibilityHandlers>();
     configurationContext.Services.AddTransient<RegistrantHandlers>();
+    configurationContext.Services.AddTransient<ProgramHandlers>();
     configurationContext.Services.AddTransient<PortalInvitationHandlers>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, ReferencePortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, IcraReferencePortalInvitationVerificationHandler>();
