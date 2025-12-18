@@ -19,7 +19,7 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
       .ForMember(d => d.Province, opts => opts.MapFrom(s => s.ecer_ProvinceIdName))
       .ForMember(d => d.Country, opts => opts.MapFrom(s => s.ecer_Country))
       .ForMember(d => d.PostalCode, opts => opts.MapFrom(s => s.ecer_ZipPostalCode))
-      .ForMember(d => d.BceidBusinessId, opts => opts.Ignore())
+      .ForMember(d => d.BceidBusinessId, opts => opts.MapFrom(s => s.ecer_BusinessBCeID))
       .ReverseMap()
       .ForMember(d => d.ecer_PostSecondaryInstituteId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
