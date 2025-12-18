@@ -1,6 +1,8 @@
 <template>
-  <p v-if="messageCount === 0">You have no messages.</p>
-  <v-list v-else-if="messageCount > 0" lines="two" class="flex-grow-1 message-list" style="padding: 0px">
+   <v-btn color="primary" size="large" id="newMessageBtn" class="mb-4" @click="createNewMessage">
+      New Message
+   </v-btn>
+  <v-list v-if="messageCount > 0" lines="two" class="flex-grow-1 message-list" style="padding: 0px">
     <MessageListItem
       v-for="(message, index) in messages"
       :key="index"
@@ -16,9 +18,10 @@
 import { defineComponent, nextTick } from "vue";
 import { getMessages } from "@/api/message";
 import { useDisplay } from "vuetify";
-import MessageListItem from "@/components/MessageListItem.vue";
+import MessageListItem from "@/components/communication/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
+import { useRouter } from "vue-router";
 
 const PAGE_SIZE = 10;
 
@@ -28,7 +31,8 @@ export default defineComponent({
   setup() {
     const messageStore = useMessageStore();
     const { mdAndUp } = useDisplay();
-    return { messageStore, mdAndUp };
+    const router = useRouter();
+    return { messageStore, mdAndUp, router };
   },
   data() {
     return {
@@ -75,6 +79,12 @@ export default defineComponent({
         }
       }
     },
+    createNewMessage() {
+      this.router.push({
+        name: "newMessage",
+      });
+      this.messageStore.currentMessage = null;
+    }
   },
 });
 </script>

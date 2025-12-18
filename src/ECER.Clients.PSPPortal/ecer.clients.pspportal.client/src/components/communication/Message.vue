@@ -25,6 +25,11 @@
                 <v-icon class="ml-n2">mdi-paperclip</v-icon>
                 Attachments
               </p>
+              <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
+                <DownloadFileLink :name="file.name" :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
+                  <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
+                </DownloadFileLink>
+              </div>
             </div>
             <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey"
               class="mt-10 border-opacity-100"></v-divider>
@@ -49,7 +54,17 @@
     </v-sheet>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
-      <span>{{ messageFromString(message) }}</span>
+      <v-row>
+        <v-col>
+          <span>To {{ messageToString(message) }}</span>
+        </v-col>
+      </v-row>
+      <v-row class="mt-n3">
+        <v-col>
+          <span>From {{ messageFromString(message) }}</span>
+        </v-col>
+      </v-row>
+      
       <div class="mt-3"
         v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`">
       </div>
@@ -59,6 +74,11 @@
           <v-icon class="ml-n2">mdi-paperclip</v-icon>
           Attachments
         </p>
+        <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
+          <DownloadFileLink :name="file.name" :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
+            <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
+          </DownloadFileLink>
+        </div>
       </div>
 
       <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey"
@@ -79,10 +99,12 @@ import { formatDate } from "@/utils/format";
 import { useLoadingStore } from "@/store/loading";
 import type { Communication } from "@/types/openapi";
 import { useRouter } from "vue-router";
+import DownloadFileLink from "../common/DownloadFileLink.vue";
+import { getCommunicationFile } from "@/api/message";
 
 export default defineComponent({
   name: "Message",
-  components: {  },
+  components: { DownloadFileLink },
   setup() {
     const messageStore = useMessageStore();
     const loadingStore = useLoadingStore();
@@ -95,6 +117,7 @@ export default defineComponent({
       smAndDown,
       mdAndUp,
       router,
+      getCommunicationFile,
     };
   },
   computed: {
@@ -122,15 +145,21 @@ export default defineComponent({
     messageFromString(message: Communication): string {
       switch (message.from) {
         case "Registry":
-          return "From ECE Registry";
+          return "ECE Registry";
         case "PortalUser":
-          return "You Replied";
-        case "Investigation":
-          return "From ECE Investigations";
+          return message.educationInstituteName !== null && message.educationInstituteName !== undefined ? message.educationInstituteName: "";
         default:
           return "";
       }
     },
+    messageToString(message: Communication): string {
+      if(message.from === 'Registry') {
+        return message.educationInstituteName !== null && message.educationInstituteName !== undefined ? message.educationInstituteName: "";
+      } else if(message.from === 'PortalUser') {
+        return "ECE Registry";
+      }
+      return "";
+    }
   },
 });
 </script>
