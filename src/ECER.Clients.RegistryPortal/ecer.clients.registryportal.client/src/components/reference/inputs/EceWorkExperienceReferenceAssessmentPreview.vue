@@ -1,87 +1,88 @@
 <template>
-  <ReferencePreviewCard
-    :is-valid="true"
-    title="Are you satisfied that the applicant is competent in the following areas?"
-    subtitle="This must be based on your own observations of the applicant."
-    reference-stage="Assessment"
-  >
-    <template #content>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Child development</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.childDevelopment }}</p>
-          <p v-if="assessment.childDevelopmentReason" class="small">{{ assessment.childDevelopmentReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Child guidance</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.childGuidance }}</p>
-          <p v-if="assessment.childGuidanceReason" class="small">{{ assessment.childGuidanceReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Health, safety and nutrition</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.healthSafetyAndNutrition }}</p>
-          <p v-if="assessment.healthSafetyAndNutritionReason" class="small">{{ assessment.healthSafetyAndNutritionReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Developing an early childhood education curriculum</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.developAnEceCurriculum }}</p>
-          <p v-if="assessment.developAnEceCurriculumReason" class="small">{{ assessment.developAnEceCurriculumReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Implementing an early childhood education curriculum</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.implementAnEceCurriculum }}</p>
-          <p v-if="assessment.implementAnEceCurriculumReason" class="small">{{ assessment.implementAnEceCurriculumReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Fostering positive relationships with children under their care</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.fosteringPositiveRelationChild }}</p>
-          <p v-if="assessment.fosteringPositiveRelationChildReason" class="small">{{ assessment.fosteringPositiveRelationChildReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Fostering positive relationships with the families of children</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.fosteringPositiveRelationFamily }}</p>
-          <p v-if="assessment.fosteringPositiveRelationFamilyReason" class="small">{{ assessment.fosteringPositiveRelationFamilyReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Fostering positive relationships with co-workers</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.fosteringPositiveRelationCoworker }}</p>
-          <p v-if="assessment.fosteringPositiveRelationCoworkerReason" class="small">
-            {{ assessment.fosteringPositiveRelationCoworkerReason }}
-          </p>
-        </v-col>
-      </v-row>
-    </template>
-  </ReferencePreviewCard>
+  <div>
+    <!-- Application type -->
+    <ReferencePreviewCard :is-valid="true" title="Application type" reference-stage="ApplicationType">
+      <template #content>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">Certification type</p>
+          </v-col>
+          <v-col cols="8">
+            <p class="small font-weight-bold">{{ applicationType.certificationType || "-" }}</p>
+          </v-col>
+        </v-row>
+      </template>
+    </ReferencePreviewCard>
+
+    <!-- Education -->
+    <ReferencePreviewCard :is-valid="true" title="Education" reference-stage="Education">
+      <template #content>
+        <div v-if="education.institutionName" class="mb-4">
+          <p class="small font-weight-bold mb-0">{{ education.institutionName }}</p>
+        </div>
+
+        <v-row>
+          <v-col cols="4"><p class="small">Name of program or course</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ education.programName || "-" }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">Start date of program or course</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ formatDate(education.startDate) }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">End date of program or course</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ formatDate(education.endDate) }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">Country</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ education.country || "-" }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">Campus location</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ education.campusLocation || "-" }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">Student number or ID</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ education.studentNumber || "-" }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">Your full name as shown on transcript</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ education.fullNameOnTranscript || "-" }}</p></v-col>
+        </v-row>
+      </template>
+    </ReferencePreviewCard>
+
+    <!-- Character reference -->
+    <ReferencePreviewCard :is-valid="true" title="Character reference" reference-stage="CharacterReference">
+      <template #content>
+        <v-row>
+          <v-col cols="4"><p class="small">Last Name</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ characterReference.lastName || "-" }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">First Name</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ characterReference.firstName || "-" }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">Email</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ characterReference.email || "-" }}</p></v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4"><p class="small">Phone number</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ characterReference.phoneNumber || "-" }}</p></v-col>
+        </v-row>
+      </template>
+    </ReferencePreviewCard>
+  </div>
 </template>
 
 <script lang="ts">
@@ -89,109 +90,133 @@ import { defineComponent } from "vue";
 
 import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
-import type { Components } from "@/types/openapi";
-import { likertScaleRadio } from "@/utils/constant";
+
+type AnyObj = Record<string, any>;
 
 export default defineComponent({
-  name: "EceWorkExperienceReferenceAssessmentPreview",
+  name: "EceApplicationReviewSubmitPreview",
   components: {
     ReferencePreviewCard,
   },
   setup: () => {
     const wizardStore = useWizardStore();
-    return {
-      wizardStore,
-    };
+    return { wizardStore };
   },
   computed: {
-    assessment(): Components.Schemas.WorkExperienceReferenceCompetenciesAssessment {
-      const childDevelopmentDisplay = likertScaleRadio.find(
-        (value) =>
-          value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]?.childDevelopment,
-      )?.label;
+    applicationType(): { certificationType: string } {
+      // Try a few likely step/input locations; adjust these keys if your wizardConfig differs.
+      const candidateInputIds: string[] = [
+        this.getInputId("applicationType", "applicationType"),
+        this.getInputId("applicationType", "certificationType"),
+        this.getInputId("review", "applicationType"),
+        this.getInputId("reviewAndSubmit", "applicationType"),
+      ].filter(Boolean) as string[];
 
-      const childGuidanceDisplay = likertScaleRadio.find(
-        (value) =>
-          value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]?.childGuidance,
-      )?.label;
+      const data = this.firstWizardData(candidateInputIds);
 
-      const healthSafetyAndNutritionDisplay = likertScaleRadio.find(
-        (value) =>
-          value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.healthSafetyAndNutrition,
-      )?.label;
+      // Common field names we might see
+      const certificationType =
+        data?.certificationType ??
+        data?.certification ??
+        data?.certificationTypes?.[0] ??
+        data?.certificationTypeDisplay ??
+        "";
 
-      const developAnEceCurriculumDisplay = likertScaleRadio.find(
-        (value) =>
-          value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.developAnEceCurriculum,
-      )?.label;
+      return { certificationType };
+    },
 
-      const implementAnEceCurriculumDisplay = likertScaleRadio.find(
-        (value) =>
-          value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.implementAnEceCurriculum,
-      )?.label;
+    education(): {
+      institutionName: string;
+      programName: string;
+      startDate: string;
+      endDate: string;
+      country: string;
+      campusLocation: string;
+      studentNumber: string;
+      fullNameOnTranscript: string;
+    } {
+      const candidateInputIds: string[] = [
+        this.getInputId("education", "education"),
+        this.getInputId("education", "eceEducation"),
+        this.getInputId("education", "training"),
+        this.getInputId("review", "education"),
+        this.getInputId("reviewAndSubmit", "education"),
+      ].filter(Boolean) as string[];
 
-      const fosteringPositiveRelationChildDisplay = likertScaleRadio.find(
-        (value) =>
-          value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.fosteringPositiveRelationChild,
-      )?.label;
-
-      const fosteringPositiveRelationFamilyDisplay = likertScaleRadio.find(
-        (value) =>
-          value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.fosteringPositiveRelationFamily,
-      )?.label;
-
-      const fosteringPositiveRelationCoworkerDisplay = likertScaleRadio.find(
-        (value) =>
-          value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.fosteringPositiveRelationCoworker,
-      )?.label;
+      const data = this.firstWizardData(candidateInputIds);
 
       return {
-        childDevelopment: childDevelopmentDisplay as Components.Schemas.LikertScale,
-        childGuidance: childGuidanceDisplay as Components.Schemas.LikertScale,
-        healthSafetyAndNutrition: healthSafetyAndNutritionDisplay as Components.Schemas.LikertScale,
-        developAnEceCurriculum: developAnEceCurriculumDisplay as Components.Schemas.LikertScale,
-        implementAnEceCurriculum: implementAnEceCurriculumDisplay as Components.Schemas.LikertScale,
-        fosteringPositiveRelationChild: fosteringPositiveRelationChildDisplay as Components.Schemas.LikertScale,
-        fosteringPositiveRelationFamily: fosteringPositiveRelationFamilyDisplay as Components.Schemas.LikertScale,
-        fosteringPositiveRelationCoworker: fosteringPositiveRelationCoworkerDisplay as Components.Schemas.LikertScale,
-        childDevelopmentReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.childDevelopmentReason,
-        childGuidanceReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]?.childGuidanceReason,
-        healthSafetyAndNutritionReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.healthSafetyAndNutritionReason,
-        developAnEceCurriculumReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.developAnEceCurriculumReason,
-        implementAnEceCurriculumReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.implementAnEceCurriculumReason,
-        fosteringPositiveRelationChildReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.fosteringPositiveRelationChildReason,
-        fosteringPositiveRelationFamilyReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.fosteringPositiveRelationFamilyReason,
-        fosteringPositiveRelationCoworkerReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
-            ?.fosteringPositiveRelationCoworkerReason,
+        institutionName: data?.institutionName ?? data?.schoolName ?? data?.institution ?? data?.nameOfSchool ?? "",
+        programName: data?.programName ?? data?.courseName ?? data?.programOrCourseName ?? "",
+        startDate: data?.startDate ?? data?.programStartDate ?? "",
+        endDate: data?.endDate ?? data?.programEndDate ?? "",
+        country: data?.country ?? "",
+        campusLocation: data?.campusLocation ?? data?.campus ?? "",
+        studentNumber: data?.studentNumber ?? data?.studentId ?? data?.studentNumberOrId ?? "",
+        fullNameOnTranscript: data?.fullNameOnTranscript ?? data?.nameOnTranscript ?? "",
       };
+    },
+
+    characterReference(): {
+      lastName: string;
+      firstName: string;
+      email: string;
+      phoneNumber: string;
+    } {
+      const candidateInputIds: string[] = [
+        this.getInputId("characterReference", "characterReference"),
+        this.getInputId("characterReference", "reference"),
+        this.getInputId("reference", "characterReference"),
+        this.getInputId("review", "characterReference"),
+        this.getInputId("reviewAndSubmit", "characterReference"),
+      ].filter(Boolean) as string[];
+
+      const data = this.firstWizardData(candidateInputIds);
+
+      return {
+        lastName: data?.lastName ?? "",
+        firstName: data?.firstName ?? "",
+        email: data?.email ?? "",
+        phoneNumber: data?.phoneNumber ?? data?.phone ?? "",
+      };
+    },
+  },
+
+  methods: {
+    /**
+     * Safe getter for wizardConfig.steps[stepKey].form.inputs[inputKey].id
+     */
+    getInputId(stepKey: string, inputKey: string): string {
+      return (
+        this.wizardStore.wizardConfig?.steps?.[stepKey as any]?.form?.inputs?.[inputKey as any]?.id ??
+        ""
+      );
+    },
+
+    /**
+     * Return the first wizardData object found from the provided input IDs
+     */
+    firstWizardData(inputIds: string[]): AnyObj {
+      for (const id of inputIds) {
+        const value = (this.wizardStore.wizardData as AnyObj)?.[id];
+        if (value) return value as AnyObj;
+      }
+      return {};
+    },
+
+    formatDate(value: any): string {
+      if (!value) return "-";
+
+      // Accept ISO strings, Date, or other parseable values.
+      const d = value instanceof Date ? value : new Date(value);
+      if (Number.isNaN(d.getTime())) return String(value);
+
+      // Matches the screenshot style like "January 1, 2020"
+      return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(d);
     },
   },
 });
