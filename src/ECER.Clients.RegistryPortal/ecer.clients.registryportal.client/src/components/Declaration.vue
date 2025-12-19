@@ -101,12 +101,15 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.checkboxValue = this.applicationStore.draftApplication.signedDate ? true : false;
+    this.checkboxValue = !!this.applicationStore.draftApplication.signedDate;
     this.name = this.userStore.fullName;
+
+    const signedDate = this.applicationStore?.draftApplication?.signedDate;
+
     this.date =
-      this.applicationStore.hasDraftApplication && this.applicationStore?.draftApplication?.signedDate
-        ? formatDate(this.applicationStore?.draftApplication?.signedDate, "yyyy-MM-dd")
-        : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+      this.applicationStore.hasDraftApplication && signedDate
+        ? DateTime.fromISO(signedDate, { zone: "utc" }).toFormat("yyyy-MM-dd")
+        : DateTime.now().toFormat("yyyy-MM-dd");
   },
   methods: {
     async continueClick() {
