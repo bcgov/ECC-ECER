@@ -32,6 +32,8 @@ import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { ReferenceStage } from "@/types/wizard";
 
+type PreviewCardStage = ReferenceStage | "CertificationType" | "Education" | "CharacterReferences";
+
 export default defineComponent({
   name: "PreviewCard",
   props: {
@@ -48,7 +50,7 @@ export default defineComponent({
       default: "",
     },
     referenceStage: {
-      type: String as PropType<ReferenceStage>,
+      type: String as PropType<PreviewCardStage>,
       required: true,
     },
   },
@@ -69,7 +71,7 @@ export default defineComponent({
     },
   },
   methods: {
-    setWizard(stage: ReferenceStage) {
+    setWizard(stage: PreviewCardStage) {
       this.wizardStore.setCurrentStep(stage);
     },
   },

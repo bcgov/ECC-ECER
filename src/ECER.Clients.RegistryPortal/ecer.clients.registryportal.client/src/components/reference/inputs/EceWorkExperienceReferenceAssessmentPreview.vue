@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- Application type -->
-    <ReferencePreviewCard :is-valid="true" title="Application type" reference-stage="ApplicationType">
+    <ReferencePreviewCard :is-valid="true" title="Application type" class="mb-6" reference-stage="CertificationType">
       <template #content>
         <v-row>
           <v-col cols="4">
@@ -14,11 +13,10 @@
       </template>
     </ReferencePreviewCard>
 
-    <!-- Education -->
-    <ReferencePreviewCard :is-valid="true" title="Education" reference-stage="Education">
+    <ReferencePreviewCard :is-valid="true" title="Education" class="mb-6" reference-stage="Education">
       <template #content>
-        <div v-if="education.institutionName" class="mb-4">
-          <p class="small font-weight-bold mb-0">{{ education.institutionName }}</p>
+        <div v-if="education.educationalInstitutionName " class="mb-4">
+          <p class="small font-weight-bold mb-0">{{ education.educationalInstitutionName  }}</p>
         </div>
 
         <v-row>
@@ -38,7 +36,9 @@
 
         <v-row>
           <v-col cols="4"><p class="small">Country</p></v-col>
-          <v-col cols="8"><p class="small font-weight-bold">{{ education.country || "-" }}</p></v-col>
+          <v-col cols="8">
+            <p class="small font-weight-bold">{{ education.country?.countryName || "-" }}</p>
+          </v-col>
         </v-row>
 
         <v-row>
@@ -58,8 +58,7 @@
       </template>
     </ReferencePreviewCard>
 
-    <!-- Character reference -->
-    <ReferencePreviewCard :is-valid="true" title="Character reference" reference-stage="CharacterReference">
+    <ReferencePreviewCard :is-valid="true" title="Character reference" class="mb-6" reference-stage="CharacterReferences">
       <template #content>
         <v-row>
           <v-col cols="4"><p class="small">Last Name</p></v-col>
@@ -73,7 +72,7 @@
 
         <v-row>
           <v-col cols="4"><p class="small">Email</p></v-col>
-          <v-col cols="8"><p class="small font-weight-bold">{{ characterReference.email || "-" }}</p></v-col>
+          <v-col cols="8"><p class="small font-weight-bold">{{ characterReference.emailAddress || "-" }}</p></v-col>
         </v-row>
 
         <v-row>
@@ -91,8 +90,6 @@ import { defineComponent } from "vue";
 import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 
-type AnyObj = Record<string, any>;
-
 export default defineComponent({
   name: "EceApplicationReviewSubmitPreview",
   components: {
@@ -102,122 +99,94 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     return { wizardStore };
   },
+
   computed: {
+    wizardData(): any {
+      return this.wizardStore.wizardData as any;
+    },
+
+    educationSource(): any {
+      const list = this.wizardData?.educationList;
+      if (!list || typeof list !== "object") return {};
+
+      const numericKeys = Object.keys(list).filter((k) => !Number.isNaN(Number(k)));
+      if (!numericKeys.length) return {};
+
+      const highest = numericKeys
+        .map((k) => Number(k))
+        .sort((a, b) => a - b)
+        .pop();
+
+      return highest !== undefined ? list[String(highest)] : {};
+    },
+
+
+    characterReferenceSource(): any {
+      const list = this.wizardData?.characterReferences;
+      if (Array.isArray(list)) {
+        return list.length ? list[list.length - 1] : {};
+      }
+      return list && typeof list === "object" ? list : {};
+    },
     applicationType(): { certificationType: string } {
-      // Try a few likely step/input locations; adjust these keys if your wizardConfig differs.
-      const candidateInputIds: string[] = [
-        this.getInputId("applicationType", "applicationType"),
-        this.getInputId("applicationType", "certificationType"),
-        this.getInputId("review", "applicationType"),
-        this.getInputId("reviewAndSubmit", "applicationType"),
-      ].filter(Boolean) as string[];
-
-      const data = this.firstWizardData(candidateInputIds);
-
-      // Common field names we might see
-      const certificationType =
-        data?.certificationType ??
-        data?.certification ??
-        data?.certificationTypes?.[0] ??
-        data?.certificationTypeDisplay ??
-        "";
-
-      return { certificationType };
+      return { certificationType: "ECE Five Year" };
     },
 
     education(): {
-      institutionName: string;
+      educationalInstitutionName : string;
       programName: string;
-      startDate: string;
-      endDate: string;
-      country: string;
+      startDate: any;
+      endDate: any;
+      country: any;
       campusLocation: string;
       studentNumber: string;
       fullNameOnTranscript: string;
     } {
-      const candidateInputIds: string[] = [
-        this.getInputId("education", "education"),
-        this.getInputId("education", "eceEducation"),
-        this.getInputId("education", "training"),
-        this.getInputId("review", "education"),
-        this.getInputId("reviewAndSubmit", "education"),
-      ].filter(Boolean) as string[];
-
-      const data = this.firstWizardData(candidateInputIds);
+      const e = this.educationSource;
 
       return {
-        institutionName: data?.institutionName ?? data?.schoolName ?? data?.institution ?? data?.nameOfSchool ?? "",
-        programName: data?.programName ?? data?.courseName ?? data?.programOrCourseName ?? "",
-        startDate: data?.startDate ?? data?.programStartDate ?? "",
-        endDate: data?.endDate ?? data?.programEndDate ?? "",
-        country: data?.country ?? "",
-        campusLocation: data?.campusLocation ?? data?.campus ?? "",
-        studentNumber: data?.studentNumber ?? data?.studentId ?? data?.studentNumberOrId ?? "",
-        fullNameOnTranscript: data?.fullNameOnTranscript ?? data?.nameOnTranscript ?? "",
+        educationalInstitutionName : e?.educationalInstitutionName  ?? "",
+        programName: e?.programName ?? "",
+        startDate: e?.startDate ?? "",
+        endDate: e?.endDate ?? "",
+        country: e?.country ?? null,
+        campusLocation: e?.campusLocation ?? "",
+        studentNumber: e?.studentNumber ?? "",
+        fullNameOnTranscript: e?.fullNameOnTranscript ?? "",
       };
     },
 
     characterReference(): {
       lastName: string;
       firstName: string;
-      email: string;
+      emailAddress: string;
       phoneNumber: string;
     } {
-      const candidateInputIds: string[] = [
-        this.getInputId("characterReference", "characterReference"),
-        this.getInputId("characterReference", "reference"),
-        this.getInputId("reference", "characterReference"),
-        this.getInputId("review", "characterReference"),
-        this.getInputId("reviewAndSubmit", "characterReference"),
-      ].filter(Boolean) as string[];
-
-      const data = this.firstWizardData(candidateInputIds);
-
+      const r = this.characterReferenceSource || {};
       return {
-        lastName: data?.lastName ?? "",
-        firstName: data?.firstName ?? "",
-        email: data?.email ?? "",
-        phoneNumber: data?.phoneNumber ?? data?.phone ?? "",
+        lastName: r?.lastName ?? "",
+        firstName: r?.firstName ?? "",
+        emailAddress: r?.emailAddress ?? "",
+        phoneNumber: r?.phoneNumber ?? "",
       };
     },
   },
 
   methods: {
-    /**
-     * Safe getter for wizardConfig.steps[stepKey].form.inputs[inputKey].id
-     */
-    getInputId(stepKey: string, inputKey: string): string {
-      return (
-        this.wizardStore.wizardConfig?.steps?.[stepKey as any]?.form?.inputs?.[inputKey as any]?.id ??
-        ""
-      );
-    },
-
-    /**
-     * Return the first wizardData object found from the provided input IDs
-     */
-    firstWizardData(inputIds: string[]): AnyObj {
-      for (const id of inputIds) {
-        const value = (this.wizardStore.wizardData as AnyObj)?.[id];
-        if (value) return value as AnyObj;
-      }
-      return {};
-    },
-
     formatDate(value: any): string {
       if (!value) return "-";
-
-      // Accept ISO strings, Date, or other parseable values.
       const d = value instanceof Date ? value : new Date(value);
       if (Number.isNaN(d.getTime())) return String(value);
 
-      // Matches the screenshot style like "January 1, 2020"
       return new Intl.DateTimeFormat("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
+        timeZone: "UTC",
       }).format(d);
     },
   },
+
+
 });
 </script>
