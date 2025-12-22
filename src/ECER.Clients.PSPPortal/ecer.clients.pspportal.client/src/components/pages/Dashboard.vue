@@ -95,7 +95,7 @@ import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { getPspUserProfile, registerPspUser } from "@/api/psp-rep";
-import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution, Program, ProgramStatus } from "@/types/openapi";
+import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution, Program } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Card from "@/components/Card.vue";
@@ -160,7 +160,7 @@ export default defineComponent({
     }
 
     // Check if the user has a profile, if not, register them
-    [this.pspUserProfile] = await Promise.all([getPspUserProfile()]);
+    this.pspUserProfile = await getPspUserProfile();
 
     if (!this.pspUserProfile) {
       if (!this.userStore.invitationToken || !this.userStore.invitedProgramRepresentativeId) {
@@ -202,16 +202,14 @@ export default defineComponent({
         return;
       }
 
-      [this.pspUserProfile] = await Promise.all([getPspUserProfile()]);
+      this.pspUserProfile = await getPspUserProfile();
     }
 
-    if (this.pspUserProfile) {
-      if (!this.pspUserProfile.hasAcceptedTermsOfUse) {
-        this.router.replace("/new-user");
-      }else{
-        this.getInstitutionData();
-        this.getProgramProfileData();
-      }
+if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
+      this.getInstitutionData();
+      this.getProgramProfileData();
+    }else{
+      this.router.replace("/new-user");
     }
     
     this.setUserStoreValues();
@@ -232,10 +230,10 @@ export default defineComponent({
   },
   methods: {
     async getInstitutionData() {
-      [this.educationInstitution] = await Promise.all([getEducationInstitution()]);
+      this.educationInstitution = await getEducationInstitution();
     },
     async getProgramProfileData() {
-      [this.programsRequiringReview] = await Promise.all([getPrograms()]);  
+      this.programsRequiringReview = await getPrograms();  
     },
     setUserStoreValues() {
       if (this.pspUserProfile) {
