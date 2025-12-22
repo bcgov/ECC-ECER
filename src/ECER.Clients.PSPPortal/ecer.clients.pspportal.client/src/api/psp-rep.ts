@@ -1,5 +1,5 @@
 import { getClient } from "@/api/client";
-import type { EducationInstitution, RegisterPspUserRequest, PspRegistrationErrorResponse, PspUserProfile, Program, Paths } from "@/types/openapi";
+import type { RegisterPspUserRequest, PspRegistrationErrorResponse, PspUserProfile } from "@/types/openapi";
 import ApiResultHandler from "@/utils/apiResultHandler";
 const apiResultHandler = new ApiResultHandler();
 
