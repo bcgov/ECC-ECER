@@ -70,6 +70,9 @@ declare namespace Components {
             countryCode?: string | null;
             isICRA?: boolean;
         }
+        export interface DraftProgramResponse {
+            program?: Program;
+        }
         export interface EducationInstitution {
             id?: string | null;
             name?: string | null;
@@ -136,6 +139,14 @@ declare namespace Components {
             detail?: string | null;
             instance?: string | null;
         }
+        export interface Program {
+            id?: string | null;
+            portalStage: string;
+            status?: ProgramStatus;
+            createdOn?: string | null; // date-time
+            name?: string | null;
+        }
+        export type ProgramStatus = "Draft" | "UnderReview" | "Approved" | "Denied" | "Inactive";
         export interface Province {
             provinceId?: string | null;
             provinceName?: string | null;
@@ -185,6 +196,9 @@ declare namespace Components {
             programRepresentativeId?: string | null;
             bceidBusinessId?: string | null;
             profile: /* User profile information */ PspUserProfile;
+        }
+        export interface SaveDraftProgramRequest {
+            program?: Program;
         }
         /**
          * Send Message Request
@@ -243,6 +257,21 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = /* file Response */ Components.Schemas.FileResponse;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
+    }
+    namespace DraftprogramPut {
+        namespace Parameters {
+            export type Id = string;
+        }
+        export interface PathParameters {
+            id?: Parameters.Id;
+        }
+        export type RequestBody = Components.Schemas.SaveDraftProgramRequest;
+        namespace Responses {
+            export type $200 = Components.Schemas.DraftProgramResponse;
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
             export interface $404 {
             }
@@ -318,6 +347,24 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = Components.Schemas.PortalInvitationQueryResult;
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
+        }
+    }
+    namespace ProgramGet {
+        namespace Parameters {
+            export type ByStatus = Components.Schemas.ProgramStatus[];
+            export type Id = string;
+        }
+        export interface PathParameters {
+            id?: Parameters.Id;
+        }
+        export interface QueryParameters {
+            byStatus?: Parameters.ByStatus;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Program[];
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
         }
     }
     namespace ProvinceGet {
@@ -531,6 +578,22 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.PspUserRegisterPost.Responses.$200>
   /**
+   * draftprogram_put - Save a draft program for the current user
+   */
+  'draftprogram_put'(
+    parameters?: Parameters<Paths.DraftprogramPut.PathParameters> | null,
+    data?: Paths.DraftprogramPut.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DraftprogramPut.Responses.$200>
+  /**
+   * program_get - Handles program queries
+   */
+  'program_get'(
+    parameters?: Parameters<Paths.ProgramGet.QueryParameters & Paths.ProgramGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ProgramGet.Responses.$200>
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   'portal_invitation_get'(
@@ -731,6 +794,26 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.PspUserRegisterPost.Responses.$200>
   }
+  ['/api/draftprograms/{id}']: {
+    /**
+     * draftprogram_put - Save a draft program for the current user
+     */
+    'put'(
+      parameters?: Parameters<Paths.DraftprogramPut.PathParameters> | null,
+      data?: Paths.DraftprogramPut.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DraftprogramPut.Responses.$200>
+  }
+  ['/api/programs/{id}']: {
+    /**
+     * program_get - Handles program queries
+     */
+    'get'(
+      parameters?: Parameters<Paths.ProgramGet.QueryParameters & Paths.ProgramGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ProgramGet.Responses.$200>
+  }
   ['/api/PortalInvitations/{token}']: {
     /**
      * portal_invitation_get - Handles portal invitation queries
@@ -842,6 +925,7 @@ export type CommunicationStatus = Components.Schemas.CommunicationStatus;
 export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults = Components.Schemas.CommunicationsStatusResults;
 export type Country = Components.Schemas.Country;
+export type DraftProgramResponse = Components.Schemas.DraftProgramResponse;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type FileResponse = Components.Schemas.FileResponse;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
@@ -854,6 +938,8 @@ export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
+export type Program = Components.Schemas.Program;
+export type ProgramStatus = Components.Schemas.ProgramStatus;
 export type Province = Components.Schemas.Province;
 export type PspRegistrationError = Components.Schemas.PspRegistrationError;
 export type PspRegistrationErrorResponse = Components.Schemas.PspRegistrationErrorResponse;
@@ -861,6 +947,7 @@ export type PspUserListItem = Components.Schemas.PspUserListItem;
 export type PspUserProfile = Components.Schemas.PspUserProfile;
 export type PspUserRole = Components.Schemas.PspUserRole;
 export type RegisterPspUserRequest = Components.Schemas.RegisterPspUserRequest;
+export type SaveDraftProgramRequest = Components.Schemas.SaveDraftProgramRequest;
 export type SendMessageRequest = Components.Schemas.SendMessageRequest;
 export type SendMessageResponse = Components.Schemas.SendMessageResponse;
 export type VersionMetadata = Components.Schemas.VersionMetadata;

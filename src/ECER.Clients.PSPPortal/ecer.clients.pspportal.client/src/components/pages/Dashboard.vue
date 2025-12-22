@@ -17,6 +17,18 @@
         <v-col cols="12">
           <h1>My PSP dashboard</h1>
         </v-col>
+        <v-col v-if="programsRequiringReview != null && programsRequiringReview?.length > 0" cols="12">
+          <Card color="secondary" class="d-flex flex-column">
+            <h2 color="surface">You have program profiles to review</h2>
+            <p color="surface" class="mt-4">The ECE Registry reviews programs on an annual basis. Your program profile review can now be completed online.</p>
+            <div class="mt-auto">
+              <v-btn size="large" class="mt-4" color="warning" id="btnReviewProgramProfile" @click="router.push('/program-profiles')">
+                <v-icon size="large" icon="mdi-arrow-right" />
+                Review now
+              </v-btn>
+            </div>
+          </Card>  
+        </v-col>
         <v-col v-if="educationInstitution" cols="12">
           <EducationInstitutionCard :education-institution="educationInstitution" />
         </v-col>
@@ -82,13 +94,15 @@ import { useDisplay } from "vuetify";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
-import { getEducationInstitution, getPspUserProfile, registerPspUser } from "@/api/psp-rep";
-import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution } from "@/types/openapi";
+import { getPspUserProfile, registerPspUser } from "@/api/psp-rep";
+import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution, Program, ProgramStatus } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Card from "@/components/Card.vue";
 import EducationInstitutionCard from "@/components/EducationInstitutionCard.vue";
 import { useMessageStore } from "@/store/message";
+import { getEducationInstitution } from "@/api/education-institution";
+import { getPrograms } from "@/api/program";
 
 export default defineComponent({
   name: "Dashboard",
@@ -105,6 +119,7 @@ export default defineComponent({
     return {
       pspUserProfile: null as PspUserProfile | null,
       educationInstitution: null as EducationInstitution | null,
+      programsRequiringReview: null as Program[] | null,
       loading: true,
     };
   },
@@ -145,7 +160,7 @@ export default defineComponent({
     }
 
     // Check if the user has a profile, if not, register them
-    [this.pspUserProfile, this.educationInstitution] = await Promise.all([getPspUserProfile(), getEducationInstitution()]);
+    [this.pspUserProfile] = await Promise.all([getPspUserProfile()]);
 
     if (!this.pspUserProfile) {
       if (!this.userStore.invitationToken || !this.userStore.invitedProgramRepresentativeId) {
@@ -187,12 +202,15 @@ export default defineComponent({
         return;
       }
 
-      [this.pspUserProfile, this.educationInstitution] = await Promise.all([getPspUserProfile(), getEducationInstitution()]);
+      [this.pspUserProfile] = await Promise.all([getPspUserProfile()]);
     }
 
     if (this.pspUserProfile) {
       if (!this.pspUserProfile.hasAcceptedTermsOfUse) {
         this.router.replace("/new-user");
+      }else{
+        this.getInstitutionData();
+        this.getProgramProfileData();
       }
     }
     
@@ -213,6 +231,12 @@ export default defineComponent({
 
   },
   methods: {
+    async getInstitutionData() {
+      [this.educationInstitution] = await Promise.all([getEducationInstitution()]);
+    },
+    async getProgramProfileData() {
+      [this.programsRequiringReview] = await Promise.all([getPrograms()]);  
+    },
     setUserStoreValues() {
       if (this.pspUserProfile) {
         this.userStore.setPspUserProfile(this.pspUserProfile);

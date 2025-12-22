@@ -36,7 +36,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { getEducationInstitution, updateEducationInstitution } from "@/api/psp-rep";
+import { getEducationInstitution, updateEducationInstitution } from "@/api/education-institution";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import EceForm from "@/components/Form.vue";
 import PageContainer from "@/components/PageContainer.vue";
