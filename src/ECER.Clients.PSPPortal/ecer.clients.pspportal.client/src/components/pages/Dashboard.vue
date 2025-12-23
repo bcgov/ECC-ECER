@@ -233,9 +233,7 @@ if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
       this.educationInstitution = await getEducationInstitution();
     },
     async getProgramProfileData() {
-      let status: ProgramStatus = "Draft";
-      let statuses: ProgramStatus[] = new Array(status);
-      this.programsRequiringReview = await getPrograms(statuses);  
+      this.programsRequiringReview = await getPrograms(["Draft"]);  
     },
     setUserStoreValues() {
       if (this.pspUserProfile) {
