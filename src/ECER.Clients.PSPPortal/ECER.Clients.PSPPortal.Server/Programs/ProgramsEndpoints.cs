@@ -66,8 +66,6 @@ public class ProgramsEndpoints : IRegisterEndpoints
         ? byStatus.Convert<ProgramStatus, ContractProgramStatus>()
         : null;
 
-      if (statusFilter == null) statusFilter = [ContractProgramStatus.Draft];
-
       var results = await messageBus.Send(new ContractProgramsQuery
       {
         ById = id,

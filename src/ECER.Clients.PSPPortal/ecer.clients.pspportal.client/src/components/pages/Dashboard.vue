@@ -95,7 +95,7 @@ import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { getPspUserProfile, registerPspUser } from "@/api/psp-rep";
-import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution, Program } from "@/types/openapi";
+import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution, Program, ProgramStatus } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Card from "@/components/Card.vue";
@@ -233,7 +233,9 @@ if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
       this.educationInstitution = await getEducationInstitution();
     },
     async getProgramProfileData() {
-      this.programsRequiringReview = await getPrograms();  
+      let status: ProgramStatus = "Draft";
+      let statuses: ProgramStatus[] = new Array(status);
+      this.programsRequiringReview = await getPrograms(statuses);  
     },
     setUserStoreValues() {
       if (this.pspUserProfile) {
