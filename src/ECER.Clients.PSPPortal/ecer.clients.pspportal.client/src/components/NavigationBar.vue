@@ -5,7 +5,7 @@
         <router-link to="/">
           <img src="../assets/bc-gov-logo.png" width="155" class="logo" alt="B.C. Government Logo" />
         </router-link>
-        <v-toolbar-title>ECE Educational Institution Portal</v-toolbar-title>
+        <v-toolbar-title>ECE Post-Secondary Programs Portal</v-toolbar-title>
         <template v-if="userStore.hasUserProfile && userStore.hasAcceptedTermsOfUse">
           <v-menu v-if="$vuetify.display.smAndDown" offset-y bottom transition="slide-y-transition">
             <template #activator="{ props }">

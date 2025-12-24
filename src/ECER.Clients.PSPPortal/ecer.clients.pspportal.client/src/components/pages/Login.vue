@@ -1,7 +1,7 @@
 <template>
   <v-sheet :rounded="0" flat color="primary" width="100%">
     <PageContainer :margin-top="false" class="py-13">
-      <h1 class="text-white">Welcome to the ECE Educational Institution Portal</h1>
+      <h1 class="text-white">Welcome to the ECE Post-Secondary Programs Portal</h1>
       <p class="small text-white mt-4">For educational institutions to manage their ECE programs with the B.C. ECE
         Registry</p>
     </PageContainer>
