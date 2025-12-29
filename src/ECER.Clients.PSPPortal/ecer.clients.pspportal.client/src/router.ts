@@ -73,6 +73,11 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/program",
+      component: () => import("./components/pages/Program.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+    },
+    {
       path: "/silent-callback",
       component: () => import("./components/pages/SilentCallback.vue"),
       meta: { requiresAuth: false },

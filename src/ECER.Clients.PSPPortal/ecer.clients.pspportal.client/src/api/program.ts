@@ -1,0 +1,35 @@
+import { getClient } from "@/api/client";
+import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
+import type { Components, Paths } from "@/types/openapi";
+
+const apiResultHandler = new ApiResultHandler();
+
+const getPrograms = async (): Promise<ApiResponse<Components.Schemas.Program[] | null | undefined>> => {
+  const client = await getClient();
+  return apiResultHandler.execute<Components.Schemas.Program[] | null | undefined>({ request: client.program_get({
+      id: "",
+      byStatus: ["Draft", "Denied", "Approved", "UnderReview"]
+  }), key: "program_get" });
+};
+
+const createOrUpdateDraftApplication = async (
+  program: Components.Schemas.Program
+): Promise<ApiResponse<Components.Schemas.DraftProgramResponse | null | undefined>> => {
+  const client = await getClient();
+  const body: Paths.DraftprogramPut.RequestBody = {
+    program: program
+  };
+  const pathParameters: Paths.DraftprogramPut.PathParameters = {
+    id: program.id || "",
+  };
+
+  return apiResultHandler.execute<Components.Schemas.DraftProgramResponse | null | undefined>({
+    request: client.draftprogram_put(pathParameters, body),
+    key: "draftprogram_put",
+  });
+}
+
+export  {
+  createOrUpdateDraftApplication,
+  getPrograms
+}
