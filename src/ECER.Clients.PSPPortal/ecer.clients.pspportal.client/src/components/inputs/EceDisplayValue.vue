@@ -1,10 +1,12 @@
 <template>
-  <div class="ece-display-value">
-    <div class="ece-display-value__label">{{ label }}</div>
-    <div class="ece-display-value__value font-weight-bold">
+  <v-row no-gutters class="align-baseline">
+    <v-col cols="12" sm="4" class="mb-2 mb-sm-0">
+      {{ label }}
+    </v-col>
+    <v-col cols="12" sm="8" class="font-weight-bold text-break">
       {{ displayValue }}
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -57,36 +59,4 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.ece-display-value {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.ece-display-value__label {
-  flex-shrink: 0;
-}
-
-.ece-display-value__value {
-  word-break: break-word;
-}
-
-@media (min-width: 600px) {
-  .ece-display-value {
-    flex-direction: row;
-    align-items: baseline;
-    gap: 1rem;
-  }
-  
-  .ece-display-value__label {
-    min-width: 150px;
-  }
-  
-  .ece-display-value__value {
-    flex: 1;
-  }
-}
-</style>
 
