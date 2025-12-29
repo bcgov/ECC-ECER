@@ -4,11 +4,14 @@ import type { Components, Paths } from "@/types/openapi";
 
 const apiResultHandler = new ApiResultHandler();
 
-const getPrograms = async (): Promise<ApiResponse<Components.Schemas.Program[] | null | undefined>> => {
+const getPrograms = async (
+  id: string = "",
+  statuses: Components.Schemas.ProgramStatus[] = ["Draft", "Denied", "Approved", "UnderReview"]
+): Promise<ApiResponse<Components.Schemas.Program[] | null | undefined>> => {
   const client = await getClient();
   return apiResultHandler.execute<Components.Schemas.Program[] | null | undefined>({ request: client.program_get({
-      id: "",
-      byStatus: ["Draft", "Denied", "Approved", "UnderReview"]
+      id: id,
+      byStatus: statuses
   }), key: "program_get" });
 };
 
