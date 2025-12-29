@@ -10,11 +10,7 @@ export const getClient = async (appendToken: boolean = true) => {
   if (!cachedClient) {
     const api = new OpenAPIClientAxios({
       definition: "/swagger/v1/swagger.json",
-      axiosConfigDefaults: {
-        paramsSerializer: {
-          indexes: null // This sends arrays in a format .net is expecting
-        }
-      }
+      axiosConfigDefaults: { paramsSerializer: { indexes: null}}, // Added to remove square brackets from array parameter names i.e byStatus[]=Active
     });
     cachedClient = await api.init<Client>();
   }

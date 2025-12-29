@@ -2,7 +2,7 @@ import IcraApplicationWorkReferenceDeclarationForm from "./icra-application-work
 import icraWorkExperienceContactInformationForm from "./icra-eligibility-work-experience-contact-information-form";
 import workExperienceAssessmentForm from "../work-experience-reference-assessment-form";
 import workExperienceDeclineForm from "@/config/work-experience-reference-decline-form";
-import IcraApplicationPreviewForm from "./preview-form-icra-five-year";
+import icraWorkExperienceReferencePreviewForm from "./preview-form-icra-work-experience-reference";
 
 import type { Wizard } from "@/types/wizard";
 
@@ -30,7 +30,7 @@ const workExperienceReferenceWizardConfig: Wizard = {
     review: {
       title: "Review",
       stage: "Review",
-      form: IcraApplicationPreviewForm,
+      form: icraWorkExperienceReferencePreviewForm,
       key: "item.4",
     },
     decline: {
