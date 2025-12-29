@@ -11,6 +11,8 @@ internal class ProgramRepositoryMapper : Profile
     CreateMap<Program, ecer_Program>(MemberList.Source)
       .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.PostSecondaryInstituteId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.PostSecondaryInstituteName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
