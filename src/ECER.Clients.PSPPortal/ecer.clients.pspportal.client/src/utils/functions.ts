@@ -47,7 +47,7 @@ export function humanFileSize(bytes: number, decimals = 2) {
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + (sizes[i] || "Bigger than YB");
+  return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + (sizes[i] || "Bigger than YB");
 }
 
 /**
@@ -64,7 +64,7 @@ export function parseHumanFileSize(humanSize: string): number {
     throw new Error("Invalid file size format");
   }
 
-  const size = parseFloat(match[1] || ""); // Convert the number part to a float
+  const size = Number.parseFloat(match[1] || ""); // Convert the number part to a float
   const unit = (match[3] || "").toUpperCase(); // Get the unit part and convert to uppercase for consistency
 
   // Define units and their corresponding multiplier in bytes
