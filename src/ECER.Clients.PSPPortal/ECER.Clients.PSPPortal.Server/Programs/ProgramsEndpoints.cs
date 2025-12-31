@@ -94,6 +94,10 @@ public record Program
   public ProgramStatus Status { get; set; } = ProgramStatus.Draft;
   public DateTime? CreatedOn { get; set; }
   public string? Name { get; set; }
+  public string? PostSecondaryInstituteName { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
+  public IEnumerable<string>? ProgramTypes { get; set; }
 }
 
 public enum ProgramStatus

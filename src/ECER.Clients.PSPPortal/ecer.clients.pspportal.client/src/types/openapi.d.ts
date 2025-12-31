@@ -145,6 +145,10 @@ declare namespace Components {
             status?: ProgramStatus;
             createdOn?: string | null; // date-time
             name?: string | null;
+            postSecondaryInstituteName?: string | null;
+            startDate?: string | null; // date-time
+            endDate?: string | null; // date-time
+            programTypes?: string[] | null;
         }
         export type ProgramStatus = "Draft" | "UnderReview" | "Approved" | "Denied" | "Inactive";
         export interface Province {

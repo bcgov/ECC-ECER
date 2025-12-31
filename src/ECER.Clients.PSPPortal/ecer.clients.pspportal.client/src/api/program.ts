@@ -1,19 +1,38 @@
 import { getClient } from "@/api/client";
-import type { Paths, Program, ProgramStatus } from "@/types/openapi";
-import ApiResultHandler from "@/utils/apiResultHandler";
+import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
+import type { Components, Paths } from "@/types/openapi";
+
 const apiResultHandler = new ApiResultHandler();
 
-const getPrograms = async ( statuses?: ProgramStatus[]): Promise<Program[] | null> => {
+const getPrograms = async (
+  id: string = "",
+  statuses: Components.Schemas.ProgramStatus[] = ["Draft", "Denied", "Approved", "UnderReview"]
+): Promise<ApiResponse<Components.Schemas.Program[] | null | undefined>> => {
   const client = await getClient();
-  const queryParameters: Paths.ProgramGet.QueryParameters = {
-    byStatus: statuses,
-  };
-
-  const response = await apiResultHandler.execute({
-    request: client.program_get(queryParameters),
-    key: "program_get",
-  });
-  return response?.data ?? null;
+  return apiResultHandler.execute<Components.Schemas.Program[] | null | undefined>({ request: client.program_get({
+      id: id,
+      byStatus: statuses
+  }), key: "program_get" });
 };
 
-export { getPrograms };
+const createOrUpdateDraftApplication = async (
+  program: Components.Schemas.Program
+): Promise<ApiResponse<Components.Schemas.DraftProgramResponse | null | undefined>> => {
+  const client = await getClient();
+  const body: Paths.DraftprogramPut.RequestBody = {
+    program: program
+  };
+  const pathParameters: Paths.DraftprogramPut.PathParameters = {
+    id: program.id || "",
+  };
+
+  return apiResultHandler.execute<Components.Schemas.DraftProgramResponse | null | undefined>({
+    request: client.draftprogram_put(pathParameters, body),
+    key: "draftprogram_put",
+  });
+}
+
+export  {
+  createOrUpdateDraftApplication,
+  getPrograms
+}

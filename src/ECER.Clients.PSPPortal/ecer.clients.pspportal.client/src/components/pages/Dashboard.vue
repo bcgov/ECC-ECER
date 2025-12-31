@@ -233,7 +233,8 @@ if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
       this.educationInstitution = await getEducationInstitution();
     },
     async getProgramProfileData() {
-      this.programsRequiringReview = await getPrograms(["Draft"]);  
+      const { data: programs } = await getPrograms("", ["Draft"]);
+      this.programsRequiringReview = programs ?? null;
     },
     setUserStoreValues() {
       if (this.pspUserProfile) {
