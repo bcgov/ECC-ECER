@@ -1,85 +1,105 @@
 <template>
   <ReferencePreviewCard
     :is-valid="true"
-    title="Are you satisfied that the applicant is competent in the following areas?"
+    title="Competencies assessment"
     subtitle="This must be based on your own observations of the applicant."
-    reference-stage="Assessment"
+    reference-stage="assessment"
   >
     <template #content>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Child development</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.childDevelopment }}</p>
-          <p v-if="assessment.childDevelopmentReason" class="small">{{ assessment.childDevelopmentReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Child guidance</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.childGuidance }}</p>
-          <p v-if="assessment.childGuidanceReason" class="small">{{ assessment.childGuidanceReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Health, safety and nutrition</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.healthSafetyAndNutrition }}</p>
-          <p v-if="assessment.healthSafetyAndNutritionReason" class="small">{{ assessment.healthSafetyAndNutritionReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Developing an early childhood education curriculum</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.developAnEceCurriculum }}</p>
-          <p v-if="assessment.developAnEceCurriculumReason" class="small">{{ assessment.developAnEceCurriculumReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Implementing an early childhood education curriculum</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.implementAnEceCurriculum }}</p>
-          <p v-if="assessment.implementAnEceCurriculumReason" class="small">{{ assessment.implementAnEceCurriculumReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Fostering positive relationships with children under their care</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.fosteringPositiveRelationChild }}</p>
-          <p v-if="assessment.fosteringPositiveRelationChildReason" class="small">{{ assessment.fosteringPositiveRelationChildReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Fostering positive relationships with the families of children</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.fosteringPositiveRelationFamily }}</p>
-          <p v-if="assessment.fosteringPositiveRelationFamilyReason" class="small">{{ assessment.fosteringPositiveRelationFamilyReason }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Fostering positive relationships with co-workers</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.fosteringPositiveRelationCoworker }}</p>
-          <p v-if="assessment.fosteringPositiveRelationCoworkerReason" class="small">
-            {{ assessment.fosteringPositiveRelationCoworkerReason }}
-          </p>
-        </v-col>
-      </v-row>
+      <div>
+        <v-row class="py-3" no-gutters>
+          <v-col cols="8" class="pr-6">
+            <p class="small mb-0">Is the applicant competent in child development?</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="small font-weight-bold mb-0">{{ assessment.childDevelopment }}</p>
+            <p v-if="assessment.childDevelopmentReason" class="small mb-0 mt-1">{{ assessment.childDevelopmentReason }}</p>
+          </v-col>
+        </v-row>
+        <v-divider />
+
+        <v-row class="py-3" no-gutters>
+          <v-col cols="8" class="pr-6">
+            <p class="small mb-0">Is the applicant competent in child guidance?</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="small font-weight-bold mb-0">{{ assessment.childGuidance }}</p>
+            <p v-if="assessment.childGuidanceReason" class="small mb-0 mt-1">{{ assessment.childGuidanceReason }}</p>
+          </v-col>
+        </v-row>
+        <v-divider />
+
+        <v-row class="py-3" no-gutters>
+          <v-col cols="8" class="pr-6">
+            <p class="small mb-0">Is the applicant competent in health, safety and nutrition?</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="small font-weight-bold mb-0">{{ assessment.healthSafetyAndNutrition }}</p>
+            <p v-if="assessment.healthSafetyAndNutritionReason" class="small mb-0 mt-1">{{ assessment.healthSafetyAndNutritionReason }}</p>
+          </v-col>
+        </v-row>
+        <v-divider />
+
+        <v-row class="py-3" no-gutters>
+          <v-col cols="8" class="pr-6">
+            <p class="small mb-0">Is the applicant competent in developing an early childhood education curriculum?</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="small font-weight-bold mb-0">{{ assessment.developAnEceCurriculum }}</p>
+            <p v-if="assessment.developAnEceCurriculumReason" class="small mb-0 mt-1">{{ assessment.developAnEceCurriculumReason }}</p>
+          </v-col>
+        </v-row>
+        <v-divider />
+
+        <v-row class="py-3" no-gutters>
+          <v-col cols="8" class="pr-6">
+            <p class="small mb-0">Is the applicant competent in implementing an early childhood education curriculum?</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="small font-weight-bold mb-0">{{ assessment.implementAnEceCurriculum }}</p>
+            <p v-if="assessment.implementAnEceCurriculumReason" class="small mb-0 mt-1">{{ assessment.implementAnEceCurriculumReason }}</p>
+          </v-col>
+        </v-row>
+        <v-divider />
+
+        <v-row class="py-3" no-gutters>
+          <v-col cols="8" class="pr-6">
+            <p class="small mb-0">Is the applicant competent in fostering positive relationships with children under their care?</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="small font-weight-bold mb-0">{{ assessment.fosteringPositiveRelationChild }}</p>
+            <p v-if="assessment.fosteringPositiveRelationChildReason" class="small mb-0 mt-1">
+              {{ assessment.fosteringPositiveRelationChildReason }}
+            </p>
+          </v-col>
+        </v-row>
+        <v-divider />
+
+        <v-row class="py-3" no-gutters>
+          <v-col cols="8" class="pr-6">
+            <p class="small mb-0">Is the applicant competent in fostering positive relationships with the families of children?</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="small font-weight-bold mb-0">{{ assessment.fosteringPositiveRelationFamily }}</p>
+            <p v-if="assessment.fosteringPositiveRelationFamilyReason" class="small mb-0 mt-1">
+              {{ assessment.fosteringPositiveRelationFamilyReason }}
+            </p>
+          </v-col>
+        </v-row>
+        <v-divider />
+
+        <v-row class="py-3" no-gutters>
+          <v-col cols="8" class="pr-6">
+            <p class="small mb-0">Is the applicant competent in fostering positive relationships with co-workers?</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="small font-weight-bold mb-0">{{ assessment.fosteringPositiveRelationCoworker }}</p>
+            <p v-if="assessment.fosteringPositiveRelationCoworkerReason" class="small mb-0 mt-1">
+              {{ assessment.fosteringPositiveRelationCoworkerReason }}
+            </p>
+          </v-col>
+        </v-row>
+      </div>
     </template>
   </ReferencePreviewCard>
 </template>
