@@ -364,7 +364,11 @@ const router = createRouter({
       path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/:referenceId/replace",
       name: "icra-eligibility-replace-work-experience-reference",
       component: () => import("./components/IcraEligibilityUpsertWorkExperienceReference.vue"),
-      props: (route) => ({ icraEligibilityId: route.params.icraEligibilityId, type: "replace" }),
+      props: (route) => ({
+        icraEligibilityId: route.params.icraEligibilityId,
+        referenceId: route.params.referenceId,
+        type: "replace",
+      }),
       meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
