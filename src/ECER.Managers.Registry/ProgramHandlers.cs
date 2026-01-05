@@ -9,7 +9,8 @@ public class ProgramHandlers(
     IProgramRepository programRepository,
     IMapper mapper)
   : IRequestHandler<SaveDraftProgramCommand, Contract.Programs.Program?>,
-    IRequestHandler<ProgramsQuery, ProgramsQueryResults>
+    IRequestHandler<ProgramsQuery, ProgramsQueryResults>,
+    IRequestHandler<ProgramDetailCommand, Contract.Programs.ProgramDetail>
 {
   public async Task<Contract.Programs.Program?> Handle(SaveDraftProgramCommand request, CancellationToken cancellationToken)
   {
@@ -42,5 +43,14 @@ public class ProgramHandlers(
     }, cancellationToken);
 
     return new ProgramsQueryResults(mapper.Map<IEnumerable<Contract.Programs.Program>>(programs)!);
+  }
+
+  public async Task<Contract.Programs.ProgramDetail> Handle(ProgramDetailCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var program = await programRepository.GetProgramById(new ProgramDetailQuery(request.ProgramId, request.PostSecondaryInstituteId), cancellationToken);
+
+    return mapper.Map<Contract.Programs.ProgramDetail>(program);
   }
 }

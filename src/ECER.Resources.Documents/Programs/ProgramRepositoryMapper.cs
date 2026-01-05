@@ -1,6 +1,5 @@
 using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
-using Microsoft.Xrm.Sdk;
 
 namespace ECER.Resources.Documents.Programs;
 
@@ -33,6 +32,21 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null));
 
+    CreateMap<ProgramDetail, ecer_Program>(MemberList.Source)
+       .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.Courses, opts => opts.DoNotValidate())
+       .ForMember(d => d.ecer_PostSecondaryInstitutionName, opts => opts.MapFrom(s => s.PostSecondaryInstituteName))
+       .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
+       .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
+       .ForMember(d => d.ecer_ProgramTypes, opts => opts.MapFrom(s => s.ProgramTypes != null ? s.ProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)) : null))
+       .ForMember(d => d.ecer_course_Programid, opts => opts.MapFrom(s => s.Courses))
+       .ReverseMap()
+       .ValidateMemberList(MemberList.Destination)
+       .ForMember(d => d.PostSecondaryInstituteName, opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitutionName))
+       .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_StartDate))
+       .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
+       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null));
+
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
       .ConvertUsing(status =>
           status == ProgramStatus.Draft ? ecer_Program_StatusCode.RequiresReview :
@@ -50,6 +64,18 @@ internal class ProgramRepositoryMapper : Profile
           status == ecer_Program_StatusCode.Denied ? ProgramStatus.Denied :
           status == ecer_Program_StatusCode.Inactive ? ProgramStatus.Inactive :
                                                                      ProgramStatus.Draft);
+    CreateMap<Course, ecer_Course>(MemberList.Source)
+      .ForSourceMember(s => s.AreaOfInstructions, opts => opts.DoNotValidate())
+      .ForMember(d => d.ecer_CourseName, opts => opts.MapFrom(s => s.Title))
+      .ForMember(d => d.ecer_coursehourdecimal, opts => opts.MapFrom(s => s.Hours))
+      .ForMember(d => d.ecer_Code, opts => opts.MapFrom(s => s.CourseNumber))
+      .ForMember(d => d.ecer_ProgramType, opts => opts.MapFrom(s => s.ProgramType))
+      .ForMember(d => d.ecer_courseprovincialrequirement_CourseId, opts => opts.MapFrom(s => s.AreaOfInstructions))
+      .ReverseMap();
 
+    CreateMap<AreaOfInstruction, ecer_CourseProvincialRequirement>(MemberList.Source)
+      .ForMember(d => d.ecer_Hours, opts => opts.MapFrom(s => s.Hours))
+      .ForMember(d => d.ecer_ProgramAreaIdName, opts => opts.MapFrom(s => s.AreaOfInstructionName))
+      .ReverseMap();
   }
 }

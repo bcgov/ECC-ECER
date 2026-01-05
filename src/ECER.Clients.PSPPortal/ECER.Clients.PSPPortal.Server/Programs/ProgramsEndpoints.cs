@@ -1,5 +1,6 @@
 using AutoMapper;
 using ECER.Infrastructure.Common;
+using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -8,8 +9,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
-using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
 using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQuery;
+using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
 using SaveDraftProgramCommand = ECER.Managers.Registry.Contract.Programs.SaveDraftProgramCommand;
 
 namespace ECER.Clients.PSPPortal.Server.Programs;
@@ -30,7 +31,8 @@ public class ProgramsEndpoints : IRegisterEndpoints
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
       var draftProgram = mapper.Map<ContractProgram>(request.Program)
-        with { PostSecondaryInstituteId = programRep.PostSecondaryInstituteId, Status = ContractProgramStatus.Draft };
+        with
+      { PostSecondaryInstituteId = programRep.PostSecondaryInstituteId, Status = ContractProgramStatus.Draft };
 
       if (id != null)
       {
@@ -54,30 +56,52 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .RequireAuthorization("psp_user")
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<IEnumerable<Program>>, NotFound>> (string? id, ProgramStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/programs/detail/{programId}", async Task<Results<Ok<ProgramDetail>, NotFound, BadRequest<ProblemDetails>>> (string programId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
-      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
+      bool IdIsNotGuid = !Guid.TryParse(programId, out _);
+      if (IdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "programId is not a valid guid" });
+      }
 
       var userContext = ctx.User.GetUserContext()!;
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-      var statusFilter = (byStatus != null && byStatus.Length > 0)
-        ? byStatus.Convert<ProgramStatus, ContractProgramStatus>()
-        : null;
+      var result = await messageBus.Send(new ProgramDetailCommand(programId, programRep.PostSecondaryInstituteId), ct);
 
-      var results = await messageBus.Send(new ContractProgramsQuery
-      {
-        ById = id,
-        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
-        ByStatus = statusFilter
-      }, ct);
+      if (result == null) return TypedResults.NotFound();
 
-      return TypedResults.Ok(mapper.Map<IEnumerable<Program>>(results.Items));
+      return TypedResults.Ok(mapper.Map<ProgramDetail>(result));
     })
-    .WithOpenApi("Handles program queries", string.Empty, "program_get")
+    .WithOpenApi("Handles program detail query", string.Empty, "program_detail_get")
     .RequireAuthorization("psp_user")
     .WithParameterValidation();
+
+    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<IEnumerable<Program>>, NotFound>> (string? id, ProgramStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+      {
+        bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
+
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+
+        var statusFilter = (byStatus != null && byStatus.Length > 0)
+          ? byStatus.Convert<ProgramStatus, ContractProgramStatus>()
+          : null;
+
+        var results = await messageBus.Send(new ContractProgramsQuery
+        {
+          ById = id,
+          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
+          ByStatus = statusFilter
+        }, ct);
+
+        return TypedResults.Ok(mapper.Map<IEnumerable<Program>>(results.Items));
+      })
+      .WithOpenApi("Handles program queries", string.Empty, "program_get")
+      .RequireAuthorization("psp_user")
+      .WithParameterValidation();
   }
 }
 
@@ -100,6 +124,29 @@ public record Program
   public IEnumerable<string>? ProgramTypes { get; set; }
 }
 
+public record ProgramDetail()
+{
+  public string? PostSecondaryInstituteName { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
+  public IEnumerable<string>? ProgramTypes { get; set; }
+  public IEnumerable<Course>? Courses { get; set; }
+};
+
+public record Course()
+{
+  public float Hours { get; set; }
+  public string? Title { get; set; }
+  public string? CourseNumber { get; set; }
+  public CourseProgramType ProgramType { get; set; }
+  public IEnumerable<AreaOfInstruction>? AreaOfInstructions { get; set; }
+}
+public record AreaOfInstruction()
+{
+  public string? AreaOfInstructionName { get; set; }
+  public float Hours { get; set; }
+}
+
 public enum ProgramStatus
 {
   Draft,
@@ -107,4 +154,11 @@ public enum ProgramStatus
   Approved,
   Denied,
   Inactive
+}
+
+public enum CourseProgramType
+{
+  ITE,
+  SNE,
+  Basic
 }
