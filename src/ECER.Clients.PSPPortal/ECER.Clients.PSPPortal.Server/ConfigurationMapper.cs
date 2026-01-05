@@ -10,5 +10,6 @@ public class ConfigurationMapper : Profile
   {
     CreateMap<Managers.Admin.Contract.Metadatas.Province, Province>().ReverseMap();
     CreateMap<Managers.Admin.Contract.Metadatas.Country, Country>().ReverseMap();
+    CreateMap<Managers.Admin.Contract.Metadatas.AreaOfInstruction, AreaOfInstruction>().ReverseMap();
   }
 }

@@ -9,6 +9,7 @@ internal class MetadataMapper : Profile
   {
     CreateMap<Country, Contract.Metadatas.Country>().ReverseMap();
     CreateMap<Province, Contract.Metadatas.Province>().ReverseMap();
+    CreateMap<AreaOfInstruction, Contract.Metadatas.AreaOfInstruction>().ReverseMap();
     CreateMap<PostSecondaryInstitution, Contract.Metadatas.PostSecondaryInstitution>().ReverseMap();
     CreateMap<SystemMessage, Contract.Metadatas.SystemMessage>();
     CreateMap<IdentificationType, Contract.Metadatas.IdentificationType>();
