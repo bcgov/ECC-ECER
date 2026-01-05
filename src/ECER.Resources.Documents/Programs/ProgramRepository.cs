@@ -26,7 +26,11 @@ internal sealed class ProgramRepository : IProgramRepository
 
     programs = programs.OrderByDescending(p => p.CreatedOn);
 
-    var results = context.From(programs).Execute().ToList();
+    var results = context.From(programs)
+      .Join()
+      .Include(c => c.ecer_course_Programid)
+      .Execute()
+      .ToList();
 
     if (query.ByPostSecondaryInstituteId != null)
     {

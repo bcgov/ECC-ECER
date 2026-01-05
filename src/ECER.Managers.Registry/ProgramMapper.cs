@@ -21,5 +21,8 @@ internal class ProgramMapper : Profile
     CreateMap<Contract.Programs.ProgramStatus, ProgramStatus>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
+    
+    CreateMap<Contract.Programs.Course, Course>()
+      .ReverseMap();
   }
 }

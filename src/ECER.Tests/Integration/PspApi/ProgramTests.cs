@@ -143,4 +143,21 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     draft.ShouldNotBeNull();
     return draft!;
   }
+  
+  [Fact]
+  public async Task GetProgramProfile_ReturnsStatus()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.programId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var status = await response.ReadAsJsonAsync<IEnumerable<Program>>();
+    status.ShouldNotBeNull();
+
+    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    firstProfile.Courses.ShouldNotBeNull();
+  }
 }

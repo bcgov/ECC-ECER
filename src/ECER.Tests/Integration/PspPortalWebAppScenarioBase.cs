@@ -35,6 +35,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private UserIdentity testPspIdentity = null!;
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
+  private ecer_Program testProgram = null!;
+  private ecer_Course testCourse = null!;
+  
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedPspUserIdentity => testPspIdentity;
@@ -47,6 +50,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
+  
+  public string programId => testProgram.Id.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -86,7 +91,10 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, "comm2", null);
-
+    
+    testProgram = AddProgram(context, testPostSecondaryInstitute);
+    testCourse = AddCourse(context, testProgram);
+    
     context.SaveChanges();
 
     //load dependent properties
@@ -94,6 +102,40 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     context.LoadProperty(testProgramRepresentative, ecer_ECEProgramRepresentative.Fields.ecer_authentication_eceprogramrepresentative);
 
     context.SaveChanges();
+  }
+  
+  private ecer_Course AddCourse(EcerContext context, ecer_Program program)
+  {
+    var course = new ecer_Course
+    {
+      ecer_Code = "101",
+      ecer_CourseName = "Course 101",
+      ecer_NewCourseHourDecimal = 20.00m,
+      ecer_ProgramType = ecer_PSIProgramType.SNE,
+      ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
+    };
+    context.AddObject(course);
+
+    return course;
+  }
+
+  private ecer_Program AddProgram(EcerContext context, ecer_PostSecondaryInstitute institute)
+  {
+    string[] sneProgramTypes = { "SNE" };
+    var program = new ecer_Program
+    {
+      StatusCode = ecer_Program_StatusCode.RequiresReview,
+      ecer_ProgramId = Guid.NewGuid(),
+      ecer_Name = "Draft",
+      ecer_PortalStage = "stage1",
+      ecer_StartDate = DateTime.UtcNow.Date,
+      ecer_EndDate = DateTime.UtcNow.Date.AddYears(1),
+      ecer_ProgramTypes = sneProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)),
+      ecer_PostSecondaryInstitution = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
+    };
+    context.AddObject(program);
+
+    return program;
   }
   
   private ecer_Communication GetOrAddCommunication(EcerContext context, string message, Guid? parentCommunicationId)
