@@ -104,12 +104,14 @@ export default defineComponent({
     this.checkboxValue = !!this.applicationStore.draftApplication.signedDate;
     this.name = this.userStore.fullName;
 
-    const signedDate = this.applicationStore?.draftApplication?.signedDate;
+    const signedDateRaw = this.applicationStore?.draftApplication?.signedDate as string | undefined;
 
-    this.date =
-      this.applicationStore.hasDraftApplication && signedDate
-        ? DateTime.fromISO(signedDate, { zone: "utc" }).toFormat("yyyy-MM-dd")
-        : DateTime.now().toFormat("yyyy-MM-dd");
+    const fromDynamics =
+      this.applicationStore.hasDraftApplication && signedDateRaw
+        ? signedDateRaw.split("T")[0]
+        : undefined;
+
+    this.date = fromDynamics ?? (DateTime.now().toISODate() ?? "");
   },
   methods: {
     async continueClick() {
