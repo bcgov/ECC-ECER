@@ -39,9 +39,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		AppealDecision = 621870008,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Cancelled = 621870007,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Closed = 621870009,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -58,6 +55,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		InProgress = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NotSubmitted = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Pending = 290700001,
@@ -118,6 +118,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_addmoreworkexperiencereferenceName = "ecer_addmoreworkexperiencereferencename";
 			public const string ecer_AlternatePhoneNumber = "ecer_alternatephonenumber";
 			public const string ecer_AppealPeriodEndDate = "ecer_appealperiodenddate";
+			public const string ecer_AppealPeriodEndDateLD = "ecer_appealperiodenddateld";
 			public const string ecer_ApplicantAge = "ecer_applicantage";
 			public const string ecer_ApplicantFullName = "ecer_applicantfullname";
 			public const string ecer_Applicantid = "ecer_applicantid";
@@ -185,10 +186,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CurriculumApproved = "ecer_curriculumapproved";
 			public const string ecer_curriculumapprovedName = "ecer_curriculumapprovedname";
 			public const string ecer_DateEscalated = "ecer_dateescalated";
+			public const string ecer_DateEscalatedLD = "ecer_dateescalatedld";
 			public const string ecer_DateofBirth = "ecer_dateofbirth";
 			public const string ecer_DateSigned = "ecer_datesigned";
 			public const string ecer_DateSubmitted = "ecer_datesubmitted";
+			public const string ecer_DateSubmittedLD = "ecer_datesubmittedld";
 			public const string ecer_decisiondate = "ecer_decisiondate";
+			public const string ecer_DecisionDateLD = "ecer_decisiondateld";
 			public const string ecer_DeclarationConfirmation = "ecer_declarationconfirmation";
 			public const string ecer_declarationconfirmationName = "ecer_declarationconfirmationname";
 			public const string ecer_DeclarationStatements = "ecer_declarationstatements";
@@ -233,6 +237,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_icraeligibilityassessment_ApplicationId = "ecer_icraeligibilityassessment_ApplicationId";
 			public const string ecer_IDVerifiedManualApplication = "ecer_idverifiedmanualapplication";
 			public const string ecer_idverifiedmanualapplicationName = "ecer_idverifiedmanualapplicationname";
+			public const string ecer_InactiveApplicationClosureDate = "ecer_inactiveapplicationclosuredate";
+			public const string ecer_InactiveApplicationClosureDateLD = "ecer_inactiveapplicationclosuredateld";
 			public const string ecer_InternationalCertification_ecer_ApplicationId_ecer_Application = "ecer_InternationalCertification_ecer_ApplicationId_ecer_Application";
 			public const string ecer_investigationapplication_application = "ecer_investigationapplication_application";
 			public const string ecer_investigationparallelprocesscommunication = "ecer_investigationparallelprocesscommunication";
@@ -320,6 +326,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReadyforAssessmentDate = "ecer_readyforassessmentdate";
 			public const string ecer_readyforassessmentName = "ecer_readyforassessmentname";
 			public const string ecer_ReconsiderationPeriodEndDate = "ecer_reconsiderationperiodenddate";
+			public const string ecer_ReconsiderationPeriodEndDateLD = "ecer_reconsiderationperiodenddateld";
 			public const string ecer_ReconsiderationRequest = "ecer_reconsiderationrequest";
 			public const string ecer_reconsiderationrequest_ApplicationId = "ecer_reconsiderationrequest_ApplicationId";
 			public const string ecer_reconsiderationrequestName = "ecer_reconsiderationrequestname";
@@ -735,6 +742,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_appealperiodenddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealperiodenddateld")]
+		public string ecer_AppealPeriodEndDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_appealperiodenddateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_appealperiodenddateld", value);
 			}
 		}
 		
@@ -1632,6 +1654,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateescalatedld")]
+		public string ecer_DateEscalatedLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_dateescalatedld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateescalatedld", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofbirth")]
 		public System.Nullable<System.DateTime> ecer_DateofBirth
 		{
@@ -1677,6 +1714,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datesubmittedld")]
+		public string ecer_DateSubmittedLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_datesubmittedld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_datesubmittedld", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondate")]
 		public System.Nullable<System.DateTime> ecer_decisiondate
 		{
@@ -1689,6 +1741,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_decisiondate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondateld")]
+		public string ecer_DecisionDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_decisiondateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisiondateld", value);
 			}
 		}
 		
@@ -2281,6 +2348,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_inactiveapplicationclosuredate")]
+		public System.Nullable<System.DateTime> ecer_InactiveApplicationClosureDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_inactiveapplicationclosuredate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_inactiveapplicationclosuredate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_inactiveapplicationclosuredateld")]
+		public string ecer_InactiveApplicationClosureDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_inactiveapplicationclosuredateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_inactiveapplicationclosuredateld", value);
 			}
 		}
 		
@@ -3572,6 +3669,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_reconsiderationperiodenddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationperiodenddateld")]
+		public string ecer_ReconsiderationPeriodEndDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_reconsiderationperiodenddateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationperiodenddateld", value);
 			}
 		}
 		

@@ -62,7 +62,7 @@
                   :loading="loadingStore.isLoading('icra_put') || loadingStore.isLoading('icra_post')"
                   @click="handleSubmit"
                 >
-                  Submit eligibility submission
+                  Submit
                 </v-btn>
               </v-col>
             </v-row>

@@ -12,10 +12,16 @@ updates:
     open-pull-requests-limit: 20
   - package-ecosystem: "npm" # See documentation for possible values
     directories:
-     - "/src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client"
+      - "/src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 20
+    open-pull-requests-limit: 10
+  - package-ecosystem: "npm" # See documentation for possible values
+    directories:
+      - "/src/ECER.Clients.PSPPortal/ecer.clients.pspportal.client"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -428,7 +428,8 @@ export default defineComponent({
         this.certificationStore.hasCertifications &&
         !this.icraStore.hasIcraEligibility &&
         !this.applicationStore.hasApplication &&
-        !this.certificationStore.holdsAllCertifications
+        !this.certificationStore.holdsAllCertifications &&
+        !this.showIcraEligibilityStep2StartCard
       );
     },
     cancelApplicationLoading(): boolean {
