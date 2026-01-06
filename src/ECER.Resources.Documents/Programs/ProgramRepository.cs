@@ -91,4 +91,28 @@ internal sealed class ProgramRepository : IProgramRepository
     context.SaveChanges();
     return ecerProgram.ecer_ProgramId.Value.ToString();
   }
+
+  public async Task<ProgramDetail> GetProgramById(ProgramDetailQuery programQuery, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+
+    if (string.IsNullOrWhiteSpace(programQuery.PostSecondaryInstituteId))
+    {
+      throw new InvalidOperationException("Post secondary institute id is required");
+    }
+
+    var programDetail = context.ecer_ProgramSet.Where(
+      t => t.ecer_ProgramId == Guid.Parse(programQuery.ProgramId) &&
+      t.ecer_PostSecondaryInstitution.Id == Guid.Parse(programQuery.PostSecondaryInstituteId));
+
+    var results = context.From(programDetail!)
+      .Join()
+      .Include(t => t.ecer_course_Programid)
+      .IncludeNested(t => t.ecer_courseprovincialrequirement_CourseId)
+      .Execute();
+
+    var result = results.FirstOrDefault();
+
+    return mapper.Map<ProgramDetail>(result);
+  }
 }
