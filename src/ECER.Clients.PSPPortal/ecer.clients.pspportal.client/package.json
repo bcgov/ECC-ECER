@@ -65,7 +65,7 @@
     "storybook": "^10.1.11",
     "tsx": "^4.21.0",
     "vitest": "^4.0.16",
-    "sass": "^1.97.1",
+    "sass": "^1.97.2",
     "typescript": "~5.9.3",
     "vite": "^7.3.0",
     "vue-eslint-parser": "^10.2.0",
