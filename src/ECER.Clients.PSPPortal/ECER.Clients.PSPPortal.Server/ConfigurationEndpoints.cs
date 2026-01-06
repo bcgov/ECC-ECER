@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Clients.PSPPortal.Server.EducationInstitutions;
+using ECER.Clients.PSPPortal.Server.Programs;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
 using MediatR;
@@ -62,4 +63,4 @@ public record OidcAuthenticationSettings
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
 public record AreaOfInstructionListResponse(IEnumerable<AreaOfInstruction> AreaOfInstruction);
-public record AreaOfInstruction(string Id, string Name, IEnumerable<string> ProgramTypes, int? MinimumHours);
+public record AreaOfInstruction(string Id, string Name, IEnumerable<ProgramTypes> ProgramTypes, int? MinimumHours);

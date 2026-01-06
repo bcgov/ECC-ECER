@@ -1,5 +1,6 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
+using ECER.Clients.PSPPortal.Server.Programs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +38,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
-  private static readonly string[] AreaOfInstructionProgramTypeNames = { "ITE", "SNE" };
+  private static readonly ProgramTypes[] AreaOfInstructionProgramTypeValues = { ProgramTypes.ITE, ProgramTypes.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
@@ -54,7 +55,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
   public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
-  public IEnumerable<string> AreaOfInstructionProgramTypes => AreaOfInstructionProgramTypeNames;
+  public IEnumerable<ProgramTypes> AreaOfInstructionProgramTypes => AreaOfInstructionProgramTypeValues;
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
