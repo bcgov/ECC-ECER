@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Clients.PSPPortal.Server.EducationInstitutions;
+using ECER.Clients.PSPPortal.Server.Programs;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
 using MediatR;
@@ -32,6 +33,14 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       return TypedResults.Ok(mapper.Map<IEnumerable<Country>>(results.Items));
     }).WithOpenApi("Handles country queries", string.Empty, "country_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
+
+    endpointRouteBuilder.MapGet("/api/areaofinstructionlist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var results = await messageBus.Send(new AreaOfInstructionsQuery(), ct);
+      var instructions = mapper.Map<IEnumerable<AreaOfInstruction>>(results.Items);
+      return TypedResults.Ok(new AreaOfInstructionListResponse(instructions));
+    }).WithOpenApi("Handles area of instruction queries", string.Empty, "area_of_instruction_get")
+      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
   }
 }
 
@@ -53,3 +62,5 @@ public record OidcAuthenticationSettings
 
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
+public record AreaOfInstructionListResponse(IEnumerable<AreaOfInstruction> AreaOfInstruction);
+public record AreaOfInstruction(string Id, string Name, IEnumerable<ProgramTypes> ProgramTypes, int? MinimumHours);

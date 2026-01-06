@@ -27,6 +27,15 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     return mapper.Map<IEnumerable<Country>>(countries)!.ToList();
   }
 
+  public async Task<IEnumerable<AreaOfInstruction>> QueryAreaOfInstructions(AreaOfInstructionsQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var requirements = context.ecer_ProvincialRequirementSet.Where(r => r.StateCode == ecer_provincialrequirement_statecode.Active);
+    if (query.ById != null) requirements = requirements.Where(r => r.ecer_ProvincialRequirementId == Guid.Parse(query.ById));
+
+    return mapper.Map<IEnumerable<AreaOfInstruction>>(requirements)!.ToList();
+  }
+
   public async Task<IEnumerable<PostSecondaryInstitution>> QueryPostSecondaryInstitutions(PostSecondaryInstitutionsQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
