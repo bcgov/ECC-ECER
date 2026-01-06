@@ -55,9 +55,12 @@ internal class ProgramRepositoryMapper : Profile
     CreateMap<ecer_Course, Course>(MemberList.Destination)
       .ForMember(d => d.CourseNumber, opts => opts.MapFrom(s => s.ecer_Code))
       .ForMember(d => d.CourseTitle, opts => opts.MapFrom(s => s.ecer_CourseName))
-      .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewCourseHourDecimal != null ? Convert.ToString(s.ecer_NewCourseHourDecimal) : "0.00"))
-      .ForMember(d => d.AreaOfInstructionId, opts => opts.MapFrom(s => s.ecer_ProgramAreas))
+      .ForMember(d => d.AreaOfInstructions, opts => opts.MapFrom(s => s.ecer_ProgramAreas))
       .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType));
-
+    
+    CreateMap<ecer_CourseProvincialRequirement, AreaOfInstruction>(MemberList.Destination)
+      .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours != null ? Convert.ToString(s.ecer_NewHours) : "0.00"))
+      .ForMember(d => d.AreaOfInstructionId, opts => opts.MapFrom(s => s.Id))
+      .ReverseMap();
   }
 }

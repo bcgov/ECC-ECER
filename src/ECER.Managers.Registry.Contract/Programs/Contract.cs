@@ -21,9 +21,14 @@ public record Course
 {
   public string CourseNumber { get; set; } = null!;
   public string? CourseTitle { get; set; }
-  public string? NewHours { get; set; }
-  public string? AreaOfInstructionId { get; set; }
+  public IEnumerable<AreaOfInstruction>? AreaOfInstructions { get; set; }
   public string? ProgramType { get; set; }
+}
+
+public record AreaOfInstruction
+{
+  public string? AreaOfInstructionId { get; set; }
+  public string? NewHours { get; set; }
 }
 
 /// <summary>

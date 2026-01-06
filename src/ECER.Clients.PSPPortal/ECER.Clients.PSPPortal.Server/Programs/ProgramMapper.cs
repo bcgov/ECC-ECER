@@ -23,5 +23,8 @@ internal sealed class ProgramMapper : Profile
     
     CreateMap<Course, Managers.Registry.Contract.Programs.Course>()
       .ReverseMap();
+    
+    CreateMap<AreaOfInstruction, Managers.Registry.Contract.Programs.AreaOfInstruction>()
+      .ReverseMap();
   }
 }

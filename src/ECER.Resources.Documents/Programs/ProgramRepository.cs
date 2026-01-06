@@ -29,6 +29,7 @@ internal sealed class ProgramRepository : IProgramRepository
     var results = context.From(programs)
       .Join()
       .Include(c => c.ecer_course_Programid)
+      .IncludeNested(t => t.ecer_courseprovincialrequirement_CourseId)
       .Execute()
       .ToList();
 
