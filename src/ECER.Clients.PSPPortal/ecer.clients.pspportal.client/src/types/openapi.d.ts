@@ -13,6 +13,15 @@ declare namespace Components {
                 [name: string]: OidcAuthenticationSettings;
             } | null;
         }
+        export interface AreaOfInstruction {
+            id?: string | null;
+            name?: string | null;
+            programTypes?: ProgramTypes[] | null;
+            minimumHours?: number | null; // int32
+        }
+        export interface AreaOfInstructionListResponse {
+            areaOfInstruction?: AreaOfInstruction[] | null;
+        }
         export type Auspice = "ContinuingEducation" | "PublicOOP" | "Private" | "Public";
         export interface Communication {
             id?: string | null;
@@ -69,6 +78,16 @@ declare namespace Components {
             countryName?: string | null;
             countryCode?: string | null;
             isICRA?: boolean;
+        }
+        export interface Course {
+            courseNumber: string;
+            courseTitle?: string | null;
+            courseAreaOfInstruction?: CourseAreaOfInstruction[] | null;
+            programType?: string | null;
+        }
+        export interface CourseAreaOfInstruction {
+            courseAreaOfInstructionId?: string | null;
+            newHours?: string | null;
         }
         export interface DraftProgramResponse {
             program?: Program;
@@ -127,6 +146,8 @@ declare namespace Components {
             id?: string | null;
             pspProgramRepresentativeId?: string | null;
             inviteType?: InviteType;
+            bceidBusinessName?: string | null;
+            isLinked?: boolean;
         }
         export interface PortalInvitationQueryResult {
             portalInvitation?: PortalInvitation;
@@ -148,9 +169,11 @@ declare namespace Components {
             postSecondaryInstituteName?: string | null;
             startDate?: string | null; // date-time
             endDate?: string | null; // date-time
-            programTypes?: string[] | null;
+            programTypes?: ProgramTypes[] | null;
+            courses?: Course[] | null;
         }
         export type ProgramStatus = "Draft" | "UnderReview" | "Approved" | "Denied" | "Inactive";
+        export type ProgramTypes = "Basic" | "SNE" | "ITE";
         export interface Province {
             provinceId?: string | null;
             provinceName?: string | null;
@@ -199,6 +222,7 @@ declare namespace Components {
             token?: string | null;
             programRepresentativeId?: string | null;
             bceidBusinessId?: string | null;
+            bceidBusinessName?: string | null;
             profile: /* User profile information */ PspUserProfile;
         }
         export interface SaveDraftProgramRequest {
@@ -227,6 +251,11 @@ declare namespace Components {
     }
 }
 declare namespace Paths {
+    namespace AreaOfInstructionGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.AreaOfInstructionListResponse;
+        }
+    }
     namespace CommunicationPut {
         namespace Parameters {
             export type Id = string;
@@ -510,6 +539,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CountryGet.Responses.$200>
   /**
+   * area_of_instruction_get - Handles area of instruction queries
+   */
+  'area_of_instruction_get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AreaOfInstructionGet.Responses.$200>
+  /**
    * version_get - Returns the version information
    */
   'version_get'(
@@ -709,6 +746,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CountryGet.Responses.$200>
+  }
+  ['/api/areaofinstructionlist']: {
+    /**
+     * area_of_instruction_get - Handles area of instruction queries
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AreaOfInstructionGet.Responses.$200>
   }
   ['/api/version']: {
     /**
@@ -920,6 +967,8 @@ export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
 
 
 export type ApplicationConfiguration = Components.Schemas.ApplicationConfiguration;
+export type AreaOfInstruction = Components.Schemas.AreaOfInstruction;
+export type AreaOfInstructionListResponse = Components.Schemas.AreaOfInstructionListResponse;
 export type Auspice = Components.Schemas.Auspice;
 export type Communication = Components.Schemas.Communication;
 export type CommunicationDocument = Components.Schemas.CommunicationDocument;
@@ -929,6 +978,8 @@ export type CommunicationStatus = Components.Schemas.CommunicationStatus;
 export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults = Components.Schemas.CommunicationsStatusResults;
 export type Country = Components.Schemas.Country;
+export type Course = Components.Schemas.Course;
+export type CourseAreaOfInstruction = Components.Schemas.CourseAreaOfInstruction;
 export type DraftProgramResponse = Components.Schemas.DraftProgramResponse;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type FileResponse = Components.Schemas.FileResponse;
@@ -944,6 +995,7 @@ export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQue
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type Program = Components.Schemas.Program;
 export type ProgramStatus = Components.Schemas.ProgramStatus;
+export type ProgramTypes = Components.Schemas.ProgramTypes;
 export type Province = Components.Schemas.Province;
 export type PspRegistrationError = Components.Schemas.PspRegistrationError;
 export type PspRegistrationErrorResponse = Components.Schemas.PspRegistrationErrorResponse;

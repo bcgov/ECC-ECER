@@ -56,11 +56,12 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
   
-  public string programId => testProgram.Id.ToString();
+  public string programId => testProgram.Id.ToString(); 
+  public string courseId => testCourse.Id.ToString();
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
   public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
-  public IEnumerable<ProgramTypes> AreaOfInstructionProgramTypes => AreaOfInstructionProgramTypeValues;
+  public static IEnumerable<ProgramTypes> AreaOfInstructionProgramTypes => AreaOfInstructionProgramTypeValues;
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -168,7 +169,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute)
   {
-    var course = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_Name == "Draft-Test");
     string[] sneProgramTypes = { "SNE" };
     var program = new ecer_Program
     {
@@ -228,12 +228,15 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     if (institute == null)
     {
       var instituteId = Guid.NewGuid();
+      var bceidId = Guid.NewGuid();
       institute = new ecer_PostSecondaryInstitute
       {
         Id = instituteId,
         ecer_PostSecondaryInstituteId = instituteId,
         ecer_Name = instituteName,
-        ecer_City = "Victoria"
+        ecer_City = "Victoria",
+        ecer_BusinessBCeID = bceidId.ToString(),
+        ecer_BCeIDBusinessName = "testBceidName"
       };
 
       context.AddObject(institute);

@@ -169,6 +169,7 @@ public class PspUserHandlers(
     {
       // Save the bceid business id to the post secondary institute
       postSecondaryInstitution.BceidBusinessId = request.BceidBusinessId;
+      postSecondaryInstitution.BceidBusinessName = request.BceidBusinessName;
       await postSecondaryInstituteRepository.Save(postSecondaryInstitution, cancellationToken);
     }
     

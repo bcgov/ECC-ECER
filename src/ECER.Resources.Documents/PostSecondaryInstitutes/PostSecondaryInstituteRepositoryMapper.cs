@@ -20,10 +20,12 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
       .ForMember(d => d.Country, opts => opts.MapFrom(s => s.ecer_Country))
       .ForMember(d => d.PostalCode, opts => opts.MapFrom(s => s.ecer_ZipPostalCode))
       .ForMember(d => d.BceidBusinessId, opts => opts.MapFrom(s => s.ecer_BusinessBCeID))
+      .ForMember(d => d.BceidBusinessName, opts => opts.MapFrom(s => s.ecer_BCeIDBusinessName))
       .ReverseMap()
       .ForMember(d => d.ecer_PostSecondaryInstituteId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
       .ForMember(d => d.ecer_BusinessBCeID, opts => opts.MapFrom(s => s.BceidBusinessId))
+      .ForMember(d => d.ecer_BCeIDBusinessName, opts => opts.MapFrom(s => s.BceidBusinessName))
       .ForMember(d => d.ecer_ProvinceIdName, opts => opts.MapFrom(s => s.Province))
       .ValidateMemberList(MemberList.Source);
   }

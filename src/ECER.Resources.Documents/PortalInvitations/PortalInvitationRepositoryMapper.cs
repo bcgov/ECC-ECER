@@ -20,7 +20,8 @@ internal sealed class PortalInvitationMapper : Profile
       .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.ecer_ApplicationId == null ? null : s.ecer_ApplicationId.Id.ToString()))
       .ForMember(d => d.PspProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_psiprogramrepresentativeid == null ? null : s.ecer_psiprogramrepresentativeid.Id.ToString()))
       .ForMember(d => d.InviteType, opts => opts.MapFrom(s => s.ecer_Type))
-      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode));
+      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
+      ;
 
     CreateMap<PortalInvitationStatusCode, ecer_PortalInvitation_StatusCode>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
