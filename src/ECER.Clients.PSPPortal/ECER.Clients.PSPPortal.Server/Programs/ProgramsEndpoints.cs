@@ -112,7 +112,7 @@ public record Program
   public string? PostSecondaryInstituteName { get; set; }
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
-  public IEnumerable<string>? ProgramTypes { get; set; }
+  public IEnumerable<ProgramTypes>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
 }
 
