@@ -78,7 +78,13 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   name: "Profile",
   components: { Wizard, WizardHeader },
-  setup: async () => {
+  props: {
+    programId: {
+      type: String,
+      required: true
+    }
+  },
+  setup: async (props) => {
     const wizardStore = useWizardStore();
     const userStore = useUserStore();
     const alertStore = useAlertStore();
@@ -92,7 +98,7 @@ export default defineComponent({
     if (userProfile !== null) {
       userStore.setPspUserProfile(userProfile);
     }
-    await programStore.fetchPrograms();
+    await programStore.setDraftProgram(props.programId);
     //Initialize wizard
     await wizardStore.initializeWizard(programStore.applicationConfiguration, programStore.draftProgram);
 
@@ -161,8 +167,8 @@ export default defineComponent({
       this.wizardStore.decrementStep();
       this.programStore.draftProgram.portalStage = this.wizardStore.currentStepStage as ProgramStage;
     },
-    handleBack() {
-      this.programStore.saveDraft();
+    async handleBack() {
+      await this.programStore.saveDraft();
       this.decrementWizard();
 
     },

@@ -35,19 +35,18 @@ export const useProgramStore = defineStore("program", {
     }
   },
   actions: {
-    async fetchPrograms() {
+    async setDraftProgram(programId: string) {
       // Drop any existing draft program
       this.$reset();
 
-      const { data: programs } = await getPrograms();
+      const { data: programs } = await getPrograms(programId);
+      const program = programs && programs.length > 0 ? programs[0] : undefined;
 
-      const draftProgram = programs?.find((app) => app.status === "Draft");
-
-      if (draftProgram) {
-        if(!draftProgram.portalStage) {
-          draftProgram.portalStage = "ProgramOverview";
+      if (program) {
+        if(!program.portalStage) {
+          program.portalStage = "ProgramOverview";
         }
-        this.draftProgram = draftProgram;
+        this.draftProgram = program;
       }
 
       return programs;
