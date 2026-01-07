@@ -71,6 +71,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_completedcourse_Courseid = "ecer_completedcourse_Courseid";
 			public const string ecer_course_Campus_ecer_postsecondaryinstitute = "ecer_course_Campus_ecer_postsecondaryinstitute";
 			public const string ecer_course_CertificateTypeid = "ecer_course_CertificateTypeid";
+			public const string Referencingecer_course_FromCourseId = "ecer_course_FromCourseId";
 			public const string ecer_course_ProgramApplication_ecer_postsecond = "ecer_course_ProgramApplication_ecer_postsecond";
 			public const string ecer_course_Programid = "ecer_course_Programid";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
@@ -81,6 +82,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_courseprovincialrequirement_CourseId = "ecer_courseprovincialrequirement_CourseId";
 			public const string ecer_Description = "ecer_description";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
+			public const string ecer_FromCourseId = "ecer_fromcourseid";
+			public const string ecer_FromCourseIdName = "ecer_fromcourseidname";
 			public const string ecer_HasChanges = "ecer_haschanges";
 			public const string ecer_haschangesName = "ecer_haschangesname";
 			public const string ecer_Name = "ecer_name";
@@ -114,6 +117,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
+			public const string Referencedecer_course_FromCourseId = "Referencedecer_course_FromCourseId";
 			public const string StateCode = "statecode";
 			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
@@ -442,6 +446,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_description", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcourseid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_FromCourseId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_fromcourseid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_fromcourseid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcourseidname")]
+		public string ecer_FromCourseIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_fromcourseid"))
+				{
+					return this.FormattedValues["ecer_fromcourseid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1112,6 +1148,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_course_FromCourseId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_course_FromCourseId", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Course> Referencedecer_course_FromCourseId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_FromCourseId", Microsoft.Xrm.Sdk.EntityRole.Referenced);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_FromCourseId", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_courseprovincialrequirement_CourseId
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_courseprovincialrequirement_CourseId")]
@@ -1164,6 +1218,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_course_CertificateTypeid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_course_FromCourseId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcourseid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_course_FromCourseId", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Course Referencingecer_course_FromCourseId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_FromCourseId", Microsoft.Xrm.Sdk.EntityRole.Referencing);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_FromCourseId", Microsoft.Xrm.Sdk.EntityRole.Referencing, value);
 			}
 		}
 		

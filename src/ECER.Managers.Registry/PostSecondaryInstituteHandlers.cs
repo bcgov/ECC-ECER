@@ -48,6 +48,7 @@ public class PostSecondaryInstituteHandlers(
       Id = request.Institute.Id,
       Auspice = institute.Auspice,
       BceidBusinessId = institute.BceidBusinessId,
+      BceidBusinessName = institute.BceidBusinessName,
       City = institute.City,
       PostalCode = institute.PostalCode,
       Name = institute.Name,

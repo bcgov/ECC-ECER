@@ -19,6 +19,8 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public string? PspProgramRepresentativeId { get; set; }
   public InviteType? InviteType { get; set; }
   public PortalInvitationStatusCode? StatusCode { get; set; }
+  public string? BceidBusinessName { get; set; }
+  public bool IsLinked { get; set; }
 }
 
 public enum InviteType
