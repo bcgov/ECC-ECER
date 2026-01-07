@@ -21,6 +21,8 @@ internal sealed class PortalInvitationMapper : Profile
       .ForMember(d => d.PspProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_psiprogramrepresentativeid == null ? null : s.ecer_psiprogramrepresentativeid.Id.ToString()))
       .ForMember(d => d.InviteType, opts => opts.MapFrom(s => s.ecer_Type))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
+      .ForMember(d => d.BceidBusinessName, opts => opts.Ignore())
+      .ForMember(d => d.IsLinked, opts => opts.Ignore())
       ;
 
     CreateMap<PortalInvitationStatusCode, ecer_PortalInvitation_StatusCode>()
