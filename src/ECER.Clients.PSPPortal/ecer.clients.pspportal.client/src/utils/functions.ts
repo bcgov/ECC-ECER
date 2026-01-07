@@ -47,7 +47,7 @@ export function humanFileSize(bytes: number, decimals = 2) {
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + sizes[i];
+  return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + (sizes[i] || "Bigger than YB");
 }
 
 /**
@@ -58,13 +58,14 @@ export function humanFileSize(bytes: number, decimals = 2) {
 export function parseHumanFileSize(humanSize: string): number {
   // Trim the input and split into size and unit
   const sizePattern = /^(\d+(\.\d+)?)\s?([a-zA-Z]+)$/;
-  const match = sizePattern.exec(humanSize.trim());
+  const match = humanSize.trim().match(sizePattern);
+
   if (!match) {
     throw new Error("Invalid file size format");
   }
 
-  const size = parseFloat(match[1]); // Convert the number part to a float
-  const unit = match[3].toUpperCase(); // Get the unit part and convert to uppercase for consistency
+  const size = Number.parseFloat(match[1] || ""); // Convert the number part to a float
+  const unit = (match[3] || "").toUpperCase(); // Get the unit part and convert to uppercase for consistency
 
   // Define units and their corresponding multiplier in bytes
   const units: { [key: string]: number } = {
@@ -210,7 +211,7 @@ export function parseFirstNameLastName(name: string) {
 
   let nameArray = name.split(" ");
   if (nameArray.length === 1) {
-    lastName = nameArray[0];
+    lastName = nameArray[0] || "";
   } else if (nameArray.length > 1) {
     lastName = nameArray.pop() || "";
     firstName = nameArray.join(" ");
