@@ -25,7 +25,7 @@ internal class ProgramMapper : Profile
     CreateMap<Contract.Programs.Course, Course>()
       .ReverseMap();
     
-    CreateMap<Contract.Programs.AreaOfInstruction, AreaOfInstruction>()
+    CreateMap<Contract.Programs.CourseAreaOfInstruction, CourseAreaOfInstruction>()
       .ReverseMap();
   }
 }
