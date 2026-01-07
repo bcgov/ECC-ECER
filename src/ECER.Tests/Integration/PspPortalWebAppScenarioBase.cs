@@ -102,8 +102,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, "comm2", null);
     
-    testProgram = AddProgram(context, testPostSecondaryInstitute);
-    testCourse = AddCourse(context, testProgram);
+    testProgram = GetOrAddProgram(context, testPostSecondaryInstitute);
+    testCourse = GetOrAddCourse(context, testProgram);
     
     context.SaveChanges();
 
@@ -146,29 +146,35 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return requirement;
   }
   
-  private ecer_Course AddCourse(EcerContext context, ecer_Program program)
+  private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program)
   {
-    var course = new ecer_Course
+    var course = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == "101");
+    
+    if (course == null)
     {
-      ecer_Code = "101",
-      ecer_CourseName = "Course 101",
-      ecer_NewCourseHourDecimal = 20.00m,
-      ecer_ProgramType = ecer_PSIProgramType.SNE,
-      ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
-    };
-    context.AddObject(course);
+      course = new ecer_Course
+      {
+        ecer_Code = "101",
+        ecer_CourseName = "Course 101",
+        ecer_NewCourseHourDecimal = 20.00m,
+        ecer_ProgramType = ecer_PSIProgramType.SNE,
+        ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
+      };
+      context.AddObject(course);
+    }
 
     return course;
   }
 
-  private ecer_Program AddProgram(EcerContext context, ecer_PostSecondaryInstitute institute)
+  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute)
   {
+    var course = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_Name == "Draft-Test");
     string[] sneProgramTypes = { "SNE" };
     var program = new ecer_Program
     {
       StatusCode = ecer_Program_StatusCode.RequiresReview,
       ecer_ProgramId = Guid.NewGuid(),
-      ecer_Name = "Draft",
+      ecer_Name = "Draft-Test",
       ecer_PortalStage = "stage1",
       ecer_StartDate = DateTime.UtcNow.Date,
       ecer_EndDate = DateTime.UtcNow.Date.AddYears(1),
