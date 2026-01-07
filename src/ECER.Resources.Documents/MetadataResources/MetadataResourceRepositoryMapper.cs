@@ -39,6 +39,16 @@ internal class MetadataResourceRepositoryMapper : Profile
         .ForMember(dest => dest.ecer_EligibleforICRA, opt => opt.MapFrom(src => src.IsICRA))
         .ForMember(dest => dest.ecer_ShortName, opt => opt.MapFrom(src => src.CountryCode));
 
+    CreateMap<ecer_ProvincialRequirement, AreaOfInstruction>(MemberList.Source)
+        .ForCtorParam(nameof(AreaOfInstruction.Id), opt => opt.MapFrom(src => src.ecer_ProvincialRequirementId))
+        .ForCtorParam(nameof(AreaOfInstruction.Name), opt => opt.MapFrom(src => src.ecer_Name))
+        .ForCtorParam(nameof(AreaOfInstruction.ProgramTypes), opt => opt.MapFrom(src =>
+          src.ecer_CertificateLevels == null
+            ? Array.Empty<string>()
+            : src.ecer_CertificateLevels.Select(level => level.ToString())))
+        .ForCtorParam(nameof(AreaOfInstruction.MinimumHours), opt => opt.MapFrom(src => src.ecer_MinimumHours))
+        .ValidateMemberList(MemberList.Destination);
+
     CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)
        .ForCtorParam(nameof(PostSecondaryInstitution.Id), opt => opt.MapFrom(src => src.ecer_PostSecondaryInstituteId))
        .ForCtorParam(nameof(PostSecondaryInstitution.Name), opt => opt.MapFrom(src => src.ecer_Name))

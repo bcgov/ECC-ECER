@@ -9,6 +9,7 @@ public class MetadataHandlers(
    IMetadataResourceRepository metadataResourceRepository,
    IMapper mapper) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
    IRequestHandler<Contract.Metadatas.CountriesQuery, CountriesQueryResults>,
+   IRequestHandler<Contract.Metadatas.AreaOfInstructionsQuery, AreaOfInstructionsQueryResults>,
    IRequestHandler<Contract.Metadatas.CertificationComparisonQuery, CertificationComparisonQueryResults>,
    IRequestHandler<Contract.Metadatas.PostSecondaryInstitutionsQuery, PostSecondaryInstitutionsQueryResults>,
    IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>,
@@ -54,6 +55,14 @@ public class MetadataHandlers(
 
     var provinces = await metadataResourceRepository.QueryProvinces(new Resources.Documents.MetadataResources.ProvincesQuery() { ById = request.ById }, cancellationToken);
     return new ProvincesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.Province>>(provinces)!);
+  }
+
+  public async Task<AreaOfInstructionsQueryResults> Handle(Contract.Metadatas.AreaOfInstructionsQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var instructions = await metadataResourceRepository.QueryAreaOfInstructions(new Resources.Documents.MetadataResources.AreaOfInstructionsQuery() { ById = request.ById }, cancellationToken);
+    return new AreaOfInstructionsQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.AreaOfInstruction>>(instructions)!);
   }
 
   public async Task<SystemMessagesQueryResults> Handle(Contract.Metadatas.SystemMessagesQuery request, CancellationToken cancellationToken)

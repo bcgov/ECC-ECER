@@ -124,3 +124,9 @@ public enum ProgramStatus
   Denied,
   Inactive
 }
+public enum ProgramTypes
+{
+  Basic,
+  SNE,
+  ITE
+}

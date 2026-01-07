@@ -1,5 +1,6 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
+using ECER.Clients.PSPPortal.Server.Programs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,12 +33,16 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_PostSecondaryInstitute otherPostSecondaryInstitute = null!;
   private ecer_ECEProgramRepresentative otherInstituteRepresentative = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
+  private ecer_ProvincialRequirement testAreaOfInstruction = null!;
   private UserIdentity testPspIdentity = null!;
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
   private ecer_Program testProgram = null!;
   private ecer_Course testCourse = null!;
   
+  private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
+  private static readonly ProgramTypes[] AreaOfInstructionProgramTypeValues = { ProgramTypes.ITE, ProgramTypes.SNE };
+  private const int DefaultAreaOfInstructionMinimumHours = 40;
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedPspUserIdentity => testPspIdentity;
@@ -52,6 +57,10 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string communicationTwoId => testCommunication2.Id.ToString();
   
   public string programId => testProgram.Id.ToString();
+  public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
+  public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
+  public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
+  public IEnumerable<ProgramTypes> AreaOfInstructionProgramTypes => AreaOfInstructionProgramTypeValues;
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -88,6 +97,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, $"{TestRunId}psp_institute_other");
     otherInstituteRepresentative = GetOrAddProgramRepresentative(context, otherPostSecondaryInstitute, $"{TestRunId}psp_rep_other", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
+    testAreaOfInstruction = GetOrAddAreaOfInstruction(context);
     
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, "comm2", null);
@@ -102,6 +112,38 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     context.LoadProperty(testProgramRepresentative, ecer_ECEProgramRepresentative.Fields.ecer_authentication_eceprogramrepresentative);
 
     context.SaveChanges();
+  }
+
+  private ecer_ProvincialRequirement GetOrAddAreaOfInstruction(EcerContext context)
+  {
+    var instructionName = $"{TestRunId}psp_area_instruction";
+    var requirement = context.ecer_ProvincialRequirementSet.FirstOrDefault(r => r.ecer_Name == instructionName);
+
+    if (requirement == null)
+    {
+      var requirementId = Guid.NewGuid();
+      requirement = new ecer_ProvincialRequirement
+      {
+        Id = requirementId,
+        ecer_ProvincialRequirementId = requirementId,
+        ecer_Name = instructionName,
+        ecer_MinimumHours = DefaultAreaOfInstructionMinimumHours,
+        ecer_CertificateLevels = AreaOfInstructionCertificateLevels,
+        StateCode = ecer_provincialrequirement_statecode.Active,
+        StatusCode = ecer_ProvincialRequirement_StatusCode.Active
+      };
+      context.AddObject(requirement);
+    }
+    else
+    {
+      requirement.ecer_MinimumHours = DefaultAreaOfInstructionMinimumHours;
+      requirement.ecer_CertificateLevels = AreaOfInstructionCertificateLevels;
+      requirement.StateCode = ecer_provincialrequirement_statecode.Active;
+      requirement.StatusCode = ecer_ProvincialRequirement_StatusCode.Active;
+      context.UpdateObject(requirement);
+    }
+
+    return requirement;
   }
   
   private ecer_Course AddCourse(EcerContext context, ecer_Program program)
