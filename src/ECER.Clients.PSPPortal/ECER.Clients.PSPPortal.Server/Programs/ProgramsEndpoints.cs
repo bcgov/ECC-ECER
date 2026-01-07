@@ -85,6 +85,21 @@ public record SaveDraftProgramRequest(Program Program);
 
 public record DraftProgramResponse(Program Program);
 
+public record CourseAreaOfInstruction
+{
+  public string? CourseAreaOfInstructionId { get; set; }
+  public string? NewHours { get; set; }
+}
+
+public record Course
+{
+  [Required]
+  public string CourseNumber { get; set; } = null!;
+  public string? CourseTitle { get; set; }
+  public IEnumerable<CourseAreaOfInstruction>? CourseAreaOfInstruction { get; set; }
+  public string? ProgramType { get; set; }
+}
+
 public record Program
 {
   public string? Id { get; set; }
@@ -98,6 +113,7 @@ public record Program
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
   public IEnumerable<ProgramTypes>? ProgramTypes { get; set; }
+  public IEnumerable<Course>? Courses { get; set; }
 }
 
 public enum ProgramStatus

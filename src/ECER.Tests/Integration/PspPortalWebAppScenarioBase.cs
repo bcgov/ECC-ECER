@@ -37,6 +37,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private UserIdentity testPspIdentity = null!;
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
+  private ecer_Program testProgram = null!;
+  private ecer_Course testCourse = null!;
+  
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
   private static readonly ProgramTypes[] AreaOfInstructionProgramTypeValues = { ProgramTypes.ITE, ProgramTypes.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
@@ -52,6 +55,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
+  
+  public string programId => testProgram.Id.ToString();
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
   public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
@@ -96,7 +101,10 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, "comm2", null);
-
+    
+    testProgram = GetOrAddProgram(context, testPostSecondaryInstitute);
+    testCourse = GetOrAddCourse(context, testProgram);
+    
     context.SaveChanges();
 
     //load dependent properties
@@ -136,6 +144,46 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     }
 
     return requirement;
+  }
+  
+  private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program)
+  {
+    var course = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == "101");
+    
+    if (course == null)
+    {
+      course = new ecer_Course
+      {
+        ecer_Code = "101",
+        ecer_CourseName = "Course 101",
+        ecer_NewCourseHourDecimal = 20.00m,
+        ecer_ProgramType = ecer_PSIProgramType.SNE,
+        ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
+      };
+      context.AddObject(course);
+    }
+
+    return course;
+  }
+
+  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute)
+  {
+    var course = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_Name == "Draft-Test");
+    string[] sneProgramTypes = { "SNE" };
+    var program = new ecer_Program
+    {
+      StatusCode = ecer_Program_StatusCode.RequiresReview,
+      ecer_ProgramId = Guid.NewGuid(),
+      ecer_Name = "Draft-Test",
+      ecer_PortalStage = "stage1",
+      ecer_StartDate = DateTime.UtcNow.Date,
+      ecer_EndDate = DateTime.UtcNow.Date.AddYears(1),
+      ecer_ProgramTypes = sneProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)),
+      ecer_PostSecondaryInstitution = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
+    };
+    context.AddObject(program);
+
+    return program;
   }
   
   private ecer_Communication GetOrAddCommunication(EcerContext context, string message, Guid? parentCommunicationId)

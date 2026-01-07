@@ -24,6 +24,12 @@ internal sealed class ProgramMapper : Profile
     CreateMap<ProgramStatus, Managers.Registry.Contract.Programs.ProgramStatus>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
+    
+    CreateMap<Course, Managers.Registry.Contract.Programs.Course>()
+      .ReverseMap();
+    
+    CreateMap<CourseAreaOfInstruction, Managers.Registry.Contract.Programs.CourseAreaOfInstruction>()
+      .ReverseMap();
   }
 
   private static ProgramTypes[]? ParseProgramTypes(IEnumerable<string>? programTypes)
