@@ -1,19 +1,11 @@
 <template>
   <div>
-    <v-progress-linear
-      v-if="loading"
-      indeterminate
-      color="primary"
-    ></v-progress-linear>
-    
-    <ProgramWizard
-      v-else-if="isDraftOrInProgress && program"
-      :program-id="programId"
-      :program="program"
-    />
-    <!--v-else for Derek -->
-    <div v-else-if="!loading && !program" class="text-center pa-8">
-      <p>Program not found</p>
+    <v-progress-linear v-if="loading" indeterminate color="primary"></v-progress-linear>
+
+    <ProgramWizard v-else-if="isDraftOrInProgress && program" :program-id="programId" :program="program" />
+
+    <div v-else-if="program">
+      <ProgramDetail :program="program" />
     </div>
   </div>
 </template>
@@ -24,12 +16,14 @@ import { getPspUserProfile } from "@/api/psp-rep";
 import { getPrograms } from "@/api/program";
 import { useUserStore } from "@/store/user";
 import ProgramWizard from "./ProgramWizard.vue";
+import ProgramDetail from "../ProgramDetail.vue";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "Program",
   components: {
     ProgramWizard,
+    ProgramDetail,
   },
   props: {
     programId: {
@@ -71,7 +65,7 @@ export default defineComponent({
     async loadProgram() {
       this.loading = true;
       try {
-        const { data: programs } = await getPrograms(this.programId);
+        const { data: programs } = await getPrograms(this.programId, ["Draft", "Denied", "Approved", "UnderReview", "ChangeRequestInProgress", "Inactive"]);
         const program = programs && programs.length > 0 ? programs[0] : null;
         this.program = program || null;
       } catch (error) {

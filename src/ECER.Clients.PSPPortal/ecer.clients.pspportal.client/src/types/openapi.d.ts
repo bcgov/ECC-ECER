@@ -173,7 +173,7 @@ declare namespace Components {
             programTypes?: ProgramTypes[] | null;
             courses?: Course[] | null;
         }
-        export type ProgramStatus = "Draft" | "UnderReview" | "Approved" | "Denied" | "Inactive";
+        export type ProgramStatus = "Draft" | "UnderReview" | "Approved" | "Denied" | "Inactive" | "ChangeRequestInProgress";
         export type ProgramTypes = "Basic" | "SNE" | "ITE";
         export interface Province {
             provinceId?: string | null;

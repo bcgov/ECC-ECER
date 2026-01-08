@@ -57,5 +57,6 @@ public enum ProgramStatus
   UnderReview,
   Approved,
   Denied,
-  Inactive
+  Inactive,
+  ChangeRequestInProgress
 }

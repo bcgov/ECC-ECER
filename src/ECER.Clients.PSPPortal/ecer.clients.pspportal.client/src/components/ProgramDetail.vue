@@ -6,7 +6,7 @@
         <v-row>
           <v-col>
             <div>
-              <strong>{{ programProfile?.name }}</strong>
+              <strong>{{ program?.name }}</strong>
             </div>
           </v-col>
         </v-row>
@@ -38,7 +38,7 @@
               <p class="small">Institution name</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">{{ programProfile?.postSecondaryInstituteName }}</p>
+              <p class="small font-weight-bold">{{ program?.postSecondaryInstituteName }}</p>
             </v-col>
           </v-row>
           <v-row>
@@ -46,7 +46,7 @@
               <p class="small">Start date</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">{{ programProfile?.startDate }}</p>
+              <p class="small font-weight-bold">{{ program?.startDate }}</p>
             </v-col>
           </v-row>
           <v-row>
@@ -54,7 +54,7 @@
               <p class="small">End date</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">{{ programProfile?.endDate }}</p>
+              <p class="small font-weight-bold">{{ program?.endDate }}</p>
             </v-col>
           </v-row>
           <v-row>
@@ -62,7 +62,7 @@
               <p class="small">Program types(s)</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">{{ programProfile?.programTypes?.join(", ") }}</p>
+              <p class="small font-weight-bold">{{ program?.programTypes?.join(", ") }}</p>
             </v-col>
           </v-row>
           <v-row>
@@ -76,15 +76,12 @@
         </v-card-text>
       </v-card>
       <!-- Area of instructions -->
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="Basic" :programProfile="programProfile" />
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="ITE" :programProfile="programProfile" />
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="SNE" :programProfile="programProfile" />
+      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="Basic" :programProfile="program" />
+      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="ITE" :programProfile="program" />
+      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="SNE" :programProfile="program" />
       <v-row v-if="showUpdateProgramProfileButton">
-        <v-col class="d-flex justify-end">
-          <v-btn rounded="lg" variant="text">
-            <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
-            <div class="small">Update program profile TODO: Not Implemented</div>
-          </v-btn>
+        <v-col color="primary">
+          <v-btn rounded="lg" color="primary">Update program profile TODO: Not Implemented</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -99,6 +96,7 @@ import { type Components } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
 import { getPrograms } from "@/api/program";
+import { DateTime } from "luxon";
 
 import Loading from "./Loading.vue";
 import ProgramDetailAreaOfInstructionCard from "./ProgramDetailAreaOfInstructionCard.vue";
@@ -111,9 +109,6 @@ export default defineComponent({
     const { mdAndDown, mobile } = useDisplay();
     const router = useRouter();
 
-    const programProfiles = await getPrograms();
-    console.log(programProfiles);
-
     return {
       loadingStore,
       mdAndDown,
@@ -121,48 +116,45 @@ export default defineComponent({
       router,
     };
   },
+  async mounted() {
+    this.programProfiles = (await getPrograms(undefined, ["Draft", "Denied", "Approved", "UnderReview", "ChangeRequestInProgress", "Inactive"]))?.data || [];
+  },
   data() {
     return {
-      programProfile: undefined as Components.Schemas.Program | undefined,
+      programProfiles: [] as Components.Schemas.Program[],
     };
   },
   props: {
-    programId: {
-      type: String,
+    program: {
+      type: Object as () => Components.Schemas.Program,
       required: true,
     },
   },
-
-  // CreateMap<ProgramStatus, ecer_Program_StatusCode>()
-  // .ConvertUsing(status =>
-  //     status == ProgramStatus.Draft ? ecer_Program_StatusCode.RequiresReview :
-  //     status == ProgramStatus.UnderReview ? ecer_Program_StatusCode.UnderRegistryReview :
-  //     status == ProgramStatus.Approved ? ecer_Program_StatusCode.RegistryReviewComplete :
-  //     status == ProgramStatus.Denied ? ecer_Program_StatusCode.Denied :
-  //     status == ProgramStatus.Inactive ? ecer_Program_StatusCode.Inactive :
-  //                                           ecer_Program_StatusCode.RequiresReview);
   computed: {
     showUpdateProgramProfileButton(): boolean {
-      if (this.programProfile?.status === "Inactive") {
+      if (this.program?.status === "Inactive") {
         return false;
       }
 
-      //registry review complete
-      if (this.programProfile?.status === "Approved") {
+      if (this.program?.status === "Approved" || this.program?.status === "UnderReview" || this.program?.status === "ChangeRequestInProgress") {
         return true;
       }
 
-      if (this.programProfile?.status === "UnderReview") {
-        return true;
+      if (!this.thisIsTheLatestProfile) {
+        //another profile exists for the next year
+        return false;
       }
-      //need change request in progress
 
       //default
       return false;
     },
-  },
-  async mounted() {
-    this.programProfile = (await getPrograms(this.programId)).data?.[0];
+    thisIsTheLatestProfile(): boolean {
+      //check if there is a profile that exists next year
+      this.programProfiles?.every((programProfile) => {
+        return DateTime.fromISO(programProfile?.startDate || "") <= DateTime.fromISO(this.program?.startDate || "");
+      });
+      return true;
+    },
   },
   methods: {
     printPage() {
