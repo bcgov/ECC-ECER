@@ -26,12 +26,23 @@ internal sealed class ProgramRepository : IProgramRepository
 
     programs = programs.OrderByDescending(p => p.CreatedOn);
 
-    var results = context.From(programs)
-      .Join()
-      .Include(c => c.ecer_course_Programid)
-      .IncludeNested(t => t.ecer_courseprovincialrequirement_CourseId)
-      .Execute()
-      .ToList();
+    List<ecer_Program> results;
+
+    if (query.ById != null)
+    {
+      results = context.From(programs)
+        .Join()
+        .Include(c => c.ecer_course_Programid)
+        .IncludeNested(t => t.ecer_courseprovincialrequirement_CourseId)
+        .Execute()
+        .ToList();
+    }
+    else
+    {
+      results = context.From(programs)
+        .Execute()
+        .ToList();
+    }
 
     if (query.ByPostSecondaryInstituteId != null)
     {
