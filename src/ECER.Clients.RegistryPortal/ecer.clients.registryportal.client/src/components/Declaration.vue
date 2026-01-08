@@ -101,12 +101,17 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.checkboxValue = this.applicationStore.draftApplication.signedDate ? true : false;
+    this.checkboxValue = !!this.applicationStore.draftApplication.signedDate;
     this.name = this.userStore.fullName;
-    this.date =
-      this.applicationStore.hasDraftApplication && this.applicationStore?.draftApplication?.signedDate
-        ? formatDate(this.applicationStore?.draftApplication?.signedDate, "yyyy-MM-dd")
-        : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+
+    const signedDateRaw = this.applicationStore?.draftApplication?.signedDate as string | undefined;
+
+    const fromDynamics =
+      this.applicationStore.hasDraftApplication && signedDateRaw
+        ? signedDateRaw.split("T")[0]
+        : undefined;
+
+    this.date = fromDynamics ?? (DateTime.now().toISODate() ?? "");
   },
   methods: {
     async continueClick() {
