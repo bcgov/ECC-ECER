@@ -26,6 +26,7 @@ public record CourseAreaOfInstruction()
 {
   public string? CourseAreaOfInstructionId { get; set; }
   public float NewHours { get; set; }
+  public string? AreaOfInstructionId { get; set; }
 }
 
 public record Program(string? Id, string PostSecondaryInstituteId)
