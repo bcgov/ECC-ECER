@@ -77,20 +77,13 @@ const router = createRouter({
       component: () => import("./components/pages/Program.vue"),
       name: "programDetail",
       meta: { requiresAuth: true, requiresVerification: true },
-      props: true
+      props: true,
     },
     {
       path: "/program-profiles",
       component: () => import("./components/pages/ProgramProfiles.vue"),
       name: "program-profiles",
       meta: { requiresAuth: true },
-    },
-    {
-      path: "/program/profile/detail/:programId",
-      component: () => import("./components/ProgramDetail.vue"),
-      name: "program-detail",
-      meta: { requiresAuth: true, requiresVerification: true },
-      props: true,
     },
     {
       path: "/silent-callback",
