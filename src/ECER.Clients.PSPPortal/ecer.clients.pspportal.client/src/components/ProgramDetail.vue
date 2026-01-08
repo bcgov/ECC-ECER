@@ -70,15 +70,15 @@
               <p class="small">Program name</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">TODO I think this is missing from the mappings</p>
+              <p class="small font-weight-bold">{{ program?.name }}</p>
             </v-col>
           </v-row>
         </v-card-text>
       </v-card>
       <!-- Area of instructions -->
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="Basic" :programProfile="program" />
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="ITE" :programProfile="program" />
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="SNE" :programProfile="program" />
+      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="Basic" :program="program" />
+      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="ITE" :program="program" />
+      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="SNE" :program="program" />
       <v-row v-if="showUpdateProgramProfileButton">
         <v-col color="primary">
           <v-btn rounded="lg" color="primary">Update program profile TODO: Not Implemented</v-btn>

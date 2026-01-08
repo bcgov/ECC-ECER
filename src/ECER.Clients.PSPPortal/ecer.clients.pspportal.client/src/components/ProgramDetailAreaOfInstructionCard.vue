@@ -13,10 +13,10 @@
           <p class="small">Program is offered</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ programProfile?.programTypes?.includes(programType) ? "Yes" : "No" }}</p>
+          <p class="small font-weight-bold">{{ program?.programTypes?.includes(programType) ? "Yes" : "No" }}</p>
         </v-col>
       </v-row>
-      <template v-if="programProfile?.programTypes?.includes(programType)">
+      <template v-if="program?.programTypes?.includes(programType)">
         <v-row class="mb-4" no-gutters>
           <v-col cols="4">Area of Instruction</v-col>
           <v-col cols="4">Course number and name</v-col>
@@ -83,7 +83,7 @@ export default defineComponent({
   },
 
   props: {
-    programProfile: {
+    program: {
       type: Object as PropType<Components.Schemas.Program>,
       required: true,
       default: () => ({}),
@@ -108,26 +108,7 @@ export default defineComponent({
     },
     // this method will return a Map that looks like this {Key = AreaOfInstructionId, Values = Array of courses with name and hours}
     getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(): AreaOfInstructionWithCourseHoursMap | undefined {
-      let filteredCourses = this.programProfile?.courses?.filter((course: Components.Schemas.Course) => course.programType === this.programType); //filter out relevant courses here
-      let courseAreaOfInstructionMap = new Map();
-      filteredCourses?.forEach((course: Components.Schemas.Course) => {
-        course.courseAreaOfInstruction?.forEach((area: Components.Schemas.CourseAreaOfInstruction) => {
-          if (courseAreaOfInstructionMap.has(area.areaOfInstructionId)) {
-            //areaOfInstructionExists -> append to array
-            courseAreaOfInstructionMap.get(area.areaOfInstructionId).push({ courseName: course.courseNumber, hours: area.newHours });
-          } else {
-            //create new areaOfInstruction key
-            courseAreaOfInstructionMap.set(area.areaOfInstructionId, [{ courseName: course.courseNumber, hours: area.newHours }]);
-          }
-        });
-      });
-      return courseAreaOfInstructionMap;
-    },
-  },
-  mounted() {},
-  methods: {
-    getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction2(): AreaOfInstructionWithCourseHoursMap | undefined {
-      let filteredCourses = this.programProfile?.courses?.filter((course: Components.Schemas.Course) => course.programType === this.programType); //filter out relevant courses here
+      let filteredCourses = this.program?.courses?.filter((course: Components.Schemas.Course) => course.programType === this.programType); //filter out relevant courses here
       let courseAreaOfInstructionMap = new Map();
       filteredCourses?.forEach((course: Components.Schemas.Course) => {
         course.courseAreaOfInstruction?.forEach((area: Components.Schemas.CourseAreaOfInstruction) => {
