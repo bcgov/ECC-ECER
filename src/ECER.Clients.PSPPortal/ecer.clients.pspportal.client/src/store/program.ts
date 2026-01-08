@@ -35,22 +35,11 @@ export const useProgramStore = defineStore("program", {
     }
   },
   actions: {
-    async fetchPrograms() {
-      // Drop any existing draft program
-      this.$reset();
-
-      const { data: programs } = await getPrograms();
-
-      const draftProgram = programs?.find((app) => app.status === "Draft");
-
-      if (draftProgram) {
-        if(!draftProgram.portalStage) {
-          draftProgram.portalStage = "ProgramOverview";
-        }
-        this.draftProgram = draftProgram;
+    setDraftProgramFromProfile(program: Components.Schemas.Program): void {
+      if (!program.portalStage) {
+        program.portalStage = "ProgramOverview";
       }
-
-      return programs;
+      this.draftProgram = program;
     },
     prepareDraftProgramFromWizard() {
       const wizardStore = useWizardStore();
