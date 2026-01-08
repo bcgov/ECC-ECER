@@ -29,6 +29,7 @@ public record PostSecondaryInstitute
   public string Id { get; set; } = null!;
   public string? Name { get; set; }
   public string? BceidBusinessId { get; set; }
+  public string? BceidBusinessName { get; set; }
   public Auspice? Auspice { get; set; }
   public string? WebsiteUrl { get; set; }
   public string? Street1 { get; set; }

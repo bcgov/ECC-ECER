@@ -173,6 +173,7 @@ export default defineComponent({
         token: this.userStore.invitationToken as string,
         programRepresentativeId: this.userStore.invitedProgramRepresentativeId as string,
         bceidBusinessId: user.profile.bceid_business_guid as string,
+        bceidBusinessName: user.profile.bceid_business_name as string,
         profile: {
           firstName: user.profile.given_name as string,
           lastName: user.profile.family_name as string,

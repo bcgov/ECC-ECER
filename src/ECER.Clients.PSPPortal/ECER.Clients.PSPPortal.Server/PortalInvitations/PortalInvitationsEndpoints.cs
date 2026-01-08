@@ -23,6 +23,7 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
       {
         return TypedResults.BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = result.ErrorMessage });
       }
+
       return TypedResults.Ok(new PortalInvitationQueryResult(mapper.Map<PortalInvitation>(result.Invitation)));
     }).WithOpenApi("Handles portal invitation queries", string.Empty, "portal_invitation_get").WithParameterValidation();
   }
@@ -34,6 +35,8 @@ public record PortalInvitation(string? Id)
 {
   public string? PspProgramRepresentativeId { get; set; }
   public InviteType? InviteType { get; set; }
+  public string? BceidBusinessName { get; set; }
+  public bool IsLinked { get; set; }
 }
 
 public enum InviteType
