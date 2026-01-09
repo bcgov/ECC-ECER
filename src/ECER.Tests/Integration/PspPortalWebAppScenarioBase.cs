@@ -149,26 +149,34 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   
   private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program)
   {
-    var course = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == "101");
-    
-    if (course == null)
+    var existingCourse = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == "101");
+    if (existingCourse != null)
     {
-      course = new ecer_Course
+      context.DeleteObject(existingCourse);
+    }
+
+    var course = new ecer_Course
       {
+        ecer_CourseId = Guid.NewGuid(),
         ecer_Code = "101",
         ecer_CourseName = "Course 101",
         ecer_NewCourseHourDecimal = 20.00m,
         ecer_ProgramType = ecer_PSIProgramType.SNE,
         ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
       };
-      context.AddObject(course);
-    }
-
+    context.AddObject(course);
     return course;
   }
 
   private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute)
   {
+    
+    var existingProgram = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_PostSecondaryInstitution.Id == institute.Id);
+    if (existingProgram != null)
+    {
+      context.DeleteObject(existingProgram);
+    }
+    
     string[] sneProgramTypes = { "SNE" };
     var program = new ecer_Program
     {

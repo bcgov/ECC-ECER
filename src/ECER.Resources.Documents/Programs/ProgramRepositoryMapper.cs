@@ -53,13 +53,17 @@ internal class ProgramRepositoryMapper : Profile
           status == ecer_Program_StatusCode.Inactive ? ProgramStatus.Inactive :
           status == ecer_Program_StatusCode.ChangeRequestInProgress ? ProgramStatus.ChangeRequestInProgress :
                                                                      ProgramStatus.Draft);
-
+    
     CreateMap<ecer_Course, Course>(MemberList.Destination)
+      .ForMember(d => d.CourseId, opts => opts.MapFrom(s => s.ecer_CourseId))
       .ForMember(d => d.CourseNumber, opts => opts.MapFrom(s => s.ecer_Code))
       .ForMember(d => d.CourseTitle, opts => opts.MapFrom(s => s.ecer_CourseName))
+      .ForMember(d => d.NewCourseNumber, opts => opts.MapFrom(s => s.ecer_NewCode))
+      .ForMember(d => d.NewCourseTitle, opts => opts.MapFrom(s => s.ecer_NewCourseName))
       .ForMember(d => d.CourseAreaOfInstruction, opts => opts.MapFrom(s => s.ecer_courseprovincialrequirement_CourseId))
-      .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType));
-
+      .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType))
+      .ReverseMap();
+    
     CreateMap<ecer_CourseProvincialRequirement, CourseAreaOfInstruction>(MemberList.Destination)
       .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours != null ? Convert.ToString(s.ecer_NewHours) : "0.00"))
       .ForMember(d => d.CourseAreaOfInstructionId, opts => opts.MapFrom(s => s.Id))
