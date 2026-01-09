@@ -22,13 +22,11 @@
           <v-col cols="4">Course number and name</v-col>
           <v-col cols="4">hours</v-col>
         </v-row>
-        <v-row
-          no-gutters
-          class="mb-4"
+        <v-row no-gutters class="mb-4"
           v-for="[courseAreaOfInstructionId, courses] in getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction"
-          :key="courseAreaOfInstructionId"
-        >
-          <v-col cols="4">{{ configStore.areaOfInstructionNameById(courseAreaOfInstructionId) || courseAreaOfInstructionId }}</v-col>
+          :key="courseAreaOfInstructionId">
+          <v-col cols="4">{{ configStore.areaOfInstructionNameById(courseAreaOfInstructionId) ||
+            courseAreaOfInstructionId }}</v-col>
           <v-col cols="8">
             <div v-for="course in courses" :key="course.courseName">
               <v-row no-gutters>
@@ -50,7 +48,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import { useDisplay } from "vuetify";
-import { type Components } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 
 import { useLoadingStore } from "@/store/loading";
 import { useConfigStore } from "@/store/config";

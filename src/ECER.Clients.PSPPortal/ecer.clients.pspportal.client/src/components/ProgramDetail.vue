@@ -91,7 +91,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
-import { type Components } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 
 import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
