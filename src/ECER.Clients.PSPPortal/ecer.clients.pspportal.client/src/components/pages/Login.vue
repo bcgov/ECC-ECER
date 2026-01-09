@@ -36,7 +36,7 @@
           <p><a href="mailto:ECERegistry.Programs@gov.bc.ca">ECERegistry.Programs@gov.bc.ca</a></p>
           <p>This information is being collected by The Ministry of Education and Child Care under Section 26(a) and
             Section 26(c) of <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_00">the
-              Freedom of Information and Protection of Privacy Act</a></p>
+              Freedom of Information and Protection of Privacy Act</a>.</p>
         </div>
       </v-col>
     </v-row>
