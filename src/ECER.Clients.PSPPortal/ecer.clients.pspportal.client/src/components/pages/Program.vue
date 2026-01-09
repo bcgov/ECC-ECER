@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-progress-linear v-if="loading" indeterminate color="primary"></v-progress-linear>
-
     <ProgramWizard v-else-if="isDraftOrInProgress && program" :program-id="programId" :program="program" />
-
-    <div v-else-if="program">
-      <ProgramDetail :program="program" />
-    </div>
+    <ProgramDetail v-else-if="program" :program="program" />
+    <Alert v-else type="error" :closable="false" :prominent="true" variant="text" :rounded="false">
+      <h2 class="text-error">Program Not Found</h2>
+      <p class="text-grey-dark">The program you are looking for does not exist or you do not have access to it.</p>
+    </Alert>
   </div>
 </template>
 
@@ -17,6 +17,7 @@ import { getPrograms } from "@/api/program";
 import { useUserStore } from "@/store/user";
 import ProgramWizard from "./ProgramWizard.vue";
 import ProgramDetail from "../ProgramDetail.vue";
+import Alert from "@/components/Alert.vue";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
@@ -24,6 +25,7 @@ export default defineComponent({
   components: {
     ProgramWizard,
     ProgramDetail,
+    Alert,
   },
   props: {
     programId: {

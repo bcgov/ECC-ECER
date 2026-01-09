@@ -81,7 +81,8 @@
       <ProgramDetailAreaOfInstructionCard class="mb-4" programType="SNE" :program="program" />
       <v-row v-if="showUpdateProgramProfileButton">
         <v-col color="primary">
-          <v-btn rounded="lg" color="primary">Update program profile TODO: Not Implemented</v-btn>
+          <!-- TODO not implemented -->
+          <v-btn rounded="lg" color="primary">Update program profile</v-btn>
         </v-col>
       </v-row>
     </v-container>
