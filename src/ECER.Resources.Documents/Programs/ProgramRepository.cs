@@ -1,6 +1,7 @@
 using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Programs;
@@ -106,5 +107,60 @@ internal sealed class ProgramRepository : IProgramRepository
 
     context.SaveChanges();
     return ecerProgram.ecer_ProgramId.Value.ToString();
+  }
+
+  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var program = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == Guid.Parse(id));
+    if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
+    
+    foreach (var course in incomingCourse)
+    {
+      var courseExists = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_CourseId == Guid.Parse(course.CourseId));
+      
+      if (courseExists != null)
+      {
+        courseExists.ecer_NewCode = !string.IsNullOrWhiteSpace(course.NewCourseNumber)
+          ? course.NewCourseNumber
+          : course.CourseNumber;
+        courseExists.ecer_NewCourseName = !string.IsNullOrWhiteSpace(course.NewCourseTitle) 
+          ? course.NewCourseTitle 
+          : course.CourseTitle;
+        context.UpdateObject(courseExists);
+
+        if (course.CourseAreaOfInstruction != null)
+        {
+          foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
+          {
+            if (courseExists.ecer_courseprovincialrequirement_CourseId != null)
+            {
+              var existingAreaOfInstruction =
+                courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
+                  a.Id == Guid.Parse(areaOfInstruction.CourseAreaOfInstructionId));
+              context.DeleteObject(existingAreaOfInstruction);
+            }
+
+            var instructionArea =
+              context.ecer_ProvincialRequirementSet.SingleOrDefault(r =>
+                r.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
+
+            if (instructionArea != null)
+            {
+              var newAreaOfInstruction = new ecer_CourseProvincialRequirement
+              {
+                Id = Guid.NewGuid(),
+                ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours),
+                ecer_CourseId = new EntityReference(ecer_Course.EntityLogicalName, courseExists.Id),
+                ecer_ProgramAreaId = new EntityReference(ecer_ProvincialRequirement.EntityLogicalName, instructionArea.Id)
+              };
+              context.AddObject(newAreaOfInstruction);
+            }
+          }
+        }
+      }
+    }
+    context.SaveChanges();
+    return program.Id.ToString();
   }
 }
