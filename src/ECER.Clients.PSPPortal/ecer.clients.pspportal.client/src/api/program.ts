@@ -6,7 +6,7 @@ const apiResultHandler = new ApiResultHandler();
 
 const getPrograms = async (
   id: string = "",
-  statuses: Components.Schemas.ProgramStatus[] = ["Draft", "Denied", "Approved", "UnderReview"]
+  statuses: Components.Schemas.ProgramStatus[] = ["Draft", "Denied", "Approved", "UnderReview", "ChangeRequestInProgress"]
 ): Promise<ApiResponse<Components.Schemas.Program[] | null | undefined>> => {
   const client = await getClient();
   return apiResultHandler.execute<Components.Schemas.Program[] | null | undefined>({ request: client.program_get({

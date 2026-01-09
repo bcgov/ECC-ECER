@@ -77,7 +77,7 @@ const router = createRouter({
       component: () => import("./components/pages/Program.vue"),
       name: "programDetail",
       meta: { requiresAuth: true, requiresVerification: true },
-      props: true
+      props: true,
     },
     {
       path: "/program-profiles",

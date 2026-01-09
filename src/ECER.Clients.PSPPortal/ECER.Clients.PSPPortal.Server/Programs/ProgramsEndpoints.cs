@@ -5,11 +5,10 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
-using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
 using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQuery;
+using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
 using SaveDraftProgramCommand = ECER.Managers.Registry.Contract.Programs.SaveDraftProgramCommand;
 
 namespace ECER.Clients.PSPPortal.Server.Programs;
@@ -30,7 +29,8 @@ public class ProgramsEndpoints : IRegisterEndpoints
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
       var draftProgram = mapper.Map<ContractProgram>(request.Program)
-        with { PostSecondaryInstituteId = programRep.PostSecondaryInstituteId, Status = ContractProgramStatus.Draft };
+        with
+      { PostSecondaryInstituteId = programRep.PostSecondaryInstituteId, Status = ContractProgramStatus.Draft };
 
       if (id != null)
       {
@@ -89,6 +89,7 @@ public record CourseAreaOfInstruction
 {
   public string? CourseAreaOfInstructionId { get; set; }
   public string? NewHours { get; set; }
+  public string? AreaOfInstructionId { get; set; }
 }
 
 public record Course
@@ -122,8 +123,10 @@ public enum ProgramStatus
   UnderReview,
   Approved,
   Denied,
-  Inactive
+  Inactive,
+  ChangeRequestInProgress
 }
+
 public enum ProgramTypes
 {
   Basic,

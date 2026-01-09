@@ -29,6 +29,7 @@ public record CourseAreaOfInstruction
 {
   public string? CourseAreaOfInstructionId { get; set; }
   public string? NewHours { get; set; }
+  public string? AreaOfInstructionId { get; set; }
 }
 
 /// <summary>
@@ -56,5 +57,6 @@ public enum ProgramStatus
   UnderReview,
   Approved,
   Denied,
-  Inactive
+  Inactive,
+  ChangeRequestInProgress
 }

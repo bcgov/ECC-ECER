@@ -41,6 +41,7 @@ internal class ProgramRepositoryMapper : Profile
           status == ProgramStatus.Approved ? ecer_Program_StatusCode.RegistryReviewComplete :
           status == ProgramStatus.Denied ? ecer_Program_StatusCode.Denied :
           status == ProgramStatus.Inactive ? ecer_Program_StatusCode.Inactive :
+          status == ProgramStatus.ChangeRequestInProgress ? ecer_Program_StatusCode.ChangeRequestInProgress :
                                                 ecer_Program_StatusCode.RequiresReview);
 
     CreateMap<ecer_Program_StatusCode, ProgramStatus>()
@@ -50,17 +51,19 @@ internal class ProgramRepositoryMapper : Profile
           status == ecer_Program_StatusCode.RegistryReviewComplete ? ProgramStatus.Approved :
           status == ecer_Program_StatusCode.Denied ? ProgramStatus.Denied :
           status == ecer_Program_StatusCode.Inactive ? ProgramStatus.Inactive :
+          status == ecer_Program_StatusCode.ChangeRequestInProgress ? ProgramStatus.ChangeRequestInProgress :
                                                                      ProgramStatus.Draft);
-    
+
     CreateMap<ecer_Course, Course>(MemberList.Destination)
       .ForMember(d => d.CourseNumber, opts => opts.MapFrom(s => s.ecer_Code))
       .ForMember(d => d.CourseTitle, opts => opts.MapFrom(s => s.ecer_CourseName))
       .ForMember(d => d.CourseAreaOfInstruction, opts => opts.MapFrom(s => s.ecer_courseprovincialrequirement_CourseId))
       .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType));
-    
+
     CreateMap<ecer_CourseProvincialRequirement, CourseAreaOfInstruction>(MemberList.Destination)
       .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours != null ? Convert.ToString(s.ecer_NewHours) : "0.00"))
       .ForMember(d => d.CourseAreaOfInstructionId, opts => opts.MapFrom(s => s.Id))
+      .ForMember(d => d.AreaOfInstructionId, opts => opts.MapFrom(s => s.ecer_ProgramAreaId.Id))
       .ReverseMap();
   }
 }

@@ -16,8 +16,9 @@ const getCountryList = async (): Promise<Components.Schemas.Country[] | null | u
   return (await client.country_get()).data;
 };
 
-export { 
-  getConfiguration, 
-  getProvinceList,
-  getCountryList
+const getAreaOfInstructionList = async (): Promise<Components.Schemas.AreaOfInstruction[] | null | undefined> => {
+  const client = await getClient(false);
+  return (await client.area_of_instruction_get()).data.areaOfInstruction;
 };
+
+export { getConfiguration, getProvinceList, getCountryList, getAreaOfInstructionList };
