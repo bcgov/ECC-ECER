@@ -6,7 +6,7 @@ public interface IProgramRepository
 
   Task<string> Save(Program program, CancellationToken cancellationToken);
   
-  Task<string> UpdateCourse(IEnumerable<Course> course, string id, CancellationToken cancellationToken);
+  Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, CancellationToken cancellationToken);
 }
 
 public record ProgramQuery
