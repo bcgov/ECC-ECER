@@ -33,7 +33,7 @@ const programOverviewForm: Form = {
       getValue: (data) => data.draftApplication.startDate,
     },
     endDate: {
-      id: "startDate",
+      id: "endDate",
       component: EceDisplayValue,
       props: {
         label: "End date",
@@ -50,7 +50,7 @@ const programOverviewForm: Form = {
       id: "programTypes",
       component: EceDisplayValue,
       props: {
-        label: "Program types"
+        label: "Program types",
       },
       cols: {
         md: 8,
@@ -58,7 +58,7 @@ const programOverviewForm: Form = {
         xl: 4,
       },
       getValue: (data) => data.draftApplication.programTypes?.join(", "),
-    }
+    },
   },
 };
 
