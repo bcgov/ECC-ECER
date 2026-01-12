@@ -43,6 +43,9 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public string? PostSecondaryInstituteName { get; set; }
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
+  public string? BasicTotalHours { get; set; }
+  public string? SneTotalHours { get; set; }
+  public string? IteTotalHours { get; set; }
   public IEnumerable<string>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
 }

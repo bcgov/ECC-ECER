@@ -13,6 +13,9 @@ internal class ProgramRepositoryMapper : Profile
       .ForSourceMember(s => s.PostSecondaryInstituteName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Courses, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.BasicTotalHours, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.SneTotalHours, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.IteTotalHours, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
@@ -32,7 +35,11 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_StartDate))
       .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
       .ForMember(d => d.Courses, opts => opts.MapFrom(s => s.ecer_course_Programid))
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null));
+      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null))
+      .ForMember(d => d.BasicTotalHours, opts => opts.MapFrom(s => s.ecer_NewBasicTotalHours != null ? Convert.ToString(s.ecer_NewBasicTotalHours) : "0.00"))
+      .ForMember(d => d.SneTotalHours, opts => opts.MapFrom(s => s.ecer_NewSNETotalHours  != null ?  Convert.ToString(s.ecer_NewSNETotalHours) : "0.00"))
+      .ForMember(d => d.IteTotalHours, opts => opts.MapFrom(s => s.ecer_NewITETotalHours != null ? Convert.ToString(s.ecer_NewITETotalHours) : "0.00"))
+      ;
 
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
       .ConvertUsing(status =>
