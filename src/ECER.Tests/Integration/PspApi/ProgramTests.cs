@@ -12,9 +12,9 @@ namespace ECER.Tests.Integration.PspApi;
 
 public class ProgramTests : PspPortalWebAppScenarioBase
 {
-  private static readonly string[] BasicProgramTypes = { "Basic" };
-  private static readonly string[] BasicAndIteProgramTypes = { "Basic", "ITE" };
-  private static readonly string[] SneProgramTypes = { "SNE" };
+  private static readonly ProgramTypes[] BasicProgramTypes = { ProgramTypes.Basic };
+  private static readonly ProgramTypes[] BasicAndIteProgramTypes = { ProgramTypes.Basic, ProgramTypes.ITE };
+  private static readonly ProgramTypes[] SneProgramTypes = { ProgramTypes.SNE };
 
   public ProgramTests(ITestOutputHelper output, PspPortalWebAppFixture fixture) : base(output, fixture)
   {
@@ -123,7 +123,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     });
   }
 
-  private async Task<DraftProgramResponse> CreateDraftProgram(string stage, string name, DateTime? startDate = null, DateTime? endDate = null, IEnumerable<string>? programTypes = null)
+  private async Task<DraftProgramResponse> CreateDraftProgram(string stage, string name, DateTime? startDate = null, DateTime? endDate = null, IEnumerable<ProgramTypes>? programTypes = null)
   {
     var response = await Host.Scenario(_ =>
     {
@@ -142,5 +142,148 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var draft = await response.ReadAsJsonAsync<DraftProgramResponse>();
     draft.ShouldNotBeNull();
     return draft!;
+  }
+  
+  [Fact]
+  public async Task GetProgramProfile_ReturnsStatusOk()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.programIdWithTotals}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var status = await response.ReadAsJsonAsync<IEnumerable<Program>>();
+    status.ShouldNotBeNull();
+
+    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    firstProfile.NewBasicTotalHours.ShouldBe("20.75");
+    firstProfile.NewSneTotalHours.ShouldBe("10");
+    firstProfile.NewIteTotalHours.ShouldBe("15.25");
+  }
+  
+  [Fact]
+  public async Task GetAllProgramProfiles_ReturnsStatusOk()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/null");
+      _.StatusCodeShouldBeOk();
+    });
+  
+    var status = await response.ReadAsJsonAsync<IEnumerable<Program>>();
+    status.ShouldNotBeNull();
+  
+    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    firstProfile.Courses.ShouldNotBeNull();
+    firstProfile.Courses.Count().ShouldBe(0);
+  }
+  
+  [Fact]
+  public async Task UpdateCourses_ReturnsStatusOk()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(new UpdateCourseRequest(new []{ CreateCourse() })).ToUrl($"/api/program/{Fixture.programId}/courses");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var updateStatus = await response.ReadAsJsonAsync<string>();
+    updateStatus.ShouldNotBeNull();
+    updateStatus.ShouldBe(Fixture.programId);
+
+    var programResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.programId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var status = await programResponse.ReadAsJsonAsync<IEnumerable<Program>>();
+    status.ShouldNotBeNull();
+
+    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    firstProfile.Courses.ShouldNotBeNull();
+    firstProfile.Courses.ElementAt(0).CourseNumber.ShouldBe("101");
+    firstProfile.Courses.ElementAt(0).CourseTitle.ShouldBe("Course 101");
+    firstProfile.Courses.ElementAt(0).NewCourseNumber.ShouldBe("102");
+    firstProfile.Courses.ElementAt(0).NewCourseTitle.ShouldBe("Course 102");
+  }
+  
+  [Fact]
+  public async Task UpdateCourses_With_AreaOfInstructions_ReturnsStatusOk()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(new UpdateCourseRequest(new []{ CreateCourseWithCourseAreaOfInstructions() })).ToUrl($"/api/program/{Fixture.programId}/courses");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var updateStatus = await response.ReadAsJsonAsync<string>();
+    updateStatus.ShouldNotBeNull();
+    updateStatus.ShouldBe(Fixture.programId);
+
+    var programResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.programId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var status = await programResponse.ReadAsJsonAsync<IEnumerable<Program>>();
+    status.ShouldNotBeNull();
+
+    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    firstProfile.Courses.ShouldNotBeNull();
+    firstProfile.Courses.Count().ShouldNotBe(0);
+
+    var firstCourse = firstProfile.Courses.SingleOrDefault();
+    firstCourse.ShouldNotBeNull();
+    firstCourse.CourseNumber.ShouldBe("101");
+    firstCourse.CourseTitle.ShouldBe("Course 101");
+    firstCourse.NewCourseNumber.ShouldBe("102");
+    firstCourse.NewCourseTitle.ShouldBe("Course 102");
+    
+    firstCourse.CourseAreaOfInstruction.ShouldNotBeNull();
+    
+    var firstCourseAreaOfInstruction = firstCourse.CourseAreaOfInstruction.SingleOrDefault();
+    firstCourseAreaOfInstruction.ShouldNotBeNull();
+  }
+
+  private Course CreateCourse()
+  {
+    return new Course
+    {
+      CourseId = Fixture.courseId,
+      CourseNumber = "101",
+      CourseTitle = "Course 101",
+      NewCourseNumber = "102",
+      NewCourseTitle = "Course 102",
+      ProgramType = ProgramTypes.SNE.ToString()
+    };
+  }
+  
+  private Course CreateCourseWithCourseAreaOfInstructions()
+  {
+    return new Course
+    {
+      CourseId = Fixture.courseId,
+      CourseNumber = "101",
+      CourseTitle = "Course 101",
+      NewCourseNumber = "102",
+      NewCourseTitle = "Course 102",
+      ProgramType = ProgramTypes.SNE.ToString(),
+      CourseAreaOfInstruction = new []
+      {
+        new CourseAreaOfInstruction()
+        {
+          CourseAreaOfInstructionId = Guid.NewGuid().ToString(),
+          AreaOfInstructionId = Fixture.AreaOfInstructionId,
+          NewHours = "20.00"
+        }
+      }
+    };
   }
 }

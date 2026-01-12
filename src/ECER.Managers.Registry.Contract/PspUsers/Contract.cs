@@ -62,7 +62,7 @@ public enum PortalAccessStatus
 /// <summary>
 /// Request to register a new psp user
 /// </summary>
-public record RegisterPspUserCommand(string Token, string ProgramRepresentativeId, string BceidBusinessId, PspUserProfile Profile, UserIdentity Identity) : IRequest<RegisterPspUserResult>;
+public record RegisterPspUserCommand(string Token, string ProgramRepresentativeId, string BceidBusinessId, string BceidBusinessName, PspUserProfile Profile, UserIdentity Identity) : IRequest<RegisterPspUserResult>;
 
 public class RegisterPspUserResult
 {

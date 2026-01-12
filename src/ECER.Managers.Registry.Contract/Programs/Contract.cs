@@ -17,6 +17,26 @@ public record ProgramsQuery : IRequest<ProgramsQueryResults>
   public IEnumerable<ProgramStatus>? ByStatus { get; set; }
 }
 
+public record UpdateCourseCommand(IEnumerable<Course> Course, string Id) : IRequest<string>;
+
+public record Course
+{
+  public string CourseId { get; set; } = null!;
+  public string CourseNumber { get; set; } = null!;
+  public string CourseTitle { get; set; } = null!;
+  public string? NewCourseNumber { get; set; } 
+  public string? NewCourseTitle { get; set; } 
+  public IEnumerable<CourseAreaOfInstruction>? CourseAreaOfInstruction { get; set; }
+  public string ProgramType { get; set; } = null!;
+}
+
+public record CourseAreaOfInstruction
+{
+  public string CourseAreaOfInstructionId { get; set; } = null!;
+  public string? NewHours { get; set; }
+  public string AreaOfInstructionId { get; set; } = null!;
+}
+
 /// <summary>
 /// Container for <see cref="ProgramsQuery"/> results
 /// </summary>
@@ -32,7 +52,11 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public string? PostSecondaryInstituteName { get; set; }
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
+  public string? NewBasicTotalHours { get; set; }
+  public string? NewSneTotalHours { get; set; }
+  public string? NewIteTotalHours { get; set; }
   public IEnumerable<string>? ProgramTypes { get; set; }
+  public IEnumerable<Course>? Courses { get; set; }
 }
 
 public enum ProgramStatus
@@ -41,5 +65,6 @@ public enum ProgramStatus
   UnderReview,
   Approved,
   Denied,
-  Inactive
+  Inactive,
+  ChangeRequestInProgress
 }

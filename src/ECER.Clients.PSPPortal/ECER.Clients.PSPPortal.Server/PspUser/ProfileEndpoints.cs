@@ -57,6 +57,7 @@ public class ProfileEndpoints : IRegisterEndpoints
               request.Token,
               request.ProgramRepresentativeId,
               request.BceidBusinessId,
+              request.BceidBusinessName,
               mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(request.Profile)!,
               user.Identity
             ),
@@ -103,7 +104,7 @@ public class ProfileEndpoints : IRegisterEndpoints
 /// <summary>
 /// Request to register a new psp user
 /// </summary>
-public record RegisterPspUserRequest([Required] string Token, [Required] string ProgramRepresentativeId, [Required] string BceidBusinessId)
+public record RegisterPspUserRequest([Required] string Token, [Required] string ProgramRepresentativeId, [Required] string BceidBusinessId, [Required] string BceidBusinessName)
 {
   [Required]
   public PspUserProfile Profile { get; set; } = null!;

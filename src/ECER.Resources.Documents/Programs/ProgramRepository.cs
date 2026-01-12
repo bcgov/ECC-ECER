@@ -1,6 +1,7 @@
 using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Programs;
@@ -26,7 +27,23 @@ internal sealed class ProgramRepository : IProgramRepository
 
     programs = programs.OrderByDescending(p => p.CreatedOn);
 
-    var results = context.From(programs).Execute().ToList();
+    List<ecer_Program> results;
+
+    if (query.ById != null)
+    {
+      results = context.From(programs)
+        .Join()
+        .Include(c => c.ecer_course_Programid)
+        .IncludeNested(t => t.ecer_courseprovincialrequirement_CourseId)
+        .Execute()
+        .ToList();
+    }
+    else
+    {
+      results = context.From(programs)
+        .Execute()
+        .ToList();
+    }
 
     if (query.ByPostSecondaryInstituteId != null)
     {
@@ -90,5 +107,88 @@ internal sealed class ProgramRepository : IProgramRepository
 
     context.SaveChanges();
     return ecerProgram.ecer_ProgramId.Value.ToString();
+  }
+
+  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var program = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == Guid.Parse(id));
+    if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
+    
+    foreach (var course in incomingCourse)
+    {
+      var courseExists = context.ecer_CourseSet.SingleOrDefault(r => r.ecer_CourseId == Guid.Parse(course.CourseId));
+      
+      if (courseExists != null)
+      {
+        courseExists.ecer_NewCode = !string.IsNullOrWhiteSpace(course.NewCourseNumber)
+          ? course.NewCourseNumber
+          : course.CourseNumber;
+        courseExists.ecer_NewCourseName = !string.IsNullOrWhiteSpace(course.NewCourseTitle) 
+          ? course.NewCourseTitle 
+          : course.CourseTitle;
+        context.UpdateObject(courseExists);
+
+        if (course.CourseAreaOfInstruction != null)
+        {
+          foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
+          {
+            if (courseExists.ecer_courseprovincialrequirement_CourseId != null)
+            {
+              var existingAreaOfInstruction =
+                courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
+                  a.Id == Guid.Parse(areaOfInstruction.CourseAreaOfInstructionId));
+              
+              if (existingAreaOfInstruction != null)
+              {
+                UpdateAreaOfInstruction(areaOfInstruction,  existingAreaOfInstruction);
+              }
+            }
+            else
+            {
+              CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
+            }
+          }
+        }
+      }
+      else
+      {
+        throw new InvalidOperationException($"Course not found");
+      }
+    }
+    context.SaveChanges();
+    return program.Id.ToString();
+  }
+
+  private void CreateNewAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_Course courseExists)
+  {
+    var instructionArea =
+      context.ecer_ProvincialRequirementSet.SingleOrDefault(r =>
+        r.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
+
+    if (instructionArea != null)
+    {
+      var newAreaOfInstruction = new ecer_CourseProvincialRequirement
+      {
+        Id = Guid.NewGuid(),
+        ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours),
+        ecer_CourseId = new EntityReference(ecer_Course.EntityLogicalName, courseExists.Id),
+        ecer_ProgramAreaId = new EntityReference(ecer_ProvincialRequirement.EntityLogicalName, instructionArea.Id)
+      };
+      context.AddObject(newAreaOfInstruction);
+    }
+  }
+
+  private void UpdateAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_CourseProvincialRequirement existingAreaOfInstruction)
+  {
+    var instructionArea =
+      context.ecer_ProvincialRequirementSet.SingleOrDefault(r =>
+        r.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
+
+    if (instructionArea != null)
+    {
+      existingAreaOfInstruction.ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours);
+      context.UpdateObject(existingAreaOfInstruction);
+    }
   }
 }

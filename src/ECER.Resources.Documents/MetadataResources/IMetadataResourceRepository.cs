@@ -10,6 +10,8 @@ public interface IMetadataResourceRepository
 
   Task<IEnumerable<Country>> QueryCountries(CountriesQuery query, CancellationToken cancellationToken);
 
+  Task<IEnumerable<AreaOfInstruction>> QueryAreaOfInstructions(AreaOfInstructionsQuery query, CancellationToken cancellationToken);
+
   Task<IEnumerable<PostSecondaryInstitution>> QueryPostSecondaryInstitutions(PostSecondaryInstitutionsQuery query, CancellationToken cancellationToken);
 
   Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken);
@@ -23,6 +25,7 @@ public interface IMetadataResourceRepository
 
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
+public record AreaOfInstruction(string Id, string Name, IEnumerable<string> ProgramTypes, int? MinimumHours);
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
 public record SystemMessage(string Name, string Subject, string Message)
@@ -70,6 +73,11 @@ public record CountriesQuery
   public string? ByCode { get; set; }
   public string? ByName { get; set; }
   public bool? ByICRA { get; set; }
+}
+
+public record AreaOfInstructionsQuery
+{
+  public string? ById { get; set; }
 }
 
 public record PostSecondaryInstitutionsQuery

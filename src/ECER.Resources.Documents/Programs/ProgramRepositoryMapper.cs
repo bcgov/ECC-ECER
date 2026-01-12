@@ -1,6 +1,5 @@
 using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
-using Microsoft.Xrm.Sdk;
 
 namespace ECER.Resources.Documents.Programs;
 
@@ -13,6 +12,10 @@ internal class ProgramRepositoryMapper : Profile
       .ForSourceMember(s => s.PostSecondaryInstituteId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.PostSecondaryInstituteName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Courses, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NewBasicTotalHours, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NewSneTotalHours, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NewIteTotalHours, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
@@ -31,7 +34,12 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.PostSecondaryInstituteName, opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitutionName))
       .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_StartDate))
       .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null));
+      .ForMember(d => d.Courses, opts => opts.MapFrom(s => s.ecer_course_Programid))
+      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null))
+      .ForMember(d => d.NewBasicTotalHours, opts => opts.MapFrom(s => s.ecer_NewBasicTotalHours))
+      .ForMember(d => d.NewSneTotalHours, opts => opts.MapFrom(s => s.ecer_NewSNETotalHours))
+      .ForMember(d => d.NewIteTotalHours, opts => opts.MapFrom(s => s.ecer_NewITETotalHours))
+      ;
 
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
       .ConvertUsing(status =>
@@ -40,6 +48,7 @@ internal class ProgramRepositoryMapper : Profile
           status == ProgramStatus.Approved ? ecer_Program_StatusCode.RegistryReviewComplete :
           status == ProgramStatus.Denied ? ecer_Program_StatusCode.Denied :
           status == ProgramStatus.Inactive ? ecer_Program_StatusCode.Inactive :
+          status == ProgramStatus.ChangeRequestInProgress ? ecer_Program_StatusCode.ChangeRequestInProgress :
                                                 ecer_Program_StatusCode.RequiresReview);
 
     CreateMap<ecer_Program_StatusCode, ProgramStatus>()
@@ -49,7 +58,23 @@ internal class ProgramRepositoryMapper : Profile
           status == ecer_Program_StatusCode.RegistryReviewComplete ? ProgramStatus.Approved :
           status == ecer_Program_StatusCode.Denied ? ProgramStatus.Denied :
           status == ecer_Program_StatusCode.Inactive ? ProgramStatus.Inactive :
+          status == ecer_Program_StatusCode.ChangeRequestInProgress ? ProgramStatus.ChangeRequestInProgress :
                                                                      ProgramStatus.Draft);
-
+    
+    CreateMap<ecer_Course, Course>(MemberList.Destination)
+      .ForMember(d => d.CourseId, opts => opts.MapFrom(s => s.ecer_CourseId))
+      .ForMember(d => d.CourseNumber, opts => opts.MapFrom(s => s.ecer_Code))
+      .ForMember(d => d.CourseTitle, opts => opts.MapFrom(s => s.ecer_CourseName))
+      .ForMember(d => d.NewCourseNumber, opts => opts.MapFrom(s => s.ecer_NewCode))
+      .ForMember(d => d.NewCourseTitle, opts => opts.MapFrom(s => s.ecer_NewCourseName))
+      .ForMember(d => d.CourseAreaOfInstruction, opts => opts.MapFrom(s => s.ecer_courseprovincialrequirement_CourseId))
+      .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType))
+      .ReverseMap();
+    
+    CreateMap<ecer_CourseProvincialRequirement, CourseAreaOfInstruction>(MemberList.Destination)
+      .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours))
+      .ForMember(d => d.CourseAreaOfInstructionId, opts => opts.MapFrom(s => s.Id))
+      .ForMember(d => d.AreaOfInstructionId, opts => opts.MapFrom(s => s.ecer_ProgramAreaId.Id))
+      .ReverseMap();
   }
 }
