@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.PspUsers;
@@ -10,6 +11,7 @@ using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
 using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQuery;
 using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
 using SaveDraftProgramCommand = ECER.Managers.Registry.Contract.Programs.SaveDraftProgramCommand;
+using UpdateCourseCommand = ECER.Managers.Registry.Contract.Programs.UpdateCourseCommand;
 
 namespace ECER.Clients.PSPPortal.Server.Programs;
 
@@ -78,27 +80,63 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .WithOpenApi("Handles program queries", string.Empty, "program_get")
     .RequireAuthorization("psp_user")
     .WithParameterValidation();
+    
+    endpointRouteBuilder.MapPut("/api/program/{id}/courses", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string? id, UpdateCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+      {
+        if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
+        bool IdIsNotGuid = !Guid.TryParse(id, out _);
+
+        if (IdIsNotGuid) return TypedResults.BadRequest("invalid program profile id");
+
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+        
+        var results = await messageBus.Send(new ContractProgramsQuery
+        {
+          ById = id,
+          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
+          ByStatus = new[] { ContractProgramStatus.Draft }
+        }, ct);
+        
+        if (!results.Items.Any()) return TypedResults.NotFound();
+        var mappedCourses = mapper.Map<IEnumerable<Managers.Registry.Contract.Programs.Course>>(request.Courses);
+        
+        var result = await messageBus.Send(new UpdateCourseCommand(mappedCourses, id), ct);
+        return TypedResults.Ok(result);
+      })
+      .WithOpenApi("Update a course for a program profile", string.Empty, "course_put")
+      .RequireAuthorization("psp_user")
+      .WithParameterValidation();
   }
 }
 
 public record SaveDraftProgramRequest(Program Program);
 
+public record UpdateCourseRequest(IEnumerable<Course>? Courses);
+
 public record DraftProgramResponse(Program Program);
 
 public record CourseAreaOfInstruction
 {
-  public string? CourseAreaOfInstructionId { get; set; }
+  public string CourseAreaOfInstructionId { get; set; } = null!;
   public string? NewHours { get; set; }
-  public string? AreaOfInstructionId { get; set; }
+  public string AreaOfInstructionId { get; set; } = null!;
 }
 
 public record Course
 {
   [Required]
+  public string CourseId { get; set; } = null!;
+  [Required]
   public string CourseNumber { get; set; } = null!;
-  public string? CourseTitle { get; set; }
+  [Required] 
+  public string CourseTitle { get; set; } = null!;
+  public string? NewCourseNumber { get; set; } 
+  public string? NewCourseTitle { get; set; } 
   public IEnumerable<CourseAreaOfInstruction>? CourseAreaOfInstruction { get; set; }
-  public string? ProgramType { get; set; }
+  [Required] 
+  public string ProgramType { get; set; } = null!;
 }
 
 public record Program
