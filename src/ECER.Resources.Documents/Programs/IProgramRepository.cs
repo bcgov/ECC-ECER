@@ -30,7 +30,7 @@ public record Course
 public record CourseAreaOfInstruction()
 {
   public string CourseAreaOfInstructionId { get; set; } = null!;
-  public string? NewHours { get; set; }
+  public float? NewHours { get; set; }
   public string AreaOfInstructionId { get; set; } = null!;
 }
 
@@ -43,6 +43,9 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public string? PostSecondaryInstituteName { get; set; }
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
+  public float? NewBasicTotalHours { get; set; }
+  public float? NewSneTotalHours { get; set; }
+  public float? NewIteTotalHours { get; set; }
   public IEnumerable<string>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
 }

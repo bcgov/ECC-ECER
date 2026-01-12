@@ -13,6 +13,9 @@ internal class ProgramRepositoryMapper : Profile
       .ForSourceMember(s => s.PostSecondaryInstituteName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Courses, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NewBasicTotalHours, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NewSneTotalHours, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NewIteTotalHours, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
@@ -32,7 +35,11 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_StartDate))
       .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
       .ForMember(d => d.Courses, opts => opts.MapFrom(s => s.ecer_course_Programid))
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null));
+      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null))
+      .ForMember(d => d.NewBasicTotalHours, opts => opts.MapFrom(s => s.ecer_NewBasicTotalHours))
+      .ForMember(d => d.NewSneTotalHours, opts => opts.MapFrom(s => s.ecer_NewSNETotalHours))
+      .ForMember(d => d.NewIteTotalHours, opts => opts.MapFrom(s => s.ecer_NewITETotalHours))
+      ;
 
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
       .ConvertUsing(status =>
@@ -65,7 +72,7 @@ internal class ProgramRepositoryMapper : Profile
       .ReverseMap();
     
     CreateMap<ecer_CourseProvincialRequirement, CourseAreaOfInstruction>(MemberList.Destination)
-      .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours != null ? Convert.ToString(s.ecer_NewHours) : "0.00"))
+      .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours))
       .ForMember(d => d.CourseAreaOfInstructionId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.AreaOfInstructionId, opts => opts.MapFrom(s => s.ecer_ProgramAreaId.Id))
       .ReverseMap();
