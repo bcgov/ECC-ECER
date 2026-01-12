@@ -151,9 +151,9 @@ public record Program
   public string? PostSecondaryInstituteName { get; set; }
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
-  public string? BasicTotalHours { get; set; }
-  public string? SneTotalHours { get; set; }
-  public string? IteTotalHours { get; set; }
+  public string? NewBasicTotalHours { get; set; }
+  public string? NewSneTotalHours { get; set; }
+  public string? NewIteTotalHours { get; set; }
   public IEnumerable<ProgramTypes>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
 }

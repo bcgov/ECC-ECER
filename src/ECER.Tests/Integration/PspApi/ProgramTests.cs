@@ -150,7 +150,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
-      _.Get.Url($"/api/programs/{this.Fixture.programId}");
+      _.Get.Url($"/api/programs/{this.Fixture.programIdWithTotals}");
       _.StatusCodeShouldBeOk();
     });
 
@@ -158,8 +158,9 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     status.ShouldNotBeNull();
 
     var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
-    firstProfile.Courses.ShouldNotBeNull();
-    firstProfile.Courses.Count().ShouldNotBe(0);
+    firstProfile.NewBasicTotalHours.ShouldBe("20.75");
+    firstProfile.NewSneTotalHours.ShouldBe("10");
+    firstProfile.NewIteTotalHours.ShouldBe("15.25");
   }
   
   [Fact]
@@ -171,10 +172,10 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Get.Url($"/api/programs/null");
       _.StatusCodeShouldBeOk();
     });
-
+  
     var status = await response.ReadAsJsonAsync<IEnumerable<Program>>();
     status.ShouldNotBeNull();
-
+  
     var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.Count().ShouldBe(0);
