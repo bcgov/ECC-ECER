@@ -108,10 +108,12 @@ export default defineComponent({
 
     const fromDynamics =
       this.applicationStore.hasDraftApplication && signedDateRaw
-        ? signedDateRaw.split("T")[0]
+        ? DateTime.fromISO(signedDateRaw, { zone: "utc" }).toISODate()
         : undefined;
 
-    this.date = fromDynamics ?? (DateTime.now().toISODate() ?? "");
+    const today = DateTime.now().toISODate() ?? "";
+
+    this.date = fromDynamics ?? today;
   },
   methods: {
     async continueClick() {
