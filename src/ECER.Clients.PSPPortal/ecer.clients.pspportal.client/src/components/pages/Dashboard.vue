@@ -192,6 +192,8 @@ export default defineComponent({
             this.router.replace("/invalid-invitation");
             break;
           case "BceidBusinessIdDoesNotMatch":
+            this.router.replace("/access-denied-mismatch");
+            break;
           case "PostSecondaryInstitutionNotFound":
             this.router.replace("/access-denied");
             break;
