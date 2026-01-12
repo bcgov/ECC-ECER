@@ -117,7 +117,7 @@ internal sealed class ProgramRepository : IProgramRepository
     
     foreach (var course in incomingCourse)
     {
-      var courseExists = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_CourseId == Guid.Parse(course.CourseId));
+      var courseExists = context.ecer_CourseSet.SingleOrDefault(r => r.ecer_CourseId == Guid.Parse(course.CourseId));
       
       if (courseExists != null)
       {
@@ -138,29 +138,57 @@ internal sealed class ProgramRepository : IProgramRepository
               var existingAreaOfInstruction =
                 courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
                   a.Id == Guid.Parse(areaOfInstruction.CourseAreaOfInstructionId));
-              context.DeleteObject(existingAreaOfInstruction);
-            }
-
-            var instructionArea =
-              context.ecer_ProvincialRequirementSet.SingleOrDefault(r =>
-                r.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
-
-            if (instructionArea != null)
-            {
-              var newAreaOfInstruction = new ecer_CourseProvincialRequirement
+              
+              if (existingAreaOfInstruction != null)
               {
-                Id = Guid.NewGuid(),
-                ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours),
-                ecer_CourseId = new EntityReference(ecer_Course.EntityLogicalName, courseExists.Id),
-                ecer_ProgramAreaId = new EntityReference(ecer_ProvincialRequirement.EntityLogicalName, instructionArea.Id)
-              };
-              context.AddObject(newAreaOfInstruction);
+                UpdateAreaOfInstruction(areaOfInstruction,  existingAreaOfInstruction);
+              }
+            }
+            else
+            {
+              CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
             }
           }
         }
       }
+      else
+      {
+        throw new InvalidOperationException($"Course not found");
+      }
     }
     context.SaveChanges();
     return program.Id.ToString();
+  }
+
+  private void CreateNewAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_Course courseExists)
+  {
+    var instructionArea =
+      context.ecer_ProvincialRequirementSet.SingleOrDefault(r =>
+        r.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
+
+    if (instructionArea != null)
+    {
+      var newAreaOfInstruction = new ecer_CourseProvincialRequirement
+      {
+        Id = Guid.NewGuid(),
+        ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours),
+        ecer_CourseId = new EntityReference(ecer_Course.EntityLogicalName, courseExists.Id),
+        ecer_ProgramAreaId = new EntityReference(ecer_ProvincialRequirement.EntityLogicalName, instructionArea.Id)
+      };
+      context.AddObject(newAreaOfInstruction);
+    }
+  }
+
+  private void UpdateAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_CourseProvincialRequirement existingAreaOfInstruction)
+  {
+    var instructionArea =
+      context.ecer_ProvincialRequirementSet.SingleOrDefault(r =>
+        r.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
+
+    if (instructionArea != null)
+    {
+      existingAreaOfInstruction.ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours);
+      context.UpdateObject(existingAreaOfInstruction);
+    }
   }
 }
