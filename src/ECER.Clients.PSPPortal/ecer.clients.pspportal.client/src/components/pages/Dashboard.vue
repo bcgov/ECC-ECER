@@ -18,7 +18,7 @@
           <h1>My PSP dashboard</h1>
         </v-col>
         <v-col v-if="programsRequiringReview != null && programsRequiringReview?.length > 0" cols="12">
-          <Card color="primary" class="d-flex flex-column">
+          <Card color="secondary" class="d-flex flex-column">
             <h2 color="surface">You have program profiles to review</h2>
             <p color="surface" class="mt-4">The ECE Registry reviews programs on an annual basis. Your program profile review can now be completed online.</p>
             <div class="mt-auto">
