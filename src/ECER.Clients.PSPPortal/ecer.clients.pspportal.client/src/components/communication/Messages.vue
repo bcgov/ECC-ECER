@@ -13,7 +13,7 @@
 
     <Loading v-if="loadingStore.isLoading('message_get')"></Loading>
 
-    <v-row class="ga-10">
+    <v-row v-else class="ga-10">
       <v-col cols="12" md="6" lg="4">
         <MessageList />
       </v-col>

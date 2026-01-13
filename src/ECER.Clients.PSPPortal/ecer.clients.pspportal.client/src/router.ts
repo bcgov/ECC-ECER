@@ -119,6 +119,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
       name: "access-denied",
     },
+        {
+      path: "/access-denied-mismatch",
+      component: () => import("./components/pages/AccessDeniedMismatch.vue"),
+      meta: { requiresAuth: true },
+      name: "access-denied-mismatch",
+    },
     {
       path: "/terms-of-use",
       component: () => import("./components/pages/PageNotFound.vue"),

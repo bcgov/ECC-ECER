@@ -42,7 +42,7 @@
         <v-col class="d-flex" cols="12" sm="6" md="4">
           <Card class="d-flex flex-column">
             <h2>Program profiles</h2>
-            <p class="mt-4">Program profiles View or manage your institution’s annual program profiles. View program profiles.</p>
+            <p class="mt-4">View or manage your institution’s annual program profiles.</p>
             <div class="mt-auto">
               <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnNeedOtherOptions" @click="router.push('/program-profiles')">
                 View program profiles
@@ -192,6 +192,8 @@ export default defineComponent({
             this.router.replace("/invalid-invitation");
             break;
           case "BceidBusinessIdDoesNotMatch":
+            this.router.replace("/access-denied-mismatch");
+            break;
           case "PostSecondaryInstitutionNotFound":
             this.router.replace("/access-denied");
             break;
