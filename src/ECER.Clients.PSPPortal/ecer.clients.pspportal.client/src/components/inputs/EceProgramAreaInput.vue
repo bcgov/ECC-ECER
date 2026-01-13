@@ -56,7 +56,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useAlertStore } from "@/store/alert";
 import { useWizardStore } from "@/store/wizard";
 import { useConfigStore } from "@/store/config";
 
@@ -68,7 +67,7 @@ import * as Rules from "@/utils/formRules";
 import Callout from "../common/Callout.vue";
 
 export default defineComponent({
-  name: "EceCharacterReference",
+  name: "EceProgramAreaInput",
   components: { Callout },
   props: {
     modelValue: {
@@ -81,16 +80,14 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_characterReferencesData: Boolean) => true,
+    "update:model-value": (_model_value: boolean) => true,
     updatedValidation: (_errorState: boolean) => true,
   },
   setup: () => {
     const wizardStore = useWizardStore();
-    const alertStore = useAlertStore();
     const configStore = useConfigStore();
 
     return {
-      alertStore,
       configStore,
       wizardStore,
     };
