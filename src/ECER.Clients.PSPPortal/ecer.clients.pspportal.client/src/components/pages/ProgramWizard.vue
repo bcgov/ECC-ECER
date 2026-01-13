@@ -32,7 +32,11 @@
                 <v-btn
                   id="btnSaveAndContinue"
                   v-if="showSaveButtons"
-                  :loading="loadingStore.isLoading('draftprogram_put') || loadingStore.isLoading('psp_user_profile_put') || loadingStore.isLoading('psp_user_profile_get')"
+                  :loading="
+                    loadingStore.isLoading('draftprogram_put') ||
+                    loadingStore.isLoading('psp_user_profile_put') ||
+                    loadingStore.isLoading('psp_user_profile_get')
+                  "
                   rounded="lg"
                   color="primary"
                   @click="handleSaveAndContinue"
@@ -79,12 +83,12 @@ export default defineComponent({
   props: {
     programId: {
       type: String,
-      required: true
+      required: true,
     },
     program: {
       type: Object as () => Components.Schemas.Program,
-      required: true
-    }
+      required: true,
+    },
   },
   setup: async (props) => {
     const wizardStore = useWizardStore();
@@ -94,7 +98,7 @@ export default defineComponent({
     const { mdAndDown, mobile } = useDisplay();
 
     programStore.setDraftProgramFromProfile(props.program);
-    
+
     await wizardStore.initializeWizard(programStore.applicationConfiguration, programStore.draftProgram);
 
     return {
@@ -137,6 +141,14 @@ export default defineComponent({
         switch (this.wizardStore.currentStepStage) {
           case "ProgramOverview":
             await this.saveDraftAndAlertSuccess(false);
+            this.incrementWizard();
+            break;
+          case "EarlyChildhood":
+          case "InfantAndToddler":
+          case "SpecialNeeds":
+            await this.saveDraftAndAlertSuccess(false);
+            // refresh needed to sync wizard data and draft program changes
+            await this.wizardStore.initializeWizard(this.programStore.applicationConfiguration, this.programStore.draftProgram);
             this.incrementWizard();
             break;
         }

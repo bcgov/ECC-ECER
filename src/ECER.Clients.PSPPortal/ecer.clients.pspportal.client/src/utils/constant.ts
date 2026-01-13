@@ -45,3 +45,9 @@ export enum CertificationType {
   ONE_YEAR = "OneYear",
   ECE_ASSISTANT = "EceAssistant",
 }
+
+export enum ProgramType {
+  BASIC = "Basic",
+  ITE = "ITE",
+  SNE = "SNE",
+}
