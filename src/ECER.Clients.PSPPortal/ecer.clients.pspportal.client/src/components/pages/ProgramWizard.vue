@@ -23,6 +23,12 @@
         </v-stepper-header>
       </v-container>
     </template>
+    <template #PrintPreview>
+      <v-btn rounded="lg" variant="text" @click="printPage()">
+        <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+        <a class="small">Print Preview</a>
+      </v-btn>
+    </template>
     <template #actions>
       <v-window class="my-n10">
         <v-stepper-window>
