@@ -40,7 +40,9 @@
     <br />
     <p>
       For a detailed description of Provincial requirements, refer to
-      <a href="#" target="_blank">Table 1, 2 or 3 of the Child Care Occupational Competencies.</a>
+      <a href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf" target="_blank">
+        Table 1, 2 or 3 of the Child Care Occupational Competencies.
+      </a>
     </p>
     <br />
     <h2>Required areas of instruction</h2>
