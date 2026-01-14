@@ -136,7 +136,7 @@ export default defineComponent({
         .forEach((course) => {
           if (course.courseAreaOfInstruction) {
             course.courseAreaOfInstruction.forEach((courseArea) => {
-                total += parseFloat(courseArea.newHours || "0");
+                total += Number.parseFloat(courseArea.newHours || "0");
             });
           }
         });
@@ -214,11 +214,11 @@ export default defineComponent({
       return coursesForArea;
     },
     getAreaSubtitles(areaId: string | null | undefined) {
-      const areaIds = this.getCoursesForArea(areaId).map(c => c.areaOfInstructionId);
+      const areaIds = new Set(this.getCoursesForArea(areaId).map(c => c.areaOfInstructionId));
 
       return Object.fromEntries(
         Object.entries(this.areaSubtitles).filter(([key, value]) =>
-          areaIds.includes(key)
+          areaIds.has(key)
         )
       );
     },

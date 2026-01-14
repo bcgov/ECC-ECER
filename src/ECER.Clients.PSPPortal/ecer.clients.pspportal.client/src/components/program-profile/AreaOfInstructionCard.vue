@@ -168,8 +168,8 @@
           const minimumHours = areaOfInstruction?.minimumHours || 0;
           
           const totalHours = courses.reduce((sum, courseArea) => {
-            const hours = parseFloat(courseArea.newHours || "0");
-            return sum + (isNaN(hours) ? 0 : hours);
+            const hours = Number.parseFloat(courseArea.newHours || "0");
+            return sum + hours;
           }, 0);
 
           const progressPercentage = minimumHours === 0 
@@ -192,8 +192,8 @@
       },
       overallTotalHours(): number {
         return this.courseAreaOfInstructions.reduce((sum, courseArea) => {
-          const hours = parseFloat(courseArea.newHours || "0");
-          return sum + (isNaN(hours) ? 0 : hours);
+          const hours = Number.parseFloat(courseArea.newHours || "0");
+          return sum + hours;
         }, 0);
       },
       overallProgressPercentage(): number {

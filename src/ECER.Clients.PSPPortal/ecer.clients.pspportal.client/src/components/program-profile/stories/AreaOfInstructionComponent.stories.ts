@@ -128,12 +128,8 @@ const mockProgram: Components.Schemas.Program = {
 // Decorator that initializes the store before rendering
 const withMockConfigStore = (storyFn: any, context: any) => {
   // Initialize store with mock data
-  try {
-    const configStore = useConfigStore();
-    configStore.areaOfInstructionList = mockAreaOfInstructions;
-  } catch (e) {
-    // If store is not available yet, we'll handle it in the component
-  }
+  const configStore = useConfigStore();
+  configStore.areaOfInstructionList = mockAreaOfInstructions;
   
   return storyFn(context);
 };
