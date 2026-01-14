@@ -135,7 +135,7 @@ const newUserForm: Form = {
       id: "hasAcceptedTermsOfUse",
       component: EceCheckbox,
       props: {
-        label: "I have read and accept the Terms of Use",
+        label: "I have read and accept the <a href='/terms-of-use' target='_blank'>Terms of Use</a>",
         rules: [Rules.hasCheckbox("You must read and accept the Terms of Use")],
       },
       cols: {

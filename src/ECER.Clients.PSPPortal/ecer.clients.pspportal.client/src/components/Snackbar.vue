@@ -1,11 +1,19 @@
 <template>
   <div @mouseover="pause = true" @mouseleave="pause = false">
-    <v-snackbar id="mainSnackBar" v-model="showSnackBar" :timeout="timeout" elevation="24" location="top" centered
-      :color="colour" transition="slide-y-transition" class="snackbar">
+    <v-snackbar
+      id="mainSnackBar"
+      v-model="showSnackBar"
+      :timeout="timeout"
+      elevation="24"
+      location="top"
+      centered
+      :color="colour"
+      transition="slide-y-transition"
+      class="snackbar"
+    >
       <v-alert :color="colour" :icon="icon" density="compact">{{ alertNotificationText }}</v-alert>
       <template #actions>
-        <v-btn text="true" :color="colour == AlertNotificationType.WARN ? 'black' : 'white'" v-bind="$attrs"
-          @click="showSnackBar = false">
+        <v-btn text="true" :color="colour == AlertNotificationType.WARN ? 'black' : 'white'" v-bind="$attrs" @click="showSnackBar = false">
           {{ alertNotificationQueue.length > 0 ? "Next (" + alertNotificationQueue.length + ")" : "Close" }}
         </v-btn>
       </template>

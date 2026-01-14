@@ -10,7 +10,7 @@
         <h1>Program Profiles</h1>
       </v-col>
     </v-row>
-    
+
     <Loading v-if="isLoading"></Loading>
 
     <div v-else>
@@ -18,18 +18,23 @@
       <div v-if="programsRequiringReview.length > 0">
         <v-row>
           <v-col>
-            <ECEHeader title="Program profile review"/>
+            <ECEHeader title="Program profile review" />
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12">
             <div class="d-flex flex-column ga-3 pb-5">
-            <p>The program profile review process is conducted annually by the EDE Registry to ensure requirements are met for continued recognition in B.C.</p>
-            <p class="font-weight-bold">You will need to review your program profile for accuracy and to ensure that courses meet the minimum hours for each of the provincially-required areas of instruction.</p>
+              <p>
+                The program profile review process is conducted annually by the EDE Registry to ensure requirements are met for continued recognition in B.C.
+              </p>
+              <p class="font-weight-bold">
+                You will need to review your program profile for accuracy and to ensure that courses meet the minimum hours for each of the
+                provincially-required areas of instruction.
+              </p>
             </div>
             <v-sheet color="support-surface-info " class="w-100 px-12 py-7">
               <div class="text-support-border-info">
-                <h2 class="mb-3 ">Review process</h2>
+                <h2 class="mb-3">Review process</h2>
                 <p>Click the "Review now" button to begin.</p>
                 <ol class="ml-8 pb-3">
                   <li>Review the information we have for your program(s) and make changes if required.</li>
@@ -44,7 +49,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <ECEHeader title="Program profiles requiring review"/>
+            <ECEHeader title="Program profiles requiring review" />
           </v-col>
         </v-row>
         <v-row>
@@ -113,9 +118,7 @@ export default defineComponent({
       return this.loadingStore.isLoading("program_get") || this.loading;
     },
     programsRequiringReview(): Components.Schemas.Program[] {
-      return this.programs.filter(
-        (p) => p.status === "Draft" || p.status === "UnderReview"
-      );
+      return this.programs.filter((p) => p.status === "Draft" || p.status === "UnderReview");
     },
     currentProgramProfiles(): Components.Schemas.Program[] {
       return this.programs.filter((p) => "Approved" === p.status || "Inactive" === p.status);
@@ -137,5 +140,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

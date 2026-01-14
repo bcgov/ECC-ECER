@@ -21,12 +21,7 @@ interface Component {
     xl?: number;
   };
   isInput?: boolean;
-  getValue?: (dataSources: {
-    userProfile?: any;
-    oidcUserInfo?: any;
-    oidcAddress?: any;
-    draftApplication?: any;
-  }) => any | Promise<any>;
+  getValue?: (dataSources: { userProfile?: any; oidcUserInfo?: any; oidcAddress?: any; draftApplication?: any }) => any | Promise<any>;
 }
 
 // Wrap any type to type a dropdown list for v-select and v-autocomplete

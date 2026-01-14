@@ -15,9 +15,4 @@ interface Wizard {
   };
 }
 
-type ProgramStage =
-  | "ProgramOverview"
-  | "EarlyChildhood"
-  | "InfantAndToddler"
-  | "SpecialNeeds"
-  | "Review";
+type ProgramStage = "ProgramOverview" | "EarlyChildhood" | "InfantAndToddler" | "SpecialNeeds" | "Review";

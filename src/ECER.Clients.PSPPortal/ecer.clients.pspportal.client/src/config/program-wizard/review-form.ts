@@ -1,9 +1,9 @@
-import type {Form} from "@/types/form";
+import type { Form } from "@/types/form";
 
 const reviewForm: Form = {
   id: "reviewForm",
   title: "Special Needs Educator",
-  components: {}
+  components: {},
 };
 
 export default reviewForm;

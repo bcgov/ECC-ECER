@@ -1,7 +1,5 @@
 <template>
-   <v-btn color="primary" size="large" id="newMessageBtn" class="mb-4" @click="createNewMessage">
-      New Message
-   </v-btn>
+  <v-btn color="primary" size="large" id="newMessageBtn" class="mb-4" @click="createNewMessage">New Message</v-btn>
   <v-list v-if="messageCount > 0" lines="two" class="flex-grow-1 message-list" style="padding: 0px">
     <MessageListItem
       v-for="(message, index) in messages"
@@ -84,7 +82,7 @@ export default defineComponent({
         name: "newMessage",
       });
       this.messageStore.currentMessage = null;
-    }
+    },
   },
 });
 </script>

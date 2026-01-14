@@ -5,37 +5,57 @@
         <v-icon size="large" icon="mdi-attachment" />
         Attachments
       </p>
-      <p>You can upload images, Microsoft Word documents, Microsoft Excel documents, and PDFs. Max file size accepted is
-        10MB. <b>All attachments must be directly related to your request. Do not upload any personal or sensitive
-          information (e.g., transcripts, resumes, CVs, etc.)</b></p>
+      <p>
+        You can upload images, Microsoft Word documents, Microsoft Excel documents, and PDFs. Max file size accepted is 10MB.
+        <b>
+          All attachments must be directly related to your request. Do not upload any personal or sensitive information (e.g., transcripts, resumes, CVs, etc.)
+        </b>
+      </p>
       <Callout class="mt-3" type="warning">
         <div class="d-flex flex-column ga-3">
           <p v-if="selectedFiles.length >= maxNumberOfFiles">
-            No more files can be added. You can only add {{ maxNumberOfFiles }} file{{ maxNumberOfFiles > 1 ? "s" : ""
-            }}.
+            No more files can be added. You can only add {{ maxNumberOfFiles }} file{{ maxNumberOfFiles > 1 ? "s" : "" }}.
           </p>
           <p v-else>Selected files: {{ selectedFiles.length }}/{{ maxNumberOfFiles }}</p>
         </div>
       </Callout>
-      <v-btn v-if="showAddFileButton && selectedFiles.length < maxNumberOfFiles && !filesInProgress"
-        prepend-icon="mdi-plus" variant="text" color="primary" class="mt-3" @click="triggerFileInput">
+      <v-btn
+        v-if="showAddFileButton && selectedFiles.length < maxNumberOfFiles && !filesInProgress"
+        prepend-icon="mdi-plus"
+        variant="text"
+        color="primary"
+        class="mt-3"
+        @click="triggerFileInput"
+      >
         Add file
       </v-btn>
-      <v-file-input ref="fileInput" style="display: none" :multiple="allowMultipleFiles"
+      <v-file-input
+        ref="fileInput"
+        style="display: none"
+        :multiple="allowMultipleFiles"
         accept=".txt,.pdf,.doc,.docx,.rtf,.xls,.xlsx,.jpg,.jpeg,.gif,.png,.bmp,.tiff,.x-tiff"
-        @change="handleFileUpload"></v-file-input>
+        @change="handleFileUpload"
+      ></v-file-input>
       <Alert v-model="showErrorBanner" class="mt-10" type="error">
         <p class="small">{{ errorBannerMessage }}</p>
       </Alert>
       <v-list lines="two" class="flex-grow-1 message-list">
         <v-divider v-if="selectedFiles.length > 0" class="border-opacity-100" color="ash-grey"></v-divider>
-        <UploadFileItem v-for="(file, index) in selectedFiles" :key="index" :file-item="file"
-          :upload-progress="file.progress" :errors="file.fileErrors"
-          :can-delete="canDeletePermanentFiles || file.storageFolder === 'temporary'" @delete-file="removeFile">
-        </UploadFileItem>
+        <UploadFileItem
+          v-for="(file, index) in selectedFiles"
+          :key="index"
+          :file-item="file"
+          :upload-progress="file.progress"
+          :errors="file.fileErrors"
+          :can-delete="canDeletePermanentFiles || file.storageFolder === 'temporary'"
+          @delete-file="removeFile"
+        ></UploadFileItem>
       </v-list>
-      <v-input :model-value="userFiles" :hide-details="'auto'"
-        :rules="[!fileErrors, !tooManyFiles, !filesInProgress, !fileTooLarge, !allFilesTooLarge, !duplicateFileName, ...rules]" />
+      <v-input
+        :model-value="userFiles"
+        :hide-details="'auto'"
+        :rules="[!fileErrors, !tooManyFiles, !filesInProgress, !fileTooLarge, !allFilesTooLarge, !duplicateFileName, ...rules]"
+      />
     </v-col>
   </v-row>
 </template>
