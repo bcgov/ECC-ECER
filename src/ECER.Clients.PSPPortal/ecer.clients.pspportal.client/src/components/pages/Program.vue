@@ -15,7 +15,7 @@ import { defineComponent } from "vue";
 import { getPspUserProfile } from "@/api/psp-rep";
 import { getPrograms } from "@/api/program";
 import { useUserStore } from "@/store/user";
-import ProgramWizard from "@/ProgramWizard.vue";
+import ProgramWizard from "../program-profile/ProgramWizard.vue";
 import ProgramDetail from "../ProgramDetail.vue";
 import Alert from "@/components/Alert.vue";
 import type { Components } from "@/types/openapi";
