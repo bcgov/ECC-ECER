@@ -139,7 +139,6 @@
       groupedAreas(): AreaGroup[] {
         // Group courses by areaOfInstructionId (filter out courses without areaOfInstructionId)
         const grouped = new Map<string, CourseAreaOfInstructionWithCourse[]>();
-        console.log(this.courseAreaOfInstructions)
         this.courseAreaOfInstructions.forEach((course) => {
           // Only process courses with a valid areaOfInstructionId
           const areaId = course.areaOfInstructionId;
