@@ -21,7 +21,11 @@ onMounted(async () => {
     const { data, error } = await getPortalInvitation(route.params.token as string);
 
     if (error) {
-        router.push("/access-denied");
+        if (error.detail === "Portal Invitation Wrong Status"){
+            router.replace("/invalid-invitation");
+        } else {
+            router.push("/access-denied");
+        }
         return;
     }
 

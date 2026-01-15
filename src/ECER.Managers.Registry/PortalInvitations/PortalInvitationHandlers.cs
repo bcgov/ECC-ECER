@@ -2,6 +2,7 @@
 using ECER.Engines.Transformation;
 using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Managers.Registry.Contract.PortalInvitations;
+using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Resources.Documents.PortalInvitations;
 using MediatR;
 
@@ -28,6 +29,12 @@ public class PortalInvitationHandlers(
     {
       return PortalInvitationVerificationQueryResult.Failure("Portal Invitation not found");
     }
+
+    if (portalInvitation.StatusCode != Resources.Documents.PortalInvitations.PortalInvitationStatusCode.Sent)
+    {
+      return PortalInvitationVerificationQueryResult.Failure("Portal Invitation Wrong Status");
+    }
+
     var portalInvitation_Manager = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
     var handler = verificationHandlers.FirstOrDefault(h => h.CanHandle(portalInvitation_Manager.InviteType));
     if (handler == null)
