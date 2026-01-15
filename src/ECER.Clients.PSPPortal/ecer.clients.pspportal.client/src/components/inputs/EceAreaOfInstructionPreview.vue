@@ -1,14 +1,7 @@
 <template>
-  <v-card variant="outlined" rounded="lg">
-    <v-card-title>
-      <div class="d-flex justify-space-between align-center">
-        <div>
-          <h2 class="text-wrap">{{ generateTitle }}</h2>
-        </div>
-      </div>
-    </v-card-title>
-    <v-card-text class="text-grey-dark">
-      <v-row class="mb-4" no-gutters>
+  <PreviewCard :title="getTitle" :portal-stage="getPortalStage">
+    <template #content>
+      <v-row class="mb-4">
         <v-col cols="4">
           <p class="small">Program is offered</p>
         </v-col>
@@ -17,13 +10,7 @@
         </v-col>
       </v-row>
       <template v-if="program?.programTypes?.includes(programType)">
-        <v-row class="mb-4" no-gutters>
-          <v-col cols="4">Area of Instruction</v-col>
-          <v-col cols="4">Course number and name</v-col>
-          <v-col cols="4">hours</v-col>
-        </v-row>
         <v-row
-          no-gutters
           class="mb-4"
           v-for="[courseAreaOfInstructionId, courses] in getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction"
           :key="courseAreaOfInstructionId"
@@ -43,50 +30,70 @@
           </v-col>
         </v-row>
       </template>
-    </v-card-text>
-  </v-card>
+    </template>
+  </PreviewCard>
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import { useDisplay } from "vuetify";
 import type { Components } from "@/types/openapi";
+import type { ProgramStage } from "@/types/wizard";
 import { getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction } from "@/utils/functions";
 
-import { useLoadingStore } from "@/store/loading";
 import { useConfigStore } from "@/store/config";
-import { useRouter } from "vue-router";
+import { useProgramStore } from "@/store/program";
+
+import PreviewCard from "../common/PreviewCard.vue";
 
 export default defineComponent({
-  name: "ProgramDetailAreaOfInstructionCard",
-  components: {},
-  setup: async () => {
-    const loadingStore = useLoadingStore();
-    const configStore = useConfigStore();
-    const { mdAndDown, mobile } = useDisplay();
-    const router = useRouter();
-
-    return {
-      configStore,
-      loadingStore,
-      mdAndDown,
-      mobile,
-      router,
-    };
+  name: "EceAreaOfInstructionPreview",
+  components: {
+    PreviewCard,
   },
-
   props: {
-    program: {
-      type: Object as PropType<Components.Schemas.Program>,
-      required: true,
-      default: () => ({}),
-    },
     programType: {
       type: String as PropType<Components.Schemas.ProgramTypes>,
       required: true,
     },
   },
+  setup: () => {
+    const configStore = useConfigStore();
+    //TODO remove when we get the wizardDataValueForCourses this is a shim just to get things showing
+    const programStore = useProgramStore();
+
+    return { configStore, programStore };
+  },
+  data() {
+    return {
+      //TODO remove when we get the wizardDataValueForCourses this is a shim just to get things showing
+      program: {} as Components.Schemas.Program,
+    };
+  },
+  mounted() {
+    //TODO remove when we get the wizardDataValueForCourses this is a shim just to get things showing
+    this.program = this.programStore.draftProgram;
+  },
   computed: {
+    getPortalStage(): ProgramStage {
+      switch (this.programType) {
+        case "Basic":
+          return "EarlyChildhood";
+        case "ITE":
+          return "InfantAndToddler";
+        case "SNE":
+          return "SpecialNeeds";
+      }
+    },
+    getTitle(): string {
+      switch (this.programType) {
+        case "Basic":
+          return "Basic Early Childhood Educator";
+        case "ITE":
+          return "Infant and Toddler Educator";
+        case "SNE":
+          return "Special Needs Educator";
+      }
+    },
     generateTitle(): string {
       switch (this.programType) {
         case "Basic":
