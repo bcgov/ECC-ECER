@@ -1,7 +1,10 @@
 <template>
-  <AcknowledgementBanner v-if="acceptedPaths"
+  <AcknowledgementBanner
+    v-if="acceptedPaths"
     title="The B.C. Public Service acknowledges the territories of First Nations around B.C. and is grateful to carry out our work on these lands. We acknowledge the rights, interests, priorities, and concerns of all Indigenous Peoples - First Nations, Métis, and Inuit - respecting and acknowledging their distinct cultures, histories, rights, laws, and governments."
-    color="black" class="mb-3" />
+    color="black"
+    class="mb-3"
+  />
   <v-footer>
     <v-container>
       <div class="w-100 justify-space-between d-sm-flex-column d-md-flex">
@@ -14,12 +17,10 @@
           <p><b>More information</b></p>
           <div class="d-flex">
             <div class="d-flex flex-column w-50">
-              <a v-for="link in firstColumnLinks" :key="link.name" :href="link.path" class="small text-black"
-                :target="link?.target">{{ link.name }}</a>
+              <a v-for="link in firstColumnLinks" :key="link.name" :href="link.path" class="small text-black" :target="link?.target">{{ link.name }}</a>
             </div>
             <div class="d-flex flex-column w-50">
-              <a v-for="link in secondColumnLinks" :key="link.name" :href="link.path" class="small text-black"
-                :target="link?.target">{{ link.name }}</a>
+              <a v-for="link in secondColumnLinks" :key="link.name" :href="link.path" class="small text-black" :target="link?.target">{{ link.name }}</a>
             </div>
           </div>
         </div>
@@ -28,14 +29,19 @@
       <v-divider class="border-opacity-100 w-100 my-6"></v-divider>
       <div class="w-100 justify-space-between d-flex">
         <p class="small text-black align-self-center">© 2025 Government of British Columbia</p>
-        <v-btn @click="handleShowVersionModal" class="align-self-center" flat icon="mdi-information-outline"
-          size="x-small"></v-btn>
+        <v-btn @click="handleShowVersionModal" class="align-self-center" flat icon="mdi-information-outline" size="x-small"></v-btn>
       </div>
     </v-container>
   </v-footer>
 
-  <ConfirmationDialog :title="'Version Information'" :show="showVersionDialog" @cancel="showVersionDialog = false"
-    @accept="showVersionDialog = false" :has-cancel-button="false" :accept-button-text="'Close'">
+  <ConfirmationDialog
+    :title="'Version Information'"
+    :show="showVersionDialog"
+    @cancel="showVersionDialog = false"
+    @accept="showVersionDialog = false"
+    :has-cancel-button="false"
+    :accept-button-text="'Close'"
+  >
     <template #confirmation-text>
       <div class="d-flex flex-column ga-3 my-6">
         <p>

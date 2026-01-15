@@ -4,14 +4,7 @@
       <v-row>
         <v-col :class="[mobile ? 'flex-column-reverse' : 'justify-space-between', 'd-flex']">
           <div :class="[{ ['text-right mb-2']: mobile }]">
-            <v-btn
-              id="btnSaveAndExit"
-              variant="outlined"
-              :loading="loadingStore.isLoading('draftprogram_put')"
-              @click="saveAndExit"
-            >
-              Save and exit
-            </v-btn>
+            <v-btn id="btnSaveAndExit" variant="outlined" :loading="loadingStore.isLoading('draftprogram_put')" @click="saveAndExit">Save and exit</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -87,7 +80,7 @@ export default defineComponent({
     },
     async saveAndExit() {
       const valid = await this.validateForm();
-      
+
       if (!valid) {
         this.showSaveExitConfirmation = true;
       } else {

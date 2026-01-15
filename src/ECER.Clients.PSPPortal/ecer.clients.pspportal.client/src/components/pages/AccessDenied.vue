@@ -7,10 +7,7 @@
         <p>You may have followed an invalid link.</p>
         <p>Contact the ECE Registry if you require help.</p>
       </div>
-      <v-btn class="mt-8 align-self-start" @click="oidcStore.logout" :size="smAndDown ? 'default' : 'large'"
-        color="primary">
-        Try again
-      </v-btn>
+      <v-btn class="mt-8 align-self-start" @click="oidcStore.logout" :size="smAndDown ? 'default' : 'large'" color="primary">Try again</v-btn>
     </div>
   </v-container>
 </template>

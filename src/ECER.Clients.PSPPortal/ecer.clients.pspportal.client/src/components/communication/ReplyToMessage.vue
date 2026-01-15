@@ -9,25 +9,38 @@
           <v-row class="mt-5">
             <v-col>
               <div>Message</div>
-              <v-textarea ref="textarea" v-model="text" class="mt-2" auto-grow counter="1000" maxlength="1000"
-                color="primary" variant="outlined" hide-details="auto"
-                :rules="[Rules.required('Enter a message no longer than 1000 characters')]"></v-textarea>
+              <v-textarea
+                ref="textarea"
+                v-model="text"
+                class="mt-2"
+                auto-grow
+                counter="1000"
+                maxlength="1000"
+                color="primary"
+                variant="outlined"
+                hide-details="auto"
+                :rules="[Rules.required('Enter a message no longer than 1000 characters')]"
+              ></v-textarea>
             </v-col>
           </v-row>
           <FileUploader ref="FileUploader" :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" />
           <v-row class="mt-10">
             <v-col>
-              <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')"
-                @click="handleReplyToMessage">Send</v-btn>
+              <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="handleReplyToMessage">Send</v-btn>
             </v-col>
           </v-row>
         </v-form>
       </v-col>
     </v-row>
   </PageContainer>
-  <ConfirmationDialog :cancel-button-text="'Continue editing'" :accept-button-text="'Delete message'"
-    :title="'Delete Message?'" :show="showCloseDialog" @cancel="showCloseDialog = false"
-    @accept="router.push('/messages')">
+  <ConfirmationDialog
+    :cancel-button-text="'Continue editing'"
+    :accept-button-text="'Delete message'"
+    :title="'Delete Message?'"
+    :show="showCloseDialog"
+    @cancel="showCloseDialog = false"
+    @accept="router.push('/messages')"
+  >
     <template #confirmation-text>
       <p>Your message will be deleted. It will not be sent.</p>
     </template>
