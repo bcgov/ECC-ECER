@@ -15,6 +15,7 @@ interface Component {
   id: string;
   component: any;
   props?: Record<string, any>;
+  slots?: Record<string, string>;
   cols: {
     md?: number;
     lg?: number;
