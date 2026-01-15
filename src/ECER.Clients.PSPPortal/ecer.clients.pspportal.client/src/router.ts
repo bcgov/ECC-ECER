@@ -73,9 +73,17 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/program",
+      path: "/program/:programId",
       component: () => import("./components/pages/Program.vue"),
+      name: "programDetail",
       meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
+    {
+      path: "/program-profiles",
+      component: () => import("./components/pages/ProgramProfiles.vue"),
+      name: "program-profiles",
+      meta: { requiresAuth: true },
     },
     {
       path: "/silent-callback",
@@ -110,6 +118,12 @@ const router = createRouter({
       component: () => import("./components/pages/AccessDenied.vue"),
       meta: { requiresAuth: true },
       name: "access-denied",
+    },
+        {
+      path: "/access-denied-mismatch",
+      component: () => import("./components/pages/AccessDeniedMismatch.vue"),
+      meta: { requiresAuth: true },
+      name: "access-denied-mismatch",
     },
     {
       path: "/terms-of-use",

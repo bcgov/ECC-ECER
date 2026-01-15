@@ -1,6 +1,6 @@
 import type { UserManagerSettings } from "oidc-client-ts";
 import { defineStore } from "pinia";
-import { getConfiguration, getProvinceList, getCountryList } from "@/api/configuration";
+import { getConfiguration, getProvinceList, getCountryList, getAreaOfInstructionList } from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
 import type { Components } from "@/types/openapi";
 import { sortArray } from "@/utils/functions";
@@ -9,6 +9,7 @@ export interface UserState {
   applicationConfiguration: Components.Schemas.ApplicationConfiguration;
   provinceList: Components.Schemas.Province[];
   countryList: Components.Schemas.Country[];
+  areaOfInstructionList: Components.Schemas.AreaOfInstruction[];
 }
 
 export const useConfigStore = defineStore("config", {
@@ -19,6 +20,7 @@ export const useConfigStore = defineStore("config", {
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,
     provinceList: [] as Components.Schemas.Province[],
     countryList: [] as Components.Schemas.Country[],
+    areaOfInstructionList: [] as Components.Schemas.AreaOfInstruction[],
   }),
   getters: {
     kcOidcConfiguration: (state): UserManagerSettings => {
@@ -47,11 +49,19 @@ export const useConfigStore = defineStore("config", {
     britishColumbia(state) {
       return state.provinceList.find((province) => province.provinceName!.toLowerCase() === "british columbia");
     },
+    areaOfInstructionNameById(state) {
+      return (areaOfInstructionId: string) => state.areaOfInstructionList.find((area) => area.id === areaOfInstructionId)?.name;
+    },
   },
 
   actions: {
     async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
-      const [configuration, provinceList, countryList] = await Promise.all([getConfiguration(), getProvinceList(), getCountryList()]);
+      const [configuration, provinceList, countryList, areaOfInstructionList] = await Promise.all([
+        getConfiguration(),
+        getProvinceList(),
+        getCountryList(),
+        getAreaOfInstructionList(),
+      ]);
 
       if (configuration !== null && configuration !== undefined) {
         this.applicationConfiguration = configuration;
@@ -61,6 +71,9 @@ export const useConfigStore = defineStore("config", {
       }
       if (countryList !== null && countryList !== undefined) {
         this.countryList = countryList.sort((a, b) => sortArray(a, b, "countryName"));
+      }
+      if (areaOfInstructionList !== null && areaOfInstructionList !== undefined) {
+        this.areaOfInstructionList = areaOfInstructionList;
       }
       return configuration;
     },

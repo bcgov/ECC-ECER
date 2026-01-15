@@ -37,7 +37,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private UserIdentity testPspIdentity = null!;
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
-  private ecer_Program testProgram = null!;
+  private ecer_Program testProgram1 = null!;
+  private ecer_Program testProgram2 = null!;
   private ecer_Course testCourse = null!;
   
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
@@ -56,7 +57,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
   
-  public string programId => testProgram.Id.ToString(); 
+  public string programId => testProgram1.Id.ToString();
+  public string programIdWithTotals => testProgram2.Id.ToString(); 
   public string courseId => testCourse.Id.ToString();
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
@@ -103,8 +105,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, "comm2", null);
     
-    testProgram = GetOrAddProgram(context, testPostSecondaryInstitute);
-    testCourse = GetOrAddCourse(context, testProgram);
+    testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false);
+    testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true);
+    testCourse = GetOrAddCourse(context, testProgram1);
     
     context.SaveChanges();
 
@@ -149,26 +152,34 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   
   private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program)
   {
-    var course = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == "101");
-    
-    if (course == null)
+    var existingCourse = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == "101");
+    if (existingCourse != null)
     {
-      course = new ecer_Course
+      context.DeleteObject(existingCourse);
+    }
+
+    var course = new ecer_Course
       {
+        ecer_CourseId = Guid.NewGuid(),
         ecer_Code = "101",
         ecer_CourseName = "Course 101",
         ecer_NewCourseHourDecimal = 20.00m,
         ecer_ProgramType = ecer_PSIProgramType.SNE,
         ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
       };
-      context.AddObject(course);
-    }
-
+    context.AddObject(course);
     return course;
   }
 
-  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute)
+  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute, bool addProgramTotals)
   {
+    
+    var existingProgram = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_PostSecondaryInstitution.Id == institute.Id);
+    if (existingProgram != null)
+    {
+      context.DeleteObject(existingProgram);
+    }
+    
     string[] sneProgramTypes = { "SNE" };
     var program = new ecer_Program
     {
@@ -181,6 +192,13 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       ecer_ProgramTypes = sneProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)),
       ecer_PostSecondaryInstitution = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
     };
+
+    if (addProgramTotals)
+    {
+      program.ecer_NewBasicTotalHours = 20.75m;
+      program.ecer_NewSNETotalHours = 10.00m;
+      program.ecer_NewITETotalHours = 15.25m;
+    }
     context.AddObject(program);
 
     return program;

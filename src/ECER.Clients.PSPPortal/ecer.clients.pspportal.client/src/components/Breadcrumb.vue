@@ -49,6 +49,12 @@ export default defineComponent({
           { title: "Edit Institution", disabled: true, href: "/education-institution/edit" },
         ];
       }
+      if (this.route.name === "program-profiles") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          { title: "Program profiles", disabled: true, href: "/program-profiles" },
+        ];
+      }
       return [];
     },
   },

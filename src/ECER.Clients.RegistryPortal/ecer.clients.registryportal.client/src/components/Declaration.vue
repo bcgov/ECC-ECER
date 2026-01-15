@@ -101,12 +101,29 @@ export default defineComponent({
     };
   },
   mounted() {
+    //check if user has a draftApplication in progress (They should not be coming to this screen vice versa)
+    if (
+      (this.stream === "Eligibility" && this.applicationStore.hasDraftApplication) ||
+      (this.stream === "Application" && this.icraStore.hasDraftIcraEligibility)
+    ) {
+      console.warn(
+        `User should not be trying to apply for ${this.stream === "Eligibility" ? "icra eligibility" : "an application"} if they have a ${this.stream === "Eligibility" ? "draft application" : "draft icra eligibility"} in progress. Sending user back to home page`,
+      );
+      this.router.push("/");
+    }
     this.checkboxValue = this.applicationStore.draftApplication.signedDate ? true : false;
     this.name = this.userStore.fullName;
-    this.date =
-      this.applicationStore.hasDraftApplication && this.applicationStore?.draftApplication?.signedDate
-        ? formatDate(this.applicationStore?.draftApplication?.signedDate, "yyyy-MM-dd")
-        : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+    if (this.stream === "Application") {
+      this.date =
+        this.applicationStore.hasDraftApplication && this.applicationStore?.draftApplication?.signedDate
+          ? formatDate(this.applicationStore?.draftApplication?.signedDate, "yyyy-MM-dd")
+          : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+    } else if (this.stream === "Eligibility") {
+      this.date =
+        this.icraStore.hasDraftIcraEligibility && this.icraStore?.draftIcraEligibility?.signedDate
+          ? formatDate(this.icraStore?.draftIcraEligibility?.signedDate, "yyyy-MM-dd")
+          : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+    }
   },
   methods: {
     async continueClick() {

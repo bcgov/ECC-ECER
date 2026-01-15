@@ -4,7 +4,7 @@ import { createOrUpdateDraftApplication, getPrograms } from "@/api/program.ts";
 
 import programWizard from "@/config/program-wizard/program-wizard";
 import type { Components } from "@/types/openapi";
-import type {ProgramStage, Wizard} from "@/types/wizard";
+import type { ProgramStage, Wizard } from "@/types/wizard";
 
 import { useWizardStore } from "./wizard";
 
@@ -19,7 +19,7 @@ export const useProgramStore = defineStore("program", {
       portalStage: "ProgramOverview",
       createdOn: null,
       status: "Draft",
-      name: null
+      name: null,
     },
   }),
   persist: {
@@ -29,33 +29,29 @@ export const useProgramStore = defineStore("program", {
     hasDraftProgram(state): boolean {
       return state.draftProgram.id !== undefined;
     },
-    
+
     applicationConfiguration(): Wizard {
-        return programWizard;
-    }
+      return programWizard;
+    },
   },
   actions: {
-    async fetchPrograms() {
-      // Drop any existing draft program
-      this.$reset();
-
-      const { data: programs } = await getPrograms();
-
-      const draftProgram = programs?.find((app) => app.status === "Draft");
-
-      if (draftProgram) {
-        if(!draftProgram.portalStage) {
-          draftProgram.portalStage = "ProgramOverview";
-        }
-        this.draftProgram = draftProgram;
+    setDraftProgramFromProfile(program: Components.Schemas.Program): void {
+      if (!program.portalStage) {
+        program.portalStage = "ProgramOverview";
       }
-
-      return programs;
+      this.draftProgram = program;
     },
     prepareDraftProgramFromWizard() {
       const wizardStore = useWizardStore();
       this.draftProgram.portalStage = wizardStore.currentStepStage as ProgramStage;
-      
+      //If programType is offered add it to the array of program types ex. earlyChildhood === true => programTypes = ["Basic"]
+      const basicStep = wizardStore?.wizardConfig?.steps?.earlyChildhood?.form.components.earlyChildhood?.id;
+      const specialNeedsStep = wizardStore?.wizardConfig?.steps?.specialNeeds?.form.components.specialNeeds?.id;
+      const infantAndToddlerStep = wizardStore?.wizardConfig?.steps?.infantAndToddler?.form.components.infantAndToddler?.id;
+      this.draftProgram.programTypes = [];
+      basicStep && wizardStore.wizardData[basicStep] === true && this.draftProgram.programTypes?.push("Basic");
+      specialNeedsStep && wizardStore.wizardData[specialNeedsStep] === true && this.draftProgram.programTypes?.push("SNE");
+      infantAndToddlerStep && wizardStore.wizardData[infantAndToddlerStep] === true && this.draftProgram.programTypes?.push("ITE");
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftProgramResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftProgram);
@@ -70,12 +66,12 @@ export const useProgramStore = defineStore("program", {
         portalStage: "ProgramOverview",
         createdOn: null,
         status: "Draft",
-        name: null
+        name: null,
       };
     },
     async saveDraft(): Promise<Components.Schemas.DraftProgramResponse | null | undefined> {
       this.prepareDraftProgramFromWizard();
       return await this.upsertDraftApplication();
-    }
+    },
   },
 });

@@ -1,181 +1,81 @@
 <template>
-  <Wizard :ref="'wizard'" :wizard="programStore.applicationConfiguration">
-    <template #stepperHeader>
-      <v-container v-show="showSteps">
-        <v-stepper-header class="elevation-0">
-          <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
-            <v-stepper-item
-              color="primary"
-              :step="wizardStore.step"
-              :value="index + 1"
-              :title="step.title"
-              :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
-              :complete="index + 1 < wizardStore.step"
-              :class="`small ${mdAndDown ? 'text-wrap' : 'text-no-wrap'}`"
-            >
-              <template #title>
-                <a v-if="index + 1 < wizardStore.step" href="#" @click.prevent>{{ step.title }}</a>
-                <div v-else>{{ step.title }}</div>
-              </template>
-            </v-stepper-item>
-            <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
-          </template>
-        </v-stepper-header>
-      </v-container>
-    </template>
-    <template #actions>
-      <v-window class="my-n10">
-        <v-stepper-window>
-          <v-container>
-            <v-row>
-              <v-col>
-                <v-btn
-                  id="btnSaveAndContinue"
-                  v-if="showSaveButtons"
-                  :loading="loadingStore.isLoading('draftprogram_put') || loadingStore.isLoading('psp_user_profile_put') || loadingStore.isLoading('psp_user_profile_get')"
-                  rounded="lg"
-                  color="primary"
-                  @click="handleSaveAndContinue"
-                >
-                  Save and continue
-                </v-btn>
-                <v-btn
-                  id="btnSubmitApplication"
-                  v-if="showSubmitApplication"
-                  rounded="lg"
-                  color="primary"
-                  :loading="loadingStore.isLoading('draftprogram_put')"
-                  @click="handleSubmit"
-                >
-                  Submit
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-stepper-window>
-      </v-window>
-    </template>
-  </Wizard>
+  <div>
+    <v-progress-linear v-if="loading" indeterminate color="primary"></v-progress-linear>
+    <ProgramWizard v-else-if="isDraftOrInProgress && program" :program-id="programId" :program="program" />
+    <ProgramDetail v-else-if="program" :program="program" />
+    <Alert v-else type="error" :closable="false" :prominent="true" variant="text" :rounded="false">
+      <h2 class="text-error">Program Not Found</h2>
+      <p class="text-grey-dark">The program you are looking for does not exist or you do not have access to it.</p>
+    </Alert>
+  </div>
 </template>
 
 <script lang="ts">
-import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
-import { useDisplay } from "vuetify";
-
 import { getPspUserProfile } from "@/api/psp-rep";
-import Wizard from "@/components/Wizard.vue";
-import WizardHeader from "@/components/WizardHeader.vue";
-import programWizard from "@/config/program-wizard/program-wizard.ts";
-import { useAlertStore } from "@/store/alert";
-import { useProgramStore } from "@/store/program";
-import { useLoadingStore } from "@/store/loading";
+import { getPrograms } from "@/api/program";
 import { useUserStore } from "@/store/user";
-import { useWizardStore } from "@/store/wizard";
-import type { ProgramStage } from "@/types/wizard";
-import { useRouter } from "vue-router";
+import ProgramWizard from "./ProgramWizard.vue";
+import ProgramDetail from "../ProgramDetail.vue";
+import Alert from "@/components/Alert.vue";
+import type { Components } from "@/types/openapi";
 
 export default defineComponent({
-  name: "Profile",
-  components: { Wizard, WizardHeader },
-  setup: async () => {
-    const wizardStore = useWizardStore();
+  name: "Program",
+  components: {
+    ProgramWizard,
+    ProgramDetail,
+    Alert,
+  },
+  props: {
+    programId: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      loading: true,
+      program: null as Components.Schemas.Program | null,
+    };
+  },
+  computed: {
+    isDraftOrInProgress(): boolean {
+      if (!this.program || !this.program.status) {
+        return false;
+      }
+      return this.program.status === "Draft" || this.program.status === "UnderReview";
+    },
+  },
+  async setup() {
     const userStore = useUserStore();
-    const alertStore = useAlertStore();
-    const programStore = useProgramStore();
-    const loadingStore = useLoadingStore();
-    const { mdAndDown, mobile } = useDisplay();
-    const router = useRouter();
 
     // Refresh userProfile from the server
     const userProfile = await getPspUserProfile();
     if (userProfile !== null) {
       userStore.setPspUserProfile(userProfile);
     }
-    await programStore.fetchPrograms();
-    //Initialize wizard
-    await wizardStore.initializeWizard(programStore.applicationConfiguration, programStore.draftProgram);
 
     return {
-      programStore,
-      wizardStore,
-      alertStore,
       userStore,
-      loadingStore,
-      programWizard,
-      mdAndDown,
-      mobile,
-      router,
     };
   },
-  computed: {
-    ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
-    showSaveButtons() {
-      return (
-        this.wizardStore.currentStepStage !== "Review" &&
-        !(this.wizardStore.currentStepStage === "ProgramOverview" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "EarlyChildhood" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "InfantAndToddler" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "SpecialNeeds" && this.wizardStore.listComponentMode === "add")
-      );
-    },
-    showSubmitApplication() {
-      return this.wizardStore.currentStepStage === "Review";
-    },
-    showSteps() {
-      return !this.mobile && this.wizardStore.listComponentMode !== "add";
-    },
-  },
-  mounted() {
-    this.mode = "list";
+  async mounted() {
+    await this.loadProgram();
   },
   methods: {
-    async handleSaveAndContinue() {
-      const valid = await this.validateForm();
-      if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
-      } else {
-        switch (this.wizardStore.currentStepStage) {
-          case "ProgramOverview":
-            await this.saveDraftAndAlertSuccess(false);
-            this.incrementWizard();
-            break;
-        }
+    async loadProgram() {
+      this.loading = true;
+      try {
+        const { data: programs } = await getPrograms(this.programId, ["Draft", "Denied", "Approved", "UnderReview", "ChangeRequestInProgress", "Inactive"]);
+        const program = programs && programs.length > 0 ? programs[0] : null;
+        this.program = program || null;
+      } catch (error) {
+        console.error("Error loading program:", error);
+        this.program = null;
+      } finally {
+        this.loading = false;
       }
-    },
-    handleSubmit() {
-      //implemented in future ticket
-    },
-    async validateForm() {
-      const currentStepFormId = this.wizardStore.currentStep.form.id;
-      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
-      const { valid } = await formRef.validate();
-
-      return valid;
-    },
-    incrementWizard() {
-      this.wizardStore.incrementStep();
-      this.programStore.draftProgram.portalStage = this.wizardStore.currentStepStage as ProgramStage;
-    },
-    decrementWizard() {
-      this.wizardStore.decrementStep();
-      this.programStore.draftProgram.portalStage = this.wizardStore.currentStepStage as ProgramStage;
-    },
-    handleBack() {
-      this.programStore.saveDraft();
-      this.decrementWizard();
-
-    },
-    async saveDraftAndAlertSuccess(exit: boolean) {
-      const draftApplicationResponse = await this.programStore.saveDraft();
-      if (draftApplicationResponse?.program) {
-        let message = "Information saved. If you save and exit, you can resume your application later.";
-        if (exit) message = "Information saved. You can resume your application later.";
-        this.alertStore.setSuccessAlert(message);
-      }
-    },
-    printPage() {
-      globalThis.print();
     },
   },
 });

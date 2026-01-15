@@ -1,3 +1,5 @@
+import type { Components } from "@/types/openapi";
+
 export function cleanPreferredName(firstName: string | null | undefined, lastName: string | null | undefined, mode = "full") {
   const clean = (str: any) => (str ?? "").trim(); // null/undefined → '' and trim
 
@@ -246,4 +248,29 @@ export function parseCertificationType(input: string): CertificationType {
   const cert = certificationTypeMap[input];
   if (!cert) throw new Error(`Unrecognized certification type: "${input}"`);
   return cert;
+}
+
+// this method will return a Map that looks like this {Key = AreaOfInstructionId, Values = Array of courses with name and hours}
+export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
+  program: Components.Schemas.Program,
+  programType: Components.Schemas.ProgramTypes,
+): AreaOfInstructionWithCourseHoursMap | undefined {
+  let filteredCourses = program?.courses?.filter((course: Components.Schemas.Course) => course.programType === programType); //filter out relevant courses here
+  let courseAreaOfInstructionMap = new Map();
+  filteredCourses?.forEach((course: Components.Schemas.Course) => {
+    course.courseAreaOfInstruction?.forEach((area: Components.Schemas.CourseAreaOfInstruction) => {
+      if (courseAreaOfInstructionMap.has(area.areaOfInstructionId)) {
+        //areaOfInstructionExists -> append to array
+        courseAreaOfInstructionMap
+          .get(area.areaOfInstructionId)
+          .push({ courseNumber: course.courseNumber, courseTitle: course.courseTitle, hours: area.newHours } as CourseAreaDetail);
+      } else {
+        //create new areaOfInstruction key
+        courseAreaOfInstructionMap.set(area.areaOfInstructionId, [
+          { courseNumber: course.courseNumber, courseTitle: course.courseTitle, hours: area.newHours } as CourseAreaDetail,
+        ]);
+      }
+    });
+  });
+  return courseAreaOfInstructionMap;
 }

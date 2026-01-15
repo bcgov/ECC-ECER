@@ -2,8 +2,7 @@
     <v-container>
         <div class="d-flex flex-column ga-10 mt-10">
             <h1>Required invitation</h1>
-            <h2 class="mt-20">You must have an invitation to successfully authenticate with the ECE Educational
-                Institution Portal.</h2>
+            <h2 class="mt-20">You must have an invitation to successfully authenticate with the  ECE Post-Secondary Programs Portal.</h2>
             <div class="d-flex flex-column ga-3">
                 <p>ensure you have an invitation from the ECE Registry.</p>
                 <p>Contact the ECE Registry if you require help.</p>

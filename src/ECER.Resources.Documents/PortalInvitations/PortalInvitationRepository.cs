@@ -20,10 +20,10 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
     var portalInvitation = context.ecer_PortalInvitationSet.Single(pi => pi.ecer_PortalInvitationId == query.portalInvitationId);
     var result = mapper.Map<PortalInvitation>(portalInvitation);
 
-    if (portalInvitation != null)
+    if (portalInvitation != null && portalInvitation.ecer_Type == ecer_PortalInvitationTypes.PSIProgramRepresentative)
     {
       var pspRep = context.ecer_ECEProgramRepresentativeSet.Single(pr => pr.ecer_ECEProgramRepresentativeId == portalInvitation!.ecer_psiprogramrepresentativeid.Id);
-      var institute = context.ecer_PostSecondaryInstituteSet.Single(psi => psi.ecer_PostSecondaryInstituteId ==  pspRep.ecer_PostSecondaryInstitute.Id);
+      var institute = context.ecer_PostSecondaryInstituteSet.Single(psi => psi.ecer_PostSecondaryInstituteId == pspRep.ecer_PostSecondaryInstitute.Id);
       if (institute.ecer_BusinessBCeID != null)
       {
         result.IsLinked = true;
