@@ -7,6 +7,8 @@ public interface IProgramRepository
   Task<string> Save(Program program, CancellationToken cancellationToken);
   
   Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, CancellationToken cancellationToken);
+  
+  Task<string> UpdateProgram(Program program, CancellationToken cancellationToken);
 }
 
 public record ProgramQuery
@@ -46,6 +48,7 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public float? NewBasicTotalHours { get; set; }
   public float? NewSneTotalHours { get; set; }
   public float? NewIteTotalHours { get; set; }
+  public ProgramProfileType ProgramProfileType { get; set; }
   public IEnumerable<string>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
 }
@@ -57,5 +60,12 @@ public enum ProgramStatus
   Approved,
   Denied,
   Inactive,
-  ChangeRequestInProgress
+  ChangeRequestInProgress,
+  Withdrawn
+}
+
+public enum ProgramProfileType
+{
+  ChangeRequest,
+  AnnualReview
 }

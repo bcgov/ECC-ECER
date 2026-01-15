@@ -12,6 +12,8 @@ using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQ
 using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
 using SaveDraftProgramCommand = ECER.Managers.Registry.Contract.Programs.SaveDraftProgramCommand;
 using UpdateCourseCommand = ECER.Managers.Registry.Contract.Programs.UpdateCourseCommand;
+using UpdateProgramCommand =  ECER.Managers.Registry.Contract.Programs.UpdateProgramCommand;
+using ContractProgramProfileType = ECER.Managers.Registry.Contract.Programs.ProgramProfileType;
 
 namespace ECER.Clients.PSPPortal.Server.Programs;
 
@@ -81,7 +83,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .RequireAuthorization("psp_user")
     .WithParameterValidation();
     
-    endpointRouteBuilder.MapPut("/api/program/{id}/courses", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string? id, UpdateCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/program/{id}/courses", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, UpdateCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
         if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
         bool IdIsNotGuid = !Guid.TryParse(id, out _);
@@ -106,6 +108,38 @@ public class ProgramsEndpoints : IRegisterEndpoints
         return TypedResults.Ok(result);
       })
       .WithOpenApi("Update a course for a program profile", string.Empty, "course_put")
+      .RequireAuthorization("psp_user")
+      .WithParameterValidation();
+    
+    endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+      {
+        if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
+        bool IdIsNotGuid = !Guid.TryParse(id, out _);
+        if (IdIsNotGuid) return TypedResults.BadRequest("invalid program profile id");
+        
+        if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
+
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+        
+        var existing = await messageBus.Send(new ContractProgramsQuery
+        {
+          ById = id,
+          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
+          ByStatus = new[] { ContractProgramStatus.Draft }
+        }, ct);
+
+        if (!existing.Items.Any()) return TypedResults.NotFound();
+
+        if (existing.Items.First().Status == ContractProgramStatus.Draft 
+            && existing.Items.First().ProgramProfileType != ContractProgramProfileType.ChangeRequest) 
+          return TypedResults.BadRequest("update not allowed on a draft program");
+
+        var programId = await messageBus.Send(new UpdateProgramCommand(mapper.Map<ContractProgram>(request)), ct);
+        return TypedResults.Ok(programId);
+      })
+      .WithOpenApi("Update program profile", string.Empty, "program_put")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
   }
@@ -154,6 +188,7 @@ public record Program
   public string? NewBasicTotalHours { get; set; }
   public string? NewSneTotalHours { get; set; }
   public string? NewIteTotalHours { get; set; }
+  public ProgramProfileType ProgramProfileType { get; set; }
   public IEnumerable<ProgramTypes>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
 }
@@ -165,7 +200,8 @@ public enum ProgramStatus
   Approved,
   Denied,
   Inactive,
-  ChangeRequestInProgress
+  ChangeRequestInProgress,
+  Withdrawn
 }
 
 public enum ProgramTypes
@@ -173,4 +209,10 @@ public enum ProgramTypes
   Basic,
   SNE,
   ITE
+}
+
+public enum ProgramProfileType
+{
+  ChangeRequest,
+  AnnualReview
 }

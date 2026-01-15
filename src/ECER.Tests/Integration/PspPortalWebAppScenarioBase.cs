@@ -39,6 +39,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_Communication testCommunication2 = null!;
   private ecer_Program testProgram1 = null!;
   private ecer_Program testProgram2 = null!;
+  private ecer_Program changeRequestProgram = null!;
   private ecer_Course testCourse = null!;
   
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
@@ -58,6 +59,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string communicationTwoId => testCommunication2.Id.ToString();
   
   public string programId => testProgram1.Id.ToString();
+  public string changeRequestProgramId => changeRequestProgram.Id.ToString();
   public string programIdWithTotals => testProgram2.Id.ToString(); 
   public string courseId => testCourse.Id.ToString();
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
@@ -105,8 +107,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, "comm2", null);
     
-    testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false);
-    testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true);
+    testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
+    testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
+    changeRequestProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, true, "CR", "Draft");
     testCourse = GetOrAddCourse(context, testProgram1);
     
     context.SaveChanges();
@@ -171,10 +174,10 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return course;
   }
 
-  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute, bool addProgramTotals)
+  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute, bool addProgramTotals, bool isChangeRequest, string type, string status)
   {
-    
-    var existingProgram = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_PostSecondaryInstitution.Id == institute.Id);
+    var programName = $"{TestRunId}psp_program_{type}_{status}";
+    var existingProgram = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_Name == programName);
     if (existingProgram != null)
     {
       context.DeleteObject(existingProgram);
@@ -185,13 +188,13 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     {
       StatusCode = ecer_Program_StatusCode.RequiresReview,
       ecer_ProgramId = Guid.NewGuid(),
-      ecer_Name = "Draft-Test",
       ecer_PortalStage = "stage1",
       ecer_StartDate = DateTime.UtcNow.Date,
       ecer_EndDate = DateTime.UtcNow.Date.AddYears(1),
       ecer_ProgramTypes = sneProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)),
       ecer_PostSecondaryInstitution = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
     };
+    program.ecer_Type = isChangeRequest ? ecer_ProgramProfileType.ChangeRequest :  ecer_ProgramProfileType.AnnualReview;
 
     if (addProgramTotals)
     {

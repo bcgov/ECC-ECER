@@ -18,6 +18,7 @@ public record ProgramsQuery : IRequest<ProgramsQueryResults>
 }
 
 public record UpdateCourseCommand(IEnumerable<Course> Course, string Id) : IRequest<string>;
+public record UpdateProgramCommand(Program Program) : IRequest<string>;
 
 public record Course
 {
@@ -55,6 +56,7 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public string? NewBasicTotalHours { get; set; }
   public string? NewSneTotalHours { get; set; }
   public string? NewIteTotalHours { get; set; }
+  public ProgramProfileType ProgramProfileType { get; set; }
   public IEnumerable<string>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
 }
@@ -66,5 +68,12 @@ public enum ProgramStatus
   Approved,
   Denied,
   Inactive,
-  ChangeRequestInProgress
+  ChangeRequestInProgress,
+  Withdrawn
+}
+
+public enum ProgramProfileType
+{
+  ChangeRequest,
+  AnnualReview
 }

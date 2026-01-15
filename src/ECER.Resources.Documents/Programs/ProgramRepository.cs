@@ -191,4 +191,25 @@ internal sealed class ProgramRepository : IProgramRepository
       context.UpdateObject(existingAreaOfInstruction);
     }
   }
+
+  public async Task<string> UpdateProgram(Program program, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var existingProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == Guid.Parse(program.Id!));
+    if (existingProgram == null) throw new InvalidOperationException($"ecer_Program '{program.Id}' not found");
+
+    if (existingProgram.ecer_Type == ecer_ProgramProfileType.ChangeRequest &&
+        existingProgram.StatusCode == ecer_Program_StatusCode.RequiresReview)
+    {
+      if (program.Status == ProgramStatus.Withdrawn)
+      {
+        existingProgram.StatusCode = ecer_Program_StatusCode.Withdrawn;
+        existingProgram.StateCode = ecer_program_statecode.Inactive;
+        
+        context.UpdateObject(existingProgram);
+      }
+    }
+    context.SaveChanges();
+    return program.Id!;
+  }
 }
