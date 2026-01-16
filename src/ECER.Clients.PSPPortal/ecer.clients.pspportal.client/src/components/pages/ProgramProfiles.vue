@@ -86,7 +86,7 @@ import { defineComponent } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import ProgramProfileCard from "@/components/ProgramProfileCard.vue";
+import ProgramProfileCard from "@/components/program-profile/ProgramProfileCard.vue";
 import { getPrograms } from "@/api/program";
 import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";

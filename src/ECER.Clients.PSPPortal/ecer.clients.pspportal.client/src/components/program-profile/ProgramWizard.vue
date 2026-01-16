@@ -141,9 +141,7 @@ export default defineComponent({
   methods: {
     async handleSaveAndContinue() {
       const valid = await this.validateForm();
-      if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
-      } else {
+      if (valid) {
         switch (this.wizardStore.currentStepStage) {
           case "ProgramOverview":
             await this.saveDraftAndAlertSuccess(false);
@@ -158,6 +156,8 @@ export default defineComponent({
             this.incrementWizard();
             break;
         }
+      } else {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
     },
     handleSubmit() {
