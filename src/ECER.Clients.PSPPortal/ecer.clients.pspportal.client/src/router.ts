@@ -98,7 +98,7 @@ const router = createRouter({
     {
       path: "/invalid-invitation",
       component: () => import("./components/pages/InvalidInvitation.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: false },
       name: "invalid-invitation",
     },
     {
