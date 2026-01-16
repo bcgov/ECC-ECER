@@ -5,5 +5,18 @@ set -e
 cd "$(git rev-parse --show-toplevel)/src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client" && npm run validate-colors
 cd "$(git rev-parse --show-toplevel)/src/ECER.Clients.PSPPortal/ecer.clients.pspportal.client" && npm run validate-colors
 
+# Run format and check if it made changes
 cd "$(git rev-parse --show-toplevel)/src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client" && npm run format
 cd "$(git rev-parse --show-toplevel)/src/ECER.Clients.PSPPortal/ecer.clients.pspportal.client" && npm run format
+
+# Check if formatting changed any files
+if ! git diff --exit-code --quiet; then
+  echo "❌ Code formatting changes detected!"
+  echo "📝 Files have been automatically formatted."
+  echo "🔄 Please stage the formatted files and commit again:"
+  echo "   git add ."
+  echo "   git commit"
+  exit 1
+fi
+
+echo "✅ All files are properly formatted!"
