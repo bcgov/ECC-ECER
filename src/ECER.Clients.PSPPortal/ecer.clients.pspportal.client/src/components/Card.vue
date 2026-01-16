@@ -1,7 +1,12 @@
 <template>
-  <v-card :rounded="true" :border="true" flat class="pa-6 border-primary border-opacity-100 w-100"
+  <v-card
+    :rounded="true"
+    :border="true"
+    flat
+    class="pa-6 border-primary border-opacity-100 w-100"
     :class="[{ 'card-top-border-large': hasTopBorder && topBorderSize === 'large', 'card-top-border-small': hasTopBorder && topBorderSize === 'small' }]"
-    v-bind="$attrs">
+    v-bind="$attrs"
+  >
     <slot />
   </v-card>
 </template>

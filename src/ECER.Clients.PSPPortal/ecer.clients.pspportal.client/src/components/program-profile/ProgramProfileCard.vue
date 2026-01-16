@@ -22,20 +22,12 @@
     </div>
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
-      <v-btn v-if="status !== 'Draft'" size="large" variant="outlined" color="primary" @click="openProfile">
-        View
-      </v-btn>
-      <v-btn v-else-if="!isActive" size="large" variant="outlined" color="primary" @click="openProfile">
-        Review now
-      </v-btn>
+      <v-btn v-if="status !== 'Draft'" size="large" variant="outlined" color="primary" @click="openProfile">View</v-btn>
+      <v-btn v-else-if="!isActive" size="large" variant="outlined" color="primary" @click="openProfile">Review now</v-btn>
       <v-row v-else>
-      <v-btn size="large" variant="outlined" color="primary" @click="openProfile">
-        Continue
-      </v-btn>
-      <v-spacer />
-      <p v-if="isActive && status === 'Draft'" class="mt-2 text-support-border-info">
-        REVIEW IN PROGRESS: {{ step }}/5
-      </p>
+        <v-btn size="large" variant="outlined" color="primary" @click="openProfile">Continue</v-btn>
+        <v-spacer />
+        <p v-if="isActive && status === 'Draft'" class="mt-2 text-support-border-info">REVIEW IN PROGRESS: {{ step }}/5</p>
       </v-row>
     </v-card-actions>
   </v-card>
@@ -82,14 +74,14 @@ export default defineComponent({
         case "Draft":
           return "warning-border";
         case "UnderReview":
-          return "support-border-info"
+          return "support-border-info";
         case "Approved":
-          return "#42814A"
+          return "#42814A";
       }
     },
     step(): number {
       if (!this.isActive) return 0;
-      
+
       const stageToStep: Record<ProgramStage, number> = {
         ProgramOverview: 1,
         EarlyChildhood: 2,
@@ -97,7 +89,7 @@ export default defineComponent({
         SpecialNeeds: 4,
         Review: 5,
       };
-      
+
       return stageToStep[this.program.portalStage as ProgramStage] || 0;
     },
     statusText(): string {
@@ -121,7 +113,7 @@ export default defineComponent({
     openProfile() {
       this.router.push({ path: "/program/" + this.program.id });
     },
-    formatDate
+    formatDate,
   },
 });
 </script>

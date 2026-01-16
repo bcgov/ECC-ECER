@@ -80,6 +80,13 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/program/submitted",
+      component: () => import("./components/pages/Submitted.vue"),
+      name: "programSubmitted",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
+    {
       path: "/program-profiles",
       component: () => import("./components/pages/ProgramProfiles.vue"),
       name: "program-profiles",
@@ -98,7 +105,7 @@ const router = createRouter({
     {
       path: "/invalid-invitation",
       component: () => import("./components/pages/InvalidInvitation.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: false },
       name: "invalid-invitation",
     },
     {
@@ -119,7 +126,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
       name: "access-denied",
     },
-        {
+    {
       path: "/access-denied-mismatch",
       component: () => import("./components/pages/AccessDeniedMismatch.vue"),
       meta: { requiresAuth: true },
@@ -127,7 +134,7 @@ const router = createRouter({
     },
     {
       path: "/terms-of-use",
-      component: () => import("./components/pages/PageNotFound.vue"),
+      component: () => import("./components/pages/TermsOfUse.vue"),
       meta: { requiresAuth: false },
       name: "terms-of-use",
     },

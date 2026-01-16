@@ -56,7 +56,7 @@ export default defineComponent({
   props: {
     wizard: {
       type: Object as PropType<Wizard>,
-      required: true
+      required: true,
     },
     showSteps: {
       type: Boolean,

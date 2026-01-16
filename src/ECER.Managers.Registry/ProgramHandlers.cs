@@ -10,7 +10,8 @@ public class ProgramHandlers(
     IMapper mapper)
   : IRequestHandler<SaveDraftProgramCommand, Contract.Programs.Program?>,
     IRequestHandler<ProgramsQuery, ProgramsQueryResults>,
-    IRequestHandler<UpdateCourseCommand, string>
+    IRequestHandler<UpdateCourseCommand, string>,
+    IRequestHandler<UpdateProgramCommand, string>
 {
   public async Task<Contract.Programs.Program?> Handle(SaveDraftProgramCommand request, CancellationToken cancellationToken)
   {
@@ -50,5 +51,12 @@ public class ProgramHandlers(
     }, cancellationToken);
 
     return new ProgramsQueryResults(mapper.Map<IEnumerable<Contract.Programs.Program>>(programs)!);
+  }
+  
+  public async Task<string> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var programId = await programRepository.UpdateProgram(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
+    return programId;
   }
 }

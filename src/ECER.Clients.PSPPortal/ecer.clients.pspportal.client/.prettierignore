@@ -1,0 +1,16 @@
+# Build artifacts
+obj/
+dist/
+node_modules/
+.vite/
+
+# Dependencies
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Coverage
+coverage/
+
+# Build outputs
+*.log

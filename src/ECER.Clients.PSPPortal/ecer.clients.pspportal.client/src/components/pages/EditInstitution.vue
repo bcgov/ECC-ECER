@@ -80,7 +80,6 @@ export default defineComponent({
       const { valid } = await (this.$refs.editEducationInstitutionFormRef as typeof EceForm).$refs[institutionForm.id].validate();
 
       if (valid) {
-
         const institution = {
           id: this.institutionId,
           name: this.institutionName,

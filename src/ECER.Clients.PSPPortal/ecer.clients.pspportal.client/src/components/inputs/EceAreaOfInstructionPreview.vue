@@ -6,10 +6,10 @@
           <p class="small">Program is offered</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ program?.programTypes?.includes(programType) ? "Yes" : "No" }}</p>
+          <p class="small font-weight-bold">{{ programStore.draftProgram?.programTypes?.includes(programType) ? "Yes" : "No" }}</p>
         </v-col>
       </v-row>
-      <template v-if="program?.programTypes?.includes(programType)">
+      <template v-if="programStore.draftProgram?.programTypes?.includes(programType)">
         <v-row
           class="mb-4"
           v-for="[courseAreaOfInstructionId, courses] in getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction"
@@ -58,20 +58,11 @@ export default defineComponent({
   },
   setup: () => {
     const configStore = useConfigStore();
-    //TODO remove when we get the wizardDataValueForCourses this is a shim just to get things showing
+    //using programStore for data since technically changes to courses are separate from the wizardFlow.
+    //we have a separate endpoint for course edits. ProgramStore.draftProgram will have the updated information to display.
     const programStore = useProgramStore();
 
     return { configStore, programStore };
-  },
-  data() {
-    return {
-      //TODO remove when we get the wizardDataValueForCourses this is a shim just to get things showing
-      program: {} as Components.Schemas.Program,
-    };
-  },
-  mounted() {
-    //TODO remove when we get the wizardDataValueForCourses this is a shim just to get things showing
-    this.program = this.programStore.draftProgram;
   },
   computed: {
     getPortalStage(): ProgramStage {
@@ -108,7 +99,7 @@ export default defineComponent({
     },
     // this method will return a Map that looks like this {Key = AreaOfInstructionId, Values = Array of courses with name and hours}
     getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(): AreaOfInstructionWithCourseHoursMap | undefined {
-      return getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(this.program, this.programType);
+      return getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(this.programStore.draftProgram, this.programType);
     },
   },
   methods: {
