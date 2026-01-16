@@ -17,7 +17,7 @@ public class AutoMapperValidation
      {
        cfg.AddMaps(ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER"));
        cfg.EnableEnumMappingValidation();
-     }, loggerFactory: loggerFactory);  // v15 requires this overload
+     });  // v15 requires this overload
 
     mapperConfig.AssertConfigurationIsValid();
   }

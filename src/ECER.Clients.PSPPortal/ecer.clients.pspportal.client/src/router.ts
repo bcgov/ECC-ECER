@@ -105,7 +105,7 @@ const router = createRouter({
     {
       path: "/invalid-invitation",
       component: () => import("./components/pages/InvalidInvitation.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: false },
       name: "invalid-invitation",
     },
     {
@@ -134,7 +134,7 @@ const router = createRouter({
     },
     {
       path: "/terms-of-use",
-      component: () => import("./components/pages/PageNotFound.vue"),
+      component: () => import("./components/pages/TermsOfUse.vue"),
       meta: { requiresAuth: false },
       name: "terms-of-use",
     },

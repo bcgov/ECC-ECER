@@ -5,46 +5,58 @@
         <v-btn prepend-icon="mdi-close" variant="text" text="Close" @click="showCloseDialog = true"></v-btn>
         <v-divider :style="{ opacity: 1 }" />
         <v-row>
-          <v-col>
-            New message
-          </v-col>
+          <v-col>New message</v-col>
         </v-row>
         <v-row>
           <v-col>
-            Send a message to the ECE Registry. 
-            <span class="font-weight-bold">Please note that all program representatives at your institution will be able to read and reply to this thread.</span>
+            Send a message to the ECE Registry.
+            <span class="font-weight-bold">
+              Please note that all program representatives at your institution will be able to read and reply to this thread.
+            </span>
           </v-col>
         </v-row>
         <v-form ref="messageForm" v-model="formValid">
           <v-row class="mt-5">
             <v-col cols="6">
               <div>Subject</div>
-              <v-text-field v-model="subject" class="mt-2" variant="outlined"
-                :rules="[Rules.required('Required')]"></v-text-field>
+              <v-text-field v-model="subject" class="mt-2" variant="outlined" :rules="[Rules.required('Required')]"></v-text-field>
             </v-col>
           </v-row>
           <v-row class="mt-5">
             <v-col>
               <div>Message</div>
-              <v-textarea ref="textarea" v-model="text" class="mt-2" auto-grow counter="1000" maxlength="1000"
-                color="primary" variant="outlined" hide-details="auto"
-                :rules="[Rules.required('Enter a message no longer than 1000 characters')]"></v-textarea>
+              <v-textarea
+                ref="textarea"
+                v-model="text"
+                class="mt-2"
+                auto-grow
+                counter="1000"
+                maxlength="1000"
+                color="primary"
+                variant="outlined"
+                hide-details="auto"
+                :rules="[Rules.required('Enter a message no longer than 1000 characters')]"
+              ></v-textarea>
             </v-col>
           </v-row>
           <FileUploader ref="FileUploader" :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" />
           <v-row class="mt-10">
             <v-col>
-              <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')"
-                @click="send">Send</v-btn>
+              <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="send">Send</v-btn>
             </v-col>
           </v-row>
         </v-form>
       </v-col>
     </v-row>
   </PageContainer>
-  <ConfirmationDialog :cancel-button-text="'Continue editing'" :accept-button-text="'Delete message'"
-    :title="'Delete Message?'" :show="showCloseDialog" @cancel="showCloseDialog = false"
-    @accept="router.push('/messages')">
+  <ConfirmationDialog
+    :cancel-button-text="'Continue editing'"
+    :accept-button-text="'Delete message'"
+    :title="'Delete Message?'"
+    :show="showCloseDialog"
+    @cancel="showCloseDialog = false"
+    @accept="router.push('/messages')"
+  >
     <template #confirmation-text>
       <p>Your message will be deleted. It will not be sent.</p>
     </template>
@@ -93,19 +105,19 @@ export default defineComponent({
       loadingStore,
       alertStore,
       maxNumberOfFiles,
-      router
+      router,
     };
   },
   data(): NewMessage {
     return {
-      text: '',
+      text: "",
       Rules,
       showCloseDialog: false,
       areAttachedFilesValid: true,
       isFileUploadInProgress: false,
       formValid: false,
       attachments: [],
-      subject: ''
+      subject: "",
     };
   },
   methods: {

@@ -7,8 +7,7 @@
       <v-col cols="auto">
         <v-tooltip text="Edit Institution Information" location="top">
           <template #activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-pencil" variant="plain"
-              @click="router.push('education-institution/edit')" />
+            <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="router.push('education-institution/edit')" />
           </template>
         </v-tooltip>
       </v-col>
@@ -37,8 +36,7 @@
         <span>Website:</span>
       </v-col>
       <v-col cols="12" sm="9">
-        <a v-if="educationInstitution.websiteUrl" :href="educationInstitution.websiteUrl" target="_blank"
-          class="text-links font-weight-bold">
+        <a v-if="educationInstitution.websiteUrl" :href="educationInstitution.websiteUrl" target="_blank" class="text-links font-weight-bold">
           {{ educationInstitution.websiteUrl }}
         </a>
         <span v-else class="font-weight-bold">—</span>

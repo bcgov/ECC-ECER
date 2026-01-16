@@ -27,7 +27,7 @@
                 Review now
               </v-btn>
             </div>
-          </Card>  
+          </Card>
         </v-col>
         <v-col v-if="educationInstitution" cols="12">
           <EducationInstitutionCard :education-institution="educationInstitution" />
@@ -55,9 +55,7 @@
             <h2>Messages</h2>
             <p class="mt-4">View or send a new message to the ECE Registry.</p>
             <div class="mt-auto">
-              <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnMessages" @click="router.push('/messages')">
-                Go to messages
-              </v-btn>
+              <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnMessages" @click="router.push('/messages')">Go to messages</v-btn>
             </div>
           </Card>
         </v-col>
@@ -113,7 +111,7 @@ export default defineComponent({
     Card,
     EducationInstitutionCard,
     Alert,
-    UnreadMessages
+    UnreadMessages,
   },
   data() {
     return {
@@ -208,13 +206,13 @@ export default defineComponent({
       this.pspUserProfile = await getPspUserProfile();
     }
 
-if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
+    if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
       this.getInstitutionData();
       this.getProgramProfileData();
-    }else{
+    } else {
       this.router.replace("/new-user");
     }
-    
+
     this.setUserStoreValues();
 
     this.loading = false;
@@ -229,7 +227,6 @@ if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
         this.loading
       );
     },
-
   },
   methods: {
     async getInstitutionData() {
@@ -246,7 +243,7 @@ if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
       if (this.educationInstitution) {
         this.userStore.setEducationInstitution(this.educationInstitution);
       }
-    }
-  }
+    },
+  },
 });
 </script>
