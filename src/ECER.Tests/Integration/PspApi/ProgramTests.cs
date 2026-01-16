@@ -1,11 +1,6 @@
 using Alba;
 using ECER.Clients.PSPPortal.Server.Programs;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.PspApi;
@@ -250,6 +245,58 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     
     var firstCourseAreaOfInstruction = firstCourse.CourseAreaOfInstruction.SingleOrDefault();
     firstCourseAreaOfInstruction.ShouldNotBeNull();
+  }
+  
+  [Fact]
+  public async Task UpdateProgram_Type_Draft_ReturnsBadRequest()
+  {
+    var programResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.programId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var status = await programResponse.ReadAsJsonAsync<IEnumerable<Program>>();
+    var program = status.First();
+    
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(program).ToUrl($"/api/program/{Fixture.programId}");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
+    });
+  }
+  
+  [Fact]
+  public async Task UpdateProgram_Type_ChangeRequest_ReturnsOk()
+  {
+    var programResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.changeRequestProgramId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var status = await programResponse.ReadAsJsonAsync<IEnumerable<Program>>();
+    var program = status.First();
+    program.Status = ProgramStatus.Withdrawn;
+    
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(program).ToUrl($"/api/program/{Fixture.changeRequestProgramId}");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var updatedProgramResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.changeRequestProgramId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var updated = await updatedProgramResponse.ReadAsJsonAsync<IEnumerable<Program>>();
+    var updatedProgram = updated.First();
+    updatedProgram.ShouldNotBeNull();
+    updatedProgram.Status.ShouldBe(ProgramStatus.Withdrawn);
   }
 
   private Course CreateCourse()

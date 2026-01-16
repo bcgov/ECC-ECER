@@ -16,6 +16,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForSourceMember(s => s.NewBasicTotalHours, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.NewSneTotalHours, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.NewIteTotalHours, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramProfileType, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
@@ -39,6 +40,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.NewBasicTotalHours, opts => opts.MapFrom(s => s.ecer_NewBasicTotalHours))
       .ForMember(d => d.NewSneTotalHours, opts => opts.MapFrom(s => s.ecer_NewSNETotalHours))
       .ForMember(d => d.NewIteTotalHours, opts => opts.MapFrom(s => s.ecer_NewITETotalHours))
+      .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ecer_Type))
       ;
 
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
@@ -48,6 +50,7 @@ internal class ProgramRepositoryMapper : Profile
           status == ProgramStatus.Approved ? ecer_Program_StatusCode.RegistryReviewComplete :
           status == ProgramStatus.Denied ? ecer_Program_StatusCode.Denied :
           status == ProgramStatus.Inactive ? ecer_Program_StatusCode.Inactive :
+          status == ProgramStatus.Withdrawn ? ecer_Program_StatusCode.Withdrawn :
           status == ProgramStatus.ChangeRequestInProgress ? ecer_Program_StatusCode.ChangeRequestInProgress :
                                                 ecer_Program_StatusCode.RequiresReview);
 
@@ -58,6 +61,7 @@ internal class ProgramRepositoryMapper : Profile
           status == ecer_Program_StatusCode.RegistryReviewComplete ? ProgramStatus.Approved :
           status == ecer_Program_StatusCode.Denied ? ProgramStatus.Denied :
           status == ecer_Program_StatusCode.Inactive ? ProgramStatus.Inactive :
+          status == ecer_Program_StatusCode.Withdrawn ? ProgramStatus.Withdrawn :
           status == ecer_Program_StatusCode.ChangeRequestInProgress ? ProgramStatus.ChangeRequestInProgress :
                                                                      ProgramStatus.Draft);
     
