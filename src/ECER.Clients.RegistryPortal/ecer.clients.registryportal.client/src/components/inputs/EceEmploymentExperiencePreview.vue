@@ -26,7 +26,10 @@
             <p class="small">Reference first name</p>
           </v-col>
           <v-col>
-            <p id="employmentExperienceLastName" class="small font-weight-bold">
+            <p
+              id="employmentExperienceFirstName"
+              class="small font-weight-bold"
+            >
               {{ experience.firstName }}
             </p>
           </v-col>
