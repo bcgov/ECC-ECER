@@ -130,7 +130,7 @@ const withMockConfigStore = (storyFn: any, context: any) => {
   // Initialize store with mock data
   const configStore = useConfigStore();
   configStore.areaOfInstructionList = mockAreaOfInstructions;
-  
+
   return storyFn(context);
 };
 
@@ -171,7 +171,8 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: "A component that displays area of instruction cards for a given program type, filtering areas and courses accordingly. Also displays non-allocated courses in a separate card.",
+        component:
+          "A component that displays area of instruction cards for a given program type, filtering areas and courses accordingly. Also displays non-allocated courses in a separate card.",
       },
     },
   },
@@ -331,7 +332,8 @@ export const WithChildGuidanceCombined: Story = {
       ],
     },
     areaSubtitles: {
-      "area-5": "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
+      "area-5":
+        "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
     },
     includeTotalHours: false,
   },
@@ -410,7 +412,8 @@ export const BasicWithChildGuidanceSubtitle: Story = {
       ],
     },
     areaSubtitles: {
-      "area-5": "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
+      "area-5":
+        "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
     },
     includeTotalHours: false,
   },

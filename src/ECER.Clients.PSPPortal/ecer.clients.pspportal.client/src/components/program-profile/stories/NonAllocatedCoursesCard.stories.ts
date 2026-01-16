@@ -41,7 +41,8 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: "A card component that displays courses with no hours allocated toward any required areas of instruction. No progress bar or total hours are shown.",
+        component:
+          "A card component that displays courses with no hours allocated toward any required areas of instruction. No progress bar or total hours are shown.",
       },
     },
   },

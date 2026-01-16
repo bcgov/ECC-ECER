@@ -22,7 +22,8 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: "A card component that displays total hours of instruction with a progress bar. Shows green background and border when requirements are met, yellow when not met.",
+        component:
+          "A card component that displays total hours of instruction with a progress bar. Shows green background and border when requirements are met, yellow when not met.",
       },
     },
   },

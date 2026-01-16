@@ -36,7 +36,7 @@ const withMockConfigStore = (storyFn: any, context: any) => {
   // This runs in the component context, so Pinia should be available
   const configStore = useConfigStore();
   configStore.areaOfInstructionList = mockAreaOfInstructions;
-  
+
   return storyFn(context);
 };
 
@@ -91,7 +91,8 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: "A card component that displays CourseAreaOfInstruction items grouped by area of instruction. Each area shows its own title, subtitle, progress bar, and course list. An overall total hours is displayed at the bottom.",
+        component:
+          "A card component that displays CourseAreaOfInstruction items grouped by area of instruction. Each area shows its own title, subtitle, progress bar, and course list. An overall total hours is displayed at the bottom.",
       },
     },
   },
@@ -163,8 +164,9 @@ export const MultipleAreas: Story = {
       },
     ] as CourseAreaOfInstructionWithCourse[],
     areaSubtitles: {
-      "area-2": "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance."
-    }
+      "area-2":
+        "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
+    },
   },
 };
 
@@ -286,4 +288,3 @@ export const Empty: Story = {
     courseAreaOfInstructions: [] as CourseAreaOfInstructionWithCourse[],
   },
 };
-
