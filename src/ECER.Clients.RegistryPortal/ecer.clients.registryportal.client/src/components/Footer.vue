@@ -10,17 +10,38 @@
       <div class="w-100 justify-space-between d-sm-flex-column d-md-flex">
         <div>
           <router-link to="/">
-            <img src="../assets/bc-gov-logo.png" width="155" class="logo" alt="B.C. Government Logo" />
+            <img
+              src="../assets/bc-gov-logo.png"
+              width="155"
+              class="logo"
+              alt="B.C. Government Logo"
+            />
           </router-link>
         </div>
         <div :class="[smAndUp ? 'w-50' : 'w-100']">
           <p><b>More information</b></p>
           <div class="d-flex">
             <div class="d-flex flex-column w-50">
-              <a v-for="link in firstColumnLinks" :key="link.name" :href="link.path" class="small text-black" :target="link?.target">{{ link.name }}</a>
+              <a
+                v-for="link in firstColumnLinks"
+                :key="link.name"
+                :href="link.path"
+                class="small text-black"
+                :target="link?.target"
+              >
+                {{ link.name }}
+              </a>
             </div>
             <div class="d-flex flex-column w-50">
-              <a v-for="link in secondColumnLinks" :key="link.name" :href="link.path" class="small text-black" :target="link?.target">{{ link.name }}</a>
+              <a
+                v-for="link in secondColumnLinks"
+                :key="link.name"
+                :href="link.path"
+                class="small text-black"
+                :target="link?.target"
+              >
+                {{ link.name }}
+              </a>
             </div>
           </div>
         </div>
@@ -28,8 +49,16 @@
 
       <v-divider class="border-opacity-100 w-100 my-6"></v-divider>
       <div class="w-100 justify-space-between d-flex">
-        <p class="small text-black align-self-center">© 2024 Government of British Columbia</p>
-        <v-btn @click="handleShowVersionModal" class="align-self-center" flat icon="mdi-information-outline" size="x-small"></v-btn>
+        <p class="small text-black align-self-center">
+          © 2024 Government of British Columbia
+        </p>
+        <v-btn
+          @click="handleShowVersionModal"
+          class="align-self-center"
+          flat
+          icon="mdi-information-outline"
+          size="x-small"
+        ></v-btn>
       </div>
     </v-container>
   </v-footer>
@@ -94,11 +123,31 @@ export default defineComponent({
 
     const links: FooterLink[] = [
       { name: "Home", path: "/" },
-      { name: "Contact Us", path: "https://www2.gov.bc.ca/gov/content?id=9376DE7539D44C64B3E667DB53320E71", target: "_blank" },
-      { name: "Disclaimer", path: "https://www2.gov.bc.ca/gov/content?id=79F93E018712422FBC8E674A67A70535", target: "_blank" },
-      { name: "Privacy", path: "https://www2.gov.bc.ca/gov/content?id=9E890E16955E4FF4BF3B0E07B4722932", target: "_blank" },
-      { name: "Accessibility", path: "https://www2.gov.bc.ca/gov/content?id=E08E79740F9C41B9B0C484685CC5E412", target: "_blank" },
-      { name: "Copyright", path: "https://www2.gov.bc.ca/gov/content?id=1AAACC9C65754E4D89A118B875E0FBDA", target: "_blank" },
+      {
+        name: "Contact Us",
+        path: "https://www2.gov.bc.ca/gov/content?id=9376DE7539D44C64B3E667DB53320E71",
+        target: "_blank",
+      },
+      {
+        name: "Disclaimer",
+        path: "https://www2.gov.bc.ca/gov/content?id=79F93E018712422FBC8E674A67A70535",
+        target: "_blank",
+      },
+      {
+        name: "Privacy",
+        path: "https://www2.gov.bc.ca/gov/content?id=9E890E16955E4FF4BF3B0E07B4722932",
+        target: "_blank",
+      },
+      {
+        name: "Accessibility",
+        path: "https://www2.gov.bc.ca/gov/content?id=E08E79740F9C41B9B0C484685CC5E412",
+        target: "_blank",
+      },
+      {
+        name: "Copyright",
+        path: "https://www2.gov.bc.ca/gov/content?id=1AAACC9C65754E4D89A118B875E0FBDA",
+        target: "_blank",
+      },
     ];
     return { links, smAndUp, route };
   },
@@ -111,9 +160,15 @@ export default defineComponent({
     },
     acceptedPaths(): boolean {
       const routeName = this.route.name?.toString() || "";
-      return ["login", "dashboard", "invalid-reference", "reference-submitted", "verify", "lookup-certification", "lookup-certification-record"].includes(
-        routeName,
-      );
+      return [
+        "login",
+        "dashboard",
+        "invalid-reference",
+        "reference-submitted",
+        "verify",
+        "lookup-certification",
+        "lookup-certification-record",
+      ].includes(routeName);
     },
     formattedTimestamp(): string {
       return formatDate(this.timestamp || "", "FFF");

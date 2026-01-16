@@ -2,17 +2,35 @@
   <v-container fluid class="bg-primary">
     <v-container>
       <v-row>
-        <v-col :class="[mobile ? 'flex-column-reverse' : 'justify-space-between', 'd-flex']">
+        <v-col
+          :class="[
+            mobile ? 'flex-column-reverse' : 'justify-space-between',
+            'd-flex',
+          ]"
+        >
           <div>
-            <div v-if="isIcraEligibility" class="text-white text-h5 font-weight-bold">Apply with international certification</div>
+            <div
+              v-if="isIcraEligibility"
+              class="text-white text-h5 font-weight-bold"
+            >
+              Apply with international certification
+            </div>
             <ApplicationCertificationTypeHeader
               v-else
               :is-renewal="isRenewal"
               :is-labor-mobility="isLaborMobility"
-              :certification-types="applicationStore.draftApplication.certificationTypes ?? []"
+              :certification-types="
+                applicationStore.draftApplication.certificationTypes ?? []
+              "
             />
             <a
-              v-if="!isRenewal && !isRegistrant && !isLaborMobility && !isIcraEligibility && !applicationStore.isDraftApplicationIcra"
+              v-if="
+                !isRenewal &&
+                !isRegistrant &&
+                !isLaborMobility &&
+                !isIcraEligibility &&
+                !applicationStore.isDraftApplicationIcra
+              "
               href="#"
               class="text-white"
               @click.prevent="toggleChangeCertificationConfirmation"
@@ -24,7 +42,11 @@
             <v-btn
               id="btnSaveAndExit"
               variant="outlined"
-              :loading="loadingStore.isLoading(isIcraEligibility ? 'icra_put' : 'draftapplication_put')"
+              :loading="
+                loadingStore.isLoading(
+                  isIcraEligibility ? 'icra_put' : 'draftapplication_put',
+                )
+              "
               @click="saveAndExit"
             >
               Save and exit
@@ -41,16 +63,24 @@
       @cancel="toggleChangeCertificationConfirmation"
     >
       <template #confirmation-text>
-        <div class="pb-3">When you change the type of certification you're applying for</div>
+        <div class="pb-3">
+          When you change the type of certification you're applying for
+        </div>
         <ul class="ml-10">
           <li>It will save the data you've entered</li>
-          <li>It may change the type and amount of information you need to provide</li>
+          <li>
+            It may change the type and amount of information you need to provide
+          </li>
         </ul>
       </template>
     </ConfirmationDialog>
     <ConfirmationDialog
       :show="showSaveExitConfirmation"
-      :title="wizardStore.listComponentMode === 'add' ? 'Your information will not be saved' : 'Missing or invalid information'"
+      :title="
+        wizardStore.listComponentMode === 'add'
+          ? 'Your information will not be saved'
+          : 'Missing or invalid information'
+      "
       accept-button-text="Discard changes"
       cancel-button-text="Continue editing"
       @accept="goToDashboard"
@@ -64,7 +94,10 @@
               : "To save your changes, you must enter all required fields in a valid format."
           }}
         </p>
-        <p>If you discard your changes, no information on this page will be saved.</p>
+        <p>
+          If you discard your changes, no information on this page will be
+          saved.
+        </p>
       </template>
     </ConfirmationDialog>
   </v-container>
@@ -155,7 +188,12 @@ export default defineComponent({
       const step = this.wizardStore.currentStep.stage;
 
       //if user is on the list screen for these ones, they should be able to save and exit while saving what they currently have
-      if (!valid && step !== "Education" && step !== "WorkReferences" && step !== "ProfessionalDevelopment") {
+      if (
+        !valid &&
+        step !== "Education" &&
+        step !== "WorkReferences" &&
+        step !== "ProfessionalDevelopment"
+      ) {
         this.showSaveExitConfirmation = true;
       } else if (this.wizardStore.listComponentMode === "add") {
         this.showSaveExitConfirmation = true;

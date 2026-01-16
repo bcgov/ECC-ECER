@@ -33,7 +33,9 @@
         :model-value="modelValue.currentCertificationNumber"
         label="Certificate or registration number (if applicable to your province or territory)"
         maxlength="100"
-        @update:model-value="(value: string) => updateField('currentCertificationNumber', value)"
+        @update:model-value="
+          (value: string) => updateField('currentCertificationNumber', value)
+        "
       ></EceTextField>
     </v-col>
   </v-row>
@@ -47,7 +49,12 @@
         :rules="[Rules.requiredRadio('Select an option')]"
         @update:model-value="nameRadioChanges"
       >
-        <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
+        <v-radio
+          v-for="(step, index) in applicantNameRadioOptions"
+          :key="index"
+          :label="step.label"
+          :value="step.value"
+        ></v-radio>
       </v-radio-group>
       <div v-if="previousNameRadio === 'other'">
         <v-row>
@@ -59,7 +66,9 @@
               variant="outlined"
               color="primary"
               maxlength="100"
-              @update:model-value="(value: string) => updateField('legalFirstName', value)"
+              @update:model-value="
+                (value: string) => updateField('legalFirstName', value)
+              "
             ></EceTextField>
           </v-col>
         </v-row>
@@ -71,7 +80,9 @@
               variant="outlined"
               color="primary"
               maxlength="100"
-              @update:model-value="(value: string) => updateField('legalMiddleName', value)"
+              @update:model-value="
+                (value: string) => updateField('legalMiddleName', value)
+              "
             ></EceTextField>
           </v-col>
         </v-row>
@@ -84,7 +95,9 @@
               variant="outlined"
               color="primary"
               maxlength="100"
-              @update:model-value="(value: string) => updateField('legalLastName', value)"
+              @update:model-value="
+                (value: string) => updateField('legalLastName', value)
+              "
             ></EceTextField>
           </v-col>
         </v-row>
@@ -128,27 +141,41 @@ export default defineComponent({
     };
   },
   emits: {
-    "update:model-value": (_addressData: Components.Schemas.CertificateInformation) => true,
+    "update:model-value": (
+      _addressData: Components.Schemas.CertificateInformation,
+    ) => true,
   },
   computed: {
     applicantNameRadioOptions(): RadioOptions[] {
       let legalNameRadioOptions: RadioOptions[] = [
         {
           label: this.userStore.legalName,
-          value: { firstName: this.userStore.firstName || null, middleName: this.userStore.middleName || null, lastName: this.userStore.lastName || null },
+          value: {
+            firstName: this.userStore.firstName || null,
+            middleName: this.userStore.middleName || null,
+            lastName: this.userStore.lastName || null,
+          },
         },
       ];
       return [...legalNameRadioOptions, ...this.previousNameRadioOptions];
     },
     previousNameRadioOptions(): RadioOptions[] {
-      let radioOptions: RadioOptions[] = this.userStore.verifiedPreviousNames.map((previousName) => {
-        let displayLabel = previousName.firstName ?? "";
-        if (previousName.middleName) {
-          displayLabel += ` ${previousName.middleName}`;
-        }
-        displayLabel += ` ${previousName.lastName}`;
-        return { label: displayLabel, value: { firstName: previousName.firstName, middleName: previousName.middleName, lastName: previousName.lastName } };
-      });
+      let radioOptions: RadioOptions[] =
+        this.userStore.verifiedPreviousNames.map((previousName) => {
+          let displayLabel = previousName.firstName ?? "";
+          if (previousName.middleName) {
+            displayLabel += ` ${previousName.middleName}`;
+          }
+          displayLabel += ` ${previousName.lastName}`;
+          return {
+            label: displayLabel,
+            value: {
+              firstName: previousName.firstName,
+              middleName: previousName.middleName,
+              lastName: previousName.lastName,
+            },
+          };
+        });
 
       radioOptions.push({ label: "Other name", value: "other" });
       return radioOptions;
@@ -159,18 +186,25 @@ export default defineComponent({
       this.previousNameRadio = "other";
     } else {
       // If matching names set option
-      const matchingNameOption = this.applicantNameRadioOptions.find((option) => {
-        return (
-          option.value.firstName === this.modelValue.legalFirstName &&
-          option.value.middleName === this.modelValue.legalMiddleName &&
-          option.value.lastName === this.modelValue.legalLastName
-        );
-      });
-      this.previousNameRadio = matchingNameOption ? matchingNameOption.value : this.applicantNameRadioOptions?.[0]?.value;
+      const matchingNameOption = this.applicantNameRadioOptions.find(
+        (option) => {
+          return (
+            option.value.firstName === this.modelValue.legalFirstName &&
+            option.value.middleName === this.modelValue.legalMiddleName &&
+            option.value.lastName === this.modelValue.legalLastName
+          );
+        },
+      );
+      this.previousNameRadio = matchingNameOption
+        ? matchingNameOption.value
+        : this.applicantNameRadioOptions?.[0]?.value;
     }
   },
   methods: {
-    updateField(fieldName: keyof Components.Schemas.CertificateInformation, value: string | boolean) {
+    updateField(
+      fieldName: keyof Components.Schemas.CertificateInformation,
+      value: string | boolean,
+    ) {
       this.$emit("update:model-value", {
         ...this.modelValue,
         [fieldName]: value,

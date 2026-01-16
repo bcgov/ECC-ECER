@@ -17,7 +17,9 @@ export const useOidcStore = defineStore("oidc", {
     async oidcUserInfo(): Promise<any> {
       const user = await this.getUser();
 
-      let { firstName, lastName } = parseFirstNameLastName(user?.profile.given_name || "");
+      let { firstName, lastName } = parseFirstNameLastName(
+        user?.profile.given_name || "",
+      );
       return {
         dateOfBirth: undefined,
         firstName: firstName,

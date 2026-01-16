@@ -53,7 +53,10 @@ export const useWizardStore = defineStore("wizard", {
     },
   },
   actions: {
-    async initializeWizard(wizard: Wizard, draftApplication: Components.Schemas.Program): Promise<void> {
+    async initializeWizard(
+      wizard: Wizard,
+      draftApplication: Components.Schemas.Program,
+    ): Promise<void> {
       const userStore = useUserStore();
       const oidcStore = useOidcStore();
 
@@ -64,7 +67,10 @@ export const useWizardStore = defineStore("wizard", {
       this.wizardConfig = wizard;
 
       // Set the current step based on draft application stage
-      this.step = Object.values(wizard.steps).findIndex((step) => step.stage === draftApplication.portalStage) + 1;
+      this.step =
+        Object.values(wizard.steps).findIndex(
+          (step) => step.stage === draftApplication.portalStage,
+        ) + 1;
 
       // Prepare data sources object
       const dataSources = {
@@ -80,7 +86,9 @@ export const useWizardStore = defineStore("wizard", {
         for (const component of Object.values(step.form?.components)) {
           // If input has a getValue function, use it to populate wizardData
           if (component.getValue) {
-            const value = await Promise.resolve(component.getValue(dataSources));
+            const value = await Promise.resolve(
+              component.getValue(dataSources),
+            );
             if (value !== undefined) {
               wizardData[component.id] = value;
             }
@@ -94,7 +102,10 @@ export const useWizardStore = defineStore("wizard", {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
     setCurrentStep(stage: ProgramStage): void {
-      this.step = Object.values(this.wizardConfig.steps).findIndex((step) => step.stage === stage) + 1;
+      this.step =
+        Object.values(this.wizardConfig.steps).findIndex(
+          (step) => step.stage === stage,
+        ) + 1;
       globalThis.scrollTo({
         top: 0,
         behavior: "smooth",

@@ -10,7 +10,16 @@
   >
     <template #prepend>
       <div class="d-inline-flex flex-nowrap">
-        <svg v-if="!message.isRead" class="mr-3" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none" alt="unread">
+        <svg
+          v-if="!message.isRead"
+          class="mr-3"
+          xmlns="http://www.w3.org/2000/svg"
+          width="15"
+          height="15"
+          viewBox="0 0 15 15"
+          fill="none"
+          alt="unread"
+        >
           <circle cx="7" cy="7" r="7" fill="#1976D2" />
         </svg>
       </div>
@@ -45,7 +54,10 @@ export default defineComponent({
   },
   computed: {
     messageDate(): string {
-      return formatDate(String(this.message.latestMessageNotifiedOn), "LLL d, yyyy t");
+      return formatDate(
+        String(this.message.latestMessageNotifiedOn),
+        "LLL d, yyyy t",
+      );
     },
   },
 
@@ -56,7 +68,9 @@ export default defineComponent({
       this.loadChildMessages(this.message.id!);
     },
     async loadChildMessages(messageId: string) {
-      this.messageStore.currentThread = (await getChildMessages({ parentId: messageId })).data?.communications;
+      this.messageStore.currentThread = (
+        await getChildMessages({ parentId: messageId })
+      ).data?.communications;
       this.messageStore.currentMessage = this.message;
       globalThis.scrollTo({
         top: 0,
@@ -64,21 +78,29 @@ export default defineComponent({
       });
       // mark unread messages as read
       if (this.messageStore.currentThread != null) {
-        const unreadMessages = this.messageStore.currentThread?.filter((message) => !message.isRead);
+        const unreadMessages = this.messageStore.currentThread?.filter(
+          (message) => !message.isRead,
+        );
 
         if (unreadMessages && unreadMessages.length > 0) {
           try {
-            const markReadPromises = unreadMessages.map((message) => markMessageAsRead(message?.id ?? ""));
+            const markReadPromises = unreadMessages.map((message) =>
+              markMessageAsRead(message?.id ?? ""),
+            );
 
             const results = await Promise.all(markReadPromises);
 
             results.forEach((result) => {
               if (result.error) {
-                this.alertStore.setFailureAlert("Failed to mark message as read");
+                this.alertStore.setFailureAlert(
+                  "Failed to mark message as read",
+                );
               }
             });
           } catch (error) {
-            this.alertStore.setFailureAlert("An error occurred while marking messages as read");
+            this.alertStore.setFailureAlert(
+              "An error occurred while marking messages as read",
+            );
           }
         }
       }

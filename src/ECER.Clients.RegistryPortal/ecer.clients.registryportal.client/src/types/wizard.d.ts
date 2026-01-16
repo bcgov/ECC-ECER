@@ -27,6 +27,22 @@ type ApplicationStage =
   | "CharacterReferences"
   | "WorkReferences"
   | "Review";
-type IcraEligibilityStage = "ContactInformation" | "InternationalCertification" | "EmploymentExperience" | "Review";
-type ReferenceStage = "Declaration" | "Decline" | "ContactInformation" | "Assessment" | "Review" | "ReferenceEvaluation";
-type RenewStage = "ContactInformation" | "ExplanationLetter" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
+type IcraEligibilityStage =
+  | "ContactInformation"
+  | "InternationalCertification"
+  | "EmploymentExperience"
+  | "Review";
+type ReferenceStage =
+  | "Declaration"
+  | "Decline"
+  | "ContactInformation"
+  | "Assessment"
+  | "Review"
+  | "ReferenceEvaluation";
+type RenewStage =
+  | "ContactInformation"
+  | "ExplanationLetter"
+  | "Education"
+  | "CharacterReferences"
+  | "WorkReferences"
+  | "Review";

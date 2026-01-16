@@ -6,52 +6,74 @@
     <p>You need the following information to renew your certificate.</p>
   </v-col>
   <v-col v-if="expired && !expiredMoreThan5Years" cols="12">
-    <ECEHeader title="Reason why you're late renewing your ECE Five Year certification" />
+    <ECEHeader
+      title="Reason why you're late renewing your ECE Five Year certification"
+    />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You need to provide the reason why you did not submit an application before your certificate expired.</p>
+      <p>
+        You need to provide the reason why you did not submit an application
+        before your certificate expired.
+      </p>
     </div>
   </v-col>
   <v-col cols="12">
     <ECEHeader title="Character reference" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
+      <p>
+        You will need to provide a character reference. You'll enter their name
+        and email. We'll contact them later after you submit your application.
+      </p>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
         <li>Can speak to your character</li>
-        <li>Can speak to your ability to educate and care for young children</li>
+        <li>
+          Can speak to your ability to educate and care for young children
+        </li>
         <li>Has known you for at least 6 months</li>
         <li>Is not your relative, partner, spouse or yourself</li>
         <li>Is not the same person as your work experience reference</li>
       </ul>
-      <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
+      <p>
+        We recommend the person is a certified ECE who has directly observed you
+        working with young children.
+      </p>
     </div>
   </v-col>
   <v-col cols="12">
     <ECEHeader title="Work experience" />
     <div v-if="!expired" class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
-        can provide multiple references.
+        You need to have completed 400 hours of work experience and be able to
+        provide references to verify the hours. If you worked at multiple
+        locations, you can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">
         <li>Be related to the field of early childhood education</li>
         <li>
-          Have been completed within the term of your current certificate (between {{ formattedLatestCertificationEffectiveDate }} and
+          Have been completed within the term of your current certificate
+          (between {{ formattedLatestCertificationEffectiveDate }} and
           {{ formattedLatestCertificationExpiryDate }})
         </li>
       </ul>
       <p>The reference must:</p>
       <ul class="ml-10">
         <li>Be able to confirm you've completed the hours</li>
-        <li>Be a co-worker, supervisor, or a parent/guardian of a child you worked with</li>
+        <li>
+          Be a co-worker, supervisor, or a parent/guardian of a child you worked
+          with
+        </li>
         <li>Not be the same person you provide as a character reference</li>
       </ul>
     </div>
-    <div v-if="expired && !expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
+    <div
+      v-if="expired && !expiredMoreThan5Years"
+      class="d-flex flex-column ga-3 my-6"
+    >
       <p>
-        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
-        can provide multiple references.
+        You need to have completed 400 hours of work experience and be able to
+        provide references to verify the hours. If you worked at multiple
+        locations, you can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">
@@ -61,24 +83,48 @@
       <p>The reference must:</p>
       <ul class="ml-10">
         <li>Be able to confirm you've completed the hours</li>
-        <li>Be a co-worker, supervisor, or a parent/guardian of a child you worked with</li>
+        <li>
+          Be a co-worker, supervisor, or a parent/guardian of a child you worked
+          with
+        </li>
         <li>Not be the same person you provide as a character reference</li>
       </ul>
     </div>
-    <div v-if="expired && expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
-      <p>You need to have completed 500 hours of work experience and be able to provide references to verify the hours.</p>
+    <div
+      v-if="expired && expiredMoreThan5Years"
+      class="d-flex flex-column ga-3 my-6"
+    >
+      <p>
+        You need to have completed 500 hours of work experience and be able to
+        provide references to verify the hours.
+      </p>
       <p>Important information about calculating hours:</p>
       <ul class="ml-10">
-        <li>Only include hours you worked once you began your basic early childhood education program</li>
+        <li>
+          Only include hours you worked once you began your basic early
+          childhood education program
+        </li>
         <li>Only include hours completed within the last 5 years</li>
-        <li>You cannot include hours that were part of your education (practicum or placement hours)</li>
+        <li>
+          You cannot include hours that were part of your education (practicum
+          or placement hours)
+        </li>
         <li>You can include hours you volunteered</li>
       </ul>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
-        <li>Has directly supervised or observed you working with children from birth to 5 years old</li>
-        <li>Can speak to your knowledge, skills, and abilities (competencies) as an ECE</li>
-        <li>Held valid Canadian ECE certification during the hours they supervised or observed you</li>
+        <li>
+          Has directly supervised or observed you working with children from
+          birth to 5 years old
+        </li>
+        <li>
+          Can speak to your knowledge, skills, and abilities (competencies) as
+          an ECE
+        </li>
+        <li>
+          Held valid Canadian ECE certification during the hours they supervised
+          or observed you
+        </li>
         <li>The person cannot be your character reference.</li>
       </ul>
     </div>
@@ -86,7 +132,10 @@
   <v-col cols="12">
     <ECEHeader title="Professional development" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>To meet the professional development requirement, you need to have completed 40 hours of training.</p>
+      <p>
+        To meet the professional development requirement, you need to have
+        completed 40 hours of training.
+      </p>
       <h3>What courses or workshops are eligible?</h3>
       <p>Each course or workshop must:</p>
       <ul class="ml-10">
@@ -138,12 +187,17 @@ export default defineComponent({
     },
     formattedLatestCertificationEffectiveDate(): string {
       if (this.fromCertificate) {
-        return formatDate(this.fromCertificate.effectiveDate ?? "", "LLL d, yyyy");
+        return formatDate(
+          this.fromCertificate.effectiveDate ?? "",
+          "LLL d, yyyy",
+        );
       }
       return formatDate("", "LLL d, yyyy"); // Default to empty if no fromCertificate is specified
     },
     fromCertificate() {
-      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
+      return this.certificationStore.getCertificationById(
+        this.applicationStore.draftApplication.fromCertificate,
+      );
     },
   },
 });

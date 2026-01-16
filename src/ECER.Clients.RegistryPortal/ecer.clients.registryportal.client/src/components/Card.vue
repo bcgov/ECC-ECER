@@ -4,7 +4,12 @@
     :border="true"
     flat
     class="pa-6 border-primary border-opacity-100"
-    :class="[{ 'card-top-border-large': hasTopBorder && topBorderSize === 'large', 'card-top-border-small': hasTopBorder && topBorderSize === 'small' }]"
+    :class="[
+      {
+        'card-top-border-large': hasTopBorder && topBorderSize === 'large',
+        'card-top-border-small': hasTopBorder && topBorderSize === 'small',
+      },
+    ]"
     v-bind="$attrs"
   >
     <slot />

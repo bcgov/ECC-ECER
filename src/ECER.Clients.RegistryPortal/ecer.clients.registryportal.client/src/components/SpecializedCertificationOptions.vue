@@ -2,10 +2,19 @@
   <ECEHeader title="Specialized certification options" />
   <div class="d-flex flex-column ga-3 my-6">
     <template v-if="!isLaborMobility">
-      <p>There are 2 types of specialized certifications in B.C. that you can add to your ECE Five Year certificate.</p>
+      <p>
+        There are 2 types of specialized certifications in B.C. that you can add
+        to your ECE Five Year certificate.
+      </p>
       <ol class="ml-10">
-        <li>Infant and Toddler Educator (ITE) - you must have completed an infant and toddler educator program</li>
-        <li>Special Needs Educator (SNE) - you must have completed a special needs educator program</li>
+        <li>
+          Infant and Toddler Educator (ITE) - you must have completed an infant
+          and toddler educator program
+        </li>
+        <li>
+          Special Needs Educator (SNE) - you must have completed a special needs
+          educator program
+        </li>
       </ol>
       <p>The program(s) must be either:</p>
       <ul class="ml-10">
@@ -21,24 +30,37 @@
         <li>Considered equivalent by the ECE Registry</li>
       </ul>
       <p>
-        You will need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
-        Registry.
+        You will need to request an official transcript from your educational
+        institution. It must be sent directly from the educational institution
+        to the ECE Registry.
       </p>
       <p class="mt-6">What do you want to add to your certificate?</p>
     </template>
     <template v-if="isLaborMobility">
-      <p>You are also eligible to apply for the following specialized certificates as part of your out-of-province transfer application:</p>
+      <p>
+        You are also eligible to apply for the following specialized
+        certificates as part of your out-of-province transfer application:
+      </p>
       <ol class="ml-10">
         <li>Infant and Toddler Educator (ITE)</li>
         <ul class="bullet-list ml-10">
-          <li>allows you to work alone and/or as the primary educator with children birth to 5 years</li>
+          <li>
+            allows you to work alone and/or as the primary educator with
+            children birth to 5 years
+          </li>
         </ul>
         <li>Special Needs Educator (SNE)</li>
         <ul class="bullet-list ml-10">
-          <li>alone and/or as the primary educator in inclusive settings with children 3-5 years of age</li>
+          <li>
+            alone and/or as the primary educator in inclusive settings with
+            children 3-5 years of age
+          </li>
         </ul>
       </ol>
-      <p class="mt-6">Please confirm the specialized certificates you want to add to your ECE Five Year:</p>
+      <p class="mt-6">
+        Please confirm the specialized certificates you want to add to your ECE
+        Five Year:
+      </p>
     </template>
     <v-form ref="specializationForm" validate-on="lazy">
       <v-checkbox
@@ -61,7 +83,9 @@
         @update:model-value="handleSelection"
       ></v-checkbox>
       <v-input
-        v-if="applicationStore.draftApplication.certificationTypes?.length === 0"
+        v-if="
+          applicationStore.draftApplication.certificationTypes?.length === 0
+        "
         auto-hide="auto"
         :model-value="selected"
         :rules="[hasSelection]"
@@ -85,7 +109,9 @@ export default defineComponent({
   setup() {
     const applicationStore = useApplicationStore();
 
-    const handleSpecializationSelection = inject<(newValue: Components.Schemas.CertificationType[]) => void>("handleSpecializationSelection");
+    const handleSpecializationSelection = inject<
+      (newValue: Components.Schemas.CertificationType[]) => void
+    >("handleSpecializationSelection");
 
     return { applicationStore, handleSpecializationSelection };
   },

@@ -1,14 +1,11 @@
 <template>
-  <v-card 
-    flat
-    rounded="lg"
-    :border="true"
-    color="#EDEBE9"
-  >
+  <v-card flat rounded="lg" :border="true" color="#EDEBE9">
     <v-card-text>
       <v-card-title class="pl-0">Non-allocated courses</v-card-title>
       <v-card-subtitle class="pl-0 pb-4">
-        Courses listed here have no hours allocated toward any of the required areas of instruction. If changes are required, edit the course to allocate hours.
+        Courses listed here have no hours allocated toward any of the required
+        areas of instruction. If changes are required, edit the course to
+        allocate hours.
       </v-card-subtitle>
       <div v-if="courses.length > 0">
         <v-row
@@ -36,7 +33,7 @@
           </v-col>
         </v-row>
       </div>
-      
+
       <p v-else class="text-grey-darken-1">No courses added yet.</p>
     </v-card-text>
   </v-card>
@@ -61,7 +58,7 @@ export default defineComponent({
     getCourseTitle(course: Components.Schemas.Course): string {
       const courseNumber = course.courseNumber || "";
       const courseTitle = course.courseTitle || "";
-      
+
       if (courseNumber && courseTitle) {
         return `${courseNumber} - ${courseTitle}`;
       } else if (courseNumber) {

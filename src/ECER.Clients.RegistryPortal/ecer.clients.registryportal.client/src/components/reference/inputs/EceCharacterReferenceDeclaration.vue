@@ -1,7 +1,13 @@
 <template>
   <v-row>
     <v-col cols="12" v-for="systemMessage in configStore.systemMessages">
-      <Alert v-if="systemMessage.portalTags && systemMessage.portalTags.includes('REFERENCES')" title="Alert">
+      <Alert
+        v-if="
+          systemMessage.portalTags &&
+          systemMessage.portalTags.includes('REFERENCES')
+        "
+        title="Alert"
+      >
         {{ systemMessage.message ? systemMessage.message : "" }}
       </Alert>
     </v-col>
@@ -9,24 +15,41 @@
       <v-row no-gutters>
         <v-col>
           <div>
-            <b>{{ `${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}` }}</b>
+            <b>
+              {{
+                `${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}`
+              }}
+            </b>
             is requesting a character reference for
-            {{ certificationType }}. We'll review your reference when assessing if the applicant is eligible for certification.
+            {{ certificationType }}. We'll review your reference when assessing
+            if the applicant is eligible for certification.
           </div>
           <br />
           <p>
             <b>
-              This reference request is for {{ cleanPreferredName(wizardStore.wizardData.referenceFirstName, wizardStore.wizardData.referenceLastName) }}. If
-              you are not {{ cleanPreferredName(wizardStore.wizardData.referenceFirstName, wizardStore.wizardData.referenceLastName) }}, please select "No"
-              below and “Other” on the following page.
+              This reference request is for
+              {{
+                cleanPreferredName(
+                  wizardStore.wizardData.referenceFirstName,
+                  wizardStore.wizardData.referenceLastName,
+                )
+              }}. If you are not
+              {{
+                cleanPreferredName(
+                  wizardStore.wizardData.referenceFirstName,
+                  wizardStore.wizardData.referenceLastName,
+                )
+              }}, please select "No" below and “Other” on the following page.
             </b>
           </p>
           <br />
 
           <h2>Information you'll need</h2>
           <div>
-            It should take about 5 minutes to enter your reference. Make sure you gather all the information you need before you continue. If you're not ready
-            now, you can come back later using the link in your email.
+            It should take about 5 minutes to enter your reference. Make sure
+            you gather all the information you need before you continue. If
+            you're not ready now, you can come back later using the link in your
+            email.
           </div>
           <br />
 
@@ -40,11 +63,20 @@
           </ul>
           <br />
           <div>
-            All personal information is collected by the Ministry of Education and Child Care under the authority of the Freedom of Information and Protection
-            of Privacy Act s. 26(a), and will be used to determine if the applicant has the experience and other qualifications required by the regulations. If
-            you have any questions about the collection, use or disclosure of this information, contact the Early Childhood Educator (ECE) Registry, PO Box
-            9961, STN PROV GOVT, Victoria BC V8W 9R4, Phone toll free: 1-888-338-6622, or email
-            <a style="text-decoration: underline" href="mailto:ECERegistry@gov.bc.ca">ECERegistry@gov.bc.ca</a>
+            All personal information is collected by the Ministry of Education
+            and Child Care under the authority of the Freedom of Information and
+            Protection of Privacy Act s. 26(a), and will be used to determine if
+            the applicant has the experience and other qualifications required
+            by the regulations. If you have any questions about the collection,
+            use or disclosure of this information, contact the Early Childhood
+            Educator (ECE) Registry, PO Box 9961, STN PROV GOVT, Victoria BC V8W
+            9R4, Phone toll free: 1-888-338-6622, or email
+            <a
+              style="text-decoration: underline"
+              href="mailto:ECERegistry@gov.bc.ca"
+            >
+              ECERegistry@gov.bc.ca
+            </a>
           </div>
           <br />
           <h2>Requirements to be a reference</h2>
@@ -52,7 +84,10 @@
           <ul class="ml-10">
             <li>Have known the applicant for at least 6 months</li>
             <li>Be able to speak to the character of the applicant</li>
-            <li>Be able to speak to the applicant's ability to educate and care for young children</li>
+            <li>
+              Be able to speak to the applicant's ability to educate and care
+              for young children
+            </li>
             <li>Not be a relative, partner, or spouse of the applicant</li>
           </ul>
         </v-col>
@@ -63,7 +98,9 @@
           <v-radio-group
             :rules="[Rules.requiredRadio('Select an option')]"
             hide-details="auto"
-            @update:model-value="(value) => $emit('update:model-value', value as boolean)"
+            @update:model-value="
+              (value) => $emit('update:model-value', value as boolean)
+            "
           >
             <v-radio label="Yes" :value="true"></v-radio>
             <v-radio label="No" :value="false"></v-radio>
@@ -103,11 +140,23 @@ export default defineComponent({
   computed: {
     certificationType() {
       let certificationType = "Certificate type not found";
-      if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.ECE_ASSISTANT)) {
+      if (
+        this.wizardStore.wizardData.certificationTypes?.includes(
+          CertificationType.ECE_ASSISTANT,
+        )
+      ) {
         certificationType = "ECE Assistant certification";
-      } else if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.ONE_YEAR)) {
+      } else if (
+        this.wizardStore.wizardData.certificationTypes?.includes(
+          CertificationType.ONE_YEAR,
+        )
+      ) {
         certificationType = "ECE One Year certification";
-      } else if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+      } else if (
+        this.wizardStore.wizardData.certificationTypes?.includes(
+          CertificationType.FIVE_YEAR,
+        )
+      ) {
         certificationType = "ECE Five Year certification";
       }
       return certificationType;

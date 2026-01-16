@@ -5,22 +5,38 @@
       <v-col cols="12">
         <h1>Create your My ECE Registry account</h1>
         <p v-if="oidcIdentityProvider === 'bcsc'" class="mt-2">
-          Welcome {{ cleanPreferredName(oidcUserInfo.firstName!.replace(/^(.*?)(\s.*)?$/, "$1"), oidcUserInfo.lastName) }}.
+          Welcome
+          {{
+            cleanPreferredName(
+              oidcUserInfo.firstName!.replace(/^(.*?)(\s.*)?$/, "$1"),
+              oidcUserInfo.lastName,
+            )
+          }}.
         </p>
         <p v-if="oidcIdentityProvider === 'bceidbasic'" class="mt-2">
-          After you enter your information below, you will need to provide government-issued ID so we can verify your identity.
+          After you enter your information below, you will need to provide
+          government-issued ID so we can verify your identity.
         </p>
       </v-col>
 
       <!-- Information from BC Services Card -->
       <v-col cols="12" v-if="oidcIdentityProvider === 'bcsc'">
         <ECEHeader title="Information from your BC Services Card account" />
-        <p class="mt-2">We automatically use the following information from your BC Services Card account for your My ECE Registry account.</p>
+        <p class="mt-2">
+          We automatically use the following information from your BC Services
+          Card account for your My ECE Registry account.
+        </p>
         <p class="mt-5">Legal name</p>
-        <p class="mt-2">{{ oidcUserInfo.firstName }} {{ oidcUserInfo.lastName }}</p>
+        <p class="mt-2">
+          {{ oidcUserInfo.firstName }} {{ oidcUserInfo.lastName }}
+        </p>
         <p class="mt-5">Address</p>
         <p class="mt-2">{{ oidcUserInfo.address.street_address }}</p>
-        <p>{{ oidcUserInfo.address.locality }}, {{ oidcUserInfo.address.region }} {{ oidcUserInfo.address.postal_code }}</p>
+        <p>
+          {{ oidcUserInfo.address.locality }},
+          {{ oidcUserInfo.address.region }}
+          {{ oidcUserInfo.address.postal_code }}
+        </p>
         <p>{{ oidcUserInfo.address.country }}</p>
       </v-col>
 
@@ -28,25 +44,37 @@
         <!-- Information needed from BCeID Basic -->
         <v-col cols="12" v-if="oidcIdentityProvider === 'bceidbasic'">
           <ECEHeader title="Legal name" />
-          <p class="mt-2">Must exactly match the name shown on your government-issued ID.</p>
+          <p class="mt-2">
+            Must exactly match the name shown on your government-issued ID.
+          </p>
           <v-row>
             <!-- First name Field -->
             <v-col sm="12" md="6" class="mt-8">
-              <EceTextField v-model="firstName" label="First name"></EceTextField>
+              <EceTextField
+                v-model="firstName"
+                label="First name"
+              ></EceTextField>
             </v-col>
           </v-row>
 
           <v-row>
             <!-- Middle name Field -->
             <v-col sm="12" md="6">
-              <EceTextField v-model="middleName" label="Middle names (optional)"></EceTextField>
+              <EceTextField
+                v-model="middleName"
+                label="Middle names (optional)"
+              ></EceTextField>
             </v-col>
           </v-row>
 
           <v-row>
             <!-- Last name Field -->
             <v-col sm="12" md="6">
-              <EceTextField v-model="lastName" label="Last name" :rules="[Rules.required()]"></EceTextField>
+              <EceTextField
+                v-model="lastName"
+                label="Last name"
+                :rules="[Rules.required()]"
+              ></EceTextField>
             </v-col>
           </v-row>
 
@@ -74,7 +102,10 @@
           <v-row>
             <!-- Preferred first name Field -->
             <v-col sm="12" md="6" class="mt-8">
-              <EceTextField v-model="preferredName" label="Preferred first name (optional)"></EceTextField>
+              <EceTextField
+                v-model="preferredName"
+                label="Preferred first name (optional)"
+              ></EceTextField>
             </v-col>
           </v-row>
         </v-col>
@@ -84,7 +115,10 @@
           <v-row class="ga-2">
             <v-col cols="12">
               <ECEHeader title="Contact information" />
-              <p class="mt-2">We'll use this to contact you about your account and updates about your application or certificate.</p>
+              <p class="mt-2">
+                We'll use this to contact you about your account and updates
+                about your application or certificate.
+              </p>
             </v-col>
             <v-col cols="12">
               <v-row>
@@ -94,7 +128,12 @@
                     v-model="email"
                     label="Email"
                     type="email"
-                    :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
+                    :rules="[
+                      Rules.required(),
+                      Rules.email(
+                        'Enter your email in the format \'name@email.com\'',
+                      ),
+                    ]"
                   ></EceTextField>
                 </v-col>
               </v-row>
@@ -103,7 +142,11 @@
               <v-row>
                 <!-- Phone Field -->
                 <v-col cols="12" sm="6">
-                  <EceTextField v-model="phoneNumber" label="Phone number" :rules="[Rules.required(), Rules.phoneNumber()]"></EceTextField>
+                  <EceTextField
+                    v-model="phoneNumber"
+                    label="Phone number"
+                    :rules="[Rules.required(), Rules.phoneNumber()]"
+                  ></EceTextField>
                 </v-col>
               </v-row>
             </v-col>
@@ -111,11 +154,20 @@
             <!-- ECE Registration Section -->
             <v-col cols="12">
               <ECEHeader title="Your ECE registration" />
-              <p class="mt-2">You can add an existing ECE certificate to your account and manage it online.</p>
-              <p class="mt-5">Do you have, or ever had, an ECE certificate in British Columbia?</p>
+              <p class="mt-2">
+                You can add an existing ECE certificate to your account and
+                manage it online.
+              </p>
+              <p class="mt-5">
+                Do you have, or ever had, an ECE certificate in British
+                Columbia?
+              </p>
 
               <!-- Radio Group for ECE Certificate -->
-              <v-radio-group v-model="eceCertificateStatus" :rules="[Rules.requiredRadio('Choose an option')]">
+              <v-radio-group
+                v-model="eceCertificateStatus"
+                :rules="[Rules.requiredRadio('Choose an option')]"
+              >
                 <v-radio label="Yes" :value="true"></v-radio>
                 <v-radio label="No" :value="false"></v-radio>
               </v-radio-group>
@@ -135,11 +187,22 @@
 
             <!-- Checkbox for Terms of Use -->
             <v-col cols="12">
-              <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="[Rules.hasCheckbox('You must read and accept the Terms of Use')]">
+              <v-checkbox
+                v-model="hasAgreed"
+                label=""
+                color="primary"
+                :rules="[
+                  Rules.hasCheckbox(
+                    'You must read and accept the Terms of Use',
+                  ),
+                ]"
+              >
                 <template #label>
                   <div>
                     I have read and accept the
-                    <router-link to="/terms-of-use" target="_blank">Terms of Use</router-link>
+                    <router-link to="/terms-of-use" target="_blank">
+                      Terms of Use
+                    </router-link>
                   </div>
                 </template>
               </v-checkbox>
@@ -153,7 +216,11 @@
         <div>
           <v-btn
             rounded="lg"
-            :loading="loadingStore.isLoading('userinfo_post') || loadingStore.isLoading('profile_put') || isRedirecting"
+            :loading="
+              loadingStore.isLoading('userinfo_post') ||
+              loadingStore.isLoading('profile_put') ||
+              isRedirecting
+            "
             color="primary"
             class="mr-2"
             @click="submit"
@@ -162,7 +229,11 @@
           </v-btn>
           <v-btn
             rounded="lg"
-            :loading="loadingStore.isLoading('userinfo_post') || loadingStore.isLoading('profile_put') || isRedirecting"
+            :loading="
+              loadingStore.isLoading('userinfo_post') ||
+              loadingStore.isLoading('profile_put') ||
+              isRedirecting
+            "
             variant="outlined"
             @click="logout"
           >
@@ -256,7 +327,9 @@ export default defineComponent({
 
       if (valid) {
         this.isRedirecting = true;
-        const registrationNumber = this.eceCertificateStatus ? this.eceRegistrationNumber : "";
+        const registrationNumber = this.eceCertificateStatus
+          ? this.eceRegistrationNumber
+          : "";
         const userCreated: boolean = await postUserInfo({
           ...this.oidcUserInfo,
           firstName: this.firstName,

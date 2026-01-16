@@ -3,7 +3,9 @@
     <template #content>
       <v-row>
         <v-col cols="4">
-          <p class="small">Why do you need to renew your ECE One Year certification</p>
+          <p class="small">
+            Why do you need to renew your ECE One Year certification
+          </p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">
@@ -17,7 +19,12 @@
         </v-col>
         <v-col>
           <p class="small font-weight-bold">
-            {{ wizardStore.wizardData[wizardStore?.wizardConfig?.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id || ""] || "—" }}
+            {{
+              wizardStore.wizardData[
+                wizardStore?.wizardConfig?.steps?.oneYearRenewalExplanation
+                  ?.form?.inputs?.renewalExplanationOther?.id || ""
+              ] || "—"
+            }}
           </p>
         </v-col>
       </v-row>
@@ -46,13 +53,19 @@ export default defineComponent({
   },
   computed: {
     hasOtherReasonToRenew() {
-      return !!this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id || ""];
+      return !!this.wizardStore.wizardData[
+        this.wizardStore?.wizardConfig?.steps?.oneYearRenewalExplanation?.form
+          ?.inputs?.renewalExplanationOther?.id || ""
+      ];
     },
     generateReasonToRenew() {
       const renewalReason = renewalInformationRadio.find(
         (reason) =>
           reason.value ===
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id || ""],
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.oneYearRenewalExplanation
+              ?.form?.inputs?.oneYearRenewalExplanation?.id || ""
+          ],
       )?.label;
 
       return renewalReason ?? "-";

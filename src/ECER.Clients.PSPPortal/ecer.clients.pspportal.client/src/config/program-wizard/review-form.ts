@@ -99,7 +99,8 @@ const reviewForm: Form = {
         lg: 6,
         xl: 4,
       },
-      getValue: (data) => `${data.userProfile.firstName} ${data.userProfile.lastName}`.trim(),
+      getValue: (data) =>
+        `${data.userProfile.firstName} ${data.userProfile.lastName}`.trim(),
     },
     signDate: {
       id: "signDate",

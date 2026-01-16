@@ -1,5 +1,10 @@
 <template>
-  <v-progress-circular v-if="loading" size="25" color="primary" indeterminate></v-progress-circular>
+  <v-progress-circular
+    v-if="loading"
+    size="25"
+    color="primary"
+    indeterminate
+  ></v-progress-circular>
   <a v-else href="#" @click.prevent="downloadFile"><slot></slot></a>
 </template>
 
@@ -52,7 +57,11 @@ export default defineComponent({
     },
     isSafari() {
       const ua = navigator.userAgent.toLowerCase();
-      return ua.includes("safari") && !ua.includes("chrome") && !ua.includes("android");
+      return (
+        ua.includes("safari") &&
+        !ua.includes("chrome") &&
+        !ua.includes("android")
+      );
     },
   },
 });

@@ -2,7 +2,9 @@
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
       <h2>Contact information</h2>
-      <div role="doc-subtitle">We may contact you to verify or clarify information you provide.</div>
+      <div role="doc-subtitle">
+        We may contact you to verify or clarify information you provide.
+      </div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
@@ -30,7 +32,10 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
             :model-value="modelValue.email"
-            :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
+            :rules="[
+              Rules.required(),
+              Rules.email('Enter your email in the format \'name@email.com\''),
+            ]"
             label="Email"
             autocomplete="email"
             maxlength="200"
@@ -42,16 +47,27 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
             :model-value="modelValue.phoneNumber"
-            :rules="[Rules.required('Enter a phone number'), Rules.phoneNumber('Enter your valid phone number')]"
+            :rules="[
+              Rules.required('Enter a phone number'),
+              Rules.phoneNumber('Enter your valid phone number'),
+            ]"
             label="Phone Number"
             autocomplete="tel"
             @input="updateField('phoneNumber', $event)"
           ></EceTextField>
         </v-col>
       </v-row>
-      <div v-if="wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_400_Hours">
+      <div
+        v-if="
+          wizardStore.wizardData.workExperienceType ===
+          WorkExperienceType.IS_400_Hours
+        "
+      >
         <h2 class="mt-5">ECE certification</h2>
-        <div>If you're registered as an ECE in Canada, please provide your certification number.</div>
+        <div>
+          If you're registered as an ECE in Canada, please provide your
+          certification number.
+        </div>
 
         <v-row class="mt-5">
           <v-col cols="12" md="8" lg="6" xl="4">
@@ -90,15 +106,32 @@
       </div>
       <div v-else>
         <h2 class="mt-5">ECE certification</h2>
-        <div v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER" role="doc-subtitle">
-          If you are registered as an ECE in Canada, please provide your certification number.
+        <div
+          v-if="
+            wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER
+          "
+          role="doc-subtitle"
+        >
+          If you are registered as an ECE in Canada, please provide your
+          certification number.
         </div>
-        <div v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE" role="doc-subtitle">
-          We need this information to look up your certificate. Only people with a valid certificate can be a work reference.
+        <div
+          v-if="
+            wizardStore.wizardData.inviteType ===
+            PortalInviteType.WORK_EXPERIENCE
+          "
+          role="doc-subtitle"
+        >
+          We need this information to look up your certificate. Only people with
+          a valid certificate can be a work reference.
         </div>
         <v-row class="mt-5">
           <v-col cols="12" md="8" lg="6" xl="4">
-            <label v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER">
+            <label
+              v-if="
+                wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER
+              "
+            >
               Province/Territory Certified/Registered In (Optional)
               <v-autocomplete
                 :model-value="modelValue.certificateProvinceId"
@@ -114,7 +147,12 @@
                 @click:clear="provinceClearClicked"
               ></v-autocomplete>
             </label>
-            <label v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE">
+            <label
+              v-if="
+                wizardStore.wizardData.inviteType ===
+                PortalInviteType.WORK_EXPERIENCE
+              "
+            >
               Province/Territory Certified/Registered In
               <v-autocomplete
                 :model-value="modelValue.certificateProvinceId"
@@ -124,7 +162,12 @@
                 class="pt-2"
                 item-title="provinceName"
                 item-value="provinceId"
-                :items="configStore?.provinceList.filter((province) => province.provinceName !== ProvinceTerritoryType.OTHER)"
+                :items="
+                  configStore?.provinceList.filter(
+                    (province) =>
+                      province.provinceName !== ProvinceTerritoryType.OTHER,
+                  )
+                "
                 :rules="[Rules.required()]"
                 @update:model-value="certificateProvinceIdChanged"
               ></v-autocomplete>
@@ -165,7 +208,9 @@
 import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 
-import EceTextField, { type ECETextField } from "@/components/inputs/EceTextField.vue";
+import EceTextField, {
+  type ECETextField,
+} from "@/components/inputs/EceTextField.vue";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
@@ -186,13 +231,21 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_contactInformationData: Components.Schemas.ReferenceContactInformation) => true,
+    "update:model-value": (
+      _contactInformationData: Components.Schemas.ReferenceContactInformation,
+    ) => true,
   },
   setup() {
     const configStore = useConfigStore();
     const wizardStore = useWizardStore();
 
-    return { configStore, wizardStore, PortalInviteType, ProvinceTerritoryType, WorkExperienceType };
+    return {
+      configStore,
+      wizardStore,
+      PortalInviteType,
+      ProvinceTerritoryType,
+      WorkExperienceType,
+    };
   },
   data() {
     return {
@@ -201,7 +254,9 @@ export default defineComponent({
   },
   computed: {
     userSelectProvinceIdBC(): boolean {
-      const provinceName = this.configStore.provinceName(this.modelValue?.certificateProvinceId as string);
+      const provinceName = this.configStore.provinceName(
+        this.modelValue?.certificateProvinceId as string,
+      );
       return provinceName === ProvinceTerritoryType.BC;
     },
     today() {
@@ -210,16 +265,24 @@ export default defineComponent({
   },
   mounted() {
     if (
-      this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
-      this.wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_500_Hours
+      this.wizardStore.wizardData.inviteType ===
+        PortalInviteType.WORK_EXPERIENCE &&
+      this.wizardStore.wizardData.workExperienceType ===
+        WorkExperienceType.IS_500_Hours
     ) {
-      const bcProvinceId = this.configStore?.provinceList.find((province) => province.provinceName?.toLowerCase() === "british columbia")?.provinceId;
+      const bcProvinceId = this.configStore?.provinceList.find(
+        (province) =>
+          province.provinceName?.toLowerCase() === "british columbia",
+      )?.provinceId;
       this.certificateProvinceIdChanged(bcProvinceId as string);
     }
   },
   methods: {
     isNumber,
-    updateField(fieldName: keyof Components.Schemas.ReferenceContactInformation, value: any) {
+    updateField(
+      fieldName: keyof Components.Schemas.ReferenceContactInformation,
+      value: any,
+    ) {
       this.$emit("update:model-value", {
         ...this.modelValue,
         [fieldName]: value,
@@ -227,7 +290,9 @@ export default defineComponent({
     },
     customOptionalIfNotBCRule() {
       if (this.userSelectProvinceIdBC) {
-        return (v: string) => !!(v && v?.trim()) || "Enter your ECE certification/registration in a numeric format";
+        return (v: string) =>
+          !!(v && v?.trim()) ||
+          "Enter your ECE certification/registration in a numeric format";
       }
       return true;
     },

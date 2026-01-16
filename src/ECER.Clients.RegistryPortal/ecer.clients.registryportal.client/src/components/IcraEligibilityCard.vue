@@ -1,16 +1,43 @@
 <template>
-  <v-card :rounded="!isRounded ? '0' : ''" flat color="primary" :variant="icraStore.icraEligibilityStatus === undefined ? 'outlined' : undefined">
+  <v-card
+    :rounded="!isRounded ? '0' : ''"
+    flat
+    color="primary"
+    :variant="
+      icraStore.icraEligibilityStatus === undefined ? 'outlined' : undefined
+    "
+  >
     <v-card-item class="ma-4">
-      <h2 :class="{ 'text-white': icraStore.icraEligibilityStatus !== undefined }">{{ title }}</h2>
-      <p :class="{ small: true, 'mt-4': true, 'text-white': icraStore.icraEligibilityStatus !== undefined }">
+      <h2
+        :class="{ 'text-white': icraStore.icraEligibilityStatus !== undefined }"
+      >
+        {{ title }}
+      </h2>
+      <p
+        :class="{
+          small: true,
+          'mt-4': true,
+          'text-white': icraStore.icraEligibilityStatus !== undefined,
+        }"
+      >
         {{ subTitle }}
       </p>
     </v-card-item>
 
     <div class="d-flex flex-row justify-start ga-3 flex-wrap ma-4">
       <!-- ICRA eligibility status Draft -->
-      <v-card-actions v-if="icraStore.icraEligibilityStatus === 'Draft' || icraStore.icraEligibilityStatus === 'Active'">
-        <v-btn size="large" variant="flat" color="warning" @click="router.push('/icra-eligibility')">
+      <v-card-actions
+        v-if="
+          icraStore.icraEligibilityStatus === 'Draft' ||
+          icraStore.icraEligibilityStatus === 'Active'
+        "
+      >
+        <v-btn
+          size="large"
+          variant="flat"
+          color="warning"
+          @click="router.push('/icra-eligibility')"
+        >
           <v-icon size="large" icon="mdi-arrow-right" />
           Continue submission
         </v-btn>
@@ -25,7 +52,12 @@
           icraStore.icraEligibilityStatus === 'ReadyforAssessment'
         "
       >
-        <v-btn variant="flat" size="large" color="warning" @click="handleManageIcraEligibility">
+        <v-btn
+          variant="flat"
+          size="large"
+          color="warning"
+          @click="handleManageIcraEligibility"
+        >
           <v-icon size="large" icon="mdi-arrow-right" />
           Manage submission
         </v-btn>
@@ -93,7 +125,10 @@ export default defineComponent({
   },
   methods: {
     handleManageIcraEligibility() {
-      this.router.push({ name: "manage-icra-eligibility", params: { icraEligibilityId: this.icraStore?.icraEligibility?.id } });
+      this.router.push({
+        name: "manage-icra-eligibility",
+        params: { icraEligibilityId: this.icraStore?.icraEligibility?.id },
+      });
     },
   },
 });

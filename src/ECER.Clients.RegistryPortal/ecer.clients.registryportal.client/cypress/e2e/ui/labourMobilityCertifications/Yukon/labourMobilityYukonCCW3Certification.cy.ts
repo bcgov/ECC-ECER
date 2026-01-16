@@ -11,16 +11,22 @@ describe("Labour Mobility - Child Care Worker III Certification Transfer Applica
     cy.contains("Check your transfer eligibility").should("be.visible");
 
     /** Yukon*/
-    cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.provinceDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 
     /**Out of province Certification Type */
-    cy.get(selectors.transferEligibility.certificationTypeDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.certificationTypeDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(certificationName).click();
 
     cy.contains("Work experience").should("be.visible");
 
-    cy.get(selectors.transferEligibility.programConfirmationRadioYes).check({ force: true });
+    cy.get(selectors.transferEligibility.programConfirmationRadioYes).check({
+      force: true,
+    });
 
     cy.contains(
       "You can apply to transfer your certification to ECE Five Year certification with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE) in B.C.",
@@ -40,10 +46,14 @@ describe("Labour Mobility - Child Care Worker III Certification Transfer Applica
     /** Certificate Information */
 
     cy.contains("Certificate information").should("be.visible");
-    cy.contains("ECE Five Year and Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)").should("be.visible");
+    cy.contains(
+      "ECE Five Year and Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)",
+    ).should("be.visible");
     cy.contains(provinceName).should("be.visible");
     cy.contains(certificationName).should("be.visible");
-    cy.get(selectors.certificateInformation.nameOnCertificateRadio).first().check({ force: true });
+    cy.get(selectors.certificateInformation.nameOnCertificateRadio)
+      .first()
+      .check({ force: true });
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEFiveYearWorkflow(provinceName, certificationName);

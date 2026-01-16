@@ -6,29 +6,52 @@
       <h1 class="mt-5">Professional development</h1>
       <div role="doc-subtitle">
         <b>
-          {{ totalRequiredProfessionalDevelopmentHours }} hours of professional development relevant to early childhood education is required.
+          {{ totalRequiredProfessionalDevelopmentHours }} hours of professional
+          development relevant to early childhood education is required.
           <span v-if="totalHours < totalRequiredProfessionalDevelopmentHours">
-            You need to add {{ totalRequiredProfessionalDevelopmentHours - totalHours }} more hours.
+            You need to add
+            {{ totalRequiredProfessionalDevelopmentHours - totalHours }} more
+            hours.
           </span>
         </b>
       </div>
       <p>Your hours:</p>
       <ul class="ml-10">
         <li v-if="fromCertificate?.statusCode === 'Active'">
-          Must have been completed within the term of your current certificate (between the
-          {{ formatDate(fromCertificate?.effectiveDate || "", "LLL d, yyyy") }} and {{ formatDate(fromCertificate?.expiryDate || "", "LLL d, yyyy") }})
+          Must have been completed within the term of your current certificate
+          (between the
+          {{ formatDate(fromCertificate?.effectiveDate || "", "LLL d, yyyy") }}
+          and
+          {{ formatDate(fromCertificate?.expiryDate || "", "LLL d, yyyy") }})
         </li>
-        <li v-if="fromCertificate?.statusCode === 'Expired'">Must have been completed within the last 5 years</li>
+        <li v-if="fromCertificate?.statusCode === 'Expired'">
+          Must have been completed within the last 5 years
+        </li>
         <li>Can be work or volunteer hours</li>
-        <li>Cannot include hours worked as part of your education on your practicum or work placement</li>
+        <li>
+          Cannot include hours worked as part of your education on your
+          practicum or work placement
+        </li>
       </ul>
     </div>
-    <div v-for="(professionalDevelopment, index) in applicationStatus?.professionalDevelopmentsStatus" :key="index">
-      <ManageProfessionalDevelopmentListItem :professional-development="professionalDevelopment" />
+    <div
+      v-for="(
+        professionalDevelopment, index
+      ) in applicationStatus?.professionalDevelopmentsStatus"
+      :key="index"
+    >
+      <ManageProfessionalDevelopmentListItem
+        :professional-development="professionalDevelopment"
+      />
     </div>
     <v-card elevation="0" rounded="0" class="border-t">
       <v-card-text>
-        <v-row class="d-flex" :class="[smAndUp ? 'justify-space-between align-center' : 'flex-column']">
+        <v-row
+          class="d-flex"
+          :class="[
+            smAndUp ? 'justify-space-between align-center' : 'flex-column',
+          ]"
+        >
           <v-col cols="4">
             <div>
               <p><b>Total hours</b></p>
@@ -44,20 +67,38 @@
         </v-row>
       </v-card-text>
     </v-card>
-    <div v-if="totalHours < totalRequiredProfessionalDevelopmentHours" class="mt-10">
-      <p>You need {{ totalRequiredProfessionalDevelopmentHours - totalHours }} more hours of professional development.</p>
+    <div
+      v-if="totalHours < totalRequiredProfessionalDevelopmentHours"
+      class="mt-10"
+    >
+      <p>
+        You need
+        {{ totalRequiredProfessionalDevelopmentHours - totalHours }} more hours
+        of professional development.
+      </p>
       <v-btn
         prepend-icon="mdi-plus"
         class="mt-10"
         color="primary"
-        @click.prevent="router.push({ name: 'addProfessionalDevelopment', params: { applicationId: applicationId } })"
+        @click.prevent="
+          router.push({
+            name: 'addProfessionalDevelopment',
+            params: { applicationId: applicationId },
+          })
+        "
       >
         Add course or workshop
       </v-btn>
     </div>
-    <Callout v-if="totalHours >= totalRequiredProfessionalDevelopmentHours" title="Please wait" type="warning" class="mt-10">
-      No additional courses or workshops are needed. You’ve provided the required hours. We will contact you shortly after we've reviewed the new professional
-      development courses or workshops added.
+    <Callout
+      v-if="totalHours >= totalRequiredProfessionalDevelopmentHours"
+      title="Please wait"
+      type="warning"
+      class="mt-10"
+    >
+      No additional courses or workshops are needed. You’ve provided the
+      required hours. We will contact you shortly after we've reviewed the new
+      professional development courses or workshops added.
     </Callout>
   </v-container>
 </template>
@@ -91,7 +132,8 @@ export default defineComponent({
     const { smAndUp } = useDisplay();
     const router = useRouter();
     const certificationStore = useCertificationStore();
-    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))
+      ?.data;
 
     return {
       applicationStatus,
@@ -115,7 +157,9 @@ export default defineComponent({
       return this.applicationStatus?.applicationType;
     },
     fromCertificate() {
-      return this.certificationStore.getCertificationById(this.applicationStatus?.fromCertificate);
+      return this.certificationStore.getCertificationById(
+        this.applicationStatus?.fromCertificate,
+      );
     },
   },
   methods: {

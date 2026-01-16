@@ -2,10 +2,17 @@
   <PreviewCard title="Work experience reference" portal-stage="WorkReferences">
     <template #content>
       <div v-for="(experience, id, index) in references" :key="id">
-        <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
+        <v-divider
+          v-if="index !== 0"
+          :thickness="2"
+          color="grey-lightest"
+          class="border-opacity-100 my-6"
+        />
         <v-row>
           <v-col>
-            <h4 id="workReferenceName" class="text-black">{{ experience.firstName }} {{ experience.lastName }}</h4>
+            <h4 id="workReferenceName" class="text-black">
+              {{ experience.firstName }} {{ experience.lastName }}
+            </h4>
           </v-col>
         </v-row>
         <v-row>
@@ -13,7 +20,9 @@
             <p class="small">Email</p>
           </v-col>
           <v-col>
-            <p id="workReferenceEmail" class="small font-weight-bold">{{ experience.emailAddress }}</p>
+            <p id="workReferenceEmail" class="small font-weight-bold">
+              {{ experience.emailAddress }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -58,7 +67,10 @@ export default defineComponent({
   },
   computed: {
     references(): { [id: string]: Components.Schemas.WorkExperienceReference } {
-      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.workReference?.form?.inputs?.referenceList?.id || ""];
+      return this.wizardStore.wizardData[
+        this.wizardStore?.wizardConfig?.steps?.workReference?.form?.inputs
+          ?.referenceList?.id || ""
+      ];
     },
   },
 });

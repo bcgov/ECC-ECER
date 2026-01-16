@@ -1,6 +1,10 @@
 <template>
   <Card
-    :color="user.accessToPortal === 'Disabled' || user.accessToPortal == null ? 'surface-border-default' : 'surface'"
+    :color="
+      user.accessToPortal === 'Disabled' || user.accessToPortal == null
+        ? 'surface-border-default'
+        : 'surface'
+    "
     min-height="225px"
     class="d-flex flex-column justify-space-between"
   >
@@ -22,11 +26,20 @@
     <v-row v-if="user.accessToPortal === 'Active'">
       <v-col cols="12" class="align-self-end">
         <span v-if="isPrimary" class="d-flex align-center ga-2">
-          <v-icon color="success" icon="mdi-check-decagram" size="small"></v-icon>
+          <v-icon
+            color="success"
+            icon="mdi-check-decagram"
+            size="small"
+          ></v-icon>
           <p class="text-success small">Primary contact</p>
         </span>
         <div v-else class="d-flex ga-2">
-          <v-btn color="primary" size="small" @click="$emit('set-primary', user.id)" :loading="isLoading">
+          <v-btn
+            color="primary"
+            size="small"
+            @click="$emit('set-primary', user.id)"
+            :loading="isLoading"
+          >
             <v-icon class="mr-2">mdi-check-decagram</v-icon>
             Set user as primary
           </v-btn>
@@ -48,7 +61,13 @@
     <!-- Pending invitations: Resend invitation button -->
     <v-row v-if="user.accessToPortal === 'Invited'">
       <v-col cols="12" class="align-self-end">
-        <v-btn color="primary" size="small" variant="outlined" @click="$emit('resend-invitation', user.id)" :loading="isLoading">
+        <v-btn
+          color="primary"
+          size="small"
+          variant="outlined"
+          @click="$emit('resend-invitation', user.id)"
+          :loading="isLoading"
+        >
           <v-icon class="mr-2">mdi-email-arrow-right-outline</v-icon>
           Resend invitation
         </v-btn>
@@ -56,9 +75,16 @@
     </v-row>
 
     <!-- Inactive users: Reactivate button -->
-    <v-row v-if="user.accessToPortal === 'Disabled' || user.accessToPortal == null">
+    <v-row
+      v-if="user.accessToPortal === 'Disabled' || user.accessToPortal == null"
+    >
       <v-col cols="12" class="align-self-end">
-        <v-btn color="primary" size="small" @click="$emit('reactivate', user.id)" :loading="isLoading">
+        <v-btn
+          color="primary"
+          size="small"
+          @click="$emit('reactivate', user.id)"
+          :loading="isLoading"
+        >
           <v-icon class="mr-2">mdi-account-plus-outline</v-icon>
           Reactivate user
         </v-btn>

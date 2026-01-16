@@ -4,7 +4,11 @@
     rounded="lg"
     :border="true"
     :color="cardBackgroundColor"
-    :style="{ borderColor: progressColor, borderWidth: '1px', borderStyle: 'solid' }"
+    :style="{
+      borderColor: progressColor,
+      borderWidth: '1px',
+      borderStyle: 'solid',
+    }"
   >
     <v-card-text>
       <v-card-title class="pl-0 pt-0">Total hours of instruction</v-card-title>
@@ -19,7 +23,12 @@
           class="flex-grow-1"
         >
           <template v-slot:default="{ value }">
-            <span><strong>{{ totalHours }}</strong> total hours / <strong>{{ requiredHours }}</strong> required hours</span>
+            <span>
+              <strong>{{ totalHours }}</strong>
+              total hours /
+              <strong>{{ requiredHours }}</strong>
+              required hours
+            </span>
           </template>
         </v-progress-linear>
         <v-icon
@@ -31,7 +40,9 @@
         ></v-icon>
       </div>
       <p class="text-center font-weight-medium">
-        The required hours of instruction have <span v-if="!isCompleted">NOT</span> been met.
+        The required hours of instruction have
+        <span v-if="!isCompleted">NOT</span>
+        been met.
       </p>
     </v-card-text>
   </v-card>

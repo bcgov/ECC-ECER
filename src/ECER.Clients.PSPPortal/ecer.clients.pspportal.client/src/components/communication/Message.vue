@@ -9,33 +9,73 @@
     >
       <v-card>
         <v-toolbar color="white">
-          <v-btn prepend-icon="mdi-close" text="Close" @click="messageStore.currentMessage = null"></v-btn>
+          <v-btn
+            prepend-icon="mdi-close"
+            text="Close"
+            @click="messageStore.currentMessage = null"
+          ></v-btn>
         </v-toolbar>
         <v-card-text>
-          <v-sheet v-if="messageStore.currentMessage?.doNotReply == false" class="message-reply mb-6">
-            <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply"></v-btn>
+          <v-sheet
+            v-if="messageStore.currentMessage?.doNotReply == false"
+            class="message-reply mb-6"
+          >
+            <v-btn
+              prepend-icon="mdi-reply"
+              variant="text"
+              color="primary"
+              text="Reply"
+              @click="handleMessageReply"
+            ></v-btn>
           </v-sheet>
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
 
-          <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
+          <div
+            v-for="(message, index) in messageStore.currentThread"
+            :key="index"
+            class="small mt-6"
+          >
             <span>{{ messageFromString(message) }}</span>
-            <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
+            <div
+              class="mt-3"
+              v-html="
+                `${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`
+              "
+            ></div>
             <div class="mt-6" v-html="message.text"></div>
             <div v-if="message.documents!.length > 0" class="mt-6">
               <p>
                 <v-icon class="ml-n2">mdi-paperclip</v-icon>
                 Attachments
               </p>
-              <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
-                <DownloadFileLink :name="file.name" :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
-                  <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
+              <div
+                v-for="(file, fileIndex) in message.documents"
+                :key="fileIndex"
+                class="mt-3"
+              >
+                <DownloadFileLink
+                  :name="file.name"
+                  :get-file-function="
+                    () => getCommunicationFile(message.id || '', file.id || '')
+                  "
+                >
+                  <div>
+                    {{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}
+                  </div>
                 </DownloadFileLink>
               </div>
             </div>
-            <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey" class="mt-10 border-opacity-100"></v-divider>
+            <v-divider
+              v-if="index < messageStore.currentThread!.length - 1"
+              color="ash-grey"
+              class="mt-10 border-opacity-100"
+            ></v-divider>
           </div>
           <div v-if="messageStore.currentMessage?.doNotReply">
-            <v-divider color="ash-grey" class="mt-12 border-opacity-100"></v-divider>
+            <v-divider
+              color="ash-grey"
+              class="mt-12 border-opacity-100"
+            ></v-divider>
             <div class="mt-2">No reply option available for this message.</div>
           </div>
         </v-card-text>
@@ -43,7 +83,13 @@
     </v-dialog>
   </div>
   <div v-if="mdAndUp && messageStore.currentMessage !== null">
-    <v-sheet v-if="messageStore.currentMessage?.doNotReply === false || messageStore.currentMessage?.applicationId" class="message-reply mb-6">
+    <v-sheet
+      v-if="
+        messageStore.currentMessage?.doNotReply === false ||
+        messageStore.currentMessage?.applicationId
+      "
+      class="message-reply mb-6"
+    >
       <v-btn
         v-if="messageStore.currentMessage?.doNotReply === false"
         prepend-icon="mdi-reply"
@@ -52,7 +98,14 @@
         text="Reply"
         @click="handleMessageReply"
       ></v-btn>
-      <span v-if="messageStore.currentMessage?.doNotReply === false && messageStore.currentMessage?.applicationId">|</span>
+      <span
+        v-if="
+          messageStore.currentMessage?.doNotReply === false &&
+          messageStore.currentMessage?.applicationId
+        "
+      >
+        |
+      </span>
       <v-btn
         v-if="messageStore.currentMessage?.applicationId"
         prepend-icon="mdi-list-box"
@@ -63,7 +116,11 @@
       ></v-btn>
     </v-sheet>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
-    <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
+    <div
+      v-for="(message, index) in messageStore.currentThread"
+      :key="index"
+      class="small mt-6"
+    >
       <v-row>
         <v-col>
           <span>To {{ messageToString(message) }}</span>
@@ -75,21 +132,39 @@
         </v-col>
       </v-row>
 
-      <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
+      <div
+        class="mt-3"
+        v-html="
+          `${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`
+        "
+      ></div>
       <div class="mt-6" v-html="message.text"></div>
       <div v-if="message.documents!.length > 0" class="mt-6">
         <p>
           <v-icon class="ml-n2">mdi-paperclip</v-icon>
           Attachments
         </p>
-        <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
-          <DownloadFileLink :name="file.name" :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
+        <div
+          v-for="(file, fileIndex) in message.documents"
+          :key="fileIndex"
+          class="mt-3"
+        >
+          <DownloadFileLink
+            :name="file.name"
+            :get-file-function="
+              () => getCommunicationFile(message.id || '', file.id || '')
+            "
+          >
             <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
           </DownloadFileLink>
         </div>
       </div>
 
-      <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey" class="mt-10 border-opacity-100"></v-divider>
+      <v-divider
+        v-if="index < messageStore.currentThread!.length - 1"
+        color="ash-grey"
+        class="mt-10 border-opacity-100"
+      ></v-divider>
     </div>
     <div v-if="messageStore.currentMessage?.doNotReply">
       <v-divider color="ash-grey" class="mt-12 border-opacity-100"></v-divider>
@@ -130,7 +205,9 @@ export default defineComponent({
   computed: {
     messageDate(): string {
       let message = this.messageStore.currentMessage;
-      return message ? formatDate(String(message.notifiedOn), "LLL d, yyyy t") : "";
+      return message
+        ? formatDate(String(message.notifiedOn), "LLL d, yyyy t")
+        : "";
     },
   },
   methods: {
@@ -145,7 +222,9 @@ export default defineComponent({
     handleApplicationSummary() {
       this.router.push({
         name: "manageApplication",
-        params: { applicationId: this.messageStore.currentMessage?.applicationId },
+        params: {
+          applicationId: this.messageStore.currentMessage?.applicationId,
+        },
       });
       this.messageStore.currentMessage = null;
     },
@@ -154,14 +233,20 @@ export default defineComponent({
         case "Registry":
           return "ECE Registry";
         case "PortalUser":
-          return message.educationInstituteName !== null && message.educationInstituteName !== undefined ? message.educationInstituteName : "";
+          return message.educationInstituteName !== null &&
+            message.educationInstituteName !== undefined
+            ? message.educationInstituteName
+            : "";
         default:
           return "";
       }
     },
     messageToString(message: Communication): string {
       if (message.from === "Registry") {
-        return message.educationInstituteName !== null && message.educationInstituteName !== undefined ? message.educationInstituteName : "";
+        return message.educationInstituteName !== null &&
+          message.educationInstituteName !== undefined
+          ? message.educationInstituteName
+          : "";
       } else if (message.from === "PortalUser") {
         return "ECE Registry";
       }

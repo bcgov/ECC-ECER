@@ -8,7 +8,7 @@ describe("Final cleanup - logout & reset browser state", () => {
     cy.logout();
     cy.resetBrowserState();
     cy.then(() => {
-    Cypress.session.clearAllSavedSessions();
+      Cypress.session.clearAllSavedSessions();
     });
   });
 });

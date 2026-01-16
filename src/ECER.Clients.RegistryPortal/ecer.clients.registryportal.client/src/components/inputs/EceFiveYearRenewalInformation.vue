@@ -10,7 +10,12 @@
         value-key="fiveYearRenewalExplanationChoice"
         :radio-rules="[Rules.requiredRadio('Select an option')]"
         :model-value="wizardStore.wizardData.fiveYearRenewalExplanationChoice"
-        :additional-info-props="{ autoGrow: true, counter: 500, maxlength: 500, rules: [Rules.required('Enter a reason')] }"
+        :additional-info-props="{
+          autoGrow: true,
+          counter: 500,
+          maxlength: 500,
+          rules: [Rules.required('Enter a reason')],
+        }"
         :text-input-value="wizardStore.wizardData.renewalExplanationOther"
         @update:model-value="updateFields"
       >

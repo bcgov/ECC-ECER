@@ -1,5 +1,12 @@
 <template>
-  <Alert type="error" title="Sorry, this link is no longer valid" :closable="false" :prominent="true" variant="text" :rounded="false" />
+  <Alert
+    type="error"
+    title="Sorry, this link is no longer valid"
+    :closable="false"
+    :prominent="true"
+    variant="text"
+    :rounded="false"
+  />
 </template>
 
 <script lang="ts">

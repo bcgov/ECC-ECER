@@ -4,7 +4,10 @@
     <v-row>
       <v-col>
         <Alert v-model="duplicatePreviousName" type="error" prominent>
-          <p>This previous name is already in your account. You cannot add the same name again.</p>
+          <p>
+            This previous name is already in your account. You cannot add the
+            same name again.
+          </p>
         </Alert>
       </v-col>
     </v-row>
@@ -15,16 +18,24 @@
     </v-row>
     <div class="d-flex flex-column ga-3 my-6">
       <p>
-        This is only needed when you’re applying for certification and a transcript or other document has a different name than your current legal name. For
-        example, if your transcript has a different name than the name in your account.
+        This is only needed when you’re applying for certification and a
+        transcript or other document has a different name than your current
+        legal name. For example, if your transcript has a different name than
+        the name in your account.
       </p>
       <p>There are 3 steps:</p>
       <ol class="ml-10">
         <li>Enter your previous name below</li>
         <li>Provide proof of name change document(s)</li>
-        <li>We will review your proof of name change document and add this name to your account</li>
+        <li>
+          We will review your proof of name change document and add this name to
+          your account
+        </li>
       </ol>
-      <p>Before you continue, make sure you have an accepted proof of name change document such as:</p>
+      <p>
+        Before you continue, make sure you have an accepted proof of name change
+        document such as:
+      </p>
       <ul class="ml-10">
         <li>Government-issued marriage certificate</li>
         <li>Divorce certificate or papers</li>
@@ -33,13 +44,32 @@
     </div>
     <v-row class="mt-10">
       <v-col>
-        <EceForm ref="addPreviousNameForm" :form="previousNameForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
+        <EceForm
+          ref="addPreviousNameForm"
+          :form="previousNameForm"
+          :form-data="formStore.formData"
+          @updated-form-data="formStore.setFormData"
+        />
       </v-col>
     </v-row>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
-        <v-btn size="large" color="primary" :loading="loadingStore.isLoading('profile_put')" @click="handleSubmitPreviousName">Save and continue</v-btn>
-        <v-btn size="large" variant="outlined" color="primary" @click="router.back()">Cancel</v-btn>
+        <v-btn
+          size="large"
+          color="primary"
+          :loading="loadingStore.isLoading('profile_put')"
+          @click="handleSubmitPreviousName"
+        >
+          Save and continue
+        </v-btn>
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="router.back()"
+        >
+          Cancel
+        </v-btn>
       </v-col>
     </v-row>
   </PageContainer>
@@ -72,14 +102,28 @@ export default {
 
     formStore.initializeForm({});
 
-    return { formStore, loadingStore, alertStore, userStore, previousNameForm, router };
+    return {
+      formStore,
+      loadingStore,
+      alertStore,
+      userStore,
+      previousNameForm,
+      router,
+    };
   },
   computed: {
     newPreviousName(): Components.Schemas.PreviousName {
       return {
-        firstName: this.formStore.formData[previousNameForm?.inputs?.firstName?.id || ""] ?? null,
-        middleName: this.formStore.formData[previousNameForm?.inputs?.middleName?.id || ""] ?? null,
-        lastName: this.formStore.formData[previousNameForm?.inputs?.lastName?.id || ""],
+        firstName:
+          this.formStore.formData[
+            previousNameForm?.inputs?.firstName?.id || ""
+          ] ?? null,
+        middleName:
+          this.formStore.formData[
+            previousNameForm?.inputs?.middleName?.id || ""
+          ] ?? null,
+        lastName:
+          this.formStore.formData[previousNameForm?.inputs?.lastName?.id || ""],
         source: "Profile",
       };
     },
@@ -96,7 +140,9 @@ export default {
   methods: {
     async handleSubmitPreviousName() {
       // Validate the form
-      const { valid } = await (this.$refs.addPreviousNameForm as typeof EceForm).$refs[previousNameForm.id].validate();
+      const { valid } = await (
+        this.$refs.addPreviousNameForm as typeof EceForm
+      ).$refs[previousNameForm.id].validate();
       if (valid) {
         //check for duplicate previous name
         if (!this.duplicatePreviousName) {
@@ -106,7 +152,9 @@ export default {
           });
 
           if (error) {
-            this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+            this.alertStore.setFailureAlert(
+              "Sorry, something went wrong and your changes could not be saved. Try again later.",
+            );
           } else {
             // Refetch user profile to get the new previous name Id
             const userProfile = await getProfile();
@@ -119,7 +167,10 @@ export default {
                   previousName.lastName === this.newPreviousName.lastName,
               );
               if (latestPreviousName) {
-                this.router.push({ name: "verify-previous-name", params: { previousNameId: latestPreviousName.id } });
+                this.router.push({
+                  name: "verify-previous-name",
+                  params: { previousNameId: latestPreviousName.id },
+                });
               }
             }
           }
@@ -127,7 +178,9 @@ export default {
           globalThis.scrollTo(0, 0);
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue.",
+        );
       }
     },
   },

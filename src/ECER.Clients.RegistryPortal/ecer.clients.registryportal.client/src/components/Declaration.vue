@@ -4,7 +4,13 @@
     <h1 class="mb-5">Declaration and consent</h1>
     <p>You must read and agree to the following to apply for certification.</p>
     <br />
-    <p class="ml-10 multiline">{{ configStore.defaultContents.find((content) => content.name == "New BC Recognized Application")?.multiText }}</p>
+    <p class="ml-10 multiline">
+      {{
+        configStore.defaultContents.find(
+          (content) => content.name == "New BC Recognized Application",
+        )?.multiText
+      }}
+    </p>
 
     <v-form ref="declarationForm">
       <v-row>
@@ -22,12 +28,22 @@
 
       <v-row>
         <v-col cols="4">
-          <EceTextField :model-value="name" label="Your full legal name" :readonly="true" :rules="[]"></EceTextField>
+          <EceTextField
+            :model-value="name"
+            label="Your full legal name"
+            :readonly="true"
+            :rules="[]"
+          ></EceTextField>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="4">
-          <EceDateInput :model-value="date" label="Signed date" :readonly="true" :rules="[]"></EceDateInput>
+          <EceDateInput
+            :model-value="date"
+            label="Signed date"
+            :readonly="true"
+            :rules="[]"
+          ></EceDateInput>
         </v-col>
       </v-row>
     </v-form>
@@ -35,7 +51,10 @@
       class="mt-6"
       rounded="lg"
       color="primary"
-      :loading="loadingStore.isLoading('draftapplication_put') || loadingStore.isLoading('icra_put')"
+      :loading="
+        loadingStore.isLoading('draftapplication_put') ||
+        loadingStore.isLoading('icra_put')
+      "
       @click="continueClick"
       id="btnContinue"
     >
@@ -84,7 +103,16 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    return { Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router, icraStore };
+    return {
+      Rules,
+      userStore,
+      applicationStore,
+      alertStore,
+      loadingStore,
+      configStore,
+      router,
+      icraStore,
+    };
   },
   props: {
     stream: {
@@ -103,7 +131,8 @@ export default defineComponent({
   mounted() {
     //check if user has a draftApplication in progress (They should not be coming to this screen vice versa)
     if (
-      (this.stream === "Eligibility" && this.applicationStore.hasDraftApplication) ||
+      (this.stream === "Eligibility" &&
+        this.applicationStore.hasDraftApplication) ||
       (this.stream === "Application" && this.icraStore.hasDraftIcraEligibility)
     ) {
       console.warn(
@@ -111,17 +140,27 @@ export default defineComponent({
       );
       this.router.push("/");
     }
-    this.checkboxValue = this.applicationStore.draftApplication.signedDate ? true : false;
+    this.checkboxValue = this.applicationStore.draftApplication.signedDate
+      ? true
+      : false;
     this.name = this.userStore.fullName;
     if (this.stream === "Application") {
       this.date =
-        this.applicationStore.hasDraftApplication && this.applicationStore?.draftApplication?.signedDate
-          ? formatDate(this.applicationStore?.draftApplication?.signedDate, "yyyy-MM-dd")
+        this.applicationStore.hasDraftApplication &&
+        this.applicationStore?.draftApplication?.signedDate
+          ? formatDate(
+              this.applicationStore?.draftApplication?.signedDate,
+              "yyyy-MM-dd",
+            )
           : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
     } else if (this.stream === "Eligibility") {
       this.date =
-        this.icraStore.hasDraftIcraEligibility && this.icraStore?.draftIcraEligibility?.signedDate
-          ? formatDate(this.icraStore?.draftIcraEligibility?.signedDate, "yyyy-MM-dd")
+        this.icraStore.hasDraftIcraEligibility &&
+        this.icraStore?.draftIcraEligibility?.signedDate
+          ? formatDate(
+              this.icraStore?.draftIcraEligibility?.signedDate,
+              "yyyy-MM-dd",
+            )
           : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
     }
   },
@@ -129,7 +168,9 @@ export default defineComponent({
     async continueClick() {
       const { valid } = await (this.$refs.declarationForm as VForm).validate();
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
         return;
       }
 
@@ -142,7 +183,9 @@ export default defineComponent({
       }
     },
     async applicationPath() {
-      this.applicationStore.$patch({ draftApplication: { signedDate: this.date } });
+      this.applicationStore.$patch({
+        draftApplication: { signedDate: this.date },
+      });
 
       let response = await this.applicationStore.upsertDraftApplication();
 

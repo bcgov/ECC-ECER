@@ -31,11 +31,17 @@ const uploadFile = async (
     onUploadProgress,
   };
   return apiResultHandler.execute<Components.Schemas.FileResponse>({
-    request: client.upload_file(parameters, formData as unknown as Paths.UploadFile.RequestBody, config),
+    request: client.upload_file(
+      parameters,
+      formData as unknown as Paths.UploadFile.RequestBody,
+      config,
+    ),
   });
 };
 
-const deleteFile = async (fileId: string): Promise<ApiResponse<Paths.DeleteFile.Responses.$200>> => {
+const deleteFile = async (
+  fileId: string,
+): Promise<ApiResponse<Paths.DeleteFile.Responses.$200>> => {
   const client = await getClient();
 
   const parameters: Paths.DeleteFile.PathParameters = {
@@ -48,7 +54,9 @@ const deleteFile = async (fileId: string): Promise<ApiResponse<Paths.DeleteFile.
     },
   };
 
-  return apiResultHandler.execute<Paths.DeleteFile.Responses.$200>({ request: client.delete_file(parameters, null, config) });
+  return apiResultHandler.execute<Paths.DeleteFile.Responses.$200>({
+    request: client.delete_file(parameters, null, config),
+  });
 };
 
 export { deleteFile, uploadFile };

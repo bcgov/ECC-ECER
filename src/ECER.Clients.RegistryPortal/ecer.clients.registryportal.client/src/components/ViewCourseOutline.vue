@@ -9,10 +9,16 @@
           <b>{{ transcript?.programName }}</b>
         </li>
       </ul>
-      <p>Ask your educational institution for detailed course outlines or syllabi. You cannot create these yourself.</p>
+      <p>
+        Ask your educational institution for detailed course outlines or
+        syllabi. You cannot create these yourself.
+      </p>
       <p>The outlines must:</p>
       <ul class="ml-10">
-        <li>Include detailed descriptions of course content, learning goals, outcomes and expectations</li>
+        <li>
+          Include detailed descriptions of course content, learning goals,
+          outcomes and expectations
+        </li>
         <li>Be for the year(s) you completed the course(s)</li>
         <li>Be in English</li>
       </ul>
@@ -20,8 +26,16 @@
     <h3>How will you provide your course outlines or syllabi?</h3>
     <v-form ref="updateCourseOutlineOptionsAndDocuments" validate-on="input">
       <v-row class="mt-4">
-        <v-radio-group id="courseOutlineRadio" v-model="courseOutlineOptions" :rules="[Rules.required()]" color="primary">
-          <v-radio label="I have my course outlines or syllabi and will upload them now." value="UploadNow"></v-radio>
+        <v-radio-group
+          id="courseOutlineRadio"
+          v-model="courseOutlineOptions"
+          :rules="[Rules.required()]"
+          color="primary"
+        >
+          <v-radio
+            label="I have my course outlines or syllabi and will upload them now."
+            value="UploadNow"
+          ></v-radio>
           <v-radio
             :label="`The ECE Registry already has my course outlines or syllabi on file for the ${applicationStatus?.certificationTypes?.includes('EceAssistant') ? 'course' : 'program'} relevant to this application and certificate type.`"
             value="RegistryAlreadyHas"
@@ -32,8 +46,9 @@
         <v-col>
           <p class="mb-3"><b>Attach files</b></p>
           <p class="mb-3">
-            Check that you have all the relevant course outlines or syllabi before you add them here. The ECE Registry will contact you if additional
-            information is required.
+            Check that you have all the relevant course outlines or syllabi
+            before you add them here. The ECE Registry will contact you if
+            additional information is required.
           </p>
           <FileUploader
             :user-files="generateUserPrimaryFileArray"
@@ -46,7 +61,14 @@
       </v-row>
     </v-form>
     <v-row class="mt-6">
-      <v-btn :loading="loadingStore.isLoading('application_update_transcript_post')" @click="handleSubmit" size="large" color="primary">Save</v-btn>
+      <v-btn
+        :loading="loadingStore.isLoading('application_update_transcript_post')"
+        @click="handleSubmit"
+        size="large"
+        color="primary"
+      >
+        Save
+      </v-btn>
     </v-row>
   </v-container>
 </template>
@@ -55,7 +77,10 @@
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAlertStore } from "@/store/alert";
-import { getApplicationStatus, setTranscriptDocumentsAndOptions } from "@/api/application";
+import {
+  getApplicationStatus,
+  setTranscriptDocumentsAndOptions,
+} from "@/api/application";
 import Breadcrumb from "./Breadcrumb.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import type { FileItem } from "./UploadFileItem.vue";
@@ -84,9 +109,12 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const router = useRouter();
 
-    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))
+      ?.data;
 
-    const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
+    const transcript = applicationStatus?.transcriptsStatus?.find(
+      (transcript) => transcript.id === props.transcriptId,
+    );
 
     let courseOutlineOptions = ref<CourseOutlineOptions | undefined>(undefined);
     const areAttachedFilesValid = ref(true);
@@ -142,9 +170,13 @@ export default defineComponent({
   methods: {
     async handleSubmit() {
       // Validate the form
-      const { valid } = await (this.$refs.updateCourseOutlineOptionsAndDocuments as VForm).validate();
+      const { valid } = await (
+        this.$refs.updateCourseOutlineOptionsAndDocuments as VForm
+      ).validate();
       if (this.isFileUploadInProgress) {
-        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
+        this.alertStore.setFailureAlert(
+          "Uploading files in progress. Please wait until files are uploaded and try again.",
+        );
       } else if (valid) {
         const { error } = await setTranscriptDocumentsAndOptions({
           courseOutlineOptions: this.courseOutlineOptions,
@@ -153,13 +185,20 @@ export default defineComponent({
           transcriptId: this.transcriptId,
         });
         if (error) {
-          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+          this.alertStore.setFailureAlert(
+            "Sorry, something went wrong and your changes could not be saved. Try again later.",
+          );
         } else {
           this.alertStore.setSuccessAlert("Your changes have been saved.");
-          this.router.push({ name: "manageApplication", params: { applicationId: this.applicationId } });
+          this.router.push({
+            name: "manageApplication",
+            params: { applicationId: this.applicationId },
+          });
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue.",
+        );
       }
     },
     handleFileUpdate(filesArray: FileItem[]) {
@@ -171,7 +210,11 @@ export default defineComponent({
           const file = filesArray[i] as FileItem;
 
           // Check if file exists in transcript.courseOutlineFiles
-          if (this.transcript?.courseOutlineFiles?.find((f) => f.id === file.fileId)) {
+          if (
+            this.transcript?.courseOutlineFiles?.find(
+              (f) => f.id === file.fileId,
+            )
+          ) {
             // If file exists in transcript.courseOutlineFiles, continue
             continue;
           }

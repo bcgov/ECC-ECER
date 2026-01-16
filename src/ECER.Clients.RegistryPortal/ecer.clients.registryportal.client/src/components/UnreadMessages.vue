@@ -1,5 +1,7 @@
 <template>
-  <template v-if="messageStore.unreadMessageCount === 0">You have no new messages.</template>
+  <template v-if="messageStore.unreadMessageCount === 0">
+    You have no new messages.
+  </template>
   <template v-if="messageStore.unreadMessageCount === 1">
     You have
     <template v-if="linkable">
@@ -17,7 +19,9 @@
       </router-link>
       <span>.</span>
     </template>
-    <template v-else>{{ messageStore.unreadMessageCount }} new messages.</template>
+    <template v-else>
+      {{ messageStore.unreadMessageCount }} new messages.
+    </template>
   </template>
 </template>
 

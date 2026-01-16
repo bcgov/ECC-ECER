@@ -2,7 +2,10 @@
   <v-responsive min-height="210">
     <v-card height="100%" class="custom-card-styling">
       <v-row class="fill-height" no-gutters>
-        <v-col cols="3" class="icon-container d-flex align-center justify-center">
+        <v-col
+          cols="3"
+          class="icon-container d-flex align-center justify-center"
+        >
           <v-icon v-if="icon" :icon="icon" size="40"></v-icon>
         </v-col>
         <v-col>

@@ -6,8 +6,10 @@
 
       <ECEHeader title="Is this pathway right for you?" />
       <p>
-        If you are certified as an Early Childhood Educator (ECE) in another country, you may be eligible to apply for ECE Five Year certification in British
-        Columbia using professional experience you have outside of Canada.
+        If you are certified as an Early Childhood Educator (ECE) in another
+        country, you may be eligible to apply for ECE Five Year certification in
+        British Columbia using professional experience you have outside of
+        Canada.
       </p>
       <p class="mt-5 mb-8">
         <b>Note:</b>
@@ -19,21 +21,37 @@
       <ol class="ml-10 mt-3">
         <li>Submit your required documentation</li>
         <li>
-          We will review your submission and determine if you are eligible to apply for ECE Five Year certification using professional experience you have
-          outside of Canada
+          We will review your submission and determine if you are eligible to
+          apply for ECE Five Year certification using professional experience
+          you have outside of Canada
         </li>
         <li>
-          If you are eligible, you may continue with your ECE Five Year application. If you are not eligible, we will contact you with other application options
+          If you are eligible, you may continue with your ECE Five Year
+          application. If you are not eligible, we will contact you with other
+          application options
         </li>
       </ol>
-      <Callout class="mt-10" type="warning" title="Do you have 500 hours of work experience supervised by a Canadian-certified ECE?">
+      <Callout
+        class="mt-10"
+        type="warning"
+        title="Do you have 500 hours of work experience supervised by a Canadian-certified ECE?"
+      >
         If yes, you do not need to confirm your eligibility. Please
-        <router-link class="mt-4" to="/">apply for certification directly here.</router-link>
+        <router-link class="mt-4" to="/">
+          apply for certification directly here.
+        </router-link>
       </Callout>
 
       <h3 class="mt-13">When you are ready, you can begin your submission.</h3>
 
-      <v-btn class="mt-6" rounded="lg" color="primary" @click="router.push({ name: 'icra-eligibility-requirements' })">Check eligibility</v-btn>
+      <v-btn
+        class="mt-6"
+        rounded="lg"
+        color="primary"
+        @click="router.push({ name: 'icra-eligibility-requirements' })"
+      >
+        Check eligibility
+      </v-btn>
     </div>
   </v-container>
 </template>

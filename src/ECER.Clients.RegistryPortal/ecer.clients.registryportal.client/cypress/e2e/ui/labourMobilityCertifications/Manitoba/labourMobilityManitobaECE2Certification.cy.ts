@@ -11,18 +11,26 @@ describe("Labour Mobility - ECE 2 Certification Transfer Application for Manitob
     cy.contains("Check your transfer eligibility").should("be.visible");
 
     /** Manitoba*/
-    cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.provinceDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 
     /**Out of province Certification Type */
-    cy.get(selectors.transferEligibility.certificationTypeDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.certificationTypeDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(certificationName).click();
 
     cy.contains("Work experience").should("be.visible");
 
-    cy.get(selectors.transferEligibility.programConfirmationRadioNo).check({ force: true });
+    cy.get(selectors.transferEligibility.programConfirmationRadioNo).check({
+      force: true,
+    });
 
-    cy.contains("You can apply to transfer your certification to ECE One Year certification in B.C.").should("be.visible");
+    cy.contains(
+      "You can apply to transfer your certification to ECE One Year certification in B.C.",
+    ).should("be.visible");
 
     /** View Requirements Button */
     cy.get(selectors.transferEligibility.viewRequirementsButton).click();
@@ -41,7 +49,9 @@ describe("Labour Mobility - ECE 2 Certification Transfer Application for Manitob
     cy.contains("ECE One Year").should("be.visible");
     cy.contains(provinceName).should("be.visible");
     cy.contains(certificationName).should("be.visible");
-    cy.get(selectors.certificateInformation.nameOnCertificateRadio).first().check({ force: true });
+    cy.get(selectors.certificateInformation.nameOnCertificateRadio)
+      .first()
+      .check({ force: true });
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEOneYearWorkflow(provinceName, certificationName);

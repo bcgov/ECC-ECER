@@ -34,9 +34,6 @@
       </v-col>
     </v-row>
 
-
-    
-
     <div class="mb-6">
       <ECEHeader class="mb-6" title="Options" />
     </div>
@@ -50,9 +47,7 @@
         minutes to receive the email.
       </p>
 
-      <p class="mb-3">
-        If they do not receive the email:
-      </p>
+      <p class="mb-3">If they do not receive the email:</p>
 
       <ul class="ml-6 mb-4">
         <li class="mb-2">Ask the person to check their spam folder</li>
@@ -67,8 +62,13 @@
       <v-btn
         variant="outlined"
         color="primary"
-        :loading="loadingStore.isLoading('icra_work_reference_resend_invite_post')"
-        :disabled="!employmentReference || loadingStore.isLoading('icra_work_reference_resend_invite_post')"
+        :loading="
+          loadingStore.isLoading('icra_work_reference_resend_invite_post')
+        "
+        :disabled="
+          !employmentReference ||
+          loadingStore.isLoading('icra_work_reference_resend_invite_post')
+        "
         @click.stop.prevent="onResendClick"
       >
         Resend email
@@ -134,7 +134,8 @@ export default defineComponent({
   },
   data() {
     return {
-      employmentReference: null as Components.Schemas.EmploymentReference | null,
+      employmentReference:
+        null as Components.Schemas.EmploymentReference | null,
     };
   },
   async mounted() {
@@ -146,7 +147,7 @@ export default defineComponent({
       if (!this.employmentReference) return "";
       return cleanPreferredName(
         this.employmentReference.firstName,
-        this.employmentReference.lastName
+        this.employmentReference.lastName,
       );
     },
   },
@@ -168,8 +169,7 @@ export default defineComponent({
           referenceId: this.referenceId,
         },
       });
-    }
+    },
   },
 });
 </script>
-

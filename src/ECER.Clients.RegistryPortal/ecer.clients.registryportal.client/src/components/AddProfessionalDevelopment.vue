@@ -11,12 +11,20 @@
           <br />
           <ul class="ml-10">
             <li>Be relevant to the field of early childhood education</li>
-            <li v-if="fromCertificate && fromCertificate.statusCode === 'Active'">
+            <li
+              v-if="fromCertificate && fromCertificate.statusCode === 'Active'"
+            >
               {{
                 `Have been completed within the term of your current certificate (Between ${formatDate(fromCertificate?.effectiveDate || "", "LLLL d, yyyy")} to ${formatDate(fromCertificate?.expiryDate || "", "LLLL d, yyyy")})`
               }}
             </li>
-            <li v-else-if="fromCertificate && fromCertificate.statusCode === 'Expired'">Have been completed within the last 5 years</li>
+            <li
+              v-else-if="
+                fromCertificate && fromCertificate.statusCode === 'Expired'
+              "
+            >
+              Have been completed within the last 5 years
+            </li>
           </ul>
         </v-col>
       </v-row>
@@ -46,7 +54,11 @@
               tooltip-text="Provide the name of the school, organization, or instructor that offered the training or issued the certificate. 
 They should be able to confirm you completed the course or workshop."
               maxlength="300"
-              :rules="[Rules.required('Enter the name of the organization that offered this training')]"
+              :rules="[
+                Rules.required(
+                  'Enter the name of the organization that offered this training',
+                ),
+              ]"
             ></EceTextField>
           </v-col>
         </v-row>
@@ -84,10 +96,14 @@ They should be able to confirm you completed the course or workshop."
               ref="startDateInput"
               v-model="professionalDevelopment.startDate"
               :rules="[
-                Rules.required('Enter the start date of your course or workshop'),
+                Rules.required(
+                  'Enter the start date of your course or workshop',
+                ),
                 Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
-                  !!(fromCertificate && fromCertificate.statusCode === 'Active'),
+                  !!(
+                    fromCertificate && fromCertificate.statusCode === 'Active'
+                  ),
                   Rules.dateBetweenRule(
                     fromCertificate?.effectiveDate || '',
                     fromCertificate?.expiryDate || '',
@@ -95,7 +111,9 @@ They should be able to confirm you completed the course or workshop."
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  !!(fromCertificate && fromCertificate.statusCode === 'Expired'),
+                  !!(
+                    fromCertificate && fromCertificate.statusCode === 'Expired'
+                  ),
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -120,7 +138,9 @@ They should be able to confirm you completed the course or workshop."
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(professionalDevelopment.startDate || ''),
                 Rules.conditionalWrapper(
-                  !!(fromCertificate && fromCertificate.statusCode === 'Active'),
+                  !!(
+                    fromCertificate && fromCertificate.statusCode === 'Active'
+                  ),
                   Rules.dateBetweenRule(
                     fromCertificate?.effectiveDate || '',
                     fromCertificate?.expiryDate || '',
@@ -128,7 +148,9 @@ They should be able to confirm you completed the course or workshop."
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  !!(fromCertificate && fromCertificate.statusCode === 'Expired'),
+                  !!(
+                    fromCertificate && fromCertificate.statusCode === 'Expired'
+                  ),
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -148,7 +170,10 @@ They should be able to confirm you completed the course or workshop."
               id="txtNumberOfHours"
               v-model="professionalDevelopment.numberOfHours"
               label="How many hours was this course or workshop?"
-              :rules="[Rules.required('Enter your course or workshop hours'), Rules.numberToDecimalPlaces()]"
+              :rules="[
+                Rules.required('Enter your course or workshop hours'),
+                Rules.numberToDecimalPlaces(),
+              ]"
             ></EceTextField>
           </v-col>
         </v-row>
@@ -156,7 +181,10 @@ They should be able to confirm you completed the course or workshop."
           <v-col>
             <h3>Proof of completion</h3>
             <br />
-            <p>We may need to verify you took this course. You'll need to provide at least one option below</p>
+            <p>
+              We may need to verify you took this course. You'll need to provide
+              at least one option below
+            </p>
             <br />
             <p>What can you provide? Choose all that apply</p>
           </v-col>
@@ -177,11 +205,17 @@ They should be able to confirm you completed the course or workshop."
               <v-col md="8" lg="6" xl="4">
                 <EceTextField
                   id="txtOrganizationPhoneNumber"
-                  v-model="professionalDevelopment.organizationContactInformation"
+                  v-model="
+                    professionalDevelopment.organizationContactInformation
+                  "
                   label="Phone number"
                   :rules="[
-                    Rules.required('Enter the phone number for your course or workshop contact'),
-                    Rules.phoneNumber('Enter your reference\'s valid phone number'),
+                    Rules.required(
+                      'Enter the phone number for your course or workshop contact',
+                    ),
+                    Rules.phoneNumber(
+                      'Enter your reference\'s valid phone number',
+                    ),
                   ]"
                 ></EceTextField>
               </v-col>
@@ -202,7 +236,12 @@ They should be able to confirm you completed the course or workshop."
                   id="txtOrganizationEmailAddress"
                   v-model="professionalDevelopment.organizationEmailAddress"
                   label="Email address"
-                  :rules="[Rules.required('Enter the email address of your course or workshop contact'), Rules.email()]"
+                  :rules="[
+                    Rules.required(
+                      'Enter the email address of your course or workshop contact',
+                    ),
+                    Rules.email(),
+                  ]"
                 ></EceTextField>
               </v-col>
             </v-row>
@@ -220,7 +259,11 @@ They should be able to confirm you completed the course or workshop."
         </v-row>
         <v-row v-if="showFileInput" class="ml-4">
           <v-col>
-            <FileUploader :allow-multiple-files="false" :show-add-file-button="true" @update:files="handleFileUpdate" />
+            <FileUploader
+              :allow-multiple-files="false"
+              :show-add-file-button="true"
+              @update:files="handleFileUpdate"
+            />
           </v-col>
         </v-row>
       </v-form>
@@ -231,7 +274,11 @@ They should be able to confirm you completed the course or workshop."
           id="btnAddProfessionalDevelopment"
           size="large"
           color="primary"
-          :loading="loadingStore.isLoading('application_professionaldevelopment_add_post')"
+          :loading="
+            loadingStore.isLoading(
+              'application_professionaldevelopment_add_post',
+            )
+          "
           @click="handleAddProfessionalDevelopment"
         >
           Save course or workshop
@@ -283,7 +330,9 @@ export default defineComponent({
 
     const loadingStore = useLoadingStore();
     const router = useRouter();
-    const applicationStatus = (await getApplicationStatus(props.applicationId.toString()))?.data;
+    const applicationStatus = (
+      await getApplicationStatus(props.applicationId.toString())
+    )?.data;
     const certificationStore = useCertificationStore();
 
     return {
@@ -297,7 +346,8 @@ export default defineComponent({
     };
   },
   data() {
-    const professionalDevelopment: ProfessionalDevelopmentData & Components.Schemas.ProfessionalDevelopment = {
+    const professionalDevelopment: ProfessionalDevelopmentData &
+      Components.Schemas.ProfessionalDevelopment = {
       selection: [],
       areAttachedFilesValid: true,
       isFileUploadInProgress: false,
@@ -322,26 +372,44 @@ export default defineComponent({
       return this.professionalDevelopment.selection.includes("file");
     },
     fromCertificate() {
-      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
+      return this.certificationStore.getCertificationById(
+        this.applicationStore.draftApplication.fromCertificate,
+      );
     },
   },
 
   methods: {
     async handleAddProfessionalDevelopment() {
       // Validate the form
-      const { valid } = await (this.$refs.professionalDevelopmentForm as VForm).validate();
+      const { valid } = await (
+        this.$refs.professionalDevelopmentForm as VForm
+      ).validate();
       if (this.professionalDevelopment.isFileUploadInProgress) {
-        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
+        this.alertStore.setFailureAlert(
+          "Uploading files in progress. Please wait until files are uploaded and try again.",
+        );
       } else if (valid) {
-        const { error } = await addProfessionalDevelopment({ application_id: this.applicationId }, this.professionalDevelopment);
+        const { error } = await addProfessionalDevelopment(
+          { application_id: this.applicationId },
+          this.professionalDevelopment,
+        );
         if (error) {
-          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+          this.alertStore.setFailureAlert(
+            "Sorry, something went wrong and your changes could not be saved. Try again later.",
+          );
         } else {
-          this.alertStore.setSuccessAlert("Professional development added sucessfully!");
-          this.router.push({ name: "manageProfessionalDevelopment", params: { applicationId: this.applicationId } });
+          this.alertStore.setSuccessAlert(
+            "Professional development added sucessfully!",
+          );
+          this.router.push({
+            name: "manageProfessionalDevelopment",
+            params: { applicationId: this.applicationId },
+          });
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue.",
+        );
       }
     },
     isNumber,
@@ -360,7 +428,10 @@ export default defineComponent({
       }
     },
     validateDates() {
-      if (this.professionalDevelopment.startDate && this.professionalDevelopment.endDate) {
+      if (
+        this.professionalDevelopment.startDate &&
+        this.professionalDevelopment.endDate
+      ) {
         (this.$refs.startDateInput as VInput).validate();
         (this.$refs.endDateInput as VInput).validate();
       }
@@ -389,7 +460,10 @@ export default defineComponent({
           }
 
           // If file is valid and fully uploaded, add to attachments
-          if (this.professionalDevelopment.areAttachedFilesValid && !this.professionalDevelopment.isFileUploadInProgress) {
+          if (
+            this.professionalDevelopment.areAttachedFilesValid &&
+            !this.professionalDevelopment.isFileUploadInProgress
+          ) {
             this.professionalDevelopment.newFiles?.push(file.fileId);
           }
         }

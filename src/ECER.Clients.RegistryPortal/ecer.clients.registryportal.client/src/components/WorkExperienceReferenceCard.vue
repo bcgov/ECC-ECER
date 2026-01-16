@@ -1,5 +1,11 @@
 <template>
-  <v-card min-width="100%" variant="elevated" rounded="lg" class="custom-card-styling" elevation="4">
+  <v-card
+    min-width="100%"
+    variant="elevated"
+    rounded="lg"
+    class="custom-card-styling"
+    elevation="4"
+  >
     <template #title>
       <v-card-title>
         <v-row>
@@ -17,7 +23,13 @@
     <template #append>
       <v-tooltip text="Edit reference" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editReference" :loading="loadingStore.isLoading('draftapplication_put')" />
+          <v-btn
+            v-bind="props"
+            icon="mdi-pencil"
+            variant="plain"
+            @click="editReference"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          />
         </template>
       </v-tooltip>
       <v-tooltip text="Delete reference" location="top">
@@ -64,7 +76,10 @@ export default defineComponent({
       return `${this.reference.hours} hours`;
     },
     referenceFullName() {
-      return cleanPreferredName(this.reference.firstName, this.reference.lastName);
+      return cleanPreferredName(
+        this.reference.firstName,
+        this.reference.lastName,
+      );
     },
   },
   methods: {

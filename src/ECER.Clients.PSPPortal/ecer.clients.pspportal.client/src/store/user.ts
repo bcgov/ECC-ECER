@@ -19,14 +19,17 @@ export const useUserStore = defineStore("user", {
   getters: {
     id: (state): string => state.pspUserProfile?.id ?? "",
     hasUserProfile: (state): boolean => state.pspUserProfile !== null,
-    hasAcceptedTermsOfUse: (state): boolean => state.pspUserProfile?.hasAcceptedTermsOfUse ?? false,
+    hasAcceptedTermsOfUse: (state): boolean =>
+      state.pspUserProfile?.hasAcceptedTermsOfUse ?? false,
     firstName: (state): string => state.pspUserProfile?.firstName ?? "",
     lastName: (state): string => state.pspUserProfile?.lastName ?? "",
     email: (state): string => state.pspUserProfile?.email ?? "",
     phone: (state): string => state.pspUserProfile?.phone ?? "",
-    phoneExtension: (state): string => state.pspUserProfile?.phoneExtension ?? "",
+    phoneExtension: (state): string =>
+      state.pspUserProfile?.phoneExtension ?? "",
     jobTitle: (state): string => state.pspUserProfile?.jobTitle ?? "",
-    role: (state): Components.Schemas.PspUserRole => state.pspUserProfile?.role ?? "Primary",
+    role: (state): Components.Schemas.PspUserRole =>
+      state.pspUserProfile?.role ?? "Primary",
     preferredName: (state): string => state.pspUserProfile?.preferredName ?? "",
     auspice: (state): string => state.educationInstitution?.auspice ?? "",
     street1: (state): string => state.educationInstitution?.street1 ?? "",
@@ -36,23 +39,42 @@ export const useUserStore = defineStore("user", {
     websiteUrl: (state): string => state.educationInstitution?.websiteUrl ?? "",
   },
   actions: {
-    setPspUserProfile(pspUserProfile: Components.Schemas.PspUserProfile | null): void {
+    setPspUserProfile(
+      pspUserProfile: Components.Schemas.PspUserProfile | null,
+    ): void {
       this.$patch({ pspUserProfile: pspUserProfile });
     },
-    updatePspUserProfile(pspUserProfile: Components.Schemas.PspUserProfile | null): void {
-      this.$patch({ pspUserProfile: { ...this.pspUserProfile, ...pspUserProfile } });
+    updatePspUserProfile(
+      pspUserProfile: Components.Schemas.PspUserProfile | null,
+    ): void {
+      this.$patch({
+        pspUserProfile: { ...this.pspUserProfile, ...pspUserProfile },
+      });
     },
-    setInvitedProgramRepresentativeId(invitedProgramRepresentativeId: string | null): void {
-      this.$patch({ invitedProgramRepresentativeId: invitedProgramRepresentativeId });
+    setInvitedProgramRepresentativeId(
+      invitedProgramRepresentativeId: string | null,
+    ): void {
+      this.$patch({
+        invitedProgramRepresentativeId: invitedProgramRepresentativeId,
+      });
     },
     setInvitationToken(invitationToken: string | null): void {
       this.$patch({ invitationToken: invitationToken });
     },
-    setEducationInstitution(educationInstitution: Components.Schemas.EducationInstitution | null): void {
+    setEducationInstitution(
+      educationInstitution: Components.Schemas.EducationInstitution | null,
+    ): void {
       this.$patch({ educationInstitution: educationInstitution });
     },
-    updateEducationInstitution(educationInstitution: Components.Schemas.EducationInstitution | null): void {
-      this.$patch({ educationInstitution: { ...this.educationInstitution, ...educationInstitution } });
+    updateEducationInstitution(
+      educationInstitution: Components.Schemas.EducationInstitution | null,
+    ): void {
+      this.$patch({
+        educationInstitution: {
+          ...this.educationInstitution,
+          ...educationInstitution,
+        },
+      });
     },
   },
 });

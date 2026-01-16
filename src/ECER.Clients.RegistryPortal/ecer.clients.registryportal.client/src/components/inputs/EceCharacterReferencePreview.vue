@@ -6,7 +6,9 @@
           <p class="small">Last name</p>
         </v-col>
         <v-col>
-          <p id="characterReferenceLastName" class="small font-weight-bold">{{ characterReference.lastName }}</p>
+          <p id="characterReferenceLastName" class="small font-weight-bold">
+            {{ characterReference.lastName }}
+          </p>
         </v-col>
       </v-row>
       <v-row>
@@ -14,7 +16,9 @@
           <p class="small">First name</p>
         </v-col>
         <v-col>
-          <p id="characterReferenceFirstName" class="small font-weight-bold">{{ characterReference.firstName }}</p>
+          <p id="characterReferenceFirstName" class="small font-weight-bold">
+            {{ characterReference.firstName }}
+          </p>
         </v-col>
       </v-row>
       <v-row>
@@ -22,7 +26,9 @@
           <p class="small">Email</p>
         </v-col>
         <v-col>
-          <p id="characterReferenceEmail" class="small font-weight-bold">{{ characterReference.emailAddress }}</p>
+          <p id="characterReferenceEmail" class="small font-weight-bold">
+            {{ characterReference.emailAddress }}
+          </p>
         </v-col>
       </v-row>
       <v-row>
@@ -30,7 +36,9 @@
           <p class="small">Phone number</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ characterReference.phoneNumber }}</p>
+          <p class="small font-weight-bold">
+            {{ characterReference.phoneNumber }}
+          </p>
         </v-col>
       </v-row>
     </template>
@@ -60,15 +68,25 @@ export default defineComponent({
     characterReference(): Components.Schemas.CharacterReference {
       return {
         firstName:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id || ""]?.[0]?.firstName,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.characterReferences?.form
+              ?.inputs?.characterReferences?.id || ""
+          ]?.[0]?.firstName,
         lastName:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id || ""]?.[0]?.lastName,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.characterReferences?.form
+              ?.inputs?.characterReferences?.id || ""
+          ]?.[0]?.lastName,
         emailAddress:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id || ""]?.[0]
-            ?.emailAddress,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.characterReferences?.form
+              ?.inputs?.characterReferences?.id || ""
+          ]?.[0]?.emailAddress,
         phoneNumber:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id || ""]?.[0]
-            ?.phoneNumber,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.characterReferences?.form
+              ?.inputs?.characterReferences?.id || ""
+          ]?.[0]?.phoneNumber,
       };
     },
   },

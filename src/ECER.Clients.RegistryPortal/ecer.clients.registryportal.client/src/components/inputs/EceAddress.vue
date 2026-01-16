@@ -33,7 +33,9 @@
         ref="line1"
         :label="addressLabel + ' street address'"
         :model-value="modelValue.line1"
-        :rules="[Rules.required(`Enter your ${addressLabel.toLowerCase()} address`)]"
+        :rules="[
+          Rules.required(`Enter your ${addressLabel.toLowerCase()} address`),
+        ]"
         variant="outlined"
         color="primary"
         maxlength="100"
@@ -61,14 +63,19 @@
   <!-- For Canada: Show Province/Territory list -->
   <v-row v-if="isCanada">
     <v-col cols="12">
-      <label :for="`${addressLabel}-province-autocomplete`">Province / Territory</label>
+      <label :for="`${addressLabel}-province-autocomplete`">
+        Province / Territory
+      </label>
       <v-autocomplete
         :id="`${addressLabel}-province-autocomplete`"
         :model-value="modelValue.province"
         variant="outlined"
         color="primary"
         class="pt-2"
-        :rules="[Rules.required('Select your province/territory'), Rules.mustExistInList(filteredProvinceList, 'provinceCode')]"
+        :rules="[
+          Rules.required('Select your province/territory'),
+          Rules.mustExistInList(filteredProvinceList, 'provinceCode'),
+        ]"
         :items="filteredProvinceList"
         item-title="provinceName"
         item-value="provinceCode"
@@ -100,11 +107,19 @@
       <EceTextField
         :model-value="modelValue.postalCode"
         :label="isCanada ? 'Postal code' : 'Postal / Zip code'"
-        :rules="[Rules.conditionalWrapper(isCanada, Rules.required('Postal code required')), Rules.conditionalWrapper(isCanada, Rules.postalCode())]"
+        :rules="[
+          Rules.conditionalWrapper(
+            isCanada,
+            Rules.required('Postal code required'),
+          ),
+          Rules.conditionalWrapper(isCanada, Rules.postalCode()),
+        ]"
         variant="outlined"
         color="primary"
         maxlength="20"
-        @update:model-value="(value: string) => updateField('postalCode', value)"
+        @update:model-value="
+          (value: string) => updateField('postalCode', value)
+        "
       ></EceTextField>
     </v-col>
   </v-row>
@@ -144,7 +159,9 @@ export default defineComponent({
       return this.modelValue.country === this.configStore.canada?.countryName;
     },
     filteredProvinceList() {
-      return (this.configStore?.provinceList || []).filter((province) => province.provinceName !== ProvinceTerritoryType.OTHER);
+      return (this.configStore?.provinceList || []).filter(
+        (province) => province.provinceName !== ProvinceTerritoryType.OTHER,
+      );
     },
   },
   data() {
@@ -159,14 +176,20 @@ export default defineComponent({
     }
     // If country is Canada and province is not set, default it to British Columbia.
     if (this.modelValue.country === "Canada" && !this.modelValue.province) {
-      this.updateField("province", this.configStore.britishColumbia?.provinceCode ?? "");
+      this.updateField(
+        "province",
+        this.configStore.britishColumbia?.provinceCode ?? "",
+      );
     }
   },
   watch: {
     // When switching back to Canada, if no province is set, reset it to British Columbia.
     "modelValue.country"(newVal: string) {
       if (newVal === "Canada" && !this.modelValue.province) {
-        this.updateField("province", this.configStore.britishColumbia?.provinceCode ?? "");
+        this.updateField(
+          "province",
+          this.configStore.britishColumbia?.provinceCode ?? "",
+        );
       }
     },
   },

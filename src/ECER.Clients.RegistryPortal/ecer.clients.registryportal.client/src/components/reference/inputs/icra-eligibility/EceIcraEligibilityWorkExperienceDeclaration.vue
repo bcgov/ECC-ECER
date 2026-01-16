@@ -1,7 +1,13 @@
 <template>
   <v-row>
     <v-col cols="12" v-for="systemMessage in configStore.systemMessages">
-      <Alert v-if="systemMessage.portalTags && systemMessage.portalTags.includes('REFERENCES')" title="Alert">
+      <Alert
+        v-if="
+          systemMessage.portalTags &&
+          systemMessage.portalTags.includes('REFERENCES')
+        "
+        title="Alert"
+      >
         {{ systemMessage.message ? systemMessage.message : "" }}
       </Alert>
     </v-col>
@@ -9,43 +15,75 @@
       <v-row no-gutters>
         <v-col>
           <p>
-            <b>{{ `${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}` }}</b>
+            <b>
+              {{
+                `${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}`
+              }}
+            </b>
             is requesting
             <strong>verification of employment experience</strong>
-            to determine whether they are eligible to apply for ECE Five Year certification in British Columbia, Canada using professional experience obtained
-            outside of Canada.
+            to determine whether they are eligible to apply for ECE Five Year
+            certification in British Columbia, Canada using professional
+            experience obtained outside of Canada.
           </p>
           <br />
-          <p>As part of the process, you are asked to complete two reference forms:</p>
+          <p>
+            As part of the process, you are asked to complete two reference
+            forms:
+          </p>
           <br />
           <v-row align="center">
             <v-col cols="auto">
-              <v-chip color="warning" size="large" variant="flat"><strong>Complete now</strong></v-chip>
+              <v-chip color="warning" size="large" variant="flat">
+                <strong>Complete now</strong>
+              </v-chip>
             </v-col>
-            <v-col><strong>Step 1 of 2: Employment Verification - Confirm the applicant’s employment details</strong></v-col>
+            <v-col>
+              <strong>
+                Step 1 of 2: Employment Verification - Confirm the applicant’s
+                employment details
+              </strong>
+            </v-col>
           </v-row>
           <v-row align="center">
             <v-col cols="auto">
-              <v-chip color="grey-light" size="large" variant="flat">Complete later</v-chip>
+              <v-chip color="grey-light" size="large" variant="flat">
+                Complete later
+              </v-chip>
             </v-col>
             <v-col>
-              <div>Step 2 of 2: Competencies Assessment - Evaluate the applicant's knowledge, skills and abilities as an early childhood educator</div>
+              <div>
+                Step 2 of 2: Competencies Assessment - Evaluate the applicant's
+                knowledge, skills and abilities as an early childhood educator
+              </div>
             </v-col>
           </v-row>
           <br />
 
           <p>
             <b>
-              This reference request is for {{ cleanPreferredName(wizardStore.wizardData.referenceFirstName, wizardStore.wizardData.referenceLastName) }}. If
-              you are not {{ cleanPreferredName(wizardStore.wizardData.referenceFirstName, wizardStore.wizardData.referenceLastName) }}, please select "No"
-              below and “Other” on the following page.
+              This reference request is for
+              {{
+                cleanPreferredName(
+                  wizardStore.wizardData.referenceFirstName,
+                  wizardStore.wizardData.referenceLastName,
+                )
+              }}. If you are not
+              {{
+                cleanPreferredName(
+                  wizardStore.wizardData.referenceFirstName,
+                  wizardStore.wizardData.referenceLastName,
+                )
+              }}, please select "No" below and “Other” on the following page.
             </b>
           </p>
           <br />
           <h2 class="mb-5">Information you'll need</h2>
           <p>
-            It should take about 5 minutes to complete your employment verification. Make sure you get together all the information you need before you
-            continue, as you cannot save the form. If you are not ready now, you can come back later using the link in your email.
+            It should take about 5 minutes to complete your employment
+            verification. Make sure you get together all the information you
+            need before you continue, as you cannot save the form. If you are
+            not ready now, you can come back later using the link in your email.
           </p>
           <br />
           <p class="mb-3">You'll be asked to provide:</p>
@@ -74,7 +112,10 @@
             <p class="mb-3">You need to be:</p>
             <ul class="ml-10">
               <li>Able to verify the applicant's employment history</li>
-              <li>Able to speak to the applicant's knowledge, skills, and abilities (competencies) as an ECE</li>
+              <li>
+                Able to speak to the applicant's knowledge, skills, and
+                abilities (competencies) as an ECE
+              </li>
               <li>A former or current co-worker or employer</li>
             </ul>
           </div>
@@ -87,7 +128,9 @@
             id="willProvideReferenceRadio"
             :rules="[Rules.requiredRadio()]"
             hide-details="auto"
-            @update:model-value="(value) => $emit('update:model-value', value as boolean)"
+            @update:model-value="
+              (value) => $emit('update:model-value', value as boolean)
+            "
           >
             <v-radio label="Yes" :value="true"></v-radio>
             <v-radio label="No" :value="false"></v-radio>

@@ -6,10 +6,18 @@ const apiResultHandler = new ApiResultHandler();
 
 const getPrograms = async (
   id: string = "",
-  statuses: Components.Schemas.ProgramStatus[] = ["Draft", "Denied", "Approved", "UnderReview", "ChangeRequestInProgress"],
+  statuses: Components.Schemas.ProgramStatus[] = [
+    "Draft",
+    "Denied",
+    "Approved",
+    "UnderReview",
+    "ChangeRequestInProgress",
+  ],
 ): Promise<ApiResponse<Components.Schemas.Program[] | null | undefined>> => {
   const client = await getClient();
-  return apiResultHandler.execute<Components.Schemas.Program[] | null | undefined>({
+  return apiResultHandler.execute<
+    Components.Schemas.Program[] | null | undefined
+  >({
     request: client.program_get({
       id: id,
       byStatus: statuses,
@@ -20,7 +28,9 @@ const getPrograms = async (
 
 const createOrUpdateDraftApplication = async (
   program: Components.Schemas.Program,
-): Promise<ApiResponse<Components.Schemas.DraftProgramResponse | null | undefined>> => {
+): Promise<
+  ApiResponse<Components.Schemas.DraftProgramResponse | null | undefined>
+> => {
   const client = await getClient();
   const body: Paths.DraftprogramPut.RequestBody = {
     program: program,
@@ -29,7 +39,9 @@ const createOrUpdateDraftApplication = async (
     id: program.id || "",
   };
 
-  return apiResultHandler.execute<Components.Schemas.DraftProgramResponse | null | undefined>({
+  return apiResultHandler.execute<
+    Components.Schemas.DraftProgramResponse | null | undefined
+  >({
     request: client.draftprogram_put(pathParameters, body),
     key: "draftprogram_put",
   });

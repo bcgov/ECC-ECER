@@ -13,19 +13,41 @@
     <v-row>
       <v-col cols="12">
         <p>
-          Provide the user’s details below to invite them to join you in this PSP Portal. Once the invitation is accepted, this user will have access to the
+          Provide the user’s details below to invite them to join you in this
+          PSP Portal. Once the invitation is accepted, this user will have
+          access to the
           {{ educationInstitutionName }} PSP portal.
         </p>
       </v-col>
     </v-row>
     <v-row>
       <v-col class="mt-4" cols="12">
-        <EceForm ref="addUserFormRef" :form="inviteUserForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
+        <EceForm
+          ref="addUserFormRef"
+          :form="inviteUserForm"
+          :form-data="formStore.formData"
+          @updated-form-data="formStore.setFormData"
+        />
         <v-row class="mt-10">
           <v-col>
             <div class="d-flex flex-row justify-start ga-2">
-              <v-btn rounded="lg" color="primary" :loading="loadingStore.isLoading('psp_user_add')" @click="saveUser">Send invitation</v-btn>
-              <v-btn rounded="lg" color="primary" variant="outlined" :loading="loadingStore.isLoading('psp_user_add')" @click="router.back()">Cancel</v-btn>
+              <v-btn
+                rounded="lg"
+                color="primary"
+                :loading="loadingStore.isLoading('psp_user_add')"
+                @click="saveUser"
+              >
+                Send invitation
+              </v-btn>
+              <v-btn
+                rounded="lg"
+                color="primary"
+                variant="outlined"
+                :loading="loadingStore.isLoading('psp_user_add')"
+                @click="router.back()"
+              >
+                Cancel
+              </v-btn>
             </div>
           </v-col>
         </v-row>
@@ -73,25 +95,45 @@ export default defineComponent({
   },
   methods: {
     async saveUser() {
-      const { valid } = await (this.$refs.addUserFormRef as typeof EceForm).$refs[inviteUserForm.id].validate();
+      const { valid } = await (
+        this.$refs.addUserFormRef as typeof EceForm
+      ).$refs[inviteUserForm.id].validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       } else {
         const response = await addUser({
-          email: this.formStore.formData[inviteUserForm?.components?.email?.id || ""],
-          firstName: this.formStore.formData[inviteUserForm?.components?.firstName?.id || ""],
-          lastName: this.formStore.formData[inviteUserForm?.components?.lastName?.id || ""],
-          jobTitle: this.formStore.formData[inviteUserForm?.components?.jobTitle?.id || ""],
+          email:
+            this.formStore.formData[
+              inviteUserForm?.components?.email?.id || ""
+            ],
+          firstName:
+            this.formStore.formData[
+              inviteUserForm?.components?.firstName?.id || ""
+            ],
+          lastName:
+            this.formStore.formData[
+              inviteUserForm?.components?.lastName?.id || ""
+            ],
+          jobTitle:
+            this.formStore.formData[
+              inviteUserForm?.components?.jobTitle?.id || ""
+            ],
         });
         if (response?.id) {
-          this.alertStore.setSuccessAlert("User has been successfully invited.");
+          this.alertStore.setSuccessAlert(
+            "User has been successfully invited.",
+          );
           await this.router.push({
             name: "manage-users",
             params: { educationInstitutionName: this.educationInstitutionName },
           });
         } else {
-          this.alertStore.setFailureAlert("User invitation failed, please try again.");
+          this.alertStore.setFailureAlert(
+            "User invitation failed, please try again.",
+          );
         }
       }
     },

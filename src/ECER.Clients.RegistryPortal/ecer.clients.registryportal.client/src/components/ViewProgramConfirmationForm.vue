@@ -13,22 +13,42 @@
       <ol class="ml-10">
         <li>
           Download a
-          <a target="_blank" href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (880KB, PDF)</a>
+          <a
+            target="_blank"
+            href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0"
+          >
+            Program Confirmation Form (880KB, PDF)
+          </a>
           .
         </li>
         <li>Complete Section 1 of the form.</li>
         <li>
-          Ask your educational institution to complete the rest of the form in English. If they cannot complete it in English, ask them to send the completed
-          form directly to a professional translator.
+          Ask your educational institution to complete the rest of the form in
+          English. If they cannot complete it in English, ask them to send the
+          completed form directly to a professional translator.
         </li>
-        <li>Upload the completed form after you get it back from your educational institution or translator.</li>
+        <li>
+          Upload the completed form after you get it back from your educational
+          institution or translator.
+        </li>
       </ol>
     </div>
     <h3>How will you provide your Program Confirmation Form?</h3>
-    <v-form ref="updateProgramConfirmationOptionsAndDocuments" validate-on="input">
+    <v-form
+      ref="updateProgramConfirmationOptionsAndDocuments"
+      validate-on="input"
+    >
       <v-row class="mt-4">
-        <v-radio-group id="programConfirmationRadio" v-model="programConfirmationOptions" :rules="[Rules.required()]" color="primary">
-          <v-radio label="I have my Program Confirmation Form and will upload it now." value="UploadNow"></v-radio>
+        <v-radio-group
+          id="programConfirmationRadio"
+          v-model="programConfirmationOptions"
+          :rules="[Rules.required()]"
+          color="primary"
+        >
+          <v-radio
+            label="I have my Program Confirmation Form and will upload it now."
+            value="UploadNow"
+          ></v-radio>
           <v-radio
             label="The ECE Registry already has my Program Confirmation Form on file for the program relevant to this application and certificate type."
             value="RegistryAlreadyHas"
@@ -49,7 +69,14 @@
       </v-row>
     </v-form>
     <v-row class="mt-6">
-      <v-btn :loading="loadingStore.isLoading('application_update_transcript_post')" @click="handleSubmit" size="large" color="primary">Save</v-btn>
+      <v-btn
+        :loading="loadingStore.isLoading('application_update_transcript_post')"
+        @click="handleSubmit"
+        size="large"
+        color="primary"
+      >
+        Save
+      </v-btn>
     </v-row>
   </v-container>
 </template>
@@ -58,7 +85,10 @@
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAlertStore } from "@/store/alert";
-import { getApplicationStatus, setTranscriptDocumentsAndOptions } from "@/api/application";
+import {
+  getApplicationStatus,
+  setTranscriptDocumentsAndOptions,
+} from "@/api/application";
 import { useLoadingStore } from "@/store/loading";
 import Breadcrumb from "./Breadcrumb.vue";
 import FileUploader from "@/components/FileUploader.vue";
@@ -86,11 +116,16 @@ export default defineComponent({
 
     const router = useRouter();
     const loadingStore = useLoadingStore();
-    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))
+      ?.data;
 
-    const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
+    const transcript = applicationStatus?.transcriptsStatus?.find(
+      (transcript) => transcript.id === props.transcriptId,
+    );
 
-    let programConfirmationOptions = ref<ProgramConfirmationOptions | undefined>(undefined);
+    let programConfirmationOptions = ref<
+      ProgramConfirmationOptions | undefined
+    >(undefined);
     const areAttachedFilesValid = ref(true);
     const isFileUploadInProgress = ref(false);
     const newFiles = ref<string[]>([]);
@@ -99,10 +134,22 @@ export default defineComponent({
       router.back();
     } else {
       // Set programConfirmationOptions based on a field from transcript
-      programConfirmationOptions = ref(transcript.programConfirmationOptions || undefined);
+      programConfirmationOptions = ref(
+        transcript.programConfirmationOptions || undefined,
+      );
     }
 
-    return { router, transcript, alertStore, Rules, programConfirmationOptions, areAttachedFilesValid, isFileUploadInProgress, newFiles, loadingStore };
+    return {
+      router,
+      transcript,
+      alertStore,
+      Rules,
+      programConfirmationOptions,
+      areAttachedFilesValid,
+      isFileUploadInProgress,
+      newFiles,
+      loadingStore,
+    };
   },
   computed: {
     generateUserPrimaryFileArray() {
@@ -133,9 +180,13 @@ export default defineComponent({
   methods: {
     async handleSubmit() {
       // Validate the form
-      const { valid } = await (this.$refs.updateProgramConfirmationOptionsAndDocuments as VForm).validate();
+      const { valid } = await (
+        this.$refs.updateProgramConfirmationOptionsAndDocuments as VForm
+      ).validate();
       if (this.isFileUploadInProgress) {
-        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
+        this.alertStore.setFailureAlert(
+          "Uploading files in progress. Please wait until files are uploaded and try again.",
+        );
       } else if (valid) {
         const { error } = await setTranscriptDocumentsAndOptions({
           programConfirmationOptions: this.programConfirmationOptions,
@@ -144,13 +195,20 @@ export default defineComponent({
           transcriptId: this.transcriptId,
         });
         if (error) {
-          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+          this.alertStore.setFailureAlert(
+            "Sorry, something went wrong and your changes could not be saved. Try again later.",
+          );
         } else {
           this.alertStore.setSuccessAlert("Your changes have been saved.");
-          this.router.push({ name: "manageApplication", params: { applicationId: this.applicationId } });
+          this.router.push({
+            name: "manageApplication",
+            params: { applicationId: this.applicationId },
+          });
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue.",
+        );
       }
     },
     handleFileUpdate(filesArray: FileItem[]) {
@@ -162,7 +220,11 @@ export default defineComponent({
           const file = filesArray[i] as FileItem;
 
           // Check if file exists in transcript.programConfirmationFiles
-          if (this.transcript?.programConfirmationFiles?.find((f) => f.id === file.fileId)) {
+          if (
+            this.transcript?.programConfirmationFiles?.find(
+              (f) => f.id === file.fileId,
+            )
+          ) {
             // If file exists in transcript.programConfirmationFiles, continue
             continue;
           }

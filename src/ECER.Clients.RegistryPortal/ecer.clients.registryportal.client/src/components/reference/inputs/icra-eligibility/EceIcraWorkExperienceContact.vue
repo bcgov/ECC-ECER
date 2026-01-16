@@ -2,7 +2,9 @@
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
       <h2>Contact information</h2>
-      <div role="doc-subtitle">We may contact you to verify or clarify information you provide.</div>
+      <div role="doc-subtitle">
+        We may contact you to verify or clarify information you provide.
+      </div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
@@ -35,7 +37,10 @@
           <EceTextField
             id="emailTextInput"
             :model-value="modelValue.email"
-            :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
+            :rules="[
+              Rules.required(),
+              Rules.email('Enter your email in the format \'name@email.com\''),
+            ]"
             label="Email"
             type="text"
             autocomplete="email"
@@ -49,7 +54,10 @@
           <EceTextField
             id="phoneNumberTextInput"
             :model-value="modelValue.phoneNumber"
-            :rules="[Rules.required('Enter a phone number'), Rules.phoneNumber('Enter your valid phone number')]"
+            :rules="[
+              Rules.required('Enter a phone number'),
+              Rules.phoneNumber('Enter your valid phone number'),
+            ]"
             label="Phone Number"
             type="tel"
             autocomplete="tel"
@@ -79,7 +87,9 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_contactInformationData: Components.Schemas.ReferenceContactInformation) => true,
+    "update:model-value": (
+      _contactInformationData: Components.Schemas.ReferenceContactInformation,
+    ) => true,
   },
   setup() {},
   data() {
@@ -89,7 +99,10 @@ export default defineComponent({
   },
   methods: {
     isNumber,
-    updateField(fieldName: keyof Components.Schemas.ReferenceContactInformation, value: any) {
+    updateField(
+      fieldName: keyof Components.Schemas.ReferenceContactInformation,
+      value: any,
+    ) {
       this.$emit("update:model-value", {
         ...this.modelValue,
         [fieldName]: value,

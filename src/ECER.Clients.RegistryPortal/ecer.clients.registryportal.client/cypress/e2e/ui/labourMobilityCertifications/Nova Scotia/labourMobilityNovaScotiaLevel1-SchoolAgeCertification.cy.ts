@@ -11,14 +11,20 @@ describe("Labour Mobility - Level 1 or School Age Approval Certification Transfe
     cy.contains("Check your transfer eligibility").should("be.visible");
 
     /** Nova Scotia*/
-    cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.provinceDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 
     /**Out of province Certification Type */
-    cy.get(selectors.transferEligibility.certificationTypeDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.certificationTypeDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(certificationName).click();
 
-    cy.contains("You can apply to transfer your certification to ECE Assistant certification in B.C.").should("be.visible");
+    cy.contains(
+      "You can apply to transfer your certification to ECE Assistant certification in B.C.",
+    ).should("be.visible");
 
     /** View Requirements Button */
     cy.get(selectors.transferEligibility.viewRequirementsButton).click();
@@ -37,7 +43,9 @@ describe("Labour Mobility - Level 1 or School Age Approval Certification Transfe
     cy.contains("ECE Assistant").should("be.visible");
     cy.contains(provinceName).should("be.visible");
     cy.contains(certificationName).should("be.visible");
-    cy.get(selectors.certificateInformation.nameOnCertificateRadio).first().check({ force: true });
+    cy.get(selectors.certificateInformation.nameOnCertificateRadio)
+      .first()
+      .check({ force: true });
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEAssistantWorkflow(provinceName, certificationName);

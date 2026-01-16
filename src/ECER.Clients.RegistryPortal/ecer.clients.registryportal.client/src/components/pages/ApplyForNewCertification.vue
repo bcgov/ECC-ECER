@@ -3,7 +3,10 @@
     <Breadcrumb />
     <h1 class="mb-3">What type of certification do you want to apply for?</h1>
     <p class="mb-6">Start an application for a new certification.</p>
-    <ApplicationCardList @apply-now="handleApplyNow" :certifications="certificationStore.certifications || []" />
+    <ApplicationCardList
+      @apply-now="handleApplyNow"
+      :certifications="certificationStore.certifications || []"
+    />
   </v-container>
 </template>
 
@@ -36,19 +39,30 @@ export default defineComponent({
   },
   methods: {
     handleApplyNow(type: Components.Schemas.CertificationType[]) {
-      this.applicationStore.$patch({ draftApplication: { certificationTypes: [...type] } });
+      this.applicationStore.$patch({
+        draftApplication: { certificationTypes: [...type] },
+      });
 
       // Registrant pathways, associate the most recent 5 year certificate
       if (type.includes("Ite") || type.includes("Sne") || type.length === 0) {
         if (this.certificationStore.activeEceFiveYearCertification) {
-          this.applicationStore.$patch({ draftApplication: { fromCertificate: this.certificationStore.activeEceFiveYearCertification.id } });
+          this.applicationStore.$patch({
+            draftApplication: {
+              fromCertificate:
+                this.certificationStore.activeEceFiveYearCertification.id,
+            },
+          });
         }
       }
 
       if (!type.includes("FiveYears")) {
-        this.applicationStore.$patch({ draftApplication: { workExperienceReferences: [] } });
+        this.applicationStore.$patch({
+          draftApplication: { workExperienceReferences: [] },
+        });
       }
-      this.userStore.isUnder19 ? this.router.push({ name: "consent-required" }) : this.router.push({ name: "application-requirements" });
+      this.userStore.isUnder19
+        ? this.router.push({ name: "consent-required" })
+        : this.router.push({ name: "application-requirements" });
     },
   },
 });

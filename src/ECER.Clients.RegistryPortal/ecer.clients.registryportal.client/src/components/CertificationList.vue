@@ -12,11 +12,21 @@
       </div>
     </v-col>
     <v-col cols="12">
-      <p v-if="filter === 'latest'">Showing only your most recent certificate of each type</p>
+      <p v-if="filter === 'latest'">
+        Showing only your most recent certificate of each type
+      </p>
       <p v-else>Showing your entire certification history</p>
     </v-col>
-    <v-col cols="12" v-for="(cert, index) in displayCertifications" :key="index">
-      <CertificationCard :certification="cert" :has-application="applicationStore.hasApplication" :is-latest-of-type="latestCertifications.includes(cert)" />
+    <v-col
+      cols="12"
+      v-for="(cert, index) in displayCertifications"
+      :key="index"
+    >
+      <CertificationCard
+        :certification="cert"
+        :has-application="applicationStore.hasApplication"
+        :is-latest-of-type="latestCertifications.includes(cert)"
+      />
     </v-col>
   </v-row>
 </template>
@@ -76,7 +86,12 @@ export default defineComponent({
     sortedCertifications() {
       return orderBy(
         this.certifications,
-        [({ statusCode }: Components.Schemas.Certification) => this.getStatusPriority(statusCode || ""), "expiryDate", this.getCertificationTypePriority],
+        [
+          ({ statusCode }: Components.Schemas.Certification) =>
+            this.getStatusPriority(statusCode || ""),
+          "expiryDate",
+          this.getCertificationTypePriority,
+        ],
         ["asc", "desc", "asc"], // asc for status (Active first), desc for expiry date (latest first), asc for type priority (ECE 5 YR = 1, Assistant = 3)
       );
     },
@@ -87,7 +102,12 @@ export default defineComponent({
       const result: Components.Schemas.Certification[] = [];
 
       for (const cert of this.sortedCertifications) {
-        const certType = cert.levels?.find((level) => level.type === "ECE 5 YR" || level.type === "ECE 1 YR" || level.type === "Assistant")?.type;
+        const certType = cert.levels?.find(
+          (level) =>
+            level.type === "ECE 5 YR" ||
+            level.type === "ECE 1 YR" ||
+            level.type === "Assistant",
+        )?.type;
 
         if (certType && !seenTypes.has(certType)) {
           seenTypes.add(certType);
@@ -99,7 +119,9 @@ export default defineComponent({
     },
 
     displayCertifications() {
-      return this.filter === "latest" ? this.latestCertifications : this.sortedCertifications;
+      return this.filter === "latest"
+        ? this.latestCertifications
+        : this.sortedCertifications;
     },
   },
   data() {

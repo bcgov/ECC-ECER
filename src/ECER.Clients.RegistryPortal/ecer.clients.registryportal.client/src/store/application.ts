@@ -1,6 +1,10 @@
 import { defineStore } from "pinia";
 
-import { createOrUpdateDraftApplication, getApplications, submitDraftApplication } from "@/api/application";
+import {
+  createOrUpdateDraftApplication,
+  getApplications,
+  submitDraftApplication,
+} from "@/api/application";
 import type { ProfessionalDevelopmentExtended } from "@/components/inputs/EceProfessionalDevelopment.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
 import applicationWizardIteSne from "@/config/application-wizard-ite-sne";
@@ -67,11 +71,14 @@ export const useApplicationStore = defineStore("application", {
       id: undefined,
       signedDate: null,
       stage: "ContactInformation",
-      labourMobilityCertificateInformation: {} as Components.Schemas.CertificateInformation,
+      labourMobilityCertificateInformation:
+        {} as Components.Schemas.CertificateInformation,
       transcripts: [] as Components.Schemas.Transcript[],
       characterReferences: [] as Components.Schemas.CharacterReference[],
-      workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
-      professionalDevelopments: [] as Components.Schemas.ProfessionalDevelopment[],
+      workExperienceReferences:
+        [] as Components.Schemas.WorkExperienceReference[],
+      professionalDevelopments:
+        [] as Components.Schemas.ProfessionalDevelopment[],
       applicationType: "New",
       createdOn: null,
     },
@@ -105,20 +112,31 @@ export const useApplicationStore = defineStore("application", {
       return state.application?.origin;
     },
     workExperienceReferenceById: (state) => {
-      return (referenceId: string) => state.application?.workExperienceReferences?.find((ref) => ref.id === referenceId);
+      return (referenceId: string) =>
+        state.application?.workExperienceReferences?.find(
+          (ref) => ref.id === referenceId,
+        );
     },
     characterReferenceById: (state) => {
-      return (referenceId: string) => state.application?.characterReferences?.find((ref) => ref.id === referenceId);
+      return (referenceId: string) =>
+        state.application?.characterReferences?.find(
+          (ref) => ref.id === referenceId,
+        );
     },
     totalWorkExperienceHours(state): number {
       return (
-        state.draftApplication.workExperienceReferences?.reduce((sum, currentReference) => {
-          return sum + (currentReference.hours || 0);
-        }, 0) ?? 0
+        state.draftApplication.workExperienceReferences?.reduce(
+          (sum, currentReference) => {
+            return sum + (currentReference.hours || 0);
+          },
+          0,
+        ) ?? 0
       );
     },
     isDraftCertificateTypeEceAssistant(state): boolean {
-      return !!state.draftApplication.certificationTypes?.includes("EceAssistant");
+      return !!state.draftApplication.certificationTypes?.includes(
+        "EceAssistant",
+      );
     },
     isDraftCertificateTypeOneYear(state): boolean {
       return !!state.draftApplication.certificationTypes?.includes("OneYear");
@@ -193,26 +211,44 @@ export const useApplicationStore = defineStore("application", {
     draftApplicationFlow(state): ApplicationFlow {
       const userStore = useUserStore();
       const certificationStore = useCertificationStore();
-      const fromCertificate = certificationStore.getCertificationById(state.draftApplication.fromCertificate);
+      const fromCertificate = certificationStore.getCertificationById(
+        state.draftApplication.fromCertificate,
+      );
 
       // ICRA flows
       if (state.draftApplication.applicationType === "ICRA") {
-        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne) return "IcraFiveYearWithIteAndSne";
-        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte) return "IcraFiveYearWithIte";
-        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne) return "IcraFiveYearWithSne";
+        if (
+          this.isDraftCertificateTypeFiveYears &&
+          this.isDraftCertificateTypeIte &&
+          this.isDraftCertificateTypeSne
+        )
+          return "IcraFiveYearWithIteAndSne";
+        if (
+          this.isDraftCertificateTypeFiveYears &&
+          this.isDraftCertificateTypeIte
+        )
+          return "IcraFiveYearWithIte";
+        if (
+          this.isDraftCertificateTypeFiveYears &&
+          this.isDraftCertificateTypeSne
+        )
+          return "IcraFiveYearWithSne";
         if (this.isDraftCertificateTypeFiveYears) return "IcraFiveYear";
       }
       // RENEWAL flows
       if (state.draftApplication.applicationType === "Renewal") {
         if (this.isDraftCertificateTypeEceAssistant) return "AssistantRenewal";
         if (this.isDraftCertificateTypeOneYear) {
-          if (fromCertificate && fromCertificate.statusCode === "Active") return "OneYearActiveRenewal";
+          if (fromCertificate && fromCertificate.statusCode === "Active")
+            return "OneYearActiveRenewal";
           return "OneYearExpiredRenewal";
         }
         if (this.isDraftCertificateTypeFiveYears) {
           if (fromCertificate) {
-            if (fromCertificate.statusCode === "Active") return "FiveYearActiveRenewal";
-            if (expiredMoreThan5Years(fromCertificate)) return "FiveYearExpiredMoreThanFiveYearsRenewal";
+            if (fromCertificate.statusCode === "Active")
+              return "FiveYearActiveRenewal";
+            if (expiredMoreThan5Years(fromCertificate))
+              return "FiveYearExpiredMoreThanFiveYearsRenewal";
             return "FiveYearExpiredLessThanFiveYearsRenewal";
           }
           // Default to expired renewal if no fromCertificate is specified
@@ -222,31 +258,51 @@ export const useApplicationStore = defineStore("application", {
 
       // LABOR MOBILITY flows
       if (state.draftApplication.applicationType === "LabourMobility") {
-        if (this.isDraftCertificateTypeFiveYears) return "FiveYearLaborMobility";
+        if (this.isDraftCertificateTypeFiveYears)
+          return "FiveYearLaborMobility";
         if (this.isDraftCertificateTypeOneYear) return "OneYearLaborMobility";
-        if (this.isDraftCertificateTypeEceAssistant) return "AssistantLaborMobility";
+        if (this.isDraftCertificateTypeEceAssistant)
+          return "AssistantLaborMobility";
       }
 
       // REGISTRANT flows
       if (userStore.isRegistrant) {
-        if (this.isDraftCertificateTypeEceAssistant) return "AssistantRegistrant";
+        if (this.isDraftCertificateTypeEceAssistant)
+          return "AssistantRegistrant";
         if (this.isDraftCertificateTypeOneYear) return "OneYearRegistrant";
         if (this.isDraftCertificateTypeFiveYears) {
-          if (this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne) return "FiveYearWithIteAndSneRegistrant";
-          if (this.isDraftCertificateTypeIte) return "FiveYearWithIteRegistrant";
-          if (this.isDraftCertificateTypeSne) return "FiveYearWithSneRegistrant";
+          if (this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne)
+            return "FiveYearWithIteAndSneRegistrant";
+          if (this.isDraftCertificateTypeIte)
+            return "FiveYearWithIteRegistrant";
+          if (this.isDraftCertificateTypeSne)
+            return "FiveYearWithSneRegistrant";
           return "FiveYearRegistrant";
         }
-        if (this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne) return "IteAndSneRegistrant";
+        if (this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne)
+          return "IteAndSneRegistrant";
         if (this.isDraftCertificateTypeIte) return "IteRegistrant";
         if (this.isDraftCertificateTypeSne) return "SneRegistrant";
       }
 
       // NEW flows
       if (state.draftApplication.applicationType === "New") {
-        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne) return "FiveYearWithIteAndSne";
-        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte) return "FiveYearWithIte";
-        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne) return "FiveYearWithSne";
+        if (
+          this.isDraftCertificateTypeFiveYears &&
+          this.isDraftCertificateTypeIte &&
+          this.isDraftCertificateTypeSne
+        )
+          return "FiveYearWithIteAndSne";
+        if (
+          this.isDraftCertificateTypeFiveYears &&
+          this.isDraftCertificateTypeIte
+        )
+          return "FiveYearWithIte";
+        if (
+          this.isDraftCertificateTypeFiveYears &&
+          this.isDraftCertificateTypeSne
+        )
+          return "FiveYearWithSne";
         if (this.isDraftCertificateTypeFiveYears) return "FiveYear";
         if (this.isDraftCertificateTypeOneYear) return "OneYear";
         if (this.isDraftCertificateTypeEceAssistant) return "Assistant";
@@ -269,17 +325,31 @@ export const useApplicationStore = defineStore("application", {
         if (this.isDraftCertificateTypeIte) {
           certificationType += " and Infant and Toddler Educator (ITE)";
         }
-      } else if (!this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne && this.isDraftCertificateTypeIte) {
-        certificationType = "Special Needs Educator and Infant and Toddler Educator";
-      } else if (!this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne) {
+      } else if (
+        !this.isDraftCertificateTypeFiveYears &&
+        this.isDraftCertificateTypeSne &&
+        this.isDraftCertificateTypeIte
+      ) {
+        certificationType =
+          "Special Needs Educator and Infant and Toddler Educator";
+      } else if (
+        !this.isDraftCertificateTypeFiveYears &&
+        this.isDraftCertificateTypeSne
+      ) {
         certificationType = "Special Needs Educator";
-      } else if (!this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte) {
+      } else if (
+        !this.isDraftCertificateTypeFiveYears &&
+        this.isDraftCertificateTypeIte
+      ) {
         certificationType = "Infant and Toddler Educator";
       }
       return certificationType;
     },
     hasIcraApplication(state) {
-      return state.applications?.some((app) => app.applicationType === "ICRA") ?? false;
+      return (
+        state.applications?.some((app) => app.applicationType === "ICRA") ??
+        false
+      );
     },
   },
   actions: {
@@ -289,13 +359,19 @@ export const useApplicationStore = defineStore("application", {
 
       const { data: applications } = await getApplications();
 
-      const filteredApplications = applications?.filter((application) => application.status !== "Decision" && application.status !== "Complete");
+      const filteredApplications = applications?.filter(
+        (application) =>
+          application.status !== "Decision" &&
+          application.status !== "Complete",
+      );
       this.applications = applications;
       // Load the first application as the current draft application
       if (filteredApplications?.length && filteredApplications.length > 0) {
         this.application = filteredApplications[0];
 
-        const draftApplication = filteredApplications.find((app) => app.status === "Draft");
+        const draftApplication = filteredApplications.find(
+          (app) => app.status === "Draft",
+        );
 
         if (draftApplication) {
           this.draftApplication = draftApplication;
@@ -309,49 +385,83 @@ export const useApplicationStore = defineStore("application", {
 
       // Get the IDs of the form inputs up front, if they are defined in the wizard config. If the ID is not defined, subsequent checks will
       // be skipped. Thus, the ID must be defined in the wizard config for the data to be set in the draft application object.
-      const educationListId = wizardStore.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id;
-      const certificateInformationId = wizardStore.wizardConfig?.steps?.certificateInformation?.form?.inputs?.certificateInformation?.id;
-      const characterReferencesId = wizardStore.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id;
-      const workExperienceReferenceListId = wizardStore.wizardConfig?.steps?.workReference?.form?.inputs?.referenceList?.id;
-      const professionalDevelopmentsId = wizardStore.wizardConfig?.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id;
-      const oneYearRenewalExplanationId = wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id;
-      const oneYearRenewalExplanationOtherId = wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id;
-      const fiveYearRenewalExplanationId = wizardStore.wizardConfig.steps?.fiveYearRenewalExplanation?.form?.inputs?.fiveYearRenewalExplanation?.id;
-      const fiveYearRenewalExplanationOtherId = wizardStore.wizardConfig.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id;
+      const educationListId =
+        wizardStore.wizardConfig?.steps?.education?.form?.inputs?.educationList
+          ?.id;
+      const certificateInformationId =
+        wizardStore.wizardConfig?.steps?.certificateInformation?.form?.inputs
+          ?.certificateInformation?.id;
+      const characterReferencesId =
+        wizardStore.wizardConfig?.steps?.characterReferences?.form?.inputs
+          ?.characterReferences?.id;
+      const workExperienceReferenceListId =
+        wizardStore.wizardConfig?.steps?.workReference?.form?.inputs
+          ?.referenceList?.id;
+      const professionalDevelopmentsId =
+        wizardStore.wizardConfig?.steps?.professionalDevelopments?.form?.inputs
+          ?.professionalDevelopments?.id;
+      const oneYearRenewalExplanationId =
+        wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs
+          ?.oneYearRenewalExplanation?.id;
+      const oneYearRenewalExplanationOtherId =
+        wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs
+          ?.renewalExplanationOther?.id;
+      const fiveYearRenewalExplanationId =
+        wizardStore.wizardConfig.steps?.fiveYearRenewalExplanation?.form?.inputs
+          ?.fiveYearRenewalExplanation?.id;
+      const fiveYearRenewalExplanationOtherId =
+        wizardStore.wizardConfig.steps?.fiveYearRenewalExplanation?.form?.inputs
+          ?.renewalExplanationOther?.id;
 
       // Set wizard stage to the current step stage
-      this.draftApplication.stage = wizardStore.currentStepStage as ApplicationStage;
+      this.draftApplication.stage =
+        wizardStore.currentStepStage as ApplicationStage;
 
       // Certificate Information step data
-      this.draftApplication.labourMobilityCertificateInformation = certificateInformationId ? wizardStore.wizardData[certificateInformationId] : undefined;
+      this.draftApplication.labourMobilityCertificateInformation =
+        certificateInformationId
+          ? wizardStore.wizardData[certificateInformationId]
+          : undefined;
 
       // Education step data
-      this.draftApplication.transcripts = educationListId ? Object.values(wizardStore.wizardData[educationListId]) : [];
+      this.draftApplication.transcripts = educationListId
+        ? Object.values(wizardStore.wizardData[educationListId])
+        : [];
 
       // Work References step data
-      this.draftApplication.workExperienceReferences = workExperienceReferenceListId
-        ? Object.values(wizardStore.wizardData[workExperienceReferenceListId])
-        : [];
+      this.draftApplication.workExperienceReferences =
+        workExperienceReferenceListId
+          ? Object.values(wizardStore.wizardData[workExperienceReferenceListId])
+          : [];
 
       // One year renewal explanation letter
       if (oneYearRenewalExplanationId && oneYearRenewalExplanationOtherId) {
-        this.draftApplication.oneYearRenewalExplanationChoice = wizardStore.wizardData[oneYearRenewalExplanationId];
-        this.draftApplication.renewalExplanationOther = wizardStore.wizardData[oneYearRenewalExplanationOtherId];
+        this.draftApplication.oneYearRenewalExplanationChoice =
+          wizardStore.wizardData[oneYearRenewalExplanationId];
+        this.draftApplication.renewalExplanationOther =
+          wizardStore.wizardData[oneYearRenewalExplanationOtherId];
       }
 
       // Five year renewal explanation letter
       if (fiveYearRenewalExplanationId && fiveYearRenewalExplanationOtherId) {
-        this.draftApplication.fiveYearRenewalExplanationChoice = wizardStore.wizardData[fiveYearRenewalExplanationId];
-        this.draftApplication.renewalExplanationOther = wizardStore.wizardData[fiveYearRenewalExplanationOtherId];
+        this.draftApplication.fiveYearRenewalExplanationChoice =
+          wizardStore.wizardData[fiveYearRenewalExplanationId];
+        this.draftApplication.renewalExplanationOther =
+          wizardStore.wizardData[fiveYearRenewalExplanationOtherId];
       }
 
       // Character References step data
       if (characterReferencesId) {
-        if (wizardStore.wizardData[characterReferencesId]?.[0]?.lastName && wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress) {
-          this.draftApplication.characterReferences = wizardStore.wizardData[characterReferencesId];
+        if (
+          wizardStore.wizardData[characterReferencesId]?.[0]?.lastName &&
+          wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress
+        ) {
+          this.draftApplication.characterReferences =
+            wizardStore.wizardData[characterReferencesId];
         } else if (
           wizardStore.wizardData[characterReferencesId]?.[0]?.lastName === "" &&
-          wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress === ""
+          wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress ===
+            ""
         ) {
           this.draftApplication.characterReferences = [];
         }
@@ -359,36 +469,49 @@ export const useApplicationStore = defineStore("application", {
         this.draftApplication.characterReferences = [];
       }
 
-      if (professionalDevelopmentsId && wizardStore.wizardData.professionalDevelopments) {
+      if (
+        professionalDevelopmentsId &&
+        wizardStore.wizardData.professionalDevelopments
+      ) {
         //remove all newFilesWithData elements and add them to newFiles as ID's
-        const professionalDevelopmentCleaned = wizardStore.wizardData.professionalDevelopments.map((item: ProfessionalDevelopmentExtended) => {
-          if (item?.newFilesWithData) {
-            for (const each of item?.newFilesWithData as FileItem[]) {
-              item.newFiles?.push(each.fileId);
+        const professionalDevelopmentCleaned =
+          wizardStore.wizardData.professionalDevelopments.map(
+            (item: ProfessionalDevelopmentExtended) => {
+              if (item?.newFilesWithData) {
+                for (const each of item?.newFilesWithData as FileItem[]) {
+                  item.newFiles?.push(each.fileId);
 
-              //we need to change wizardData to match what's been done on the server (added files)
-              const addedFile: Components.Schemas.FileInfo = {
-                id: each.fileId,
-                size: humanFileSize(each.fileSize),
-                name: each.fileName,
-              };
+                  //we need to change wizardData to match what's been done on the server (added files)
+                  const addedFile: Components.Schemas.FileInfo = {
+                    id: each.fileId,
+                    size: humanFileSize(each.fileSize),
+                    name: each.fileName,
+                  };
 
-              item.files?.push(addedFile);
-            }
-            delete item["newFilesWithData"];
-          }
+                  item.files?.push(addedFile);
+                }
+                delete item["newFilesWithData"];
+              }
 
-          return item;
-        });
+              return item;
+            },
+          );
 
-        this.draftApplication.professionalDevelopments = professionalDevelopmentCleaned;
+        this.draftApplication.professionalDevelopments =
+          professionalDevelopmentCleaned;
       } else {
         this.draftApplication.professionalDevelopments = [];
       }
     },
-    async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
-      const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);
-      if (draftApplicationResponse !== null && draftApplicationResponse !== undefined) {
+    async upsertDraftApplication(): Promise<
+      Components.Schemas.DraftApplicationResponse | null | undefined
+    > {
+      const { data: draftApplicationResponse } =
+        await createOrUpdateDraftApplication(this.draftApplication);
+      if (
+        draftApplicationResponse !== null &&
+        draftApplicationResponse !== undefined
+      ) {
         this.draftApplication = draftApplicationResponse.application!;
       }
       return draftApplicationResponse;
@@ -401,21 +524,31 @@ export const useApplicationStore = defineStore("application", {
         stage: "ContactInformation",
         transcripts: [] as Components.Schemas.Transcript[],
         characterReferences: [] as Components.Schemas.CharacterReference[],
-        workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
-        professionalDevelopments: [] as Components.Schemas.ProfessionalDevelopment[],
+        workExperienceReferences:
+          [] as Components.Schemas.WorkExperienceReference[],
+        professionalDevelopments:
+          [] as Components.Schemas.ProfessionalDevelopment[],
         applicationType: "New",
         createdOn: null,
       };
     },
-    async submitApplication(): Promise<Components.Schemas.SubmitApplicationResponse | null | undefined> {
-      const { data: submitApplicationResponse } = await submitDraftApplication(this.draftApplication.id!);
+    async submitApplication(): Promise<
+      Components.Schemas.SubmitApplicationResponse | null | undefined
+    > {
+      const { data: submitApplicationResponse } = await submitDraftApplication(
+        this.draftApplication.id!,
+      );
       return submitApplicationResponse;
     },
-    async saveDraft(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
+    async saveDraft(): Promise<
+      Components.Schemas.DraftApplicationResponse | null | undefined
+    > {
       this.prepareDraftApplicationFromWizard();
       return await this.upsertDraftApplication();
     },
-    async patchDraft(draftApplication: Components.Schemas.DraftApplication): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
+    async patchDraft(
+      draftApplication: Components.Schemas.DraftApplication,
+    ): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       this.$patch({ draftApplication: draftApplication });
       return await this.upsertDraftApplication();
     },

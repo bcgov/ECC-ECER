@@ -1,5 +1,10 @@
 <template>
-  <v-dialog :model-value="show" width="650" :disabled="disabled" @click:outside="cancel">
+  <v-dialog
+    :model-value="show"
+    width="650"
+    :disabled="disabled"
+    @click:outside="cancel"
+  >
     <template #default>
       <v-container>
         <v-card class="no-scroll">
@@ -9,7 +14,12 @@
                 {{ title }}
               </h2>
               <v-spacer></v-spacer>
-              <v-btn size="default" icon="mdi-close" elevation="0" @click="cancel" />
+              <v-btn
+                size="default"
+                icon="mdi-close"
+                elevation="0"
+                @click="cancel"
+              />
             </div>
           </v-card-title>
           <v-card-text class="pb-12">
@@ -19,9 +29,27 @@
           </v-card-text>
           <v-card-actions>
             <v-row>
-              <v-col class="text-right d-flex flex-row justify-end flex-wrap ga-2">
-                <v-btn v-if="hasCancelButton" :loading="loading" class="ma-0" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
-                <v-btn class="ma-0" :loading="loading" color="primary" variant="flat" @click="accept">{{ acceptButtonText }}</v-btn>
+              <v-col
+                class="text-right d-flex flex-row justify-end flex-wrap ga-2"
+              >
+                <v-btn
+                  v-if="hasCancelButton"
+                  :loading="loading"
+                  class="ma-0"
+                  variant="outlined"
+                  @click="cancel"
+                >
+                  {{ cancelButtonText }}
+                </v-btn>
+                <v-btn
+                  class="ma-0"
+                  :loading="loading"
+                  color="primary"
+                  variant="flat"
+                  @click="accept"
+                >
+                  {{ acceptButtonText }}
+                </v-btn>
               </v-col>
             </v-row>
           </v-card-actions>

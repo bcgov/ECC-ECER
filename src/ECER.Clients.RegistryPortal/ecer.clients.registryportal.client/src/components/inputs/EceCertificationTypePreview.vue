@@ -1,12 +1,18 @@
 <template>
-  <PreviewCard :title="generateTitle" portal-stage="CertificationType" :editable="false">
+  <PreviewCard
+    :title="generateTitle"
+    portal-stage="CertificationType"
+    :editable="false"
+  >
     <template #content>
       <v-row>
         <v-col cols="4">
           <p class="small">Certification type</p>
         </v-col>
         <v-col>
-          <p id="certificationType" class="small font-weight-bold">{{ certificationType }}</p>
+          <p id="certificationType" class="small font-weight-bold">
+            {{ certificationType }}
+          </p>
         </v-col>
       </v-row>
     </template>
@@ -50,10 +56,17 @@ export default defineComponent({
         this.applicationStore.isDraftCertificateTypeSne &&
         this.applicationStore.isDraftCertificateTypeIte
       ) {
-        certificationType = "Special Needs Educator and Infant and Toddler Educator";
-      } else if (!this.applicationStore.isDraftCertificateTypeFiveYears && this.applicationStore.isDraftCertificateTypeSne) {
+        certificationType =
+          "Special Needs Educator and Infant and Toddler Educator";
+      } else if (
+        !this.applicationStore.isDraftCertificateTypeFiveYears &&
+        this.applicationStore.isDraftCertificateTypeSne
+      ) {
         certificationType = "Special Needs Educator";
-      } else if (!this.applicationStore.isDraftCertificateTypeFiveYears && this.applicationStore.isDraftCertificateTypeIte) {
+      } else if (
+        !this.applicationStore.isDraftCertificateTypeFiveYears &&
+        this.applicationStore.isDraftCertificateTypeIte
+      ) {
         certificationType = "Infant and Toddler Educator";
       }
       return certificationType;

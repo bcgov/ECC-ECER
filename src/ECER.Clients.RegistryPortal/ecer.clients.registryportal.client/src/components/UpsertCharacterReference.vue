@@ -3,8 +3,16 @@
     <Breadcrumb />
     <v-row>
       <v-col>
-        <Alert v-model="isDuplicateReference" type="error" title="choose someone else" prominent>
-          <p>This person is your work experience reference. Your character reference and work experience reference must be different people.</p>
+        <Alert
+          v-model="isDuplicateReference"
+          type="error"
+          title="choose someone else"
+          prominent
+        >
+          <p>
+            This person is your work experience reference. Your character
+            reference and work experience reference must be different people.
+          </p>
         </Alert>
       </v-col>
     </v-row>
@@ -14,12 +22,24 @@
       <p>Make sure you choose a person that:</p>
       <ul class="ml-10">
         <li>Can speak to your character</li>
-        <li>Can speak to your ability to educate and care for young children</li>
+        <li>
+          Can speak to your ability to educate and care for young children
+        </li>
         <li>Has known you for at least 6 months</li>
         <li>Is not your relative, partner, spouse, or yourself</li>
       </ul>
-      <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
-      <p v-if="applicationStatus?.certificationTypes?.includes(CertificationType.FIVE_YEAR)" class="mb-6">
+      <p>
+        We recommend the person is a certified ECE who has directly observed you
+        working with young children.
+      </p>
+      <p
+        v-if="
+          applicationStatus?.certificationTypes?.includes(
+            CertificationType.FIVE_YEAR,
+          )
+        "
+        class="mb-6"
+      >
         The person
         <b>cannot</b>
         be any of your work experience references.
@@ -30,14 +50,31 @@
         :form-data="formStore.formData"
         @updated-form-data="formStore.setFormData"
       />
-      <p class="mt-6">After you save, we will send an email to this person requesting a reference.</p>
+      <p class="mt-6">
+        After you save, we will send an email to this person requesting a
+        reference.
+      </p>
     </div>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
-        <v-btn size="large" color="primary" :loading="loadingStore.isLoading('application_characterreference_update_post')" @click="handleSubmitReference">
+        <v-btn
+          size="large"
+          color="primary"
+          :loading="
+            loadingStore.isLoading('application_characterreference_update_post')
+          "
+          @click="handleSubmitReference"
+        >
           Save new reference
         </v-btn>
-        <v-btn size="large" variant="outlined" color="primary" @click="router.back()">Cancel</v-btn>
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="router.back()"
+        >
+          Cancel
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -80,9 +117,11 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const router = useRouter();
     const formStore = useFormStore();
-    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))
+      ?.data;
 
-    let reference: Components.Schemas.CharacterReference | undefined = undefined;
+    let reference: Components.Schemas.CharacterReference | undefined =
+      undefined;
 
     if (props.referenceId) {
       // Check store for existing reference
@@ -95,7 +134,17 @@ export default defineComponent({
       }
     }
 
-    return { applicationStore, alertStore, reference, formStore, loadingStore, characterReferenceUpsertForm, router, applicationStatus, CertificationType };
+    return {
+      applicationStore,
+      alertStore,
+      reference,
+      formStore,
+      loadingStore,
+      characterReferenceUpsertForm,
+      router,
+      applicationStatus,
+      CertificationType,
+    };
   },
   data() {
     return {
@@ -106,7 +155,9 @@ export default defineComponent({
   methods: {
     async handleSubmitReference() {
       // Validate the form
-      const { valid } = await (this.$refs.upsertCharacterReferenceForm as typeof EceForm).$refs[characterReferenceUpsertForm.id].validate();
+      const { valid } = await (
+        this.$refs.upsertCharacterReferenceForm as typeof EceForm
+      ).$refs[characterReferenceUpsertForm.id].validate();
       if (valid) {
         //check for duplicate reference
 
@@ -115,14 +166,21 @@ export default defineComponent({
         const refSet = new Set<string>();
 
         if (this.applicationStatus?.workExperienceReferencesStatus) {
-          for (const ref of this.applicationStatus.workExperienceReferencesStatus) {
+          for (const ref of this.applicationStatus
+            .workExperienceReferencesStatus) {
             if (ref.status !== "Rejected") {
-              refSet.add(`${ref.firstName?.toLowerCase()} ${ref.lastName?.toLowerCase()}`);
+              refSet.add(
+                `${ref.firstName?.toLowerCase()} ${ref.lastName?.toLowerCase()}`,
+              );
             }
           }
         }
 
-        if (refSet.has(`${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`)) {
+        if (
+          refSet.has(
+            `${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`,
+          )
+        ) {
           this.isDuplicateReference = true;
           //scroll to top of page
           globalThis.scrollTo({
@@ -130,16 +188,28 @@ export default defineComponent({
             behavior: "smooth",
           });
         } else {
-          const { error } = await upsertCharacterReference({ application_id: this.applicationId, reference_id: this.referenceId }, this.formStore.formData);
+          const { error } = await upsertCharacterReference(
+            {
+              application_id: this.applicationId,
+              reference_id: this.referenceId,
+            },
+            this.formStore.formData,
+          );
           if (error) {
-            this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+            this.alertStore.setFailureAlert(
+              "Sorry, something went wrong and your changes could not be saved. Try again later.",
+            );
           } else {
-            this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
+            this.alertStore.setSuccessAlert(
+              "Reference updated. We sent them an email to request a reference.",
+            );
             this.router.push(`/manage-application/${this.applicationId}`);
           }
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue.",
+        );
       }
     },
   },

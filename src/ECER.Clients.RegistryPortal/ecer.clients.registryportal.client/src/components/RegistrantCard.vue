@@ -1,5 +1,11 @@
 <template>
-  <v-col v-for="(flow, index) in registrantFlows" :key="index" cols="12" sm="6" lg="4">
+  <v-col
+    v-for="(flow, index) in registrantFlows"
+    :key="index"
+    cols="12"
+    sm="6"
+    lg="4"
+  >
     <ActionCard :title="flow.title">
       <template #content>
         <div class="d-flex flex-column ga-3">
@@ -24,7 +30,13 @@ import { useCertificationStore } from "@/store/certification";
 import type { Components } from "@/types/openapi";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
-import { hasITE, hasSNE, isEceAssistant, isEceFiveYear, isEceOneYear } from "@/utils/certification";
+import {
+  hasITE,
+  hasSNE,
+  isEceAssistant,
+  isEceFiveYear,
+  isEceOneYear,
+} from "@/utils/certification";
 
 export interface RegistrantFlow {
   types: Components.Schemas.CertificationType[];
@@ -96,18 +108,28 @@ export default defineComponent({
         types.push(oneYearRegistrantFlow, fiveYearRegistrantFlow);
       }
       if (isEceOneYear(currentCertification)) {
-        if (currentCertification.statusCode === "Expired") types.push(assistantRegistrantFlow);
+        if (currentCertification.statusCode === "Expired")
+          types.push(assistantRegistrantFlow);
         types.push(fiveYearRegistrantFlow);
       }
       if (isEceFiveYear(currentCertification)) {
         if (hasSNE(currentCertification) && !hasITE(currentCertification)) {
-          if (currentCertification.statusCode === "Expired") types.push(assistantRegistrantFlow);
+          if (currentCertification.statusCode === "Expired")
+            types.push(assistantRegistrantFlow);
           else types.push(iteRegistrantFlow);
-        } else if (hasITE(currentCertification) && !hasSNE(currentCertification)) {
-          if (currentCertification.statusCode === "Expired") types.push(assistantRegistrantFlow);
+        } else if (
+          hasITE(currentCertification) &&
+          !hasSNE(currentCertification)
+        ) {
+          if (currentCertification.statusCode === "Expired")
+            types.push(assistantRegistrantFlow);
           else types.push(sneRegistrantFlow);
-        } else if (!hasITE(currentCertification) && !hasSNE(currentCertification)) {
-          if (currentCertification.statusCode === "Expired") types.push(assistantRegistrantFlow);
+        } else if (
+          !hasITE(currentCertification) &&
+          !hasSNE(currentCertification)
+        ) {
+          if (currentCertification.statusCode === "Expired")
+            types.push(assistantRegistrantFlow);
           else types.push(specializationRegistrantFlow);
         }
       }
@@ -116,9 +138,16 @@ export default defineComponent({
   },
   methods: {
     handleLearnMore(flow: RegistrantFlow) {
-      this.applicationStore.$patch({ draftApplication: { applicationType: "New", certificationTypes: flow.types } });
+      this.applicationStore.$patch({
+        draftApplication: {
+          applicationType: "New",
+          certificationTypes: flow.types,
+        },
+      });
 
-      this.userStore.isUnder19 ? this.router.push({ name: "consent-required" }) : this.router.push({ name: "application-requirements" });
+      this.userStore.isUnder19
+        ? this.router.push({ name: "consent-required" })
+        : this.router.push({ name: "application-requirements" });
     },
   },
 });

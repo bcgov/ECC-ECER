@@ -48,12 +48,22 @@ export default defineComponent({
       return (items: ItemsType[]): ItemsType[] => {
         if (this.isUnder19InApplication) {
           // Find the index of the "Requirements" item
-          const requirementsIndex = items.findIndex((item) => item.title === "Requirements");
+          const requirementsIndex = items.findIndex(
+            (item) => item.title === "Requirements",
+          );
           if (requirementsIndex !== -1) {
             // Insert "Consent required" immediately before "Requirements"
             const beforeRequirements = items.slice(0, requirementsIndex);
             const afterRequirements = items.slice(requirementsIndex);
-            return [...beforeRequirements, { title: "Consent required", disabled: false, href: "/application/consent-required" }, ...afterRequirements];
+            return [
+              ...beforeRequirements,
+              {
+                title: "Consent required",
+                disabled: false,
+                href: "/application/consent-required",
+              },
+              ...afterRequirements,
+            ];
           }
         }
         return items;
@@ -72,7 +82,10 @@ export default defineComponent({
     },
     // Helper to insert items at correct position based on ranking
     insertAtCorrectRank() {
-      return (items: BreadcrumbItem[], newItem: BreadcrumbItem): BreadcrumbItem[] => {
+      return (
+        items: BreadcrumbItem[],
+        newItem: BreadcrumbItem,
+      ): BreadcrumbItem[] => {
         const rank = this.applicationPageRankings[newItem.routeName || ""];
         if (rank === undefined) {
           // If no rank, append to end
@@ -82,7 +95,8 @@ export default defineComponent({
         // Find the correct position based on rank
         let insertIndex = items.length;
         for (let i = 0; i < items.length; i++) {
-          const itemRank = this.applicationPageRankings[items?.[i]?.routeName || ""];
+          const itemRank =
+            this.applicationPageRankings[items?.[i]?.routeName || ""];
           if (itemRank !== undefined && itemRank > rank) {
             insertIndex = i;
             break;
@@ -104,7 +118,11 @@ export default defineComponent({
       const currentRouteName = this.route.name as string;
 
       // Add certification type selection (for new applications)
-      if (!this.applicationStore.isDraftApplicationRenewal && !this.applicationStore.isDraftApplicationLaborMobility && !this.applicationStore.isDraftApplicationIcra) {
+      if (
+        !this.applicationStore.isDraftApplicationRenewal &&
+        !this.applicationStore.isDraftApplicationLaborMobility &&
+        !this.applicationStore.isDraftApplicationIcra
+      ) {
         const step = {
           title: "Apply for new certification",
           disabled: currentRouteName === "application-certification",
@@ -201,19 +219,36 @@ export default defineComponent({
       }
 
       // For other routes, use the existing switch statement
-      return this.generateBreadcrumbs(this.route.name as string, this.route.params as Record<string, string>);
+      return this.generateBreadcrumbs(
+        this.route.name as string,
+        this.route.params as Record<string, string>,
+      );
     },
   },
   methods: {
-    generateBreadcrumbs(routeName: string, params: Record<string, string | string[]>): ItemsType[] {
+    generateBreadcrumbs(
+      routeName: string,
+      params: Record<string, string | string[]>,
+    ): ItemsType[] {
       switch (routeName) {
         case "certification-requirements":
-          return [...this.baseItems, { title: "Certification requirements", disabled: true, href: "/certification-requirements" }];
+          return [
+            ...this.baseItems,
+            {
+              title: "Certification requirements",
+              disabled: true,
+              href: "/certification-requirements",
+            },
+          ];
 
         case "viewComprehensiveReport":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
             {
               title: "Comprehensive Report",
               disabled: true,
@@ -224,7 +259,11 @@ export default defineComponent({
         case "viewCourseOutline":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
             {
               title: "Course outlines or syllabi",
               disabled: true,
@@ -235,7 +274,11 @@ export default defineComponent({
         case "viewProgramConfirmation":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
             {
               title: "Program confirmation",
               disabled: true,
@@ -246,15 +289,31 @@ export default defineComponent({
         case "viewTranscriptDetails":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
-            { title: "Transcript", disabled: true, href: `/manage-application/${params.applicationId}/transcript/${params.transcriptId}` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
+            {
+              title: "Transcript",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/transcript/${params.transcriptId}`,
+            },
           ];
 
         case "view-character-reference":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
-            { title: "Character reference", disabled: true, href: `/manage-application/${params.applicationId}/character-reference/${params.referenceId}` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
+            {
+              title: "Character reference",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/character-reference/${params.referenceId}`,
+            },
           ];
 
         // Manage work experience references
@@ -262,22 +321,46 @@ export default defineComponent({
         case "addCharacterReference":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
-            { title: "Add", disabled: true, href: `/manage-application/${params.applicationId}/character-reference/add` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
+            {
+              title: "Add",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/character-reference/add`,
+            },
           ];
         case "updateCharacterReference":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
-            { title: "Character reference", disabled: false, href: `/manage-application/${params.applicationId}/character-reference/${params.referenceId}` },
-            { title: "Add", disabled: true, href: `/manage-application/${params.applicationId}/character-reference/${params.referenceId}/edit` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
+            {
+              title: "Character reference",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}/character-reference/${params.referenceId}`,
+            },
+            {
+              title: "Add",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/character-reference/${params.referenceId}/edit`,
+            },
           ];
 
         // Manage work experience references
         case "viewWorkExperienceReference":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
             {
               title: "Work experience reference",
               disabled: true,
@@ -287,117 +370,253 @@ export default defineComponent({
         case "manageWorkExperienceReferences":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
-            { title: "Work experience references", disabled: true, href: `/manage-application/${params.applicationId}/work-experience-references` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
+            {
+              title: "Work experience references",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/work-experience-references`,
+            },
           ];
         case "addWorkExperienceReference":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
             {
               title: "Work experience reference",
               disabled: false,
               href: `/manage-application/${params.applicationId}/work-experience-references`,
             },
-            { title: "Add", disabled: true, href: `/manage-application/${params.applicationId}/work-experience-reference/add` },
+            {
+              title: "Add",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/work-experience-reference/add`,
+            },
           ];
         case "updateWorkExperienceReference":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
             {
               title: "Work experience reference",
               disabled: false,
               href: `/manage-application/${params.applicationId}/work-experience-reference/${params.referenceId}`,
             },
-            { title: "Add", disabled: true, href: `/manage-application/${params.applicationId}/work-experience-reference/${params.referenceId}/edit` },
+            {
+              title: "Add",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/work-experience-reference/${params.referenceId}/edit`,
+            },
           ];
         case "manageProfessionalDevelopment":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
-            { title: "Professional development", disabled: true, href: `/manage-application/${params.applicationId}/professional-development` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
+            {
+              title: "Professional development",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/professional-development`,
+            },
           ];
         case "addProfessionalDevelopment":
           return [
             ...this.baseItems,
-            { title: "Application", disabled: false, href: `/manage-application/${params.applicationId}` },
-            { title: "Professional development", disabled: false, href: `/manage-application/${params.applicationId}/professional-development` },
-            { title: "Add", disabled: true, href: `/manage-application/${params.applicationId}/professional-development/add` },
+            {
+              title: "Application",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}`,
+            },
+            {
+              title: "Professional development",
+              disabled: false,
+              href: `/manage-application/${params.applicationId}/professional-development`,
+            },
+            {
+              title: "Add",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}/professional-development/add`,
+            },
           ];
         case "add-previous-name":
           return [
             ...this.baseItems,
             { title: "Profile", disabled: false, href: "/profile" },
-            { title: "Add previous name", disabled: true, href: "/profile/add-previous-name" },
+            {
+              title: "Add previous name",
+              disabled: true,
+              href: "/profile/add-previous-name",
+            },
           ];
 
         case "verify-previous-name":
           return [
             ...this.baseItems,
             { title: "Profile", disabled: false, href: "/profile" },
-            { title: "Verify previous name", disabled: true, href: `/profile/verify-previous-name/${params.previousNameId}` },
+            {
+              title: "Verify previous name",
+              disabled: true,
+              href: `/profile/verify-previous-name/${params.previousNameId}`,
+            },
           ];
 
         case "edit-profile":
-          return [...this.baseItems, { title: "Profile", disabled: false, href: "/profile" }, { title: "Edit profile", disabled: true, href: "/profile/edit" }];
+          return [
+            ...this.baseItems,
+            { title: "Profile", disabled: false, href: "/profile" },
+            { title: "Edit profile", disabled: true, href: "/profile/edit" },
+          ];
 
         case "verifyIdentification":
-          return [...this.baseItems, { title: "Verify identification", disabled: true, href: "/verify-identification" }];
+          return [
+            ...this.baseItems,
+            {
+              title: "Verify identification",
+              disabled: true,
+              href: "/verify-identification",
+            },
+          ];
 
         case "createAccount":
-          return [...this.baseItems, { title: "Create account", disabled: true, href: "/create-account" }];
+          return [
+            ...this.baseItems,
+            {
+              title: "Create account",
+              disabled: true,
+              href: "/create-account",
+            },
+          ];
 
         case "certificate-terms-and-conditions":
-          return [...this.baseItems, { title: "Terms and conditions", disabled: true, href: `/certificate-terms-and-conditions/${params.certificationId}` }];
+          return [
+            ...this.baseItems,
+            {
+              title: "Terms and conditions",
+              disabled: true,
+              href: `/certificate-terms-and-conditions/${params.certificationId}`,
+            },
+          ];
 
         case "my-certifications":
-          return [...this.baseItems, { title: "My certifications", disabled: true, href: "/my-certifications" }];
+          return [
+            ...this.baseItems,
+            {
+              title: "My certifications",
+              disabled: true,
+              href: "/my-certifications",
+            },
+          ];
 
         case "profile":
-          return [...this.baseItems, { title: "Profile", disabled: true, href: "/profile" }];
+          return [
+            ...this.baseItems,
+            { title: "Profile", disabled: true, href: "/profile" },
+          ];
 
         case "messages":
-          return [...this.baseItems, { title: "Messages", disabled: true, href: "/messages" }];
+          return [
+            ...this.baseItems,
+            { title: "Messages", disabled: true, href: "/messages" },
+          ];
 
         case "replyToMessage":
           return [
             ...this.baseItems,
             { title: "Messages", disabled: false, href: "/messages" },
-            { title: "Reply to message", disabled: true, href: `/messages/${params.messageId}/reply` },
+            {
+              title: "Reply to message",
+              disabled: true,
+              href: `/messages/${params.messageId}/reply`,
+            },
           ];
 
         case "manageApplication":
-          return [...this.baseItems, { title: "Application", disabled: true, href: `/manage-application/${params.applicationId}` }];
+          return [
+            ...this.baseItems,
+            {
+              title: "Application",
+              disabled: true,
+              href: `/manage-application/${params.applicationId}`,
+            },
+          ];
 
         case "icra-eligibility":
-          return [...this.baseItems, { title: "Apply with international certificate", disabled: true, href: "/icra-eligibility/check" }];
+          return [
+            ...this.baseItems,
+            {
+              title: "Apply with international certificate",
+              disabled: true,
+              href: "/icra-eligibility/check",
+            },
+          ];
 
         case "icra-eligibility-requirements":
           return [
             ...this.baseItems,
-            { title: "Apply with international certificate", disabled: false, href: "/icra-eligibility/check" },
-            { title: "Requirements", disabled: true, href: "/icra-eligibility/requirements" },
+            {
+              title: "Apply with international certificate",
+              disabled: false,
+              href: "/icra-eligibility/check",
+            },
+            {
+              title: "Requirements",
+              disabled: true,
+              href: "/icra-eligibility/requirements",
+            },
           ];
 
         case "icra-eligibility-declaration":
           return [
             ...this.baseItems,
-            { title: "Apply with international certificate", disabled: false, href: "/icra-eligibility/check" },
-            { title: "Requirements", disabled: false, href: "/icra-eligibility/requirements" },
-            { title: "Declaration", disabled: true, href: "/icra-eligibility/declaration" },
+            {
+              title: "Apply with international certificate",
+              disabled: false,
+              href: "/icra-eligibility/check",
+            },
+            {
+              title: "Requirements",
+              disabled: false,
+              href: "/icra-eligibility/requirements",
+            },
+            {
+              title: "Declaration",
+              disabled: true,
+              href: "/icra-eligibility/declaration",
+            },
           ];
 
         case "manage-icra-eligibility":
           return [
             ...this.baseItems,
-            { title: "Apply with international certification", disabled: true, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Apply with international certification",
+              disabled: true,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}`,
+            },
           ];
 
         case "manage-icra-eligibility-work-experience-references":
           return [
             ...this.baseItems,
-            { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Apply with international certification",
+              disabled: false,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}`,
+            },
             {
               title: "Employment experience references",
               disabled: true,
@@ -407,7 +626,11 @@ export default defineComponent({
         case "view-icra-eligibility-work-experience-reference":
           return [
             ...this.baseItems,
-            { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Apply with international certification",
+              disabled: false,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}`,
+            },
             {
               title: "Employment experience references",
               disabled: false,
@@ -422,7 +645,11 @@ export default defineComponent({
         case "icra-eligibility-add-work-experience-reference":
           return [
             ...this.baseItems,
-            { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Apply with international certification",
+              disabled: false,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}`,
+            },
             {
               title: "Employment experience references",
               disabled: false,
@@ -437,7 +664,11 @@ export default defineComponent({
         case "icra-eligibility-replace-work-experience-reference":
           return [
             ...this.baseItems,
-            { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Apply with international certification",
+              disabled: false,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}`,
+            },
             {
               title: "Employment experience references",
               disabled: false,
@@ -457,7 +688,13 @@ export default defineComponent({
 
     // Helper to check if current route is application-related
     isApplicationRoute(routeName: string): boolean {
-      return ["application-certification", "application-transfer", "application-requirements", "consent-required", "declaration"].includes(routeName);
+      return [
+        "application-certification",
+        "application-transfer",
+        "application-requirements",
+        "consent-required",
+        "declaration",
+      ].includes(routeName);
     },
   },
 });

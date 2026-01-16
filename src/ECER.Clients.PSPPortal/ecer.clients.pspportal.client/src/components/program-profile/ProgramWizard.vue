@@ -3,29 +3,44 @@
     <template #stepperHeader>
       <v-container v-show="showSteps">
         <v-stepper-header class="elevation-0">
-          <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
+          <template
+            v-for="(step, index) in Object.values(wizardStore.steps)"
+            :key="step.stage"
+          >
             <v-stepper-item
               color="primary"
               :step="wizardStore.step"
               :value="index + 1"
               :title="step.title"
-              :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
+              :editable="
+                index + 1 < wizardStore.step &&
+                wizardStore.listComponentMode !== 'add'
+              "
               :complete="index + 1 < wizardStore.step"
               :class="`small ${mdAndDown ? 'text-wrap' : 'text-no-wrap'}`"
             >
               <template #title>
-                <a v-if="index + 1 < wizardStore.step" href="#" @click.prevent>{{ step.title }}</a>
+                <a v-if="index + 1 < wizardStore.step" href="#" @click.prevent>
+                  {{ step.title }}
+                </a>
                 <div v-else>{{ step.title }}</div>
               </template>
             </v-stepper-item>
-            <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
+            <v-divider
+              v-if="index !== Object.values(wizardStore.steps).length - 1"
+              :key="`divider-${index}`"
+            />
           </template>
         </v-stepper-header>
       </v-container>
     </template>
     <template #PrintPreview>
       <v-btn rounded="lg" variant="text" @click="printPage()">
-        <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+        <v-icon
+          color="secondary"
+          icon="mdi-printer-outline"
+          class="mr-2"
+        ></v-icon>
         <a class="small">Print Preview</a>
       </v-btn>
     </template>
@@ -105,7 +120,10 @@ export default defineComponent({
 
     programStore.setDraftProgramFromProfile(props.program);
 
-    await wizardStore.initializeWizard(programStore.applicationConfiguration, programStore.draftProgram);
+    await wizardStore.initializeWizard(
+      programStore.applicationConfiguration,
+      programStore.draftProgram,
+    );
 
     return {
       programStore,
@@ -122,10 +140,22 @@ export default defineComponent({
     showSaveButtons() {
       return (
         this.wizardStore.currentStepStage !== "Review" &&
-        !(this.wizardStore.currentStepStage === "ProgramOverview" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "EarlyChildhood" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "InfantAndToddler" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "SpecialNeeds" && this.wizardStore.listComponentMode === "add")
+        !(
+          this.wizardStore.currentStepStage === "ProgramOverview" &&
+          this.wizardStore.listComponentMode === "add"
+        ) &&
+        !(
+          this.wizardStore.currentStepStage === "EarlyChildhood" &&
+          this.wizardStore.listComponentMode === "add"
+        ) &&
+        !(
+          this.wizardStore.currentStepStage === "InfantAndToddler" &&
+          this.wizardStore.listComponentMode === "add"
+        ) &&
+        !(
+          this.wizardStore.currentStepStage === "SpecialNeeds" &&
+          this.wizardStore.listComponentMode === "add"
+        )
       );
     },
     showSubmitApplication() {
@@ -152,12 +182,17 @@ export default defineComponent({
           case "SpecialNeeds":
             await this.saveDraftAndAlertSuccess(false);
             // refresh needed to sync wizard data and draft program changes
-            await this.wizardStore.initializeWizard(this.programStore.applicationConfiguration, this.programStore.draftProgram);
+            await this.wizardStore.initializeWizard(
+              this.programStore.applicationConfiguration,
+              this.programStore.draftProgram,
+            );
             this.incrementWizard();
             break;
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     handleSubmit() {
@@ -165,18 +200,22 @@ export default defineComponent({
     },
     async validateForm() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
-      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[
+        currentStepFormId
+      ][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
 
       return valid;
     },
     incrementWizard() {
       this.wizardStore.incrementStep();
-      this.programStore.draftProgram.portalStage = this.wizardStore.currentStepStage as ProgramStage;
+      this.programStore.draftProgram.portalStage = this.wizardStore
+        .currentStepStage as ProgramStage;
     },
     decrementWizard() {
       this.wizardStore.decrementStep();
-      this.programStore.draftProgram.portalStage = this.wizardStore.currentStepStage as ProgramStage;
+      this.programStore.draftProgram.portalStage = this.wizardStore
+        .currentStepStage as ProgramStage;
     },
     async handleBack() {
       await this.programStore.saveDraft();
@@ -185,8 +224,10 @@ export default defineComponent({
     async saveDraftAndAlertSuccess(exit: boolean) {
       const draftApplicationResponse = await this.programStore.saveDraft();
       if (draftApplicationResponse?.program) {
-        let message = "Information saved. If you save and exit, you can resume your application later.";
-        if (exit) message = "Information saved. You can resume your application later.";
+        let message =
+          "Information saved. If you save and exit, you can resume your application later.";
+        if (exit)
+          message = "Information saved. You can resume your application later.";
         this.alertStore.setSuccessAlert(message);
       }
     },

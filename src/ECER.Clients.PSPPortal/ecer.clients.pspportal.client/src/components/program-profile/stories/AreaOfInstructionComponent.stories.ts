@@ -130,7 +130,7 @@ const withMockConfigStore = (storyFn: any, context: any) => {
   // Initialize store with mock data
   const configStore = useConfigStore();
   configStore.areaOfInstructionList = mockAreaOfInstructions;
-  
+
   return storyFn(context);
 };
 
@@ -143,15 +143,18 @@ const meta = {
     programType: {
       control: "select",
       options: ["Basic", "SNE", "ITE"],
-      description: "The program type to filter areas of instruction and courses",
+      description:
+        "The program type to filter areas of instruction and courses",
     },
     program: {
       control: "object",
-      description: "The program object containing courses and program information",
+      description:
+        "The program object containing courses and program information",
     },
     areaSubtitles: {
       control: "object",
-      description: "Object mapping areaOfInstructionId to custom subtitle strings",
+      description:
+        "Object mapping areaOfInstructionId to custom subtitle strings",
     },
     includeTotalHours: {
       control: "boolean",
@@ -159,7 +162,8 @@ const meta = {
     },
     onEdit: {
       action: "edit",
-      description: "Emitted when edit button is clicked on a course or course area",
+      description:
+        "Emitted when edit button is clicked on a course or course area",
     },
   },
   args: {
@@ -171,7 +175,8 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: "A component that displays area of instruction cards for a given program type, filtering areas and courses accordingly. Also displays non-allocated courses in a separate card.",
+        component:
+          "A component that displays area of instruction cards for a given program type, filtering areas and courses accordingly. Also displays non-allocated courses in a separate card.",
       },
     },
   },
@@ -331,7 +336,8 @@ export const WithChildGuidanceCombined: Story = {
       ],
     },
     areaSubtitles: {
-      "area-5": "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
+      "area-5":
+        "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
     },
     includeTotalHours: false,
   },
@@ -410,7 +416,8 @@ export const BasicWithChildGuidanceSubtitle: Story = {
       ],
     },
     areaSubtitles: {
-      "area-5": "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
+      "area-5":
+        "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
     },
     includeTotalHours: false,
   },
@@ -542,7 +549,8 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
       "area-3": "",
       "area-4": "",
       "area-5": "",
-      "area-6": "Practicum hours are required for SNE program completion. A minimum of 120 hours is required.",
+      "area-6":
+        "Practicum hours are required for SNE program completion. A minimum of 120 hours is required.",
     },
     includeTotalHours: true,
   },

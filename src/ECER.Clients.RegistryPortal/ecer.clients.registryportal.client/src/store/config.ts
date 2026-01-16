@@ -31,14 +31,17 @@ export const useConfigStore = defineStore("config", {
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,
     provinceList: [] as Components.Schemas.Province[],
     countryList: [] as Components.Schemas.Country[],
-    postSecondaryInstitutionList: [] as Components.Schemas.PostSecondaryInstitution[],
+    postSecondaryInstitutionList:
+      [] as Components.Schemas.PostSecondaryInstitution[],
     systemMessages: [] as Components.Schemas.SystemMessage[],
     identificationTypes: [] as Components.Schemas.IdentificationType[],
     defaultContents: [] as Components.Schemas.DefaultContent[],
   }),
   getters: {
     kcOidcConfiguration: (state): UserManagerSettings => {
-      const oidc = state.applicationConfiguration?.clientAuthenticationMethods ? state.applicationConfiguration?.clientAuthenticationMethods["kc"] : null;
+      const oidc = state.applicationConfiguration?.clientAuthenticationMethods
+        ? state.applicationConfiguration?.clientAuthenticationMethods["kc"]
+        : null;
 
       const combinedConfig: UserManagerSettings = {
         ...oidcConfig,
@@ -52,16 +55,26 @@ export const useConfigStore = defineStore("config", {
       return combinedConfig;
     },
     provinceName(state) {
-      return (provinceId: string) => state.provinceList.find((province) => province.provinceId === provinceId)?.provinceName;
+      return (provinceId: string) =>
+        state.provinceList.find(
+          (province) => province.provinceId === provinceId,
+        )?.provinceName;
     },
     countryName(state) {
-      return (countryId: string) => state.countryList.find((country) => country.countryId === countryId)?.countryName;
+      return (countryId: string) =>
+        state.countryList.find((country) => country.countryId === countryId)
+          ?.countryName;
     },
     canada(state) {
-      return state.countryList.find((country) => country.countryName!.toLowerCase() === "canada");
+      return state.countryList.find(
+        (country) => country.countryName!.toLowerCase() === "canada",
+      );
     },
     britishColumbia(state) {
-      return state.provinceList.find((province) => province.provinceName!.toLowerCase() === "british columbia");
+      return state.provinceList.find(
+        (province) =>
+          province.provinceName!.toLowerCase() === "british columbia",
+      );
     },
     primaryIdentificationType(state) {
       return state.identificationTypes.filter((type) => type.forPrimary);
@@ -72,8 +85,18 @@ export const useConfigStore = defineStore("config", {
   },
 
   actions: {
-    async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
-      const [configuration, provinceList, countryList, postSecondaryInstitutionList, identificationTypes, systemMessages, defaultContents] = await Promise.all([
+    async initialize(): Promise<
+      Components.Schemas.ApplicationConfiguration | null | undefined
+    > {
+      const [
+        configuration,
+        provinceList,
+        countryList,
+        postSecondaryInstitutionList,
+        identificationTypes,
+        systemMessages,
+        defaultContents,
+      ] = await Promise.all([
         getConfiguration(),
         getProvinceList(),
         getCountryList(),
@@ -90,13 +113,22 @@ export const useConfigStore = defineStore("config", {
         this.systemMessages = systemMessages;
       }
       if (provinceList !== null && provinceList !== undefined) {
-        this.provinceList = provinceList.sort((a, b) => sortArray(a, b, "provinceName", [ProvinceTerritoryType.OTHER]));
+        this.provinceList = provinceList.sort((a, b) =>
+          sortArray(a, b, "provinceName", [ProvinceTerritoryType.OTHER]),
+        );
       }
       if (countryList !== null && countryList !== undefined) {
-        this.countryList = countryList.sort((a, b) => sortArray(a, b, "countryName"));
+        this.countryList = countryList.sort((a, b) =>
+          sortArray(a, b, "countryName"),
+        );
       }
-      if (postSecondaryInstitutionList !== null && postSecondaryInstitutionList !== undefined) {
-        this.postSecondaryInstitutionList = postSecondaryInstitutionList.sort((a, b) => sortArray(a, b, "name"));
+      if (
+        postSecondaryInstitutionList !== null &&
+        postSecondaryInstitutionList !== undefined
+      ) {
+        this.postSecondaryInstitutionList = postSecondaryInstitutionList.sort(
+          (a, b) => sortArray(a, b, "name"),
+        );
       }
       if (identificationTypes !== null && identificationTypes !== undefined) {
         this.identificationTypes = identificationTypes;

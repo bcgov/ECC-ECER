@@ -17,7 +17,11 @@
       <v-row>
         <v-col class="d-flex justify-end">
           <v-btn rounded="lg" variant="text" @click="printPage()">
-            <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+            <v-icon
+              color="secondary"
+              icon="mdi-printer-outline"
+              class="mr-2"
+            ></v-icon>
             <a class="small">Print Preview</a>
           </v-btn>
         </v-col>
@@ -38,7 +42,9 @@
               <p class="small">Institution name</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">{{ program?.postSecondaryInstituteName }}</p>
+              <p class="small font-weight-bold">
+                {{ program?.postSecondaryInstituteName }}
+              </p>
             </v-col>
           </v-row>
           <v-row>
@@ -62,7 +68,9 @@
               <p class="small">Program types(s)</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">{{ program?.programTypes?.join(", ") }}</p>
+              <p class="small font-weight-bold">
+                {{ program?.programTypes?.join(", ") }}
+              </p>
             </v-col>
           </v-row>
           <v-row>
@@ -76,9 +84,21 @@
         </v-card-text>
       </v-card>
       <!-- Area of instructions -->
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="Basic" :program="program" />
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="ITE" :program="program" />
-      <ProgramDetailAreaOfInstructionCard class="mb-4" programType="SNE" :program="program" />
+      <ProgramDetailAreaOfInstructionCard
+        class="mb-4"
+        programType="Basic"
+        :program="program"
+      />
+      <ProgramDetailAreaOfInstructionCard
+        class="mb-4"
+        programType="ITE"
+        :program="program"
+      />
+      <ProgramDetailAreaOfInstructionCard
+        class="mb-4"
+        programType="SNE"
+        :program="program"
+      />
       <v-row v-if="showUpdateProgramProfileButton">
         <v-col color="primary">
           <!-- TODO not implemented -->
@@ -118,7 +138,17 @@ export default defineComponent({
     };
   },
   async mounted() {
-    this.programProfiles = (await getPrograms(undefined, ["Draft", "Denied", "Approved", "UnderReview", "ChangeRequestInProgress", "Inactive"]))?.data || [];
+    this.programProfiles =
+      (
+        await getPrograms(undefined, [
+          "Draft",
+          "Denied",
+          "Approved",
+          "UnderReview",
+          "ChangeRequestInProgress",
+          "Inactive",
+        ])
+      )?.data || [];
   },
   data() {
     return {
@@ -137,7 +167,11 @@ export default defineComponent({
         return false;
       }
 
-      if (this.program?.status === "Approved" || this.program?.status === "UnderReview" || this.program?.status === "ChangeRequestInProgress") {
+      if (
+        this.program?.status === "Approved" ||
+        this.program?.status === "UnderReview" ||
+        this.program?.status === "ChangeRequestInProgress"
+      ) {
         return true;
       }
 
@@ -152,7 +186,10 @@ export default defineComponent({
     thisIsTheLatestProfile(): boolean {
       //check if there is a profile that exists next year
       this.programProfiles?.every((programProfile) => {
-        return DateTime.fromISO(programProfile?.startDate || "") <= DateTime.fromISO(this.program?.startDate || "");
+        return (
+          DateTime.fromISO(programProfile?.startDate || "") <=
+          DateTime.fromISO(this.program?.startDate || "")
+        );
       });
       return true;
     },

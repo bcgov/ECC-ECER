@@ -30,26 +30,35 @@
       </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
-        Registry.
+        You'll need to request an official transcript from your educational
+        institution. It must be sent directly from the educational institution
+        to the ECE Registry.
       </p>
     </v-col>
   </v-row>
   <v-row>
     <v-col>
       <ECEHeader title="Character reference" />
-      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
+      <p>
+        You will need to provide a character reference. You'll enter their name
+        and email. We'll contact them later after you submit your application.
+      </p>
       <br />
       <p>Make sure you choose a person that:</p>
       <br />
       <ul class="ml-10">
         <li>Can speak to your character</li>
-        <li>Can speak to your ability to educate and care for young children</li>
+        <li>
+          Can speak to your ability to educate and care for young children
+        </li>
         <li>Has known you for at least 6 months</li>
         <li>Is not your relative, partner, spouse or yourself</li>
       </ul>
       <br />
-      <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
+      <p>
+        We recommend the person is a certified ECE who has directly observed you
+        working with young children.
+      </p>
     </v-col>
   </v-row>
 </template>

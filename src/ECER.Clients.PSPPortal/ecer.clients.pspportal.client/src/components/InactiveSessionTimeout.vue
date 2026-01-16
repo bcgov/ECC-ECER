@@ -9,7 +9,8 @@
   >
     <template #confirmation-text>
       <p>
-        Your session is about to expire due to inactivity. For your security, you will be logged out in
+        Your session is about to expire due to inactivity. For your security,
+        you will be logged out in
         <b>{{ timer }} seconds.</b>
       </p>
     </template>

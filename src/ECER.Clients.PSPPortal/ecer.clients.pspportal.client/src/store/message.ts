@@ -18,7 +18,8 @@ export const useMessageStore = defineStore("message", {
   getters: {
     unreadMessageCount(): number {
       const userStore = useUserStore();
-      const unreadMessagesCount = userStore.pspUserProfile?.unreadMessagesCount ?? 0;
+      const unreadMessagesCount =
+        userStore.pspUserProfile?.unreadMessagesCount ?? 0;
       return unreadMessagesCount;
     },
   },

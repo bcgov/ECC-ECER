@@ -25,10 +25,13 @@
           <v-col cols="12">
             <div class="d-flex flex-column ga-3 pb-5">
               <p>
-                The program profile review process is conducted annually by the EDE Registry to ensure requirements are met for continued recognition in B.C.
+                The program profile review process is conducted annually by the
+                EDE Registry to ensure requirements are met for continued
+                recognition in B.C.
               </p>
               <p class="font-weight-bold">
-                You will need to review your program profile for accuracy and to ensure that courses meet the minimum hours for each of the
+                You will need to review your program profile for accuracy and to
+                ensure that courses meet the minimum hours for each of the
                 provincially-required areas of instruction.
               </p>
             </div>
@@ -37,12 +40,29 @@
                 <h2 class="mb-3">Review process</h2>
                 <p>Click the "Review now" button to begin.</p>
                 <ol class="ml-8 pb-3">
-                  <li>Review the information we have for your program(s) and make changes if required.</li>
-                  <li>Confirm and submit the program profile to the ECE Registry. You will be asked to sign off on the changes as the final step.</li>
-                  <li>The ECE Registry will then proceed with their review as required.</li>
+                  <li>
+                    Review the information we have for your program(s) and make
+                    changes if required.
+                  </li>
+                  <li>
+                    Confirm and submit the program profile to the ECE Registry.
+                    You will be asked to sign off on the changes as the final
+                    step.
+                  </li>
+                  <li>
+                    The ECE Registry will then proceed with their review as
+                    required.
+                  </li>
                 </ol>
-                <p>In some cases, the ECE Registry may request additional information about a program, particularly if changes were made.</p>
-                <p class="font-weight-bold">You will be notified when the review process has been completed by the ECE Registry.</p>
+                <p>
+                  In some cases, the ECE Registry may request additional
+                  information about a program, particularly if changes were
+                  made.
+                </p>
+                <p class="font-weight-bold">
+                  You will be notified when the review process has been
+                  completed by the ECE Registry.
+                </p>
               </div>
             </v-sheet>
           </v-col>
@@ -53,7 +73,13 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col v-for="(program, index) in programsRequiringReview" :key="getProgramKey(program, index, 'review')" cols="12" md="6" lg="4">
+          <v-col
+            v-for="(program, index) in programsRequiringReview"
+            :key="getProgramKey(program, index, 'review')"
+            cols="12"
+            md="6"
+            lg="4"
+          >
             <ProgramProfileCard :program="program" />
           </v-col>
         </v-row>
@@ -66,13 +92,24 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col v-for="(program, index) in currentProgramProfiles" :key="getProgramKey(program, index, 'current')" cols="12" md="6" lg="4">
+        <v-col
+          v-for="(program, index) in currentProgramProfiles"
+          :key="getProgramKey(program, index, 'current')"
+          cols="12"
+          md="6"
+          lg="4"
+        >
           <ProgramProfileCard :program="program" />
         </v-col>
       </v-row>
 
       <!-- Empty state -->
-      <v-row v-if="programsRequiringReview.length === 0 && currentProgramProfiles.length === 0">
+      <v-row
+        v-if="
+          programsRequiringReview.length === 0 &&
+          currentProgramProfiles.length === 0
+        "
+      >
         <v-col cols="12">
           <p>No program profiles found.</p>
         </v-col>
@@ -118,10 +155,14 @@ export default defineComponent({
       return this.loadingStore.isLoading("program_get") || this.loading;
     },
     programsRequiringReview(): Components.Schemas.Program[] {
-      return this.programs.filter((p) => p.status === "Draft" || p.status === "UnderReview");
+      return this.programs.filter(
+        (p) => p.status === "Draft" || p.status === "UnderReview",
+      );
     },
     currentProgramProfiles(): Components.Schemas.Program[] {
-      return this.programs.filter((p) => "Approved" === p.status || "Inactive" === p.status);
+      return this.programs.filter(
+        (p) => "Approved" === p.status || "Inactive" === p.status,
+      );
     },
   },
   async mounted() {
@@ -129,7 +170,11 @@ export default defineComponent({
     this.loading = false;
   },
   methods: {
-    getProgramKey(program: Components.Schemas.Program, index: number, prefix: string): string {
+    getProgramKey(
+      program: Components.Schemas.Program,
+      index: number,
+      prefix: string,
+    ): string {
       return program.id ?? `${prefix}-${index}`;
     },
     async fetchPrograms() {

@@ -1,6 +1,11 @@
 <template>
   <Loading v-if="fetchingData" />
-  <Wizard v-else :ref="'wizard'" :wizard="wizardConfigSetup" :show-steps="false">
+  <Wizard
+    v-else
+    :ref="'wizard'"
+    :wizard="wizardConfigSetup"
+    :show-steps="false"
+  >
     <template #header>
       <v-container fluid class="bg-primary">
         <v-container>
@@ -8,14 +13,23 @@
             <v-col>
               <h1 class="white">{{ inviteTypeTitle }}</h1>
               <div role="doc-subtitle">
-                {{ `For applicant: ${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}` }}
+                {{
+                  `For applicant: ${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}`
+                }}
               </div>
             </v-col>
           </v-row>
         </v-container>
       </v-container>
       <v-container>
-        <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
+        <v-btn
+          v-if="wizardStore.step !== 1"
+          slim
+          variant="text"
+          rounded="lg"
+          color="primary"
+          @click="handleBack"
+        >
           <v-icon size="x-large" icon="mdi-chevron-left" />
           Back
         </v-btn>
@@ -23,7 +37,11 @@
     </template>
     <template #PrintPreview>
       <v-btn rounded="lg" variant="text" @click="printPage">
-        <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+        <v-icon
+          color="secondary"
+          icon="mdi-printer-outline"
+          class="mr-2"
+        ></v-icon>
         <a class="small">Print Preview</a>
       </v-btn>
     </template>
@@ -55,7 +73,15 @@
             >
               Submit reference
             </v-btn>
-            <v-btn v-else rounded="lg" variant="flat" color="primary" @click="handleContinue">Continue</v-btn>
+            <v-btn
+              v-else
+              rounded="lg"
+              variant="flat"
+              color="primary"
+              @click="handleContinue"
+            >
+              Continue
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -109,29 +135,53 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
-    if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
+    if (
+      data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE
+    ) {
       switch (data.portalInvitation.workExperienceType) {
         case WorkExperienceType.IS_500_Hours:
-          wizardStore.initializeWizardForWorkExReference(workExperienceReferenceWizard, data.portalInvitation);
+          wizardStore.initializeWizardForWorkExReference(
+            workExperienceReferenceWizard,
+            data.portalInvitation,
+          );
           wizardConfigSetup = workExperienceReferenceWizard;
           break;
         case WorkExperienceType.IS_400_Hours:
-          wizardStore.initializeWizardFor400HoursWorkExReference(workExperienceReference400HoursWizard, data.portalInvitation);
+          wizardStore.initializeWizardFor400HoursWorkExReference(
+            workExperienceReference400HoursWizard,
+            data.portalInvitation,
+          );
           wizardConfigSetup = workExperienceReference400HoursWizard;
           break;
         case WorkExperienceType.ICRA:
-          wizardStore.initializeWizardForWorkExReferenceIcraApplication(IcraApplicationWorkExperienceReferenceWizard, data.portalInvitation);
+          wizardStore.initializeWizardForWorkExReferenceIcraApplication(
+            IcraApplicationWorkExperienceReferenceWizard,
+            data.portalInvitation,
+          );
           wizardConfigSetup = IcraApplicationWorkExperienceReferenceWizard;
           break;
         default:
-          console.error(`Unhandled work experience type ${data.portalInvitation.workExperienceType}`);
+          console.error(
+            `Unhandled work experience type ${data.portalInvitation.workExperienceType}`,
+          );
           router.push("/invalid-reference");
       }
-    } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
-      wizardStore.initializeWizardForCharacterReference(characterReferenceWizard, data.portalInvitation);
+    } else if (
+      data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER
+    ) {
+      wizardStore.initializeWizardForCharacterReference(
+        characterReferenceWizard,
+        data.portalInvitation,
+      );
       wizardConfigSetup = characterReferenceWizard;
-    } else if (data?.portalInvitation?.inviteType === PortalInviteType.ICRA_WORK_EXPERIENCE) {
-      wizardStore.initializeWizardForWorkExReferenceIcraEligibility(IcraEligibilityWorkExperienceReferenceWizard, data.portalInvitation);
+    } else if (
+      data?.portalInvitation?.inviteType ===
+      PortalInviteType.ICRA_WORK_EXPERIENCE
+    ) {
+      wizardStore.initializeWizardForWorkExReferenceIcraEligibility(
+        IcraEligibilityWorkExperienceReferenceWizard,
+        data.portalInvitation,
+      );
       wizardConfigSetup = IcraEligibilityWorkExperienceReferenceWizard;
     }
     return {
@@ -152,10 +202,14 @@ export default defineComponent({
   },
   computed: {
     userDeclinedStep(): number {
-      return this.wizardStore.steps.findIndex((step) => step.stage === "Decline") + 1;
+      return (
+        this.wizardStore.steps.findIndex((step) => step.stage === "Decline") + 1
+      );
     },
     userReviewStep(): number {
-      return this.wizardStore.steps.findIndex((step) => step.stage === "Review") + 1;
+      return (
+        this.wizardStore.steps.findIndex((step) => step.stage === "Review") + 1
+      );
     },
     inviteTypeTitle(): string {
       switch (this.wizardStore.wizardData?.inviteType) {
@@ -173,25 +227,43 @@ export default defineComponent({
   watch: {
     "wizardStore.step"(step) {
       //Resets recaptcha(s) if we navigate away. Prevents expiry bug if multiple recaptchas expire.
-      if (step !== this.userDeclinedStep && step !== this.userReviewStep && globalThis.grecaptcha) {
-        for (let i = 0; i < document.querySelectorAll(".g-recaptcha").length; i++) {
+      if (
+        step !== this.userDeclinedStep &&
+        step !== this.userReviewStep &&
+        globalThis.grecaptcha
+      ) {
+        for (
+          let i = 0;
+          i < document.querySelectorAll(".g-recaptcha").length;
+          i++
+        ) {
           globalThis.grecaptcha.reset(i);
         }
-        this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""] = "";
+        this.wizardStore.wizardData[
+          this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+            ?.recaptchaToken?.id || ""
+        ] = "";
       }
     },
   },
   methods: {
     async handleContinue() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
-      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[
+        currentStepFormId
+      ][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue",
+        );
       } else {
         if (
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""] === false &&
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs
+              ?.willProvideReference?.id || ""
+          ] === false &&
           this.wizardStore.step === 1
         ) {
           this.wizardStore.setStep(this.userDeclinedStep);
@@ -209,11 +281,15 @@ export default defineComponent({
     },
     async handleSubmit() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
-      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[
+        currentStepFormId
+      ][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue",
+        );
         return;
       }
 
@@ -228,20 +304,39 @@ export default defineComponent({
           await this.handleSubmitIcraEligibilityReferenceFlow();
           break;
         default:
-          this.alertStore.setFailureAlert(`Unhandled portal invite type ${this.wizardStore.wizardData?.inviteType}`);
+          this.alertStore.setFailureAlert(
+            `Unhandled portal invite type ${this.wizardStore.wizardData?.inviteType}`,
+          );
       }
     },
     async handleSubmitCharacterReferenceFlow() {
       const response = await postCharacterReference({
         token: this.route.params.token as string,
-        willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+        willProvideReference:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs
+              ?.willProvideReference?.id || ""
+          ],
         referenceContactInformation:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.referenceContactInformation?.id || ""
+          ],
         referenceEvaluation:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""],
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form
+              ?.inputs?.characterReferenceEvaluation?.id || ""
+          ],
         confirmProvidedInformationIsRight:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
-        recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+              ?.confirmProvidedInformationIsRight?.id || ""
+          ],
+        recaptchaToken:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+              ?.recaptchaToken?.id || ""
+          ],
       });
 
       if (!response?.error) {
@@ -255,53 +350,109 @@ export default defineComponent({
           response = await postWorkExperienceReference({
             token: this.route.params.token as string,
             workExperienceType: this.wizardStore.wizardData.workExperienceType,
-            willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+            willProvideReference:
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs
+                  ?.willProvideReference?.id || ""
+              ],
             referenceContactInformation:
-              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+                  ?.inputs?.referenceContactInformation?.id || ""
+              ],
             workExperienceReferenceDetails:
-              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""],
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.workExperienceEvaluation
+                  ?.form?.inputs?.workExperienceEvaluation?.id || ""
+              ],
             workExperienceReferenceCompetenciesAssessment:
-              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""],
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.assessment?.form?.inputs
+                  ?.workExperienceAssessment?.id || ""
+              ],
             confirmProvidedInformationIsRight:
-              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
-            recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+                  ?.confirmProvidedInformationIsRight?.id || ""
+              ],
+            recaptchaToken:
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+                  ?.recaptchaToken?.id || ""
+              ],
           });
           break;
         case WorkExperienceType.IS_400_Hours:
           response = await postWorkExperienceReference({
             token: this.route.params.token as string,
             workExperienceType: this.wizardStore.wizardData.workExperienceType,
-            willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+            willProvideReference:
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs
+                  ?.willProvideReference?.id || ""
+              ],
             referenceContactInformation:
-              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+                  ?.inputs?.referenceContactInformation?.id || ""
+              ],
             workExperienceReferenceDetails:
               this.wizardStore.wizardData[
-                this.wizardStore?.wizardConfig?.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+                this.wizardStore?.wizardConfig?.steps
+                  ?.workExperience400HoursEvaluation?.form?.inputs
+                  ?.workExperience400HoursEvaluation?.id || ""
               ],
             confirmProvidedInformationIsRight:
-              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
-            recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+                  ?.confirmProvidedInformationIsRight?.id || ""
+              ],
+            recaptchaToken:
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+                  ?.recaptchaToken?.id || ""
+              ],
           });
           break;
         case WorkExperienceType.ICRA:
           response = await postWorkExperienceReference({
             token: this.route.params.token as string,
             workExperienceType: this.wizardStore.wizardData.workExperienceType,
-            willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+            willProvideReference:
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs
+                  ?.willProvideReference?.id || ""
+              ],
             referenceContactInformation:
               this.wizardStore.wizardData[
-                this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
+                this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+                  ?.inputs?.icraEligibilityWorkExperienceContactInformation
+                  ?.id || ""
               ],
             workExperienceReferenceCompetenciesAssessment:
-              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""],
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.assessment?.form?.inputs
+                  ?.workExperienceAssessment?.id || ""
+              ],
             confirmProvidedInformationIsRight:
-              this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
-            recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+                  ?.confirmProvidedInformationIsRight?.id || ""
+              ],
+            recaptchaToken:
+              this.wizardStore.wizardData[
+                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+                  ?.recaptchaToken?.id || ""
+              ],
           });
           break;
         default:
-          console.error(`Unhandled work experience type ${this.wizardStore.wizardData.workExperienceType}`);
-          this.alertStore.setFailureAlert(`Unhandled work experience type ${this.wizardStore.wizardData.workExperienceType}`);
+          console.error(
+            `Unhandled work experience type ${this.wizardStore.wizardData.workExperienceType}`,
+          );
+          this.alertStore.setFailureAlert(
+            `Unhandled work experience type ${this.wizardStore.wizardData.workExperienceType}`,
+          );
           return;
       }
       if (!response?.error) {
@@ -311,16 +462,28 @@ export default defineComponent({
     async handleSubmitIcraEligibilityReferenceFlow() {
       const icraEligibilityContact =
         this.wizardStore.wizardData[
-          this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
+          this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+            ?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
         ];
 
       const icraWorkExperienceEvaluation =
-        this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""];
+        this.wizardStore.wizardData[
+          this.wizardStore?.wizardConfig?.steps?.workExperienceEvaluation?.form
+            ?.inputs?.workExperienceEvaluation?.id || ""
+        ];
 
       const response = await postIcraEligibilityWorkExperienceReference({
         token: this.route.params.token as string,
-        willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
-        recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+        willProvideReference:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs
+              ?.willProvideReference?.id || ""
+          ],
+        recaptchaToken:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
+              ?.recaptchaToken?.id || ""
+          ],
         //contact step
         firstName: icraEligibilityContact.firstName,
         lastName: icraEligibilityContact.lastName,
@@ -334,7 +497,8 @@ export default defineComponent({
         endDate: icraWorkExperienceEvaluation.endDate,
         workedWithChildren: icraWorkExperienceEvaluation.workedWithChildren,
         childcareAgeRanges: icraWorkExperienceEvaluation.childcareAgeRanges,
-        referenceRelationship: icraWorkExperienceEvaluation.referenceRelationship,
+        referenceRelationship:
+          icraWorkExperienceEvaluation.referenceRelationship,
       });
 
       if (!response?.error) {
@@ -343,28 +507,48 @@ export default defineComponent({
     },
     async handleDecline() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
-      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[
+        currentStepFormId
+      ][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue",
+        );
         return;
       }
 
-      const reason = this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.decline?.form?.inputs?.referenceDecline?.id || ""];
-      const recaptchaToken = this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.decline?.form?.inputs?.recaptchaToken?.id || ""];
-      const result = await optOutReference(this.route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons, recaptchaToken);
+      const reason =
+        this.wizardStore.wizardData[
+          this.wizardStore?.wizardConfig?.steps?.decline?.form?.inputs
+            ?.referenceDecline?.id || ""
+        ];
+      const recaptchaToken =
+        this.wizardStore.wizardData[
+          this.wizardStore?.wizardConfig?.steps?.decline?.form?.inputs
+            ?.recaptchaToken?.id || ""
+        ];
+      const result = await optOutReference(
+        this.route.params.token as string,
+        reason as Components.Schemas.UnabletoProvideReferenceReasons,
+        recaptchaToken,
+      );
       if (!result.error) {
         this.router.push({ path: "/reference-submitted" });
       }
     },
     async printPage() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
-      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[
+        currentStepFormId
+      ][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format before printing");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format before printing",
+        );
       } else {
         globalThis.print();
       }

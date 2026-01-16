@@ -18,19 +18,25 @@ const route = useRoute();
 const userStore = useUserStore();
 
 onMounted(async () => {
-  const { data, error } = await getPortalInvitation(route.params.token as string);
+  const { data, error } = await getPortalInvitation(
+    route.params.token as string,
+  );
 
   if (error) {
-      if (error.detail === "Portal Invitation Wrong Status"){
-          router.replace("/invalid-invitation");
-      } else {
-          router.push("/access-denied");
-      }
-      return;
+    if (error.detail === "Portal Invitation Wrong Status") {
+      router.replace("/invalid-invitation");
+    } else {
+      router.push("/access-denied");
+    }
+    return;
   }
 
-  if (data?.portalInvitation?.inviteType === PortalInviteType.PSIProgramRepresentative) {
-    const programRepresentativeId = data?.portalInvitation?.pspProgramRepresentativeId;
+  if (
+    data?.portalInvitation?.inviteType ===
+    PortalInviteType.PSIProgramRepresentative
+  ) {
+    const programRepresentativeId =
+      data?.portalInvitation?.pspProgramRepresentativeId;
     if (programRepresentativeId) {
       userStore.setInvitedProgramRepresentativeId(programRepresentativeId);
       userStore.setInvitationToken(route.params.token as string);

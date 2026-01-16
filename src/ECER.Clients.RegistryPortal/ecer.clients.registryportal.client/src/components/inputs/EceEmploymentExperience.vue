@@ -1,15 +1,22 @@
 <template>
   <!-- add view -->
-  <div v-if="employmentExperienceFormMode === 'edit' || employmentExperienceFormMode === 'add'">
+  <div
+    v-if="
+      employmentExperienceFormMode === 'edit' ||
+      employmentExperienceFormMode === 'add'
+    "
+  >
     <ECEHeader title="Employment experience references" />
     <br />
     <p>
-      The ECE Registry will contact your references to verify your employment. Once we receive your submission, we will send an email to these people containing
-      a link to an online reference form.
+      The ECE Registry will contact your references to verify your employment.
+      Once we receive your submission, we will send an email to these people
+      containing a link to an online reference form.
     </p>
     <br />
     <p>
-      If you are eligible for this application pathway, your references will be asked to complete a competencies assessment to verify that you have the
+      If you are eligible for this application pathway, your references will be
+      asked to complete a competencies assessment to verify that you have the
       knowledge, skills and abilities to work as an ECE in British Columbia.
     </p>
     <v-form ref="icraWorkExperienceEligibilityForm" class="mt-6">
@@ -26,7 +33,12 @@
       </v-row>
       <v-row>
         <v-col md="8" lg="6" xl="4">
-          <EceTextField id="txtWorkReferenceFirstName" v-model="firstName" label="First name" maxlength="100"></EceTextField>
+          <EceTextField
+            id="txtWorkReferenceFirstName"
+            v-model="firstName"
+            label="First name"
+            maxlength="100"
+          ></EceTextField>
         </v-col>
       </v-row>
       <v-row>
@@ -34,7 +46,12 @@
           <EceTextField
             id="txtWorkReferenceEmail"
             v-model="emailAddress"
-            :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
+            :rules="[
+              Rules.required(),
+              Rules.email(
+                'Enter your reference\'s email in the format \'name@email.com\'',
+              ),
+            ]"
             label="Email"
             maxlength="200"
           ></EceTextField>
@@ -45,7 +62,9 @@
           <EceTextField
             id="txtWorkReferencePhoneNumber"
             v-model="phoneNumber"
-            :rules="[Rules.phoneNumber('Enter your reference\'s valid phone number')]"
+            :rules="[
+              Rules.phoneNumber('Enter your reference\'s valid phone number'),
+            ]"
             label="Phone number (optional)"
           ></EceTextField>
         </v-col>
@@ -54,10 +73,24 @@
     <v-row class="mt-10">
       <v-col>
         <v-row justify="start" class="ml-1">
-          <v-btn id="btnSaveReference" rounded="lg" color="primary" class="mr-2" @click="handleSubmit" :loading="loadingStore.isLoading('icra_put')">
+          <v-btn
+            id="btnSaveReference"
+            rounded="lg"
+            color="primary"
+            class="mr-2"
+            @click="handleSubmit"
+            :loading="loadingStore.isLoading('icra_put')"
+          >
             Save reference
           </v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('icra_put')">Cancel</v-btn>
+          <v-btn
+            rounded="lg"
+            variant="outlined"
+            @click="handleCancel"
+            :loading="loadingStore.isLoading('icra_put')"
+          >
+            Cancel
+          </v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -71,20 +104,33 @@
         <p>Your employment experience must:</p>
         <ul class="ml-10">
           <li>Have been completed within the last 5 years</li>
-          <li>Not overlap (any overlapping employment experience will only be counted once)</li>
+          <li>
+            Not overlap (any overlapping employment experience will only be
+            counted once)
+          </li>
           <li>Have been completed while holding valid ECE certification</li>
         </ul>
         <br />
-        <p>If your employment experience was completed at multiple locations:</p>
+        <p>
+          If your employment experience was completed at multiple locations:
+        </p>
         <ul class="ml-10">
           <li>Provide a reference from each person</li>
           <li>{{ `You may enter up to ${MAX_NUM_REFERENCES} references` }}</li>
         </ul>
       </v-col>
     </v-row>
-    <v-row v-if="Array.isArray(modelValue) && modelValue.length > 0" v-for="(reference, index) in modelValue" :key="index">
+    <v-row
+      v-if="Array.isArray(modelValue) && modelValue.length > 0"
+      v-for="(reference, index) in modelValue"
+      :key="index"
+    >
       <v-col sm="12" md="10" lg="8" xl="6">
-        <EceEmploymentExperienceCard :reference="reference" @edit="handleEdit" @delete="(reference) => handleDelete(reference, index)" />
+        <EceEmploymentExperienceCard
+          :reference="reference"
+          @edit="handleEdit"
+          @delete="(reference) => handleDelete(reference, index)"
+        />
       </v-col>
     </v-row>
     <v-row v-else-if="modelValue?.length === 0">
@@ -111,13 +157,20 @@
     <v-input
       class="mt-6"
       :model-value="modelValue"
-      :rules="[() => modelValue.length > 0 || 'You must provide at least one reference']"
+      :rules="[
+        () =>
+          modelValue.length > 0 || 'You must provide at least one reference',
+      ]"
       auto-hide="auto"
     ></v-input>
     <!-- callouts and optional messages -->
     <v-row>
       <v-col>
-        <Callout v-if="modelValue && modelValue.length >= MAX_NUM_REFERENCES" type="warning" title="Max limit reached">
+        <Callout
+          v-if="modelValue && modelValue.length >= MAX_NUM_REFERENCES"
+          type="warning"
+          title="Max limit reached"
+        >
           {{
             `You have reached the limit of ${MAX_NUM_REFERENCES} employment experience references. You can still proceed to submit your application. The registry will contact you to
           provide additional references.`
@@ -155,14 +208,22 @@ import { useIcraStore } from "@/store/icra";
 
 const MAX_NUM_REFERENCES = 6;
 
-interface EmploymentExperienceData extends Components.Schemas.EmploymentReference {
+interface EmploymentExperienceData
+  extends Components.Schemas.EmploymentReference {
   //other fields
   employmentExperienceFormMode: "add" | "edit" | undefined;
 }
 
 export default defineComponent({
   name: "EceEmploymentExperience",
-  components: { ProgressBar, EceEmploymentExperienceCard, EceDateInput, EceTextField, Callout, ECEHeader },
+  components: {
+    ProgressBar,
+    EceEmploymentExperienceCard,
+    EceDateInput,
+    EceTextField,
+    Callout,
+    ECEHeader,
+  },
   props: {
     modelValue: {
       type: Array as PropType<Components.Schemas.EmploymentReference[]>,
@@ -170,7 +231,9 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_icraWorkExperienceEligibility: Components.Schemas.EmploymentReference[]) => true,
+    "update:model-value": (
+      _icraWorkExperienceEligibility: Components.Schemas.EmploymentReference[],
+    ) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -249,29 +312,44 @@ export default defineComponent({
       this.employmentExperienceFormMode = "edit";
       globalThis.scroll(0, 0);
     },
-    async handleDelete(_reference: Components.Schemas.EmploymentReference, index: number) {
-      this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
+    async handleDelete(
+      _reference: Components.Schemas.EmploymentReference,
+      index: number,
+    ) {
+      this.$emit(
+        "update:model-value",
+        removeElementByIndex(this.modelValue, index),
+      );
 
       await this.icraStore.saveDraft();
 
       this.alertStore.setSuccessAlert("You have deleted your reference.");
     },
     async handleSubmit() {
-      const { valid } = await (this.$refs.icraWorkExperienceEligibilityForm as VForm).validate();
+      const { valid } = await (
+        this.$refs.icraWorkExperienceEligibilityForm as VForm
+      ).validate();
 
       if (valid) {
-        const newEmploymentExperienceReference: Components.Schemas.EmploymentReference = {
-          id: this.id, //empty if we are adding
-          lastName: this.lastName,
-          firstName: this.firstName,
-          emailAddress: this.emailAddress,
-          phoneNumber: this.phoneNumber,
-        };
+        const newEmploymentExperienceReference: Components.Schemas.EmploymentReference =
+          {
+            id: this.id, //empty if we are adding
+            lastName: this.lastName,
+            firstName: this.firstName,
+            emailAddress: this.emailAddress,
+            phoneNumber: this.phoneNumber,
+          };
         let updatedModelValue = this.modelValue?.slice() || []; //create a copy of the array
 
         if (this.employmentExperienceFormMode === "edit") {
-          const indexOfEditedReference = updatedModelValue.findIndex((reference) => reference.id === newEmploymentExperienceReference.id);
-          updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedReference, newEmploymentExperienceReference);
+          const indexOfEditedReference = updatedModelValue.findIndex(
+            (reference) => reference.id === newEmploymentExperienceReference.id,
+          );
+          updatedModelValue = replaceElementByIndex(
+            updatedModelValue,
+            indexOfEditedReference,
+            newEmploymentExperienceReference,
+          );
         } else if (this.employmentExperienceFormMode === "add") {
           updatedModelValue.push(newEmploymentExperienceReference);
         }
@@ -281,7 +359,9 @@ export default defineComponent({
         await this.icraStore.saveDraft();
 
         this.alertStore.setSuccessAlert(
-          this.employmentExperienceFormMode === "edit" ? "You have successfully edited your reference." : "You have successfully added your reference.",
+          this.employmentExperienceFormMode === "edit"
+            ? "You have successfully edited your reference."
+            : "You have successfully added your reference.",
         );
 
         this.resetFormData();
@@ -290,7 +370,9 @@ export default defineComponent({
 
         globalThis.scroll(0, 0);
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     resetFormData() {

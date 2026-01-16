@@ -33,7 +33,11 @@ const previewForm: Form = {
       props: {
         label:
           "To the best of my knowledge the provided information is complete and correct. I am aware the ECE Registry may contact me to verify or clarify the provided information.",
-        rules: [Rules.hasCheckbox("You must agree with the above statement to submit your reference")],
+        rules: [
+          Rules.hasCheckbox(
+            "You must agree with the above statement to submit your reference",
+          ),
+        ],
       },
       cols: {
         md: 12,
