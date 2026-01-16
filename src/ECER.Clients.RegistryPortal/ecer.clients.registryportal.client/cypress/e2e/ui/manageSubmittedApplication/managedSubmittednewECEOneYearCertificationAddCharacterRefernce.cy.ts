@@ -77,11 +77,11 @@ describe("New ECE One Year Certificate Application", () => {
     cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
     cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
 
-    // Manage Submitted Application 
-    cy.contains('span.v-btn__content', 'Home').click();
+    // Manage Submitted Application
+    cy.contains("span.v-btn__content", "Home").click();
     cy.reload();
-    cy.contains('span.v-btn__content', 'Manage Application').click();
-    cy.contains('p.text-links', 'Character reference provided by Reference First Name Reference Last Name').click()
+    cy.contains("span.v-btn__content", "Manage Application").click();
+    cy.contains("p.text-links", "Character reference provided by Reference First Name Reference Last Name").click();
     // cy.get('body').then($body => {
     //   if ($body.find('p.text-links:contains("WorkReference")').length > 0) {
     //     // Element exists → click it
@@ -94,14 +94,13 @@ describe("New ECE One Year Certificate Application", () => {
     // });
     // cy.contains('p.text-links', 'Character reference provided by Reference First Name Reference Last Name').click()
     // cy.contains('p.text-links', 'WorkReferenceFirstName WorkReferenceLastName').click();
-    cy.contains('a','Choose a new reference').click({ force: true });
-
+    cy.contains("a", "Choose a new reference").click({ force: true });
 
     cy.get('[aria-label="Last Name"]').type("CharacterReferenceLastName");
     cy.get('[aria-label="First Name"]').type("CharacterReferenceLastName");
     cy.get('[aria-label="Email"]').type("CharacterExperience_Reference@test.gov.bc.ca");
     cy.get('[aria-label="Phone Number (optional)"]').type("1234567890");
     // cy.get('[aria-label="Work experience hours observed by reference"]').type("500");
-    cy.contains('span.v-btn__content', 'Save new reference').click();
+    cy.contains("span.v-btn__content", "Save new reference").click();
   });
 });

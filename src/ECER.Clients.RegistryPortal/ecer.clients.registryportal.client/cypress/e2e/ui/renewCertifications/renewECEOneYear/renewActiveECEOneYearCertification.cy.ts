@@ -1,6 +1,5 @@
 import selectors from "../../../../support/selectors";
 
-
 describe("Renew Active ECE One Year Certificate Application", () => {
   it("should create a sucessfull Renewal - ECE One Year Application", () => {
     cy.seedRenewalApplication("ECEOneYear", true, false);

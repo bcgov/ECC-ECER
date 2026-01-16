@@ -177,10 +177,8 @@ export default defineComponent({
             this.incrementWizard();
             break;
         }
-        
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
-        
       }
     },
     async validateForm() {

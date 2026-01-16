@@ -8,7 +8,7 @@
             <p class="small">Country of Institution</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ `${configStore.countryName(internationalCertificate.countryId || '')}` }}</p>
+            <p class="small font-weight-bold">{{ `${configStore.countryName(internationalCertificate.countryId || "")}` }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -43,12 +43,10 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              <a
-                v-if="internationalCertificate?.websiteOfRegulatoryAuthority"
-                :href="internationalCertificate.websiteOfRegulatoryAuthority"
-                target="_blank"
-              >{{ internationalCertificate.websiteOfRegulatoryAuthority }}</a>
-              <div v-else>{{ "—" }}</div>
+              <a v-if="internationalCertificate?.websiteOfRegulatoryAuthority" :href="internationalCertificate.websiteOfRegulatoryAuthority" target="_blank">
+                {{ internationalCertificate.websiteOfRegulatoryAuthority }}
+              </a>
+              <span v-else>{{ "—" }}</span>
             </p>
           </v-col>
         </v-row>
@@ -62,8 +60,10 @@
                 v-if="internationalCertificate?.onlineCertificateValidationToolOfRegulatoryAuthority"
                 :href="internationalCertificate.onlineCertificateValidationToolOfRegulatoryAuthority"
                 target="_blank"
-              >{{ internationalCertificate.onlineCertificateValidationToolOfRegulatoryAuthority }}</a>
-              <div v-else>{{ "—" }}</div>
+              >
+                {{ internationalCertificate.onlineCertificateValidationToolOfRegulatoryAuthority }}
+              </a>
+              <span v-else>{{ "—" }}</span>
             </p>
           </v-col>
         </v-row>
@@ -103,7 +103,8 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ `${internationalCertificate?.expiryDate ? formatDate(internationalCertificate.expiryDate || "", "LLLL d, yyyy") : "—"} ` }}
+              {{ `${internationalCertificate?.expiryDate ? formatDate(internationalCertificate.expiryDate || "", "LLLL
+              d, yyyy") : "—"} ` }}
             </p>
           </v-col>
         </v-row>

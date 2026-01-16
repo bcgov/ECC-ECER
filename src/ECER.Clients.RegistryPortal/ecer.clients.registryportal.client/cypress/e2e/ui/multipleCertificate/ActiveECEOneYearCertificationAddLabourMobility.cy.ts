@@ -45,5 +45,5 @@ describe(" Active ECE One Year Certificate Applicatio plus add labour Mobility",
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEAssistantWorkflow(provinceName, certificationName);
-   });
+  });
 });

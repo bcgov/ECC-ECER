@@ -2,7 +2,7 @@
   <div>
     <p class="d-flex flex-column pb-4">
       {{ text }}
-      <p v-if="canRenew && !readyToRenew">{{ dateText }}</p>
+      <template v-if="canRenew && !readyToRenew">{{ dateText }}</template>
     </p>
     <div>
       <v-btn id="btnRenew" v-if="showRenewLink" color="primary" @click="handleRenewClicked">Renew</v-btn>
@@ -68,7 +68,7 @@ export default defineComponent({
     canRenew() {
       return (
         !(this.certificationStore.hasMultipleEceOneYearCertifications && isEceOneYear(this.certification)) &&
-        !(isEceOneYear(this.certification) && this.expiredOverFiveYears) 
+        !(isEceOneYear(this.certification) && this.expiredOverFiveYears)
       );
     },
     title() {
@@ -123,7 +123,7 @@ export default defineComponent({
     handleLearnAboutRenewalRequirementsClicked() {
       this.router.push({
         name: "certification-requirements",
-        query: { certificationTypes: getCertificationTypes(this.certification)},
+        query: { certificationTypes: getCertificationTypes(this.certification) },
       });
     },
     handleRenewClicked() {

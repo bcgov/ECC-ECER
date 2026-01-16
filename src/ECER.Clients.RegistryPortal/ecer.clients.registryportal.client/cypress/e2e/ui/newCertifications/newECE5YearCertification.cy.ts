@@ -2,7 +2,7 @@ import selectors from "../../../support/selectors";
 import { courseStartDay, courseEndDay, todayDay } from "../../../support/utils";
 
 describe("New ECE 5 Year Certificate Application", () => {
-  it("should sucessfully create a New ECE 5 Year Application", () => {  
+  it("should sucessfully create a New ECE 5 Year Application", () => {
     /** Dashboard */
     cy.get(selectors.dashboard.applyNowButton).click();
 

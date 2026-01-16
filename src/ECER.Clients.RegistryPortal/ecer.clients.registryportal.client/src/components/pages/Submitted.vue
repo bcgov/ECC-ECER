@@ -97,9 +97,7 @@ export default defineComponent({
       return (this.applicationStore.application?.transcripts?.length || 0) > 0;
     },
     applicationHasEducationNotRecognized() {
-      return this.applicationStore.application?.transcripts?.some(
-        (transcript) => transcript.educationRecognition === "NotRecognized"
-      );
+      return this.applicationStore.application?.transcripts?.some((transcript) => transcript.educationRecognition === "NotRecognized");
     },
     applicationIsEceAssistant() {
       return this.applicationStore.application?.certificationTypes?.includes("EceAssistant");

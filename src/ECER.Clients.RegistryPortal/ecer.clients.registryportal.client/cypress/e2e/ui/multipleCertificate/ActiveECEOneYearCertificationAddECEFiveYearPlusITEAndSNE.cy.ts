@@ -1,7 +1,6 @@
 import selectors from "../../../support/selectors";
 import { courseStartDay, courseEndDay, todayDay } from "../../../support/utils";
 
-
 describe("Active ECE One Year Certificate Application Add 5 year+SNE+ITE Certificaten", () => {
   it("should create a sucessfull 5 year+SNE+ITE Application Add 5 year+SNE+ITE Certificaten", () => {
     cy.seedRenewalApplication("ECEOneYear", true, false);
@@ -10,7 +9,6 @@ describe("Active ECE One Year Certificate Application Add 5 year+SNE+ITE Certifi
     /** Dashboard */
     cy.get(selectors.dashboard.multiApplyButton).first().click();
     cy.get(selectors.certificationType.applyNowEceFiveYearButton).click();
-
 
     /** Application Requirements */
     cy.get(selectors.certificationType.iteCheckBox).check({ force: true });

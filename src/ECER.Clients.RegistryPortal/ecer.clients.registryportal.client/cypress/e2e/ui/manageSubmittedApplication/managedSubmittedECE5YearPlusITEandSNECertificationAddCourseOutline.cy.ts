@@ -96,25 +96,25 @@ describe("New ECE 5 Year + ITE & SNE Certificate Application", () => {
     cy.document().its("readyState").should("eq", "complete");
     cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
     cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
-     // Manage Submitted Application 
-     cy.contains('span.v-btn__content', 'Home').click();
-     cy.reload();
-     cy.contains('span.v-btn__content', 'Manage Application').click();
-     cy.contains('p.text-links', 'Course outlines or syllabi:').click()
-     cy.get('input[aria-label="I have my course outlines or syllabi and will upload them now."]').check({ force: true });
-     cy.contains('span.v-btn__content', 'Add file').click();
+    // Manage Submitted Application
+    cy.contains("span.v-btn__content", "Home").click();
+    cy.reload();
+    cy.contains("span.v-btn__content", "Manage Application").click();
+    cy.contains("p.text-links", "Course outlines or syllabi:").click();
+    cy.get('input[aria-label="I have my course outlines or syllabi and will upload them now."]').check({ force: true });
+    cy.contains("span.v-btn__content", "Add file").click();
 
-     // Wait for hidden file input to appear in the DOM
-     cy.get('input[type="file"]', { timeout: 10000 }).should('exist');
- 
-     // Path relative to cypress/fixtures
-     const filePath = 'Sample.pdf';
- 
-     // Attach file directly to hidden input
-     cy.get('input[type="file"]').attachFile(filePath);
- 
-     // (Optional) Assert successful upload
-     cy.contains('Upload complete').should('be.visible');
-     cy.contains('span.v-btn__content', 'Save').click();
+    // Wait for hidden file input to appear in the DOM
+    cy.get('input[type="file"]', { timeout: 10000 }).should("exist");
+
+    // Path relative to cypress/fixtures
+    const filePath = "Sample.pdf";
+
+    // Attach file directly to hidden input
+    cy.get('input[type="file"]').attachFile(filePath);
+
+    // (Optional) Assert successful upload
+    cy.contains("Upload complete").should("be.visible");
+    cy.contains("span.v-btn__content", "Save").click();
   });
 });

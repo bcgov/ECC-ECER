@@ -78,30 +78,30 @@ describe("Managed Submitted ECE Assistant Certification Add PreviousName", () =>
     cy.document().its("readyState").should("eq", "complete");
     cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
     cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
-     // Manage Submitted Application 
-     cy.get(selectors.elementType.span_button).contains('Home').click();
-     cy.reload();
-     cy.get(selectors.elementType.span_button).contains('Manage Application').click();
-     cy.get(selectors.elementType.text_links).contains('Proof of previous name').click()
-     cy.contains('a','Add previous name').click({ force: true });
-     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-     cy.get('[aria-label="First name"]').type(`First Name_${timestamp}`); 
-     cy.get('[aria-label="Middle names (optional)"]').type(`Middle tName_${timestamp}`);
-     cy.get('[aria-label="Last name"]').type(`Last Name_${timestamp}`);
+    // Manage Submitted Application
+    cy.get(selectors.elementType.span_button).contains("Home").click();
+    cy.reload();
+    cy.get(selectors.elementType.span_button).contains("Manage Application").click();
+    cy.get(selectors.elementType.text_links).contains("Proof of previous name").click();
+    cy.contains("a", "Add previous name").click({ force: true });
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    cy.get('[aria-label="First name"]').type(`First Name_${timestamp}`);
+    cy.get('[aria-label="Middle names (optional)"]').type(`Middle tName_${timestamp}`);
+    cy.get('[aria-label="Last name"]').type(`Last Name_${timestamp}`);
 
-     cy.get(selectors.elementType.span_button).contains('Save and continue').click();
-     cy.get(selectors.elementType.span_button).contains('Add file').click();
-     // Wait for hidden file input to appear in the DOM
-     cy.get('input[type="file"]', { timeout: 10000 }).should('exist');
+    cy.get(selectors.elementType.span_button).contains("Save and continue").click();
+    cy.get(selectors.elementType.span_button).contains("Add file").click();
+    // Wait for hidden file input to appear in the DOM
+    cy.get('input[type="file"]', { timeout: 10000 }).should("exist");
 
-     // Path relative to cypress/fixtures
-     const filePath = 'Sample.pdf';
+    // Path relative to cypress/fixtures
+    const filePath = "Sample.pdf";
 
-     // Attach file directly to hidden input
-     cy.get('input[type="file"]').attachFile(filePath);
+    // Attach file directly to hidden input
+    cy.get('input[type="file"]').attachFile(filePath);
 
-     // (Optional) Assert successful upload
-     cy.contains('Upload complete').should('be.visible');
-     cy.get(selectors.elementType.span_button).contains('Send').click();
+    // (Optional) Assert successful upload
+    cy.contains("Upload complete").should("be.visible");
+    cy.get(selectors.elementType.span_button).contains("Send").click();
   });
 });

@@ -118,10 +118,6 @@ const resendIcraEligibilityWorkExperienceReferenceInvite = async (
   });
 };
 
-
-
-
-
 export {
   addIcraEligibilityWorkExperienceReference,
   createOrUpdateDraftIcraEligibility,
@@ -130,5 +126,5 @@ export {
   getIcraWorkExperienceReferenceById,
   replaceIcraEligibilityWorkExperienceReference,
   submitIcraEligibilityApplication,
-  resendIcraEligibilityWorkExperienceReferenceInvite
+  resendIcraEligibilityWorkExperienceReferenceInvite,
 };

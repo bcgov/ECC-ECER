@@ -13,15 +13,15 @@ Cypress.Commands.add("resetBrowserState", () => {
 Cypress.Commands.add("login", (username?: string, password?: string) => {
   const user = username ?? (Cypress.env("PORTAL_USER").BCSC_USERNAME as string);
   const pass = password ?? (Cypress.env("PORTAL_USER").BCSC_PASSWORD as string);
-  
+
   // Adjust the URL if login page is at a different route.
   cy.visit("/login");
   // Perform login steps:
   // 1. Click the button with the text "Log in with BC Services Card".
   cy.contains("button", "Log in with BC Services Card").should("be.visible").click();
- 
+
   cy.origin("https://idtest.gov.bc.ca", { args: { user, pass } }, ({ user, pass }) => {
-    // 2. Click on the tile (or button) with the given id.   
+    // 2. Click on the tile (or button) with the given id.
     cy.get("#tile_test_with_username_password_device_div_id").click({ force: true });
     // 3. Enter the username and password.
     cy.get('input[name="username"]').type(user, { force: true, log: false });

@@ -9,8 +9,7 @@ describe("Active ECE 5 Year Certificate and Active ECE one Year but ECE 5 year i
     /** Dashboard */
     cy.seedRenewalApplication("ECEOneYear", false, false);
 
-    cy.reload();  
+    cy.reload();
     cy.contains("Early Childhood Educator - ECE Five Year").should("be.visible");
   });
-   
 });
