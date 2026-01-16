@@ -370,9 +370,7 @@ const router = createRouter({
       path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-references",
       name: "manage-icra-eligibility-work-experience-references",
       component: () =>
-        import(
-          "./components/IcraEligibilityManageWorkExperienceReferences.vue"
-        ),
+        import("./components/IcraEligibilityManageWorkExperienceReferences.vue"),
       props: true,
       meta: {
         requiresAuth: true,

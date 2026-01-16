@@ -139,8 +139,14 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ `${internationalCertificate?.expiryDate ? formatDate(internationalCertificate.expiryDate || "", "LLLL
-              d, yyyy") : "—"} ` }}
+              {{
+                internationalCertificate?.expiryDate
+                  ? formatDate(
+                      internationalCertificate.expiryDate || "",
+                      "LLLL d, yyyy",
+                    )
+                  : "—"
+              }}
             </p>
           </v-col>
         </v-row>
