@@ -2,7 +2,10 @@
   <Alert type="error" title="404 Error - Page not found" />
   <v-container>
     <div class="d-flex flex-column ga-10 mt-10">
-      <h3>The page you’re looking for might have been removed, moved, or is temporarily unavailable.</h3>
+      <h3>
+        The page you’re looking for might have been removed, moved, or is
+        temporarily unavailable.
+      </h3>
       <div class="d-flex flex-column ga-3">
         <h3>We suggest</h3>
         <ul class="ml-10">
@@ -12,7 +15,9 @@
         </ul>
       </div>
     </div>
-    <v-btn class="mt-16" color="primary" @click="router.push('/')">Go to home page</v-btn>
+    <v-btn class="mt-16" color="primary" @click="router.push('/')">
+      Go to home page
+    </v-btn>
   </v-container>
 </template>
 

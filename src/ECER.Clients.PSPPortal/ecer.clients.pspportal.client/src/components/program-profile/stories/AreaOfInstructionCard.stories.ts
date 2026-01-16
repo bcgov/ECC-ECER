@@ -3,7 +3,8 @@ import { useConfigStore } from "@/store/config";
 import type { Components } from "@/types/openapi";
 import AreaOfInstructionCard from "../AreaOfInstructionCard.vue";
 
-interface CourseAreaOfInstructionWithCourse extends Components.Schemas.CourseAreaOfInstruction {
+interface CourseAreaOfInstructionWithCourse
+  extends Components.Schemas.CourseAreaOfInstruction {
   courseTitle?: string | null;
   courseNumber?: string | null;
 }
@@ -48,11 +49,13 @@ const meta = {
   argTypes: {
     courseAreaOfInstructions: {
       control: "object",
-      description: "List of CourseAreaOfInstruction items with course information, grouped by areaOfInstructionId",
+      description:
+        "List of CourseAreaOfInstruction items with course information, grouped by areaOfInstructionId",
     },
     areaSubtitles: {
       control: "object",
-      description: "Object mapping areaOfInstructionId to custom subtitle strings",
+      description:
+        "Object mapping areaOfInstructionId to custom subtitle strings",
     },
     showProgressBar: {
       control: "boolean",

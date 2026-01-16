@@ -1,11 +1,29 @@
 <template>
   <div>
-    <v-progress-linear v-if="loading" indeterminate color="primary"></v-progress-linear>
-    <ProgramWizard v-else-if="isDraftOrInProgress && program" :program-id="programId" :program="program" />
+    <v-progress-linear
+      v-if="loading"
+      indeterminate
+      color="primary"
+    ></v-progress-linear>
+    <ProgramWizard
+      v-else-if="isDraftOrInProgress && program"
+      :program-id="programId"
+      :program="program"
+    />
     <ProgramDetail v-else-if="program" :program="program" />
-    <Alert v-else type="error" :closable="false" :prominent="true" variant="text" :rounded="false">
+    <Alert
+      v-else
+      type="error"
+      :closable="false"
+      :prominent="true"
+      variant="text"
+      :rounded="false"
+    >
       <h2 class="text-error">Program Not Found</h2>
-      <p class="text-grey-dark">The program you are looking for does not exist or you do not have access to it.</p>
+      <p class="text-grey-dark">
+        The program you are looking for does not exist or you do not have access
+        to it.
+      </p>
     </Alert>
   </div>
 </template>
@@ -44,7 +62,9 @@ export default defineComponent({
       if (!this.program || !this.program.status) {
         return false;
       }
-      return this.program.status === "Draft" || this.program.status === "UnderReview";
+      return (
+        this.program.status === "Draft" || this.program.status === "UnderReview"
+      );
     },
   },
   async setup() {
@@ -67,7 +87,14 @@ export default defineComponent({
     async loadProgram() {
       this.loading = true;
       try {
-        const { data: programs } = await getPrograms(this.programId, ["Draft", "Denied", "Approved", "UnderReview", "ChangeRequestInProgress", "Inactive"]);
+        const { data: programs } = await getPrograms(this.programId, [
+          "Draft",
+          "Denied",
+          "Approved",
+          "UnderReview",
+          "ChangeRequestInProgress",
+          "Inactive",
+        ]);
         const program = programs && programs.length > 0 ? programs[0] : null;
         this.program = program || null;
       } catch (error) {

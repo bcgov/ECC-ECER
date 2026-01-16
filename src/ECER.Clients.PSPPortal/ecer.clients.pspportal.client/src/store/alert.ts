@@ -34,13 +34,22 @@ export const useAlertStore = defineStore("alert", {
     },
     // Use these three below methods to show a snackbar notification.
     async setSuccessAlert(message: string) {
-      this.addAlertNotification({ text: message, alertType: AlertNotificationType.SUCCESS });
+      this.addAlertNotification({
+        text: message,
+        alertType: AlertNotificationType.SUCCESS,
+      });
     },
     async setFailureAlert(message: string) {
-      this.addAlertNotification({ text: message, alertType: AlertNotificationType.ERROR });
+      this.addAlertNotification({
+        text: message,
+        alertType: AlertNotificationType.ERROR,
+      });
     },
     async setWarningAlert(message: string) {
-      this.addAlertNotification({ text: message, alertType: AlertNotificationType.WARN });
+      this.addAlertNotification({
+        text: message,
+        alertType: AlertNotificationType.WARN,
+      });
     },
   },
 });

@@ -1,4 +1,8 @@
-import type { CheckBoxWrapper, DropdownWrapper, RadioButtonWrapper } from "@/types/form";
+import type {
+  CheckBoxWrapper,
+  DropdownWrapper,
+  RadioButtonWrapper,
+} from "@/types/form";
 import type { Components } from "@/types/openapi";
 
 export enum ApplicationState {

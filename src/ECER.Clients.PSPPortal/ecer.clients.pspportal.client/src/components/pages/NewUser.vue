@@ -7,16 +7,34 @@
     </v-row>
     <v-row>
       <v-col class="mt-4" cols="12">
-        <EceForm ref="newUserFormRef" :form="newUserForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
+        <EceForm
+          ref="newUserFormRef"
+          :form="newUserForm"
+          :form-data="formStore.formData"
+          @updated-form-data="formStore.setFormData"
+        />
         <v-row class="mt-10">
           <v-col>
             <div class="d-flex flex-row justify-start ga-2">
-              <v-btn rounded="lg" color="primary" :loading="loadingStore.isLoading('psp_user_profile_put') || isRedirecting" @click="submit">Save</v-btn>
+              <v-btn
+                rounded="lg"
+                color="primary"
+                :loading="
+                  loadingStore.isLoading('psp_user_profile_put') ||
+                  isRedirecting
+                "
+                @click="submit"
+              >
+                Save
+              </v-btn>
               <v-btn
                 rounded="lg"
                 color="primary"
                 variant="outlined"
-                :loading="loadingStore.isLoading('psp_user_profile_put') || isRedirecting"
+                :loading="
+                  loadingStore.isLoading('psp_user_profile_put') ||
+                  isRedirecting
+                "
                 @click="oidcStore.logout()"
               >
                 Cancel
@@ -58,15 +76,26 @@ export default defineComponent({
     formStore.initializeForm({
       [newUserForm?.components?.firstName?.id || ""]: userStore.firstName ?? "",
       [newUserForm?.components?.lastName?.id || ""]: userStore.lastName ?? "",
-      [newUserForm?.components?.preferredFirstName?.id || ""]: userStore.preferredName ?? "",
+      [newUserForm?.components?.preferredFirstName?.id || ""]:
+        userStore.preferredName ?? "",
       [newUserForm?.components?.jobTitle?.id || ""]: userStore.jobTitle ?? "",
       [newUserForm?.components?.phoneNumber?.id || ""]: userStore.phone ?? "",
-      [newUserForm?.components?.phoneNumberExtension?.id || ""]: userStore.phoneExtension ?? "",
+      [newUserForm?.components?.phoneNumberExtension?.id || ""]:
+        userStore.phoneExtension ?? "",
       [newUserForm?.components?.email?.id || ""]: userStore.email ?? "",
-      [newUserForm?.components?.hasAcceptedTermsOfUse?.id || ""]: userStore.hasAcceptedTermsOfUse ?? false,
+      [newUserForm?.components?.hasAcceptedTermsOfUse?.id || ""]:
+        userStore.hasAcceptedTermsOfUse ?? false,
     });
 
-    return { newUserForm, formStore, alertStore, userStore, loadingStore, oidcStore, router };
+    return {
+      newUserForm,
+      formStore,
+      alertStore,
+      userStore,
+      loadingStore,
+      oidcStore,
+      router,
+    };
   },
   data() {
     return {
@@ -75,22 +104,48 @@ export default defineComponent({
   },
   methods: {
     async submit() {
-      const { valid } = await (this.$refs.newUserFormRef as typeof EceForm).$refs[newUserForm.id].validate();
+      const { valid } = await (
+        this.$refs.newUserFormRef as typeof EceForm
+      ).$refs[newUserForm.id].validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       } else {
         this.isRedirecting = true;
         const userUpdated = await updatePspUserProfile(
           {
-            firstName: this.formStore.formData[newUserForm?.components?.firstName?.id || ""],
-            lastName: this.formStore.formData[newUserForm?.components?.lastName?.id || ""],
-            preferredName: this.formStore.formData[newUserForm?.components?.preferredFirstName?.id || ""],
-            email: this.formStore.formData[newUserForm?.components?.email?.id || ""],
-            phone: this.formStore.formData[newUserForm?.components?.phoneNumber?.id || ""],
-            phoneExtension: this.formStore.formData[newUserForm?.components?.phoneNumberExtension?.id || ""],
-            jobTitle: this.formStore.formData[newUserForm?.components?.jobTitle?.id || ""],
-            hasAcceptedTermsOfUse: this.formStore.formData[newUserForm?.components?.hasAcceptedTermsOfUse?.id || ""],
+            firstName:
+              this.formStore.formData[
+                newUserForm?.components?.firstName?.id || ""
+              ],
+            lastName:
+              this.formStore.formData[
+                newUserForm?.components?.lastName?.id || ""
+              ],
+            preferredName:
+              this.formStore.formData[
+                newUserForm?.components?.preferredFirstName?.id || ""
+              ],
+            email:
+              this.formStore.formData[newUserForm?.components?.email?.id || ""],
+            phone:
+              this.formStore.formData[
+                newUserForm?.components?.phoneNumber?.id || ""
+              ],
+            phoneExtension:
+              this.formStore.formData[
+                newUserForm?.components?.phoneNumberExtension?.id || ""
+              ],
+            jobTitle:
+              this.formStore.formData[
+                newUserForm?.components?.jobTitle?.id || ""
+              ],
+            hasAcceptedTermsOfUse:
+              this.formStore.formData[
+                newUserForm?.components?.hasAcceptedTermsOfUse?.id || ""
+              ],
           },
           true,
         );

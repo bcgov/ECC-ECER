@@ -1,8 +1,19 @@
 <template>
-  <PreviewCard title="Professional development" portal-stage="ProfessionalDevelopment">
+  <PreviewCard
+    title="Professional development"
+    portal-stage="ProfessionalDevelopment"
+  >
     <template #content>
-      <div v-for="(professionalDevelopment, index) in professionalDevelopments" :key="professionalDevelopment.id!">
-        <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
+      <div
+        v-for="(professionalDevelopment, index) in professionalDevelopments"
+        :key="professionalDevelopment.id!"
+      >
+        <v-divider
+          v-if="index !== 0"
+          :thickness="2"
+          color="grey-lightest"
+          class="border-opacity-100 my-6"
+        />
         <v-row>
           <v-col>
             <h4 class="text-black">Name of course or workshop</h4>
@@ -13,23 +24,33 @@
             <p class="small">How many hours was it</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ `${professionalDevelopment.numberOfHours} hours` }}</p>
+            <p class="small font-weight-bold">
+              {{ `${professionalDevelopment.numberOfHours} hours` }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Name of place that hosted the course or workshop</p>
+            <p class="small">
+              Name of place that hosted the course or workshop
+            </p>
           </v-col>
           <v-col>
-            <p id="courseProvince" class="small font-weight-bold">{{ professionalDevelopment.organizationName }}</p>
+            <p id="courseProvince" class="small font-weight-bold">
+              {{ professionalDevelopment.organizationName }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Website with description of course or workshop (optional)</p>
+            <p class="small">
+              Website with description of course or workshop (optional)
+            </p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ professionalDevelopment.courseorWorkshopLink || "—" }}</p>
+            <p class="small font-weight-bold">
+              {{ professionalDevelopment.courseorWorkshopLink || "—" }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -60,17 +81,26 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ professionalDevelopment.organizationContactInformation || "—" }}
+              {{
+                professionalDevelopment.organizationContactInformation || "—"
+              }}
             </p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Certificate of document that shows you completed the course</p>
+            <p class="small">
+              Certificate of document that shows you completed the course
+            </p>
           </v-col>
           <v-col>
             <v-row no-gutters>
-              <v-col v-for="(file, childIndex) in professionalDevelopment.files" :key="childIndex" cols="12" class="small font-weight-bold">
+              <v-col
+                v-for="(file, childIndex) in professionalDevelopment.files"
+                :key="childIndex"
+                cols="12"
+                class="small font-weight-bold"
+              >
                 {{ file.name }}
               </v-col>
             </v-row>
@@ -105,7 +135,10 @@ export default defineComponent({
   },
   computed: {
     professionalDevelopments(): Components.Schemas.ProfessionalDevelopment[] {
-      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id || ""];
+      return this.wizardStore.wizardData[
+        this.wizardStore?.wizardConfig?.steps?.professionalDevelopments?.form
+          ?.inputs?.professionalDevelopments?.id || ""
+      ];
     },
   },
 });

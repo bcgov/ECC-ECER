@@ -5,6 +5,8 @@ describe("Renew Expired (for more than 5 Years) ECE One Year Certificate Applica
     cy.reload();
     cy.reload();
     /** Dashboard */
-    cy.contains("You cannot renew your ECE One Year certification because it's been expired for over 5 years.").should("be.visible");
+    cy.contains(
+      "You cannot renew your ECE One Year certification because it's been expired for over 5 years.",
+    ).should("be.visible");
   });
 });

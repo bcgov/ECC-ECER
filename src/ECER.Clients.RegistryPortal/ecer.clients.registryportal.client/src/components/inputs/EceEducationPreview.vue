@@ -2,15 +2,33 @@
   <PreviewCard title="Education" portal-stage="Education">
     <template #content>
       <div v-for="(education, id, index) in educations" :key="id">
-        <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
+        <v-divider
+          v-if="index !== 0"
+          :thickness="2"
+          color="grey-lightest"
+          class="border-opacity-100 my-6"
+        />
         <v-row>
           <v-col>
-            <h4 class="text-black">{{ education.postSecondaryInstitution?.name ?? education.educationalInstitutionName ?? "" }}</h4>
+            <h4 class="text-black">
+              {{
+                education.postSecondaryInstitution?.name ??
+                education.educationalInstitutionName ??
+                ""
+              }}
+            </h4>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Name of {{ applicationStore.isDraftCertificateTypeEceAssistant ? "course" : "program" }}</p>
+            <p class="small">
+              Name of
+              {{
+                applicationStore.isDraftCertificateTypeEceAssistant
+                  ? "course"
+                  : "program"
+              }}
+            </p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ education.programName }}</p>
@@ -18,18 +36,36 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Start date of {{ applicationStore.isDraftCertificateTypeEceAssistant ? "course" : "program" }}</p>
+            <p class="small">
+              Start date of
+              {{
+                applicationStore.isDraftCertificateTypeEceAssistant
+                  ? "course"
+                  : "program"
+              }}
+            </p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ formatDate(education.startDate || "", "LLLL d, yyyy") }}</p>
+            <p class="small font-weight-bold">
+              {{ formatDate(education.startDate || "", "LLLL d, yyyy") }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">End date of {{ applicationStore.isDraftCertificateTypeEceAssistant ? "course" : "program" }}</p>
+            <p class="small">
+              End date of
+              {{
+                applicationStore.isDraftCertificateTypeEceAssistant
+                  ? "course"
+                  : "program"
+              }}
+            </p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ formatDate(education.endDate || "", "LLLL d, yyyy") }}</p>
+            <p class="small font-weight-bold">
+              {{ formatDate(education.endDate || "", "LLLL d, yyyy") }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -37,7 +73,9 @@
             <p class="small">Country</p>
           </v-col>
           <v-col>
-            <p id="educationCountry" class="small font-weight-bold">{{ education.country?.countryName ?? "-" }}</p>
+            <p id="educationCountry" class="small font-weight-bold">
+              {{ education.country?.countryName ?? "-" }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -45,7 +83,9 @@
             <p class="small">Province or territory</p>
           </v-col>
           <v-col>
-            <p id="educationProvince" class="small font-weight-bold">{{ education.province?.provinceName ?? "-" }}</p>
+            <p id="educationProvince" class="small font-weight-bold">
+              {{ education.province?.provinceName ?? "-" }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -53,7 +93,9 @@
             <p class="small">Campus location</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.campusLocation ?? "-" }}</p>
+            <p class="small font-weight-bold">
+              {{ education.campusLocation ?? "-" }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -69,7 +111,9 @@
             <p class="small">Your full name as shown on transcript</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ studentFullName(education) }}</p>
+            <p class="small font-weight-bold">
+              {{ studentFullName(education) }}
+            </p>
           </v-col>
         </v-row>
       </div>
@@ -103,7 +147,10 @@ export default defineComponent({
   },
   computed: {
     educations(): { [id: string]: Components.Schemas.Transcript } {
-      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id || ""];
+      return this.wizardStore.wizardData[
+        this.wizardStore?.wizardConfig?.steps?.education?.form?.inputs
+          ?.educationList?.id || ""
+      ];
     },
   },
   methods: {
@@ -115,7 +162,9 @@ export default defineComponent({
       return education.educationRecognition === "Recognized" ? "Yes" : "No";
     },
     programOrigin(education: Components.Schemas.Transcript) {
-      return educationOriginRadio.find((origin) => origin.value === education.educationOrigin)?.label;
+      return educationOriginRadio.find(
+        (origin) => origin.value === education.educationOrigin,
+      )?.label;
     },
   },
 });

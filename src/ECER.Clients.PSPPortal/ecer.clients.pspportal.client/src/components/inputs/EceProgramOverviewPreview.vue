@@ -6,7 +6,9 @@
           <p class="small">Institution name</p>
         </v-col>
         <v-col>
-          <p id="institutionName" class="small font-weight-bold">{{ institutionName }}</p>
+          <p id="institutionName" class="small font-weight-bold">
+            {{ institutionName }}
+          </p>
         </v-col>
       </v-row>
       <v-row>
@@ -14,7 +16,9 @@
           <p class="small">Start date</p>
         </v-col>
         <v-col>
-          <p id="startDate" class="small font-weight-bold">{{ startDateFormatted }}</p>
+          <p id="startDate" class="small font-weight-bold">
+            {{ startDateFormatted }}
+          </p>
         </v-col>
       </v-row>
       <v-row>
@@ -22,7 +26,9 @@
           <p class="small">End date</p>
         </v-col>
         <v-col>
-          <p id="endDate" class="small font-weight-bold">{{ endDateFormatted }}</p>
+          <p id="endDate" class="small font-weight-bold">
+            {{ endDateFormatted }}
+          </p>
         </v-col>
       </v-row>
       <v-row>
@@ -30,7 +36,9 @@
           <p class="small">Program types</p>
         </v-col>
         <v-col>
-          <p id="programTypes" class="small font-weight-bold">{{ programTypes }}</p>
+          <p id="programTypes" class="small font-weight-bold">
+            {{ programTypes }}
+          </p>
         </v-col>
       </v-row>
     </template>
@@ -60,21 +68,29 @@ export default defineComponent({
   },
   computed: {
     institutionName() {
-      const institutionNameId = this.wizardStore.wizardConfig.steps.programOverview?.form.components.program?.id || "";
+      const institutionNameId =
+        this.wizardStore.wizardConfig.steps.programOverview?.form.components
+          .program?.id || "";
       return this.wizardStore.wizardData[institutionNameId];
     },
     startDateFormatted() {
-      const startDateId = this.wizardStore.wizardConfig.steps.programOverview?.form.components.startDate?.id || "";
+      const startDateId =
+        this.wizardStore.wizardConfig.steps.programOverview?.form.components
+          .startDate?.id || "";
       const startDate = this.wizardStore.wizardData[startDateId];
       return formatDate(startDate, "LLLL d, yyyy");
     },
     endDateFormatted() {
-      const endDateId = this.wizardStore.wizardConfig.steps.programOverview?.form.components.endDate?.id || "";
+      const endDateId =
+        this.wizardStore.wizardConfig.steps.programOverview?.form.components
+          .endDate?.id || "";
       const endDate = this.wizardStore.wizardData[endDateId];
       return formatDate(endDate, "LLLL d, yyyy");
     },
     programTypes() {
-      const programTypeId = this.wizardStore.wizardConfig.steps.programOverview?.form.components.programTypes?.id || "";
+      const programTypeId =
+        this.wizardStore.wizardConfig.steps.programOverview?.form.components
+          .programTypes?.id || "";
       return this.wizardStore.wizardData[programTypeId];
     },
   },

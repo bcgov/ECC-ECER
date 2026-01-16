@@ -3,8 +3,17 @@
     <Breadcrumb />
     <v-row>
       <v-col>
-        <Alert v-model="isDuplicateReference" type="error" title="choose someone else" prominent>
-          <p>This person is already your character reference. Your work experience reference and character reference must be different people.</p>
+        <Alert
+          v-model="isDuplicateReference"
+          type="error"
+          title="choose someone else"
+          prominent
+        >
+          <p>
+            This person is already your character reference. Your work
+            experience reference and character reference must be different
+            people.
+          </p>
         </Alert>
       </v-col>
     </v-row>
@@ -15,12 +24,20 @@
       <ul class="ml-10">
         <div v-if="applicationType === 'Renewal'">
           <li>Able to confirm you completed work experience hours</li>
-          <li>A co-worker, supervisor, or parent/guardian of a child you cared for</li>
+          <li>
+            A co-worker, supervisor, or parent/guardian of a child you cared for
+          </li>
         </div>
         <div v-if="applicationType === 'New'">
-          <li>Can speak to your knowledge, skill, ability and competencies as an ECE</li>
+          <li>
+            Can speak to your knowledge, skill, ability and competencies as an
+            ECE
+          </li>
           <li>Has directly supervised (observed) the hours they attest to</li>
-          <li>Has held a valid Canadian ECE certification/registration during the hours they supervised or observed you</li>
+          <li>
+            Has held a valid Canadian ECE certification/registration during the
+            hours they supervised or observed you
+          </li>
         </div>
       </ul>
       <p class="mb-6">
@@ -34,14 +51,33 @@
         :form-data="formStore.formData"
         @updated-form-data="formStore.setFormData"
       />
-      <p class="mt-6">After you save, we will send an email to this person requesting a reference.</p>
+      <p class="mt-6">
+        After you save, we will send an email to this person requesting a
+        reference.
+      </p>
     </div>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
-        <v-btn size="large" color="primary" :loading="loadingStore.isLoading('application_workexperiencereference_update_post')" @click="handleSubmitReference">
+        <v-btn
+          size="large"
+          color="primary"
+          :loading="
+            loadingStore.isLoading(
+              'application_workexperiencereference_update_post',
+            )
+          "
+          @click="handleSubmitReference"
+        >
           Save new reference
         </v-btn>
-        <v-btn size="large" variant="outlined" color="primary" @click="router.back()">Cancel</v-btn>
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="router.back()"
+        >
+          Cancel
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -83,13 +119,17 @@ export default defineComponent({
     const formStore = useFormStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
-    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))
+      ?.data;
 
-    let reference: Components.Schemas.WorkExperienceReference | undefined = undefined;
+    let reference: Components.Schemas.WorkExperienceReference | undefined =
+      undefined;
 
     if (props.referenceId) {
       // Check store for existing reference
-      const reference = applicationStore.workExperienceReferenceById(props.referenceId);
+      const reference = applicationStore.workExperienceReferenceById(
+        props.referenceId,
+      );
 
       if (!reference) {
         router.back();
@@ -97,7 +137,16 @@ export default defineComponent({
     }
     formStore.initializeForm({});
 
-    return { applicationStore, alertStore, reference, formStore, loadingStore, workExperienceReferenceUpsertForm, router, applicationStatus };
+    return {
+      applicationStore,
+      alertStore,
+      reference,
+      formStore,
+      loadingStore,
+      workExperienceReferenceUpsertForm,
+      router,
+      applicationStatus,
+    };
   },
   data() {
     return { isDuplicateReference: false };
@@ -111,7 +160,9 @@ export default defineComponent({
   methods: {
     async handleSubmitReference() {
       // Validate the form
-      const { valid } = await (this.$refs.upsertWorkExperienceReferenceForm as typeof EceForm).$refs[workExperienceReferenceUpsertForm.id].validate();
+      const { valid } = await (
+        this.$refs.upsertWorkExperienceReferenceForm as typeof EceForm
+      ).$refs[workExperienceReferenceUpsertForm.id].validate();
 
       if (valid) {
         //check for duplicate reference
@@ -121,12 +172,18 @@ export default defineComponent({
         if (this.applicationStatus?.characterReferencesStatus) {
           for (const ref of this.applicationStatus.characterReferencesStatus) {
             if (ref.status !== "Rejected") {
-              refSet.add(`${ref.firstName?.toLowerCase()} ${ref.lastName?.toLowerCase()}`);
+              refSet.add(
+                `${ref.firstName?.toLowerCase()} ${ref.lastName?.toLowerCase()}`,
+              );
             }
           }
         }
 
-        if (refSet.has(`${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`)) {
+        if (
+          refSet.has(
+            `${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`,
+          )
+        ) {
           this.isDuplicateReference = true;
           //scroll to top of page
           globalThis.scrollTo({
@@ -135,18 +192,30 @@ export default defineComponent({
           });
         } else {
           const { error } = await upsertWorkExperienceReference(
-            { application_id: this.applicationId, reference_id: this.referenceId },
+            {
+              application_id: this.applicationId,
+              reference_id: this.referenceId,
+            },
             this.formStore.formData,
           );
           if (error) {
-            this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+            this.alertStore.setFailureAlert(
+              "Sorry, something went wrong and your changes could not be saved. Try again later.",
+            );
           } else {
-            this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
-            this.router.push({ name: "manageWorkExperienceReferences", params: { applicationId: this.applicationId } });
+            this.alertStore.setSuccessAlert(
+              "Reference updated. We sent them an email to request a reference.",
+            );
+            this.router.push({
+              name: "manageWorkExperienceReferences",
+              params: { applicationId: this.applicationId },
+            });
           }
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue.",
+        );
       }
     },
   },

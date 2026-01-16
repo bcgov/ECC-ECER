@@ -8,28 +8,49 @@
     <v-row>
       <v-col class="ml-1" cols="12">
         <h1>Check your transfer eligibility</h1>
-        <p class="mt-5">Answer a few questions to see if you are eligible to apply to transfer your certification from another province or territory to B.C.</p>
+        <p class="mt-5">
+          Answer a few questions to see if you are eligible to apply to transfer
+          your certification from another province or territory to B.C.
+        </p>
         <h2 class="mt-5">Out-of-province registrant information</h2>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <p class="mt-8">In which Canadian province or territory are you certified?</p>
+            <p class="mt-8">
+              In which Canadian province or territory are you certified?
+            </p>
             <v-select
               id="province"
               class="pt-2"
-              :items="configStore.provinceList.filter((p) => p.provinceName !== 'British Columbia' && p.provinceName !== 'Other')"
+              :items="
+                configStore.provinceList.filter(
+                  (p) =>
+                    p.provinceName !== 'British Columbia' &&
+                    p.provinceName !== 'Other',
+                )
+              "
               variant="outlined"
               label=""
               v-model="province"
               item-title="provinceName"
               item-value="provinceId"
-              :rules="[Rules.required('Select your province or territory', 'provinceId')]"
+              :rules="[
+                Rules.required(
+                  'Select your province or territory',
+                  'provinceId',
+                ),
+              ]"
               @update:modelValue="onProvinceChange"
               return-object
             ></v-select>
           </v-col>
         </v-row>
         <v-row>
-          <v-col v-if="outOfProvinceCertificationTypes.length > 0" md="8" lg="6" xl="4">
+          <v-col
+            v-if="outOfProvinceCertificationTypes.length > 0"
+            md="8"
+            lg="6"
+            xl="4"
+          >
             <p class="mt-8">What certification do you have?</p>
             <v-select
               id="outOfProvinceCertification"
@@ -40,16 +61,34 @@
               v-model="outOfProvinceCertification"
               item-title="transferringCertificate.certificationType"
               item-value="transferringCertificate.id"
-              :rules="[Rules.required('Select your out of province certification type', 'transferringCertificate')]"
+              :rules="[
+                Rules.required(
+                  'Select your out of province certification type',
+                  'transferringCertificate',
+                ),
+              ]"
               @update:modelValue="onCertificationChange"
               return-object
             ></v-select>
           </v-col>
-          <v-col v-if="outOfProvinceCertificationTypes.length === 0 && province && !outOfProvinceCertificationTypesLoading" class="ml-1" cols="12">
-            <Callout type="warning" title="The province or territory you hold certification in is not eligible to be transferred to B.C.">
+          <v-col
+            v-if="
+              outOfProvinceCertificationTypes.length === 0 &&
+              province &&
+              !outOfProvinceCertificationTypesLoading
+            "
+            class="ml-1"
+            cols="12"
+          >
+            <Callout
+              type="warning"
+              title="The province or territory you hold certification in is not eligible to be transferred to B.C."
+            >
               <p>
                 You need to
-                <router-link to="/application/certification">apply for certification</router-link>
+                <router-link to="/application/certification">
+                  apply for certification
+                </router-link>
                 through a different pathway.
               </p>
             </Callout>
@@ -57,10 +96,14 @@
         </v-row>
         <v-row v-if="highestCertificationType === CertificationType.Assistant">
           <v-col class="ml-1" cols="12">
-            <Callout type="warning" title="You can apply to transfer your certification to ECE Assistant certification in B.C.">
+            <Callout
+              type="warning"
+              title="You can apply to transfer your certification to ECE Assistant certification in B.C."
+            >
               <p>
-                You will be able to work alongside ECEs and/or Infant and Toddler Educators in licensed child care programs for children birth to 5 years of
-                age.
+                You will be able to work alongside ECEs and/or Infant and
+                Toddler Educators in licensed child care programs for children
+                birth to 5 years of age.
               </p>
             </Callout>
           </v-col>
@@ -69,17 +112,32 @@
           <v-col class="ml-1" cols="12">
             <h2 class="mt-5">Work experience</h2>
             <p class="mt-5">
-              Your Canadian work experience determines your eligibility to apply for a transfer for either an ECE One Year or ECE Five Year certification in
-              B.C.
+              Your Canadian work experience determines your eligibility to apply
+              for a transfer for either an ECE One Year or ECE Five Year
+              certification in B.C.
             </p>
             <p class="mt-5">Your work experience:</p>
             <ul class="mt-3 ml-8">
-              <li>Includes any work or volunteer hours completed within the last 5 years</li>
-              <li>Cannot include your practicum hours (hours that were a part of your education)</li>
+              <li>
+                Includes any work or volunteer hours completed within the last 5
+                years
+              </li>
+              <li>
+                Cannot include your practicum hours (hours that were a part of
+                your education)
+              </li>
               <li>Must be observed by Canadian-certified ECE</li>
             </ul>
-            <p class="mt-5">Do you have 500 hours of Canadian work experience?</p>
-            <v-radio-group class="mt-3" id="programConfirmationRadio" v-model="has500HoursWorkExperience" :rules="[Rules.required()]" color="primary">
+            <p class="mt-5">
+              Do you have 500 hours of Canadian work experience?
+            </p>
+            <v-radio-group
+              class="mt-3"
+              id="programConfirmationRadio"
+              v-model="has500HoursWorkExperience"
+              :rules="[Rules.required()]"
+              color="primary"
+            >
               <v-radio label="Yes" value="true"></v-radio>
               <v-radio label="No" value="false"></v-radio>
             </v-radio-group>
@@ -90,46 +148,92 @@
             >
               <p class="mt-3">You will be able to work:</p>
               <ul class="mt-2 mb-8 ml-8">
-                <li>alone and/or as the primary educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
-                <li>alongside an Infant and Toddler Educator in licensed programs of children under 36 months</li>
+                <li>
+                  alone and/or as the primary educator in licensed child care
+                  programs for children 3 to 5 years of age, and/or
+                </li>
+                <li>
+                  alongside an Infant and Toddler Educator in licensed programs
+                  of children under 36 months
+                </li>
               </ul>
               <p>
-                Once you get 500 hours of work experience observed by a Canadian-certified ECE, you can apply to upgrade to an ECE Five Year with Infant and
-                Toddler Educator (ITE) and Special Needs Educator (SNE).
+                Once you get 500 hours of work experience observed by a
+                Canadian-certified ECE, you can apply to upgrade to an ECE Five
+                Year with Infant and Toddler Educator (ITE) and Special Needs
+                Educator (SNE).
               </p>
             </Callout>
             <Callout
-              v-else-if="has500HoursWorkExperience === 'true' && highestCertificationType === CertificationType.FiveYearCertificate"
+              v-else-if="
+                has500HoursWorkExperience === 'true' &&
+                highestCertificationType ===
+                  CertificationType.FiveYearCertificate
+              "
               type="warning"
               title="You can apply to transfer your certification to ECE Five Year certification in B.C."
             >
               <p class="mt-3">You will be able to work:</p>
               <ul class="mt-2 ml-8">
-                <li>alone and/or as the primary educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
-                <li>alongside an Infant and Toddler Educator in licensed programs of children under 36 months</li>
+                <li>
+                  alone and/or as the primary educator in licensed child care
+                  programs for children 3 to 5 years of age, and/or
+                </li>
+                <li>
+                  alongside an Infant and Toddler Educator in licensed programs
+                  of children under 36 months
+                </li>
               </ul>
             </Callout>
             <Callout
-              v-else-if="has500HoursWorkExperience === 'true' && highestCertificationType === CertificationType.FiveYearCertificateITE_SNE"
+              v-else-if="
+                has500HoursWorkExperience === 'true' &&
+                highestCertificationType ===
+                  CertificationType.FiveYearCertificateITE_SNE
+              "
               type="warning"
               title="You can apply to transfer your certification to ECE Five Year certification with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE) in B.C."
             >
-              <p strong class="mt-3">An ECE Five Year certification allows you to work in licensed child care programs:</p>
+              <p strong class="mt-3">
+                An ECE Five Year certification allows you to work in licensed
+                child care programs:
+              </p>
               <ul class="mt-2 mb-8 ml-8">
-                <li>alone and/or as the primary educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
-                <li>alongside an Infant and Toddler Educator in licensed programs of children under 36 months</li>
+                <li>
+                  alone and/or as the primary educator in licensed child care
+                  programs for children 3 to 5 years of age, and/or
+                </li>
+                <li>
+                  alongside an Infant and Toddler Educator in licensed programs
+                  of children under 36 months
+                </li>
               </ul>
-              <p strong class="mt-3">Specialized certifications allow you to work in licensed child care programs:</p>
+              <p strong class="mt-3">
+                Specialized certifications allow you to work in licensed child
+                care programs:
+              </p>
               <ul class="mt-2 ml-8">
-                <li>alone and/or as the primary educator with children birth to 5 years (ITE)</li>
-                <li>alone and/or as the primary educator in inclusive settings with children 3-5 years of age (SNE)</li>
+                <li>
+                  alone and/or as the primary educator with children birth to 5
+                  years (ITE)
+                </li>
+                <li>
+                  alone and/or as the primary educator in inclusive settings
+                  with children 3-5 years of age (SNE)
+                </li>
               </ul>
             </Callout>
           </v-col>
         </v-row>
         <v-row>
           <v-col class="ml-1" cols="12">
-            <v-btn id="btnViewRequirements" v-if="showRequirementsButton" @click="handleRequirementsClick" rounded="lg" color="primary">
+            <v-btn
+              id="btnViewRequirements"
+              v-if="showRequirementsButton"
+              @click="handleRequirementsClick"
+              rounded="lg"
+              color="primary"
+            >
               View requirements
             </v-btn>
           </v-col>
@@ -144,7 +248,10 @@ import { getCertificationComparisonList } from "@/api/configuration";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import ProfileForm from "@/components/ProfileForm.vue";
-import { getHighestCertificationType, CertificationType } from "@/utils/functions";
+import {
+  getHighestCertificationType,
+  CertificationType,
+} from "@/utils/functions";
 import { useConfigStore } from "@/store/config";
 import { useApplicationStore } from "@/store/application";
 import { useRouter } from "vue-router";
@@ -178,7 +285,10 @@ export default {
       this.has500HoursWorkExperience = undefined;
       this.highestCertificationType = undefined;
       if (this.transferData.province?.provinceId) {
-        this.outOfProvinceCertificationTypes = (await getCertificationComparisonList(this.transferData.province?.provinceId)) || [];
+        this.outOfProvinceCertificationTypes =
+          (await getCertificationComparisonList(
+            this.transferData.province?.provinceId,
+          )) || [];
         this.outOfProvinceCertificationTypesLoading = false;
       } else {
         this.outOfProvinceCertificationTypes = [];
@@ -189,7 +299,9 @@ export default {
       this.highestCertificationType = undefined;
       this.has500HoursWorkExperience = undefined;
       if (this.transferData.outOfProvinceCertification?.options) {
-        this.highestCertificationType = getHighestCertificationType(this.transferData.outOfProvinceCertification?.options);
+        this.highestCertificationType = getHighestCertificationType(
+          this.transferData.outOfProvinceCertification?.options,
+        );
       }
     },
     handleRequirementsClick() {
@@ -201,14 +313,22 @@ export default {
           stage: "CertificateInformation",
           labourMobilityCertificateInformation: {
             labourMobilityProvince: this.transferData.province,
-            existingCertificationType: this.transferData.outOfProvinceCertification?.transferringCertificate?.certificationType ?? undefined,
-            certificateComparisonId: this.getCertificationComparisonIdBasedOnSelfAssessmentOutcome(),
+            existingCertificationType:
+              this.transferData.outOfProvinceCertification
+                ?.transferringCertificate?.certificationType ?? undefined,
+            certificateComparisonId:
+              this.getCertificationComparisonIdBasedOnSelfAssessmentOutcome(),
           },
         },
       });
-      this.userStore.isUnder19 ? this.router.push({ name: "consent-required" }) : this.router.push({ name: "application-requirements" });
+      this.userStore.isUnder19
+        ? this.router.push({ name: "consent-required" })
+        : this.router.push({ name: "application-requirements" });
     },
-    getCertificationComparisonIdBasedOnSelfAssessmentOutcome(): string | undefined | null {
+    getCertificationComparisonIdBasedOnSelfAssessmentOutcome():
+      | string
+      | undefined
+      | null {
       //this function will leverage the logic from the selfAssessmentOutcome to generate the certificateComparisonId based on the options provided to registrant
       if (this.selfAssessmentOutcome.length === 0) {
         console.warn("No self-assessment outcome available.");
@@ -217,7 +337,11 @@ export default {
       //convert selfAssessmentOutcome to bcCertificate CertificationType
       let certificationType = "";
 
-      if (this.selfAssessmentOutcome.includes("FiveYears") && this.selfAssessmentOutcome.includes("Ite") && this.selfAssessmentOutcome.includes("Sne")) {
+      if (
+        this.selfAssessmentOutcome.includes("FiveYears") &&
+        this.selfAssessmentOutcome.includes("Ite") &&
+        this.selfAssessmentOutcome.includes("Sne")
+      ) {
         certificationType = CertificationType.FiveYearCertificateITE_SNE;
       } else if (this.selfAssessmentOutcome.includes("FiveYears")) {
         certificationType = CertificationType.FiveYearCertificate;
@@ -226,11 +350,16 @@ export default {
       } else if (this.selfAssessmentOutcome.includes("EceAssistant")) {
         certificationType = CertificationType.Assistant;
       } else {
-        console.warn("Unsupported self-assessment outcome:", this.selfAssessmentOutcome);
+        console.warn(
+          "Unsupported self-assessment outcome:",
+          this.selfAssessmentOutcome,
+        );
       }
 
       // find the certification comparison id based on the certification type
-      return this.transferData.outOfProvinceCertification?.options?.find((option) => option.bcCertificate === certificationType)?.id;
+      return this.transferData.outOfProvinceCertification?.options?.find(
+        (option) => option.bcCertificate === certificationType,
+      )?.id;
     },
   },
   computed: {
@@ -246,28 +375,44 @@ export default {
       }
       if (
         this.highestCertificationType === CertificationType.OneYear ||
-        (this.highestCertificationType === CertificationType.FiveYearCertificate && this.has500HoursWorkExperience === "false") ||
-        (this.highestCertificationType === CertificationType.FiveYearCertificateITE_SNE && this.has500HoursWorkExperience === "false")
+        (this.highestCertificationType ===
+          CertificationType.FiveYearCertificate &&
+          this.has500HoursWorkExperience === "false") ||
+        (this.highestCertificationType ===
+          CertificationType.FiveYearCertificateITE_SNE &&
+          this.has500HoursWorkExperience === "false")
       ) {
         return ["OneYear"];
       }
-      if (this.highestCertificationType === CertificationType.FiveYearCertificate && this.has500HoursWorkExperience === "true") {
+      if (
+        this.highestCertificationType ===
+          CertificationType.FiveYearCertificate &&
+        this.has500HoursWorkExperience === "true"
+      ) {
         return ["FiveYears"];
       }
-      if (this.highestCertificationType === CertificationType.FiveYearCertificateITE_SNE && this.has500HoursWorkExperience === "true") {
+      if (
+        this.highestCertificationType ===
+          CertificationType.FiveYearCertificateITE_SNE &&
+        this.has500HoursWorkExperience === "true"
+      ) {
         return ["FiveYears", "Ite", "Sne"];
       }
       return [];
     },
     showRequirementsButton() {
-      return this.highestCertificationType === CertificationType.Assistant || this.has500HoursWorkExperience;
+      return (
+        this.highestCertificationType === CertificationType.Assistant ||
+        this.has500HoursWorkExperience
+      );
     },
   },
   data: () => ({
     outOfProvinceCertificationTypesLoading: false,
     has500HoursWorkExperience: undefined,
     highestCertificationType: undefined as CertificationType | undefined,
-    outOfProvinceCertificationTypes: [] as Components.Schemas.ComparisonRecord[],
+    outOfProvinceCertificationTypes:
+      [] as Components.Schemas.ComparisonRecord[],
     Rules,
     province: undefined,
     outOfProvinceCertification: undefined,

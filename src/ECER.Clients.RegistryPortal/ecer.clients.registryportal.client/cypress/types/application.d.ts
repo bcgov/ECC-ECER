@@ -5,7 +5,11 @@ declare global {
        * Custom command to seed applications and certificates
        * @example cy.seedRenewalApplication()
        */
-      seedRenewalApplication(applicationType?: string, IsActive?: boolean, IsExpiredMoreThan5Years?: boolean): Chainable<Response<any>>;
+      seedRenewalApplication(
+        applicationType?: string,
+        IsActive?: boolean,
+        IsExpiredMoreThan5Years?: boolean,
+      ): Chainable<Response<any>>;
     }
   }
 }

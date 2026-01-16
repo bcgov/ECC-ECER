@@ -17,12 +17,20 @@
       <ECEHeader title="Terms and conditions" />
 
       <ul class="ml-10 d-flex flex-column ga-4 mt-6 mb-16">
-        <li v-for="(condition, index) in certification.certificateConditions" :key="index">
+        <li
+          v-for="(condition, index) in certification.certificateConditions"
+          :key="index"
+        >
           {{ condition.details }}
         </li>
       </ul>
 
-      <v-btn id="backToHome" size="large" color="primary" @click="handleBackToHome">
+      <v-btn
+        id="backToHome"
+        size="large"
+        color="primary"
+        @click="handleBackToHome"
+      >
         <v-icon size="small" icon="mdi-arrow-left" class="mr-2"></v-icon>
         Back to home
       </v-btn>

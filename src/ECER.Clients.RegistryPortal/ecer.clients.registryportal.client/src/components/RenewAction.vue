@@ -5,8 +5,18 @@
       <template v-if="canRenew && !readyToRenew">{{ dateText }}</template>
     </p>
     <div>
-      <v-btn id="btnRenew" v-if="showRenewLink" color="primary" @click="handleRenewClicked">Renew</v-btn>
-      <div v-else-if="showRenewalRequirementsLink" @click="handleLearnAboutRenewalRequirementsClicked">
+      <v-btn
+        id="btnRenew"
+        v-if="showRenewLink"
+        color="primary"
+        @click="handleRenewClicked"
+      >
+        Renew
+      </v-btn>
+      <div
+        v-else-if="showRenewalRequirementsLink"
+        @click="handleLearnAboutRenewalRequirementsClicked"
+      >
         <a href="#" @click.prevent>Learn about renewal requirements</a>
       </div>
     </div>
@@ -23,7 +33,14 @@ import { useCertificationStore } from "@/store/certification";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 import { useUserStore } from "@/store/user";
-import { getCertificationTypes, hasITE, hasSNE, isEceAssistant, isEceFiveYear, isEceOneYear } from "@/utils/certification";
+import {
+  getCertificationTypes,
+  hasITE,
+  hasSNE,
+  isEceAssistant,
+  isEceFiveYear,
+  isEceOneYear,
+} from "@/utils/certification";
 
 export default defineComponent({
   name: "RenewAction",
@@ -51,10 +68,14 @@ export default defineComponent({
   },
   computed: {
     earliestRenewalDate() {
-      return DateTime.fromISO(this.certification.expiryDate ?? "").minus({ months: 6 });
+      return DateTime.fromISO(this.certification.expiryDate ?? "").minus({
+        months: 6,
+      });
     },
     latestRenewalDate() {
-      return DateTime.fromISO(this.certification.expiryDate ?? "").plus({ years: 5 });
+      return DateTime.fromISO(this.certification.expiryDate ?? "").plus({
+        years: 5,
+      });
     },
     todaysDate() {
       return DateTime.now();
@@ -67,8 +88,10 @@ export default defineComponent({
     },
     canRenew() {
       return (
-        !(this.certificationStore.hasMultipleEceOneYearCertifications && isEceOneYear(this.certification)) &&
-        !(isEceOneYear(this.certification) && this.expiredOverFiveYears)
+        !(
+          this.certificationStore.hasMultipleEceOneYearCertifications &&
+          isEceOneYear(this.certification)
+        ) && !(isEceOneYear(this.certification) && this.expiredOverFiveYears)
       );
     },
     title() {
@@ -123,15 +146,23 @@ export default defineComponent({
     handleLearnAboutRenewalRequirementsClicked() {
       this.router.push({
         name: "certification-requirements",
-        query: { certificationTypes: getCertificationTypes(this.certification) },
+        query: {
+          certificationTypes: getCertificationTypes(this.certification),
+        },
       });
     },
     handleRenewClicked() {
       this.applicationStore.$patch({
-        draftApplication: { applicationType: "Renewal", certificationTypes: getCertificationTypes(this.certification), fromCertificate: this.certification.id },
+        draftApplication: {
+          applicationType: "Renewal",
+          certificationTypes: getCertificationTypes(this.certification),
+          fromCertificate: this.certification.id,
+        },
       });
 
-      this.userStore.isUnder19 ? this.router.push({ name: "consent-required" }) : this.router.push({ name: "application-requirements" });
+      this.userStore.isUnder19
+        ? this.router.push({ name: "consent-required" })
+        : this.router.push({ name: "application-requirements" });
     },
   },
 });

@@ -1,11 +1,20 @@
 <template>
   <v-card elevation="0" rounded="0" class="border-t border-b">
     <v-card-text>
-      <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
+      <div
+        class="d-flex"
+        :class="[smAndUp ? 'space-between align-center' : 'flex-column']"
+      >
         <p>Transcript provided by {{ name }}</p>
 
         <v-spacer></v-spacer>
-        <v-sheet rounded width="200px" class="py-2 text-center" :class="{ 'mt-2': !smAndUp }" :color="sheetColor">
+        <v-sheet
+          rounded
+          width="200px"
+          class="py-2 text-center"
+          :class="{ 'mt-2': !smAndUp }"
+          :color="sheetColor"
+        >
           <p>{{ statusText }}</p>
         </v-sheet>
       </div>

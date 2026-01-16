@@ -26,8 +26,10 @@ export default {
     provinceDropDownList: 'input[id="province"]',
     certificationTypeDropDownList: 'input[id="outOfProvinceCertification"]',
     viewRequirementsButton: 'button[id="btnViewRequirements"]',
-    programConfirmationRadioYes: 'input[type="radio"][name="programConfirmationRadio"][aria-label="Yes"]',
-    programConfirmationRadioNo: 'input[type="radio"][name="programConfirmationRadio"][aria-label="No"]',
+    programConfirmationRadioYes:
+      'input[type="radio"][name="programConfirmationRadio"][aria-label="Yes"]',
+    programConfirmationRadioNo:
+      'input[type="radio"][name="programConfirmationRadio"][aria-label="No"]',
   },
   applicationRequirements: {
     applyNowButton: 'button[id="btnApplyNow"]',
@@ -37,12 +39,15 @@ export default {
     continueButton: 'button[id="btnContinue"]',
   },
   renewalInformation: {
-    fiveYearRenewalInformationRadio: 'input[value="Ileftthechildcarefieldforpersonalreasons"]',
-    oneYearRenewalInformationRadio: 'input[value="IliveandworkinacommunitywithoutothercertifiedECEs"]',
+    fiveYearRenewalInformationRadio:
+      'input[value="Ileftthechildcarefieldforpersonalreasons"]',
+    oneYearRenewalInformationRadio:
+      'input[value="IliveandworkinacommunitywithoutothercertifiedECEs"]',
   },
 
   certificateInformation: {
-    nameOnCertificateRadio: 'input[type="radio"][name="radioNameOnCertificate"]',
+    nameOnCertificateRadio:
+      'input[type="radio"][name="radioNameOnCertificate"]',
   },
   applicationWizard: {
     saveAndContinueButton: 'button[id="btnSaveAndContinue"]',
@@ -53,15 +58,18 @@ export default {
   },
   education: {
     addEducationButton: 'button[id="btnAddEducation"]',
-    transcriptStatusRadioDiv: 'div[aria-describedby="radioTranscriptStatus-messages"]',
+    transcriptStatusRadioDiv:
+      'div[aria-describedby="radioTranscriptStatus-messages"]',
     programNameInput: 'input[id="txtProgramName"]',
     programStartDateInput: 'input[id="txtProgramStartDate"]',
     programEndDateInput: 'input[id="txtProgramEndDate"]',
     provinceDropDownList: 'input[id="ddlProvince"]',
-    postSecondaryInstitutionDropDownList: 'input[id="ddlPostSecondaryInstitution"]',
+    postSecondaryInstitutionDropDownList:
+      'input[id="ddlPostSecondaryInstitution"]',
     institutionNameInput: 'input[id="txtInstitutionName"]',
     studentIDInput: 'input[id="txtStudentID"]',
-    nameOnTranscriptRadioDiv: 'div[aria-describedby="radioNameOnTranscript-messages"]',
+    nameOnTranscriptRadioDiv:
+      'div[aria-describedby="radioNameOnTranscript-messages"]',
     saveEducationButton: 'button[id="btnSaveEducation"]',
   },
   professionalDevelopment: {

@@ -29,8 +29,12 @@
           <EceTextField
             label="Specify your relationship with applicant"
             maxlength="100"
-            :rules="[Rules.required('Enter your relationship with the applicant')]"
-            @update:model-value="updateField('referenceRelationshipOther', $event)"
+            :rules="[
+              Rules.required('Enter your relationship with the applicant'),
+            ]"
+            @update:model-value="
+              updateField('referenceRelationshipOther', $event)
+            "
           ></EceTextField>
         </v-col>
       </v-row>
@@ -54,7 +58,11 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>Have you observed the applicant working with young children?</p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="updateField('workedWithChildren', $event)">
+          <v-radio-group
+            hide-details="auto"
+            :rules="[Rules.requiredRadio('Select an option')]"
+            @update:model-value="updateField('workedWithChildren', $event)"
+          >
             <v-radio label="Yes" :value="true"></v-radio>
             <v-radio label="No" :value="false"></v-radio>
           </v-radio-group>
@@ -79,14 +87,17 @@
             persistent-counter
             hide-details="auto"
             :auto-grow="true"
-            @update:model-value="updateField('childInteractionObservations', $event)"
+            @update:model-value="
+              updateField('childInteractionObservations', $event)
+            "
           ></v-textarea>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <label for="applicantTemperamentAssessmentTextField">
-            Explain why you consider the applicant to have the temperament and ability to manage or work with young children.
+            Explain why you consider the applicant to have the temperament and
+            ability to manage or work with young children.
           </label>
           <v-textarea
             id="applicantTemperamentAssessmentTextField"
@@ -98,7 +109,9 @@
             persistent-counter
             hide-details="auto"
             :auto-grow="true"
-            @update:model-value="updateField('applicantTemperamentAssessment', $event)"
+            @update:model-value="
+              updateField('applicantTemperamentAssessment', $event)
+            "
           ></v-textarea>
         </v-col>
       </v-row>
@@ -112,7 +125,10 @@ import { defineComponent } from "vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-import { lengthOfAcquaintanceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
+import {
+  lengthOfAcquaintanceDropdown,
+  referenceRelationshipDropdown,
+} from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 import { cleanPreferredName } from "@/utils/functions";
 export default defineComponent({
@@ -125,12 +141,18 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_characterReferenceData: Components.Schemas.CharacterReferenceEvaluation) => true,
+    "update:model-value": (
+      _characterReferenceData: Components.Schemas.CharacterReferenceEvaluation,
+    ) => true,
   },
   setup: () => {
     const wizardStore = useWizardStore();
 
-    return { wizardStore, referenceRelationshipDropdown, lengthOfAcquaintanceDropdown };
+    return {
+      wizardStore,
+      referenceRelationshipDropdown,
+      lengthOfAcquaintanceDropdown,
+    };
   },
   data() {
     return {
@@ -140,13 +162,18 @@ export default defineComponent({
     };
   },
   methods: {
-    updateField(fieldName: keyof Components.Schemas.CharacterReferenceEvaluation, value: any) {
+    updateField(
+      fieldName: keyof Components.Schemas.CharacterReferenceEvaluation,
+      value: any,
+    ) {
       this.$emit("update:model-value", {
         ...this.modelValue,
         [fieldName]: value,
       });
     },
-    referenceRelationshipChanged(value: Components.Schemas.ReferenceRelationship) {
+    referenceRelationshipChanged(
+      value: Components.Schemas.ReferenceRelationship,
+    ) {
       if (value !== "Other") {
         this.$emit("update:model-value", {
           ...this.modelValue,
@@ -154,7 +181,10 @@ export default defineComponent({
           referenceRelationshipOther: "",
         });
       } else {
-        this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value });
+        this.$emit("update:model-value", {
+          ...this.modelValue,
+          referenceRelationship: value,
+        });
       }
     },
   },

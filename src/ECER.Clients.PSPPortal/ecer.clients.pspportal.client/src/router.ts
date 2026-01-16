@@ -116,7 +116,8 @@ const router = createRouter({
     },
     {
       path: "/generic-registration-error",
-      component: () => import("./components/pages/GenericRegistrationError.vue"),
+      component: () =>
+        import("./components/pages/GenericRegistrationError.vue"),
       meta: { requiresAuth: true },
       name: "generic-registration-error",
     },
@@ -143,7 +144,11 @@ const router = createRouter({
       component: () => import("./components/pages/LogoutCallback.vue"),
       meta: { requiresAuth: false },
     },
-    { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "not-found",
+      component: () => import("./components/pages/PageNotFound.vue"),
+    },
   ],
 });
 
@@ -190,7 +195,11 @@ router.beforeEach(async (to, _, next) => {
     return next(); // Let auth guard handle unauthenticated users
   }
 
-  if (to.path === "/new-user" && userStore.hasUserProfile && userStore.hasAcceptedTermsOfUse) {
+  if (
+    to.path === "/new-user" &&
+    userStore.hasUserProfile &&
+    userStore.hasAcceptedTermsOfUse
+  ) {
     return next({ path: "/" });
   }
   next();
@@ -208,7 +217,13 @@ router.beforeEach(async (to, _, next) => {
   }
 
   // Don't redirect if already going to login, new-user, or other public routes
-  const publicPaths = ["/login", "/new-user", "/silent-callback", "/logout-callback", "/verify"];
+  const publicPaths = [
+    "/login",
+    "/new-user",
+    "/silent-callback",
+    "/logout-callback",
+    "/verify",
+  ];
   if (publicPaths.some((path) => to.path.startsWith(path))) {
     return next();
   }

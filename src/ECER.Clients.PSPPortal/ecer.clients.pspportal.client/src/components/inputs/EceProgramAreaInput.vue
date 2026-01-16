@@ -3,7 +3,11 @@
   <br />
   <p>
     This program profile is for the following time period:
-    <strong>{{ `${formatDate(wizardStore.wizardData?.startDate, "LLLL d, yyyy")} - ${formatDate(wizardStore.wizardData?.endDate, "LLLL d, yyyy")}` }}</strong>
+    <strong>
+      {{
+        `${formatDate(wizardStore.wizardData?.startDate, "LLLL d, yyyy")} - ${formatDate(wizardStore.wizardData?.endDate, "LLLL d, yyyy")}`
+      }}
+    </strong>
   </p>
   <br />
   <p>
@@ -11,13 +15,22 @@
     <strong>{{ generateProgramTypeTitle }}</strong>
     program during this time period?
   </p>
-  <v-radio-group v-model="programOffered" :rules="[Rules.requiredRadio()]" @update:model-value="(value) => $emit('update:model-value', value as boolean)">
+  <v-radio-group
+    v-model="programOffered"
+    :rules="[Rules.requiredRadio()]"
+    @update:model-value="
+      (value) => $emit('update:model-value', value as boolean)
+    "
+  >
     <v-radio label="Yes" :value="true"></v-radio>
     <v-radio label="No" :value="false"></v-radio>
   </v-radio-group>
   <Callout v-if="!programOffered" type="warning">
     <h3>You may continue to the next page</h3>
-    <p>As you are not offering this program at this time, you do not have to update the course hours for this {{ programType }} program.</p>
+    <p>
+      As you are not offering this program at this time, you do not have to
+      update the course hours for this {{ programType }} program.
+    </p>
     <br />
     <p>Press continue to move through to the next page.</p>
   </Callout>
@@ -25,33 +38,62 @@
     <h2>Provincial requirements</h2>
     <br />
     <ul v-if="programType === 'Basic'" class="ml-10">
-      <li>Basic ECE education must total a minimum of {{ calculateMinimumHoursRequired }} hours, including practicum</li>
-      <li>Practicum must account for a minimum of {{ calculatePracticumHours }} hours</li>
-      <li>Each area of instruction has a minimum number of required course hours</li>
+      <li>
+        Basic ECE education must total a minimum of
+        {{ calculateMinimumHoursRequired }} hours, including practicum
+      </li>
+      <li>
+        Practicum must account for a minimum of
+        {{ calculatePracticumHours }} hours
+      </li>
+      <li>
+        Each area of instruction has a minimum number of required course hours
+      </li>
     </ul>
     <ul v-else-if="programType === 'ITE'" class="ml-10">
-      <li>ITE education must total a minimum of {{ calculateMinimumHoursRequired }} hours, including practicum</li>
-      <li>Practicum must account for a minimum of {{ calculatePracticumHours }} hours</li>
+      <li>
+        ITE education must total a minimum of
+        {{ calculateMinimumHoursRequired }} hours, including practicum
+      </li>
+      <li>
+        Practicum must account for a minimum of
+        {{ calculatePracticumHours }} hours
+      </li>
     </ul>
     <ul v-else-if="programType === 'SNE'" class="ml-10">
-      <li>SNE education must total a minimum of {{ calculateMinimumHoursRequired }} hours, including practicum</li>
-      <li>Practicum must account for a minimum of {{ calculatePracticumHours }} hours</li>
+      <li>
+        SNE education must total a minimum of
+        {{ calculateMinimumHoursRequired }} hours, including practicum
+      </li>
+      <li>
+        Practicum must account for a minimum of
+        {{ calculatePracticumHours }} hours
+      </li>
     </ul>
     <br />
     <p>
       For a detailed description of Provincial requirements, refer to
-      <a href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf" target="_blank">
+      <a
+        href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+        target="_blank"
+      >
         Table 1, 2 or 3 of the Child Care Occupational Competencies.
       </a>
     </p>
     <br />
     <h2>Required areas of instruction</h2>
     <br />
-    <p>The courses included in your program are shown here, grouped by areas of instruction.</p>
+    <p>
+      The courses included in your program are shown here, grouped by areas of
+      instruction.
+    </p>
     <br />
     <p>
-      Edit any courses as required to ensure that this program profile reflects the correct course information. The following information is editable: course
-      number, course name, course hours allocated to each area of instruction. In some cases, a course may be applicable to more than one area of instruction.
+      Edit any courses as required to ensure that this program profile reflects
+      the correct course information. The following information is editable:
+      course number, course name, course hours allocated to each area of
+      instruction. In some cases, a course may be applicable to more than one
+      area of instruction.
     </p>
   </template>
 </template>
@@ -102,7 +144,10 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.filteredAreasOfInstruction = this.configStore.areaOfInstructionList.filter((area) => area.programTypes?.includes(this.programType));
+    this.filteredAreasOfInstruction =
+      this.configStore.areaOfInstructionList.filter((area) =>
+        area.programTypes?.includes(this.programType),
+      );
   },
   computed: {
     generateProgramTypeTitle(): string {
@@ -118,10 +163,15 @@ export default defineComponent({
       }
     },
     calculatePracticumHours(): number {
-      return this.filteredAreasOfInstruction.filter((area) => area.name === "Practicum").reduce((total, area) => total + (area?.minimumHours || 0), 0);
+      return this.filteredAreasOfInstruction
+        .filter((area) => area.name === "Practicum")
+        .reduce((total, area) => total + (area?.minimumHours || 0), 0);
     },
     calculateMinimumHoursRequired(): number {
-      return this.filteredAreasOfInstruction.reduce((total, area) => total + (area?.minimumHours || 0), 0);
+      return this.filteredAreasOfInstruction.reduce(
+        (total, area) => total + (area?.minimumHours || 0),
+        0,
+      );
     },
   },
   methods: {

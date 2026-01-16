@@ -37,7 +37,11 @@ export default defineComponent({
   },
   async setup() {
     const siteKey = await getRecaptchaSiteKey();
-    useScriptTag("https://www.recaptcha.net/recaptcha/api.js?onload=recaptchaOnloadCallback&render=explicit", () => {}, { async: true, defer: true });
+    useScriptTag(
+      "https://www.recaptcha.net/recaptcha/api.js?onload=recaptchaOnloadCallback&render=explicit",
+      () => {},
+      { async: true, defer: true },
+    );
 
     return { siteKey };
   },

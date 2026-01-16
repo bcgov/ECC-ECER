@@ -3,7 +3,9 @@
     <v-card-text>
       <v-card-title class="pl-0">Non-allocated courses</v-card-title>
       <v-card-subtitle class="pl-0 pb-4">
-        Courses listed here have no hours allocated toward any of the required areas of instruction. If changes are required, edit the course to allocate hours.
+        Courses listed here have no hours allocated toward any of the required
+        areas of instruction. If changes are required, edit the course to
+        allocate hours.
       </v-card-subtitle>
       <div v-if="courses.length > 0">
         <v-row
@@ -23,7 +25,11 @@
           </v-col>
           <v-col cols="auto" class="d-flex">
             <v-divider vertical></v-divider>
-            <v-btn icon="mdi-pencil" variant="plain" @click="handleEdit(course)"></v-btn>
+            <v-btn
+              icon="mdi-pencil"
+              variant="plain"
+              @click="handleEdit(course)"
+            ></v-btn>
           </v-col>
         </v-row>
       </div>

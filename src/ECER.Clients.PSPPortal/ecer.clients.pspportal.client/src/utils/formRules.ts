@@ -18,7 +18,9 @@ import { DateTime } from "luxon";
  * @param {String} message
  * @returns Function
  */
-const email = (message = "Enter a valid email address in the format 'name@email.com'") => {
+const email = (
+  message = "Enter a valid email address in the format 'name@email.com'",
+) => {
   return (v: string) => {
     if (!v) return true;
     // RFC 5322 compliant pattern for most email addresses
@@ -53,7 +55,8 @@ const validContactName =
  */
 
 const phoneNumber = (message = "Enter a valid phone number") => {
-  return (v: string) => !v || /^(?=.{7,20}$)(?:\+)?[\d\s-]+$/.test(v) || message;
+  return (v: string) =>
+    !v || /^(?=.{7,20}$)(?:\+)?[\d\s-]+$/.test(v) || message;
 };
 
 /**
@@ -61,11 +64,20 @@ const phoneNumber = (message = "Enter a valid phone number") => {
  * @param {String} message
  * @returns Function
  */
-const postalCode = (message = "Enter your postal code in the format 'A1A 1A1'") => {
-  return (v: string) => /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(v) || message;
+const postalCode = (
+  message = "Enter your postal code in the format 'A1A 1A1'",
+) => {
+  return (v: string) =>
+    /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(
+      v,
+    ) || message;
 };
 
-const mustExistInList = <T>(list: T[], key: keyof T, message: string = "Please select a valid option") => {
+const mustExistInList = <T>(
+  list: T[],
+  key: keyof T,
+  message: string = "Please select a valid option",
+) => {
   return (v: string) => {
     return list.some((item) => item[key] === v) || message;
   };
@@ -108,7 +120,10 @@ const required = (message = "This field is required", property?: string) => {
  * @param {string} [message=`Input a number up to ${decimal} decimal places. Ex. ${Number(1).toFixed(decimal)}`] - The error message to display if the validation fails.
  * @returns {function(string): boolean|string} A validation function that accepts a string and returns true if valid, or the error message if invalid.
  */
-const numberToDecimalPlace = (decimal = 2, message = `Input a number up to ${decimal} decimal places. Ex. ${Number(1).toFixed(decimal)}`) => {
+const numberToDecimalPlace = (
+  decimal = 2,
+  message = `Input a number up to ${decimal} decimal places. Ex. ${Number(1).toFixed(decimal)}`,
+) => {
   const regex = new RegExp(`^\\d+(\\.\\d{0,${decimal}})?$`);
   return (v: string) => !v || regex.test(v) || message;
 };
@@ -119,7 +134,8 @@ const numberToDecimalPlace = (decimal = 2, message = `Input a number up to ${dec
  * @returns Function
  */
 const requiredRadio = (message = "This field is required") => {
-  return (v: boolean | string | null | undefined) => (v !== undefined && v !== null) || message;
+  return (v: boolean | string | null | undefined) =>
+    (v !== undefined && v !== null) || message;
 };
 
 /**
@@ -127,7 +143,9 @@ const requiredRadio = (message = "This field is required") => {
  * @param {String} message
  * @returns Function
  */
-const atLeastOneOptionRequired = (message = "Please select at least one option") => {
+const atLeastOneOptionRequired = (
+  message = "Please select at least one option",
+) => {
   return (v: any[]) => v.length > 0 || message;
 };
 /**
@@ -137,7 +155,11 @@ const atLeastOneOptionRequired = (message = "Please select at least one option")
  * @param {Number} years
  * @returns {String|Boolean}
  */
-const dateRuleRange = (targetDate: string, years: number, message = `Date should be within ${years} years`) => {
+const dateRuleRange = (
+  targetDate: string,
+  years: number,
+  message = `Date should be within ${years} years`,
+) => {
   return (v: string) => {
     if (v && targetDate) {
       const input = DateTime.fromJSDate(new Date(v));
@@ -156,7 +178,10 @@ const dateRuleRange = (targetDate: string, years: number, message = `Date should
  * @param {String} message - The error message.
  * @returns {Function}
  */
-const notSameAs = (otherValue: string, message = "Both values must be different") => {
+const notSameAs = (
+  otherValue: string,
+  message = "Both values must be different",
+) => {
   return (v: string) => v !== otherValue || message;
 };
 
@@ -168,7 +193,11 @@ const notSameAs = (otherValue: string, message = "Both values must be different"
  * @param {string} [message="Date should be between ${startDate} and ${endDate}"] - The error message to return if the date is outside the valid range.
  * @returns {boolean|string} - Returns `true` if the date is within the valid range, otherwise returns the error message.
  */
-const dateBetweenRule = (startDate: string, endDate: string, message = `Date should be between ${startDate} and ${endDate}`) => {
+const dateBetweenRule = (
+  startDate: string,
+  endDate: string,
+  message = `Date should be between ${startDate} and ${endDate}`,
+) => {
   return (v: string) => {
     if (v && startDate && endDate) {
       const end = DateTime.fromISO(endDate);
@@ -189,7 +218,10 @@ const dateBetweenRule = (startDate: string, endDate: string, message = `Date sho
  * @param {string} [message="End date cannot be before start date"] - The error message to return if the date is before the target date.
  * @returns {boolean|string} - Returns `true` if the date is not before the target date, otherwise returns the error message.
  */
-const dateBeforeRule = (targetDate: string, message = "End date cannot be before start date") => {
+const dateBeforeRule = (
+  targetDate: string,
+  message = "End date cannot be before start date",
+) => {
   return (v: string) => {
     if (v && targetDate) {
       const input = DateTime.fromJSDate(new Date(v));
@@ -236,8 +268,15 @@ const conditionalWrapper = (condition: boolean, rule: any) => {
  * @param {String} message
  * @returns Function
  */
-const website = (message = "Website must be valid and secure (i.e., https)") => {
-  return (v: string) => !v || /^https:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/.test(v) || message;
+const website = (
+  message = "Website must be valid and secure (i.e., https)",
+) => {
+  return (v: string) =>
+    !v ||
+    /^https:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/.test(
+      v,
+    ) ||
+    message;
 };
 
 export {

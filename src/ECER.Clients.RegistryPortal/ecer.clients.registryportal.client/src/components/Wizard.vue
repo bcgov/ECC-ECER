@@ -1,11 +1,28 @@
 <template>
   <slot name="header"></slot>
-  <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :elevation="0">
+  <v-stepper
+    v-model="wizardStore.step"
+    min-height="100dvh"
+    :alt-labels="true"
+    :elevation="0"
+  >
     <slot name="stepperHeader">
       <v-stepper-header v-if="showSteps">
-        <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
-          <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title" :editable="true"></v-stepper-item>
-          <v-divider v-if="index !== Object.values(wizard.steps).length - 1" :key="`divider-${index}`" />
+        <template
+          v-for="(step, index) in Object.values(wizard.steps)"
+          :key="step.stage"
+        >
+          <v-stepper-item
+            color="primary"
+            :step="wizardStore.step"
+            :value="index + 1"
+            :title="step.title"
+            :editable="true"
+          ></v-stepper-item>
+          <v-divider
+            v-if="index !== Object.values(wizard.steps).length - 1"
+            :key="`divider-${index}`"
+          />
         </template>
       </v-stepper-header>
     </slot>
@@ -18,7 +35,10 @@
         :reverse-transition="false"
       >
         <v-container>
-          <v-row class="justify-space-between mb-4" v-if="step.title || wizardStore.currentStepStage === 'Review'">
+          <v-row
+            class="justify-space-between mb-4"
+            v-if="step.title || wizardStore.currentStepStage === 'Review'"
+          >
             <v-col cols="auto">
               <h1>{{ step.title }}</h1>
             </v-col>
@@ -29,7 +49,12 @@
           <h4 v-if="step.subtitle">{{ step.subtitle }}</h4>
           <v-row>
             <v-col cols="12">
-              <EceForm :ref="step.form.id" :form="step.form" :form-data="wizardStore.wizardData" @updated-form-data="wizardStore.setWizardData" />
+              <EceForm
+                :ref="step.form.id"
+                :form="step.form"
+                :form-data="wizardStore.wizardData"
+                @updated-form-data="wizardStore.setWizardData"
+              />
             </v-col>
           </v-row>
         </v-container>

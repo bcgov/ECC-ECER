@@ -1,7 +1,12 @@
 <template>
   <v-card elevation="0" rounded="0" class="border-t border-b">
     <v-card-text>
-      <v-row class="d-flex" :class="[smAndUp ? 'justify-space-between align-center' : 'flex-column']">
+      <v-row
+        class="d-flex"
+        :class="[
+          smAndUp ? 'justify-space-between align-center' : 'flex-column',
+        ]"
+      >
         <v-col cols="12" sm="4">
           <div v-if="statusText !== 'Not yet received'">
             <p>{{ referenceFullName }}</p>
@@ -14,7 +19,13 @@
           <p>{{ hoursText }}</p>
         </v-col>
         <v-col cols="12" sm="4" :align="smAndUp ? 'right' : ''">
-          <v-sheet rounded width="200px" class="py-2 text-center" :class="{ 'mt-2': !smAndUp }" :color="sheetColor">
+          <v-sheet
+            rounded
+            width="200px"
+            class="py-2 text-center"
+            :class="{ 'mt-2': !smAndUp }"
+            :color="sheetColor"
+          >
             <p>{{ statusText }}</p>
           </v-sheet>
         </v-col>
@@ -94,7 +105,10 @@ export default defineComponent({
       return this.link ? "hawkes-blue" : "white-smoke";
     },
     referenceFullName(): string {
-      return cleanPreferredName(this.reference.firstName, this.reference.lastName);
+      return cleanPreferredName(
+        this.reference.firstName,
+        this.reference.lastName,
+      );
     },
   },
   methods: {

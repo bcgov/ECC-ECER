@@ -25,24 +25,72 @@
 
             <!-- Certificate Inline on mobile -->
             <template v-if="!mdAndUp">
-              <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
-              <span v-if="isCertificateActive && certificateGenerationRequested" class="d-flex align-center ga-4">
-                <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
-                <h4>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</h4>
+              <a
+                v-if="isCertificateActive && doesCertificateFileExist"
+                :href="pdfUrl"
+                target="_blank"
+              >
+                {{ generateFileDisplayName() }}
+              </a>
+              <span
+                v-if="isCertificateActive && certificateGenerationRequested"
+                class="d-flex align-center ga-4"
+              >
+                <v-progress-circular
+                  class="mb-2"
+                  color="primary"
+                  indeterminate
+                ></v-progress-circular>
+                <h4>
+                  Your certificate is being generated. This may take up to 10
+                  minutes. Please check back later to download it.
+                </h4>
               </span>
             </template>
 
-            <RenewAction v-if="!hasApplication && isLatestOfType" :certification="certification" />
+            <RenewAction
+              v-if="!hasApplication && isLatestOfType"
+              :certification="certification"
+            />
           </div>
         </v-col>
-        <v-col v-if="mdAndUp" cols="4" class="text-center d-flex justify-end align-center" style="min-width: 215px">
-          <div v-if="isCertificateActive && doesCertificateFileExist" class="d-flex flex-column align-center justify-center">
-            <img src="../assets/certificate.svg" width="215" class="logo" alt="Certificate" />
-            <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+        <v-col
+          v-if="mdAndUp"
+          cols="4"
+          class="text-center d-flex justify-end align-center"
+          style="min-width: 215px"
+        >
+          <div
+            v-if="isCertificateActive && doesCertificateFileExist"
+            class="d-flex flex-column align-center justify-center"
+          >
+            <img
+              src="../assets/certificate.svg"
+              width="215"
+              class="logo"
+              alt="Certificate"
+            />
+            <a
+              v-if="isCertificateActive && doesCertificateFileExist"
+              :href="pdfUrl"
+              target="_blank"
+            >
+              {{ generateFileDisplayName() }}
+            </a>
           </div>
-          <div v-if="isCertificateActive && certificateGenerationRequested" class="mt-8">
-            <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
-            <h4>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</h4>
+          <div
+            v-if="isCertificateActive && certificateGenerationRequested"
+            class="mt-8"
+          >
+            <v-progress-circular
+              class="mb-2"
+              color="primary"
+              indeterminate
+            ></v-progress-circular>
+            <h4>
+              Your certificate is being generated. This may take up to 10
+              minutes. Please check back later to download it.
+            </h4>
           </div>
         </v-col>
       </v-row>
@@ -52,7 +100,10 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import { getCertificateFileById, requestCertificateFileGeneration } from "@/api/certification";
+import {
+  getCertificateFileById,
+  requestCertificateFileGeneration,
+} from "@/api/certification";
 import { useCertificationStore } from "@/store/certification";
 import { humanFileSize } from "@/utils/functions";
 import type { Components } from "@/types/openapi";
@@ -134,7 +185,12 @@ export default defineComponent({
     },
     subText() {
       if (!this.certification.levels) return "";
-      const level = this.certification.levels.find((level) => level.type === "ECE 1 YR" || level.type === "ECE 5 YR" || level.type === "Assistant");
+      const level = this.certification.levels.find(
+        (level) =>
+          level.type === "ECE 1 YR" ||
+          level.type === "ECE 5 YR" ||
+          level.type === "Assistant",
+      );
       if (!level) return "";
 
       switch (level.type) {
@@ -166,7 +222,9 @@ export default defineComponent({
 
     if (this.isCertificateActive) {
       if (this.certification.certificatePDFGeneration === "No") {
-        const response = await requestCertificateFileGeneration(this.certification.id ?? "");
+        const response = await requestCertificateFileGeneration(
+          this.certification.id ?? "",
+        );
         if (response) {
           this.certification.certificatePDFGeneration = "Requested";
         }
@@ -185,7 +243,9 @@ export default defineComponent({
       return `Download certificate (PDF, ${this.fileSize})`;
     },
     handleViewTermsAndConditions() {
-      this.$router.push(`/certificate-terms-and-conditions/${this.certification.id}`);
+      this.$router.push(
+        `/certificate-terms-and-conditions/${this.certification.id}`,
+      );
     },
   },
 });

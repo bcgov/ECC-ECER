@@ -19,29 +19,44 @@
     <template #stepperHeader>
       <v-container v-show="showSteps">
         <v-stepper-header class="elevation-0">
-          <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
+          <template
+            v-for="(step, index) in Object.values(wizardStore.steps)"
+            :key="step.stage"
+          >
             <v-stepper-item
               color="primary"
               :step="wizardStore.step"
               :value="index + 1"
               :title="step.title"
-              :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
+              :editable="
+                index + 1 < wizardStore.step &&
+                wizardStore.listComponentMode !== 'add'
+              "
               :complete="index + 1 < wizardStore.step"
               :class="`small ${mdAndDown ? 'text-wrap' : 'text-no-wrap'}`"
             >
               <template #title>
-                <a v-if="index + 1 < wizardStore.step" href="#" @click.prevent>{{ step.title }}</a>
+                <a v-if="index + 1 < wizardStore.step" href="#" @click.prevent>
+                  {{ step.title }}
+                </a>
                 <div v-else>{{ step.title }}</div>
               </template>
             </v-stepper-item>
-            <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
+            <v-divider
+              v-if="index !== Object.values(wizardStore.steps).length - 1"
+              :key="`divider-${index}`"
+            />
           </template>
         </v-stepper-header>
       </v-container>
     </template>
     <template #PrintPreview>
       <v-btn rounded="lg" variant="text" @click="printPage()">
-        <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+        <v-icon
+          color="secondary"
+          icon="mdi-printer-outline"
+          class="mr-2"
+        ></v-icon>
         <a class="small">Print Preview</a>
       </v-btn>
     </template>
@@ -54,7 +69,11 @@
                 <v-btn
                   id="btnSaveAndContinue"
                   v-if="showSaveButtons"
-                  :loading="loadingStore.isLoading('draftapplication_put') || loadingStore.isLoading('profile_put') || loadingStore.isLoading('profile_get')"
+                  :loading="
+                    loadingStore.isLoading('draftapplication_put') ||
+                    loadingStore.isLoading('profile_put') ||
+                    loadingStore.isLoading('profile_get')
+                  "
                   rounded="lg"
                   color="primary"
                   @click="handleSaveAndContinue"
@@ -66,7 +85,10 @@
                   v-if="showSubmitApplication"
                   rounded="lg"
                   color="primary"
-                  :loading="loadingStore.isLoading('application_post') || loadingStore.isLoading('draftapplication_put')"
+                  :loading="
+                    loadingStore.isLoading('application_post') ||
+                    loadingStore.isLoading('draftapplication_put')
+                  "
                   @click="handleSubmit"
                 >
                   Submit
@@ -120,7 +142,10 @@ export default defineComponent({
     }
 
     //Initialize wizard
-    await wizardStore.initializeWizard(applicationStore.applicationConfiguration, applicationStore.draftApplication);
+    await wizardStore.initializeWizard(
+      applicationStore.applicationConfiguration,
+      applicationStore.draftApplication,
+    );
 
     return {
       applicationStore,
@@ -140,9 +165,18 @@ export default defineComponent({
     showSaveButtons() {
       return (
         this.wizardStore.currentStepStage !== "Review" &&
-        !(this.wizardStore.currentStepStage === "Education" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "ProfessionalDevelopment" && this.wizardStore.listComponentMode === "add")
+        !(
+          this.wizardStore.currentStepStage === "Education" &&
+          this.wizardStore.listComponentMode === "add"
+        ) &&
+        !(
+          this.wizardStore.currentStepStage === "WorkReferences" &&
+          this.wizardStore.listComponentMode === "add"
+        ) &&
+        !(
+          this.wizardStore.currentStepStage === "ProfessionalDevelopment" &&
+          this.wizardStore.listComponentMode === "add"
+        )
       );
     },
     showSubmitApplication() {
@@ -153,27 +187,43 @@ export default defineComponent({
     },
   },
   mounted() {
-    if (this.applicationStore.draftApplication.signedDate === null || this.applicationStore.draftApplication.certificationTypes?.length === 0) {
-      console.warn("user entered into /application route without a signedDate or certificationType");
+    if (
+      this.applicationStore.draftApplication.signedDate === null ||
+      this.applicationStore.draftApplication.certificationTypes?.length === 0
+    ) {
+      console.warn(
+        "user entered into /application route without a signedDate or certificationType",
+      );
       this.router.push("/");
     }
     this.mode = "list";
   },
   methods: {
     async handleSubmit() {
-      const submitApplicationResponse = await this.applicationStore.submitApplication();
+      const submitApplicationResponse =
+        await this.applicationStore.submitApplication();
 
       if (submitApplicationResponse?.application) {
-        if (submitApplicationResponse !== null && submitApplicationResponse !== undefined && submitApplicationResponse.application) {
-          this.applicationStore.application = submitApplicationResponse.application;
+        if (
+          submitApplicationResponse !== null &&
+          submitApplicationResponse !== undefined &&
+          submitApplicationResponse.application
+        ) {
+          this.applicationStore.application =
+            submitApplicationResponse.application;
         }
-        this.router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.application.id } });
+        this.router.push({
+          name: "submitted",
+          params: { applicationId: submitApplicationResponse.application.id },
+        });
       }
     },
     async handleSaveAndContinue() {
       const valid = await this.validateForm();
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       } else {
         switch (this.wizardStore.currentStepStage) {
           case "ContactInformation":
@@ -184,11 +234,14 @@ export default defineComponent({
             await this.saveDraftAndAlertSuccess(false);
             //we need to mimic professional development saved to the server for future calls after this step. This prevents us having to fetch and rehydrate the draft application
             this.wizardStore.wizardData[
-              this.wizardStore.wizardConfig.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id || ""
-            ].forEach((professionalDevelopment: ProfessionalDevelopmentExtended) => {
-              professionalDevelopment.newFiles = [];
-              professionalDevelopment.deletedFiles = [];
-            });
+              this.wizardStore.wizardConfig.steps?.professionalDevelopments
+                ?.form?.inputs?.professionalDevelopments?.id || ""
+            ].forEach(
+              (professionalDevelopment: ProfessionalDevelopmentExtended) => {
+                professionalDevelopment.newFiles = [];
+                professionalDevelopment.deletedFiles = [];
+              },
+            );
             this.incrementWizard();
             break;
           case "ExplanationLetter":
@@ -205,18 +258,22 @@ export default defineComponent({
     },
     async validateForm() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
-      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[
+        currentStepFormId
+      ][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
 
       return valid;
     },
     incrementWizard() {
       this.wizardStore.incrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as ApplicationStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore
+        .currentStepStage as ApplicationStage;
     },
     decrementWizard() {
       this.wizardStore.decrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as ApplicationStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore
+        .currentStepStage as ApplicationStage;
     },
     handleBack() {
       switch (this.wizardStore.currentStepStage) {
@@ -229,8 +286,10 @@ export default defineComponent({
     async saveDraftAndAlertSuccess(exit: boolean) {
       const draftApplicationResponse = await this.applicationStore.saveDraft();
       if (draftApplicationResponse?.application) {
-        let message = "Information saved. If you save and exit, you can resume your application later.";
-        if (exit) message = "Information saved. You can resume your application later.";
+        let message =
+          "Information saved. If you save and exit, you can resume your application later.";
+        if (exit)
+          message = "Information saved. You can resume your application later.";
         this.alertStore.setSuccessAlert(message);
       }
     },
@@ -249,30 +308,91 @@ export default defineComponent({
     },
     async saveProfile(exit: boolean) {
       const { error } = await putProfile({
-        firstName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalFirstName?.id || ""],
-        middleName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalMiddleName?.id || ""],
-        preferredName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.preferredName?.id || ""],
-        lastName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalLastName?.id || ""],
-        dateOfBirth: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.dateOfBirth?.id || ""],
+        firstName:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.legalFirstName?.id || ""
+          ],
+        middleName:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.legalMiddleName?.id || ""
+          ],
+        preferredName:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.preferredName?.id || ""
+          ],
+        lastName:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.legalLastName?.id || ""
+          ],
+        dateOfBirth:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.dateOfBirth?.id || ""
+          ],
         residentialAddress:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.addresses?.id || ""][AddressType.RESIDENTIAL],
-        mailingAddress: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.addresses?.id || ""][AddressType.MAILING],
-        email: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.email?.id || ""],
-        phone: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.primaryContactNumber?.id || ""],
-        alternateContactPhone: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.alternateContactNumber?.id || ""],
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.addresses?.id || ""
+          ][AddressType.RESIDENTIAL],
+        mailingAddress:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.addresses?.id || ""
+          ][AddressType.MAILING],
+        email:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.email
+              ?.id || ""
+          ],
+        phone:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.primaryContactNumber?.id || ""
+          ],
+        alternateContactPhone:
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+              ?.alternateContactNumber?.id || ""
+          ],
       });
 
       if (!error) {
-        let message = "Information saved. If you save and exit, you can resume your application later.";
-        if (exit) message = "Information saved. You can resume your application later.";
+        let message =
+          "Information saved. If you save and exit, you can resume your application later.";
+        if (exit)
+          message = "Information saved. You can resume your application later.";
         this.alertStore.setSuccessAlert(message);
 
         this.userStore.setUserInfo({
-          firstName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalFirstName?.id || ""],
-          lastName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalLastName?.id || ""],
-          email: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.email?.id || ""],
-          phone: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.primaryContactNumber?.id || ""],
-          dateOfBirth: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.dateOfBirth?.id || ""],
+          firstName:
+            this.wizardStore.wizardData[
+              this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+                ?.legalFirstName?.id || ""
+            ],
+          lastName:
+            this.wizardStore.wizardData[
+              this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+                ?.legalLastName?.id || ""
+            ],
+          email:
+            this.wizardStore.wizardData[
+              this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+                ?.email?.id || ""
+            ],
+          phone:
+            this.wizardStore.wizardData[
+              this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+                ?.primaryContactNumber?.id || ""
+            ],
+          dateOfBirth:
+            this.wizardStore.wizardData[
+              this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs
+                ?.dateOfBirth?.id || ""
+            ],
         });
 
         //we should get the latest from getProfile and update the wizard. In case the wizard refreshes with stale profile data.

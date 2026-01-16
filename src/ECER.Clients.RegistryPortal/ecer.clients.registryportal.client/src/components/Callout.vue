@@ -1,5 +1,12 @@
 <template>
-  <v-alert border="start" :rounded="'0'" :title="title" variant="text" :border-color="type" class="border-opacity-100">
+  <v-alert
+    border="start"
+    :rounded="'0'"
+    :title="title"
+    variant="text"
+    :border-color="type"
+    class="border-opacity-100"
+  >
     <slot></slot>
   </v-alert>
 </template>

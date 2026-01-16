@@ -17,7 +17,9 @@ export default defineComponent({
   name: "EceDisplayValue",
   props: {
     modelValue: {
-      type: [String, Number, Date] as PropType<string | number | Date | null | undefined>,
+      type: [String, Number, Date] as PropType<
+        string | number | Date | null | undefined
+      >,
       required: false,
     },
     label: {

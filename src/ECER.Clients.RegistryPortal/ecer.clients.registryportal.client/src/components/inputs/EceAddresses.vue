@@ -3,14 +3,22 @@
     :model-value="modelValue.residential"
     address-label="Home"
     v-bind="$attrs"
-    @update:model-value="(value: any) => updateAddress(AddressType.RESIDENTIAL, value)"
+    @update:model-value="
+      (value: any) => updateAddress(AddressType.RESIDENTIAL, value)
+    "
   />
-  <v-checkbox v-model="checked" color="primary" label="Mailing address is the same as home address"></v-checkbox>
+  <v-checkbox
+    v-model="checked"
+    color="primary"
+    label="Mailing address is the same as home address"
+  ></v-checkbox>
   <EceAddress
     v-if="!checked"
     :model-value="modelValue.mailing"
     :address-label="`Mailing`"
-    @update:model-value="(value: any) => updateAddress(AddressType.MAILING, value)"
+    @update:model-value="
+      (value: any) => updateAddress(AddressType.MAILING, value)
+    "
   />
 </template>
 
@@ -39,7 +47,10 @@ export default defineComponent({
   },
   data: function () {
     return {
-      checked: Functions.areObjectsEqual(this.modelValue.residential, this.modelValue.mailing),
+      checked: Functions.areObjectsEqual(
+        this.modelValue.residential,
+        this.modelValue.mailing,
+      ),
     };
   },
   watch: {
@@ -51,7 +62,10 @@ export default defineComponent({
     },
   },
   methods: {
-    updateAddress(addressType: AddressType, updatedAddress: Components.Schemas.Address) {
+    updateAddress(
+      addressType: AddressType,
+      updatedAddress: Components.Schemas.Address,
+    ) {
       if (this.checked) {
         this.$emit("update:model-value", {
           [AddressType.MAILING]: updatedAddress,

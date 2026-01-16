@@ -1,6 +1,7 @@
 import selectors from "../../../../support/selectors";
 const provinceName = "Prince Edward Island";
-const certificationName = "Early Childhood Associate (previously called ECE II)";
+const certificationName =
+  "Early Childhood Associate (previously called ECE II)";
 
 describe("Labour Mobility - Early Childhood Associate Certification Transfer Application for Prince Edward Island", () => {
   it("should sucessfully create a Early Childhood Associate LM Certification Transfer Application for Prince Edward Island", () => {
@@ -11,18 +12,26 @@ describe("Labour Mobility - Early Childhood Associate Certification Transfer App
     cy.contains("Check your transfer eligibility").should("be.visible");
 
     /** Prince Edward Island*/
-    cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.provinceDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 
     /**Out of province Certification Type */
-    cy.get(selectors.transferEligibility.certificationTypeDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.certificationTypeDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(certificationName).click();
 
     cy.contains("Work experience").should("be.visible");
 
-    cy.get(selectors.transferEligibility.programConfirmationRadioNo).check({ force: true });
+    cy.get(selectors.transferEligibility.programConfirmationRadioNo).check({
+      force: true,
+    });
 
-    cy.contains("You can apply to transfer your certification to ECE One Year certification in B.C.").should("be.visible");
+    cy.contains(
+      "You can apply to transfer your certification to ECE One Year certification in B.C.",
+    ).should("be.visible");
 
     /** View Requirements Button */
     cy.get(selectors.transferEligibility.viewRequirementsButton).click();
@@ -41,7 +50,9 @@ describe("Labour Mobility - Early Childhood Associate Certification Transfer App
     cy.contains("ECE One Year").should("be.visible");
     cy.contains(provinceName).should("be.visible");
     cy.contains(certificationName).should("be.visible");
-    cy.get(selectors.certificateInformation.nameOnCertificateRadio).first().check({ force: true });
+    cy.get(selectors.certificateInformation.nameOnCertificateRadio)
+      .first()
+      .check({ force: true });
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEOneYearWorkflow(provinceName, certificationName);

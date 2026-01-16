@@ -10,7 +10,10 @@
     <p>Your employment experience must:</p>
     <ul class="ml-10">
       <li>Have been completed within the last 5 years</li>
-      <li>Not overlap (any overlapping employment experience will only be counted once)</li>
+      <li>
+        Not overlap (any overlapping employment experience will only be counted
+        once)
+      </li>
       <li>Have been completed while holding valid ECE certification</li>
     </ul>
     <br />
@@ -21,24 +24,37 @@
     </ul>
     <br />
     <p>
-      The ECE Registry will contact your references to verify your employment. Once we receive your submission, we will send an email to these people containing
-      a link to an online reference form.
+      The ECE Registry will contact your references to verify your employment.
+      Once we receive your submission, we will send an email to these people
+      containing a link to an online reference form.
     </p>
     <br />
     <p>
-      If you are eligible for this application pathway, your references will be asked to complete a competencies assessment to verify that you have the
+      If you are eligible for this application pathway, your references will be
+      asked to complete a competencies assessment to verify that you have the
       knowledge, skills and abilities to work as an ECE in British Columbia.
     </p>
     <br />
-    <EceForm ref="form" :form="icraEligibilityWorkExperienceReferenceUpsertForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
+    <EceForm
+      ref="form"
+      :form="icraEligibilityWorkExperienceReferenceUpsertForm"
+      :form-data="formStore.formData"
+      @updated-form-data="formStore.setFormData"
+    />
     <br />
-    <p>After you save, we will send an email to this person requesting a reference.</p>
+    <p>
+      After you save, we will send an email to this person requesting a
+      reference.
+    </p>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
         <v-btn
           size="large"
           color="primary"
-          :loading="loadingStore.isLoading('icra_work_reference_replace_post') || loadingStore.isLoading('icra_work_reference_add_post')"
+          :loading="
+            loadingStore.isLoading('icra_work_reference_replace_post') ||
+            loadingStore.isLoading('icra_work_reference_add_post')
+          "
           @click="handleSubmitReference"
         >
           Save new reference
@@ -47,7 +63,10 @@
           size="large"
           variant="outlined"
           color="primary"
-          :loading="loadingStore.isLoading('icra_work_reference_replace_post') || loadingStore.isLoading('icra_work_reference_add_post')"
+          :loading="
+            loadingStore.isLoading('icra_work_reference_replace_post') ||
+            loadingStore.isLoading('icra_work_reference_add_post')
+          "
           @click="router.back()"
         >
           Cancel
@@ -63,7 +82,10 @@ import { useDisplay } from "vuetify";
 import type { Components } from "@/types/openapi";
 import { cleanPreferredName } from "@/utils/functions";
 
-import { addIcraEligibilityWorkExperienceReference, replaceIcraEligibilityWorkExperienceReference } from "@/api/icra";
+import {
+  addIcraEligibilityWorkExperienceReference,
+  replaceIcraEligibilityWorkExperienceReference,
+} from "@/api/icra";
 
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Loading from "./Loading.vue";
@@ -119,26 +141,44 @@ export default defineComponent({
   methods: {
     async handleSubmitReference() {
       // Validate the form
-      const { valid } = await (this.$refs.form as typeof EceForm).$refs[icraEligibilityWorkExperienceReferenceUpsertForm.id].validate();
+      const { valid } = await (this.$refs.form as typeof EceForm).$refs[
+        icraEligibilityWorkExperienceReferenceUpsertForm.id
+      ].validate();
 
       if (valid) {
         const { error } = await this.submitReferenceApiCall();
         if (error) {
-          this.alertStore.setFailureAlert(`Sorry, unable to ${this.type} reference. Try again later.`);
+          this.alertStore.setFailureAlert(
+            `Sorry, unable to ${this.type} reference. Try again later.`,
+          );
         } else {
-          this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
-          this.router.push({ name: "manage-icra-eligibility-work-experience-references", params: { icraEligibilityId: this.icraEligibilityId } });
+          this.alertStore.setSuccessAlert(
+            "Reference updated. We sent them an email to request a reference.",
+          );
+          this.router.push({
+            name: "manage-icra-eligibility-work-experience-references",
+            params: { icraEligibilityId: this.icraEligibilityId },
+          });
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue.",
+        );
       }
     },
     async submitReferenceApiCall() {
       switch (this.type) {
         case "add":
-          return await addIcraEligibilityWorkExperienceReference(this.icraEligibilityId, this.formStore.formData);
+          return await addIcraEligibilityWorkExperienceReference(
+            this.icraEligibilityId,
+            this.formStore.formData,
+          );
         case "replace":
-          return await replaceIcraEligibilityWorkExperienceReference(this.icraEligibilityId, this.referenceId || "", this.formStore.formData);
+          return await replaceIcraEligibilityWorkExperienceReference(
+            this.icraEligibilityId,
+            this.referenceId || "",
+            this.formStore.formData,
+          );
         default:
           console.warn("unhandled reference upsert type:", this.type);
           return { error: true };

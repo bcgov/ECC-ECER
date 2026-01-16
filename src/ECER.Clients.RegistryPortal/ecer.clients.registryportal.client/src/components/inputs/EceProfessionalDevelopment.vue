@@ -3,7 +3,10 @@
   <div v-if="mode === 'add'">
     <v-row v-if="mode === 'add'">
       <v-col>
-        <p>To meet the professional development requirement, you need to have completed 40 hours of training.</p>
+        <p>
+          To meet the professional development requirement, you need to have
+          completed 40 hours of training.
+        </p>
         <br />
         <p>Each course or workshop must:</p>
         <br />
@@ -12,19 +15,27 @@
           <li v-if="fromCertificate?.statusCode === 'Active'">
             Have been completed within the dates of your current certificate:
             <strong>
-              {{ formatDate(fromCertificate?.effectiveDate || "", "LLLL d, yyyy") }}
+              {{
+                formatDate(fromCertificate?.effectiveDate || "", "LLLL d, yyyy")
+              }}
             </strong>
             to
             <strong>
-              {{ formatDate(fromCertificate?.expiryDate || "", "LLLL d, yyyy") }}
+              {{
+                formatDate(fromCertificate?.expiryDate || "", "LLLL d, yyyy")
+              }}
             </strong>
           </li>
-          <li v-else-if="fromCertificate?.statusCode === 'Expired'">Have been completed within the last 5 years</li>
+          <li v-else-if="fromCertificate?.statusCode === 'Expired'">
+            Have been completed within the last 5 years
+          </li>
         </ul>
         <template v-if="professionalDevelopmentFormMode === 'add'">
           <br />
           <p>
-            To add additional professional development, save this form, and add the next. Continue until you have reached the required 40 hours or training.
+            To add additional professional development, save this form, and add
+            the next. Continue until you have reached the required 40 hours or
+            training.
           </p>
         </template>
       </v-col>
@@ -55,7 +66,11 @@
             tooltip-text="Provide the name of the school, organization, or instructor that offered the training or issued the certificate. 
 They should be able to confirm you completed the course or workshop."
             maxlength="300"
-            :rules="[Rules.required('Enter the name of the organization that offered this training')]"
+            :rules="[
+              Rules.required(
+                'Enter the name of the organization that offered this training',
+              ),
+            ]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -72,7 +87,12 @@ They should be able to confirm you completed the course or workshop."
       </v-row>
       <v-row>
         <v-col md="8" lg="6" xl="4">
-          <EceTextField id="txtInstructorName" v-model="instructorName" label="Name of instructor or facilitator (if known)" maxlength="100"></EceTextField>
+          <EceTextField
+            id="txtInstructorName"
+            v-model="instructorName"
+            label="Name of instructor or facilitator (if known)"
+            maxlength="100"
+          ></EceTextField>
         </v-col>
       </v-row>
       <v-row>
@@ -151,7 +171,10 @@ They should be able to confirm you completed the course or workshop."
             id="txtNumberOfHours"
             v-model="numberOfHours"
             label="How many hours was this course or workshop?"
-            :rules="[Rules.required('Enter your course or workshop hours'), Rules.numberToDecimalPlaces()]"
+            :rules="[
+              Rules.required('Enter your course or workshop hours'),
+              Rules.numberToDecimalPlaces(),
+            ]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -159,7 +182,10 @@ They should be able to confirm you completed the course or workshop."
         <v-col>
           <h3>Proof of completion</h3>
           <br />
-          <p>We may need to verify you took this course. You'll need to provide at least one option below</p>
+          <p>
+            We may need to verify you took this course. You'll need to provide
+            at least one option below
+          </p>
           <br />
           <p>What can you provide? Choose all that apply</p>
         </v-col>
@@ -183,8 +209,12 @@ They should be able to confirm you completed the course or workshop."
                 v-model="organizationContactInformation"
                 label="Phone number"
                 :rules="[
-                  Rules.required('Enter the phone number for your course or workshop contact'),
-                  Rules.phoneNumber('Enter your reference\'s valid phone number'),
+                  Rules.required(
+                    'Enter the phone number for your course or workshop contact',
+                  ),
+                  Rules.phoneNumber(
+                    'Enter your reference\'s valid phone number',
+                  ),
                 ]"
                 color="primary"
               ></EceTextField>
@@ -206,7 +236,12 @@ They should be able to confirm you completed the course or workshop."
                 id="txtOrganizationEmailAddress"
                 v-model="organizationEmailAddress"
                 label="Email address"
-                :rules="[Rules.required('Enter the email address of your course or workshop contact'), Rules.email()]"
+                :rules="[
+                  Rules.required(
+                    'Enter the email address of your course or workshop contact',
+                  ),
+                  Rules.email(),
+                ]"
               ></EceTextField>
             </v-col>
           </v-row>
@@ -227,9 +262,15 @@ They should be able to confirm you completed the course or workshop."
           <FileUploader
             :allow-multiple-files="false"
             :max-number-of-files="1"
-            :show-add-file-button="generateUserFileArray.length === 0 && !isFileUploadInProgress"
+            :show-add-file-button="
+              generateUserFileArray.length === 0 && !isFileUploadInProgress
+            "
             :user-files="generateUserFileArray"
-            :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]"
+            :rules="[
+              Rules.atLeastOneOptionRequired(
+                'Upload a certificate or document that shows you completed the course or workshop',
+              ),
+            ]"
             :delete-file-from-temp-when-removed="false"
             @update:files="handleFileUpdate"
             @delete:file="handleFileDelete"
@@ -250,7 +291,14 @@ They should be able to confirm you completed the course or workshop."
           >
             Save course or workshop
           </v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
+          <v-btn
+            rounded="lg"
+            variant="outlined"
+            @click="handleCancel"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          >
+            Cancel
+          </v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -259,7 +307,10 @@ They should be able to confirm you completed the course or workshop."
   <div v-else>
     <v-row>
       <v-col>
-        <p>To meet the professional development requirement, you need to have completed 40 hours of training.</p>
+        <p>
+          To meet the professional development requirement, you need to have
+          completed 40 hours of training.
+        </p>
         <br />
         <p><strong>What courses or workshops are eligible?</strong></p>
         <br />
@@ -270,14 +321,20 @@ They should be able to confirm you completed the course or workshop."
           <li v-if="fromCertificate?.statusCode === 'Active'">
             Have been completed within the dates of your current certificate:
             <strong>
-              {{ formatDate(fromCertificate?.effectiveDate || "", "LLLL d, yyyy") }}
+              {{
+                formatDate(fromCertificate?.effectiveDate || "", "LLLL d, yyyy")
+              }}
             </strong>
             to
             <strong>
-              {{ formatDate(fromCertificate?.expiryDate || "", "LLLL d, yyyy") }}
+              {{
+                formatDate(fromCertificate?.expiryDate || "", "LLLL d, yyyy")
+              }}
             </strong>
           </li>
-          <li v-else-if="fromCertificate?.statusCode === 'Expired'">Have been completed within the last 5 years</li>
+          <li v-else-if="fromCertificate?.statusCode === 'Expired'">
+            Have been completed within the last 5 years
+          </li>
         </ul>
       </v-col>
     </v-row>
@@ -287,39 +344,59 @@ They should be able to confirm you completed the course or workshop."
           <p class="mt-4">
             You will be asked to provide details for
             <strong>each course or workshop</strong>
-            . If you have taken multiple courses or workshops, please add them separately.
+            . If you have taken multiple courses or workshops, please add them
+            separately.
           </p>
           <br />
-          <p>As you add entries, the number of hours will increase in the progress bar, up to the 40 hours required.</p>
+          <p>
+            As you add entries, the number of hours will increase in the
+            progress bar, up to the 40 hours required.
+          </p>
           <br />
-          <p>There is no need to add courses or workshops past the 40 hour requirement.</p>
+          <p>
+            There is no need to add courses or workshops past the 40 hour
+            requirement.
+          </p>
         </Callout>
       </v-col>
     </v-row>
     <v-row>
       <v-col sm="12" md="10" lg="8" xl="6">
-        <ProgressBar :hours-required="hoursRequired" :total-hours="totalHours" :decimal-places="2"></ProgressBar>
+        <ProgressBar
+          :hours-required="hoursRequired"
+          :total-hours="totalHours"
+          :decimal-places="2"
+        ></ProgressBar>
       </v-col>
     </v-row>
-    <v-row v-if="modelValue.length > 0" v-for="(professionalDevelopment, index) in modelValue">
+    <v-row
+      v-if="modelValue.length > 0"
+      v-for="(professionalDevelopment, index) in modelValue"
+    >
       <v-col sm="12" md="10" lg="8" xl="6">
         <ProfessionalDevelopmentCard
           :key="index"
           :professional-development="professionalDevelopment"
           @edit="handleEdit"
-          @delete="(professionalDevelopment) => handleDelete(professionalDevelopment, index)"
+          @delete="
+            (professionalDevelopment) =>
+              handleDelete(professionalDevelopment, index)
+          "
         />
       </v-col>
     </v-row>
     <!-- empty list -->
     <v-row v-else>
-      <v-col sm="12" md="10" lg="8" xl="6"><p>No courses or workshops added yet.</p></v-col>
+      <v-col sm="12" md="10" lg="8" xl="6">
+        <p>No courses or workshops added yet.</p>
+      </v-col>
     </v-row>
 
     <v-row>
       <v-col sm="12" md="10" lg="8" xl="6">
         <p v-if="isDisabled" class="mb-4">
-          You have provided the required number of hours. No more courses can be added. If needed, we will follow up for more info.
+          You have provided the required number of hours. No more courses can be
+          added. If needed, we will follow up for more info.
         </p>
         <v-btn
           prepend-icon="mdi-plus"
@@ -366,7 +443,11 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
-import { parseHumanFileSize, removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
+import {
+  parseHumanFileSize,
+  removeElementByIndex,
+  replaceElementByIndex,
+} from "@/utils/functions";
 
 import FileUploader from "../FileUploader.vue";
 import ProfessionalDevelopmentCard from "../ProfessionalDevelopmentCard.vue";
@@ -380,13 +461,21 @@ interface ProfessionalDevelopmentData {
   professionalDevelopmentFormMode: "add" | "edit";
 }
 
-export interface ProfessionalDevelopmentExtended extends Components.Schemas.ProfessionalDevelopment {
+export interface ProfessionalDevelopmentExtended
+  extends Components.Schemas.ProfessionalDevelopment {
   newFilesWithData?: FileItem[];
 }
 
 export default defineComponent({
   name: "EceProfessionalDevelopment",
-  components: { ProgressBar, FileUploader, ProfessionalDevelopmentCard, EceDateInput, EceTextField, Callout },
+  components: {
+    ProgressBar,
+    FileUploader,
+    ProfessionalDevelopmentCard,
+    EceDateInput,
+    EceTextField,
+    Callout,
+  },
   props: {
     modelValue: {
       type: Object as () => ProfessionalDevelopmentExtended[],
@@ -394,7 +483,9 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_professionalDevelopmentData: Components.Schemas.ProfessionalDevelopment[]) => true,
+    "update:model-value": (
+      _professionalDevelopmentData: Components.Schemas.ProfessionalDevelopment[],
+    ) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -442,7 +533,9 @@ export default defineComponent({
   computed: {
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     fromCertificate() {
-      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
+      return this.certificationStore.getCertificationById(
+        this.applicationStore.draftApplication.fromCertificate,
+      );
     },
     isDisabled() {
       return this.totalHours >= this.hoursRequired;
@@ -519,12 +612,18 @@ export default defineComponent({
       this.courseName = professionalDevelopment.courseName;
       this.numberOfHours = professionalDevelopment.numberOfHours;
       this.organizationName = professionalDevelopment.organizationName;
-      this.startDate = professionalDevelopment.startDate ? formatDate(professionalDevelopment.startDate) : undefined;
+      this.startDate = professionalDevelopment.startDate
+        ? formatDate(professionalDevelopment.startDate)
+        : undefined;
       this.courseorWorkshopLink = professionalDevelopment.courseorWorkshopLink;
-      this.endDate = professionalDevelopment.endDate ? formatDate(professionalDevelopment.endDate) : undefined;
+      this.endDate = professionalDevelopment.endDate
+        ? formatDate(professionalDevelopment.endDate)
+        : undefined;
       this.instructorName = professionalDevelopment.instructorName;
-      this.organizationContactInformation = professionalDevelopment.organizationContactInformation;
-      this.organizationEmailAddress = professionalDevelopment.organizationEmailAddress;
+      this.organizationContactInformation =
+        professionalDevelopment.organizationContactInformation;
+      this.organizationEmailAddress =
+        professionalDevelopment.organizationEmailAddress;
       this.files = professionalDevelopment.files;
       this.newFiles = professionalDevelopment.newFiles;
       this.deletedFiles = professionalDevelopment.deletedFiles;
@@ -538,8 +637,10 @@ export default defineComponent({
         this.selection.push("email");
       }
       if (
-        (professionalDevelopment?.files?.length && professionalDevelopment?.files?.length > 0) ||
-        (professionalDevelopment?.newFilesWithData?.length && professionalDevelopment.newFilesWithData.length > 0)
+        (professionalDevelopment?.files?.length &&
+          professionalDevelopment?.files?.length > 0) ||
+        (professionalDevelopment?.newFilesWithData?.length &&
+          professionalDevelopment.newFilesWithData.length > 0)
       ) {
         this.selection.push("file");
       }
@@ -547,17 +648,30 @@ export default defineComponent({
       this.mode = "add";
       this.professionalDevelopmentFormMode = "edit";
     },
-    async handleDelete(_professionalDevelopment: ProfessionalDevelopmentExtended, index: number) {
-      this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
+    async handleDelete(
+      _professionalDevelopment: ProfessionalDevelopmentExtended,
+      index: number,
+    ) {
+      this.$emit(
+        "update:model-value",
+        removeElementByIndex(this.modelValue, index),
+      );
 
       await this.applicationStore.saveDraft();
       //we need to update wizardData with the latest information to avoid creating duplicate new entries
-      await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
+      await this.wizardStore.initializeWizard(
+        this.applicationStore.applicationConfiguration,
+        this.applicationStore.draftApplication,
+      );
 
-      this.alertStore.setSuccessAlert("You have deleted your professional development.");
+      this.alertStore.setSuccessAlert(
+        "You have deleted your professional development.",
+      );
     },
     async handleSubmit() {
-      const { valid } = await (this.$refs.professionalDevelopmentForm as VForm).validate();
+      const { valid } = await (
+        this.$refs.professionalDevelopmentForm as VForm
+      ).validate();
 
       if (valid) {
         const newProfessionalDevelopment: ProfessionalDevelopmentExtended = {
@@ -579,10 +693,16 @@ export default defineComponent({
         let updatedModelValue = this.modelValue.slice(); //create a copy of the array
 
         if (this.professionalDevelopmentFormMode === "edit") {
-          const indexOfEditedProfessionalDevelopment = updatedModelValue.findIndex(
-            (professionalDevelopment) => professionalDevelopment.id === newProfessionalDevelopment.id,
+          const indexOfEditedProfessionalDevelopment =
+            updatedModelValue.findIndex(
+              (professionalDevelopment) =>
+                professionalDevelopment.id === newProfessionalDevelopment.id,
+            );
+          updatedModelValue = replaceElementByIndex(
+            updatedModelValue,
+            indexOfEditedProfessionalDevelopment,
+            newProfessionalDevelopment,
           );
-          updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedProfessionalDevelopment, newProfessionalDevelopment);
         } else if (this.professionalDevelopmentFormMode === "add") {
           updatedModelValue.push(newProfessionalDevelopment);
         }
@@ -591,7 +711,10 @@ export default defineComponent({
 
         await this.applicationStore.saveDraft();
         //we need to update wizardData with the latest information to avoid creating duplicate new entries
-        await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
+        await this.wizardStore.initializeWizard(
+          this.applicationStore.applicationConfiguration,
+          this.applicationStore.draftApplication,
+        );
 
         this.resetFormData();
 
@@ -604,7 +727,9 @@ export default defineComponent({
 
         globalThis.scroll(0, 0);
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     handleFileUpdate(filesArray: FileItem[]) {
@@ -626,7 +751,11 @@ export default defineComponent({
           }
 
           // If file is valid and fully uploaded, add to attachments
-          if (this.areAttachedFilesValid && !this.isFileUploadInProgress && file.storageFolder === "temporary") {
+          if (
+            this.areAttachedFilesValid &&
+            !this.isFileUploadInProgress &&
+            file.storageFolder === "temporary"
+          ) {
             this.newFilesWithData.push(file);
           }
         }
@@ -636,7 +765,9 @@ export default defineComponent({
       if (fileItem.storageFolder === "permanent") {
         //we need to add it to the list of deleted files for the backend to remove.
         this.deletedFiles?.push(fileItem.fileId);
-        let index = this.files?.findIndex((file) => file.id === fileItem.fileId);
+        let index = this.files?.findIndex(
+          (file) => file.id === fileItem.fileId,
+        );
         if (index) {
           this.files = removeElementByIndex(this.modelValue, index);
         }

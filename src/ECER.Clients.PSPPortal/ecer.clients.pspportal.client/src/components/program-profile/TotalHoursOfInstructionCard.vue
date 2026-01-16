@@ -1,9 +1,27 @@
 <template>
-  <v-card flat rounded="lg" :border="true" :color="cardBackgroundColor" :style="{ borderColor: progressColor, borderWidth: '1px', borderStyle: 'solid' }">
+  <v-card
+    flat
+    rounded="lg"
+    :border="true"
+    :color="cardBackgroundColor"
+    :style="{
+      borderColor: progressColor,
+      borderWidth: '1px',
+      borderStyle: 'solid',
+    }"
+  >
     <v-card-text>
       <v-card-title class="pl-0 pt-0">Total hours of instruction</v-card-title>
       <div class="mb-4 d-flex align-center">
-        <v-progress-linear :model-value="progressPercentage" height="25" rounded rounded-bar :color="progressColor" bg-color="#f0f2f4" class="flex-grow-1">
+        <v-progress-linear
+          :model-value="progressPercentage"
+          height="25"
+          rounded
+          rounded-bar
+          :color="progressColor"
+          bg-color="#f0f2f4"
+          class="flex-grow-1"
+        >
           <template v-slot:default="{ value }">
             <span>
               <strong>{{ totalHours }}</strong>
@@ -13,7 +31,13 @@
             </span>
           </template>
         </v-progress-linear>
-        <v-icon v-if="isCompleted" icon="mdi-check" :color="progressColor" size="28" class="ml-2"></v-icon>
+        <v-icon
+          v-if="isCompleted"
+          icon="mdi-check"
+          :color="progressColor"
+          size="28"
+          class="ml-2"
+        ></v-icon>
       </div>
       <p class="text-center font-weight-medium">
         The required hours of instruction have

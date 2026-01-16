@@ -5,10 +5,15 @@
       <v-col cols="12">
         <h1>Provide proof of previous name</h1>
         <div>
-          <p class="mt-5">When your current legal name is different than your name on a supporting document, you need to provide proof of name change.</p>
+          <p class="mt-5">
+            When your current legal name is different than your name on a
+            supporting document, you need to provide proof of name change.
+          </p>
           <p class="font-weight-bold mb-2 mt-5">Legal name on your account</p>
           <p>{{ userStore.legalName }}</p>
-          <p class="font-weight-bold mb-2 mt-5">Previous name to add your account</p>
+          <p class="font-weight-bold mb-2 mt-5">
+            Previous name to add your account
+          </p>
           <p>{{ previousName }}</p>
         </div>
       </v-col>
@@ -16,7 +21,9 @@
     <v-row class="mt-5">
       <v-col>
         <ECEHeader title="Accepted proof of name change documents" />
-        <p class="mt-3">The following are examples of accepted proof of name change documents:</p>
+        <p class="mt-3">
+          The following are examples of accepted proof of name change documents:
+        </p>
         <ul class="ml-10 mt-2">
           <li>Government-issued marriage certificate</li>
           <li>Divorce certificate or papers</li>
@@ -32,14 +39,30 @@
     </v-row>
     <v-row class="mt-5">
       <v-col>
-        <ECEHeader title="Upload a photo of the proof of name change document" />
+        <ECEHeader
+          title="Upload a photo of the proof of name change document"
+        />
         <FileUploader class="mt-1" @update:files="handleFileUpdate" />
       </v-col>
     </v-row>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
-        <v-btn size="large" color="primary" :loading="loadingStore.isLoading('profile_put')" @click="handleVerifyPreviousName">Send</v-btn>
-        <v-btn size="large" variant="outlined" color="primary" @click="router.push('/profile')">Cancel</v-btn>
+        <v-btn
+          size="large"
+          color="primary"
+          :loading="loadingStore.isLoading('profile_put')"
+          @click="handleVerifyPreviousName"
+        >
+          Send
+        </v-btn>
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="router.push('/profile')"
+        >
+          Cancel
+        </v-btn>
       </v-col>
     </v-row>
   </PageContainer>
@@ -80,12 +103,20 @@ export default {
       return `${name.firstName ?? ""} ${name.middleName ?? ""} ${name.lastName}`.trim();
     }
     const previousNameId = route.params.previousNameId?.toString() || "";
-    const foundName = [...(userStore.pendingforDocumentsPreviousNames || []), ...(userStore.unverifiedPreviousNames || [])].find(
-      (item) => item.id === previousNameId,
-    );
+    const foundName = [
+      ...(userStore.pendingforDocumentsPreviousNames || []),
+      ...(userStore.unverifiedPreviousNames || []),
+    ].find((item) => item.id === previousNameId);
     const previousName = fullName(foundName!);
 
-    return { loadingStore, alertStore, userStore, router, previousName, previousNameId };
+    return {
+      loadingStore,
+      alertStore,
+      userStore,
+      router,
+      previousName,
+      previousNameId,
+    };
   },
   data(): VerifyPreviousName {
     return {
@@ -102,7 +133,9 @@ export default {
       if (!this.isAtleastOneFileAdded) {
         this.alertStore.setFailureAlert("You must add at least one file.");
       } else if (this.isFileUploadInProgress) {
-        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
+        this.alertStore.setFailureAlert(
+          "Uploading files in progress. Please wait until files are uploaded and try again.",
+        );
       } else if (!this.areAttachedFilesValid) {
         this.alertStore.setFailureAlert("You must upload valid files.");
       } else {
@@ -114,9 +147,13 @@ export default {
         });
 
         if (error) {
-          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+          this.alertStore.setFailureAlert(
+            "Sorry, something went wrong and your changes could not be saved. Try again later.",
+          );
         } else {
-          this.alertStore.setSuccessAlert("Proof of previous name submitted sucessfully.");
+          this.alertStore.setSuccessAlert(
+            "Proof of previous name submitted sucessfully.",
+          );
           this.router.push("/profile");
         }
       }

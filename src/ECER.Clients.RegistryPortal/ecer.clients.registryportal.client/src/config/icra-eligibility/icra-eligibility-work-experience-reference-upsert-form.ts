@@ -38,7 +38,12 @@ const icraEligibilityWorkExperienceReferencesUpsertForm: Form = {
       component: EceTextField,
       props: {
         label: "Email",
-        rules: [Rules.required(), Rules.email("Enter your reference's email in the format 'name@email.com'")],
+        rules: [
+          Rules.required(),
+          Rules.email(
+            "Enter your reference's email in the format 'name@email.com'",
+          ),
+        ],
         maxLength: 100,
       },
       cols: {

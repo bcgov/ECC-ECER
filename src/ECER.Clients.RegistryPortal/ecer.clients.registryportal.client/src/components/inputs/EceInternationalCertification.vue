@@ -1,9 +1,17 @@
 <template>
   <!-- add view -->
-  <div v-if="internationalCertificationFormMode === 'edit' || internationalCertificationFormMode === 'add'">
+  <div
+    v-if="
+      internationalCertificationFormMode === 'edit' ||
+      internationalCertificationFormMode === 'add'
+    "
+  >
     <ECEHeader title="Regulatory authority information" />
     <br />
-    <p>Your international certification must be issued by a country or region that regulates the practice of early childhood education.</p>
+    <p>
+      Your international certification must be issued by a country or region
+      that regulates the practice of early childhood education.
+    </p>
     <v-form ref="internationalCertificationForm" class="mt-6">
       <v-row>
         <v-col md="8" lg="6" xl="4">
@@ -11,13 +19,22 @@
           <v-select
             id="certificateCountrySelect"
             class="pt-2"
-            :items="configStore.countryList.filter((country) => country.isICRA === true)"
+            :items="
+              configStore.countryList.filter(
+                (country) => country.isICRA === true,
+              )
+            "
             variant="outlined"
             label=""
             v-model="countryId"
             item-title="countryName"
             item-value="countryId"
-            :rules="[Rules.required('Select your country of certification', 'countryId')]"
+            :rules="[
+              Rules.required(
+                'Select your country of certification',
+                'countryId',
+              ),
+            ]"
           ></v-select>
         </v-col>
       </v-row>
@@ -28,7 +45,9 @@
             v-model="nameOfRegulatoryAuthority"
             label="Name of regulatory authority"
             maxlength="100"
-            :rules="[Rules.required('Enter the name of your regulatory authority')]"
+            :rules="[
+              Rules.required('Enter the name of your regulatory authority'),
+            ]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -39,7 +58,10 @@
             v-model="emailOfRegulatoryAuthority"
             label="Email of regulatory authority"
             maxlength="100"
-            :rules="[Rules.required('Enter the email of your regulatory authority'), Rules.email()]"
+            :rules="[
+              Rules.required('Enter the email of your regulatory authority'),
+              Rules.email(),
+            ]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -79,7 +101,13 @@
       <v-row>
         <v-col md="8" lg="6" xl="4">
           <p>What is your certification status?</p>
-          <v-radio-group id="certificateStatusRadio" v-model="certificateStatus" :rules="[Rules.requiredRadio('Select the status of your certification')]">
+          <v-radio-group
+            id="certificateStatusRadio"
+            v-model="certificateStatus"
+            :rules="[
+              Rules.requiredRadio('Select the status of your certification'),
+            ]"
+          >
             <v-radio label="Valid" :value="'Valid'"></v-radio>
             <v-radio label="Expired" :value="'Expired'"></v-radio>
           </v-radio-group>
@@ -101,7 +129,10 @@
             id="certificationIssueDate"
             ref="issueDateInput"
             v-model="issueDate"
-            :rules="[Rules.required('Enter the issue date of your certificate'), Rules.futureDateNotAllowedRule()]"
+            :rules="[
+              Rules.required('Enter the issue date of your certificate'),
+              Rules.futureDateNotAllowedRule(),
+            ]"
             label="Issue date"
             :max="today"
             @update:model-value="validateDates"
@@ -132,10 +163,19 @@
           <v-radio-group
             id="radioNameOnInternationalCertification"
             v-model="previousNameRadio"
-            :rules="[Rules.requiredRadio('Enter your name as it appears on your certificate')]"
+            :rules="[
+              Rules.requiredRadio(
+                'Enter your name as it appears on your certificate',
+              ),
+            ]"
             @update:model-value="previousNameRadioChanged"
           >
-            <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
+            <v-radio
+              v-for="(step, index) in applicantNameRadioOptions"
+              :key="index"
+              :label="step.label"
+              :value="step.value"
+            ></v-radio>
           </v-radio-group>
         </v-col>
       </v-row>
@@ -154,7 +194,12 @@
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceTextField id="txtOtherMiddleName" v-model="otherMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
+            <EceTextField
+              id="txtOtherMiddleName"
+              v-model="otherMiddleName"
+              label="Middle name(s) on transcript (optional)"
+              maxlength="100"
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
@@ -184,7 +229,11 @@
             :delete-file-from-temp-when-removed="false"
             @update:files="handleFileUpdate"
             @delete:file="handleFileDelete"
-            :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]"
+            :rules="[
+              Rules.atLeastOneOptionRequired(
+                'Upload a certificate or document that shows you completed the course or workshop',
+              ),
+            ]"
           />
         </v-col>
       </v-row>
@@ -203,7 +252,14 @@
           >
             Save certification
           </v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('icra_put')">Cancel</v-btn>
+          <v-btn
+            rounded="lg"
+            variant="outlined"
+            @click="handleCancel"
+            :loading="loadingStore.isLoading('icra_put')"
+          >
+            Cancel
+          </v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -212,27 +268,43 @@
   <div v-else>
     <v-row>
       <v-col>
-        <p>Provide evidence of your international certification. Your certificate(s) must:</p>
+        <p>
+          Provide evidence of your international certification. Your
+          certificate(s) must:
+        </p>
         <br />
         <ul class="ml-10">
-          <li>Be issued by a country or region that regulates the early childhood education profession</li>
+          <li>
+            Be issued by a country or region that regulates the early childhood
+            education profession
+          </li>
           <li>Be in good standing</li>
-          <li>Be valid (you can provide expired certification, but you must also provide at least one valid certification) </li>
+          <li>
+            Be valid (you can provide expired certification, but you must also
+            provide at least one valid certification) 
+          </li>
         </ul>
         <br />
         <p>
-          Note: The ECE Registry will contact the international regulatory authority to verify the information you have provided and confirm that your
-          certificate(s) are in good standing.
+          Note: The ECE Registry will contact the international regulatory
+          authority to verify the information you have provided and confirm that
+          your certificate(s) are in good standing.
         </p>
       </v-col>
     </v-row>
-    <v-row v-if="modelValue && modelValue.length > 0" v-for="(internationalCertification, index) in modelValue">
+    <v-row
+      v-if="modelValue && modelValue.length > 0"
+      v-for="(internationalCertification, index) in modelValue"
+    >
       <v-col sm="12" md="10" lg="8" xl="6">
         <InternationalCertificationCard
           :key="index"
           :international-certification="internationalCertification"
           @edit="handleEdit"
-          @delete="(internationalCertification) => handleDelete(internationalCertification, index)"
+          @delete="
+            (internationalCertification) =>
+              handleDelete(internationalCertification, index)
+          "
         />
       </v-col>
     </v-row>
@@ -260,18 +332,36 @@
           hasValidCertificate ||
           v.length < MAX_NUM_CERTIFICATIONS ||
           `You have entered the maximum number of certifications. You must replace one of your entries with a valid certificate to proceed.`,
-        (v) => hasValidCertificate || `You provided an expired certificate. To continue, you must also provide a valid certificate.`,
+        (v) =>
+          hasValidCertificate ||
+          `You provided an expired certificate. To continue, you must also provide a valid certificate.`,
       ]"
       auto-hide="auto"
     ></v-input>
     <!-- callouts and optional messages -->
     <v-row>
       <v-col>
-        <p v-if="hasValidCertificate && modelValue && modelValue.length < MAX_NUM_CERTIFICATIONS">
-          No additional certifications may be added. You provided the required certifications. After you submit your application, the Registry will review and
-          verify your certifications and contact you for additional information if needed.
+        <p
+          v-if="
+            hasValidCertificate &&
+            modelValue &&
+            modelValue.length < MAX_NUM_CERTIFICATIONS
+          "
+        >
+          No additional certifications may be added. You provided the required
+          certifications. After you submit your application, the Registry will
+          review and verify your certifications and contact you for additional
+          information if needed.
         </p>
-        <Callout v-if="modelValue && modelValue.length >= MAX_NUM_CERTIFICATIONS && hasValidCertificate" type="warning" title="Max limit reached">
+        <Callout
+          v-if="
+            modelValue &&
+            modelValue.length >= MAX_NUM_CERTIFICATIONS &&
+            hasValidCertificate
+          "
+          type="warning"
+          title="Max limit reached"
+        >
           {{
             `You have reached the limit of ${MAX_NUM_CERTIFICATIONS} certifications. You can proceed to submit your application. The Registry will contact you to provide additional
           certifications if needed.`
@@ -303,7 +393,11 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
-import { parseHumanFileSize, removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
+import {
+  parseHumanFileSize,
+  removeElementByIndex,
+  replaceElementByIndex,
+} from "@/utils/functions";
 
 import applicationWizardIcraEligibility from "@/config/application-wizard-icra-eligibility";
 import ECEHeader from "../ECEHeader.vue";
@@ -326,13 +420,22 @@ interface InternationalCertificationData {
   internationalCertificationFormMode: "add" | "edit" | undefined;
 }
 
-export interface InternationalCertificationExtended extends Components.Schemas.InternationalCertification {
+export interface InternationalCertificationExtended
+  extends Components.Schemas.InternationalCertification {
   newFilesWithData?: FileItem[];
 }
 
 export default defineComponent({
   name: "EceInternationalCertification",
-  components: { ProgressBar, FileUploader, InternationalCertificationCard, EceDateInput, EceTextField, Callout, ECEHeader },
+  components: {
+    ProgressBar,
+    FileUploader,
+    InternationalCertificationCard,
+    EceDateInput,
+    EceTextField,
+    Callout,
+    ECEHeader,
+  },
   props: {
     modelValue: {
       type: Object as () => InternationalCertificationExtended[],
@@ -340,7 +443,9 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_internationalCertificationData: InternationalCertificationExtended[]) => true,
+    "update:model-value": (
+      _internationalCertificationData: InternationalCertificationExtended[],
+    ) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -404,7 +509,11 @@ export default defineComponent({
       let legalNameRadioOptions: RadioOptions[] = [
         {
           label: this.userStore.legalName,
-          value: { firstName: this.userStore.firstName || null, middleName: this.userStore.middleName || null, lastName: this.userStore.lastName || null },
+          value: {
+            firstName: this.userStore.firstName || null,
+            middleName: this.userStore.middleName || null,
+            lastName: this.userStore.lastName || null,
+          },
         },
       ];
       return [...legalNameRadioOptions, ...this.previousNameRadioOptions];
@@ -437,23 +546,40 @@ export default defineComponent({
       return userFileList;
     },
     previousNameRadioOptions(): RadioOptions[] {
-      let radioOptions: RadioOptions[] = this.userStore.verifiedPreviousNames.map((previousName) => {
-        let displayLabel = previousName.firstName ?? "";
-        if (previousName.middleName) {
-          displayLabel += ` ${previousName.middleName}`;
-        }
-        displayLabel += ` ${previousName.lastName}`;
-        return { label: displayLabel, value: { firstName: previousName.firstName, middleName: previousName.middleName, lastName: previousName.lastName } };
-      });
+      let radioOptions: RadioOptions[] =
+        this.userStore.verifiedPreviousNames.map((previousName) => {
+          let displayLabel = previousName.firstName ?? "";
+          if (previousName.middleName) {
+            displayLabel += ` ${previousName.middleName}`;
+          }
+          displayLabel += ` ${previousName.lastName}`;
+          return {
+            label: displayLabel,
+            value: {
+              firstName: previousName.firstName,
+              middleName: previousName.middleName,
+              lastName: previousName.lastName,
+            },
+          };
+        });
 
       radioOptions.push({ label: "Other name", value: "other" });
       return radioOptions;
     },
     showAddInternationalCertificationButton() {
-      return this.modelValue && this.modelValue.length < MAX_NUM_CERTIFICATIONS && !this.hasValidCertificate;
+      return (
+        this.modelValue &&
+        this.modelValue.length < MAX_NUM_CERTIFICATIONS &&
+        !this.hasValidCertificate
+      );
     },
     hasValidCertificate() {
-      return this.modelValue && this.modelValue.some((certificate) => certificate.certificateStatus === "Valid");
+      return (
+        this.modelValue &&
+        this.modelValue.some(
+          (certificate) => certificate.certificateStatus === "Valid",
+        )
+      );
     },
   },
 
@@ -482,11 +608,16 @@ export default defineComponent({
       // Set the form fields to component data
       this.id = internationalCertification.id;
       this.countryId = internationalCertification.countryId;
-      this.nameOfRegulatoryAuthority = internationalCertification.nameOfRegulatoryAuthority;
-      this.emailOfRegulatoryAuthority = internationalCertification.emailOfRegulatoryAuthority;
-      this.phoneOfRegulatoryAuthority = internationalCertification.phoneOfRegulatoryAuthority;
-      this.websiteOfRegulatoryAuthority = internationalCertification.websiteOfRegulatoryAuthority;
-      this.onlineCertificateValidationToolOfRegulatoryAuthority = internationalCertification.onlineCertificateValidationToolOfRegulatoryAuthority;
+      this.nameOfRegulatoryAuthority =
+        internationalCertification.nameOfRegulatoryAuthority;
+      this.emailOfRegulatoryAuthority =
+        internationalCertification.emailOfRegulatoryAuthority;
+      this.phoneOfRegulatoryAuthority =
+        internationalCertification.phoneOfRegulatoryAuthority;
+      this.websiteOfRegulatoryAuthority =
+        internationalCertification.websiteOfRegulatoryAuthority;
+      this.onlineCertificateValidationToolOfRegulatoryAuthority =
+        internationalCertification.onlineCertificateValidationToolOfRegulatoryAuthority;
       this.certificateStatus = internationalCertification.certificateStatus;
       this.certificateTitle = internationalCertification.certificateTitle;
       this.issueDate = internationalCertification.issueDate;
@@ -502,14 +633,19 @@ export default defineComponent({
 
       //set the radio button for previous names and field buttons correctly
       if (internationalCertification.hasOtherName) {
-        let index = this.applicantNameRadioOptions.findIndex((option) => option.value === "other");
+        let index = this.applicantNameRadioOptions.findIndex(
+          (option) => option.value === "other",
+        );
         this.previousNameRadio = this.applicantNameRadioOptions[index]?.value;
       } else {
         let index = this.applicantNameRadioOptions.findIndex(
           (option) =>
-            option.value?.firstName === internationalCertification.otherFirstName &&
-            option.value?.lastName === internationalCertification.otherLastName &&
-            option.value?.middleName === internationalCertification.otherMiddleName,
+            option.value?.firstName ===
+              internationalCertification.otherFirstName &&
+            option.value?.lastName ===
+              internationalCertification.otherLastName &&
+            option.value?.middleName ===
+              internationalCertification.otherMiddleName,
         );
         this.previousNameRadio = this.applicantNameRadioOptions[index]?.value;
       }
@@ -517,45 +653,68 @@ export default defineComponent({
       this.mode = "add";
       this.internationalCertificationFormMode = "edit";
     },
-    async handleDelete(_internationalCertification: InternationalCertificationExtended, index: number) {
-      this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
+    async handleDelete(
+      _internationalCertification: InternationalCertificationExtended,
+      index: number,
+    ) {
+      this.$emit(
+        "update:model-value",
+        removeElementByIndex(this.modelValue, index),
+      );
 
       await this.icraStore.saveDraft();
       //we need to update wizardData with the latest information to avoid creating duplicate new entries
-      await this.wizardStore.initializeWizardForIcraEligibility(applicationWizardIcraEligibility, this.icraStore.draftIcraEligibility);
+      await this.wizardStore.initializeWizardForIcraEligibility(
+        applicationWizardIcraEligibility,
+        this.icraStore.draftIcraEligibility,
+      );
 
-      this.alertStore.setSuccessAlert("You have deleted your international certification.");
+      this.alertStore.setSuccessAlert(
+        "You have deleted your international certification.",
+      );
     },
     async handleSubmit() {
-      const { valid } = await (this.$refs.internationalCertificationForm as VForm).validate();
+      const { valid } = await (
+        this.$refs.internationalCertificationForm as VForm
+      ).validate();
 
       if (valid) {
-        const newInternationalCertification: InternationalCertificationExtended = {
-          id: this.id, //empty if we are adding
-          countryId: this.countryId,
-          nameOfRegulatoryAuthority: this.nameOfRegulatoryAuthority,
-          emailOfRegulatoryAuthority: this.emailOfRegulatoryAuthority,
-          phoneOfRegulatoryAuthority: this.phoneOfRegulatoryAuthority,
-          websiteOfRegulatoryAuthority: this.websiteOfRegulatoryAuthority,
-          onlineCertificateValidationToolOfRegulatoryAuthority: this.onlineCertificateValidationToolOfRegulatoryAuthority,
-          certificateStatus: this.certificateStatus,
-          certificateTitle: this.certificateTitle,
-          issueDate: this.issueDate,
-          expiryDate: this.expiryDate,
-          otherFirstName: this.otherFirstName,
-          otherMiddleName: this.otherMiddleName,
-          otherLastName: this.otherLastName,
-          hasOtherName: this.hasOtherName,
-          files: this.files,
-          newFiles: this.newFiles,
-          deletedFiles: this.deletedFiles,
-          newFilesWithData: this.newFilesWithData,
-        };
+        const newInternationalCertification: InternationalCertificationExtended =
+          {
+            id: this.id, //empty if we are adding
+            countryId: this.countryId,
+            nameOfRegulatoryAuthority: this.nameOfRegulatoryAuthority,
+            emailOfRegulatoryAuthority: this.emailOfRegulatoryAuthority,
+            phoneOfRegulatoryAuthority: this.phoneOfRegulatoryAuthority,
+            websiteOfRegulatoryAuthority: this.websiteOfRegulatoryAuthority,
+            onlineCertificateValidationToolOfRegulatoryAuthority:
+              this.onlineCertificateValidationToolOfRegulatoryAuthority,
+            certificateStatus: this.certificateStatus,
+            certificateTitle: this.certificateTitle,
+            issueDate: this.issueDate,
+            expiryDate: this.expiryDate,
+            otherFirstName: this.otherFirstName,
+            otherMiddleName: this.otherMiddleName,
+            otherLastName: this.otherLastName,
+            hasOtherName: this.hasOtherName,
+            files: this.files,
+            newFiles: this.newFiles,
+            deletedFiles: this.deletedFiles,
+            newFilesWithData: this.newFilesWithData,
+          };
         let updatedModelValue = this.modelValue?.slice() || []; //create a copy of the array
 
         if (this.internationalCertificationFormMode === "edit") {
-          const indexOfEditedInternationalCertification = updatedModelValue.findIndex((certification) => certification.id === newInternationalCertification.id);
-          updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedInternationalCertification, newInternationalCertification);
+          const indexOfEditedInternationalCertification =
+            updatedModelValue.findIndex(
+              (certification) =>
+                certification.id === newInternationalCertification.id,
+            );
+          updatedModelValue = replaceElementByIndex(
+            updatedModelValue,
+            indexOfEditedInternationalCertification,
+            newInternationalCertification,
+          );
         } else if (this.internationalCertificationFormMode === "add") {
           updatedModelValue.push(newInternationalCertification);
         }
@@ -564,7 +723,10 @@ export default defineComponent({
 
         await this.icraStore.saveDraft();
         //we need to update wizardData with the latest information to avoid creating duplicate new entries
-        await this.wizardStore.initializeWizardForIcraEligibility(applicationWizardIcraEligibility, this.icraStore.draftIcraEligibility);
+        await this.wizardStore.initializeWizardForIcraEligibility(
+          applicationWizardIcraEligibility,
+          this.icraStore.draftIcraEligibility,
+        );
 
         this.resetFormData();
 
@@ -577,7 +739,9 @@ export default defineComponent({
 
         globalThis.scroll(0, 0);
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     handleFileUpdate(filesArray: FileItem[]) {
@@ -599,7 +763,11 @@ export default defineComponent({
           }
 
           // If file is valid and fully uploaded, add to attachments
-          if (areAttachedFilesValid && !isFileUploadInProgress && file.storageFolder === "temporary") {
+          if (
+            areAttachedFilesValid &&
+            !isFileUploadInProgress &&
+            file.storageFolder === "temporary"
+          ) {
             this.newFilesWithData.push(file);
           }
         }
@@ -609,7 +777,9 @@ export default defineComponent({
       if (fileItem.storageFolder === "permanent") {
         //we need to add it to the list of deleted files for the backend to remove.
         this.deletedFiles?.push(fileItem.fileId);
-        let index = this.files?.findIndex((file) => file.id === fileItem.fileId);
+        let index = this.files?.findIndex(
+          (file) => file.id === fileItem.fileId,
+        );
         if (index) {
           this.files = removeElementByIndex(this.modelValue, index);
         }

@@ -1,7 +1,14 @@
 <template>
-  <v-card :rounded="true" :border="true" flat class="pa-6 border-primary border-opacity-100 w-100">
+  <v-card
+    :rounded="true"
+    :border="true"
+    flat
+    class="pa-6 border-primary border-opacity-100 w-100"
+  >
     <div class="d-flex justify-end">
-      <v-chip :color="chipColour" variant="outlined" size="small">{{ statusText }}</v-chip>
+      <v-chip :color="chipColour" variant="outlined" size="small">
+        {{ statusText }}
+      </v-chip>
     </div>
 
     <div class="mb-4">
@@ -12,22 +19,54 @@
       <v-row>
         <v-col>
           <p class="mt-2">START DATE:</p>
-          <p class="font-weight-bold">{{ formatDate(program?.startDate || "", "LLLL d, yyyy") }}</p>
+          <p class="font-weight-bold">
+            {{ formatDate(program?.startDate || "", "LLLL d, yyyy") }}
+          </p>
         </v-col>
         <v-col>
           <p class="mt-2">END DATE:</p>
-          <p class="font-weight-bold">{{ formatDate(program?.endDate || "", "LLLL d, yyyy") }}</p>
+          <p class="font-weight-bold">
+            {{ formatDate(program?.endDate || "", "LLLL d, yyyy") }}
+          </p>
         </v-col>
       </v-row>
     </div>
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
-      <v-btn v-if="status !== 'Draft'" size="large" variant="outlined" color="primary" @click="openProfile">View</v-btn>
-      <v-btn v-else-if="!isActive" size="large" variant="outlined" color="primary" @click="openProfile">Review now</v-btn>
+      <v-btn
+        v-if="status !== 'Draft'"
+        size="large"
+        variant="outlined"
+        color="primary"
+        @click="openProfile"
+      >
+        View
+      </v-btn>
+      <v-btn
+        v-else-if="!isActive"
+        size="large"
+        variant="outlined"
+        color="primary"
+        @click="openProfile"
+      >
+        Review now
+      </v-btn>
       <v-row v-else>
-        <v-btn size="large" variant="outlined" color="primary" @click="openProfile">Continue</v-btn>
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="openProfile"
+        >
+          Continue
+        </v-btn>
         <v-spacer />
-        <p v-if="isActive && status === 'Draft'" class="mt-2 text-support-border-info">REVIEW IN PROGRESS: {{ step }}/5</p>
+        <p
+          v-if="isActive && status === 'Draft'"
+          class="mt-2 text-support-border-info"
+        >
+          REVIEW IN PROGRESS: {{ step }}/5
+        </p>
       </v-row>
     </v-card-actions>
   </v-card>
@@ -58,7 +97,10 @@ export default defineComponent({
       return this.program.name || "—";
     },
     programType(): string {
-      if (!this.program.programTypes || this.program.programTypes.length === 0) {
+      if (
+        !this.program.programTypes ||
+        this.program.programTypes.length === 0
+      ) {
         return "—";
       }
       return this.program.programTypes.join(", ");
@@ -67,7 +109,10 @@ export default defineComponent({
       return this.program.status || "Draft";
     },
     isActive(): boolean {
-      return this.program.portalStage !== null && this.program.portalStage !== undefined;
+      return (
+        this.program.portalStage !== null &&
+        this.program.portalStage !== undefined
+      );
     },
     chipColour(): string | undefined {
       switch (this.status) {

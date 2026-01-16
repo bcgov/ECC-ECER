@@ -17,7 +17,12 @@
         </v-col>
         <v-col>
           <p class="small font-weight-bold">
-            {{ wizardStore.wizardData[wizardStore?.wizardConfig?.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id || ""] || "—" }}
+            {{
+              wizardStore.wizardData[
+                wizardStore?.wizardConfig?.steps?.fiveYearRenewalExplanation
+                  ?.form?.inputs?.renewalExplanationOther?.id || ""
+              ] || "—"
+            }}
           </p>
         </v-col>
       </v-row>
@@ -44,13 +49,19 @@ export default defineComponent({
   },
   computed: {
     hasOtherReasonToRenew() {
-      return !!this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id || ""];
+      return !!this.wizardStore.wizardData[
+        this.wizardStore?.wizardConfig?.steps?.fiveYearRenewalExplanation?.form
+          ?.inputs?.renewalExplanationOther?.id || ""
+      ];
     },
     generateReasonToRenew() {
       const renewalReason = fiveYearRenewalInformationRadio.find(
         (reason) =>
           reason.value ===
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.fiveYearRenewalExplanation?.form?.inputs?.fiveYearRenewalExplanation?.id || ""],
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.fiveYearRenewalExplanation
+              ?.form?.inputs?.fiveYearRenewalExplanation?.id || ""
+          ],
       )?.label;
 
       return renewalReason ?? "-";

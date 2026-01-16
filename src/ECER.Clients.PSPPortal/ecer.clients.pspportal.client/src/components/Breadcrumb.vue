@@ -26,7 +26,11 @@ export default defineComponent({
       if (this.route.name === "edit-profile") {
         return [
           { title: "Home", disabled: false, href: "/" },
-          { title: "My contact details", disabled: true, href: "/profile/edit" },
+          {
+            title: "My contact details",
+            disabled: true,
+            href: "/profile/edit",
+          },
         ];
       }
       if (this.route.name === "manage-users") {
@@ -36,23 +40,36 @@ export default defineComponent({
         ];
       }
       if (this.route.name === "add-user") {
-        const educationInstitutionName = this.route.params.educationInstitutionName as string;
+        const educationInstitutionName = this.route.params
+          .educationInstitutionName as string;
         return [
           { title: "Home", disabled: false, href: "/" },
-          { title: "Manage users", disabled: false, href: `/manage-users/${educationInstitutionName}` },
+          {
+            title: "Manage users",
+            disabled: false,
+            href: `/manage-users/${educationInstitutionName}`,
+          },
           { title: "Invite user", disabled: true, href: this.route.path },
         ];
       }
       if (this.route.name === "edit-education-institution") {
         return [
           { title: "Home", disabled: false, href: "/" },
-          { title: "Edit Institution", disabled: true, href: "/education-institution/edit" },
+          {
+            title: "Edit Institution",
+            disabled: true,
+            href: "/education-institution/edit",
+          },
         ];
       }
       if (this.route.name === "program-profiles") {
         return [
           { title: "Home", disabled: false, href: "/" },
-          { title: "Program profiles", disabled: true, href: "/program-profiles" },
+          {
+            title: "Program profiles",
+            disabled: true,
+            href: "/program-profiles",
+          },
         ];
       }
       return [];

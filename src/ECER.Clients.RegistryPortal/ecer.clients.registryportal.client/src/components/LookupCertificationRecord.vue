@@ -1,6 +1,8 @@
 <template>
   <v-sheet class="bg-primary">
-    <v-container><h1 class="text-white">Validate an ECE certificate</h1></v-container>
+    <v-container>
+      <h1 class="text-white">Validate an ECE certificate</h1>
+    </v-container>
   </v-sheet>
   <v-container>
     <!-- prettier-ignore -->
@@ -8,28 +10,57 @@
       <v-icon size='x-large'>mdi-chevron-left</v-icon>Back to search
     </a>
     <div>
-      <h2 class="mt-7">{{ lookupCertificationStore.certificationRecord?.name }}</h2>
+      <h2 class="mt-7">
+        {{ lookupCertificationStore.certificationRecord?.name }}
+      </h2>
       <p class="font-weight-bold mt-4">ECE registration number</p>
-      <span>{{ lookupCertificationStore.certificationRecord?.registrationNumber }}</span>
+      <span>
+        {{ lookupCertificationStore.certificationRecord?.registrationNumber }}
+      </span>
       <p class="font-weight-bold mt-4">Registration status</p>
       <v-row class="mt-2" no-gutters>
         <v-col cols="12" md="auto" class="mr-2 mb-2">
-          <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
+          <v-chip :color="chipColor" variant="flat" size="small">
+            {{ chipText }}
+          </v-chip>
         </v-col>
         <v-col cols="12" md="auto">
-          <v-chip v-if="lookupCertificationStore.certificationRecord?.hasConditions" color="grey-darkest" variant="outlined" size="small">
+          <v-chip
+            v-if="lookupCertificationStore.certificationRecord?.hasConditions"
+            color="grey-darkest"
+            variant="outlined"
+            size="small"
+          >
             Has Terms and Conditions
           </v-chip>
         </v-col>
       </v-row>
       <p class="font-weight-bold mt-4">Certification</p>
-      <span>{{ lookupCertificationStore.generateCertificateLevelName(lookupCertificationStore.certificationRecord?.levels || []) }}</span>
+      <span>
+        {{
+          lookupCertificationStore.generateCertificateLevelName(
+            lookupCertificationStore.certificationRecord?.levels || [],
+          )
+        }}
+      </span>
       <p class="font-weight-bold mt-4">Certificate expiry date</p>
-      <span>{{ formatDate(lookupCertificationStore.certificationRecord?.expiryDate || "", "LLLL d, yyyy") }}</span>
+      <span>
+        {{
+          formatDate(
+            lookupCertificationStore.certificationRecord?.expiryDate || "",
+            "LLLL d, yyyy",
+          )
+        }}
+      </span>
       <div v-if="lookupCertificationStore.certificationRecord?.hasConditions">
-        <p class="font-weight-bold mt-7 mb-2">Certificate terms and conditions</p>
+        <p class="font-weight-bold mt-7 mb-2">
+          Certificate terms and conditions
+        </p>
         <ul class="ml-10">
-          <li v-for="(condition, index) in sortedCertificateConditions" :key="index">
+          <li
+            v-for="(condition, index) in sortedCertificateConditions"
+            :key="index"
+          >
             {{ condition.details }}
           </li>
         </ul>
@@ -63,7 +94,11 @@ export default defineComponent({
   computed: {
     sortedCertificateConditions() {
       // Sort the conditions based on displayOrder
-      return this.lookupCertificationStore.certificationRecord?.certificateConditions?.sort((a, b) => a.displayOrder! - b.displayOrder!) || [];
+      return (
+        this.lookupCertificationStore.certificationRecord?.certificateConditions?.sort(
+          (a, b) => a.displayOrder! - b.displayOrder!,
+        ) || []
+      );
     },
     chipText() {
       // "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended"

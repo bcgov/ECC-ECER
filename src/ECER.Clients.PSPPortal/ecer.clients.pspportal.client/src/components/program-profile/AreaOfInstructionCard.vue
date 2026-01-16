@@ -1,10 +1,24 @@
 <template>
-  <v-card flat rounded="lg" :border="true" color="support-surface-info" class="border-support-border-info">
+  <v-card
+    flat
+    rounded="lg"
+    :border="true"
+    color="support-surface-info"
+    class="border-support-border-info"
+  >
     <v-card-text>
-      <div v-for="(areaGroup, areaIndex) in groupedAreas" :key="areaGroup.areaOfInstructionId">
+      <div
+        v-for="(areaGroup, areaIndex) in groupedAreas"
+        :key="areaGroup.areaOfInstructionId"
+      >
         <v-card-title class="pl-0">{{ areaGroup.areaName }}</v-card-title>
-        <v-card-subtitle v-if="areaGroup.subtitle" class="pl-0 pb-4">{{ areaGroup.subtitle }}</v-card-subtitle>
-        <div v-if="areaIndex === 0 && showProgressBar" class="mb-4 d-flex align-center">
+        <v-card-subtitle v-if="areaGroup.subtitle" class="pl-0 pb-4">
+          {{ areaGroup.subtitle }}
+        </v-card-subtitle>
+        <div
+          v-if="areaIndex === 0 && showProgressBar"
+          class="mb-4 d-flex align-center"
+        >
           <v-progress-linear
             :model-value="overallProgressPercentage"
             height="25"
@@ -23,11 +37,32 @@
               </span>
             </template>
           </v-progress-linear>
-          <v-icon v-if="overallProgressPercentage >= 100" icon="mdi-check" :color="overallProgressColor" size="28" class="ml-2"></v-icon>
+          <v-icon
+            v-if="overallProgressPercentage >= 100"
+            icon="mdi-check"
+            :color="overallProgressColor"
+            size="28"
+            class="ml-2"
+          ></v-icon>
         </div>
-        <div v-if="areaGroup.courses.some((c: CourseAreaOfInstructionWithCourse) => c.courseNumber || c.courseTitle)">
-          <template v-for="(courseArea, index) in areaGroup.courses" :key="courseArea.courseAreaOfInstructionId || index">
-            <v-row v-if="courseArea.courseNumber || courseArea.courseTitle" no-gutters align="center" class="pl-4 mb-2 bg-white rounded-lg border">
+        <div
+          v-if="
+            areaGroup.courses.some(
+              (c: CourseAreaOfInstructionWithCourse) =>
+                c.courseNumber || c.courseTitle,
+            )
+          "
+        >
+          <template
+            v-for="(courseArea, index) in areaGroup.courses"
+            :key="courseArea.courseAreaOfInstructionId || index"
+          >
+            <v-row
+              v-if="courseArea.courseNumber || courseArea.courseTitle"
+              no-gutters
+              align="center"
+              class="pl-4 mb-2 bg-white rounded-lg border"
+            >
               <v-col cols="8">
                 <span class="font-weight-bold">
                   {{ getCourseTitle(courseArea) }}
@@ -38,15 +73,25 @@
               </v-col>
               <v-col cols="auto" class="d-flex">
                 <v-divider vertical></v-divider>
-                <v-btn icon="mdi-pencil" variant="plain" @click="handleEdit(courseArea)"></v-btn>
+                <v-btn
+                  icon="mdi-pencil"
+                  variant="plain"
+                  @click="handleEdit(courseArea)"
+                ></v-btn>
               </v-col>
             </v-row>
           </template>
         </div>
 
-        <p v-else class="text-grey-darken-1 mb-4">No courses added yet for this area.</p>
+        <p v-else class="text-grey-darken-1 mb-4">
+          No courses added yet for this area.
+        </p>
       </div>
-      <v-row v-if="groupedAreas.length > 0" no-gutters class="pl-4 pt-2 font-weight-bold">
+      <v-row
+        v-if="groupedAreas.length > 0"
+        no-gutters
+        class="pl-4 pt-2 font-weight-bold"
+      >
         <v-col cols="8">
           <span>Total hours</span>
         </v-col>
@@ -55,7 +100,9 @@
         </v-col>
       </v-row>
 
-      <p v-if="groupedAreas.length === 0" class="text-grey-darken-1">No courses added yet.</p>
+      <p v-if="groupedAreas.length === 0" class="text-grey-darken-1">
+        No courses added yet.
+      </p>
     </v-card-text>
   </v-card>
 </template>
@@ -65,7 +112,8 @@ import { defineComponent, type PropType } from "vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
 
-interface CourseAreaOfInstructionWithCourse extends Components.Schemas.CourseAreaOfInstruction {
+interface CourseAreaOfInstructionWithCourse
+  extends Components.Schemas.CourseAreaOfInstruction {
   courseTitle?: string | null;
   courseNumber?: string | null;
 }
@@ -135,10 +183,16 @@ export default defineComponent({
 
       // Convert to array with computed values for each area
       return Array.from(grouped.entries()).map(([areaId, courses]) => {
-        const areaOfInstruction = this.configStore.areaOfInstructionList.find((area) => area.id === areaId);
+        const areaOfInstruction = this.configStore.areaOfInstructionList.find(
+          (area) => area.id === areaId,
+        );
         const areaName = areaOfInstruction?.name || areaId;
         // Use provided subtitle from prop, or fallback to default based on minimum hours
-        const subtitle = this.areaSubtitles[areaId] || (areaOfInstruction?.minimumHours ? `A minimum of ${areaOfInstruction.minimumHours} is required.` : "");
+        const subtitle =
+          this.areaSubtitles[areaId] ||
+          (areaOfInstruction?.minimumHours
+            ? `A minimum of ${areaOfInstruction.minimumHours} is required.`
+            : "");
         const minimumHours = areaOfInstruction?.minimumHours || 0;
 
         const totalHours = courses.reduce((sum, courseArea) => {
@@ -146,7 +200,10 @@ export default defineComponent({
           return sum + hours;
         }, 0);
 
-        const progressPercentage = minimumHours === 0 ? 0 : Math.min((totalHours / minimumHours) * 100, 100);
+        const progressPercentage =
+          minimumHours === 0
+            ? 0
+            : Math.min((totalHours / minimumHours) * 100, 100);
 
         const progressColor = progressPercentage >= 100 ? "#66CB7B" : "#FACC75";
 

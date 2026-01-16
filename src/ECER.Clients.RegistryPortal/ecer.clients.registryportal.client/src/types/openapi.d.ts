@@ -1,4 +1,10 @@
-import type { OpenAPIClient, Parameters, UnknownParamsObject, OperationResponse, AxiosRequestConfig } from "openapi-client-axios";
+import type {
+  OpenAPIClient,
+  Parameters,
+  UnknownParamsObject,
+  OperationResponse,
+  AxiosRequestConfig,
+} from "openapi-client-axios";
 
 declare namespace Components {
   namespace Schemas {
@@ -87,7 +93,11 @@ declare namespace Components {
        */
       id?: string | null;
     }
-    export type ApplicationTypes = "New" | "Renewal" | "LabourMobility" | "ICRA";
+    export type ApplicationTypes =
+      | "New"
+      | "Renewal"
+      | "LabourMobility"
+      | "ICRA";
     /**
      * delete draft application response
      */
@@ -117,7 +127,14 @@ declare namespace Components {
     }
     export type CertificatePDFGeneration = "No" | "Requested" | "Yes";
     export type CertificateStatus = "Valid" | "Expired";
-    export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
+    export type CertificateStatusCode =
+      | "Active"
+      | "Cancelled"
+      | "Expired"
+      | "Inactive"
+      | "Renewed"
+      | "Reprinted"
+      | "Suspended";
     export interface Certification {
       id?: string | null;
       name?: string | null;
@@ -171,7 +188,12 @@ declare namespace Components {
       levels?: CertificationLevel[] | null;
       certificateConditions?: CertificateCondition[] | null;
     }
-    export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
+    export type CertificationType =
+      | "EceAssistant"
+      | "OneYear"
+      | "FiveYears"
+      | "Ite"
+      | "Sne";
     export interface CharacterReference {
       lastName?: string | null;
       phoneNumber?: string | null;
@@ -263,7 +285,11 @@ declare namespace Components {
        */
       communicationId?: string | null;
     }
-    export type CommunicationStatus = "Draft" | "NotifiedRecipient" | "Acknowledged" | "Inactive";
+    export type CommunicationStatus =
+      | "Draft"
+      | "NotifiedRecipient"
+      | "Acknowledged"
+      | "Inactive";
     export interface CommunicationsStatus {
       count?: number; // int32
       hasUnread?: boolean;
@@ -275,7 +301,10 @@ declare namespace Components {
       transferringCertificate?: OutOfProvinceCertificationType;
       options?: CertificationComparison[] | null;
     }
-    export type ComprehensiveReportOptions = "FeeWaiver" | "InternationalCredentialEvaluationService" | "RegistryAlreadyHas";
+    export type ComprehensiveReportOptions =
+      | "FeeWaiver"
+      | "InternationalCredentialEvaluationService"
+      | "RegistryAlreadyHas";
     export interface Country {
       countryId?: string | null;
       countryName?: string | null;
@@ -400,7 +429,16 @@ declare namespace Components {
     export interface ICRAEligibilitySubmissionRequest {
       id?: string | null;
     }
-    export type ICRAStatus = "Active" | "Draft" | "Eligible" | "Inactive" | "Ineligible" | "InReview" | "ReadyforReview" | "Submitted" | "ReadyforAssessment";
+    export type ICRAStatus =
+      | "Active"
+      | "Draft"
+      | "Eligible"
+      | "Inactive"
+      | "Ineligible"
+      | "InReview"
+      | "ReadyforReview"
+      | "Submitted"
+      | "ReadyforAssessment";
     export interface ICRAWorkExperienceReferenceSubmissionRequest {
       token?: string | null;
       recaptchaToken?: string | null;
@@ -433,7 +471,11 @@ declare namespace Components {
       name?: string | null;
       size?: string | null;
     }
-    export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry" | "ProgramRepresentative";
+    export type InitiatedFrom =
+      | "Investigation"
+      | "PortalUser"
+      | "Registry"
+      | "ProgramRepresentative";
     export interface InternationalCertification {
       id?: string | null;
       otherFirstName?: string | null;
@@ -465,7 +507,10 @@ declare namespace Components {
       | "Rejected"
       | "UnderReview"
       | "WaitingforResponse";
-    export type InviteType = "CharacterReference" | "WorkExperienceReferenceforApplication" | "WorkExperienceReferenceforICRA";
+    export type InviteType =
+      | "CharacterReference"
+      | "WorkExperienceReferenceforApplication"
+      | "WorkExperienceReferenceforICRA";
     export type LikertScale = "Yes" | "No";
     export interface OidcAuthenticationSettings {
       authority?: string | null;
@@ -527,8 +572,17 @@ declare namespace Components {
       source?: PreviousNameSources;
       documents?: IdentityDocument[] | null;
     }
-    export type PreviousNameSources = "NameLog" | "Profile" | "Transcript" | "OutofProvinceCertificate";
-    export type PreviousNameStage = "Archived" | "PendingforDocuments" | "ReadyforVerification" | "Unverified" | "Verified";
+    export type PreviousNameSources =
+      | "NameLog"
+      | "Profile"
+      | "Transcript"
+      | "OutofProvinceCertificate";
+    export type PreviousNameStage =
+      | "Archived"
+      | "PendingforDocuments"
+      | "ReadyforVerification"
+      | "Unverified"
+      | "Verified";
     export interface ProblemDetails {
       [name: string]: any;
       type?: string | null;
@@ -591,8 +645,18 @@ declare namespace Components {
       certificateNumber?: string | null;
       dateOfBirth?: string | null; // date-time
     }
-    export type ReferenceKnownTime = "From1to2years" | "From2to5years" | "From6monthsto1year" | "Lessthan6months" | "Morethan5years";
-    export type ReferenceRelationship = "CoWorker" | "Other" | "ParentGuardianofChildinCare" | "Supervisor" | "Teacher";
+    export type ReferenceKnownTime =
+      | "From1to2years"
+      | "From2to5years"
+      | "From6monthsto1year"
+      | "Lessthan6months"
+      | "Morethan5years";
+    export type ReferenceRelationship =
+      | "CoWorker"
+      | "Other"
+      | "ParentGuardianofChildinCare"
+      | "Supervisor"
+      | "Teacher";
     export interface ResendIcraReferenceInviteResponse {
       referenceId?: string | null;
     }
@@ -629,7 +693,13 @@ declare namespace Components {
        */
       communicationId?: string | null;
     }
-    export type StatusCode = "Inactive" | "PendingforDocuments" | "ReadyforIDVerification" | "ReadyforRegistrantMatch" | "Unverified" | "Verified";
+    export type StatusCode =
+      | "Inactive"
+      | "PendingforDocuments"
+      | "ReadyforIDVerification"
+      | "ReadyforRegistrantMatch"
+      | "Unverified"
+      | "Verified";
     export interface SubmitApplicationResponse {
       application?: Application;
     }
@@ -690,7 +760,14 @@ declare namespace Components {
       comprehensiveReportOptions?: ComprehensiveReportOptions;
       programConfirmationOptions?: ProgramConfirmationOptions;
     }
-    export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
+    export type TranscriptStage =
+      | "Accepted"
+      | "ApplicationSubmitted"
+      | "Draft"
+      | "InProgress"
+      | "Rejected"
+      | "Submitted"
+      | "WaitingforDetails";
     export interface TranscriptStatus {
       id?: string | null;
       status?: TranscriptStage;
@@ -708,7 +785,10 @@ declare namespace Components {
       country?: Country;
       educationRecognition?: EducationRecognition;
     }
-    export type TranscriptStatusOptions = "RegistryHasTranscript" | "OfficialTranscriptRequested" | "TranscriptWillRequireEnglishTranslation";
+    export type TranscriptStatusOptions =
+      | "RegistryHasTranscript"
+      | "OfficialTranscriptRequested"
+      | "TranscriptWillRequireEnglishTranslation";
     export type UnabletoProvideReferenceReasons =
       | "Iamunabletoatthistime"
       | "Idonothavetheinformationrequired"
@@ -849,7 +929,8 @@ declare namespace Paths {
       referenceId: Parameters.ReferenceId;
     }
     namespace Responses {
-      export type $200 = /* Resend reference invite response */ Components.Schemas.ResendReferenceInviteResponse;
+      export type $200 =
+        /* Resend reference invite response */ Components.Schemas.ResendReferenceInviteResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
@@ -886,10 +967,13 @@ declare namespace Paths {
     }
   }
   namespace ApplicationPost {
-    export type RequestBody = /* Submit application request */ Components.Schemas.ApplicationSubmissionRequest;
+    export type RequestBody =
+      /* Submit application request */ Components.Schemas.ApplicationSubmissionRequest;
     namespace Responses {
       export type $200 = Components.Schemas.SubmitApplicationResponse;
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -917,13 +1001,16 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = Components.Schemas.SubmittedApplicationStatus;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
-      export type $404 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $404 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace ApplicationUpdateTranscriptPost {
     export type RequestBody = Components.Schemas.TranscriptDocuments;
     namespace Responses {
-      export type $200 = /* Save draft application response */ Components.Schemas.DraftApplicationResponse;
+      export type $200 =
+        /* Save draft application response */ Components.Schemas.DraftApplicationResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
@@ -937,7 +1024,8 @@ declare namespace Paths {
       referenceId: Parameters.ReferenceId;
     }
     namespace Responses {
-      export type $200 = /* Resend reference invite response */ Components.Schemas.ResendReferenceInviteResponse;
+      export type $200 =
+        /* Resend reference invite response */ Components.Schemas.ResendReferenceInviteResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
@@ -1000,12 +1088,15 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.CertificationLookupRequest;
     namespace Responses {
       export type $200 = Components.Schemas.CertificationLookupResponse[];
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
   namespace CharacterReferencePost {
-    export type RequestBody = Components.Schemas.CharacterReferenceSubmissionRequest;
+    export type RequestBody =
+      Components.Schemas.CharacterReferenceSubmissionRequest;
     namespace Responses {
       export interface $200 {}
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
@@ -1018,9 +1109,11 @@ declare namespace Paths {
     export interface PathParameters {
       id?: Parameters.Id;
     }
-    export type RequestBody = /* Communication seen request */ Components.Schemas.CommunicationSeenRequest;
+    export type RequestBody =
+      /* Communication seen request */ Components.Schemas.CommunicationSeenRequest;
     namespace Responses {
-      export type $200 = /* Save communication response */ Components.Schemas.CommunicationResponse;
+      export type $200 =
+        /* Save communication response */ Components.Schemas.CommunicationResponse;
       export type $400 = string;
     }
   }
@@ -1060,7 +1153,8 @@ declare namespace Paths {
       id: Parameters.Id;
     }
     namespace Responses {
-      export type $200 = /* delete draft application response */ Components.Schemas.CancelDraftApplicationResponse;
+      export type $200 =
+        /* delete draft application response */ Components.Schemas.CancelDraftApplicationResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
@@ -1071,9 +1165,11 @@ declare namespace Paths {
     export interface PathParameters {
       id?: Parameters.Id;
     }
-    export type RequestBody = /* Save draft application request */ Components.Schemas.SaveDraftApplicationRequest;
+    export type RequestBody =
+      /* Save draft application request */ Components.Schemas.SaveDraftApplicationRequest;
     namespace Responses {
-      export type $200 = /* Save draft application response */ Components.Schemas.DraftApplicationResponse;
+      export type $200 =
+        /* Save draft application response */ Components.Schemas.DraftApplicationResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -1121,10 +1217,13 @@ declare namespace Paths {
     }
   }
   namespace IcraPost {
-    export type RequestBody = Components.Schemas.ICRAEligibilitySubmissionRequest;
+    export type RequestBody =
+      Components.Schemas.ICRAEligibilitySubmissionRequest;
     namespace Responses {
       export type $200 = Components.Schemas.SubmitICRAEligibilityResponse;
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -1135,7 +1234,8 @@ declare namespace Paths {
     export interface PathParameters {
       id?: Parameters.Id;
     }
-    export type RequestBody = Components.Schemas.SaveDraftICRAEligibilityRequest;
+    export type RequestBody =
+      Components.Schemas.SaveDraftICRAEligibilityRequest;
     namespace Responses {
       export type $200 = Components.Schemas.DraftICRAEligibilityResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
@@ -1152,11 +1252,14 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = Components.Schemas.ICRAEligibilityStatus;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
-      export type $404 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $404 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace IcraWorkExperienceReferencePost {
-    export type RequestBody = Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
+    export type RequestBody =
+      Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
     namespace Responses {
       export interface $200 {}
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
@@ -1243,15 +1346,21 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetMessagesResponse;
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
   namespace MessagePost {
-    export type RequestBody = /* Send Message Request */ Components.Schemas.SendMessageRequest;
+    export type RequestBody =
+      /* Send Message Request */ Components.Schemas.SendMessageRequest;
     namespace Responses {
-      export type $200 = /* Send Message Response */ Components.Schemas.SendMessageResponse;
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $200 =
+        /* Send Message Response */ Components.Schemas.SendMessageResponse;
+      export type $400 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -1262,12 +1371,14 @@ declare namespace Paths {
   }
   namespace ProfileGet {
     namespace Responses {
-      export type $200 = /* User profile information */ Components.Schemas.UserProfile;
+      export type $200 =
+        /* User profile information */ Components.Schemas.UserProfile;
       export interface $404 {}
     }
   }
   namespace ProfilePut {
-    export type RequestBody = /* User profile information */ Components.Schemas.UserProfile;
+    export type RequestBody =
+      /* User profile information */ Components.Schemas.UserProfile;
     namespace Responses {
       export interface $200 {}
     }
@@ -1276,7 +1387,9 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.ProfileIdentification;
     namespace Responses {
       export interface $200 {}
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace ProvinceGet {
@@ -1342,7 +1455,9 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = /* file Response */ Components.Schemas.FileResponse;
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -1365,7 +1480,8 @@ declare namespace Paths {
     }
   }
   namespace WorkExperienceReferencePost {
-    export type RequestBody = Components.Schemas.WorkExperienceReferenceSubmissionRequest;
+    export type RequestBody =
+      Components.Schemas.WorkExperienceReferenceSubmissionRequest;
     namespace Responses {
       export interface $200 {}
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
@@ -1410,7 +1526,10 @@ export interface OperationMethods {
    * certificationComparison_get - Handles certification comparison queries
    */
   "certificationComparison_get"(
-    parameters?: Parameters<Paths.CertificationComparisonGet.QueryParameters & Paths.CertificationComparisonGet.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.CertificationComparisonGet.QueryParameters &
+        Paths.CertificationComparisonGet.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CertificationComparisonGet.Responses.$200>;
@@ -1418,7 +1537,9 @@ export interface OperationMethods {
    * psi_get - Handles psi queries
    */
   "psi_get"(
-    parameters?: Parameters<Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PsiGet.Responses.$200>;
@@ -1538,7 +1659,9 @@ export interface OperationMethods {
    * icra_get - Handles icra queries
    */
   "icra_get"(
-    parameters?: Parameters<Paths.IcraGet.QueryParameters & Paths.IcraGet.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.IcraGet.QueryParameters & Paths.IcraGet.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.IcraGet.Responses.$200>;
@@ -1708,7 +1831,9 @@ export interface OperationMethods {
    * application_get - Handles application queries
    */
   "application_get"(
-    parameters?: Parameters<Paths.ApplicationGet.QueryParameters & Paths.ApplicationGet.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.ApplicationGet.QueryParameters & Paths.ApplicationGet.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
@@ -1799,7 +1924,11 @@ export interface PathsDictionary {
     /**
      * province_get - Handles province queries
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
   };
   ["/api/defaultContents"]: {
     /**
@@ -1815,14 +1944,21 @@ export interface PathsDictionary {
     /**
      * country_get - Handles country queries
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.CountryGet.Responses.$200>;
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CountryGet.Responses.$200>;
   };
   ["/api/certificationComparison/{id}"]: {
     /**
      * certificationComparison_get - Handles certification comparison queries
      */
     "get"(
-      parameters?: Parameters<Paths.CertificationComparisonGet.QueryParameters & Paths.CertificationComparisonGet.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.CertificationComparisonGet.QueryParameters &
+          Paths.CertificationComparisonGet.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CertificationComparisonGet.Responses.$200>;
@@ -1832,7 +1968,9 @@ export interface PathsDictionary {
      * psi_get - Handles psi queries
      */
     "get"(
-      parameters?: Parameters<Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PsiGet.Responses.$200>;
@@ -1871,13 +2009,21 @@ export interface PathsDictionary {
     /**
      * version_get - Returns the version information
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.VersionGet.Responses.$200>;
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.VersionGet.Responses.$200>;
   };
   ["/api/profile"]: {
     /**
      * profile_get - Gets the current user profile
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProfileGet.Responses.$200>;
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProfileGet.Responses.$200>;
     /**
      * profile_put - Gets the current user profile
      */
@@ -1901,7 +2047,11 @@ export interface PathsDictionary {
     /**
      * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.UserinfoGet.Responses.$200>;
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.UserinfoGet.Responses.$200>;
     /**
      * userinfo_post - Creates or updates the currently logged on user's profile
      */
@@ -1974,7 +2124,9 @@ export interface PathsDictionary {
      * icra_get - Handles icra queries
      */
     "get"(
-      parameters?: Parameters<Paths.IcraGet.QueryParameters & Paths.IcraGet.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.IcraGet.QueryParameters & Paths.IcraGet.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.IcraGet.Responses.$200>;
@@ -2045,13 +2197,21 @@ export interface PathsDictionary {
     /**
      * files_certificate_get - Handles fetching certificate PDF's
      */
-    "get"(parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<any>;
+    "get"(
+      parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<any>;
   };
   ["/api/files/communication/{communicationId}/file/{fileId}"]: {
     /**
      * files_communication_get - Handles fetching files
      */
-    "get"(parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<any>;
+    "get"(
+      parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<any>;
   };
   ["/api/files/{fileId}"]: {
     /**
@@ -2166,7 +2326,10 @@ export interface PathsDictionary {
      * application_get - Handles application queries
      */
     "get"(
-      parameters?: Parameters<Paths.ApplicationGet.QueryParameters & Paths.ApplicationGet.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.ApplicationGet.QueryParameters &
+          Paths.ApplicationGet.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
@@ -2261,120 +2424,170 @@ export interface PathsDictionary {
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
 
-export type AddProfessionalDevelopmentResponse = Components.Schemas.AddProfessionalDevelopmentResponse;
+export type AddProfessionalDevelopmentResponse =
+  Components.Schemas.AddProfessionalDevelopmentResponse;
 export type Address = Components.Schemas.Address;
 export type Application = Components.Schemas.Application;
-export type ApplicationConfiguration = Components.Schemas.ApplicationConfiguration;
+export type ApplicationConfiguration =
+  Components.Schemas.ApplicationConfiguration;
 export type ApplicationOrigin = Components.Schemas.ApplicationOrigin;
 export type ApplicationStatus = Components.Schemas.ApplicationStatus;
-export type ApplicationStatusReasonDetail = Components.Schemas.ApplicationStatusReasonDetail;
-export type ApplicationSubmissionRequest = Components.Schemas.ApplicationSubmissionRequest;
+export type ApplicationStatusReasonDetail =
+  Components.Schemas.ApplicationStatusReasonDetail;
+export type ApplicationSubmissionRequest =
+  Components.Schemas.ApplicationSubmissionRequest;
 export type ApplicationTypes = Components.Schemas.ApplicationTypes;
-export type CancelDraftApplicationResponse = Components.Schemas.CancelDraftApplicationResponse;
+export type CancelDraftApplicationResponse =
+  Components.Schemas.CancelDraftApplicationResponse;
 export type CertificateCondition = Components.Schemas.CertificateCondition;
 export type CertificateInformation = Components.Schemas.CertificateInformation;
-export type CertificatePDFGeneration = Components.Schemas.CertificatePDFGeneration;
+export type CertificatePDFGeneration =
+  Components.Schemas.CertificatePDFGeneration;
 export type CertificateStatus = Components.Schemas.CertificateStatus;
 export type CertificateStatusCode = Components.Schemas.CertificateStatusCode;
 export type Certification = Components.Schemas.Certification;
-export type CertificationComparison = Components.Schemas.CertificationComparison;
+export type CertificationComparison =
+  Components.Schemas.CertificationComparison;
 export type CertificationFile = Components.Schemas.CertificationFile;
 export type CertificationLevel = Components.Schemas.CertificationLevel;
-export type CertificationLookupRequest = Components.Schemas.CertificationLookupRequest;
-export type CertificationLookupResponse = Components.Schemas.CertificationLookupResponse;
+export type CertificationLookupRequest =
+  Components.Schemas.CertificationLookupRequest;
+export type CertificationLookupResponse =
+  Components.Schemas.CertificationLookupResponse;
 export type CertificationType = Components.Schemas.CertificationType;
 export type CharacterReference = Components.Schemas.CharacterReference;
-export type CharacterReferenceEvaluation = Components.Schemas.CharacterReferenceEvaluation;
-export type CharacterReferenceStage = Components.Schemas.CharacterReferenceStage;
-export type CharacterReferenceStatus = Components.Schemas.CharacterReferenceStatus;
-export type CharacterReferenceSubmissionRequest = Components.Schemas.CharacterReferenceSubmissionRequest;
+export type CharacterReferenceEvaluation =
+  Components.Schemas.CharacterReferenceEvaluation;
+export type CharacterReferenceStage =
+  Components.Schemas.CharacterReferenceStage;
+export type CharacterReferenceStatus =
+  Components.Schemas.CharacterReferenceStatus;
+export type CharacterReferenceSubmissionRequest =
+  Components.Schemas.CharacterReferenceSubmissionRequest;
 export type ChildcareAgeRanges = Components.Schemas.ChildcareAgeRanges;
 export type ChildrenProgramType = Components.Schemas.ChildrenProgramType;
 export type Communication = Components.Schemas.Communication;
 export type CommunicationDocument = Components.Schemas.CommunicationDocument;
 export type CommunicationResponse = Components.Schemas.CommunicationResponse;
-export type CommunicationSeenRequest = Components.Schemas.CommunicationSeenRequest;
+export type CommunicationSeenRequest =
+  Components.Schemas.CommunicationSeenRequest;
 export type CommunicationStatus = Components.Schemas.CommunicationStatus;
 export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
-export type CommunicationsStatusResults = Components.Schemas.CommunicationsStatusResults;
+export type CommunicationsStatusResults =
+  Components.Schemas.CommunicationsStatusResults;
 export type ComparisonRecord = Components.Schemas.ComparisonRecord;
-export type ComprehensiveReportOptions = Components.Schemas.ComprehensiveReportOptions;
+export type ComprehensiveReportOptions =
+  Components.Schemas.ComprehensiveReportOptions;
 export type Country = Components.Schemas.Country;
 export type CourseOutlineOptions = Components.Schemas.CourseOutlineOptions;
 export type DefaultContent = Components.Schemas.DefaultContent;
 export type DraftApplication = Components.Schemas.DraftApplication;
-export type DraftApplicationResponse = Components.Schemas.DraftApplicationResponse;
-export type DraftICRAEligibilityResponse = Components.Schemas.DraftICRAEligibilityResponse;
+export type DraftApplicationResponse =
+  Components.Schemas.DraftApplicationResponse;
+export type DraftICRAEligibilityResponse =
+  Components.Schemas.DraftICRAEligibilityResponse;
 export type EducationOrigin = Components.Schemas.EducationOrigin;
 export type EducationRecognition = Components.Schemas.EducationRecognition;
 export type EmploymentReference = Components.Schemas.EmploymentReference;
-export type EmploymentReferenceStatus = Components.Schemas.EmploymentReferenceStatus;
+export type EmploymentReferenceStatus =
+  Components.Schemas.EmploymentReferenceStatus;
 export type FileInfo = Components.Schemas.FileInfo;
 export type FileResponse = Components.Schemas.FileResponse;
-export type FiveYearRenewalExplanations = Components.Schemas.FiveYearRenewalExplanations;
+export type FiveYearRenewalExplanations =
+  Components.Schemas.FiveYearRenewalExplanations;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
-export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
+export type HttpValidationProblemDetails =
+  Components.Schemas.HttpValidationProblemDetails;
 export type ICRAEligibility = Components.Schemas.ICRAEligibility;
 export type ICRAEligibilityStatus = Components.Schemas.ICRAEligibilityStatus;
-export type ICRAEligibilitySubmissionRequest = Components.Schemas.ICRAEligibilitySubmissionRequest;
+export type ICRAEligibilitySubmissionRequest =
+  Components.Schemas.ICRAEligibilitySubmissionRequest;
 export type ICRAStatus = Components.Schemas.ICRAStatus;
-export type ICRAWorkExperienceReferenceSubmissionRequest = Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
+export type ICRAWorkExperienceReferenceSubmissionRequest =
+  Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
 export type IcraEligibilityOrigin = Components.Schemas.IcraEligibilityOrigin;
 export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
-export type InternationalCertification = Components.Schemas.InternationalCertification;
-export type InternationalCertificationStatus = Components.Schemas.InternationalCertificationStatus;
+export type InternationalCertification =
+  Components.Schemas.InternationalCertification;
+export type InternationalCertificationStatus =
+  Components.Schemas.InternationalCertificationStatus;
 export type InviteType = Components.Schemas.InviteType;
 export type LikertScale = Components.Schemas.LikertScale;
-export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;
-export type OneYearRenewalexplanations = Components.Schemas.OneYearRenewalexplanations;
+export type OidcAuthenticationSettings =
+  Components.Schemas.OidcAuthenticationSettings;
+export type OneYearRenewalexplanations =
+  Components.Schemas.OneYearRenewalexplanations;
 export type OptOutReferenceRequest = Components.Schemas.OptOutReferenceRequest;
-export type OutOfProvinceCertificationType = Components.Schemas.OutOfProvinceCertificationType;
+export type OutOfProvinceCertificationType =
+  Components.Schemas.OutOfProvinceCertificationType;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
-export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
+export type PortalInvitationQueryResult =
+  Components.Schemas.PortalInvitationQueryResult;
 export type PortalTags = Components.Schemas.PortalTags;
-export type PostSecondaryInstitution = Components.Schemas.PostSecondaryInstitution;
+export type PostSecondaryInstitution =
+  Components.Schemas.PostSecondaryInstitution;
 export type PreviousName = Components.Schemas.PreviousName;
 export type PreviousNameSources = Components.Schemas.PreviousNameSources;
 export type PreviousNameStage = Components.Schemas.PreviousNameStage;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
-export type ProfessionalDevelopment = Components.Schemas.ProfessionalDevelopment;
-export type ProfessionalDevelopmentStatus = Components.Schemas.ProfessionalDevelopmentStatus;
-export type ProfessionalDevelopmentStatusCode = Components.Schemas.ProfessionalDevelopmentStatusCode;
+export type ProfessionalDevelopment =
+  Components.Schemas.ProfessionalDevelopment;
+export type ProfessionalDevelopmentStatus =
+  Components.Schemas.ProfessionalDevelopmentStatus;
+export type ProfessionalDevelopmentStatusCode =
+  Components.Schemas.ProfessionalDevelopmentStatusCode;
 export type ProfileIdentification = Components.Schemas.ProfileIdentification;
-export type ProgramConfirmationOptions = Components.Schemas.ProgramConfirmationOptions;
+export type ProgramConfirmationOptions =
+  Components.Schemas.ProgramConfirmationOptions;
 export type Province = Components.Schemas.Province;
-export type ReferenceContactInformation = Components.Schemas.ReferenceContactInformation;
+export type ReferenceContactInformation =
+  Components.Schemas.ReferenceContactInformation;
 export type ReferenceKnownTime = Components.Schemas.ReferenceKnownTime;
 export type ReferenceRelationship = Components.Schemas.ReferenceRelationship;
-export type ResendIcraReferenceInviteResponse = Components.Schemas.ResendIcraReferenceInviteResponse;
-export type ResendReferenceInviteResponse = Components.Schemas.ResendReferenceInviteResponse;
-export type SaveDraftApplicationRequest = Components.Schemas.SaveDraftApplicationRequest;
-export type SaveDraftICRAEligibilityRequest = Components.Schemas.SaveDraftICRAEligibilityRequest;
+export type ResendIcraReferenceInviteResponse =
+  Components.Schemas.ResendIcraReferenceInviteResponse;
+export type ResendReferenceInviteResponse =
+  Components.Schemas.ResendReferenceInviteResponse;
+export type SaveDraftApplicationRequest =
+  Components.Schemas.SaveDraftApplicationRequest;
+export type SaveDraftICRAEligibilityRequest =
+  Components.Schemas.SaveDraftICRAEligibilityRequest;
 export type SendMessageRequest = Components.Schemas.SendMessageRequest;
 export type SendMessageResponse = Components.Schemas.SendMessageResponse;
 export type StatusCode = Components.Schemas.StatusCode;
-export type SubmitApplicationResponse = Components.Schemas.SubmitApplicationResponse;
-export type SubmitICRAEligibilityResponse = Components.Schemas.SubmitICRAEligibilityResponse;
-export type SubmittedApplicationStatus = Components.Schemas.SubmittedApplicationStatus;
+export type SubmitApplicationResponse =
+  Components.Schemas.SubmitApplicationResponse;
+export type SubmitICRAEligibilityResponse =
+  Components.Schemas.SubmitICRAEligibilityResponse;
+export type SubmittedApplicationStatus =
+  Components.Schemas.SubmittedApplicationStatus;
 export type SystemMessage = Components.Schemas.SystemMessage;
 export type Transcript = Components.Schemas.Transcript;
 export type TranscriptDocuments = Components.Schemas.TranscriptDocuments;
 export type TranscriptStage = Components.Schemas.TranscriptStage;
 export type TranscriptStatus = Components.Schemas.TranscriptStatus;
-export type TranscriptStatusOptions = Components.Schemas.TranscriptStatusOptions;
-export type UnabletoProvideReferenceReasons = Components.Schemas.UnabletoProvideReferenceReasons;
-export type UpdateReferenceResponse = Components.Schemas.UpdateReferenceResponse;
+export type TranscriptStatusOptions =
+  Components.Schemas.TranscriptStatusOptions;
+export type UnabletoProvideReferenceReasons =
+  Components.Schemas.UnabletoProvideReferenceReasons;
+export type UpdateReferenceResponse =
+  Components.Schemas.UpdateReferenceResponse;
 export type UserInfo = Components.Schemas.UserInfo;
 export type UserProfile = Components.Schemas.UserProfile;
 export type VersionMetadata = Components.Schemas.VersionMetadata;
 export type WorkExperienceRefStage = Components.Schemas.WorkExperienceRefStage;
-export type WorkExperienceReference = Components.Schemas.WorkExperienceReference;
-export type WorkExperienceReferenceCompetenciesAssessment = Components.Schemas.WorkExperienceReferenceCompetenciesAssessment;
-export type WorkExperienceReferenceDetails = Components.Schemas.WorkExperienceReferenceDetails;
-export type WorkExperienceReferenceStatus = Components.Schemas.WorkExperienceReferenceStatus;
-export type WorkExperienceReferenceSubmissionRequest = Components.Schemas.WorkExperienceReferenceSubmissionRequest;
+export type WorkExperienceReference =
+  Components.Schemas.WorkExperienceReference;
+export type WorkExperienceReferenceCompetenciesAssessment =
+  Components.Schemas.WorkExperienceReferenceCompetenciesAssessment;
+export type WorkExperienceReferenceDetails =
+  Components.Schemas.WorkExperienceReferenceDetails;
+export type WorkExperienceReferenceStatus =
+  Components.Schemas.WorkExperienceReferenceStatus;
+export type WorkExperienceReferenceSubmissionRequest =
+  Components.Schemas.WorkExperienceReferenceSubmissionRequest;
 export type WorkExperienceTypes = Components.Schemas.WorkExperienceTypes;
 export type WorkHoursType = Components.Schemas.WorkHoursType;
 export type YesNoNull = Components.Schemas.YesNoNull;

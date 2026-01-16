@@ -23,7 +23,9 @@ const meta = {
       levelName: "ECE Assistant",
       statusCode: "Active",
       certificatePDFGeneration: "Yes",
-      levels: [{ id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" }],
+      levels: [
+        { id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" },
+      ],
       files: [
         {
           id: "3979ff88-f262-4747-b294-c289caa2402a",
@@ -65,7 +67,9 @@ export const OneYear: Story = {
       levelName: "ECE One Year",
       statusCode: "Active",
       certificatePDFGeneration: "Yes",
-      levels: [{ id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" }],
+      levels: [
+        { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" },
+      ],
       files: [
         {
           id: "3979ff88-f262-4747-b294-c289caa2402a",
@@ -94,7 +98,9 @@ export const FiveYears: Story = {
       levelName: "ECE Five Years",
       statusCode: "Active",
       certificatePDFGeneration: "Yes",
-      levels: [{ id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 5 YR" }],
+      levels: [
+        { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 5 YR" },
+      ],
       files: [
         {
           id: "3979ff88-f262-4747-b294-c289caa2402a",
@@ -354,7 +360,9 @@ export const HasApplication: Story = {
       levelName: "ECE One Year",
       statusCode: "Active",
       certificatePDFGeneration: "Yes",
-      levels: [{ id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" }],
+      levels: [
+        { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" },
+      ],
       files: [
         {
           id: "3979ff88-f262-4747-b294-c289caa2402a",
@@ -384,7 +392,9 @@ export const ExpiredAssistantMoreThan5Years: Story = {
       levelName: "ECE Assistant",
       statusCode: "Expired",
       certificatePDFGeneration: "Yes",
-      levels: [{ id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" }],
+      levels: [
+        { id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" },
+      ],
       files: [
         {
           id: "3979ff88-f262-4747-b294-c289caa2402a",

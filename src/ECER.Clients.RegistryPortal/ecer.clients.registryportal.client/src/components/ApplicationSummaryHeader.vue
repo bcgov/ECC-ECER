@@ -1,7 +1,10 @@
 <template>
   <v-card elevation="0" rounded="0" class="border-t border-b">
     <v-card-text>
-      <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
+      <div
+        class="d-flex"
+        :class="[smAndUp ? 'space-between align-center' : 'flex-column']"
+      >
         <p>
           <b>{{ text }}</b>
         </p>

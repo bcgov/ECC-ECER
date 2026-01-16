@@ -1,5 +1,9 @@
 <template>
-  <ReferencePreviewCard :is-valid="true" title="Contact information" reference-stage="ContactInformation">
+  <ReferencePreviewCard
+    :is-valid="true"
+    title="Contact information"
+    reference-stage="ContactInformation"
+  >
     <template #content>
       <v-row>
         <v-col cols="4">
@@ -38,7 +42,9 @@
           <p class="small">Province/Territory Certified/Registered In</p>
         </v-col>
         <v-col cols="8">
-          <p class="small font-weight-bold">{{ reference.certificateProvinceId }}</p>
+          <p class="small font-weight-bold">
+            {{ reference.certificateProvinceId }}
+          </p>
         </v-col>
       </v-row>
       <v-row v-if="reference.certificateNumber">
@@ -46,7 +52,9 @@
           <p class="small">ECE Certification/Registration Number</p>
         </v-col>
         <v-col cols="8">
-          <p class="small font-weight-bold">{{ reference.certificateNumber }}</p>
+          <p class="small font-weight-bold">
+            {{ reference.certificateNumber }}
+          </p>
         </v-col>
       </v-row>
       <v-row v-if="reference.dateOfBirth">
@@ -54,7 +62,9 @@
           <p class="small">Your date of birth</p>
         </v-col>
         <v-col cols="8">
-          <p class="small font-weight-bold">{{ formatDate(reference.dateOfBirth, "LLLL d, yyyy") }}</p>
+          <p class="small font-weight-bold">
+            {{ formatDate(reference.dateOfBirth, "LLLL d, yyyy") }}
+          </p>
         </v-col>
       </v-row>
     </template>
@@ -86,30 +96,48 @@ export default defineComponent({
   computed: {
     reference(): Components.Schemas.ReferenceContactInformation {
       const provinceName = this.configStore.provinceName(
-        this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
-          ?.certificateProvinceId,
+        this.wizardStore.wizardData[
+          this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+            ?.inputs?.referenceContactInformation?.id || ""
+        ]?.certificateProvinceId,
       );
       return {
         firstName:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
-            ?.firstName,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.referenceContactInformation?.id || ""
+          ]?.firstName,
         lastName:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]?.lastName,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.referenceContactInformation?.id || ""
+          ]?.lastName,
         email:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]?.email,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.referenceContactInformation?.id || ""
+          ]?.email,
         phoneNumber:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
-            ?.phoneNumber,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.referenceContactInformation?.id || ""
+          ]?.phoneNumber,
         certificateProvinceId: provinceName,
         certificateProvinceOther:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
-            ?.certificateProvinceOther,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.referenceContactInformation?.id || ""
+          ]?.certificateProvinceOther,
         certificateNumber:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
-            ?.certificateNumber,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.referenceContactInformation?.id || ""
+          ]?.certificateNumber,
         dateOfBirth:
-          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
-            ?.dateOfBirth,
+          this.wizardStore.wizardData[
+            this.wizardStore?.wizardConfig?.steps.contactInformation?.form
+              ?.inputs?.referenceContactInformation?.id || ""
+          ]?.dateOfBirth,
       };
     },
   },

@@ -6,16 +6,33 @@
           <p class="small">Program is offered</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ programStore.draftProgram?.programTypes?.includes(programType) ? "Yes" : "No" }}</p>
+          <p class="small font-weight-bold">
+            {{
+              programStore.draftProgram?.programTypes?.includes(programType)
+                ? "Yes"
+                : "No"
+            }}
+          </p>
         </v-col>
       </v-row>
-      <template v-if="programStore.draftProgram?.programTypes?.includes(programType)">
+      <template
+        v-if="programStore.draftProgram?.programTypes?.includes(programType)"
+      >
         <v-row
           class="mb-4"
-          v-for="[courseAreaOfInstructionId, courses] in getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction"
+          v-for="[
+            courseAreaOfInstructionId,
+            courses,
+          ] in getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction"
           :key="courseAreaOfInstructionId"
         >
-          <v-col cols="4">{{ configStore.areaOfInstructionNameById(courseAreaOfInstructionId) || courseAreaOfInstructionId }}</v-col>
+          <v-col cols="4">
+            {{
+              configStore.areaOfInstructionNameById(
+                courseAreaOfInstructionId,
+              ) || courseAreaOfInstructionId
+            }}
+          </v-col>
           <v-col cols="8">
             <div v-for="course in courses">
               <v-row no-gutters>
@@ -98,8 +115,13 @@ export default defineComponent({
       }
     },
     // this method will return a Map that looks like this {Key = AreaOfInstructionId, Values = Array of courses with name and hours}
-    getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(): AreaOfInstructionWithCourseHoursMap | undefined {
-      return getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(this.programStore.draftProgram, this.programType);
+    getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction():
+      | AreaOfInstructionWithCourseHoursMap
+      | undefined {
+      return getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
+        this.programStore.draftProgram,
+        this.programType,
+      );
     },
   },
   methods: {

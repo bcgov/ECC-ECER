@@ -18,21 +18,29 @@ Cypress.Commands.add("login", (username?: string, password?: string) => {
   cy.visit("/login");
   // Perform login steps:
   // 1. Click the button with the text "Log in with BC Services Card".
-  cy.contains("button", "Log in with BC Services Card").should("be.visible").click();
+  cy.contains("button", "Log in with BC Services Card")
+    .should("be.visible")
+    .click();
 
-  cy.origin("https://idtest.gov.bc.ca", { args: { user, pass } }, ({ user, pass }) => {
-    // 2. Click on the tile (or button) with the given id.
-    cy.get("#tile_test_with_username_password_device_div_id").click({ force: true });
-    // 3. Enter the username and password.
-    cy.get('input[name="username"]').type(user, { force: true, log: false });
-    cy.get('input[name="password"]').type(pass, { force: true, log: false });
-    // 4. Click the submit button.
-    cy.get("#submit-btn").click({ force: true });
-    // 5. Check "I agree to the BC Login Service Terms of Use"
-    cy.get('input[id="accept"]').click({ force: true });
-    // 6. Click the "Continue" button.
-    cy.get('button[id="btnSubmit"').click({ force: true });
-  });
+  cy.origin(
+    "https://idtest.gov.bc.ca",
+    { args: { user, pass } },
+    ({ user, pass }) => {
+      // 2. Click on the tile (or button) with the given id.
+      cy.get("#tile_test_with_username_password_device_div_id").click({
+        force: true,
+      });
+      // 3. Enter the username and password.
+      cy.get('input[name="username"]').type(user, { force: true, log: false });
+      cy.get('input[name="password"]').type(pass, { force: true, log: false });
+      // 4. Click the submit button.
+      cy.get("#submit-btn").click({ force: true });
+      // 5. Check "I agree to the BC Login Service Terms of Use"
+      cy.get('input[id="accept"]').click({ force: true });
+      // 6. Click the "Continue" button.
+      cy.get('button[id="btnSubmit"').click({ force: true });
+    },
+  );
 
   // 5. Verify that the login was successful.
   cy.url().should("not.include", "/login");
@@ -75,33 +83,40 @@ Cypress.Commands.add("resetUserState", () => {
     });
 });
 
-Cypress.Commands.add("seedRenewalApplication", (applicationType?: string, IsActive?: boolean, IsExpiredMoreThan5Years?: boolean) => {
-  const baseApiUrl: string = Cypress.env("API_URL").replace(/\/$/, "");
-  const apiKey: string = Cypress.env("API_KEY");
-  const externalUserId: string = Cypress.env("PORTAL_USER").EXTERNAL_USER_ID;
+Cypress.Commands.add(
+  "seedRenewalApplication",
+  (
+    applicationType?: string,
+    IsActive?: boolean,
+    IsExpiredMoreThan5Years?: boolean,
+  ) => {
+    const baseApiUrl: string = Cypress.env("API_URL").replace(/\/$/, "");
+    const apiKey: string = Cypress.env("API_KEY");
+    const externalUserId: string = Cypress.env("PORTAL_USER").EXTERNAL_USER_ID;
 
-  return cy
-    .request({
-      method: "POST",
-      url: `${baseApiUrl}/api/E2ETests/applications/seed/renewal`,
-      headers: {
-        "X-API-KEY": apiKey,
-        "EXTERNAL-USER-ID": externalUserId,
-        "APPLICATION-TYPE": applicationType,
-        "APP-STATUS": IsActive,
-        "APP-EXPIRATION": IsExpiredMoreThan5Years,
-      },
-      failOnStatusCode: true,
-      retryOnStatusCodeFailure: true,
-      retryOnNetworkFailure: true,
-    })
-    .then((response) => {
-      expect(response.status).to.eq(200);
-      cy.log("Applicaion and Certification seeded sucessfully");
-      // Return the response if needed for further chaining
-      return cy.wrap(response);
-    });
-});
+    return cy
+      .request({
+        method: "POST",
+        url: `${baseApiUrl}/api/E2ETests/applications/seed/renewal`,
+        headers: {
+          "X-API-KEY": apiKey,
+          "EXTERNAL-USER-ID": externalUserId,
+          "APPLICATION-TYPE": applicationType,
+          "APP-STATUS": IsActive,
+          "APP-EXPIRATION": IsExpiredMoreThan5Years,
+        },
+        failOnStatusCode: true,
+        retryOnStatusCodeFailure: true,
+        retryOnNetworkFailure: true,
+      })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        cy.log("Applicaion and Certification seeded sucessfully");
+        // Return the response if needed for further chaining
+        return cy.wrap(response);
+      });
+  },
+);
 
 /* Custom command to wait for a button to be ready (not loading) before clicking
   This is useful for Vuetify buttons that have a loading state */

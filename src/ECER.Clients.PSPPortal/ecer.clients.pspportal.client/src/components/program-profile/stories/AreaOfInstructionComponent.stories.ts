@@ -143,15 +143,18 @@ const meta = {
     programType: {
       control: "select",
       options: ["Basic", "SNE", "ITE"],
-      description: "The program type to filter areas of instruction and courses",
+      description:
+        "The program type to filter areas of instruction and courses",
     },
     program: {
       control: "object",
-      description: "The program object containing courses and program information",
+      description:
+        "The program object containing courses and program information",
     },
     areaSubtitles: {
       control: "object",
-      description: "Object mapping areaOfInstructionId to custom subtitle strings",
+      description:
+        "Object mapping areaOfInstructionId to custom subtitle strings",
     },
     includeTotalHours: {
       control: "boolean",
@@ -159,7 +162,8 @@ const meta = {
     },
     onEdit: {
       action: "edit",
-      description: "Emitted when edit button is clicked on a course or course area",
+      description:
+        "Emitted when edit button is clicked on a course or course area",
     },
   },
   args: {
@@ -545,7 +549,8 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
       "area-3": "",
       "area-4": "",
       "area-5": "",
-      "area-6": "Practicum hours are required for SNE program completion. A minimum of 120 hours is required.",
+      "area-6":
+        "Practicum hours are required for SNE program completion. A minimum of 120 hours is required.",
     },
     includeTotalHours: true,
   },

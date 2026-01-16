@@ -8,7 +8,10 @@
         variant="outlined"
         color="primary"
         class="pt-2"
-        :rules="[Rules.required('Select your province'), Rules.mustExistInList(filteredProvinceList, 'provinceName')]"
+        :rules="[
+          Rules.required('Select your province'),
+          Rules.mustExistInList(filteredProvinceList, 'provinceName'),
+        ]"
         :items="filteredProvinceList"
         item-title="provinceName"
         item-value="provinceCode"
@@ -46,7 +49,9 @@ export default defineComponent({
 
   computed: {
     filteredProvinceList() {
-      return (this.configStore?.provinceList || []).filter((province) => province.provinceName !== ProvinceTerritoryType.OTHER);
+      return (this.configStore?.provinceList || []).filter(
+        (province) => province.provinceName !== ProvinceTerritoryType.OTHER,
+      );
     },
   },
   data() {
@@ -57,12 +62,16 @@ export default defineComponent({
   mounted() {
     // If province is not set, default it to British Columbia.
     if (!this.modelValue) {
-      this.provinceChanged(this.configStore.britishColumbia?.provinceName ?? "");
+      this.provinceChanged(
+        this.configStore.britishColumbia?.provinceName ?? "",
+      );
     }
   },
   methods: {
     provinceChanged(value: string) {
-      let chosenProvince = this.filteredProvinceList.find((province) => province.provinceCode === value);
+      let chosenProvince = this.filteredProvinceList.find(
+        (province) => province.provinceCode === value,
+      );
       this.$emit("update:model-value", chosenProvince?.provinceName ?? "");
     },
   },

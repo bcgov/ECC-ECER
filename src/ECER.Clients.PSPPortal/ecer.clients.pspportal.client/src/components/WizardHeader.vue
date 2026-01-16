@@ -2,16 +2,32 @@
   <v-container fluid class="bg-primary">
     <v-container>
       <v-row>
-        <v-col :class="[mobile ? 'flex-column-reverse' : 'justify-space-between', 'd-flex']">
+        <v-col
+          :class="[
+            mobile ? 'flex-column-reverse' : 'justify-space-between',
+            'd-flex',
+          ]"
+        >
           <div :class="[{ ['text-right mb-2']: mobile }]">
-            <v-btn id="btnSaveAndExit" variant="outlined" :loading="loadingStore.isLoading('draftprogram_put')" @click="saveAndExit">Save and exit</v-btn>
+            <v-btn
+              id="btnSaveAndExit"
+              variant="outlined"
+              :loading="loadingStore.isLoading('draftprogram_put')"
+              @click="saveAndExit"
+            >
+              Save and exit
+            </v-btn>
           </div>
         </v-col>
       </v-row>
     </v-container>
     <ConfirmationDialog
       :show="showSaveExitConfirmation"
-      :title="wizardStore.listComponentMode === 'add' ? 'Your information will not be saved' : 'Missing or invalid information'"
+      :title="
+        wizardStore.listComponentMode === 'add'
+          ? 'Your information will not be saved'
+          : 'Missing or invalid information'
+      "
       accept-button-text="Discard changes"
       cancel-button-text="Continue editing"
       @accept="goToDashboard"
@@ -25,7 +41,10 @@
               : "To save your changes, you must enter all required fields in a valid format."
           }}
         </p>
-        <p>If you discard your changes, no information on this page will be saved.</p>
+        <p>
+          If you discard your changes, no information on this page will be
+          saved.
+        </p>
       </template>
     </ConfirmationDialog>
   </v-container>

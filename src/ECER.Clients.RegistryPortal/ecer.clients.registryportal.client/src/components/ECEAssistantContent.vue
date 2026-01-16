@@ -3,8 +3,9 @@
     <v-row>
       <v-col cols="12">
         <p>
-          This certification allows you to work alongside ECEs and/or Infant and Toddler Educators in licensed child care programs for children birth to 5 years
-          of age.
+          This certification allows you to work alongside ECEs and/or Infant and
+          Toddler Educators in licensed child care programs for children birth
+          to 5 years of age.
         </p>
         <br />
         <p>This certificate needs to be renewed every 5 years.</p>

@@ -1,6 +1,10 @@
 <template>
-  <p :class="{ 'font-weight-bold': isBold }">Effective date: {{ formattedEffectiveDate }}</p>
-  <p :class="{ 'font-weight-bold': isBold }">Expiry date: {{ formattedExpiryDate }}</p>
+  <p :class="{ 'font-weight-bold': isBold }">
+    Effective date: {{ formattedEffectiveDate }}
+  </p>
+  <p :class="{ 'font-weight-bold': isBold }">
+    Expiry date: {{ formattedExpiryDate }}
+  </p>
 </template>
 
 <script lang="ts">

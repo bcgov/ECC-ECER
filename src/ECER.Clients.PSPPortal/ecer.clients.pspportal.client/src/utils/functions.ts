@@ -1,6 +1,10 @@
 import type { Components } from "@/types/openapi";
 
-export function cleanPreferredName(firstName: string | null | undefined, lastName: string | null | undefined, mode = "full") {
+export function cleanPreferredName(
+  firstName: string | null | undefined,
+  lastName: string | null | undefined,
+  mode = "full",
+) {
   const clean = (str: any) => (str ?? "").trim(); // null/undefined → '' and trim
 
   const fn = clean(firstName);
@@ -17,7 +21,12 @@ export function areObjectsEqual(obj1: any, obj2: any): boolean {
     return true;
   }
 
-  if (typeof obj1 !== "object" || obj1 === null || typeof obj2 !== "object" || obj2 === null) {
+  if (
+    typeof obj1 !== "object" ||
+    obj1 === null ||
+    typeof obj2 !== "object" ||
+    obj2 === null
+  ) {
     return false;
   }
 
@@ -49,7 +58,10 @@ export function humanFileSize(bytes: number, decimals = 2) {
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + (sizes[i] || "Bigger than YB");
+  return (
+    Number.parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) +
+    (sizes[i] || "Bigger than YB")
+  );
 }
 
 /**
@@ -98,7 +110,12 @@ export function parseHumanFileSize(humanSize: string): number {
  * @param {Array<string>} [exceptions=[]] - An array of strings representing exceptions that should be kept at the end of the sorted array.
  * @returns {number} A negative value if a should come before b, a positive value if a should come after b, or 0 if they are equal.
  */
-export function sortArray(a: any, b: any, key: string, exceptions: string[] = []) {
+export function sortArray(
+  a: any,
+  b: any,
+  key: string,
+  exceptions: string[] = [],
+) {
   if (exceptions.includes(a[key])) {
     return 1;
   }
@@ -129,7 +146,9 @@ export function removeElementByIndex(array: any[], index: number) {
     arrayCopy.splice(index, 1);
     return arrayCopy;
   } else {
-    console.error("removeElementByIndex() :: invalid index element not removed");
+    console.error(
+      "removeElementByIndex() :: invalid index element not removed",
+    );
     return array;
   }
 }
@@ -144,13 +163,19 @@ export function removeElementByIndex(array: any[], index: number) {
  *
  * @returns {any[]} Original array if the index is invalid.
  */
-export function replaceElementByIndex(array: any[], index: number, element: any) {
+export function replaceElementByIndex(
+  array: any[],
+  index: number,
+  element: any,
+) {
   if (index >= 0 && index < array.length) {
     const arrayCopy = array.slice();
     arrayCopy.splice(index, 1, element);
     return arrayCopy;
   } else {
-    console.error("replaceElementByIndex() :: invalid index element not replaced");
+    console.error(
+      "replaceElementByIndex() :: invalid index element not replaced",
+    );
     return array;
   }
 }
@@ -229,7 +254,9 @@ export enum CertificationType {
   FiveYearCertificateITE_SNE = "Five Year Certificate+ITE+SNE",
 }
 
-const certificationTypeMap: Record<string, CertificationType> = Object.values(CertificationType).reduce(
+const certificationTypeMap: Record<string, CertificationType> = Object.values(
+  CertificationType,
+).reduce(
   (m, v) => {
     m[v] = v;
     return m;
@@ -255,22 +282,32 @@ export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
   program: Components.Schemas.Program,
   programType: Components.Schemas.ProgramTypes,
 ): AreaOfInstructionWithCourseHoursMap | undefined {
-  let filteredCourses = program?.courses?.filter((course: Components.Schemas.Course) => course.programType === programType); //filter out relevant courses here
+  let filteredCourses = program?.courses?.filter(
+    (course: Components.Schemas.Course) => course.programType === programType,
+  ); //filter out relevant courses here
   let courseAreaOfInstructionMap = new Map();
   filteredCourses?.forEach((course: Components.Schemas.Course) => {
-    course.courseAreaOfInstruction?.forEach((area: Components.Schemas.CourseAreaOfInstruction) => {
-      if (courseAreaOfInstructionMap.has(area.areaOfInstructionId)) {
-        //areaOfInstructionExists -> append to array
-        courseAreaOfInstructionMap
-          .get(area.areaOfInstructionId)
-          .push({ courseNumber: course.courseNumber, courseTitle: course.courseTitle, hours: area.newHours } as CourseAreaDetail);
-      } else {
-        //create new areaOfInstruction key
-        courseAreaOfInstructionMap.set(area.areaOfInstructionId, [
-          { courseNumber: course.courseNumber, courseTitle: course.courseTitle, hours: area.newHours } as CourseAreaDetail,
-        ]);
-      }
-    });
+    course.courseAreaOfInstruction?.forEach(
+      (area: Components.Schemas.CourseAreaOfInstruction) => {
+        if (courseAreaOfInstructionMap.has(area.areaOfInstructionId)) {
+          //areaOfInstructionExists -> append to array
+          courseAreaOfInstructionMap.get(area.areaOfInstructionId).push({
+            courseNumber: course.courseNumber,
+            courseTitle: course.courseTitle,
+            hours: area.newHours,
+          } as CourseAreaDetail);
+        } else {
+          //create new areaOfInstruction key
+          courseAreaOfInstructionMap.set(area.areaOfInstructionId, [
+            {
+              courseNumber: course.courseNumber,
+              courseTitle: course.courseTitle,
+              hours: area.newHours,
+            } as CourseAreaDetail,
+          ]);
+        }
+      },
+    );
   });
   return courseAreaOfInstructionMap;
 }

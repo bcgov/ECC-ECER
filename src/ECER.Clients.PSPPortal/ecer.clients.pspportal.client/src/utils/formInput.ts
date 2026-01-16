@@ -14,8 +14,11 @@ const isNumber = function (event: KeyboardEvent | InputEvent): void {
 
   // Check if the key pressed is not a number and not a valid input event
   if (
-    (event instanceof KeyboardEvent && (charCode > "9" || charCode < "0") && charCode !== "Backspace") ||
-    (event instanceof InputEvent && isNaN(Number((event.target as HTMLInputElement).value)))
+    (event instanceof KeyboardEvent &&
+      (charCode > "9" || charCode < "0") &&
+      charCode !== "Backspace") ||
+    (event instanceof InputEvent &&
+      isNaN(Number((event.target as HTMLInputElement).value)))
   ) {
     event.preventDefault();
   }

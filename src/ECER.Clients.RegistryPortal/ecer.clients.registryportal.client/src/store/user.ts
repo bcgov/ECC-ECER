@@ -16,26 +16,48 @@ export const useUserStore = defineStore("user", {
   getters: {
     hasUserInfo: (state): boolean => state.userInfo !== null,
     hasUserProfile: (state): boolean => state.userProfile !== null,
-    preferredName: (state): string => state.userProfile?.preferredName ?? state.userInfo?.firstName ?? "",
+    preferredName: (state): string =>
+      state.userProfile?.preferredName ?? state.userInfo?.firstName ?? "",
     legalName: (state): string => {
       return `${state.userProfile?.firstName ?? ""} ${state.userProfile?.middleName ?? ""} ${state.userProfile?.lastName}`.trim();
     },
     unverifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
-      return state.userProfile?.previousNames?.filter((name) => name.status === "Unverified") ?? [];
+      return (
+        state.userProfile?.previousNames?.filter(
+          (name) => name.status === "Unverified",
+        ) ?? []
+      );
     },
-    readyForVerificationPreviousNames: (state): Components.Schemas.PreviousName[] => {
-      return state.userProfile?.previousNames?.filter((name) => name.status === "ReadyforVerification") ?? [];
+    readyForVerificationPreviousNames: (
+      state,
+    ): Components.Schemas.PreviousName[] => {
+      return (
+        state.userProfile?.previousNames?.filter(
+          (name) => name.status === "ReadyforVerification",
+        ) ?? []
+      );
     },
     verifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
-      return state.userProfile?.previousNames?.filter((name) => name.status === "Verified") ?? [];
+      return (
+        state.userProfile?.previousNames?.filter(
+          (name) => name.status === "Verified",
+        ) ?? []
+      );
     },
-    pendingforDocumentsPreviousNames: (state): Components.Schemas.PreviousName[] => {
-      return state.userProfile?.previousNames?.filter((name) => name.status === "PendingforDocuments") ?? [];
+    pendingforDocumentsPreviousNames: (
+      state,
+    ): Components.Schemas.PreviousName[] => {
+      return (
+        state.userProfile?.previousNames?.filter(
+          (name) => name.status === "PendingforDocuments",
+        ) ?? []
+      );
     },
     firstName: (state): string => state.userInfo?.firstName ?? "",
     middleName: (state): string => state.userInfo?.middleName ?? "",
     lastName: (state): string => state.userInfo?.lastName ?? "",
-    fullName: (state): string => `${state.userInfo?.firstName ?? ""} ${state.userInfo?.middleName ?? ""} ${state.userInfo?.lastName}`.trim(),
+    fullName: (state): string =>
+      `${state.userInfo?.firstName ?? ""} ${state.userInfo?.middleName ?? ""} ${state.userInfo?.lastName}`.trim(),
     email: (state): string => state.userInfo?.email ?? "",
     phoneNumber: (state): string => state.userProfile?.phone ?? "",
     isRegistrant: (state): boolean => state.userInfo?.isRegistrant ?? false,

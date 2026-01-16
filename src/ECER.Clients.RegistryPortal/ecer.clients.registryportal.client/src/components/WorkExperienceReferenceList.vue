@@ -1,6 +1,8 @@
 <template>
   <v-row>
-    <p v-if="referenceList.length == 0">No work experience reference added yet.</p>
+    <p v-if="referenceList.length == 0">
+      No work experience reference added yet.
+    </p>
     <WorkExperienceReferenceCard
       v-for="(reference, id) in references"
       :key="id"
@@ -29,7 +31,9 @@ export default defineComponent({
   components: { WorkExperienceReferenceCard },
   props: {
     references: {
-      type: Object as () => { [id: string]: Components.Schemas.WorkExperienceReference },
+      type: Object as () => {
+        [id: string]: Components.Schemas.WorkExperienceReference;
+      },
       required: true,
     },
   },
@@ -43,7 +47,10 @@ export default defineComponent({
     },
   },
   methods: {
-    handleEdit(reference: Components.Schemas.WorkExperienceReference, referenceId: string | number) {
+    handleEdit(
+      reference: Components.Schemas.WorkExperienceReference,
+      referenceId: string | number,
+    ) {
       // Re-emit the event to the parent component
       this.$emit("edit", { reference, referenceId });
     },

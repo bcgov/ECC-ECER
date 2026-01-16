@@ -17,43 +17,86 @@ export const useCertificationStore = defineStore("certification", {
   persist: true,
   getters: {
     hasCertifications(state): boolean {
-      return state.certifications !== null && state.certifications !== undefined && state.certifications.length > 0;
+      return (
+        state.certifications !== null &&
+        state.certifications !== undefined &&
+        state.certifications.length > 0
+      );
     },
     holdsEceFiveYearCertification(state): boolean {
-      return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) ?? false;
+      return (
+        state.certifications?.some((cert) =>
+          cert.levels?.some((level) => level.type === "ECE 5 YR"),
+        ) ?? false
+      );
     },
-    activeEceFiveYearCertification(state): Components.Schemas.Certification | null {
-      return state.certifications?.find((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR") && cert.statusCode === "Active") ?? null;
+    activeEceFiveYearCertification(
+      state,
+    ): Components.Schemas.Certification | null {
+      return (
+        state.certifications?.find(
+          (cert) =>
+            cert.levels?.some((level) => level.type === "ECE 5 YR") &&
+            cert.statusCode === "Active",
+        ) ?? null
+      );
     },
     holdsAllCertifications(state): boolean {
-      if (!state.certifications || state.certifications.length === 0) return false;
+      if (!state.certifications || state.certifications.length === 0)
+        return false;
 
-      const isRenewable = (certification: Components.Schemas.Certification): boolean => {
+      const isRenewable = (
+        certification: Components.Schemas.Certification,
+      ): boolean => {
         return (
           certification.statusCode === "Active" ||
-          ((certification.statusCode === "Expired" || certification.statusCode === "Suspended") && !expiredMoreThan5Years(certification))
+          ((certification.statusCode === "Expired" ||
+            certification.statusCode === "Suspended") &&
+            !expiredMoreThan5Years(certification))
         );
       };
 
       return (
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "Assistant") && isRenewable(cert)) &&
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 1 YR") && isRenewable(cert)) &&
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) &&
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "SNE")) &&
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ITE"))
+        state.certifications.some(
+          (cert) =>
+            cert.levels?.some((level) => level.type === "Assistant") &&
+            isRenewable(cert),
+        ) &&
+        state.certifications.some(
+          (cert) =>
+            cert.levels?.some((level) => level.type === "ECE 1 YR") &&
+            isRenewable(cert),
+        ) &&
+        state.certifications.some((cert) =>
+          cert.levels?.some((level) => level.type === "ECE 5 YR"),
+        ) &&
+        state.certifications.some((cert) =>
+          cert.levels?.some((level) => level.type === "SNE"),
+        ) &&
+        state.certifications.some((cert) =>
+          cert.levels?.some((level) => level.type === "ITE"),
+        )
       );
     },
     holdsPostBasicCertification(state): boolean {
-      if (!state.certifications || state.certifications.length === 0) return false;
+      if (!state.certifications || state.certifications.length === 0)
+        return false;
       return (
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) &&
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "SNE")) &&
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ITE"))
+        state.certifications.some((cert) =>
+          cert.levels?.some((level) => level.type === "ECE 5 YR"),
+        ) &&
+        state.certifications.some((cert) =>
+          cert.levels?.some((level) => level.type === "SNE"),
+        ) &&
+        state.certifications.some((cert) =>
+          cert.levels?.some((level) => level.type === "ITE"),
+        )
       );
     },
     hasMultipleEceOneYearCertifications(state): boolean {
       let count = 0;
-      if (!state.certifications || state.certifications?.length < 2) return false;
+      if (!state.certifications || state.certifications?.length < 2)
+        return false;
       for (const cert of state.certifications) {
         if (cert.levels?.some((level) => level.type === "ECE 1 YR")) {
           count++;
@@ -96,8 +139,10 @@ export const useCertificationStore = defineStore("certification", {
             }
 
             if (
-              (levels?.some((level) => level.type === "ECE 5 YR") && levels?.some((level) => level.type === "ITE")) ||
-              (levels?.some((level) => level.type === "ECE 5 YR") && levels?.some((level) => level.type === "SNE"))
+              (levels?.some((level) => level.type === "ECE 5 YR") &&
+                levels?.some((level) => level.type === "ITE")) ||
+              (levels?.some((level) => level.type === "ECE 5 YR") &&
+                levels?.some((level) => level.type === "SNE"))
             ) {
               return 2;
             }
@@ -123,16 +168,25 @@ export const useCertificationStore = defineStore("certification", {
     },
   },
   actions: {
-    getCertificationById(certificateId: string | null | undefined): Components.Schemas.Certification | undefined {
+    getCertificationById(
+      certificateId: string | null | undefined,
+    ): Components.Schemas.Certification | undefined {
       return this.certifications?.find((cert) => cert.id === certificateId);
     },
     hasOtherCertifications(certificateId: string | null | undefined): boolean {
       if (!this.certifications) return false;
-      return this.certifications.filter((cert) => cert.id !== certificateId).length > 0;
+      return (
+        this.certifications.filter((cert) => cert.id !== certificateId).length >
+        0
+      );
     },
-    getMostRecentCertificationByExpiryDate(certificateType: CertificationLevelType): Components.Schemas.Certification | undefined {
+    getMostRecentCertificationByExpiryDate(
+      certificateType: CertificationLevelType,
+    ): Components.Schemas.Certification | undefined {
       const mostRecentCertification = orderBy(
-        this.certifications?.filter((certification) => certification.levels?.some((level) => level.type === certificateType)),
+        this.certifications?.filter((certification) =>
+          certification.levels?.some((level) => level.type === certificateType),
+        ),
         ["expiryDate"],
         ["desc"],
       )?.[0];

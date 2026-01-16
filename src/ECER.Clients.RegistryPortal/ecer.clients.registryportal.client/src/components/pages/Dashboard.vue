@@ -7,7 +7,10 @@
         <v-col cols="12">
           <!-- user has not provided id -->
           <v-card
-            v-if="userStore.userInfo?.status === 'Unverified' || userStore.userInfo?.status === 'PendingforDocuments'"
+            v-if="
+              userStore.userInfo?.status === 'Unverified' ||
+              userStore.userInfo?.status === 'PendingforDocuments'
+            "
             :rounded="0"
             flat
             color="grey-pale-background"
@@ -16,32 +19,60 @@
             <v-card-item class="ma-4">
               <h3>ID needed to complete account setup</h3>
               <p class="mt-2">
-                Before you can submit new applications or access existing certifications, we need to verify your identity by reviewing your ID.
+                Before you can submit new applications or access existing
+                certifications, we need to verify your identity by reviewing
+                your ID.
               </p>
-              <v-btn prepend-icon="mdi-card-account-details-outline" color="primary" class="mt-2" @click="router.push({ name: 'verifyIdentification' })">
+              <v-btn
+                prepend-icon="mdi-card-account-details-outline"
+                color="primary"
+                class="mt-2"
+                @click="router.push({ name: 'verifyIdentification' })"
+              >
                 Verify my identity
               </v-btn>
             </v-card-item>
           </v-card>
           <!-- user provided id waiting for verification-->
-          <v-card v-else-if="userStore.userInfo?.status === 'ReadyforIDVerification'" :rounded="0" flat color="grey-pale-background" class="pa-4">
+          <v-card
+            v-else-if="userStore.userInfo?.status === 'ReadyforIDVerification'"
+            :rounded="0"
+            flat
+            color="grey-pale-background"
+            class="pa-4"
+          >
             <v-card-item class="ma-4">
               <h3>ID Pending review</h3>
               <p class="mt-2">
-                Before you can submit new applications or access existing certifications, we need to verify your identity by reviewing your ID.
+                Before you can submit new applications or access existing
+                certifications, we need to verify your identity by reviewing
+                your ID.
               </p>
-              <p class="mt-2 font-weight-bold">We have received your IDs. We will email you when our review is complete in 2-3 business days.</p>
+              <p class="mt-2 font-weight-bold">
+                We have received your IDs. We will email you when our review is
+                complete in 2-3 business days.
+              </p>
             </v-card-item>
           </v-card>
           <!-- user has not been verified -->
-          <v-card v-else :rounded="0" flat color="grey-pale-background" class="pa-4">
+          <v-card
+            v-else
+            :rounded="0"
+            flat
+            color="grey-pale-background"
+            class="pa-4"
+          >
             <v-card-item class="ma-4">
               <h3>Your account is being reviewed</h3>
               <p class="mt-2">
-                We're finishing setting up your account for you. Once we're done you'll be able to do things like view your certification, renew it or apply for
-                new certification.
+                We're finishing setting up your account for you. Once we're done
+                you'll be able to do things like view your certification, renew
+                it or apply for new certification.
               </p>
-              <p class="mt-2">We'll send you a message as soon as your account is ready. It may take 1-3 business days.</p>
+              <p class="mt-2">
+                We'll send you a message as soon as your account is ready. It
+                may take 1-3 business days.
+              </p>
             </v-card-item>
           </v-card>
         </v-col>
@@ -50,7 +81,13 @@
         <v-col>
           <v-row>
             <v-col cols="12">
-              <Alert :rounded="mdAndUp" :class="smAndDown ? 'mt-n4 mx-n4' : ''" icon="mdi-bell"><UnreadMessages /></Alert>
+              <Alert
+                :rounded="mdAndUp"
+                :class="smAndDown ? 'mt-n4 mx-n4' : ''"
+                icon="mdi-bell"
+              >
+                <UnreadMessages />
+              </Alert>
             </v-col>
           </v-row>
         </v-col>
@@ -64,16 +101,31 @@
       </v-row>
 
       <!-- Your ECE applications -->
-      <v-row v-if="applications && userStore.isVerified && (showApplicationCard || showIcraEligibilityCard)" justify="center">
+      <v-row
+        v-if="
+          applications &&
+          userStore.isVerified &&
+          (showApplicationCard || showIcraEligibilityCard)
+        "
+        justify="center"
+      >
         <v-col>
           <v-row>
-            <v-col v-if="showApplicationCard" cols="12" :sm="showTransferCard ? 6 : 12">
+            <v-col
+              v-if="showApplicationCard"
+              cols="12"
+              :sm="showTransferCard ? 6 : 12"
+            >
               <ApplicationCard @cancel-application="showCancelDialog = true" />
             </v-col>
             <v-col v-if="showTransferCard" cols="12" sm="6">
               <TransferCard />
             </v-col>
-            <v-col v-if="showIcraEligibilityCard" cols="12" :sm="showTransferCard ? 6 : 12">
+            <v-col
+              v-if="showIcraEligibilityCard"
+              cols="12"
+              :sm="showTransferCard ? 6 : 12"
+            >
               <IcraEligibilityCard />
             </v-col>
           </v-row>
@@ -81,7 +133,10 @@
       </v-row>
 
       <!-- Specific section for ICRA Eligibility Step 2 beginning -->
-      <v-row v-if="userStore.isVerified && showIcraEligibilityStep2StartCard" justify="center">
+      <v-row
+        v-if="userStore.isVerified && showIcraEligibilityStep2StartCard"
+        justify="center"
+      >
         <v-col>
           <IcraEligibilityStep2StartCard />
         </v-col>
@@ -94,8 +149,12 @@
             <v-row>
               <v-col cols="12">
                 <ECEHeader title="My current certification" />
-                <div v-if="certifications && certificationStore.hasCertifications">
-                  <div class="d-flex flex-row justify-start ga-3 flex-wrap mt-4">
+                <div
+                  v-if="certifications && certificationStore.hasCertifications"
+                >
+                  <div
+                    class="d-flex flex-row justify-start ga-3 flex-wrap mt-4"
+                  >
                     <p class="font-weight-bold">
                       ECE registration number:
                       {{ certificationStore.currentCertification?.number }}
@@ -111,19 +170,33 @@
                     />
                   </template>
                 </div>
-                <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
+                <p v-else class="small mt-4">
+                  You do not have an ECE certificate in your My ECE Registry
+                  account.
+                </p>
               </v-col>
             </v-row>
           </v-col>
         </v-row>
 
         <!-- My Certifications -->
-        <v-row v-if="certifications && hasOtherCertifications()" justify="center" class="mt-6">
+        <v-row
+          v-if="certifications && hasOtherCertifications()"
+          justify="center"
+          class="mt-6"
+        >
           <v-col>
             <v-row>
               <v-col cols="12">
                 <div>
-                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-certifications')" class="force-full-content">
+                  <v-btn
+                    block
+                    size="x-large"
+                    variant="outlined"
+                    color="primary"
+                    @click="router.push('/my-certifications')"
+                    class="force-full-content"
+                  >
                     All my certifications
                     <v-icon size="large" icon="mdi-arrow-right" />
                   </v-btn>
@@ -146,10 +219,17 @@
             <v-col class="d-flex" cols="12" sm="6" md="4">
               <Card class="d-flex flex-column">
                 <h2>Apply for new certification</h2>
-                <p class="mt-4">Start an application for a new certificate level based on your education and work experience.</p>
+                <p class="mt-4">
+                  Start an application for a new certificate level based on your
+                  education and work experience.
+                </p>
                 <div class="mt-auto">
                   <v-btn
-                    :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                    :variant="
+                      certificationStore.holdsPostBasicCertification
+                        ? 'outlined'
+                        : 'flat'
+                    "
                     size="large"
                     class="mt-4"
                     color="primary"
@@ -164,10 +244,18 @@
             <v-col class="d-flex" cols="12" sm="6" md="4">
               <Card class="d-flex flex-column">
                 <h2>Transfer certification</h2>
-                <p class="mt-4">If you are certified in another province or territory in Canada, you may be eligible to transfer your certification to B.C.</p>
+                <p class="mt-4">
+                  If you are certified in another province or territory in
+                  Canada, you may be eligible to transfer your certification to
+                  B.C.
+                </p>
                 <div class="mt-auto">
                   <v-btn
-                    :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                    :variant="
+                      certificationStore.holdsPostBasicCertification
+                        ? 'outlined'
+                        : 'flat'
+                    "
                     size="large"
                     class="mt-4"
                     color="primary"
@@ -180,7 +268,10 @@
               </Card>
             </v-col>
             <v-col
-              v-if="configurationStore.applicationConfiguration.icraFeatureEnabled && !icraStore.hasApprovedIcraEligibility"
+              v-if="
+                configurationStore.applicationConfiguration
+                  .icraFeatureEnabled && !icraStore.hasApprovedIcraEligibility
+              "
               class="d-flex"
               cols="12"
               sm="6"
@@ -191,11 +282,14 @@
                 <p class="mt-4">
                   Apply for
                   <b>ECE Five Year Certification</b>
-                  if you are internationally certified in a country that regulates the ECE profession and do not have 500 hours work experience supervised by a
-                  Canadian-certified ECE.
+                  if you are internationally certified in a country that
+                  regulates the ECE profession and do not have 500 hours work
+                  experience supervised by a Canadian-certified ECE.
                 </p>
                 <div class="mt-auto">
-                  <router-link class="mt-4" :to="{ name: 'icra-eligibility' }">Learn more</router-link>
+                  <router-link class="mt-4" :to="{ name: 'icra-eligibility' }">
+                    Learn more
+                  </router-link>
                 </div>
               </Card>
             </v-col>
@@ -215,7 +309,10 @@
     @accept="cancelApplication"
   >
     <template #confirmation-text>
-      <p>By cancelling your application, it will be removed from the system. You cannot undo this.</p>
+      <p>
+        By cancelling your application, it will be removed from the system. You
+        cannot undo this.
+      </p>
       <p><b>Are you sure you want to proceed?</b></p>
     </template>
   </ConfirmationDialog>
@@ -249,7 +346,12 @@ import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { useLoadingStore } from "@/store/loading";
 import { useOidcStore } from "@/store/oidc";
-import type { Application, Certification, UserInfo, UserProfile } from "@/types/openapi";
+import type {
+  Application,
+  Certification,
+  UserInfo,
+  UserProfile,
+} from "@/types/openapi";
 import Card from "@/components/Card.vue";
 
 export default defineComponent({
@@ -312,12 +414,13 @@ export default defineComponent({
       return; //stops the rest of the component from loading. Prevents 401 calls for the methods below
     }
 
-    [this.applications, this.certifications, this.userInfo, this.userProfile] = await Promise.all([
-      this.applicationStore.fetchApplications(),
-      this.certificationStore.fetchCertifications(),
-      getUserInfo(),
-      getProfile(),
-    ]);
+    [this.applications, this.certifications, this.userInfo, this.userProfile] =
+      await Promise.all([
+        this.applicationStore.fetchApplications(),
+        this.certificationStore.fetchCertifications(),
+        getUserInfo(),
+        getProfile(),
+      ]);
 
     // Fetch ICRA eligibilities if the feature is enabled
     if (this.configurationStore.applicationConfiguration.icraFeatureEnabled) {
@@ -343,13 +446,20 @@ export default defineComponent({
   }),
   computed: {
     heading(): string {
-      return this.showTransferCard ? "Apply for ECE certification in B.C." : "My ECE Registry dashboard";
+      return this.showTransferCard
+        ? "Apply for ECE certification in B.C."
+        : "My ECE Registry dashboard";
     },
     subheading(): string {
-      return this.showTransferCard ? "Review your options to get certified in British Columbia." : "";
+      return this.showTransferCard
+        ? "Review your options to get certified in British Columbia."
+        : "";
     },
     showApplicationCard(): boolean {
-      if (this.certificationStore.hasCertifications && this.applicationStore.applicationStatus === undefined) {
+      if (
+        this.certificationStore.hasCertifications &&
+        this.applicationStore.applicationStatus === undefined
+      ) {
         return false;
       }
 
@@ -358,7 +468,10 @@ export default defineComponent({
       }
 
       //if we have an approved icra eligibility and user has not submitted one yet then they need to continue their application do not show transfer card
-      if (this.icraStore.hasApprovedIcraEligibility && !this.applicationStore.hasIcraApplication) {
+      if (
+        this.icraStore.hasApprovedIcraEligibility &&
+        !this.applicationStore.hasIcraApplication
+      ) {
         return false;
       }
 
@@ -370,7 +483,10 @@ export default defineComponent({
     },
     showTransferCard(): boolean {
       //if we have an approved icra eligibility and user has not submitted one yet then they need to continue their application do not show transfer card
-      if (!this.applicationStore.hasIcraApplication && this.icraStore.hasApprovedIcraEligibility) {
+      if (
+        !this.applicationStore.hasIcraApplication &&
+        this.icraStore.hasApprovedIcraEligibility
+      ) {
         return false;
       }
 
@@ -383,31 +499,49 @@ export default defineComponent({
       );
     },
     showIcraEligibilityCard(): boolean {
-      if (this.configurationStore.applicationConfiguration.icraFeatureEnabled === false) {
+      if (
+        this.configurationStore.applicationConfiguration.icraFeatureEnabled ===
+        false
+      ) {
         return false;
       }
-      if (this.certificationStore.hasCertifications && this.icraStore.icraEligibilityStatus === undefined) {
+      if (
+        this.certificationStore.hasCertifications &&
+        this.icraStore.icraEligibilityStatus === undefined
+      ) {
         return false;
       }
       if (this.icraStore.hasApprovedIcraEligibility) {
         return false;
       }
       // do not show if there is an application in process
-      if (this.applicationStore.hasApplication || this.applicationStore.hasDraftApplication) {
+      if (
+        this.applicationStore.hasApplication ||
+        this.applicationStore.hasDraftApplication
+      ) {
         return false;
       }
-      if (this.icraStore.hasIcraEligibilityInProcess || this.icraStore.icraEligibilityStatus === undefined) {
+      if (
+        this.icraStore.hasIcraEligibilityInProcess ||
+        this.icraStore.icraEligibilityStatus === undefined
+      ) {
         return true;
       }
       return false;
     },
     showIcraEligibilityStep2StartCard(): boolean {
-      if (this.configurationStore.applicationConfiguration.icraFeatureEnabled === false) {
+      if (
+        this.configurationStore.applicationConfiguration.icraFeatureEnabled ===
+        false
+      ) {
         return false;
       }
 
       //if we have an approved icra eligibility and user has not submitted one yet then they need to start their application
-      if (this.icraStore.hasApprovedIcraEligibility && !this.applicationStore.hasIcraApplication) {
+      if (
+        this.icraStore.hasApprovedIcraEligibility &&
+        !this.applicationStore.hasIcraApplication
+      ) {
         return true;
       }
 
@@ -433,7 +567,10 @@ export default defineComponent({
       );
     },
     cancelApplicationLoading(): boolean {
-      return this.loadingStore.isLoading("draftapplication_delete") || this.loadingStore.isLoading("application_get");
+      return (
+        this.loadingStore.isLoading("draftapplication_delete") ||
+        this.loadingStore.isLoading("application_get")
+      );
     },
   },
 
@@ -446,7 +583,9 @@ export default defineComponent({
       return this.certificationStore.certifications.length > 1;
     },
     async cancelApplication() {
-      const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
+      const { data: cancelledApplicationId } = await cancelDraftApplication(
+        this.applicationStore.draftApplication.id!,
+      );
       if (cancelledApplicationId) {
         await this.applicationStore.fetchApplications();
         this.alertStore.setSuccessAlert("Application successfully cancelled");

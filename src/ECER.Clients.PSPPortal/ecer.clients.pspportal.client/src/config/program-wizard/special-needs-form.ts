@@ -18,7 +18,10 @@ const specialNeedsForm: Form = {
         lg: 12,
         xl: 12,
       },
-      getValue: (data) => (data.draftApplication as Components.Schemas.Program)?.programTypes?.includes(ProgramType.SNE),
+      getValue: (data) =>
+        (
+          data.draftApplication as Components.Schemas.Program
+        )?.programTypes?.includes(ProgramType.SNE),
     },
   },
 };

@@ -5,8 +5,10 @@ import "cypress-file-upload";
 // eslint-disable-next-line mocha/no-top-level-hooks
 beforeEach(() => {
   // Set the viewport (pull width/height from Cypress.env)
-  const width = Cypress.env("DEVICE_VIEWPORT")?.WIDTH ?? Cypress.config("viewportWidth");
-  const height = Cypress.env("DEVICE_VIEWPORT")?.HEIGHT ?? Cypress.config("viewportHeight");
+  const width =
+    Cypress.env("DEVICE_VIEWPORT")?.WIDTH ?? Cypress.config("viewportWidth");
+  const height =
+    Cypress.env("DEVICE_VIEWPORT")?.HEIGHT ?? Cypress.config("viewportHeight");
 
   cy.viewport(width, height);
 

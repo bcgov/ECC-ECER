@@ -10,7 +10,10 @@
     <br />
     <ul class="ml-10">
       <li>Have been completed within the last 5 years</li>
-      <li>Not overlap (any overlapping employment experience will only be counted once)</li>
+      <li>
+        Not overlap (any overlapping employment experience will only be counted
+        once)
+      </li>
       <li>Have been completed while holding valid ECE certification</li>
     </ul>
     <br />
@@ -22,12 +25,26 @@
     </ul>
     <br />
     <!-- references list -->
-    <v-card v-for="reference in icraEligibilityStatus?.employmentReferencesStatus" elevation="0" rounded="0" class="border-t border-b">
+    <v-card
+      v-for="reference in icraEligibilityStatus?.employmentReferencesStatus"
+      elevation="0"
+      rounded="0"
+      class="border-t border-b"
+    >
       <v-card-text>
-        <v-row class="d-flex" :class="[smAndUp ? 'justify-space-between align-center' : 'flex-column']">
+        <v-row
+          class="d-flex"
+          :class="[
+            smAndUp ? 'justify-space-between align-center' : 'flex-column',
+          ]"
+        >
           <v-col cols="12" sm="4">
             <div v-if="reference.status !== 'ICRAEligibilitySubmitted'">
-              <p>{{ cleanPreferredName(reference.firstName, reference.lastName) }}</p>
+              <p>
+                {{
+                  cleanPreferredName(reference.firstName, reference.lastName)
+                }}
+              </p>
             </div>
             <a
               v-else
@@ -35,15 +52,28 @@
               @click.prevent="
                 router.push({
                   name: 'view-icra-eligibility-work-experience-reference',
-                  params: { icraEligibilityId: icraEligibilityId, referenceId: reference.id?.toString() },
+                  params: {
+                    icraEligibilityId: icraEligibilityId,
+                    referenceId: reference.id?.toString(),
+                  },
                 })
               "
             >
-              <p class="text-links">{{ cleanPreferredName(reference.firstName, reference.lastName) }}</p>
+              <p class="text-links">
+                {{
+                  cleanPreferredName(reference.firstName, reference.lastName)
+                }}
+              </p>
             </a>
           </v-col>
           <v-col cols="12" sm="4" :align="smAndUp ? 'right' : ''">
-            <v-sheet rounded width="200px" class="py-2 text-center" :class="{ 'mt-2': !smAndUp }" :color="sheetColor(reference)">
+            <v-sheet
+              rounded
+              width="200px"
+              class="py-2 text-center"
+              :class="{ 'mt-2': !smAndUp }"
+              :color="sheetColor(reference)"
+            >
               <p>{{ statusText(reference) }}</p>
             </v-sheet>
           </v-col>
@@ -57,16 +87,37 @@
       prepend-icon="mdi-plus"
       class="mt-10"
       color="primary"
-      @click.prevent="router.push({ name: 'icra-eligibility-add-work-experience-reference', params: { icraEligibilityId: icraEligibilityId } })"
+      @click.prevent="
+        router.push({
+          name: 'icra-eligibility-add-work-experience-reference',
+          params: { icraEligibilityId: icraEligibilityId },
+        })
+      "
     >
       Add reference
     </v-btn>
-    <Callout v-if="!additionalWorkReferenceRequired" type="warning" title="Waiting for references to respond">
-      <p>No additional work experience may be added. We are waiting on a response from your one or more of your references.</p>
+    <Callout
+      v-if="!additionalWorkReferenceRequired"
+      type="warning"
+      title="Waiting for references to respond"
+    >
+      <p>
+        No additional work experience may be added. We are waiting on a response
+        from your one or more of your references.
+      </p>
     </Callout>
     <br />
     <br />
-    <a href="#" @click.prevent="() => router.push({ name: 'manage-icra-eligibility', params: { icraEligibilityId: icraEligibilityId } })">
+    <a
+      href="#"
+      @click.prevent="
+        () =>
+          router.push({
+            name: 'manage-icra-eligibility',
+            params: { icraEligibilityId: icraEligibilityId },
+          })
+      "
+    >
       Back to application summary
     </a>
   </v-container>
@@ -112,26 +163,36 @@ export default defineComponent({
     };
   },
   async mounted() {
-    this.icraEligibilityStatus = (await getIcraEligibilityStatus(this.icraEligibilityId))?.data || {};
+    this.icraEligibilityStatus =
+      (await getIcraEligibilityStatus(this.icraEligibilityId))?.data || {};
   },
   computed: {
     additionalWorkReferenceRequired(): boolean {
       //set our variables to check
-      const someReferenceRejected = this.icraEligibilityStatus?.employmentReferencesStatus?.some((reference) => {
-        if (reference.status === "Rejected") {
-          return true;
-        }
-      });
+      const someReferenceRejected =
+        this.icraEligibilityStatus?.employmentReferencesStatus?.some(
+          (reference) => {
+            if (reference.status === "Rejected") {
+              return true;
+            }
+          },
+        );
 
       const totalReferencesWithoutRejections =
-        this.icraEligibilityStatus?.employmentReferencesStatus?.filter((reference) => {
-          if (reference.status !== "Rejected") {
-            return true;
-          }
-        })?.length || 0;
+        this.icraEligibilityStatus?.employmentReferencesStatus?.filter(
+          (reference) => {
+            if (reference.status !== "Rejected") {
+              return true;
+            }
+          },
+        )?.length || 0;
 
       //begin checking for scenarios
-      if (this.icraEligibilityStatus?.addAdditionalEmploymentExperienceReferences && totalReferencesWithoutRejections < 6) {
+      if (
+        this.icraEligibilityStatus
+          ?.addAdditionalEmploymentExperienceReferences &&
+        totalReferencesWithoutRejections < 6
+      ) {
         return true;
       }
 
@@ -166,7 +227,9 @@ export default defineComponent({
       }
     },
     sheetColor(reference: Components.Schemas.EmploymentReferenceStatus) {
-      return reference.status === "ICRAEligibilitySubmitted" ? "hawkes-blue" : "white-smoke";
+      return reference.status === "ICRAEligibilitySubmitted"
+        ? "hawkes-blue"
+        : "white-smoke";
     },
     cleanPreferredName,
   },

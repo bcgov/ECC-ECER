@@ -1,10 +1,18 @@
 <template>
-  <v-card min-width="100%" variant="elevated" rounded="lg" class="custom-card-styling" elevation="4">
+  <v-card
+    min-width="100%"
+    variant="elevated"
+    rounded="lg"
+    class="custom-card-styling"
+    elevation="4"
+  >
     <template #title>
       <v-card-title>
         <v-row>
           <v-col>
-            <p class="font-weight-bold">{{ internationalCertification.nameOfRegulatoryAuthority }}</p>
+            <p class="font-weight-bold">
+              {{ internationalCertification.nameOfRegulatoryAuthority }}
+            </p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
@@ -16,7 +24,13 @@
     <template #append>
       <v-tooltip text="Edit professional development" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editInternationalCertification" :loading="loadingStore.isLoading('icra_put')" />
+          <v-btn
+            v-bind="props"
+            icon="mdi-pencil"
+            variant="plain"
+            @click="editInternationalCertification"
+            :loading="loadingStore.isLoading('icra_put')"
+          />
         </template>
       </v-tooltip>
       <v-tooltip text="Delete professional development" location="top">

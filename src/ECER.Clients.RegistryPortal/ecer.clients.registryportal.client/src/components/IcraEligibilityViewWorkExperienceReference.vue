@@ -5,7 +5,9 @@
 
     <h1 class="mb-4">Employment experience reference</h1>
 
-    <p class="mb-8">We sent an email to the following person to request a reference.</p>
+    <p class="mb-8">
+      We sent an email to the following person to request a reference.
+    </p>
 
     <v-row class="mb-12">
       <v-col cols="12" md="6">
@@ -40,8 +42,9 @@
       <h3 class="mb-3">Resend email</h3>
 
       <p class="mb-4">
-        We will send another email to the reference. It will include a link to the My ECE Registry to provide a reference for you. It may take a few minutes to
-        receive the email.
+        We will send another email to the reference. It will include a link to
+        the My ECE Registry to provide a reference for you. It may take a few
+        minutes to receive the email.
       </p>
 
       <p class="mb-3">If they do not receive the email:</p>
@@ -51,13 +54,21 @@
         <li class="mb-2">Check you provided the correct email address</li>
       </ul>
 
-      <p class="mb-6">If you need to correct any information, choose to use a new reference below.</p>
+      <p class="mb-6">
+        If you need to correct any information, choose to use a new reference
+        below.
+      </p>
 
       <v-btn
         variant="outlined"
         color="primary"
-        :loading="loadingStore.isLoading('icra_work_reference_resend_invite_post')"
-        :disabled="!employmentReference || loadingStore.isLoading('icra_work_reference_resend_invite_post')"
+        :loading="
+          loadingStore.isLoading('icra_work_reference_resend_invite_post')
+        "
+        :disabled="
+          !employmentReference ||
+          loadingStore.isLoading('icra_work_reference_resend_invite_post')
+        "
         @click.stop.prevent="onResendClick"
       >
         Resend email
@@ -68,10 +79,13 @@
       <h3 class="mb-3">Change your reference</h3>
 
       <p class="mb-4">
-        This will delete this individual as your reference and let you add someone new, or correct any information in the reference listed above.
+        This will delete this individual as your reference and let you add
+        someone new, or correct any information in the reference listed above.
       </p>
 
-      <a href="#" @click.prevent="onChangeReferenceClick">Choose a new reference</a>
+      <a href="#" @click.prevent="onChangeReferenceClick">
+        Choose a new reference
+      </a>
     </section>
   </v-container>
 </template>
@@ -83,7 +97,10 @@ import { useDisplay } from "vuetify";
 import type { Components } from "@/types/openapi";
 import { cleanPreferredName } from "@/utils/functions";
 
-import { getIcraWorkExperienceReferenceById, resendIcraEligibilityWorkExperienceReferenceInvite } from "@/api/icra";
+import {
+  getIcraWorkExperienceReferenceById,
+  resendIcraEligibilityWorkExperienceReferenceInvite,
+} from "@/api/icra";
 
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Loading from "./Loading.vue";
@@ -117,7 +134,8 @@ export default defineComponent({
   },
   data() {
     return {
-      employmentReference: null as Components.Schemas.EmploymentReference | null,
+      employmentReference:
+        null as Components.Schemas.EmploymentReference | null,
     };
   },
   async mounted() {
@@ -127,7 +145,10 @@ export default defineComponent({
   computed: {
     fullName(): string {
       if (!this.employmentReference) return "";
-      return cleanPreferredName(this.employmentReference.firstName, this.employmentReference.lastName);
+      return cleanPreferredName(
+        this.employmentReference.firstName,
+        this.employmentReference.lastName,
+      );
     },
   },
   methods: {
@@ -135,7 +156,10 @@ export default defineComponent({
     async onResendClick() {
       if (!this.employmentReference) return;
 
-      await resendIcraEligibilityWorkExperienceReferenceInvite(this.icraEligibilityId, this.referenceId);
+      await resendIcraEligibilityWorkExperienceReferenceInvite(
+        this.icraEligibilityId,
+        this.referenceId,
+      );
     },
     onChangeReferenceClick() {
       this.router.push({

@@ -6,7 +6,11 @@
         <v-col>
           <v-row>
             <v-col cols="12">
-              <Alert :rounded="mdAndUp" :class="smAndDown ? 'mt-n4 mx-n4' : ''" icon="mdi-bell">
+              <Alert
+                :rounded="mdAndUp"
+                :class="smAndDown ? 'mt-n4 mx-n4' : ''"
+                icon="mdi-bell"
+              >
                 <UnreadMessages />
               </Alert>
             </v-col>
@@ -17,12 +21,27 @@
         <v-col cols="12">
           <h1>My PSP dashboard</h1>
         </v-col>
-        <v-col v-if="programsRequiringReview != null && programsRequiringReview?.length > 0" cols="12">
+        <v-col
+          v-if="
+            programsRequiringReview != null &&
+            programsRequiringReview?.length > 0
+          "
+          cols="12"
+        >
           <Card color="secondary" class="d-flex flex-column">
             <h2 color="surface">You have program profiles to review</h2>
-            <p color="surface" class="mt-4">The ECE Registry reviews programs on an annual basis. Your program profile review can now be completed online.</p>
+            <p color="surface" class="mt-4">
+              The ECE Registry reviews programs on an annual basis. Your program
+              profile review can now be completed online.
+            </p>
             <div class="mt-auto">
-              <v-btn size="large" class="mt-4" color="warning" id="btnReviewProgramProfile" @click="router.push('/program-profiles')">
+              <v-btn
+                size="large"
+                class="mt-4"
+                color="warning"
+                id="btnReviewProgramProfile"
+                @click="router.push('/program-profiles')"
+              >
                 <v-icon size="large" icon="mdi-arrow-right" />
                 Review now
               </v-btn>
@@ -30,7 +49,9 @@
           </Card>
         </v-col>
         <v-col v-if="educationInstitution" cols="12">
-          <EducationInstitutionCard :education-institution="educationInstitution" />
+          <EducationInstitutionCard
+            :education-institution="educationInstitution"
+          />
         </v-col>
       </v-row>
       <v-row justify="center">
@@ -42,9 +63,18 @@
         <v-col class="d-flex" cols="12" sm="6" md="4">
           <Card class="d-flex flex-column">
             <h2>Program profiles</h2>
-            <p class="mt-4">View or manage your institution’s annual program profiles.</p>
+            <p class="mt-4">
+              View or manage your institution’s annual program profiles.
+            </p>
             <div class="mt-auto">
-              <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnNeedOtherOptions" @click="router.push('/program-profiles')">
+              <v-btn
+                variant="outlined"
+                size="large"
+                class="mt-4"
+                color="primary"
+                id="btnNeedOtherOptions"
+                @click="router.push('/program-profiles')"
+              >
                 View program profiles
               </v-btn>
             </div>
@@ -55,14 +85,25 @@
             <h2>Messages</h2>
             <p class="mt-4">View or send a new message to the ECE Registry.</p>
             <div class="mt-auto">
-              <v-btn variant="outlined" size="large" class="mt-4" color="primary" id="btnMessages" @click="router.push('/messages')">Go to messages</v-btn>
+              <v-btn
+                variant="outlined"
+                size="large"
+                class="mt-4"
+                color="primary"
+                id="btnMessages"
+                @click="router.push('/messages')"
+              >
+                Go to messages
+              </v-btn>
             </div>
           </Card>
         </v-col>
         <v-col class="d-flex" cols="12" sm="6" md="4">
           <Card class="d-flex flex-column">
             <h2>User management</h2>
-            <p class="mt-4">Manage which users at your institution have access to this portal.</p>
+            <p class="mt-4">
+              Manage which users at your institution have access to this portal.
+            </p>
             <div class="mt-auto">
               <v-btn
                 variant="outlined"
@@ -70,7 +111,14 @@
                 class="mt-4"
                 color="primary"
                 id="btnManageUsers"
-                @click="router.push({ name: 'manage-users', params: { educationInstitutionName: educationInstitution?.name } })"
+                @click="
+                  router.push({
+                    name: 'manage-users',
+                    params: {
+                      educationInstitutionName: educationInstitution?.name,
+                    },
+                  })
+                "
               >
                 Manage users
               </v-btn>
@@ -93,7 +141,13 @@ import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { getPspUserProfile, registerPspUser } from "@/api/psp-rep";
-import type { PspUserProfile, PspRegistrationError, RegisterPspUserRequest, EducationInstitution, Program } from "@/types/openapi";
+import type {
+  PspUserProfile,
+  PspRegistrationError,
+  RegisterPspUserRequest,
+  EducationInstitution,
+  Program,
+} from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Card from "@/components/Card.vue";
@@ -161,7 +215,10 @@ export default defineComponent({
     this.pspUserProfile = await getPspUserProfile();
 
     if (!this.pspUserProfile) {
-      if (!this.userStore.invitationToken || !this.userStore.invitedProgramRepresentativeId) {
+      if (
+        !this.userStore.invitationToken ||
+        !this.userStore.invitedProgramRepresentativeId
+      ) {
         this.router.replace("/required-invitation");
         return;
       }
@@ -169,7 +226,8 @@ export default defineComponent({
       // Register a new PSP user profile with typed request
       const request: RegisterPspUserRequest = {
         token: this.userStore.invitationToken as string,
-        programRepresentativeId: this.userStore.invitedProgramRepresentativeId as string,
+        programRepresentativeId: this.userStore
+          .invitedProgramRepresentativeId as string,
         bceidBusinessId: user.profile.bceid_business_guid as string,
         bceidBusinessName: user.profile.bceid_business_name as string,
         profile: {
@@ -182,7 +240,8 @@ export default defineComponent({
       const registrationResult = await registerPspUser(request);
       if (registrationResult && "errorCode" in registrationResult) {
         // Handle registration errors based on error code from PspRegistrationErrorResponse
-        const errorCode: PspRegistrationError | undefined = registrationResult.errorCode;
+        const errorCode: PspRegistrationError | undefined =
+          registrationResult.errorCode;
 
         switch (errorCode) {
           case "PortalInvitationTokenInvalid":

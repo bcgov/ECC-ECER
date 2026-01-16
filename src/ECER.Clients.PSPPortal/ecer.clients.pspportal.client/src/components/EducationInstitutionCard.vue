@@ -7,7 +7,12 @@
       <v-col cols="auto">
         <v-tooltip text="Edit Institution Information" location="top">
           <template #activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="router.push('education-institution/edit')" />
+            <v-btn
+              v-bind="props"
+              icon="mdi-pencil"
+              variant="plain"
+              @click="router.push('education-institution/edit')"
+            />
           </template>
         </v-tooltip>
       </v-col>
@@ -36,7 +41,12 @@
         <span>Website:</span>
       </v-col>
       <v-col cols="12" sm="9">
-        <a v-if="educationInstitution.websiteUrl" :href="educationInstitution.websiteUrl" target="_blank" class="text-links font-weight-bold">
+        <a
+          v-if="educationInstitution.websiteUrl"
+          :href="educationInstitution.websiteUrl"
+          target="_blank"
+          class="text-links font-weight-bold"
+        >
           {{ educationInstitution.websiteUrl }}
         </a>
         <span v-else class="font-weight-bold">—</span>
@@ -73,18 +83,27 @@ export default defineComponent({
         PublicOOP: "Public — OOP",
         ContinuingEducation: "Continuing Education",
       };
-      return auspiceMap[this.educationInstitution.auspice] || this.educationInstitution.auspice;
+      return (
+        auspiceMap[this.educationInstitution.auspice] ||
+        this.educationInstitution.auspice
+      );
     },
     formattedAddress(): string {
       const parts: string[] = [];
-      if (this.educationInstitution.street1) parts.push(this.educationInstitution.street1);
-      if (this.educationInstitution.street2) parts.push(this.educationInstitution.street2);
-      if (this.educationInstitution.street3) parts.push(this.educationInstitution.street3);
+      if (this.educationInstitution.street1)
+        parts.push(this.educationInstitution.street1);
+      if (this.educationInstitution.street2)
+        parts.push(this.educationInstitution.street2);
+      if (this.educationInstitution.street3)
+        parts.push(this.educationInstitution.street3);
 
       const cityParts: string[] = [];
-      if (this.educationInstitution.city) cityParts.push(this.educationInstitution.city);
-      if (this.educationInstitution.province) cityParts.push(this.educationInstitution.province);
-      if (this.educationInstitution.postalCode) cityParts.push(this.educationInstitution.postalCode);
+      if (this.educationInstitution.city)
+        cityParts.push(this.educationInstitution.city);
+      if (this.educationInstitution.province)
+        cityParts.push(this.educationInstitution.province);
+      if (this.educationInstitution.postalCode)
+        cityParts.push(this.educationInstitution.postalCode);
 
       if (cityParts.length > 0) {
         parts.push(cityParts.join(", "));

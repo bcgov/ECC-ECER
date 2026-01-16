@@ -1,14 +1,29 @@
 <template>
-  <PreviewCard title="International certification" portal-stage="InternationalCertification">
+  <PreviewCard
+    title="International certification"
+    portal-stage="InternationalCertification"
+  >
     <template #content>
-      <div v-for="(internationalCertificate, index) in internationalCertificates" :key="internationalCertificate.id!">
-        <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
+      <div
+        v-for="(internationalCertificate, index) in internationalCertificates"
+        :key="internationalCertificate.id!"
+      >
+        <v-divider
+          v-if="index !== 0"
+          :thickness="2"
+          color="grey-lightest"
+          class="border-opacity-100 my-6"
+        />
         <v-row>
           <v-col cols="4">
             <p class="small">Country of Institution</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ `${configStore.countryName(internationalCertificate.countryId || "")}` }}</p>
+            <p class="small font-weight-bold">
+              {{
+                `${configStore.countryName(internationalCertificate.countryId || "")}`
+              }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -16,7 +31,9 @@
             <p class="small">Name of regulatory authority</p>
           </v-col>
           <v-col>
-            <p id="courseProvince" class="small font-weight-bold">{{ internationalCertificate.nameOfRegulatoryAuthority }}</p>
+            <p id="courseProvince" class="small font-weight-bold">
+              {{ internationalCertificate.nameOfRegulatoryAuthority }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -24,7 +41,9 @@
             <p class="small">Email of regulatory authority</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ internationalCertificate.emailOfRegulatoryAuthority }}</p>
+            <p class="small font-weight-bold">
+              {{ internationalCertificate.emailOfRegulatoryAuthority }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -33,7 +52,9 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ `${internationalCertificate.phoneOfRegulatoryAuthority || "—"}` }}
+              {{
+                `${internationalCertificate.phoneOfRegulatoryAuthority || "—"}`
+              }}
             </p>
           </v-col>
         </v-row>
@@ -43,7 +64,11 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              <a v-if="internationalCertificate?.websiteOfRegulatoryAuthority" :href="internationalCertificate.websiteOfRegulatoryAuthority" target="_blank">
+              <a
+                v-if="internationalCertificate?.websiteOfRegulatoryAuthority"
+                :href="internationalCertificate.websiteOfRegulatoryAuthority"
+                target="_blank"
+              >
                 {{ internationalCertificate.websiteOfRegulatoryAuthority }}
               </a>
               <span v-else>{{ "—" }}</span>
@@ -52,16 +77,25 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Online certificate validation tool of regulatory authority (optional)</p>
+            <p class="small">
+              Online certificate validation tool of regulatory authority
+              (optional)
+            </p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
               <a
-                v-if="internationalCertificate?.onlineCertificateValidationToolOfRegulatoryAuthority"
-                :href="internationalCertificate.onlineCertificateValidationToolOfRegulatoryAuthority"
+                v-if="
+                  internationalCertificate?.onlineCertificateValidationToolOfRegulatoryAuthority
+                "
+                :href="
+                  internationalCertificate.onlineCertificateValidationToolOfRegulatoryAuthority
+                "
                 target="_blank"
               >
-                {{ internationalCertificate.onlineCertificateValidationToolOfRegulatoryAuthority }}
+                {{
+                  internationalCertificate.onlineCertificateValidationToolOfRegulatoryAuthority
+                }}
               </a>
               <span v-else>{{ "—" }}</span>
             </p>
@@ -93,7 +127,9 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ `${formatDate(internationalCertificate.issueDate || "", "LLLL d, yyyy")}` }}
+              {{
+                `${formatDate(internationalCertificate.issueDate || "", "LLLL d, yyyy")}`
+              }}
             </p>
           </v-col>
         </v-row>
@@ -124,7 +160,12 @@
           </v-col>
           <v-col>
             <v-row no-gutters>
-              <v-col v-for="(file, childIndex) in internationalCertificate.files" :key="childIndex" cols="12" class="small font-weight-bold">
+              <v-col
+                v-for="(file, childIndex) in internationalCertificate.files"
+                :key="childIndex"
+                cols="12"
+                class="small font-weight-bold"
+              >
                 {{ file.name }}
               </v-col>
             </v-row>
@@ -160,13 +201,18 @@ export default defineComponent({
     };
   },
   methods: {
-    fullName(internationalCertificate: Components.Schemas.InternationalCertification): string {
+    fullName(
+      internationalCertificate: Components.Schemas.InternationalCertification,
+    ): string {
       return `${internationalCertificate?.otherFirstName || ""} ${internationalCertificate?.otherMiddleName || ""} ${internationalCertificate?.otherLastName || ""}`.trim();
     },
   },
   computed: {
     internationalCertificates(): Components.Schemas.InternationalCertification[] {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.internationalCertification?.form?.inputs?.internationalCertification?.id || ""];
+      return this.wizardStore.wizardData[
+        this.wizardStore.wizardConfig.steps?.internationalCertification?.form
+          ?.inputs?.internationalCertification?.id || ""
+      ];
     },
   },
 });

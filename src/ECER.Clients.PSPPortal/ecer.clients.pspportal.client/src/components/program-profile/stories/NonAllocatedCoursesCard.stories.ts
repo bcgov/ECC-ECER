@@ -9,7 +9,8 @@ const meta = {
   argTypes: {
     courses: {
       control: "object",
-      description: "List of Course items with no hours allocated toward any required areas of instruction",
+      description:
+        "List of Course items with no hours allocated toward any required areas of instruction",
     },
     onEdit: {
       action: "edit",

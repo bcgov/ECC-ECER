@@ -1,5 +1,9 @@
 <template>
-  <ReferencePreviewCard :is-valid="true" title="Your contact information" reference-stage="ContactInformation">
+  <ReferencePreviewCard
+    :is-valid="true"
+    title="Your contact information"
+    reference-stage="ContactInformation"
+  >
     <template #content>
       <v-row>
         <v-col cols="4">
@@ -64,19 +68,27 @@ export default defineComponent({
       return {
         firstName:
           this.wizardStore.wizardData[
-            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.icraEligibilityWorkExperienceContactInformation?.id ||
+              ""
           ]?.firstName,
         lastName:
           this.wizardStore.wizardData[
-            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.icraEligibilityWorkExperienceContactInformation?.id ||
+              ""
           ]?.lastName,
         email:
           this.wizardStore.wizardData[
-            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.icraEligibilityWorkExperienceContactInformation?.id ||
+              ""
           ]?.email,
         phoneNumber:
           this.wizardStore.wizardData[
-            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
+            this.wizardStore?.wizardConfig?.steps?.contactInformation?.form
+              ?.inputs?.icraEligibilityWorkExperienceContactInformation?.id ||
+              ""
           ]?.phoneNumber,
       };
     },

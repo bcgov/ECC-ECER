@@ -3,7 +3,10 @@
     <h3 class="mb-4">Required areas of instruction</h3>
     <v-row v-if="includeTotalHours" justify="center" class="mb-4">
       <v-col cols="12" :md="10">
-        <TotalHoursOfInstructionCard :total-hours="totalHours" :required-hours="requiredHours" />
+        <TotalHoursOfInstructionCard
+          :total-hours="totalHours"
+          :required-hours="requiredHours"
+        />
       </v-col>
     </v-row>
 
@@ -22,7 +25,11 @@
       @edit="handleEdit"
     />
 
-    <NonAllocatedCoursesCard v-if="nonAllocatedCourses.length > 0" :courses="nonAllocatedCourses" @edit="handleEdit" />
+    <NonAllocatedCoursesCard
+      v-if="nonAllocatedCourses.length > 0"
+      :courses="nonAllocatedCourses"
+      @edit="handleEdit"
+    />
   </div>
 </template>
 
@@ -35,7 +42,8 @@ import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
 
-interface CourseAreaOfInstructionWithCourse extends Components.Schemas.CourseAreaOfInstruction {
+interface CourseAreaOfInstructionWithCourse
+  extends Components.Schemas.CourseAreaOfInstruction {
   courseTitle?: string | null;
   courseNumber?: string | null;
 }
@@ -82,7 +90,10 @@ export default defineComponent({
   },
   computed: {
     filteredAreas(): Components.Schemas.AreaOfInstruction[] {
-      if (!this.areaOfInstructionList || this.areaOfInstructionList.length === 0) {
+      if (
+        !this.areaOfInstructionList ||
+        this.areaOfInstructionList.length === 0
+      ) {
         return [];
       }
 
@@ -91,8 +102,13 @@ export default defineComponent({
       });
 
       // Exclude child guidance. They are grouped together later
-      const hasProgramDevelopment = filtered.some((area) => area.name === "Program Development, Curriculum and Foundations");
-      const hasChildGuidance = filtered.some((area) => area.name === "Child Guidance");
+      const hasProgramDevelopment = filtered.some(
+        (area) =>
+          area.name === "Program Development, Curriculum and Foundations",
+      );
+      const hasChildGuidance = filtered.some(
+        (area) => area.name === "Child Guidance",
+      );
 
       if (hasProgramDevelopment && hasChildGuidance) {
         return filtered.filter((area) => area.name !== "Child Guidance");
@@ -106,11 +122,16 @@ export default defineComponent({
       }
 
       // Filter courses by programType first
-      const coursesForProgramType = this.program.courses.filter((course) => course.programType === this.programType);
+      const coursesForProgramType = this.program.courses.filter(
+        (course) => course.programType === this.programType,
+      );
 
       // Find courses that have no allocated hours to any area
       return coursesForProgramType.filter((course) => {
-        return !course.courseAreaOfInstruction || course.courseAreaOfInstruction.length === 0;
+        return (
+          !course.courseAreaOfInstruction ||
+          course.courseAreaOfInstruction.length === 0
+        );
       });
     },
     totalHours(): number {
@@ -142,7 +163,10 @@ export default defineComponent({
     async loadAreaOfInstructionList() {
       this.loading = true;
       try {
-        if (this.configStore.areaOfInstructionList && this.configStore.areaOfInstructionList.length > 0) {
+        if (
+          this.configStore.areaOfInstructionList &&
+          this.configStore.areaOfInstructionList.length > 0
+        ) {
           this.areaOfInstructionList = this.configStore.areaOfInstructionList;
         } else {
           const list = await getAreaOfInstructionList();
@@ -157,7 +181,9 @@ export default defineComponent({
         this.loading = false;
       }
     },
-    getCoursesForArea(areaId: string | null | undefined): CourseAreaOfInstructionWithCourse[] {
+    getCoursesForArea(
+      areaId: string | null | undefined,
+    ): CourseAreaOfInstructionWithCourse[] {
       if (!areaId || !this.program?.courses) {
         return [];
       }
@@ -166,12 +192,15 @@ export default defineComponent({
 
       // Find the area to check its name
       const area = this.areaOfInstructionList.find((a) => a.id === areaId);
-      const isProgramDevelopment = area?.name === "Program Development, Curriculum and Foundations";
+      const isProgramDevelopment =
+        area?.name === "Program Development, Curriculum and Foundations";
 
       // If this is Program Development, Curriculum and Foundations, also find Child Guidance area
       let childGuidanceAreaId: string | null | undefined;
       if (isProgramDevelopment) {
-        const childGuidanceArea = this.areaOfInstructionList.find((a) => a.name === "Child Guidance");
+        const childGuidanceArea = this.areaOfInstructionList.find(
+          (a) => a.name === "Child Guidance",
+        );
         childGuidanceAreaId = childGuidanceArea?.id;
       }
 
@@ -181,9 +210,13 @@ export default defineComponent({
         .forEach((course) => {
           if (course.courseAreaOfInstruction) {
             course.courseAreaOfInstruction.forEach((courseArea) => {
-              const matchesCurrentArea = courseArea.areaOfInstructionId === areaId;
+              const matchesCurrentArea =
+                courseArea.areaOfInstructionId === areaId;
               // If Program Development, also include courses from Child Guidance
-              const matchesChildGuidance = isProgramDevelopment && childGuidanceAreaId && courseArea.areaOfInstructionId === childGuidanceAreaId;
+              const matchesChildGuidance =
+                isProgramDevelopment &&
+                childGuidanceAreaId &&
+                courseArea.areaOfInstructionId === childGuidanceAreaId;
 
               if (matchesCurrentArea || matchesChildGuidance) {
                 coursesForArea.push({
@@ -199,9 +232,15 @@ export default defineComponent({
       return coursesForArea;
     },
     getAreaSubtitles(areaId: string | null | undefined) {
-      const areaIds = new Set(this.getCoursesForArea(areaId).map((c) => c.areaOfInstructionId));
+      const areaIds = new Set(
+        this.getCoursesForArea(areaId).map((c) => c.areaOfInstructionId),
+      );
 
-      return Object.fromEntries(Object.entries(this.areaSubtitles).filter(([key, value]) => areaIds.has(key)));
+      return Object.fromEntries(
+        Object.entries(this.areaSubtitles).filter(([key, value]) =>
+          areaIds.has(key),
+        ),
+      );
     },
     handleEdit(courseArea: Components.Schemas.CourseAreaOfInstruction) {
       this.$emit("edit", courseArea);

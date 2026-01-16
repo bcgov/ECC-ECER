@@ -1,6 +1,7 @@
 import selectors from "../../../../support/selectors";
 const provinceName = "Prince Edward Island";
-const certificationName = "Early Childhood Educator (previously called ECE III or Early Childhood Supervisor or Early Childhood Director)";
+const certificationName =
+  "Early Childhood Educator (previously called ECE III or Early Childhood Supervisor or Early Childhood Director)";
 
 describe("Labour Mobility - Early Childhood Educator Certification Transfer Application for Prince Edward Island", () => {
   it("should sucessfully create a Early Childhood Educator LM Certification Transfer Application for Prince Edward Island", () => {
@@ -11,16 +12,22 @@ describe("Labour Mobility - Early Childhood Educator Certification Transfer Appl
     cy.contains("Check your transfer eligibility").should("be.visible");
 
     /** Prince Edward Island*/
-    cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.provinceDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 
     /**Out of province Certification Type */
-    cy.get(selectors.transferEligibility.certificationTypeDropDownList).should("exist").click({ force: true });
+    cy.get(selectors.transferEligibility.certificationTypeDropDownList)
+      .should("exist")
+      .click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(certificationName).click();
 
     cy.contains("Work experience").should("be.visible");
 
-    cy.get(selectors.transferEligibility.programConfirmationRadioYes).check({ force: true });
+    cy.get(selectors.transferEligibility.programConfirmationRadioYes).check({
+      force: true,
+    });
 
     cy.contains(
       "You can apply to transfer your certification to ECE Five Year certification with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE) in B.C.",
@@ -40,10 +47,14 @@ describe("Labour Mobility - Early Childhood Educator Certification Transfer Appl
     /** Certificate Information */
 
     cy.contains("Certificate information").should("be.visible");
-    cy.contains("ECE Five Year and Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)").should("be.visible");
+    cy.contains(
+      "ECE Five Year and Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)",
+    ).should("be.visible");
     cy.contains(provinceName).should("be.visible");
     cy.contains(certificationName).should("be.visible");
-    cy.get(selectors.certificateInformation.nameOnCertificateRadio).first().check({ force: true });
+    cy.get(selectors.certificateInformation.nameOnCertificateRadio)
+      .first()
+      .check({ force: true });
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEFiveYearWorkflow(provinceName, certificationName);

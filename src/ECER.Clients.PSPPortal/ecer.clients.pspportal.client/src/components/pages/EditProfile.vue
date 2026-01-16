@@ -12,12 +12,30 @@
     </v-row>
     <v-row>
       <v-col class="mt-4" cols="12">
-        <EceForm ref="editProfileformRef" :form="profileForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
+        <EceForm
+          ref="editProfileformRef"
+          :form="profileForm"
+          :form-data="formStore.formData"
+          @updated-form-data="formStore.setFormData"
+        />
         <v-row class="mt-10">
           <v-col>
             <div class="d-flex flex-row justify-start ga-2">
-              <v-btn rounded="lg" color="primary" :loading="loadingStore.isLoading('psp_user_profile_put')" @click="saveProfile">Save</v-btn>
-              <v-btn rounded="lg" color="primary" variant="outlined" :loading="loadingStore.isLoading('psp_user_profile_put')" @click="router.back()">
+              <v-btn
+                rounded="lg"
+                color="primary"
+                :loading="loadingStore.isLoading('psp_user_profile_put')"
+                @click="saveProfile"
+              >
+                Save
+              </v-btn>
+              <v-btn
+                rounded="lg"
+                color="primary"
+                variant="outlined"
+                :loading="loadingStore.isLoading('psp_user_profile_put')"
+                @click="router.back()"
+              >
                 Cancel
               </v-btn>
             </div>
@@ -59,37 +77,78 @@ export default defineComponent({
         [profileForm?.components?.lastName?.id || ""]: userProfile.lastName,
         [profileForm?.components?.email?.id || ""]: userProfile.email,
         [profileForm?.components?.phoneNumber?.id || ""]: userProfile.phone,
-        [profileForm?.components?.phoneNumberExtension?.id || ""]: userProfile.phoneExtension,
+        [profileForm?.components?.phoneNumberExtension?.id || ""]:
+          userProfile.phoneExtension,
         [profileForm?.components?.jobTitle?.id || ""]: userProfile.jobTitle,
-        [profileForm?.components?.preferredFirstName?.id || ""]: userProfile.preferredName,
+        [profileForm?.components?.preferredFirstName?.id || ""]:
+          userProfile.preferredName,
       });
     }
 
-    return { profileForm, formStore, alertStore, userStore, loadingStore, router };
+    return {
+      profileForm,
+      formStore,
+      alertStore,
+      userStore,
+      loadingStore,
+      router,
+    };
   },
   methods: {
     async saveProfile() {
-      const { valid } = await (this.$refs.editProfileformRef as typeof EceForm).$refs[profileForm.id].validate();
+      const { valid } = await (
+        this.$refs.editProfileformRef as typeof EceForm
+      ).$refs[profileForm.id].validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       } else {
         const userUpdated = await updatePspUserProfile({
-          email: this.formStore.formData[profileForm?.components?.email?.id || ""],
-          phone: this.formStore.formData[profileForm?.components?.phoneNumber?.id || ""],
-          phoneExtension: this.formStore.formData[profileForm?.components?.phoneNumberExtension?.id || ""],
-          jobTitle: this.formStore.formData[profileForm?.components?.jobTitle?.id || ""],
-          preferredName: this.formStore.formData[profileForm?.components?.preferredFirstName?.id || ""],
+          email:
+            this.formStore.formData[profileForm?.components?.email?.id || ""],
+          phone:
+            this.formStore.formData[
+              profileForm?.components?.phoneNumber?.id || ""
+            ],
+          phoneExtension:
+            this.formStore.formData[
+              profileForm?.components?.phoneNumberExtension?.id || ""
+            ],
+          jobTitle:
+            this.formStore.formData[
+              profileForm?.components?.jobTitle?.id || ""
+            ],
+          preferredName:
+            this.formStore.formData[
+              profileForm?.components?.preferredFirstName?.id || ""
+            ],
         });
 
         if (userUpdated) {
-          this.alertStore.setSuccessAlert("You have successfully edited your profile information.");
+          this.alertStore.setSuccessAlert(
+            "You have successfully edited your profile information.",
+          );
           this.userStore.updatePspUserProfile({
-            email: this.formStore.formData[profileForm?.components?.email?.id || ""],
-            phone: this.formStore.formData[profileForm?.components?.phoneNumber?.id || ""],
-            phoneExtension: this.formStore.formData[profileForm?.components?.phoneNumberExtension?.id || ""],
-            jobTitle: this.formStore.formData[profileForm?.components?.jobTitle?.id || ""],
-            preferredName: this.formStore.formData[profileForm?.components?.preferredFirstName?.id || ""],
+            email:
+              this.formStore.formData[profileForm?.components?.email?.id || ""],
+            phone:
+              this.formStore.formData[
+                profileForm?.components?.phoneNumber?.id || ""
+              ],
+            phoneExtension:
+              this.formStore.formData[
+                profileForm?.components?.phoneNumberExtension?.id || ""
+              ],
+            jobTitle:
+              this.formStore.formData[
+                profileForm?.components?.jobTitle?.id || ""
+              ],
+            preferredName:
+              this.formStore.formData[
+                profileForm?.components?.preferredFirstName?.id || ""
+              ],
           });
         } else {
           this.alertStore.setFailureAlert("Profile save failed");

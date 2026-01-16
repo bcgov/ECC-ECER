@@ -2,7 +2,12 @@
   <PageContainer>
     <v-row>
       <v-col cols="12">
-        <v-btn prepend-icon="mdi-close" variant="text" text="Close" @click="showCloseDialog = true"></v-btn>
+        <v-btn
+          prepend-icon="mdi-close"
+          variant="text"
+          text="Close"
+          @click="showCloseDialog = true"
+        ></v-btn>
         <v-divider :style="{ opacity: 1 }" />
         <v-row>
           <v-col>New message</v-col>
@@ -11,7 +16,8 @@
           <v-col>
             Send a message to the ECE Registry.
             <span class="font-weight-bold">
-              Please note that all program representatives at your institution will be able to read and reply to this thread.
+              Please note that all program representatives at your institution
+              will be able to read and reply to this thread.
             </span>
           </v-col>
         </v-row>
@@ -19,7 +25,12 @@
           <v-row class="mt-5">
             <v-col cols="6">
               <div>Subject</div>
-              <v-text-field v-model="subject" class="mt-2" variant="outlined" :rules="[Rules.required('Required')]"></v-text-field>
+              <v-text-field
+                v-model="subject"
+                class="mt-2"
+                variant="outlined"
+                :rules="[Rules.required('Required')]"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row class="mt-5">
@@ -35,14 +46,29 @@
                 color="primary"
                 variant="outlined"
                 hide-details="auto"
-                :rules="[Rules.required('Enter a message no longer than 1000 characters')]"
+                :rules="[
+                  Rules.required(
+                    'Enter a message no longer than 1000 characters',
+                  ),
+                ]"
               ></v-textarea>
             </v-col>
           </v-row>
-          <FileUploader ref="FileUploader" :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" />
+          <FileUploader
+            ref="FileUploader"
+            :max-number-of-files="maxNumberOfFiles"
+            @update:files="handleFileUpdate"
+          />
           <v-row class="mt-10">
             <v-col>
-              <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="send">Send</v-btn>
+              <v-btn
+                size="large"
+                color="primary"
+                :loading="loadingStore.isLoading('message_post')"
+                @click="send"
+              >
+                Send
+              </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -129,11 +155,21 @@ export default defineComponent({
     async send() {
       const { valid } = await (this.$refs.messageForm as VForm).validate();
       if (this.isFileUploadInProgress) {
-        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
+        this.alertStore.setFailureAlert(
+          "Uploading files in progress. Please wait until files are uploaded and try again.",
+        );
       } else if (valid) {
-        const { error } = await sendMessage({ communication: { subject: this.subject, text: this.text, documents: this.attachments } });
+        const { error } = await sendMessage({
+          communication: {
+            subject: this.subject,
+            text: this.text,
+            documents: this.attachments,
+          },
+        });
         if (error) {
-          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+          this.alertStore.setFailureAlert(
+            "Sorry, something went wrong and your changes could not be saved. Try again later.",
+          );
         } else {
           this.alertStore.setSuccessAlert("Message sent successfully.");
           this.router.push("/messages");
@@ -141,10 +177,16 @@ export default defineComponent({
       } else {
         let component;
         if (!this.text.trim()) {
-          this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
-          component = this.$refs.textarea as ComponentPublicInstance<{ $el: HTMLElement }>;
+          this.alertStore.setFailureAlert(
+            "You must enter all required fields in the valid format to continue.",
+          );
+          component = this.$refs.textarea as ComponentPublicInstance<{
+            $el: HTMLElement;
+          }>;
         } else {
-          component = this.$refs.FileUploader as ComponentPublicInstance<{ $el: HTMLElement }>;
+          component = this.$refs.FileUploader as ComponentPublicInstance<{
+            $el: HTMLElement;
+          }>;
         }
         this.scrollToComponent(component);
       }
