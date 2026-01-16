@@ -80,6 +80,13 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/program/submitted",
+      component: () => import("./components/pages/Submitted.vue"),
+      name: "programSubmitted",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
+    {
       path: "/program-profiles",
       component: () => import("./components/pages/ProgramProfiles.vue"),
       name: "program-profiles",
