@@ -2,15 +2,15 @@
   <v-container>
     <div class="d-flex flex-column ga-10 mt-10">
       <h1>Access denied</h1>
-      <h2 class="mt-20">This portal invitation is for authentication with {{invitationInstitutionName}}, but the Business BCeID account you logged in with is associated with {{bceidBusinessName}}.</h2>
+      <h2 class="mt-20">
+        This portal invitation is for authentication with {{ invitationInstitutionName }}, but the Business BCeID account you logged in with is associated with
+        {{ bceidBusinessName }}.
+      </h2>
       <div class="d-flex flex-column ga-3">
         <p>You may have followed an invalid link.</p>
         <p>Contact the ECE Registry if you require help.</p>
       </div>
-      <v-btn class="mt-8 align-self-start" @click="oidcStore.logout" :size="smAndDown ? 'default' : 'large'"
-        color="primary">
-        Try again
-      </v-btn>
+      <v-btn class="mt-8 align-self-start" @click="oidcStore.logout" :size="smAndDown ? 'default' : 'large'" color="primary">Try again</v-btn>
     </div>
   </v-container>
 </template>
@@ -28,7 +28,7 @@ export default {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
     const { smAndDown } = useDisplay();
-    
+
     user = await oidcStore.getUser();
     const bceidBusinessName = user?.profile?.bceid_business_name;
 

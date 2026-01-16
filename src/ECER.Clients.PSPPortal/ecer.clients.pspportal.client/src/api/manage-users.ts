@@ -31,4 +31,3 @@ const addUser = async (userProfile: PspUserProfile): Promise<NewPspUserResponse 
 };
 
 export { getUsers, deactivateUser, setPrimaryUser, addUser, reactivateUser };
-

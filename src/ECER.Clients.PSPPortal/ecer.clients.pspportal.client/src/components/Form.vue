@@ -1,12 +1,19 @@
 <template>
-  <v-form :id="form.id" :ref="form.id" validate-on="input" @update:model-value="onFormValidationChanged"
-    @submit.prevent>
+  <v-form :id="form.id" :ref="form.id" validate-on="input" @update:model-value="onFormValidationChanged" @submit.prevent>
     <template v-for="component in form.components" :key="component.id">
       <v-row>
         <v-col cols="12" :md="component.cols.md" :lg="component.cols.lg" :xl="component.cols.xl">
-          <Component v-if="component.isInput !== false" :is="component.component" v-bind="component.props"
+          <Component
+            v-if="component.isInput !== false"
+            :is="component.component"
+            v-bind="component.props"
             :model-value="formData[component.id as keyof {}]"
-            @update:model-value="(value: any) => onInputChanged(component.id, value)" />
+            @update:model-value="(value: any) => onInputChanged(component.id, value)"
+          >
+            <template v-for="(slotContent, slotName) in component.slots" :key="slotName" #[slotName]>
+              <span v-html="slotContent"></span>
+            </template>
+          </Component>
           <Component v-else :is="component.component" v-bind="component.props" />
         </v-col>
       </v-row>

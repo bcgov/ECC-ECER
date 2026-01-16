@@ -5,7 +5,11 @@
     :readonly="readonly"
     :model-value="modelValue"
     @click="!readonly && $emit('update:model-value', $event.target.checked)"
-  ></v-checkbox>
+  >
+    <template #label v-if="$slots.label">
+      <slot name="label"></slot>
+    </template>
+  </v-checkbox>
 </template>
 
 <script lang="ts">

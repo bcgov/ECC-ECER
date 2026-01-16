@@ -1,10 +1,10 @@
-import {defineStore} from "pinia";
+import { defineStore } from "pinia";
 
-import type {Components} from "@/types/openapi";
-import type {ProgramStage, Step, Wizard} from "@/types/wizard";
+import type { Components } from "@/types/openapi";
+import type { ProgramStage, Step, Wizard } from "@/types/wizard";
 
-import {useOidcStore} from "./oidc";
-import {useUserStore} from "./user";
+import { useOidcStore } from "./oidc";
+import { useUserStore } from "./user";
 
 export interface WizardData {
   [key: string]: any;
@@ -40,8 +40,8 @@ export const useWizardStore = defineStore("wizard", {
       return stepId;
     },
     currentStepStage(state): ProgramStage {
-      console.log(this.steps)
-      console.log(state)
+      console.log(this.steps);
+      console.log(state);
       const stage = this.steps[state.step - 1]?.stage;
       if (!stage) throw new Error("No current step stage found");
       return stage;

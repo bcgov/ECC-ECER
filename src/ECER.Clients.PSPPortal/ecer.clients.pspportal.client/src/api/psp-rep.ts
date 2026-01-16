@@ -29,6 +29,4 @@ const registerPspUser = async (registerPspUserRequest: RegisterPspUserRequest): 
   return (response.error as PspRegistrationErrorResponse) ?? response.data ?? {};
 };
 
-
-
 export { getPspUserProfile, registerPspUser, updatePspUserProfile };

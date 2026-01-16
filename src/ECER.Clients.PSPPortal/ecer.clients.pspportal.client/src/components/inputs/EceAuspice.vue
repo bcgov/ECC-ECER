@@ -2,9 +2,19 @@
   <v-row>
     <v-col cols="12">
       <label :for="'auspiceAutocomplete'">Institution type</label>
-      <v-autocomplete :id="'auspiceAutocomplete'" :model-value="modelValue" variant="outlined" color="primary"
-        class="pt-2" :items="auspiceList" item-title="text" item-value="value" clearable hide-details="auto"
-        @update:model-value="(value: Auspice) => auspiceChanged(value)"></v-autocomplete>
+      <v-autocomplete
+        :id="'auspiceAutocomplete'"
+        :model-value="modelValue"
+        variant="outlined"
+        color="primary"
+        class="pt-2"
+        :items="auspiceList"
+        item-title="text"
+        item-value="value"
+        clearable
+        hide-details="auto"
+        @update:model-value="(value: Auspice) => auspiceChanged(value)"
+      ></v-autocomplete>
     </v-col>
   </v-row>
 </template>
