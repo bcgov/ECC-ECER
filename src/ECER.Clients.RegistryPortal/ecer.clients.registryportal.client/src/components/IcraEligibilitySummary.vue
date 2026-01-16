@@ -175,9 +175,7 @@ export default defineComponent({
     certificateNameDisplay(certificate: Components.Schemas.InternationalCertification): string {
       return `${this.configStore.countryName(certificate?.countryId || "")} - ${certificate?.certificateTitle || ""}`;
     },
-    isCertificateReceived(
-      certificate: Components.Schemas.InternationalCertification
-    ): boolean {
+    isCertificateReceived(certificate: Components.Schemas.InternationalCertification): boolean {
       switch (certificate.status) {
         case "ICRAEligibilitySubmitted":
         case "ApplicationSubmitted":
@@ -196,7 +194,7 @@ export default defineComponent({
           console.warn("unhandled certificate status:", certificate.status);
           return true;
       }
-    }
+    },
   },
   computed: {
     actionNeededWorkReferences(): boolean {
@@ -212,6 +210,11 @@ export default defineComponent({
           return true;
         }
       });
+
+      // we have no references other than rejected ones, therefore we need to add some
+      if (totalReferencesWithoutRejections === 0) {
+        return true;
+      }
 
       // check if any references still require a response
       if (someReferencesRequireResponse) {
@@ -236,9 +239,7 @@ export default defineComponent({
 
       // Treat "ICRAEligibilitySubmitted" as "not yet submitted".
       // Anything else counts as submitted/in progress/completed.
-      return references.every(
-        (reference) => reference.status && reference.status !== "ICRAEligibilitySubmitted"
-      );
+      return references.every((reference) => reference.status && reference.status !== "ICRAEligibilitySubmitted");
     },
     currentStep(): number {
       switch (this.icraEligibilityStatus?.status) {
