@@ -81,20 +81,28 @@
       </a>
     </p>
     <br />
-    <h2>Required areas of instruction</h2>
+    <AreaOfInstructionComponent
+      :program="programStore.draftProgram"
+      :program-type="programType"
+      :include-total-hours="showTotalHours"
+      :area-subtitles="generateSubtitleMap"
+    >
+      <template #description>
+        <p>
+          The courses included in your program are shown here, grouped by areas
+          of instruction.
+        </p>
+        <br />
+        <p>
+          Edit any courses as required to ensure that this program profile
+          reflects the correct course information. The following information is
+          editable: course number, course name, course hours allocated to each
+          area of instruction. In some cases, a course may be applicable to more
+          than one area of instruction.
+        </p>
+      </template>
+    </AreaOfInstructionComponent>
     <br />
-    <p>
-      The courses included in your program are shown here, grouped by areas of
-      instruction.
-    </p>
-    <br />
-    <p>
-      Edit any courses as required to ensure that this program profile reflects
-      the correct course information. The following information is editable:
-      course number, course name, course hours allocated to each area of
-      instruction. In some cases, a course may be applicable to more than one
-      area of instruction.
-    </p>
   </template>
 </template>
 
@@ -102,6 +110,7 @@
 import { defineComponent } from "vue";
 import { useWizardStore } from "@/store/wizard";
 import { useConfigStore } from "@/store/config";
+import { useProgramStore } from "@/store/program";
 
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
@@ -109,10 +118,11 @@ import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
 import Callout from "../common/Callout.vue";
+import AreaOfInstructionComponent from "../program-profile/AreaOfInstructionComponent.vue";
 
 export default defineComponent({
   name: "EceProgramAreaInput",
-  components: { Callout },
+  components: { Callout, AreaOfInstructionComponent },
   props: {
     modelValue: {
       type: Boolean,
@@ -130,10 +140,12 @@ export default defineComponent({
   setup: () => {
     const wizardStore = useWizardStore();
     const configStore = useConfigStore();
+    const programStore = useProgramStore();
 
     return {
       configStore,
       wizardStore,
+      programStore,
     };
   },
   data() {
@@ -172,6 +184,43 @@ export default defineComponent({
         (total, area) => total + (area?.minimumHours || 0),
         0,
       );
+    },
+    showTotalHours(): boolean {
+      switch (this.programType) {
+        case "Basic":
+          return false;
+        case "ITE":
+        case "SNE":
+          return true;
+        default:
+          return false;
+      }
+    },
+    generateSubtitleMap(): Record<string, string> {
+      //specific subtitle only for Area of Instruction Child Guidance for ProgramType Basic
+      const childGuidanceAreaOfInstruction =
+        this.configStore.areaOfInstructionList.filter(
+          (area) =>
+            area.name === "Child Guidance" &&
+            area.programTypes?.includes("Basic"),
+        );
+
+      if (
+        childGuidanceAreaOfInstruction &&
+        childGuidanceAreaOfInstruction.length > 0
+      ) {
+        const childGuidanceAreaOfInstructionId =
+          childGuidanceAreaOfInstruction[0]?.id;
+
+        return {
+          [childGuidanceAreaOfInstructionId!]:
+            "Child guidance is included in Program Development, Curriculum and Foundations.",
+        };
+      }
+      console.warn(
+        "Child Guidance area of instruction not found for Basic program type.",
+      );
+      return {};
     },
   },
   methods: {
