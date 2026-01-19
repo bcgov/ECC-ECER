@@ -11,7 +11,9 @@
     }"
   >
     <v-card-text>
-      <v-card-title class="pl-0 pt-0">Total hours of instruction</v-card-title>
+      <v-card-title class="pl-0 pt-0">
+        <strong>Total hours of instruction</strong>
+      </v-card-title>
       <div class="mb-4 d-flex align-center">
         <v-progress-linear
           :model-value="progressPercentage"

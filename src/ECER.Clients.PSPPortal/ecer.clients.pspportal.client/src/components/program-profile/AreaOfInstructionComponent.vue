@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="mb-4">Required areas of instruction</h3>
+    <h2 class="mb-4">Required areas of instruction</h2>
     <v-row v-if="includeTotalHours" justify="center" class="mb-4">
       <v-col cols="12" :md="10">
         <TotalHoursOfInstructionCard
@@ -21,7 +21,7 @@
       :course-area-of-instructions="getCoursesForArea(area.id)"
       :area-subtitles="getAreaSubtitles(area.id)"
       :area-id="area.id || undefined"
-      :show-progress-bar="index === 0 || programType === 'Basic'"
+      :show-progress-bar="(area.minimumHours && area.minimumHours > 0) || false"
       @edit="handleEdit"
     />
 
