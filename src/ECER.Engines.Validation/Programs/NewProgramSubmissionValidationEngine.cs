@@ -44,9 +44,9 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
         .Where(ins => ins.AreaOfInstructionId == instruction.Id)
         .ToList();
       
-      var totalHours = filteredInstructions?
+      var totalHours = filteredInstructions.Count == 0 ? 0 : filteredInstructions
         .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
-        .Sum(a => decimal.Parse(a.NewHours!)) ?? 0;
+        .Sum(a => decimal.Parse(a.NewHours!));
       
       if (instruction.MinimumHours != decimal.Zero && totalHours < instruction.MinimumHours)
       {
