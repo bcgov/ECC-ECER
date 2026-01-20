@@ -51,7 +51,7 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
       if (instruction.MinimumHours != decimal.Zero && totalHours < instruction.MinimumHours)
       {
         minHourErrors.Add("Minimum hours are required for instruction: " + instruction.Name);
-      } else if(instruction.MinimumHours == decimal.Zero && totalHours == decimal.Zero)
+      } else if(instruction.MinimumHours == decimal.Zero && totalHours <= decimal.Zero)
       {
         minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
       }
