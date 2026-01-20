@@ -35,7 +35,7 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     return new ValidationResults(validationErrors);
   }
 
-  private List<string> CheckForMinimumHours(IEnumerable<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions)
+  public static List<string> CheckForMinimumHours(IEnumerable<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions)
   {
     var minHourErrors = new List<string>();
     
@@ -65,7 +65,7 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     return minHourErrors;
   }
   
-  private List<string> CheckTotalCourseHours(IEnumerable<Course> courses)
+  public static List<string> CheckTotalCourseHours(IEnumerable<Course> courses)
   {
     var totalHourErrors = new List<string>();
     
@@ -87,7 +87,7 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     return totalHourErrors;
   }
   
-  private List<string> CheckForMinimumAreaOfInstruction(IEnumerable<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions, string programType)
+  public static List<string> CheckForMinimumAreaOfInstruction(IEnumerable<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions, string programType)
   {
     var minHourErrors = new List<string>();
 

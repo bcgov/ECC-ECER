@@ -199,7 +199,7 @@ internal sealed class ProgramRepository : IProgramRepository
     if (existingProgram == null) throw new InvalidOperationException($"ecer_Program '{program.Id}' not found");
 
     if (existingProgram.ecer_Type == ecer_ProgramProfileType.ChangeRequest &&
-        existingProgram.StatusCode == ecer_Program_StatusCode.RequiresReview)//TODO
+        existingProgram.StatusCode == ecer_Program_StatusCode.RequiresReview)
     {
       if (program.Status == ProgramStatus.Withdrawn)
       {
