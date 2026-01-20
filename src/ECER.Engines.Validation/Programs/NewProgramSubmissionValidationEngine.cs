@@ -23,49 +23,43 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     {
       validationErrors.AddRange(CheckForMinimumHours(iteCourses, instructions));
       validationErrors.AddRange(CheckTotalCourseHours(iteCourses));
-      validationErrors.AddRange(CheckForMinimumAreaOfInstruction(iteCourses, instructions, nameof(ProgramTypes.ITE)));
     }
     
     if (sneCourses != null)
     {
       validationErrors.AddRange(CheckForMinimumHours(sneCourses, instructions));
       validationErrors.AddRange(CheckTotalCourseHours(sneCourses));
-      validationErrors.AddRange(CheckForMinimumAreaOfInstruction(sneCourses, instructions, nameof(ProgramTypes.SNE)));
     }
     return new ValidationResults(validationErrors);
   }
 
-  public static List<string> CheckForMinimumHours(IEnumerable<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions)
+  public static List<string> CheckForMinimumHours(IReadOnlyCollection<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions)
   {
     var minHourErrors = new List<string>();
     
-    foreach (var course in courses)
+    foreach (var instruction in instructions)
     {
-      var areaOfInstructions = course.CourseAreaOfInstruction;
-      if (areaOfInstructions != null)
+      var filteredInstructions = courses.Where(c => c.CourseAreaOfInstruction != null)
+        .SelectMany(c => c.CourseAreaOfInstruction!)
+        .Where(ins => ins.AreaOfInstructionId == instruction.Id)
+        .ToList();
+      
+      var totalHours = filteredInstructions?
+        .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
+        .Sum(a => decimal.Parse(a.NewHours!)) ?? 0;
+      
+      if (instruction.MinimumHours != decimal.Zero && totalHours < instruction.MinimumHours)
       {
-        foreach (var areaOfInstruction in areaOfInstructions)
-        {
-          var provInstructions =
-            instructions.FirstOrDefault(ins => Guid.Parse(ins.Id) == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
-
-          if (provInstructions == null)
-          {
-            minHourErrors.Add("Area of instruction not found: " + areaOfInstruction.AreaOfInstructionId);
-          }
-
-          if (areaOfInstruction.NewHours != null && provInstructions != null && provInstructions.MinimumHours != decimal.Zero &&
-              decimal.Parse(areaOfInstruction.NewHours) < provInstructions.MinimumHours)
-          {
-            minHourErrors.Add("Minimum hours are required for course: " + course.NewCourseTitle);
-          }
-        }
+        minHourErrors.Add("Minimum hours are required for instruction: " + instruction.Name);
+      } else if(instruction.MinimumHours == decimal.Zero && totalHours == decimal.Zero)
+      {
+        minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
       }
     }
     return minHourErrors;
   }
   
-  public static List<string> CheckTotalCourseHours(IEnumerable<Course> courses)
+  public static List<string> CheckTotalCourseHours(IReadOnlyCollection<Course> courses)
   {
     var totalHourErrors = new List<string>();
     
@@ -86,28 +80,4 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     }
     return totalHourErrors;
   }
-  
-  public static List<string> CheckForMinimumAreaOfInstruction(IEnumerable<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions, string programType)
-  {
-    var minHourErrors = new List<string>();
-
-    var areaOfInstructionsByType = instructions.Where(ins => ins.ProgramTypes.SingleOrDefault(program => program == programType) != null);
-    
-    foreach (var course in courses)
-    {
-      var areaOfInstructions = course.CourseAreaOfInstruction;
-      if (areaOfInstructions != null)
-      {
-        bool hasInstructionWithHours = areaOfInstructions.Any(area => areaOfInstructionsByType.Any(typeA => Guid.Parse(typeA.Id) == Guid.Parse(area.AreaOfInstructionId)) 
-                                                  && area.NewHours != null
-                                                  && decimal.Parse(area.NewHours) > 0);
-        if (!hasInstructionWithHours)
-        {
-          minHourErrors.Add("For each Area of Instruction, the total must be greater than 0: " + course.NewCourseTitle);
-        }
-      }
-    }
-    return minHourErrors;
-  }
-  
 }
