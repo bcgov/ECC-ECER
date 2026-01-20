@@ -19,7 +19,20 @@ public record ProgramsQuery : IRequest<ProgramsQueryResults>
 
 public record UpdateCourseCommand(IEnumerable<Course> Course, string Id) : IRequest<string>;
 public record UpdateProgramCommand(Program Program) : IRequest<string>;
+public record SubmitProgramCommand(string ProgramId, string UserId) : IRequest<SubmitProgramResult>;
 
+public record SubmitProgramResult
+{
+  public string? ProgramId { get; set; }
+  public ProgramSubmissionError? Error { get; set; }
+  public IEnumerable<string>? ValidationErrors { get; set; }
+}
+
+public enum ProgramSubmissionError
+{
+  DraftApplicationNotFound,
+  DraftApplicationValidationFailed
+}
 public record Course
 {
   public string CourseId { get; set; } = null!;
@@ -77,4 +90,11 @@ public enum ProgramProfileType
 {
   ChangeRequest,
   AnnualReview
+}
+
+public enum ProgramTypes
+{
+  Basic,
+  SNE,
+  ITE
 }
