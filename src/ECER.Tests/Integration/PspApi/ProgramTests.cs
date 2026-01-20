@@ -71,7 +71,8 @@ public class ProgramTests : PspPortalWebAppScenarioBase
         Name = initial.Program.Name,
         StartDate = updatedStartDate,
         EndDate = updatedEndDate,
-        ProgramTypes = updatedProgramTypes
+        ProgramTypes = updatedProgramTypes,
+        ProgramName = "Program Name"
       })).ToUrl($"/api/draftprograms/{initial.Program.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -84,6 +85,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     updated.Program.StartDate.ShouldBe(updatedStartDate);
     updated.Program.EndDate.ShouldBe(updatedEndDate);
     updated.Program.ProgramTypes.ShouldBe(updatedProgramTypes);
+    updated.Program.ProgramName.ShouldBe("Program Name");
 
     var getResponse = await Host.Scenario(_ =>
     {
@@ -129,7 +131,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
         Name = name,
         StartDate = startDate,
         EndDate = endDate,
-        ProgramTypes = programTypes
+        ProgramTypes = programTypes,
       })).ToUrl("/api/draftprograms");
       _.StatusCodeShouldBeOk();
     });

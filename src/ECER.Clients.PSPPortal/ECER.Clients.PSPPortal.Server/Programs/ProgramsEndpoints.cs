@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.PspUsers;
@@ -8,12 +7,12 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.ComponentModel.DataAnnotations;
 using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
+using ContractProgramProfileType = ECER.Managers.Registry.Contract.Programs.ProgramProfileType;
 using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQuery;
 using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
 using SaveDraftProgramCommand = ECER.Managers.Registry.Contract.Programs.SaveDraftProgramCommand;
 using UpdateCourseCommand = ECER.Managers.Registry.Contract.Programs.UpdateCourseCommand;
-using UpdateProgramCommand =  ECER.Managers.Registry.Contract.Programs.UpdateProgramCommand;
-using ContractProgramProfileType = ECER.Managers.Registry.Contract.Programs.ProgramProfileType;
+using UpdateProgramCommand = ECER.Managers.Registry.Contract.Programs.UpdateProgramCommand;
 
 namespace ECER.Clients.PSPPortal.Server.Programs;
 
@@ -82,7 +81,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .WithOpenApi("Handles program queries", string.Empty, "program_get")
     .RequireAuthorization("psp_user")
     .WithParameterValidation();
-    
+
     endpointRouteBuilder.MapPut("/api/program/{id}/courses", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, UpdateCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
         if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
@@ -93,36 +92,36 @@ public class ProgramsEndpoints : IRegisterEndpoints
         var userContext = ctx.User.GetUserContext()!;
         var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
         if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
-        
+
         var results = await messageBus.Send(new ContractProgramsQuery
         {
           ById = id,
           ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
           ByStatus = new[] { ContractProgramStatus.Draft }
         }, ct);
-        
+
         if (!results.Items.Any()) return TypedResults.NotFound();
         var mappedCourses = mapper.Map<IEnumerable<Managers.Registry.Contract.Programs.Course>>(request.Courses);
-        
+
         var result = await messageBus.Send(new UpdateCourseCommand(mappedCourses, id), ct);
         return TypedResults.Ok(result);
       })
       .WithOpenApi("Update a course for a program profile", string.Empty, "course_put")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
-    
+
     endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
         if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
         bool IdIsNotGuid = !Guid.TryParse(id, out _);
         if (IdIsNotGuid) return TypedResults.BadRequest("invalid program profile id");
-        
+
         if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
         var userContext = ctx.User.GetUserContext()!;
         var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
         if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
-        
+
         var existing = await messageBus.Send(new ContractProgramsQuery
         {
           ById = id,
@@ -132,8 +131,8 @@ public class ProgramsEndpoints : IRegisterEndpoints
 
         if (!existing.Items.Any()) return TypedResults.NotFound();
 
-        if (existing.Items.First().Status == ContractProgramStatus.Draft 
-            && existing.Items.First().ProgramProfileType != ContractProgramProfileType.ChangeRequest) 
+        if (existing.Items.First().Status == ContractProgramStatus.Draft
+            && existing.Items.First().ProgramProfileType != ContractProgramProfileType.ChangeRequest)
           return TypedResults.BadRequest("update not allowed on a draft program");
 
         var programId = await messageBus.Send(new UpdateProgramCommand(mapper.Map<ContractProgram>(request)), ct);
@@ -164,12 +163,12 @@ public record Course
   public string CourseId { get; set; } = null!;
   [Required]
   public string CourseNumber { get; set; } = null!;
-  [Required] 
+  [Required]
   public string CourseTitle { get; set; } = null!;
-  public string? NewCourseNumber { get; set; } 
-  public string? NewCourseTitle { get; set; } 
+  public string? NewCourseNumber { get; set; }
+  public string? NewCourseTitle { get; set; }
   public IEnumerable<CourseAreaOfInstruction>? CourseAreaOfInstruction { get; set; }
-  [Required] 
+  [Required]
   public string ProgramType { get; set; } = null!;
 }
 
@@ -182,6 +181,7 @@ public record Program
   public ProgramStatus Status { get; set; } = ProgramStatus.Draft;
   public DateTime? CreatedOn { get; set; }
   public string? Name { get; set; }
+  public string? ProgramName { get; set; }
   public string? PostSecondaryInstituteName { get; set; }
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
