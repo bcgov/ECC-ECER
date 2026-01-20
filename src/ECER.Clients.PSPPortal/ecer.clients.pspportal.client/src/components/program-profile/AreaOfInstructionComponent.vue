@@ -31,6 +31,8 @@
       @edit="handleEdit"
     />
   </div>
+  <!-- this is to block the user from progressing if hours are not met -->
+  <v-input :rules="generateRulesByProgramType()" :max-errors="5"></v-input>
 </template>
 
 <script lang="ts">
@@ -41,6 +43,8 @@ import { getAreaOfInstructionList } from "@/api/configuration";
 import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
+
+const MIN_HOURS_ITE_SNE = 450;
 
 interface CourseAreaOfInstructionWithCourse
   extends Components.Schemas.CourseAreaOfInstruction {
@@ -244,6 +248,62 @@ export default defineComponent({
     },
     handleEdit(courseArea: Components.Schemas.CourseAreaOfInstruction) {
       this.$emit("edit", courseArea);
+    },
+    generateRulesByProgramType() {
+      //filteredAreas already combines Program Development + Child Guidance
+      const rules = this.filteredAreas.map((area) => {
+        if (area.minimumHours) {
+          const minimumHours = area.minimumHours;
+          let totalHours = this.getCoursesForArea(area.id).reduce(
+            (sum, courseArea) =>
+              sum + Number.parseFloat(courseArea.newHours || "0"),
+            0,
+          );
+
+          return () =>
+            totalHours >= minimumHours ||
+            `${area.name} has not met the required hours`;
+        }
+
+        //no minimum hours defined, always valid
+        return true;
+      });
+
+      const everyAreaHasHours = this.filteredAreas.every((area) => {
+        this.getCoursesForArea(area.id).some((courseArea) => {
+          Number.parseFloat(courseArea.newHours || "0") > 0;
+        });
+      });
+
+      switch (this.programType) {
+        case "Basic":
+          //no additional rules
+          break;
+        case "ITE":
+        case "SNE":
+          // every area of instruction must be greater than 0 course hours
+          const moreThanZeroHoursRules = this.filteredAreas.map((area) => {
+            return () =>
+              this.getCoursesForArea(area.id).some(
+                (courseArea) =>
+                  Number.parseFloat(courseArea.newHours || "0") > 0,
+              ) || `${area.name} must have course hours assigned`;
+          });
+          rules.push(...moreThanZeroHoursRules);
+
+          // total required hours must total at least 450
+          rules.push(
+            () =>
+              this.totalHours >= MIN_HOURS_ITE_SNE ||
+              `Total course hours must be at least ${MIN_HOURS_ITE_SNE} hours`,
+          );
+          break;
+        default:
+          console.warn(
+            `Unknown program type '${this.programType}' for generating rules.`,
+          );
+      }
+      return rules;
     },
   },
 });
