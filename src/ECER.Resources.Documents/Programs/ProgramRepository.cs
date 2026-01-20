@@ -129,6 +129,11 @@ internal sealed class ProgramRepository : IProgramRepository
       
       if (courseExists != null)
       {
+        if (!context.IsAttached(courseExists))
+        {
+          context.Attach(courseExists);
+        }
+        
         courseExists.ecer_NewCode = !string.IsNullOrWhiteSpace(course.NewCourseNumber)
           ? course.NewCourseNumber
           : course.CourseNumber;
@@ -151,10 +156,10 @@ internal sealed class ProgramRepository : IProgramRepository
               {
                 UpdateAreaOfInstruction(areaOfInstruction,  existingAreaOfInstruction);
               }
-            }
-            else
-            {
-              CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
+              else
+              {
+                CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
+              }
             }
           }
         }
