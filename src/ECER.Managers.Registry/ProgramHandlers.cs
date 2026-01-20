@@ -72,20 +72,16 @@ public class ProgramHandlers(
     
     var programs = await programRepository.Query(new ProgramQuery
     {
-      ById = request.ProgramId
+      ById = request.ProgramId,
+      ByStatus = new[] { ProgramStatus.Draft }
     }, cancellationToken);
-
-    if (programs.Count() > 1)
-    {
-      return new SubmitProgramResult { ProgramId = null, Error = ProgramSubmissionError.NonUniqueProgramProfiles, ValidationErrors = new List<string>() { "Multiple program profiles exist for the given ID" } };
-    }
     
-    var draftProgram = mapper.Map<Contract.Programs.Program>(programs.SingleOrDefault(dst => dst.Status == ProgramStatus.Draft));
-    if (draftProgram == null)
+    if (!programs.Any())
     {
       return new SubmitProgramResult { ProgramId = null, Error = ProgramSubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "Draft program profile does not exist" } };
     }
     
+    var draftProgram = mapper.Map<Contract.Programs.Program>(programs.First());
     var instructions = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery() { ById = null }, cancellationToken);
     
     var validationEngine = validationResolver?.resolve(draftProgram.ProgramProfileType);

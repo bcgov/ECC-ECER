@@ -147,7 +147,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
     
-    endpointRouteBuilder.MapPost("/api/programs", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (string? id, SubmitProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/programs", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (SubmitProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
         var userId = ctx.User.GetUserContext()!.UserId;
         bool IdIsNotGuid = !Guid.TryParse(request.ProgramId, out _);
@@ -155,13 +155,13 @@ public class ProgramsEndpoints : IRegisterEndpoints
         if (IdIsNotGuid) return TypedResults.BadRequest(new ProblemDetails() { Title = "Invalid program profile id" });
         
         var result = await messageBus.Send(new SubmitProgramCommand(request.ProgramId, userId), ct);
-        if (result.ValidationErrors != null && result.ValidationErrors.Any() && result.Error == ProgramSubmissionError.DraftApplicationNotFound)
+        if (result.Error == ProgramSubmissionError.DraftApplicationNotFound)
         {
           return TypedResults.NotFound();
         }
         
         if (result.ValidationErrors != null && result.ValidationErrors.Any() && 
-            result.Error == ProgramSubmissionError.DraftApplicationValidationFailed || result.Error == ProgramSubmissionError.NonUniqueProgramProfiles)
+            result.Error == ProgramSubmissionError.DraftApplicationValidationFailed)
         {
           var problemDetails = new ProblemDetails()
           {

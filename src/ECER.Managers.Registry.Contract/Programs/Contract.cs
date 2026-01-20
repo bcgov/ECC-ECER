@@ -31,8 +31,7 @@ public record SubmitProgramResult
 public enum ProgramSubmissionError
 {
   DraftApplicationNotFound,
-  DraftApplicationValidationFailed,
-  NonUniqueProgramProfiles,
+  DraftApplicationValidationFailed
 }
 public record Course
 {
