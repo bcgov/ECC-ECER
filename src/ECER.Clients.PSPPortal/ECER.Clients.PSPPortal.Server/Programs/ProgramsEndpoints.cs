@@ -7,6 +7,9 @@ using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.ComponentModel.DataAnnotations;
+using ECER.Managers.Registry.Contract.Applications;
+using ECER.Managers.Registry.Contract.Programs;
+using Microsoft.AspNetCore.Mvc;
 using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
 using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQuery;
 using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
@@ -14,6 +17,7 @@ using SaveDraftProgramCommand = ECER.Managers.Registry.Contract.Programs.SaveDra
 using UpdateCourseCommand = ECER.Managers.Registry.Contract.Programs.UpdateCourseCommand;
 using UpdateProgramCommand =  ECER.Managers.Registry.Contract.Programs.UpdateProgramCommand;
 using ContractProgramProfileType = ECER.Managers.Registry.Contract.Programs.ProgramProfileType;
+using SubmitProgramCommand = ECER.Managers.Registry.Contract.Programs.SubmitProgramCommand;
 
 namespace ECER.Clients.PSPPortal.Server.Programs;
 
@@ -142,6 +146,36 @@ public class ProgramsEndpoints : IRegisterEndpoints
       .WithOpenApi("Update program profile", string.Empty, "program_put")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
+    
+    endpointRouteBuilder.MapPost("/api/programs", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (string? id, SubmitProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+      {
+        var userId = ctx.User.GetUserContext()!.UserId;
+        bool IdIsNotGuid = !Guid.TryParse(request.ProgramId, out _);
+
+        if (IdIsNotGuid) return TypedResults.BadRequest(new ProblemDetails() { Title = "Invalid program profile id" });
+        
+        var result = await messageBus.Send(new SubmitProgramCommand(request.ProgramId, userId), ct);
+        if (result.ValidationErrors != null && result.ValidationErrors.Any() && result.Error == ProgramSubmissionError.DraftApplicationNotFound)
+        {
+          return TypedResults.NotFound();
+        }
+        
+        if (result.ValidationErrors != null && result.ValidationErrors.Any() && 
+            result.Error == ProgramSubmissionError.DraftApplicationValidationFailed || result.Error == ProgramSubmissionError.NonUniqueProgramProfiles)
+        {
+          var problemDetails = new ProblemDetails()
+          {
+            Status = StatusCodes.Status400BadRequest,
+            Title = "Application submission failed",
+            Extensions = { ["errors"] = result.ValidationErrors }
+          };
+          return TypedResults.BadRequest(problemDetails);
+        }
+        return TypedResults.Ok(result.ProgramId);
+      })
+      .WithOpenApi("Submit a draft program profile", string.Empty, "program_post")
+      .RequireAuthorization("psp_user")
+      .WithParameterValidation();
   }
 }
 
@@ -150,6 +184,8 @@ public record SaveDraftProgramRequest(Program Program);
 public record UpdateCourseRequest(IEnumerable<Course>? Courses);
 
 public record DraftProgramResponse(Program Program);
+
+public record SubmitProgramRequest(string ProgramId);
 
 public record CourseAreaOfInstruction
 {
