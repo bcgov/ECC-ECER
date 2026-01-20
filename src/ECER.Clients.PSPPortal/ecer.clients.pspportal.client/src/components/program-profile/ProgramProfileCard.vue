@@ -6,7 +6,7 @@
     class="pa-6 border-primary border-opacity-100 w-100"
   >
     <div class="d-flex justify-end">
-      <v-chip :color="chipColour" variant="outlined" size="small">
+      <v-chip :color="chipColour" variant="flat" size="small">
         {{ statusText }}
       </v-chip>
     </div>
@@ -117,11 +117,11 @@ export default defineComponent({
     chipColour(): string | undefined {
       switch (this.status) {
         case "Draft":
-          return "warning-border";
+          return "warning";
         case "UnderReview":
-          return "support-border-info";
+          return "primary";
         case "Approved":
-          return "#42814A";
+          return "success";
       }
     },
     step(): number {
