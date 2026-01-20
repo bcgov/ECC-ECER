@@ -269,12 +269,6 @@ export default defineComponent({
         return true;
       });
 
-      const everyAreaHasHours = this.filteredAreas.every((area) => {
-        this.getCoursesForArea(area.id).some((courseArea) => {
-          Number.parseFloat(courseArea.newHours || "0") > 0;
-        });
-      });
-
       switch (this.programType) {
         case "Basic":
           //no additional rules
