@@ -117,7 +117,15 @@ internal sealed class ProgramRepository : IProgramRepository
     
     foreach (var course in incomingCourse)
     {
-      var courseExists = context.ecer_CourseSet.SingleOrDefault(r => r.ecer_CourseId == Guid.Parse(course.CourseId));
+      var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(course.CourseId));
+      
+      var courseExists = context.From(courses)
+        .Join()
+        .Include(c => c.ecer_courseprovincialrequirement_CourseId)
+        .Execute()
+        .SingleOrDefault();
+      
+      //.ecer_CourseSet.SingleOrDefault(r => r.ecer_CourseId == Guid.Parse(course.CourseId));
       
       if (courseExists != null)
       {
@@ -171,6 +179,7 @@ internal sealed class ProgramRepository : IProgramRepository
       var newAreaOfInstruction = new ecer_CourseProvincialRequirement
       {
         Id = Guid.NewGuid(),
+        ecer_Hours = 0,
         ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours),
         ecer_CourseId = new EntityReference(ecer_Course.EntityLogicalName, courseExists.Id),
         ecer_ProgramAreaId = new EntityReference(ecer_ProvincialRequirement.EntityLogicalName, instructionArea.Id)

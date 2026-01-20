@@ -184,7 +184,7 @@ export default defineComponent({
       }
 
       // Convert to array with computed values for each area
-      return Array.from(grouped.entries()).map(([areaId, courses]) => {
+      const areas = Array.from(grouped.entries()).map(([areaId, courses]) => {
         const areaOfInstruction = this.configStore.areaOfInstructionList.find(
           (area) => area.id === areaId,
         );
@@ -219,6 +219,18 @@ export default defineComponent({
           progressPercentage,
           progressColor,
         };
+      });
+
+      // Ensure Program Development comes before Child Guidance
+      return areas.sort((a, b) => {
+        const aIsProgramDevelopment = a.areaName === "Program Development, Curriculum and Foundations";
+        const bIsProgramDevelopment = b.areaName === "Program Development, Curriculum and Foundations";
+        const aIsChildGuidance = a.areaName === "Child Guidance";
+        const bIsChildGuidance = b.areaName === "Child Guidance";
+
+        if (aIsProgramDevelopment && bIsChildGuidance) return -1;
+        if (aIsChildGuidance && bIsProgramDevelopment) return 1;
+        return 0;
       });
     },
     overallTotalHours(): number {

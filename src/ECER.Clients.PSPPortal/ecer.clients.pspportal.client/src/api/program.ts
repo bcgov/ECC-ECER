@@ -47,4 +47,16 @@ const createOrUpdateDraftApplication = async (
   });
 };
 
-export { createOrUpdateDraftApplication, getPrograms };
+const updateCourse = async (
+  programId: string,
+  courses: Components.Schemas.Course[],
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  // Using axios instance directly since endpoint may not be in openapi types
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.put(`/api/program/${programId}/courses`, { courses }),
+    key: "course_put",
+  });
+};
+
+export { createOrUpdateDraftApplication, getPrograms, updateCourse };
