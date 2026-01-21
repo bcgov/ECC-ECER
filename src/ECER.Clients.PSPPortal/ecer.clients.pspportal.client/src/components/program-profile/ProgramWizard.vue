@@ -229,11 +229,7 @@ export default defineComponent({
     },
     async handleSubmit() {
       const valid = await this.validateForm();
-      if (!valid) {
-        this.alertStore.setFailureAlert(
-          "You must enter all required fields in the valid format.",
-        );
-      } else {
+      if (valid) {
         const submitProgramResponse =
           await this.programStore.submitDraftProgramApplication();
         if (submitProgramResponse) {
@@ -245,6 +241,10 @@ export default defineComponent({
             "There was an error submitting your application. Please try again later.",
           );
         }
+      } else {
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     async validateForm() {
