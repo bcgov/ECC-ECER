@@ -225,7 +225,6 @@ export default defineComponent({
       }
     },
     async handleSubmit() {
-      //implemented in future ticket
       const valid = await this.validateForm();
       if (!valid) {
         this.alertStore.setFailureAlert(
@@ -238,6 +237,10 @@ export default defineComponent({
           this.router.push({
             name: "programSubmitted",
           });
+        } else {
+          this.alertStore.setFailureAlert(
+            "There was an error submitting your application. Please try again later.",
+          );
         }
       }
     },

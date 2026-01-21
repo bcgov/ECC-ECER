@@ -23,7 +23,9 @@
         :course-area-of-instructions="getCoursesForArea(area.id)"
         :area-subtitles="getAreaSubtitles(area.id)"
         :area-id="area.id || undefined"
-        :show-progress-bar="(area.minimumHours && area.minimumHours > 0) || false"
+        :show-progress-bar="
+          (area.minimumHours && area.minimumHours > 0) || false
+        "
         @edit="handleEdit"
       />
 
@@ -40,11 +42,18 @@
       :course="selectedCourse"
       :saving="saving"
       @save="handleCourseSave"
-      @cancel="showEditCourseDialog=false; selectedCourse=null"
+      @cancel="
+        showEditCourseDialog = false;
+        selectedCourse = null;
+      "
     />
   </div>
   <!-- this is to block the user from progressing if hours are not met -->
-  <v-input :rules="generateRulesByProgramType()" :max-errors="5"></v-input>
+  <v-input
+    v-model="programStore.draftProgram.courses"
+    :rules="generateRulesByProgramType()"
+    :max-errors="5"
+  ></v-input>
 </template>
 
 <script lang="ts">
@@ -54,7 +63,7 @@ import { useConfigStore } from "@/store/config";
 import { useAlertStore } from "@/store/alert";
 import { useProgramStore } from "@/store/program";
 import { getAreaOfInstructionList } from "@/api/configuration";
-import {getPrograms, updateCourse} from "@/api/program";
+import { getPrograms, updateCourse } from "@/api/program";
 import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
 import EditCourseDialog from "./EditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
@@ -151,8 +160,8 @@ export default defineComponent({
     },
     loading(): boolean {
       return (
-        this.loadingStore.isLoading('program_get') ||
-        this.loadingStore.isLoading('course_put')
+        this.loadingStore.isLoading("program_get") ||
+        this.loadingStore.isLoading("course_put")
       );
     },
     nonAllocatedCourses(): Components.Schemas.Course[] {
@@ -167,10 +176,15 @@ export default defineComponent({
 
       // Find courses that have no allocated hours to any area
       return coursesForProgramType.filter((course) => {
-        if(!course.courseAreaOfInstruction || course.courseAreaOfInstruction.length === 0) {
-          return true
+        if (
+          !course.courseAreaOfInstruction ||
+          course.courseAreaOfInstruction.length === 0
+        ) {
+          return true;
         }
-        return course.courseAreaOfInstruction.every(area => !area.newHours || Number.parseFloat(area.newHours) === 0);
+        return course.courseAreaOfInstruction.every(
+          (area) => !area.newHours || Number.parseFloat(area.newHours) === 0,
+        );
       });
     },
     totalHours(): number {
@@ -188,7 +202,7 @@ export default defineComponent({
           }
         });
       return total;
-    }
+    },
   },
   async mounted() {
     await this.loadAreaOfInstructionList();
@@ -238,11 +252,19 @@ export default defineComponent({
               const matchesCurrentArea =
                 courseArea.areaOfInstructionId === areaId;
 
-              if (matchesCurrentArea && courseArea?.newHours && Number.parseFloat(courseArea.newHours) > 0) {
+              if (
+                matchesCurrentArea &&
+                courseArea?.newHours &&
+                Number.parseFloat(courseArea.newHours) > 0
+              ) {
                 coursesForArea.push({
                   ...courseArea,
-                  courseTitle: course.newCourseTitle ? course.newCourseTitle : course.courseTitle,
-                  courseNumber: course.newCourseNumber ? course.newCourseNumber : course.courseNumber,
+                  courseTitle: course.newCourseTitle
+                    ? course.newCourseTitle
+                    : course.courseTitle,
+                  courseNumber: course.newCourseNumber
+                    ? course.newCourseNumber
+                    : course.courseNumber,
                 });
               }
             });
@@ -302,32 +324,42 @@ export default defineComponent({
       this.selectedCourse = course;
       this.showEditCourseDialog = true;
     },
-    handleEdit(areaOfInstructionCourse: Components.Schemas.CourseAreaOfInstruction) {
-      this.selectedCourse = this.program?.courses
-        ?.find(course =>
-          course?.courseAreaOfInstruction?.some(areaCourse => areaCourse.courseAreaOfInstructionId === areaOfInstructionCourse.courseAreaOfInstructionId)
+    handleEdit(
+      areaOfInstructionCourse: Components.Schemas.CourseAreaOfInstruction,
+    ) {
+      this.selectedCourse =
+        this.program?.courses?.find((course) =>
+          course?.courseAreaOfInstruction?.some(
+            (areaCourse) =>
+              areaCourse.courseAreaOfInstructionId ===
+              areaOfInstructionCourse.courseAreaOfInstructionId,
+          ),
         ) || null;
       this.showEditCourseDialog = true;
     },
     async handleCourseSave(updatedCourse: Components.Schemas.Course) {
       if (!this.program?.id || !updatedCourse) {
-        console.log("Invalid course save data. This should not happen.")
+        console.log("Invalid course save data. This should not happen.");
         this.alertStore.setFailureAlert(
-          "Sorry, something went wrong and your changes could not be saved. Try again later."
+          "Sorry, something went wrong and your changes could not be saved. Try again later.",
         );
         return;
       }
       this.saving = true;
       try {
-        const { error } = await updateCourse(this.program.id, [updatedCourse as Components.Schemas.Course]);
+        const { error } = await updateCourse(this.program.id, [
+          updatedCourse as Components.Schemas.Course,
+        ]);
 
         if (error) {
           this.alertStore.setFailureAlert(
-            "Sorry, something went wrong and your changes could not be saved. Try again later."
+            "Sorry, something went wrong and your changes could not be saved. Try again later.",
           );
           this.saving = false;
         } else {
-          this.alertStore.setSuccessAlert("Course has been updated successfully.");
+          this.alertStore.setSuccessAlert(
+            "Course has been updated successfully.",
+          );
           this.showEditCourseDialog = false;
           this.selectedCourse = null;
           this.saving = false;
@@ -337,7 +369,7 @@ export default defineComponent({
         this.saving = false;
         console.error("Error saving course:", error);
         this.alertStore.setFailureAlert(
-          "Sorry, something went wrong and your changes could not be saved. Try again later."
+          "Sorry, something went wrong and your changes could not be saved. Try again later.",
         );
       }
     },
