@@ -251,7 +251,7 @@ internal sealed class ProgramRepository : IProgramRepository
     
     program.StatusCode = ecer_Program_StatusCode.UnderRegistryReview;
     context.UpdateObject(program);
-    context.AddLink(pspUser, ecer_Program.Fields.ecer_ProgramRepresentative, program);
+    context.AddLink(pspUser, ecer_Program.Fields.ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative, program);
     
     context.SaveChanges();
     return id;

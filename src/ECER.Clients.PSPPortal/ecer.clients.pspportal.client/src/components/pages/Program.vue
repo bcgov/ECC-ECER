@@ -62,9 +62,7 @@ export default defineComponent({
       if (!this.program || !this.program.status) {
         return false;
       }
-      return (
-        this.program.status === "Draft" || this.program.status === "UnderReview"
-      );
+      return this.program.status === "Draft";
     },
   },
   async setup() {
