@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType, watch} from 'vue'
+import {defineComponent, type PropType, toRaw} from 'vue'
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type {Components} from "@/types/openapi";
 import {useConfigStore} from "@/store/config";
@@ -107,7 +107,9 @@ export default defineComponent({
   },
   created() {
     // Deep copy the course to avoid mutating the prop
-    this.localCourse = JSON.parse(JSON.stringify(this.course)) as Components.Schemas.Course;
+    this.localCourse = this.course
+      ? structuredClone(toRaw(this.course)) as Components.Schemas.Course
+      : null;
     
     // Track which area IDs existed in the original course
     this.originalAreaIds = new Set(
@@ -179,27 +181,22 @@ export default defineComponent({
       const wasInOriginal = this.originalAreaIds.has(areaId);
 
       if (hoursValue > 0) {
-        // If hours > 0, update or create entry
-        if (existingCourseAreaOfInstruction) {
+        if (existingCourseAreaOfInstruction) { //update existing
           existingCourseAreaOfInstruction.newHours = value;
-        } else {
+        } else { //create new
           courseAreaOfInstruction.push({
             areaOfInstructionId: areaId,
             newHours: value
           });
         }
-      } else {
-        if (existingCourseAreaOfInstruction) {
-          if (wasInOriginal) {
-            // Keep original entries even at 0 hours, just update the value
-            existingCourseAreaOfInstruction.newHours = "0";
-          } else {
-            // Remove only if it was newly created (didn't exist in original)
-            courseAreaOfInstruction = courseAreaOfInstruction.filter(c => c.areaOfInstructionId !== areaId);
-          }
-        }
-        // If it doesn't exist and hours is 0, don't create it
+      } else if (existingCourseAreaOfInstruction && wasInOriginal) {
+        // Keep original entries even at 0 hours, just update the value
+        existingCourseAreaOfInstruction.newHours = "0";
+      } else if (existingCourseAreaOfInstruction) {
+        // Remove only if it was newly created (didn't exist in original)
+        this.localCourse.courseAreaOfInstruction = courseAreaOfInstruction.filter(c => c.areaOfInstructionId !== areaId);
       }
+      // else it doesn't exist and hours is 0, so don't create it
     },
     handleSave() {
       if (this.localCourse) {
