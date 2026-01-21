@@ -1,7 +1,5 @@
 using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
-using System;
-using System.Linq;
 
 namespace ECER.Clients.PSPPortal.Server.Programs;
 
@@ -25,14 +23,14 @@ internal sealed class ProgramMapper : Profile
     CreateMap<ProgramStatus, Managers.Registry.Contract.Programs.ProgramStatus>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
-    
+
     CreateMap<ProgramProfileType, Managers.Registry.Contract.Programs.ProgramProfileType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
-    
+
     CreateMap<Course, Managers.Registry.Contract.Programs.Course>()
       .ReverseMap();
-    
+
     CreateMap<CourseAreaOfInstruction, Managers.Registry.Contract.Programs.CourseAreaOfInstruction>()
       .ReverseMap();
   }

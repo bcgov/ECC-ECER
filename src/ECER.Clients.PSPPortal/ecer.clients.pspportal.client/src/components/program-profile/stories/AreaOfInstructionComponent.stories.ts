@@ -54,6 +54,7 @@ const mockProgram: Components.Schemas.Program = {
   courses: [
     // Courses with allocated hours for area-1
     {
+      courseId: "1",
       courseNumber: "ECE 101",
       courseTitle: "Introduction to Child Development",
       programType: "Basic",
@@ -71,6 +72,7 @@ const mockProgram: Components.Schemas.Program = {
       ],
     },
     {
+      courseId: "2",
       courseNumber: "ECE 102",
       courseTitle: "Early Learning Theories",
       programType: "Basic",
@@ -84,6 +86,7 @@ const mockProgram: Components.Schemas.Program = {
     },
     // Course with allocated hours for area-2
     {
+      courseId: "3",
       courseNumber: "HSN 101",
       courseTitle: "Nutrition Basics",
       programType: "Basic",
@@ -97,6 +100,7 @@ const mockProgram: Components.Schemas.Program = {
     },
     // Non-allocated course (no courseAreaOfInstruction)
     {
+      courseId: "4",
       courseNumber: "ECE 200",
       courseTitle: "Professional Development",
       programType: "Basic",
@@ -104,6 +108,7 @@ const mockProgram: Components.Schemas.Program = {
     },
     // Non-allocated course (empty courseAreaOfInstruction)
     {
+      courseId: "5",
       courseNumber: "ECE 250",
       courseTitle: "Child Care Administration",
       programType: "Basic",
@@ -111,6 +116,7 @@ const mockProgram: Components.Schemas.Program = {
     },
     // Non-allocated course (courseAreaOfInstruction with no valid areaId or hours)
     {
+      courseId: "6",
       courseNumber: "ECE 300",
       courseTitle: "Special Topics",
       programType: "Basic",
@@ -244,6 +250,7 @@ export const WithEmptyArea: Story = {
       courses: [
         // Only courses for area-1, so area-2 and area-3 should show with no courses
         {
+          courseId: "1",
           courseNumber: "ECE 101",
           courseTitle: "Introduction to Child Development",
           programType: "Basic",
@@ -285,6 +292,7 @@ export const WithChildGuidanceCombined: Story = {
       courses: [
         // Course for Program Development, Curriculum and Foundations
         {
+          courseId: "1",
           courseNumber: "ECE 301",
           courseTitle: "Curriculum Development",
           programType: "Basic",
@@ -297,6 +305,7 @@ export const WithChildGuidanceCombined: Story = {
           ],
         },
         {
+          courseId: "2",
           courseNumber: "ECE 302",
           courseTitle: "Program Planning",
           programType: "Basic",
@@ -310,6 +319,7 @@ export const WithChildGuidanceCombined: Story = {
         },
         // Course for Child Guidance
         {
+          courseId: "3",
           courseNumber: "ECE 303",
           courseTitle: "Positive Guidance Strategies",
           programType: "Basic",
@@ -322,6 +332,7 @@ export const WithChildGuidanceCombined: Story = {
           ],
         },
         {
+          courseId: "4",
           courseNumber: "ECE 304",
           courseTitle: "Behavior Management",
           programType: "Basic",
@@ -365,6 +376,7 @@ export const BasicWithChildGuidanceSubtitle: Story = {
       ...mockProgram,
       courses: [
         {
+          courseId: "1",
           courseNumber: "ECE 101",
           courseTitle: "Introduction to Child Development",
           programType: "Basic",
@@ -377,6 +389,7 @@ export const BasicWithChildGuidanceSubtitle: Story = {
           ],
         },
         {
+          courseId: "2",
           courseNumber: "ECE 301",
           courseTitle: "Curriculum Development",
           programType: "Basic",
@@ -389,6 +402,7 @@ export const BasicWithChildGuidanceSubtitle: Story = {
           ],
         },
         {
+          courseId: "3",
           courseNumber: "ECE 303",
           courseTitle: "Positive Guidance Strategies",
           programType: "Basic",
@@ -402,12 +416,14 @@ export const BasicWithChildGuidanceSubtitle: Story = {
         },
         // Non-allocated courses
         {
+          courseId: "4",
           courseNumber: "ECE 200",
           courseTitle: "Professional Development",
           programType: "Basic",
           courseAreaOfInstruction: null,
         },
         {
+          courseId: "5",
           courseNumber: "ECE 250",
           courseTitle: "Child Care Administration",
           programType: "Basic",
@@ -445,6 +461,7 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
       ...mockProgram,
       courses: [
         {
+          courseId: "1",
           courseNumber: "ECE 101",
           courseTitle: "Introduction to Child Development",
           programType: "SNE",
@@ -457,6 +474,7 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
           ],
         },
         {
+          courseId: "2",
           courseNumber: "ECE 102",
           courseTitle: "Early Learning Theories",
           programType: "SNE",
@@ -469,6 +487,7 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
           ],
         },
         {
+          courseId: "3",
           courseNumber: "HSN 101",
           courseTitle: "Nutrition Basics",
           programType: "SNE",
@@ -481,6 +500,7 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
           ],
         },
         {
+          courseId: "4",
           courseNumber: "OBS 101",
           courseTitle: "Observation Techniques",
           programType: "SNE",
@@ -493,6 +513,7 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
           ],
         },
         {
+          courseId: "5",
           courseNumber: "PRAC 101",
           courseTitle: "Practicum I",
           programType: "SNE",
@@ -505,6 +526,7 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
           ],
         },
         {
+          courseId: "6",
           courseNumber: "PRAC 102",
           courseTitle: "Practicum II",
           programType: "SNE",
@@ -518,18 +540,21 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
         },
         // Non-allocated courses
         {
+          courseId: "7",
           courseNumber: "SNE 200",
           courseTitle: "Special Needs Administration",
           programType: "SNE",
           courseAreaOfInstruction: null,
         },
         {
+          courseId: "8",
           courseNumber: "SNE 250",
           courseTitle: "Advanced Special Education Topics",
           programType: "SNE",
           courseAreaOfInstruction: [],
         },
         {
+          courseId: "9",
           courseNumber: "SNE 300",
           courseTitle: "Independent Study",
           programType: "SNE",
