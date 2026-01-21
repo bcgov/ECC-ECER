@@ -236,15 +236,18 @@ internal sealed class ProgramRepository : IProgramRepository
     return program.Id!;
   }
 
-  public async Task<string> SubmitProgramProfile(string id, CancellationToken cancellationToken)
+  public async Task<string> SubmitProgramProfile(string id, string userId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var program = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == Guid.Parse(id));
+    var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(userId));
     if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
 
+    program.ecer_DeclarationDate = DateTime.Now;
+    program.ecer_UserName = pspUser!.ecer_FirstName + " " + pspUser.ecer_LastName;
     program.StatusCode = ecer_Program_StatusCode.UnderRegistryReview;
     context.UpdateObject(program);
-
+    
     context.SaveChanges();
     return id;
   }
