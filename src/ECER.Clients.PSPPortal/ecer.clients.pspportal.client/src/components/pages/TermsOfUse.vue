@@ -7,6 +7,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
+        <!-- prettier-ignore -->
         <p>
           Access to the Post-Secondary Programs portal is restricted to
           registered users authorized by the Province of British Columbia who
@@ -15,7 +16,8 @@
           portal, you confirm that you are the registered authorized user
           associated with the electronic login credentials provided to gain
           access to the Post-Secondary Programs portal, and acknowledge that you
-          are bound by the terms of your Business BCeID Terms of Use Agreement.
+          are bound by the terms of your
+          <a href="https://www.bceid.ca/aboutbceid/tou_business.aspx">Business BCeID Terms of Use Agreement</a>.
         </p>
       </v-col>
       <v-col cols="12">
@@ -44,6 +46,12 @@
           bound by your electronic signature in the same legal manner as a
           handwritten signature. The Province reserves the right to suspend or
           revoke access to the Post-Secondary Programs.
+        </p>
+      </v-col>
+      <v-col cols="12">
+        <p>
+          The Province reserves the right to suspend or revoke access to the
+          Post-Secondary Programs.
         </p>
       </v-col>
     </v-row>
