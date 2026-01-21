@@ -244,7 +244,11 @@ internal sealed class ProgramRepository : IProgramRepository
     if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
 
     program.ecer_DeclarationDate = DateTime.Now;
-    program.ecer_UserName = pspUser!.ecer_FirstName + " " + pspUser.ecer_LastName;
+    
+    var firstName = pspUser!.ecer_FirstName?.Trim() ?? string.Empty;
+    var lastName = pspUser.ecer_LastName?.Trim() ?? string.Empty;
+    program.ecer_UserName = $"{firstName} {lastName}".Trim();
+    
     program.StatusCode = ecer_Program_StatusCode.UnderRegistryReview;
     context.UpdateObject(program);
     
