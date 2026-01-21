@@ -43,6 +43,8 @@
       @cancel="showEditCourseDialog=false; selectedCourse=null"
     />
   </div>
+  <!-- this is to block the user from progressing if hours are not met -->
+  <v-input :rules="generateRulesByProgramType()" :max-errors="5"></v-input>
 </template>
 
 <script lang="ts">
@@ -58,6 +60,8 @@ import EditCourseDialog from "./EditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
 import Loading from "@/components/Loading.vue";
+
+const MIN_HOURS_ITE_SNE = 450;
 
 interface CourseAreaOfInstructionWithCourse
   extends Components.Schemas.CourseAreaOfInstruction {
@@ -354,6 +358,56 @@ export default defineComponent({
         this.loading = false;
       }
     }
+    generateRulesByProgramType() {
+      //filteredAreas already combines Program Development + Child Guidance
+      const rules = this.filteredAreas.map((area) => {
+        if (area.minimumHours) {
+          const minimumHours = area.minimumHours;
+          let totalHours = this.getCoursesForArea(area.id).reduce(
+            (sum, courseArea) =>
+              sum + Number.parseFloat(courseArea.newHours || "0"),
+            0,
+          );
+
+          return () =>
+            totalHours >= minimumHours ||
+            `${area.name} has not met the required hours`;
+        }
+
+        //no minimum hours defined, always valid
+        return true;
+      });
+
+      switch (this.programType) {
+        case "Basic":
+          //no additional rules
+          break;
+        case "ITE":
+        case "SNE":
+          {
+            // every area of instruction must be greater than 0 course hours
+            const moreThanZeroHoursRules = this.filteredAreas.map((area) => {
+              return () =>
+                this.getCoursesForArea(area.id).some(
+                  (courseArea) =>
+                    Number.parseFloat(courseArea.newHours || "0") > 0,
+                ) || `${area.name} must have course hours assigned`;
+            });
+
+            // total required hours must total at least 450
+            const moreThanMinimumHoursRule = () =>
+              this.totalHours >= MIN_HOURS_ITE_SNE ||
+              `Total course hours must be at least ${MIN_HOURS_ITE_SNE} hours`;
+            rules.push(...moreThanZeroHoursRules, moreThanMinimumHoursRule);
+          }
+          break;
+        default:
+          console.warn(
+            `Unknown program type '${this.programType}' for generating rules.`,
+          );
+      }
+      return rules;
+    },
   },
 });
 </script>

@@ -28,7 +28,7 @@
           "
           cols="12"
         >
-          <Card color="secondary" class="d-flex flex-column">
+          <Card color="primary" class="d-flex flex-column">
             <h2 color="surface">You have program profiles to review</h2>
             <p color="surface" class="mt-4">
               The ECE Registry reviews programs on an annual basis. Your program

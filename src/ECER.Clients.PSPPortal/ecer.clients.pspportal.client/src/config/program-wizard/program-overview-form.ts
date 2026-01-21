@@ -1,4 +1,5 @@
 import EceDisplayValue from "@/components/inputs/EceDisplayValue.vue";
+import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 
 const programOverviewForm: Form = {
@@ -58,6 +59,19 @@ const programOverviewForm: Form = {
         xl: 4,
       },
       getValue: (data) => data.draftApplication.programTypes?.join(", "),
+    },
+    programName: {
+      id: "programName",
+      component: EceTextField,
+      props: {
+        label: "Program name",
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
+      },
+      getValue: (data) => data.draftApplication.programName,
     },
   },
 };

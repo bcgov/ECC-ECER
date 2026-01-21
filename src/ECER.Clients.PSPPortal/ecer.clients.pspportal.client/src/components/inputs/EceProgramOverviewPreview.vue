@@ -41,6 +41,16 @@
           </p>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="4">
+          <p class="small">Program name</p>
+        </v-col>
+        <v-col>
+          <p id="programName" class="small font-weight-bold">
+            {{ programName }}
+          </p>
+        </v-col>
+      </v-row>
     </template>
   </PreviewCard>
 </template>
@@ -92,6 +102,12 @@ export default defineComponent({
         this.wizardStore.wizardConfig.steps.programOverview?.form.components
           .programTypes?.id || "";
       return this.wizardStore.wizardData[programTypeId];
+    },
+    programName() {
+      const programNameId =
+        this.wizardStore.wizardConfig.steps.programOverview?.form.components
+          .programName?.id || "";
+      return this.wizardStore.wizardData[programNameId];
     },
   },
 });
