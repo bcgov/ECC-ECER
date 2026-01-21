@@ -6,7 +6,7 @@
     class="pa-6 border-primary border-opacity-100 w-100"
   >
     <div class="d-flex justify-end">
-      <v-chip :color="chipColour" variant="outlined" size="small">
+      <v-chip :color="chipColour" variant="flat" size="small">
         {{ statusText }}
       </v-chip>
     </div>
@@ -117,11 +117,15 @@ export default defineComponent({
     chipColour(): string | undefined {
       switch (this.status) {
         case "Draft":
-          return "warning-border";
+          return "warning";
         case "UnderReview":
-          return "support-border-info";
+          return "primary";
         case "Approved":
-          return "#42814A";
+          return "success";
+        case "Denied":
+          return "error";
+        default:
+          return "grey-darkest";
       }
     },
     step(): number {
@@ -142,13 +146,17 @@ export default defineComponent({
         case "Draft":
           return "Requires review";
         case "UnderReview":
-          return "Under registry review";
+          return "Under ECE Registry review";
         case "Approved":
-          return "Registry review complete";
+          return "ECE Registry review complete";
         case "Denied":
           return "Denied";
         case "Inactive":
           return "Inactive";
+        case "ChangeRequestInProgress":
+          return "Change request in progress";
+        case "Withdrawn":
+          return "Withdrawn";
         default:
           return "Requires review";
       }
