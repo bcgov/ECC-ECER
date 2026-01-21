@@ -117,7 +117,7 @@ export default defineComponent({
     chipColour(): string | undefined {
       switch (this.status) {
         case "Draft":
-          return "warning";
+          return "alert-warning";
         case "UnderReview":
           return "primary";
         case "Approved":
