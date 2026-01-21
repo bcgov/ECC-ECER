@@ -1,34 +1,46 @@
 <template>
   <div>
-    <h2 class="mb-4">Required areas of instruction</h2>
-    <v-row v-if="includeTotalHours" justify="center" class="mb-4">
-      <v-col cols="12" :md="10">
-        <TotalHoursOfInstructionCard
-          :total-hours="totalHours"
-          :required-hours="requiredHours"
-        />
-      </v-col>
-    </v-row>
+    <Loading v-if="loading"></Loading>
+    <div v-else>
+      <h2 class="mb-4">Required areas of instruction</h2>
+      <v-row v-if="includeTotalHours" justify="center" class="mb-4">
+        <v-col cols="12" :md="10">
+          <TotalHoursOfInstructionCard
+            :total-hours="totalHours"
+            :required-hours="requiredHours"
+          />
+        </v-col>
+      </v-row>
 
-    <div v-if="$slots.description" class="mb-4">
-      <slot name="description"></slot>
+      <div v-if="$slots.description" class="mb-4">
+        <slot name="description"></slot>
+      </div>
+
+      <AreaOfInstructionCard
+        v-for="(area, index) in filteredAreas"
+        :key="area.id || index"
+        class="mb-4"
+        :course-area-of-instructions="getCoursesForArea(area.id)"
+        :area-subtitles="getAreaSubtitles(area.id)"
+        :area-id="area.id || undefined"
+        :show-progress-bar="(area.minimumHours && area.minimumHours > 0) || false"
+        @edit="handleEdit"
+      />
+
+      <NonAllocatedCoursesCard
+        v-if="nonAllocatedCourses.length > 0"
+        :courses="nonAllocatedCourses"
+        @edit="handleCourseEdit"
+      />
     </div>
-
-    <AreaOfInstructionCard
-      v-for="(area, index) in filteredAreas"
-      :key="area.id || undefined"
-      class="mb-4"
-      :course-area-of-instructions="getCoursesForArea(area.id)"
-      :area-subtitles="getAreaSubtitles(area.id)"
-      :area-id="area.id || undefined"
-      :show-progress-bar="(area.minimumHours && area.minimumHours > 0) || false"
-      @edit="handleEdit"
-    />
-
-    <NonAllocatedCoursesCard
-      v-if="nonAllocatedCourses.length > 0"
-      :courses="nonAllocatedCourses"
-      @edit="handleEdit"
+    <EditCourseDialog
+      v-if="selectedCourse"
+      :show="showEditCourseDialog"
+      :program-type="programType"
+      :course="selectedCourse"
+      :saving="saving"
+      @save="handleCourseSave"
+      @cancel="showEditCourseDialog=false; selectedCourse=null"
     />
   </div>
   <!-- this is to block the user from progressing if hours are not met -->
@@ -39,10 +51,16 @@
 import { defineComponent, type PropType } from "vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
+import { useAlertStore } from "@/store/alert";
+import { useProgramStore } from "@/store/program";
 import { getAreaOfInstructionList } from "@/api/configuration";
+import {getPrograms, updateCourse} from "@/api/program";
 import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
+import EditCourseDialog from "./EditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
+import Loading from "@/components/Loading.vue";
+import { useLoadingStore } from "@/store/loading";
 
 const MIN_HOURS_ITE_SNE = 450;
 
@@ -56,8 +74,10 @@ export default defineComponent({
   name: "AreaOfInstructionComponent",
   components: {
     AreaOfInstructionCard,
+    EditCourseDialog,
     NonAllocatedCoursesCard,
     TotalHoursOfInstructionCard,
+    Loading,
   },
   props: {
     programType: {
@@ -79,17 +99,26 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["edit"],
+  emits: ["courseEdit"],
   setup() {
     const configStore = useConfigStore();
+    const alertStore = useAlertStore();
+    const loadingStore = useLoadingStore();
+    const programStore = useProgramStore();
     return {
       configStore,
+      alertStore,
+      loadingStore,
+      programStore,
     };
   },
   data() {
     return {
       areaOfInstructionList: [] as Components.Schemas.AreaOfInstruction[],
-      loading: false,
+      saving: false,
+      requiredHours: 450,
+      selectedCourse: null as Components.Schemas.Course | null,
+      showEditCourseDialog: false,
     };
   },
   computed: {
@@ -120,6 +149,12 @@ export default defineComponent({
 
       return filtered;
     },
+    loading(): boolean {
+      return (
+        this.loadingStore.isLoading('program_get') ||
+        this.loadingStore.isLoading('course_put')
+      );
+    },
     nonAllocatedCourses(): Components.Schemas.Course[] {
       if (!this.program?.courses) {
         return [];
@@ -132,10 +167,10 @@ export default defineComponent({
 
       // Find courses that have no allocated hours to any area
       return coursesForProgramType.filter((course) => {
-        return (
-          !course.courseAreaOfInstruction ||
-          course.courseAreaOfInstruction.length === 0
-        );
+        if(!course.courseAreaOfInstruction || course.courseAreaOfInstruction.length === 0) {
+          return true
+        }
+        return course.courseAreaOfInstruction.every(area => !area.newHours || Number.parseFloat(area.newHours) === 0);
       });
     },
     totalHours(): number {
@@ -153,12 +188,7 @@ export default defineComponent({
           }
         });
       return total;
-    },
-    requiredHours(): number {
-      return this.filteredAreas.reduce((sum, area) => {
-        return sum + (area.minimumHours || 0);
-      }, 0);
-    },
+    }
   },
   async mounted() {
     await this.loadAreaOfInstructionList();
@@ -199,16 +229,7 @@ export default defineComponent({
       const isProgramDevelopment =
         area?.name === "Program Development, Curriculum and Foundations";
 
-      // If this is Program Development, Curriculum and Foundations, also find Child Guidance area
-      let childGuidanceAreaId: string | null | undefined;
-      if (isProgramDevelopment) {
-        const childGuidanceArea = this.areaOfInstructionList.find(
-          (a) => a.name === "Child Guidance",
-        );
-        childGuidanceAreaId = childGuidanceArea?.id;
-      }
-
-      // Filter courses by programType and extract CourseAreaOfInstructions
+      // First, collect Program Development courses
       this.program.courses
         .filter((course) => course.programType === this.programType)
         .forEach((course) => {
@@ -216,22 +237,53 @@ export default defineComponent({
             course.courseAreaOfInstruction.forEach((courseArea) => {
               const matchesCurrentArea =
                 courseArea.areaOfInstructionId === areaId;
-              // If Program Development, also include courses from Child Guidance
-              const matchesChildGuidance =
-                isProgramDevelopment &&
-                childGuidanceAreaId &&
-                courseArea.areaOfInstructionId === childGuidanceAreaId;
 
-              if (matchesCurrentArea || matchesChildGuidance) {
+              if (matchesCurrentArea && courseArea?.newHours && Number.parseFloat(courseArea.newHours) > 0) {
                 coursesForArea.push({
                   ...courseArea,
-                  courseTitle: course.courseTitle,
-                  courseNumber: course.courseNumber,
+                  courseTitle: course.newCourseTitle ? course.newCourseTitle : course.courseTitle,
+                  courseNumber: course.newCourseNumber ? course.newCourseNumber : course.courseNumber,
                 });
               }
             });
           }
         });
+
+      // If this is Program Development, also collect Child Guidance courses separately
+      if (isProgramDevelopment) {
+        const childGuidanceArea = this.areaOfInstructionList.find(
+          (a) => a.name === "Child Guidance",
+        );
+        const childGuidanceAreaId = childGuidanceArea?.id;
+        let hasChildGuidanceCourses = false;
+
+        if (childGuidanceAreaId) {
+          this.program.courses
+            .filter((course) => course.programType === this.programType)
+            .forEach((course) => {
+              if (course.courseAreaOfInstruction) {
+                course.courseAreaOfInstruction.forEach((courseArea) => {
+                  if (courseArea.areaOfInstructionId === childGuidanceAreaId) {
+                    hasChildGuidanceCourses = true;
+                    coursesForArea.push({
+                      ...courseArea,
+                      courseTitle: course.courseTitle,
+                      courseNumber: course.courseNumber,
+                    });
+                  }
+                });
+              }
+            });
+
+          // If Child Guidance exists but has no courses, add a placeholder entry
+          if (!hasChildGuidanceCourses) {
+            coursesForArea.push({
+              areaOfInstructionId: childGuidanceAreaId,
+              newHours: "0",
+            } as CourseAreaOfInstructionWithCourse);
+          }
+        }
+      }
 
       return coursesForArea;
     },
@@ -246,8 +298,73 @@ export default defineComponent({
         ),
       );
     },
-    handleEdit(courseArea: Components.Schemas.CourseAreaOfInstruction) {
-      this.$emit("edit", courseArea);
+    handleCourseEdit(course: Components.Schemas.Course) {
+      this.selectedCourse = course;
+      this.showEditCourseDialog = true;
+    },
+    handleEdit(areaOfInstructionCourse: Components.Schemas.CourseAreaOfInstruction) {
+      this.selectedCourse = this.program?.courses
+        ?.find(course =>
+          course?.courseAreaOfInstruction?.some(areaCourse => areaCourse.courseAreaOfInstructionId === areaOfInstructionCourse.courseAreaOfInstructionId)
+        ) || null;
+      this.showEditCourseDialog = true;
+    },
+    async handleCourseSave(updatedCourse: Components.Schemas.Course) {
+      if (!this.program?.id || !updatedCourse) {
+        console.log("Invalid course save data. This should not happen.")
+        this.alertStore.setFailureAlert(
+          "Sorry, something went wrong and your changes could not be saved. Try again later."
+        );
+        return;
+      }
+      this.saving = true;
+      try {
+        const { error } = await updateCourse(this.program.id, [updatedCourse as Components.Schemas.Course]);
+
+        if (error) {
+          this.alertStore.setFailureAlert(
+            "Sorry, something went wrong and your changes could not be saved. Try again later."
+          );
+          this.saving = false;
+        } else {
+          this.alertStore.setSuccessAlert("Course has been updated successfully.");
+          this.showEditCourseDialog = false;
+          this.selectedCourse = null;
+          this.saving = false;
+          await this.loadProgram(this.program.id);
+        }
+      } catch (error) {
+        this.saving = false;
+        console.error("Error saving course:", error);
+        this.alertStore.setFailureAlert(
+          "Sorry, something went wrong and your changes could not be saved. Try again later."
+        );
+      }
+    },
+    async loadProgram(programId?: string | null | undefined) {
+      if (!programId) {
+        return;
+      }
+      this.loading = true;
+      try {
+        const { data: programs } = await getPrograms(programId, [
+          "Draft",
+          "Denied",
+          "Approved",
+          "UnderReview",
+          "ChangeRequestInProgress",
+          "Inactive",
+        ]);
+        const program = programs && programs.length > 0 ? programs[0] : null;
+        if (program) {
+          // Update the store with the reloaded program
+          this.programStore.setDraftProgramFromProfile(program);
+        }
+      } catch (error) {
+        console.error("Error loading program:", error);
+      } finally {
+        this.loading = false;
+      }
     },
     generateRulesByProgramType() {
       //filteredAreas already combines Program Development + Child Guidance
