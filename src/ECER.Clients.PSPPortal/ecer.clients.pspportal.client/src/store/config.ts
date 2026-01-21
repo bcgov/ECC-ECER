@@ -103,7 +103,9 @@ export const useConfigStore = defineStore("config", {
         areaOfInstructionList !== null &&
         areaOfInstructionList !== undefined
       ) {
-        this.areaOfInstructionList = areaOfInstructionList;
+        this.areaOfInstructionList = areaOfInstructionList.filter(
+          (area) => !area.name?.includes("autotest"),
+        );
       }
       return configuration;
     },

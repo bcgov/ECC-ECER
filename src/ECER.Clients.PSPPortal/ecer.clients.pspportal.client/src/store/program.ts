@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 
-import { createOrUpdateDraftApplication, getPrograms } from "@/api/program.ts";
+import {
+  createOrUpdateDraftApplication,
+  submitDraftProgramApplication,
+} from "@/api/program.ts";
 
 import programWizard from "@/config/program-wizard/program-wizard";
 import type { Components } from "@/types/openapi";
@@ -102,6 +105,16 @@ export const useProgramStore = defineStore("program", {
     > {
       this.prepareDraftProgramFromWizard();
       return await this.upsertDraftApplication();
+    },
+    async submitDraftProgramApplication(): Promise<string | null | undefined> {
+      if (!this.draftProgram.id) {
+        console.warn("undefined draftProgram.id this should not happen");
+        return undefined;
+      }
+      const { data: submissionResponse } = await submitDraftProgramApplication(
+        this.draftProgram.id,
+      );
+      return submissionResponse;
     },
   },
 });

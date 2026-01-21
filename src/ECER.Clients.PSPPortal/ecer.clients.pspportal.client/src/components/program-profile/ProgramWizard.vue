@@ -99,6 +99,7 @@ import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 import { DateTime } from "luxon";
+import { useRouter } from "vue-router";
 
 import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
@@ -128,6 +129,7 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const programStore = useProgramStore();
     const loadingStore = useLoadingStore();
+    const router = useRouter();
     const { mdAndDown, mobile } = useDisplay();
 
     programStore.setDraftProgramFromProfile(props.program);
@@ -145,6 +147,7 @@ export default defineComponent({
       programWizard,
       mdAndDown,
       mobile,
+      router,
     };
   },
   computed: {
@@ -221,8 +224,22 @@ export default defineComponent({
         );
       }
     },
-    handleSubmit() {
+    async handleSubmit() {
       //implemented in future ticket
+      const valid = await this.validateForm();
+      if (!valid) {
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
+      } else {
+        const submitProgramResponse =
+          await this.programStore.submitDraftProgramApplication();
+        if (submitProgramResponse) {
+          this.router.push({
+            name: "programSubmitted",
+          });
+        }
+      }
     },
     async validateForm() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
