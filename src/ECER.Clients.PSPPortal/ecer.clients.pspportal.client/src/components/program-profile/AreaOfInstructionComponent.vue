@@ -275,22 +275,22 @@ export default defineComponent({
           break;
         case "ITE":
         case "SNE":
-          // every area of instruction must be greater than 0 course hours
-          const moreThanZeroHoursRules = this.filteredAreas.map((area) => {
-            return () =>
-              this.getCoursesForArea(area.id).some(
-                (courseArea) =>
-                  Number.parseFloat(courseArea.newHours || "0") > 0,
-              ) || `${area.name} must have course hours assigned`;
-          });
-          rules.push(...moreThanZeroHoursRules);
+          {
+            // every area of instruction must be greater than 0 course hours
+            const moreThanZeroHoursRules = this.filteredAreas.map((area) => {
+              return () =>
+                this.getCoursesForArea(area.id).some(
+                  (courseArea) =>
+                    Number.parseFloat(courseArea.newHours || "0") > 0,
+                ) || `${area.name} must have course hours assigned`;
+            });
 
-          // total required hours must total at least 450
-          rules.push(
-            () =>
+            // total required hours must total at least 450
+            const moreThanMinimumHoursRule = () =>
               this.totalHours >= MIN_HOURS_ITE_SNE ||
-              `Total course hours must be at least ${MIN_HOURS_ITE_SNE} hours`,
-          );
+              `Total course hours must be at least ${MIN_HOURS_ITE_SNE} hours`;
+            rules.push(...moreThanZeroHoursRules, moreThanMinimumHoursRule);
+          }
           break;
         default:
           console.warn(
