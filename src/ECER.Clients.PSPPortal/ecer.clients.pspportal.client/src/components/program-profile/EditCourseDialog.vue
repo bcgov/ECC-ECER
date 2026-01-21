@@ -194,15 +194,15 @@ export default defineComponent({
     },
     handleSave() {
       if (this.localCourse) {
-        if(this.localCourse.courseNumber !== this.courseNumber) {
-          this.localCourse.newCourseNumber = this.courseNumber;
-        } else {
+        if(this.localCourse.courseNumber === this.courseNumber) {
           this.localCourse.newCourseNumber = null;
-        }
-        if (this.localCourse.courseTitle !== this.courseTitle) {
-          this.localCourse.newCourseTitle = this.courseTitle;
         } else {
+          this.localCourse.newCourseNumber = this.courseNumber;
+        }
+        if (this.localCourse.courseTitle === this.courseTitle) {
           this.localCourse.newCourseTitle = null;
+        } else {
+          this.localCourse.newCourseTitle = this.courseTitle;
         }
         this.$emit("save", this.localCourse);
       }
