@@ -32,7 +32,7 @@ public record Course
 
 public record CourseAreaOfInstruction()
 {
-  public string CourseAreaOfInstructionId { get; set; } = null!;
+  public string? CourseAreaOfInstructionId { get; set; }
   public float? NewHours { get; set; }
   public string AreaOfInstructionId { get; set; } = null!;
 }

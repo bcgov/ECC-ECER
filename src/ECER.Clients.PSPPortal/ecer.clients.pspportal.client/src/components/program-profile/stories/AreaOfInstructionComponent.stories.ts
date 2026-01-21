@@ -166,11 +166,6 @@ const meta = {
       control: "boolean",
       description: "Whether to show the total hours of instruction card",
     },
-    onEdit: {
-      action: "edit",
-      description:
-        "Emitted when edit button is clicked on a course or course area",
-    },
   },
   args: {
     programType: "Basic" as Components.Schemas.ProgramTypes,
