@@ -91,7 +91,7 @@ public class ProgramHandlers(
       return new SubmitProgramResult { ProgramId = null, Error = ProgramSubmissionError.DraftApplicationValidationFailed, ValidationErrors = validationErrors.ValidationErrors };
     }
 
-    var programId = await programRepository.SubmitProgramProfile(draftProgram.Id!, cancellationToken);
+    var programId = await programRepository.SubmitProgramProfile(draftProgram.Id!, request.UserId, cancellationToken);
     return new SubmitProgramResult { ProgramId = programId };
   }
 }

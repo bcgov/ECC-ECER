@@ -10,22 +10,43 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     await Task.CompletedTask;
     var validationErrors = new List<string>();
 
+    if (program.ProgramTypes == null || !program.ProgramTypes.Any())
+    {
+      validationErrors.Add("No program types provided");
+      return new ValidationResults(validationErrors);
+    }
+   
     var basicCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.Basic)).ToList();
     var iteCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.ITE)).ToList();
     var sneCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.SNE)).ToList();
 
-    if (basicCourses != null)
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.Basic)) && (basicCourses == null || basicCourses.Count == 0))
+    {
+      validationErrors.Add("Must have courses for BASIC program type");
+    }
+    
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && (iteCourses == null || iteCourses.Count == 0))
+    {
+      validationErrors.Add("Must have courses for ITE program type");
+    }
+    
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.SNE)) && (sneCourses == null || sneCourses.Count == 0))
+    {
+      validationErrors.Add("Must have courses for SNE program type");
+    }
+    
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.Basic)) && basicCourses != null && basicCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(basicCourses, instructions));
     }
 
-    if (iteCourses != null)
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && iteCourses != null && iteCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(iteCourses, instructions));
       validationErrors.AddRange(CheckTotalCourseHours(iteCourses));
     }
     
-    if (sneCourses != null)
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.SNE)) && sneCourses != null && sneCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(sneCourses, instructions));
       validationErrors.AddRange(CheckTotalCourseHours(sneCourses));
@@ -43,17 +64,20 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
         .SelectMany(c => c.CourseAreaOfInstruction!)
         .Where(ins => ins.AreaOfInstructionId == instruction.Id)
         .ToList();
-      
-      var totalHours = filteredInstructions.Count == 0 ? 0 : filteredInstructions
-        .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
-        .Sum(a => decimal.Parse(a.NewHours!));
-      
-      if (instruction.MinimumHours != decimal.Zero && totalHours < instruction.MinimumHours)
+
+      if (filteredInstructions.Count != 0)
       {
-        minHourErrors.Add("Minimum hours are required for instruction: " + instruction.Name);
-      } else if(instruction.MinimumHours == decimal.Zero && totalHours <= decimal.Zero)
-      {
-        minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
+        var totalHours = filteredInstructions
+          .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
+          .Sum(a => decimal.Parse(a.NewHours!));
+      
+        if (instruction.MinimumHours != decimal.Zero && totalHours < instruction.MinimumHours)
+        {
+          minHourErrors.Add("Minimum hours are required for instruction: " + instruction.Name);
+        } else if(instruction.MinimumHours == decimal.Zero && totalHours <= decimal.Zero)
+        {
+          minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
+        }
       }
     }
     return minHourErrors;

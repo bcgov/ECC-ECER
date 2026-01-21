@@ -9,7 +9,7 @@ public interface IProgramRepository
   Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, CancellationToken cancellationToken);
   
   Task<string> UpdateProgram(Program program, CancellationToken cancellationToken);
-  Task<string> SubmitProgramProfile(string id, CancellationToken cancellationToken);
+  Task<string> SubmitProgramProfile(string id, string userId, CancellationToken cancellationToken);
 }
 
 public record ProgramQuery
@@ -50,6 +50,8 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public float? NewBasicTotalHours { get; set; }
   public float? NewSneTotalHours { get; set; }
   public float? NewIteTotalHours { get; set; }
+  public string? DeclarationDate { get; set; }
+  public string? DeclarationUserName { get; set; }
   public ProgramProfileType ProgramProfileType { get; set; }
   public IEnumerable<string>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
