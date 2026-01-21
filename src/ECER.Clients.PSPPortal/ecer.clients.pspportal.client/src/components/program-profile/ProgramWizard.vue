@@ -1,5 +1,16 @@
 <template>
   <Wizard :ref="'wizard'" :wizard="programStore.applicationConfiguration">
+    <template #header>
+      <WizardHeader
+        class="mb-6"
+        :handle-save-draft="handleSaveAndExit"
+        :validate-form="validateForm"
+      >
+        <template #title>
+          <h1>{{ generateWizardHeaderTitle }}</h1>
+        </template>
+      </WizardHeader>
+    </template>
     <template #stepperHeader>
       <v-container v-show="showSteps">
         <v-stepper-header class="elevation-0">
@@ -87,6 +98,7 @@
 import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
+import { DateTime } from "luxon";
 
 import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
@@ -137,6 +149,20 @@ export default defineComponent({
   },
   computed: {
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
+    generateWizardHeaderTitle(): string {
+      const startYear = this.programStore.draftProgram.startDate
+        ? DateTime.fromISO(this.programStore.draftProgram.startDate).toFormat(
+            "yyyy",
+          )
+        : "";
+
+      const endYear = this.programStore.draftProgram.endDate
+        ? DateTime.fromISO(this.programStore.draftProgram.endDate).toFormat(
+            "yyyy",
+          )
+        : "";
+      return `${this.programStore.draftProgram.programName} ${startYear} - ${endYear}`;
+    },
     showSaveButtons() {
       return (
         this.wizardStore.currentStepStage !== "Review" &&
@@ -220,6 +246,9 @@ export default defineComponent({
     async handleBack() {
       await this.programStore.saveDraft();
       this.decrementWizard();
+    },
+    async handleSaveAndExit() {
+      await this.saveDraftAndAlertSuccess(true);
     },
     async saveDraftAndAlertSuccess(exit: boolean) {
       const draftApplicationResponse = await this.programStore.saveDraft();
