@@ -1,40 +1,44 @@
 <template>
   <div>
-    <h2 class="mb-4">Required areas of instruction</h2>
-    <v-row v-if="includeTotalHours" justify="center" class="mb-4">
-      <v-col cols="12" :md="10">
-        <TotalHoursOfInstructionCard
-          :total-hours="totalHours"
-          :required-hours="requiredHours"
-        />
-      </v-col>
-    </v-row>
+    <Loading v-if="loading"></Loading>
+    <div v-else>
+      <h2 class="mb-4">Required areas of instruction</h2>
+      <v-row v-if="includeTotalHours" justify="center" class="mb-4">
+        <v-col cols="12" :md="10">
+          <TotalHoursOfInstructionCard
+            :total-hours="totalHours"
+            :required-hours="requiredHours"
+          />
+        </v-col>
+      </v-row>
 
-    <div v-if="$slots.description" class="mb-4">
-      <slot name="description"></slot>
+      <div v-if="$slots.description" class="mb-4">
+        <slot name="description"></slot>
+      </div>
+
+      <AreaOfInstructionCard
+        v-for="(area, index) in filteredAreas"
+        :key="area.id || undefined"
+        class="mb-4"
+        :course-area-of-instructions="getCoursesForArea(area.id)"
+        :area-subtitles="getAreaSubtitles(area.id)"
+        :area-id="area.id || undefined"
+        :show-progress-bar="(area.minimumHours && area.minimumHours > 0) || false"
+        @edit="handleEdit"
+      />
+
+      <NonAllocatedCoursesCard
+        v-if="nonAllocatedCourses.length > 0"
+        :courses="nonAllocatedCourses"
+        @edit="handleCourseEdit"
+      />
     </div>
-
-    <AreaOfInstructionCard
-      v-for="(area, index) in filteredAreas"
-      :key="area.id || undefined"
-      class="mb-4"
-      :course-area-of-instructions="getCoursesForArea(area.id)"
-      :area-subtitles="getAreaSubtitles(area.id)"
-      :area-id="area.id || undefined"
-      :show-progress-bar="(area.minimumHours && area.minimumHours > 0) || false"
-      @edit="handleEdit"
-    />
-
-    <NonAllocatedCoursesCard
-      v-if="nonAllocatedCourses.length > 0"
-      :courses="nonAllocatedCourses"
-      @edit="handleCourseEdit"
-    />
     <EditCourseDialog
       v-if="selectedCourse"
       :show="showEditCourseDialog"
       :program-type="programType"
       :course="selectedCourse"
+      :saving="saving"
       @save="handleCourseSave"
       @cancel="showEditCourseDialog=false; selectedCourse=null"
     />
@@ -53,6 +57,7 @@ import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
 import EditCourseDialog from "./EditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
+import Loading from "@/components/Loading.vue";
 
 interface CourseAreaOfInstructionWithCourse
   extends Components.Schemas.CourseAreaOfInstruction {
@@ -67,6 +72,7 @@ export default defineComponent({
     EditCourseDialog,
     NonAllocatedCoursesCard,
     TotalHoursOfInstructionCard,
+    Loading,
   },
   props: {
     programType: {
@@ -103,9 +109,10 @@ export default defineComponent({
     return {
       areaOfInstructionList: [] as Components.Schemas.AreaOfInstruction[],
       loading: false,
+      saving: false,
+      requiredHours: 450,
       selectedCourse: null as Components.Schemas.Course | null,
       showEditCourseDialog: false,
-      totalHours: 450
     };
   },
   computed: {
@@ -154,11 +161,22 @@ export default defineComponent({
         return course.courseAreaOfInstruction.every(area => !area.newHours || Number.parseFloat(area.newHours) === 0);
       });
     },
-    requiredHours(): number {
-      return this.filteredAreas.reduce((sum, area) => {
-        return sum + (area.minimumHours || 0);
-      }, 0);
-    },
+    totalHours(): number {
+      if (!this.program?.courses) {
+        return 0;
+      }
+      let total = 0;
+      this.program.courses
+        .filter((course) => course.programType === this.programType)
+        .forEach((course) => {
+          if (course.courseAreaOfInstruction) {
+            course.courseAreaOfInstruction.forEach((courseArea) => {
+              total += Number.parseFloat(courseArea.newHours || "0");
+            });
+          }
+        });
+      return total;
+    }
   },
   async mounted() {
     await this.loadAreaOfInstructionList();
@@ -211,8 +229,8 @@ export default defineComponent({
               if (matchesCurrentArea && courseArea?.newHours && Number.parseFloat(courseArea.newHours) > 0) {
                 coursesForArea.push({
                   ...courseArea,
-                  courseTitle: course.courseTitle,
-                  courseNumber: course.courseNumber,
+                  courseTitle: course.newCourseTitle ? course.newCourseTitle : course.courseTitle,
+                  courseNumber: course.newCourseNumber ? course.newCourseNumber : course.courseNumber,
                 });
               }
             });
@@ -281,42 +299,34 @@ export default defineComponent({
     },
     async handleCourseSave(updatedCourse: Components.Schemas.Course) {
       if (!this.program?.id || !updatedCourse) {
-        return;
-      }
-
-      // Ensure courseId is set (may not be in type definition but needed by backend)
-      const courseWithId = { ...updatedCourse } as Components.Schemas.Course & { courseId?: string };
-      if (!courseWithId.courseId && this.selectedCourse && 'courseId' in this.selectedCourse) {
-        courseWithId.courseId = (this.selectedCourse as any).courseId;
-      }
-
-      // Ensure courseAreaOfInstruction has required fields
-      if (courseWithId.courseAreaOfInstruction) {
-        courseWithId.courseAreaOfInstruction = courseWithId.courseAreaOfInstruction.map(
-          (area) => ({
-            ...area,
-            areaOfInstructionId: area.areaOfInstructionId || "",
-            // Ensure CourseAreaOfInstructionId is set if it exists
-            courseAreaOfInstructionId: area.courseAreaOfInstructionId || undefined,
-          })
-        );
-      }
-
-      const { error } = await updateCourse(this.program.id, [courseWithId as Components.Schemas.Course]);
-
-      if (error) {
+        console.log("Invalid course save data. This should not happen.")
         this.alertStore.setFailureAlert(
           "Sorry, something went wrong and your changes could not be saved. Try again later."
         );
-      } else {
-        this.alertStore.setSuccessAlert("Course has been updated successfully.");
-        // Close the dialog
-        this.showEditCourseDialog = false;
-        this.selectedCourse = null;
-        // Reload program and save to store
-        await this.loadProgram(this.program.id);
-        // Emit event to parent to refresh program data if needed
-        this.$emit("courseEdit");
+        return;
+      }
+      this.saving = true;
+      try {
+        const { error } = await updateCourse(this.program.id, [updatedCourse as Components.Schemas.Course]);
+
+        if (error) {
+          this.alertStore.setFailureAlert(
+            "Sorry, something went wrong and your changes could not be saved. Try again later."
+          );
+          this.saving = false;
+        } else {
+          this.alertStore.setSuccessAlert("Course has been updated successfully.");
+          this.showEditCourseDialog = false;
+          this.selectedCourse = null;
+          this.saving = false;
+          await this.loadProgram(this.program.id);
+        }
+      } catch (error) {
+        this.saving = false;
+        console.error("Error saving course:", error);
+        this.alertStore.setFailureAlert(
+          "Sorry, something went wrong and your changes could not be saved. Try again later."
+        );
       }
     },
     async loadProgram(programId?: string | null | undefined) {

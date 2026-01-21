@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :model-value="show" @update:model-value="handleDialogClose($event)">
+  <v-dialog :model-value="show" @update:model-value="handleDialogClose($event)" :persistent="saving">
     <v-card class="pa-4">
       <v-card-title>
         Update Course
@@ -11,6 +11,7 @@
               id="txtCourseNumber"
               v-model="courseNumber"
               label="Course number"
+              :disabled="saving"
             ></EceTextField>
           </v-col>
         </v-row>
@@ -20,6 +21,7 @@
               id="txtCourseName"
               v-model="courseTitle"
               label="Course name"
+              :disabled="saving"
             ></EceTextField>
           </v-col>
         </v-row>
@@ -42,6 +44,7 @@
                 @update:model-value="setAreaHours(area.id, $event)"
                 class="pa-2" 
                 max-width="6rem"
+                :disabled="saving"
               ></v-text-field>
             </v-col>
             <v-col><span v-if="area.minimumHours && area.minimumHours > 0"> / {{area.minimumHours}} hours required</span></v-col>
@@ -50,8 +53,11 @@
       </v-card-text>
       <v-card-actions class="ml-4 mb-4">
         <v-btn color="primary" variant="outlined"
+               :disabled="saving"
                @click="handleCancel">Cancel</v-btn>
         <v-btn color="primary" variant="flat"
+               :loading="saving"
+               :disabled="saving"
                @click="handleSave">Save changes</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
@@ -80,6 +86,10 @@ export default defineComponent({
     show: {
       type: Boolean,
       default: false
+    },
+    saving: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ["save", "cancel"],
@@ -99,11 +109,6 @@ export default defineComponent({
     // Deep copy the course to avoid mutating the prop
     this.localCourse = JSON.parse(JSON.stringify(this.course)) as Components.Schemas.Course;
     
-    // Ensure courseId is preserved (may not be in type definition but needed by backend)
-    if (this.course && 'courseId' in this.course && !('courseId' in (this.localCourse as any))) {
-      (this.localCourse as any).courseId = (this.course as any).courseId;
-    }
-    
     // Track which area IDs existed in the original course
     this.originalAreaIds = new Set(
       (this.course?.courseAreaOfInstruction || [])
@@ -119,21 +124,21 @@ export default defineComponent({
     },
     courseNumber: {
       get(): string {
-        return this.localCourse?.courseNumber ?? "";
+        return this.localCourse?.newCourseNumber ? this.localCourse?.newCourseNumber : this.localCourse?.courseNumber ?? "";
       },
       set(value: string) {
         if (this.localCourse) {
-          this.localCourse.courseNumber = value;
+          this.localCourse.newCourseNumber = value;
         }
       }
     },
     courseTitle: {
       get(): string {
-        return this.localCourse?.courseTitle ?? "";
+        return this.localCourse?.newCourseTitle ? this.localCourse?.newCourseTitle : this.localCourse?.courseTitle ?? "";
       },
       set(value: string) {
         if (this.localCourse) {
-          this.localCourse.courseTitle = value;
+          this.localCourse.newCourseTitle = value;
         }
       }
     }
@@ -143,12 +148,9 @@ export default defineComponent({
       if (!areaId || !this.localCourse) {
         return "0";
       }
-
-      // Ensure courseAreaOfInstruction array exists
       if (!this.localCourse.courseAreaOfInstruction) {
         this.localCourse.courseAreaOfInstruction = [];
       }
-
       // Find existing entry for this area
       const areaInstruction = this.localCourse.courseAreaOfInstruction.find(
         c => c.areaOfInstructionId === areaId
@@ -166,11 +168,11 @@ export default defineComponent({
         this.localCourse.courseAreaOfInstruction = [];
       }
 
-      const courseAreaOfInstruction = this.localCourse.courseAreaOfInstruction;
+      let courseAreaOfInstruction = this.localCourse.courseAreaOfInstruction;
       const hoursValue = Number.parseFloat(value || "0");
 
       // Find existing entry for this area
-      const existingIndex = courseAreaOfInstruction.findIndex(
+      const existingCourseAreaOfInstruction = courseAreaOfInstruction.find(
         c => c.areaOfInstructionId === areaId
       );
 
@@ -178,30 +180,22 @@ export default defineComponent({
 
       if (hoursValue > 0) {
         // If hours > 0, update or create entry
-        if (existingIndex >= 0) {
-          // Update existing entry
-          const existingEntry = courseAreaOfInstruction[existingIndex];
-          if (existingEntry) {
-            existingEntry.newHours = value;
-          }
+        if (existingCourseAreaOfInstruction) {
+          existingCourseAreaOfInstruction.newHours = value;
         } else {
-          // Create new entry only if hours > 0
           courseAreaOfInstruction.push({
             areaOfInstructionId: areaId,
             newHours: value
           });
         }
       } else {
-        if (existingIndex >= 0) {
-          const existingEntry = courseAreaOfInstruction[existingIndex];
-          if (existingEntry) {
-            if (wasInOriginal) {
-              // Keep original entries even at 0 hours, just update the value
-              existingEntry.newHours = "0";
-            } else {
-              // Remove only if it was newly created (didn't exist in original)
-              courseAreaOfInstruction.splice(existingIndex, 1);
-            }
+        if (existingCourseAreaOfInstruction) {
+          if (wasInOriginal) {
+            // Keep original entries even at 0 hours, just update the value
+            existingCourseAreaOfInstruction.newHours = "0";
+          } else {
+            // Remove only if it was newly created (didn't exist in original)
+            courseAreaOfInstruction = courseAreaOfInstruction.filter(c => c.areaOfInstructionId !== areaId);
           }
         }
         // If it doesn't exist and hours is 0, don't create it
@@ -218,7 +212,7 @@ export default defineComponent({
       this.$emit("cancel");
     },
     handleDialogClose(value: boolean) {
-      if(!value) {
+      if(!value && !this.saving) {
         this.handleCancel();
       }
     }

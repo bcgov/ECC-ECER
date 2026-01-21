@@ -125,8 +125,6 @@ internal sealed class ProgramRepository : IProgramRepository
         .Execute()
         .SingleOrDefault();
       
-      //.ecer_CourseSet.SingleOrDefault(r => r.ecer_CourseId == Guid.Parse(course.CourseId));
-      
       if (courseExists != null)
       {
         if (!context.IsAttached(courseExists))
@@ -146,20 +144,31 @@ internal sealed class ProgramRepository : IProgramRepository
         {
           foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
           {
-            if (courseExists.ecer_courseprovincialrequirement_CourseId != null)
+            if (areaOfInstruction.CourseAreaOfInstructionId != null)
             {
               var existingAreaOfInstruction =
                 courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
                   a.Id == Guid.Parse(areaOfInstruction.CourseAreaOfInstructionId));
               
-              if (existingAreaOfInstruction != null)
+              if (existingAreaOfInstruction is not null)
               {
                 UpdateAreaOfInstruction(areaOfInstruction,  existingAreaOfInstruction);
               }
               else
               {
-                CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
+                throw new InvalidOperationException("Cannot update course area of instruction. It does not exist.");
               }
+            }
+            else
+            {
+              var existingAreaOfInstruction =
+                courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
+                  a.ecer_ProgramAreaId.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
+              if (existingAreaOfInstruction is not null)
+              {
+                throw new InvalidOperationException("Cannot add course area of instruction. One already exists for this area of instruction.");
+              }
+              CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
             }
           }
         }

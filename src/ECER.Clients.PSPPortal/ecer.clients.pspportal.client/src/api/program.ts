@@ -52,9 +52,15 @@ const updateCourse = async (
   courses: Components.Schemas.Course[],
 ): Promise<ApiResponse<string | null | undefined>> => {
   const client = await getClient();
-  // Using axios instance directly since endpoint may not be in openapi types
+  const pathParameters: Paths.CoursePut.PathParameters = {
+    id: programId,
+  };
+  const body: Paths.CoursePut.RequestBody = {
+    courses: courses,
+  };
+
   return apiResultHandler.execute<string | null | undefined>({
-    request: client.put(`/api/program/${programId}/courses`, { courses }),
+    request: client.course_put(pathParameters, body),
     key: "course_put",
   });
 };
