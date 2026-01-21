@@ -357,7 +357,7 @@ export default defineComponent({
       } finally {
         this.loading = false;
       }
-    }
+    },
     generateRulesByProgramType() {
       //filteredAreas already combines Program Development + Child Guidance
       const rules = this.filteredAreas.map((area) => {
