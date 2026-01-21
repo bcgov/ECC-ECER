@@ -1,67 +1,72 @@
 <template>
   <v-dialog :model-value="show" @update:model-value="handleDialogClose($event)" :persistent="saving">
-    <v-card class="pa-4">
-      <v-card-title>
-        Update Course
-      </v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col>
-            <EceTextField
-              id="txtCourseNumber"
-              v-model="courseNumber"
-              label="Course number"
-              :disabled="saving"
-            ></EceTextField>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <EceTextField
-              id="txtCourseName"
-              v-model="courseTitle"
-              label="Course name"
-              :disabled="saving"
-            ></EceTextField>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="mb-6">
-            <h3>Areas of instruction</h3>
-            <p>Indicate the number of hours this course satisfies for each area of instruction.</p>
-          </v-col>
-        </v-row>
-        <div v-for="area in areas" :key="area.id || undefined">
-          <v-row
-            no-gutters
-            align="center"
-            class="pl-4 mb-2 bg-white rounded-lg border"
-          >
-            <v-col>{{ area.name }}</v-col>
-            <v-col class="d-flex justify-end">
-              <v-text-field
-                :model-value="getAreaHoursValue(area.id)"
-                @update:model-value="setAreaHours(area.id, $event)"
-                class="pa-2" 
-                max-width="6rem"
+    <v-form ref="updateCourse">
+      <v-card class="pa-4">
+        <v-card-title>
+          Update Course
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
+              <EceTextField
+                id="txtCourseNumber"
+                v-model="courseNumber"
+                label="Course number"
+                :rules="[Rules.required()]"
                 :disabled="saving"
-              ></v-text-field>
+              ></EceTextField>
             </v-col>
-            <v-col><span v-if="area.minimumHours && area.minimumHours > 0"> / {{area.minimumHours}} hours required</span></v-col>
           </v-row>
-        </div>
-      </v-card-text>
-      <v-card-actions class="ml-4 mb-4">
-        <v-btn color="primary" variant="outlined"
-               :disabled="saving"
-               @click="handleCancel">Cancel</v-btn>
-        <v-btn color="primary" variant="flat"
-               :loading="saving"
-               :disabled="saving"
-               @click="handleSave">Save changes</v-btn>
-        <v-spacer></v-spacer>
-      </v-card-actions>
-    </v-card>
+          <v-row>
+            <v-col>
+              <EceTextField
+                id="txtCourseName"
+                v-model="courseTitle"
+                label="Course name"
+                :rules="[Rules.required()]"
+                :disabled="saving"
+              ></EceTextField>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="mb-6">
+              <h3>Areas of instruction</h3>
+              <p>Indicate the number of hours this course satisfies for each area of instruction.</p>
+            </v-col>
+          </v-row>
+          <div v-for="area in areas" :key="area.id || undefined">
+            <v-row
+              no-gutters
+              align="center"
+              class="pl-4 mb-2 bg-white rounded-lg border"
+            >
+              <v-col>{{ area.name }}</v-col>
+              <v-col class="d-flex justify-end">
+                <v-text-field
+                  :model-value="getAreaHoursValue(area.id)"
+                  @update:model-value="setAreaHours(area.id, $event)"
+                  class="pa-2" 
+                  max-width="6rem"
+                  type="number"
+                  :disabled="saving"
+                ></v-text-field>
+              </v-col>
+              <v-col><span v-if="area.minimumHours && area.minimumHours > 0"> / {{area.minimumHours}} hours required</span></v-col>
+            </v-row>
+          </div>
+        </v-card-text>
+        <v-card-actions class="ml-4 mb-4">
+          <v-btn color="primary" variant="outlined"
+                 :disabled="saving"
+                 @click="handleCancel">Cancel</v-btn>
+          <v-btn color="primary" variant="flat"
+                 :loading="saving"
+                 :disabled="saving"
+                 @click="handleSave">Save changes</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-form>
   </v-dialog>
 </template>
 
@@ -70,6 +75,8 @@ import {defineComponent, type PropType, toRaw} from 'vue'
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type {Components} from "@/types/openapi";
 import {useConfigStore} from "@/store/config";
+import * as Rules from "@/utils/formRules";
+import {number} from "@/utils/formRules";
 
 export default defineComponent({
   name: "EditCourseDialog",
@@ -101,8 +108,11 @@ export default defineComponent({
   },
   data() {
     return {
+      courseNumber: "" as string,
+      courseTitle: "" as string,
       localCourse: null as Components.Schemas.Course | null,
-      originalAreaIds: new Set<string>()
+      originalAreaIds: new Set<string>(),
+      Rules,
     };
   },
   created() {
@@ -117,6 +127,9 @@ export default defineComponent({
         .map(c => c.areaOfInstructionId)
         .filter((id): id is string => id !== null && id !== undefined)
     );
+    
+    this.courseNumber = this.localCourse?.newCourseNumber ? this.localCourse?.newCourseNumber : this.localCourse?.courseNumber ?? "";
+    this.courseTitle = this.localCourse?.newCourseTitle ? this.localCourse?.newCourseTitle : this.localCourse?.courseTitle ?? "";
   },
   computed: {
     areas(): Components.Schemas.AreaOfInstruction[] {
@@ -124,28 +137,9 @@ export default defineComponent({
         return area?.programTypes?.includes(this.programType);
       });
     },
-    courseNumber: {
-      get(): string {
-        return this.localCourse?.newCourseNumber ? this.localCourse?.newCourseNumber : this.localCourse?.courseNumber ?? "";
-      },
-      set(value: string) {
-        if (this.localCourse) {
-          this.localCourse.newCourseNumber = value;
-        }
-      }
-    },
-    courseTitle: {
-      get(): string {
-        return this.localCourse?.newCourseTitle ? this.localCourse?.newCourseTitle : this.localCourse?.courseTitle ?? "";
-      },
-      set(value: string) {
-        if (this.localCourse) {
-          this.localCourse.newCourseTitle = value;
-        }
-      }
-    }
   },
   methods: {
+    number,
     getAreaHoursValue(areaId: string | null | undefined): string {
       if (!areaId || !this.localCourse) {
         return "0";
@@ -200,6 +194,16 @@ export default defineComponent({
     },
     handleSave() {
       if (this.localCourse) {
+        if(this.localCourse.courseNumber !== this.courseNumber) {
+          this.localCourse.newCourseNumber = this.courseNumber;
+        } else {
+          this.localCourse.newCourseNumber = null;
+        }
+        if (this.localCourse.courseTitle !== this.courseTitle) {
+          this.localCourse.newCourseTitle = this.courseTitle;
+        } else {
+          this.localCourse.newCourseTitle = null;
+        }
         this.$emit("save", this.localCourse);
       }
     },

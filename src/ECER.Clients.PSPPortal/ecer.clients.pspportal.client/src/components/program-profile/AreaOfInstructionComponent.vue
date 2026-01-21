@@ -18,7 +18,7 @@
 
       <AreaOfInstructionCard
         v-for="(area, index) in filteredAreas"
-        :key="area.id || undefined"
+        :key="area.id || index"
         class="mb-4"
         :course-area-of-instructions="getCoursesForArea(area.id)"
         :area-subtitles="getAreaSubtitles(area.id)"
@@ -60,6 +60,7 @@ import EditCourseDialog from "./EditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
 import Loading from "@/components/Loading.vue";
+import { useLoadingStore } from "@/store/loading";
 
 const MIN_HOURS_ITE_SNE = 450;
 
@@ -102,17 +103,18 @@ export default defineComponent({
   setup() {
     const configStore = useConfigStore();
     const alertStore = useAlertStore();
+    const loadingStore = useLoadingStore();
     const programStore = useProgramStore();
     return {
       configStore,
       alertStore,
+      loadingStore,
       programStore,
     };
   },
   data() {
     return {
       areaOfInstructionList: [] as Components.Schemas.AreaOfInstruction[],
-      loading: false,
       saving: false,
       requiredHours: 450,
       selectedCourse: null as Components.Schemas.Course | null,
@@ -146,6 +148,12 @@ export default defineComponent({
       }
 
       return filtered;
+    },
+    loading(): boolean {
+      return (
+        this.loadingStore.isLoading('program_get') ||
+        this.loadingStore.isLoading('course_put')
+      );
     },
     nonAllocatedCourses(): Components.Schemas.Course[] {
       if (!this.program?.courses) {
