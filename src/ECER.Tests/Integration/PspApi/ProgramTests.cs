@@ -1,3 +1,4 @@
+using System.Net;
 using Alba;
 using ECER.Clients.PSPPortal.Server.Programs;
 using Shouldly;
@@ -297,6 +298,18 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var updatedProgram = updated.First();
     updatedProgram.ShouldNotBeNull();
     updatedProgram.Status.ShouldBe(ProgramStatus.Withdrawn);
+  }
+
+  [Fact]
+  public async Task SubmitDraftProgram__ReturnsBadRequest()
+  {
+    var request = new SubmitProgramRequest(this.Fixture.programId!);
+    var postResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Post.Json(request).ToUrl($"/api/programs");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
   }
 
   private Course CreateCourse()

@@ -9,6 +9,7 @@ public interface IProgramRepository
   Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, CancellationToken cancellationToken);
   
   Task<string> UpdateProgram(Program program, CancellationToken cancellationToken);
+  Task<string> SubmitProgramProfile(string id, CancellationToken cancellationToken);
 }
 
 public record ProgramQuery
