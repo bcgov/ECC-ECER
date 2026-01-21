@@ -135,6 +135,15 @@ export const Inactive: Story = {
   },
 };
 
+export const Withdrawn: Story = {
+  args: {
+    program: {
+      ...baseProgram,
+      status: "Withdrawn",
+    },
+  },
+};
+
 export const ChangeRequestInProgress: Story = {
   args: {
     program: {
