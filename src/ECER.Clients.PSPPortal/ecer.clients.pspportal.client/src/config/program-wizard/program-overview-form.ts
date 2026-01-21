@@ -1,6 +1,7 @@
 import EceDisplayValue from "@/components/inputs/EceDisplayValue.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
+import * as rules from "@/utils/formRules";
 
 const programOverviewForm: Form = {
   id: "programOverviewForm",
@@ -65,6 +66,7 @@ const programOverviewForm: Form = {
       component: EceTextField,
       props: {
         label: "Program name",
+        rules: [rules.required("Required")],
       },
       cols: {
         md: 8,
