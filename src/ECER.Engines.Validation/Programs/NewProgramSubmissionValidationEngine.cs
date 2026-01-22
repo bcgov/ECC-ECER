@@ -90,17 +90,15 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     var allInstructionsForCourse = courses.Where(c => c.CourseAreaOfInstruction != null)
       .SelectMany(c => c.CourseAreaOfInstruction!)
       .ToList();
-
-    if (allInstructionsForCourse.Count != 0)
-    {
-      var totalHours = allInstructionsForCourse?
+    
+    var totalHours = allInstructionsForCourse.Count == 0 ? 0 
+        : allInstructionsForCourse
         .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
-        .Sum(a => decimal.Parse(a.NewHours!)) ?? 0;
+        .Sum(a => decimal.Parse(a.NewHours!));
       
-      if (totalHours < 450)
-      {
-        totalHourErrors.Add("Total course hours must hit the minimum total required hours for program: " + programType);
-      }
+    if (totalHours < 450)
+    {
+      totalHourErrors.Add("Total course hours must hit the minimum total required hours for program: " + programType);
     }
     
     return totalHourErrors;
