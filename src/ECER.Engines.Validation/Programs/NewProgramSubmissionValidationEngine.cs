@@ -37,7 +37,7 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     
     if (program.ProgramTypes.Contains(nameof(ProgramTypes.Basic)) && basicCourses != null && basicCourses.Count > 0)
     {
-      validationErrors.AddRange(CheckForMinimumHours(basicCourses, instructions, nameof(ProgramTypes.ITE)));
+      validationErrors.AddRange(CheckForMinimumHours(basicCourses, instructions, nameof(ProgramTypes.Basic)));
     }
 
     if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && iteCourses != null && iteCourses.Count > 0)
