@@ -13,6 +13,7 @@ internal class CommunicationRepositoryMapper : Profile
   {
     CreateMap<ecer_Communication, Communication>(MemberList.Destination)
      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CommunicationId))
+     .ForMember(d => d.Category, opts => opts.MapFrom(s => s.ecer_PSPCommunicationCategory))
      .ForMember(d => d.Body, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.ecer_Message, "", null)))
      .ForMember(d => d.Subject, opts => opts.MapFrom(s => s.ecer_Name))
      .ForMember(d => d.From, opts => opts.MapFrom(s => s.ecer_InitiatedFrom))
@@ -42,11 +43,19 @@ internal class CommunicationRepositoryMapper : Profile
       .ForSourceMember(s => s.Documents, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ApplicationId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.IcraEligibilityId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Category, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Subject, "", null)))
+      .ForMember(d => d.ecer_PSPCommunicationCategory, opts => opts.MapFrom(s => s.Category))
       .ForSourceMember(s => s.IsPspUser, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramRepresentativeId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.EducationInstituteName, opts => opts.DoNotValidate());
+
+    CreateMap<ecer_PSPCommunicationCategories, CommunicationCategory>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true));
+
+    CreateMap<CommunicationCategory, ecer_PSPCommunicationCategories>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true));
 
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()

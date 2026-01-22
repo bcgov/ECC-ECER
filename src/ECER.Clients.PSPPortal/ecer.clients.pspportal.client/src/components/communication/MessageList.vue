@@ -10,7 +10,7 @@
   </v-btn>
   <v-list
     v-if="messageCount > 0"
-    lines="two"
+    lines="three"
     class="flex-grow-1 message-list"
     style="padding: 0px"
   >

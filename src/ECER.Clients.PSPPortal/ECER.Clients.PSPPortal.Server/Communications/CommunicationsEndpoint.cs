@@ -175,6 +175,7 @@ public record GetMessagesResponse
 public record Communication
 {
   public string? Id { get; set; }
+  public CommunicationCategory? Category { get; set; }
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
   public InitiatedFrom From { get; set; } 
@@ -213,6 +214,19 @@ public enum CommunicationStatus
   NotifiedRecipient,
   Acknowledged,
   Inactive
+}
+
+public enum CommunicationCategory
+{
+  ProgramChangeRequest,
+  PracticumInquiry,
+  ECEProgramApplicationInquiry,
+  ECEProgramApplicationRequirements,
+  ProgramProfileInquiry,
+  IndividualEducationPlanIEP,
+  MeetingRequest,
+  RequestforAdditionalInformation,
+  Other
 }
 
 public record CommunicationsStatus

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.EnumMapping;
 using ECER.Resources.Accounts.Communications;
 
 namespace ECER.Managers.Registry;
@@ -12,6 +13,10 @@ internal class CommunicationMapper : Profile
         .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Body))
         .ForMember(dest => dest.Documents, opt => opt.MapFrom(src => src.Documents))
         .ReverseMap();
+
+    CreateMap<CommunicationCategory, Contract.Communications.CommunicationCategory>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
 
     CreateMap<CommunicationsStatus, Contract.Communications.CommunicationsStatus>();
 

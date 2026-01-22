@@ -25,6 +25,7 @@ declare namespace Components {
         export type Auspice = "ContinuingEducation" | "PublicOOP" | "Private" | "Public";
         export interface Communication {
             id?: string | null;
+            category?: CommunicationCategory;
             subject?: string | null;
             text?: string | null;
             from?: InitiatedFrom;
@@ -40,6 +41,7 @@ declare namespace Components {
             educationInstituteName?: string | null;
             documents?: CommunicationDocument[] | null;
         }
+        export type CommunicationCategory = "ProgramChangeRequest" | "PracticumInquiry" | "ECEProgramApplicationInquiry" | "ECEProgramApplicationRequirements" | "ProgramProfileInquiry" | "IndividualEducationPlanIEP" | "MeetingRequest" | "RequestforAdditionalInformation" | "Other";
         export interface CommunicationDocument {
             id?: string | null;
             url?: string | null;
@@ -1080,6 +1082,7 @@ export type AreaOfInstruction = Components.Schemas.AreaOfInstruction;
 export type AreaOfInstructionListResponse = Components.Schemas.AreaOfInstructionListResponse;
 export type Auspice = Components.Schemas.Auspice;
 export type Communication = Components.Schemas.Communication;
+export type CommunicationCategory = Components.Schemas.CommunicationCategory;
 export type CommunicationDocument = Components.Schemas.CommunicationDocument;
 export type CommunicationResponse = Components.Schemas.CommunicationResponse;
 export type CommunicationSeenRequest = Components.Schemas.CommunicationSeenRequest;
