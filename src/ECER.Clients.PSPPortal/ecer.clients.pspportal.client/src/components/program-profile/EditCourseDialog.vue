@@ -148,7 +148,7 @@ export default defineComponent({
     validateHours() {
       return (v: string) => {
         const numValue = Number.parseFloat(v);
-        if (isNaN(numValue)) {
+        if (Number.isNaN(numValue)) {
           return "Enter a valid number";
         }
         if (numValue < 0) {
@@ -184,13 +184,13 @@ export default defineComponent({
       }
 
       const validationResult = this.validateHours(value);
-      if (validationResult !== true) {
-        this.hourErrors[areaId] = validationResult;
-        this.invalidHours[areaId] = value;
-        return;
-      } else {
+      if (validationResult === true) {
         delete this.hourErrors[areaId];
         delete this.invalidHours[areaId];
+        return;
+      } else {
+        this.hourErrors[areaId] = validationResult;
+        this.invalidHours[areaId] = value;
       }
 
       // Ensure courseAreaOfInstruction array exists
