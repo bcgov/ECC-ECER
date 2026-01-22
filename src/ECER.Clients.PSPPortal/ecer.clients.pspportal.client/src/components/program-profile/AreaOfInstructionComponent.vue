@@ -209,7 +209,6 @@ export default defineComponent({
   },
   methods: {
     async loadAreaOfInstructionList() {
-      this.loading = true;
       try {
         if (
           this.configStore.areaOfInstructionList &&
@@ -225,8 +224,6 @@ export default defineComponent({
         }
       } catch (error) {
         console.error("Error loading area of instruction list:", error);
-      } finally {
-        this.loading = false;
       }
     },
     getCoursesForArea(
@@ -377,7 +374,6 @@ export default defineComponent({
       if (!programId) {
         return;
       }
-      this.loading = true;
       try {
         const { data: programs } = await getPrograms(programId, [
           "Draft",
@@ -394,8 +390,6 @@ export default defineComponent({
         }
       } catch (error) {
         console.error("Error loading program:", error);
-      } finally {
-        this.loading = false;
       }
     },
     generateRulesByProgramType() {
