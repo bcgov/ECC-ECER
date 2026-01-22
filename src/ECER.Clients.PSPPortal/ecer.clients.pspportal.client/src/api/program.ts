@@ -1,6 +1,7 @@
 import { getClient } from "@/api/client";
 import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
 import type { Components, Paths } from "@/types/openapi";
+import type { AxiosRequestConfig } from "axios";
 
 const apiResultHandler = new ApiResultHandler();
 
@@ -13,17 +14,23 @@ const getPrograms = async (
     "UnderReview",
     "ChangeRequestInProgress",
   ],
-): Promise<ApiResponse<Components.Schemas.Program[] | null | undefined>> => {
+  {
+    page = 0,
+    pageSize = 0
+  } = {},
+): Promise<ApiResponse<Components.Schemas.GetProgramsResponse | null | undefined>> => {
   const client = await getClient();
-  return apiResultHandler.execute<
-    Components.Schemas.Program[] | null | undefined
-  >({
-    request: client.program_get({
+
+  const config: AxiosRequestConfig = {
+    params: {page, pageSize},
+  };
+
+  return apiResultHandler.execute<Components.Schemas.GetProgramsResponse | null>(
+    { request: client.program_get({
       id: id,
       byStatus: statuses,
-    }),
-    key: "program_get",
-  });
+    }, null, config), key: "program_get" },
+  );
 };
 
 const createOrUpdateDraftApplication = async (

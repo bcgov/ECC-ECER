@@ -41,8 +41,8 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var programs = await getResponse.ReadAsJsonAsync<IEnumerable<Program>>();
-    var fetched = programs!.Single();
+    var response = await getResponse.ReadAsJsonAsync<GetProgramsResponse>();
+    var fetched = response.Programs!.Single();
     fetched.Id.ShouldBe(draftResponse.Program.Id);
     fetched.PortalStage.ShouldBe(stage);
     fetched.Name.ShouldNotBeNullOrWhiteSpace();
@@ -95,8 +95,8 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var programs = await getResponse.ReadAsJsonAsync<IEnumerable<Program>>();
-    var fetched = programs!.Single();
+    var response = await getResponse.ReadAsJsonAsync<GetProgramsResponse>();
+    var fetched = response.Programs!.Single();
     fetched.PortalStage.ShouldBe(updatedStage);
     fetched.Name.ShouldNotBeNullOrWhiteSpace();
     fetched.StartDate.ShouldBe(updatedStartDate);
@@ -152,10 +152,10 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var status = await response.ReadAsJsonAsync<IEnumerable<Program>>();
+    var status = await response.ReadAsJsonAsync<GetProgramsResponse>();
     status.ShouldNotBeNull();
 
-    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
     firstProfile.NewBasicTotalHours.ShouldBe("20.75");
     firstProfile.NewSneTotalHours.ShouldBe("10");
     firstProfile.NewIteTotalHours.ShouldBe("15.25");
@@ -171,10 +171,10 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
   
-    var status = await response.ReadAsJsonAsync<IEnumerable<Program>>();
+    var status = await response.ReadAsJsonAsync<GetProgramsResponse>();
     status.ShouldNotBeNull();
   
-    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.Count().ShouldBe(0);
   }
@@ -199,10 +199,10 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Get.Url($"/api/programs/{this.Fixture.programId}");
       _.StatusCodeShouldBeOk();
     });
-    var status = await programResponse.ReadAsJsonAsync<IEnumerable<Program>>();
+    var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
     status.ShouldNotBeNull();
 
-    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.ElementAt(0).CourseNumber.ShouldBe("101");
     firstProfile.Courses.ElementAt(0).CourseTitle.ShouldBe("Course 101");
@@ -230,10 +230,10 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Get.Url($"/api/programs/{this.Fixture.programId}");
       _.StatusCodeShouldBeOk();
     });
-    var status = await programResponse.ReadAsJsonAsync<IEnumerable<Program>>();
+    var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
     status.ShouldNotBeNull();
 
-    var firstProfile = status.FirstOrDefault().ShouldNotBeNull();
+    var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.Count().ShouldNotBe(0);
 
@@ -259,8 +259,8 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Get.Url($"/api/programs/{this.Fixture.programId}");
       _.StatusCodeShouldBeOk();
     });
-    var status = await programResponse.ReadAsJsonAsync<IEnumerable<Program>>();
-    var program = status.First();
+    var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
+    var program = status.Programs!.First();
     
     var response = await Host.Scenario(_ =>
     {
@@ -279,8 +279,8 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Get.Url($"/api/programs/{this.Fixture.changeRequestProgramId}");
       _.StatusCodeShouldBeOk();
     });
-    var status = await programResponse.ReadAsJsonAsync<IEnumerable<Program>>();
-    var program = status.First();
+    var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
+    var program = status.Programs!.First();
     program.Status = ProgramStatus.Withdrawn;
     
     var response = await Host.Scenario(_ =>
@@ -296,8 +296,8 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Get.Url($"/api/programs/{this.Fixture.changeRequestProgramId}");
       _.StatusCodeShouldBeOk();
     });
-    var updated = await updatedProgramResponse.ReadAsJsonAsync<IEnumerable<Program>>();
-    var updatedProgram = updated.First();
+    var updated = await updatedProgramResponse.ReadAsJsonAsync<GetProgramsResponse>();
+    var updatedProgram = updated.Programs!.First();
     updatedProgram.ShouldNotBeNull();
     updatedProgram.Status.ShouldBe(ProgramStatus.Withdrawn);
   }

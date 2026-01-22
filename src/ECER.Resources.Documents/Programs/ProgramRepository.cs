@@ -17,7 +17,7 @@ internal sealed class ProgramRepository : IProgramRepository
     this.mapper = mapper;
   }
 
-  public async Task<IEnumerable<Program>> Query(ProgramQuery query, CancellationToken cancellationToken)
+  public async Task<ProgramResult> Query(ProgramQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -26,6 +26,17 @@ internal sealed class ProgramRepository : IProgramRepository
     if (query.ById != null) programs = programs.Where(p => p.ecer_ProgramId == Guid.Parse(query.ById));
 
     programs = programs.OrderByDescending(p => p.CreatedOn);
+
+    int paginatedTotalProgramCount = 0;
+    if (query.PageNumber > 0)
+    {
+      paginatedTotalProgramCount = context.From(programs).Aggregate().Count();
+      programs = programs.OrderByDescending(item => item.CreatedOn).Skip(query.PageNumber).Take(query.PageSize);
+    }
+    else
+    {
+      programs = programs.OrderByDescending(item => item.CreatedOn);
+    }
 
     List<ecer_Program> results;
 
@@ -57,7 +68,11 @@ internal sealed class ProgramRepository : IProgramRepository
       results = results.Where(p => p.StatusCode != null && statuses.Contains(p.StatusCode.Value)).ToList();
     }
 
-    return mapper.Map<IEnumerable<Program>>(results)!;
+    return new ProgramResult
+    {
+      Programs = mapper.Map<IEnumerable<Program>>(results)!,
+      TotalProgramsCount = query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count,
+    };
   }
 
   public async Task<string> Save(Program program, CancellationToken cancellationToken)
@@ -199,15 +214,13 @@ internal sealed class ProgramRepository : IProgramRepository
     if (existingProgram == null) throw new InvalidOperationException($"ecer_Program '{program.Id}' not found");
 
     if (existingProgram.ecer_Type == ecer_ProgramProfileType.ChangeRequest &&
-        existingProgram.StatusCode == ecer_Program_StatusCode.RequiresReview)
+        existingProgram.StatusCode == ecer_Program_StatusCode.RequiresReview &&
+        program.Status == ProgramStatus.Withdrawn)
     {
-      if (program.Status == ProgramStatus.Withdrawn)
-      {
-        existingProgram.StatusCode = ecer_Program_StatusCode.Withdrawn;
-        existingProgram.StateCode = ecer_program_statecode.Inactive;
+      existingProgram.StatusCode = ecer_Program_StatusCode.Withdrawn;
+      existingProgram.StateCode = ecer_program_statecode.Inactive;
         
-        context.UpdateObject(existingProgram);
-      }
+      context.UpdateObject(existingProgram);
     }
     context.SaveChanges();
     return program.Id!;

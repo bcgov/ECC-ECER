@@ -87,7 +87,7 @@ export default defineComponent({
     async loadProgram() {
       this.loading = true;
       try {
-        const { data: programs } = await getPrograms(this.programId, [
+        const { data: response } = await getPrograms(this.programId, [
           "Draft",
           "Denied",
           "Approved",
@@ -95,7 +95,7 @@ export default defineComponent({
           "ChangeRequestInProgress",
           "Inactive",
         ]);
-        const program = programs && programs.length > 0 ? programs[0] : null;
+        const program = response?.programs && response.programs.length > 0 ? response.programs[0] : null;
         this.program = program || null;
       } catch (error) {
         console.error("Error loading program:", error);

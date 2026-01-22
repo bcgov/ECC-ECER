@@ -1,4 +1,5 @@
 using AutoMapper;
+using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.PspUsers;
@@ -6,6 +7,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
@@ -23,6 +25,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
+    const string PolicyNames = "psp_user";
     endpointRouteBuilder.MapPut("/api/draftprograms/{id?}", async Task<Results<Ok<DraftProgramResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
@@ -57,12 +60,17 @@ public class ProgramsEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new DraftProgramResponse(mappedProgram));
     })
     .WithOpenApi("Save a draft program for the current user", string.Empty, "draftprogram_put")
-    .RequireAuthorization("psp_user")
+    .RequireAuthorization(PolicyNames)
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<IEnumerable<Program>>, NotFound>> (string? id, ProgramStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, 
+      HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions < PaginationSettings > paginationOptions) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
+
+      // Get pagination parameters from the query string with default values
+      var pageNumber = int.TryParse(ctx.Request.Query[paginationOptions.Value.PageProperty], out var page) && page > 0 ? page : paginationOptions.Value.DefaultPageNumber;
+      var pageSize = int.TryParse(ctx.Request.Query[paginationOptions.Value.PageSizeProperty], out var size) ? size : paginationOptions.Value.DefaultPageSize;
 
       var userContext = ctx.User.GetUserContext()!;
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
@@ -76,13 +84,15 @@ public class ProgramsEndpoints : IRegisterEndpoints
       {
         ById = id,
         ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
-        ByStatus = statusFilter
+        ByStatus = statusFilter,
+        PageNumber = pageNumber,
+        PageSize = pageSize
       }, ct);
 
-      return TypedResults.Ok(mapper.Map<IEnumerable<Program>>(results.Items));
+      return TypedResults.Ok(new GetProgramsResponse() { Programs = mapper.Map<IEnumerable<Program>>(results.Items), TotalProgramsCount = results.TotalProgramsCount });
     })
     .WithOpenApi("Handles program queries", string.Empty, "program_get")
-    .RequireAuthorization("psp_user")
+    .RequireAuthorization(PolicyNames)
     .WithParameterValidation();
 
     endpointRouteBuilder.MapPut("/api/program/{id}/courses", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, UpdateCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
@@ -110,7 +120,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
         return TypedResults.Ok(result);
       })
       .WithOpenApi("Update a course for a program profile", string.Empty, "course_put")
-      .RequireAuthorization("psp_user")
+      .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
@@ -142,7 +152,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
         return TypedResults.Ok(programId);
       })
       .WithOpenApi("Update program profile", string.Empty, "program_put")
-      .RequireAuthorization("psp_user")
+      .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/programs", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (SubmitProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
@@ -172,7 +182,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
         return TypedResults.Ok(result.ProgramId);
       })
       .WithOpenApi("Submit a draft program profile", string.Empty, "program_post")
-      .RequireAuthorization("psp_user")
+      .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
   }
 }
@@ -250,4 +260,10 @@ public enum ProgramProfileType
 {
   ChangeRequest,
   AnnualReview
+}
+
+public record GetProgramsResponse
+{
+  public IEnumerable<Program>? Programs { get; set; }
+  public int TotalProgramsCount { get; set; }
 }
