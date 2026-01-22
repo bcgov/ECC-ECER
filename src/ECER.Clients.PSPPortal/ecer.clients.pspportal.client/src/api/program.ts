@@ -65,4 +65,23 @@ const updateCourse = async (
   });
 };
 
-export { createOrUpdateDraftApplication, getPrograms, updateCourse };
+const submitDraftProgramApplication = async (
+  programId: string,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const body: Components.Schemas.SubmitProgramRequest = {
+    programId: programId,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.program_post(null, body),
+    key: "program_post",
+  });
+};
+
+export {
+  createOrUpdateDraftApplication,
+  getPrograms,
+  submitDraftProgramApplication,
+  updateCourse,
+};

@@ -14,15 +14,22 @@
     <v-row>
       <v-col cols="12" md="6" class="mb-12">
         <div class="d-flex flex-column ga-4">
-          <h2>Login is required</h2>
-          <p>In order to login, you will need:</p>
-          <ul class="ml-10">
-            <li>an emailed invitation from the B.C. ECE Registry</li>
-            <li>
-              an active Business BCeID user account (set up by your institution)
-            </li>
-          </ul>
-          <p>If you have these, please continue to login.</p>
+          <h2>Access your institution’s ECE programs</h2>
+          <p>
+            To access the portal, you will need an active Business BCeID user
+            account set up by your institution.
+          </p>
+          <div>
+            <p class="font-weight-bold">First-time users:</p>
+            <p>
+              You must have received an invitation from the ECE Registry and set
+              up your Business BCeID account.
+            </p>
+          </div>
+          <div>
+            <p class="font-weight-bold">Returning users:</p>
+            <p>Use your existing Business BCeID account to log in.</p>
+          </div>
         </div>
         <v-btn
           class="mt-8"
@@ -38,19 +45,21 @@
       <v-col cols="12" md="6" class="mb-12">
         <div class="d-flex flex-column ga-4">
           <p class="font-weight-bold">Collection Notice</p>
-          <p>
-            Your personal information will be collected for the purposes of
-            communicating with you, authenticating users, and/or determining or
-            auditing the eligibility of the ECE programs offered at the
-            educational institution which you represent. If you have any
-            questions about the collection of this personal information, please
-            contact:
-          </p>
-          <p>
-            <a href="mailto:ECERegistry.Programs@gov.bc.ca">
-              ECERegistry.Programs@gov.bc.ca
-            </a>
-          </p>
+          <div>
+            <p>
+              Your personal information will be collected for the purposes of
+              communicating with you, authenticating users, and/or determining
+              or auditing the eligibility of the ECE programs offered at the
+              educational institution which you represent. If you have any
+              questions about the collection of this personal information,
+              please contact:
+            </p>
+            <p>
+              <a href="mailto:ECERegistry.Programs@gov.bc.ca">
+                ECERegistry.Programs@gov.bc.ca
+              </a>
+            </p>
+          </div>
           <p>
             This information is being collected by The Ministry of Education and
             Child Care under Section 26(a) and Section 26(c) of

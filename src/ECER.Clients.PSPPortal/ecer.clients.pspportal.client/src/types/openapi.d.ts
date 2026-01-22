@@ -253,6 +253,9 @@ declare namespace Components {
              */
             communicationId?: string | null;
         }
+        export interface SubmitProgramRequest {
+            programId?: string | null;
+        }
         export interface UpdateCourseRequest {
             courses?: Course[] | null;
         }
@@ -424,6 +427,15 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = Components.Schemas.Program[];
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
+    }
+    namespace ProgramPost {
+        export type RequestBody = Components.Schemas.SubmitProgramRequest;
+        namespace Responses {
+            export type $200 = string;
+            export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
             export interface $404 {
             }
         }
@@ -694,6 +706,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProgramPut.Responses.$200>
   /**
+   * program_post - Submit a draft program profile
+   */
+  'program_post'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.ProgramPost.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ProgramPost.Responses.$200>
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   'portal_invitation_get'(
@@ -944,6 +964,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProgramPut.Responses.$200>
   }
+  ['/api/programs']: {
+    /**
+     * program_post - Submit a draft program profile
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ProgramPost.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ProgramPost.Responses.$200>
+  }
   ['/api/PortalInvitations/{token}']: {
     /**
      * portal_invitation_get - Handles portal invitation queries
@@ -1086,5 +1116,6 @@ export type RegisterPspUserRequest = Components.Schemas.RegisterPspUserRequest;
 export type SaveDraftProgramRequest = Components.Schemas.SaveDraftProgramRequest;
 export type SendMessageRequest = Components.Schemas.SendMessageRequest;
 export type SendMessageResponse = Components.Schemas.SendMessageResponse;
+export type SubmitProgramRequest = Components.Schemas.SubmitProgramRequest;
 export type UpdateCourseRequest = Components.Schemas.UpdateCourseRequest;
 export type VersionMetadata = Components.Schemas.VersionMetadata;
