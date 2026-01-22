@@ -155,6 +155,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificateLevel = "ecer_certificatelevel";
 			public const string ecer_CertificateType = "ecer_certificatetype";
 			public const string ecer_CertificateTypeNomenclature = "ecer_certificatetypenomenclature";
+			public const string ecer_CertificateTypeShortName = "ecer_certificatetypeshortname";
 			public const string ecer_certificationcomparisonid = "ecer_certificationcomparisonid";
 			public const string ecer_certificationcomparisonidName = "ecer_certificationcomparisonidname";
 			public const string ecer_characterreference_Applicationid = "ecer_characterreference_Applicationid";
@@ -1205,6 +1206,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_certificatetypenomenclature", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeshortname")]
+		public string ecer_CertificateTypeShortName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_certificatetypeshortname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatetypeshortname", value);
 			}
 		}
 		

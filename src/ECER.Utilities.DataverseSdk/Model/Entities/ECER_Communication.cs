@@ -90,6 +90,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_communication_ProgramProfileId = "ecer_communication_ProgramProfileId";
 			public const string ecer_communication_ProgramRepresentativeId = "ecer_communication_ProgramRepresentativeId";
 			public const string ecer_communication_PSPreferral_ecer_pspreferral = "ecer_communication_PSPreferral_ecer_pspreferral";
+			public const string ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome = "ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome";
 			public const string ecer_communication_ReconsiderationRequestId = "ecer_communication_ReconsiderationRequestId";
 			public const string ecer_communication_TranscriptId = "ecer_communication_TranscriptId";
 			public const string ecer_CommunicationId = "ecer_communicationid";
@@ -114,6 +115,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_IsADN = "ecer_isadn";
+			public const string ecer_isadnName = "ecer_isadnname";
 			public const string ecer_IsLast = "ecer_islast";
 			public const string ecer_islastName = "ecer_islastname";
 			public const string ecer_IsRoot = "ecer_isroot";
@@ -138,8 +141,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramProfileIdName = "ecer_programprofileidname";
 			public const string ecer_ProgramRepresentativeId = "ecer_programrepresentativeid";
 			public const string ecer_ProgramRepresentativeIdName = "ecer_programrepresentativeidname";
+			public const string ecer_PSPCommunicationCategory = "ecer_pspcommunicationcategory";
+			public const string ecer_pspcommunicationcategoryName = "ecer_pspcommunicationcategoryname";
 			public const string ecer_PSPreferral = "ecer_pspreferral";
 			public const string ecer_PSPreferralName = "ecer_pspreferralname";
+			public const string ecer_ReconsiderationInvestigation = "ecer_reconsiderationinvestigation";
+			public const string ecer_ReconsiderationInvestigationName = "ecer_reconsiderationinvestigationname";
 			public const string ecer_ReconsiderationRequestId = "ecer_reconsiderationrequestid";
 			public const string ecer_ReconsiderationRequestIdName = "ecer_reconsiderationrequestidname";
 			public const string ecer_Registrantid = "ecer_registrantid";
@@ -817,6 +824,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadn")]
+		public System.Nullable<bool> ecer_IsADN
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isadn");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isadn", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadnname")]
+		public string ecer_isadnName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isadn"))
+				{
+					return this.FormattedValues["ecer_isadn"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_islast")]
 		public System.Nullable<bool> ecer_IsLast
 		{
@@ -1199,6 +1238,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspcommunicationcategory")]
+		public virtual ecer_PSPCommunicationCategories? ecer_PSPCommunicationCategory
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPCommunicationCategories?)(EntityOptionSetEnum.GetEnum(this, "ecer_pspcommunicationcategory")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_pspcommunicationcategory", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspcommunicationcategoryname")]
+		public string ecer_pspcommunicationcategoryName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_pspcommunicationcategory"))
+				{
+					return this.FormattedValues["ecer_pspcommunicationcategory"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspreferral")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_PSPreferral
 		{
@@ -1223,6 +1294,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_pspreferral"))
 				{
 					return this.FormattedValues["ecer_pspreferral"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationinvestigation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ReconsiderationInvestigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_reconsiderationinvestigation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationinvestigation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationinvestigationname")]
+		public string ecer_ReconsiderationInvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reconsiderationinvestigation"))
+				{
+					return this.FormattedValues["ecer_reconsiderationinvestigation"];
 				}
 				else
 				{
@@ -2205,6 +2308,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_communication_PSPreferral_ecer_pspreferral", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationinvestigation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+			"outcome")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+						"outcome", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+						"outcome", null, value);
 			}
 		}
 		

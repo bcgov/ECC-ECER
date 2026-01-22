@@ -127,6 +127,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramTypes = "ecer_programtypes";
 			public const string ecer_programtypesName = "ecer_programtypesname";
 			public const string ecer_pspreferral_programprofile_ecer_program = "ecer_pspreferral_programprofile_ecer_program";
+			public const string ecer_ReadyforReview = "ecer_readyforreview";
+			public const string ecer_readyforreviewName = "ecer_readyforreviewname";
 			public const string ecer_SNECoursesTotalHours = "ecer_snecoursestotalhours";
 			public const string ecer_SNECoursesTotalHoursDecimal = "ecer_snecoursestotalhoursdecimal";
 			public const string ecer_StartDate = "ecer_startdate";
@@ -911,6 +913,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_programtypes"))
 				{
 					return this.FormattedValues["ecer_programtypes"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_readyforreview")]
+		public virtual ecer_YesNoNull? ecer_ReadyforReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_readyforreview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_readyforreview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_readyforreviewname")]
+		public string ecer_readyforreviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_readyforreview"))
+				{
+					return this.FormattedValues["ecer_readyforreview"];
 				}
 				else
 				{

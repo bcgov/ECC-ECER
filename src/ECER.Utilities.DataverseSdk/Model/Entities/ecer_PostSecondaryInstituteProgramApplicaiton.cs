@@ -57,6 +57,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		PendingReview = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		RefusetoApprove = 621870012,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ReviewAnalysis = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -67,6 +70,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Submitted = 621870009,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Withdrawn = 621870011,
 	}
 	
 	/// <summary>
@@ -113,6 +119,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_collaboration = "ecer_collaboration";
 			public const string ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_communityneedsassessmentdescription = "ecer_communityneedsassessmentdescription";
+			public const string ecer_ComponentGroup = "ecer_componentgroup";
+			public const string ecer_componentgroupName = "ecer_componentgroupname";
 			public const string ecer_componentrequirementsmetanalysisreview = "ecer_componentrequirementsmetanalysisreview";
 			public const string ecer_componentrequirementsmetanalysisreviewName = "ecer_componentrequirementsmetanalysisreviewname";
 			public const string ecer_componentrfairequestsupdatedanalysisrevie = "ecer_componentrfairequestsupdatedanalysisrevie";
@@ -848,6 +856,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_communityneedsassessmentdescription", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentgroup")]
+		public virtual ecer_PSPComponentGroups? ecer_ComponentGroup
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentGroups?)(EntityOptionSetEnum.GetEnum(this, "ecer_componentgroup")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_componentgroup", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentgroupname")]
+		public string ecer_componentgroupName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_componentgroup"))
+				{
+					return this.FormattedValues["ecer_componentgroup"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
