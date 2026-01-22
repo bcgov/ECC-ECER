@@ -97,13 +97,6 @@
         }
       "
     />
-    <ApplicationSummaryActionListItem
-      v-if="currentStep === 2"
-      text="Competencies assessments"
-      :active="competenciesAssessmentsReceived"
-      :goTo="() => {}"
-      :show-link="false"
-    />
     <ApplicationSummaryHeader
       v-if="showOtherInformation"
       text="Other information"
@@ -307,22 +300,6 @@ export default defineComponent({
 
       //No action needed
       return false;
-    },
-    competenciesAssessmentsReceived(): boolean {
-      const references =
-        this.icraEligibilityStatus?.employmentReferencesStatus ?? [];
-
-      // No references yet → not received
-      if (!references.length) {
-        return false;
-      }
-
-      // Treat "ICRAEligibilitySubmitted" as "not yet submitted".
-      // Anything else counts as submitted/in progress/completed.
-      return references.every(
-        (reference) =>
-          reference.status && reference.status !== "ICRAEligibilitySubmitted",
-      );
     },
     currentStep(): number {
       switch (this.icraEligibilityStatus?.status) {
