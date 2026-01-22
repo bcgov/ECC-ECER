@@ -148,7 +148,7 @@ export default defineComponent({
           "ChangeRequestInProgress",
           "Inactive",
         ])
-      )?.data || [];
+      )?.data?.programs || [];
   },
   data() {
     return {

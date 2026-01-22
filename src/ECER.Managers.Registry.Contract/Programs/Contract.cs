@@ -15,6 +15,8 @@ public record ProgramsQuery : IRequest<ProgramsQueryResults>
   public string? ById { get; set; }
   public string? ByPostSecondaryInstituteId { get; set; }
   public IEnumerable<ProgramStatus>? ByStatus { get; set; }
+  public int PageNumber { get; set; }
+  public int PageSize { get; set; }
 }
 
 public record UpdateCourseCommand(IEnumerable<Course> Course, string Id) : IRequest<string>;
@@ -55,7 +57,8 @@ public record CourseAreaOfInstruction
 /// Container for <see cref="ProgramsQuery"/> results
 /// </summary>
 /// <param name="Items"></param>
-public record ProgramsQueryResults(IEnumerable<Program> Items);
+/// <param name="TotalProgramsCount"></param>
+public record ProgramsQueryResults(IEnumerable<Program> Items, int TotalProgramsCount);
 
 public record Program(string? Id, string PostSecondaryInstituteId)
 {

@@ -125,6 +125,10 @@ declare namespace Components {
             communications?: Communication[] | null;
             totalMessagesCount?: number; // int32
         }
+        export interface GetProgramsResponse {
+            programs?: Program[] | null;
+            totalProgramsCount?: number; // int32
+        }
         export interface HttpValidationProblemDetails {
             [name: string]: any;
             type?: string | null;
@@ -179,6 +183,8 @@ declare namespace Components {
             newBasicTotalHours?: string | null;
             newSneTotalHours?: string | null;
             newIteTotalHours?: string | null;
+            declarationDate?: string | null;
+            declarationUserName?: string | null;
             programProfileType?: ProgramProfileType;
             programTypes?: ProgramTypes[] | null;
             courses?: Course[] | null;
@@ -427,7 +433,7 @@ declare namespace Paths {
             byStatus?: Parameters.ByStatus;
         }
         namespace Responses {
-            export type $200 = Components.Schemas.Program[];
+            export type $200 = Components.Schemas.GetProgramsResponse;
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
             export interface $404 {
             }
@@ -1096,6 +1102,7 @@ export type DraftProgramResponse = Components.Schemas.DraftProgramResponse;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type FileResponse = Components.Schemas.FileResponse;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
+export type GetProgramsResponse = Components.Schemas.GetProgramsResponse;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
 export type InviteType = Components.Schemas.InviteType;

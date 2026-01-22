@@ -43,13 +43,13 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && iteCourses != null && iteCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(iteCourses, instructions));
-      validationErrors.AddRange(CheckTotalCourseHours(iteCourses));
+      validationErrors.AddRange(CheckTotalCourseHours(iteCourses, nameof(ProgramTypes.ITE)));
     }
     
     if (program.ProgramTypes.Contains(nameof(ProgramTypes.SNE)) && sneCourses != null && sneCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(sneCourses, instructions));
-      validationErrors.AddRange(CheckTotalCourseHours(sneCourses));
+      validationErrors.AddRange(CheckTotalCourseHours(sneCourses, nameof(ProgramTypes.SNE)));
     }
     return new ValidationResults(validationErrors);
   }
@@ -83,25 +83,24 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     return minHourErrors;
   }
   
-  public static List<string> CheckTotalCourseHours(IReadOnlyCollection<Course> courses)
+  public static List<string> CheckTotalCourseHours(IReadOnlyCollection<Course> courses, string programType)
   {
     var totalHourErrors = new List<string>();
     
-    foreach (var course in courses)
+    var allInstructionsForCourse = courses.Where(c => c.CourseAreaOfInstruction != null)
+      .SelectMany(c => c.CourseAreaOfInstruction!)
+      .ToList();
+    
+    var totalHours = allInstructionsForCourse.Count == 0 ? 0 
+        : allInstructionsForCourse
+        .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
+        .Sum(a => decimal.Parse(a.NewHours!));
+      
+    if (totalHours < 450)
     {
-      var areaOfInstructions = course.CourseAreaOfInstruction;
-      if (areaOfInstructions != null)
-      {
-        var totalHours = course.CourseAreaOfInstruction?
-          .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
-          .Sum(a => decimal.Parse(a.NewHours!)) ?? 0;
-
-        if (totalHours < 450)
-        {
-          totalHourErrors.Add("Total course hours must hit the minimum total required hours for course: " + course.NewCourseTitle);
-        }
-      }
+      totalHourErrors.Add("Total course hours must hit the minimum total required hours for program: " + programType);
     }
+    
     return totalHourErrors;
   }
 }

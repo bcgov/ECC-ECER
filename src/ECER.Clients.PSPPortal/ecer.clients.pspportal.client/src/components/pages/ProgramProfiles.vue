@@ -85,15 +85,31 @@
         </v-row>
       </div>
 
-      <!-- Current program profiles section -->
-      <v-row v-if="currentProgramProfiles.length > 0">
-        <v-col>
-          <ECEHeader title="Current program profiles" />
-        </v-col>
-      </v-row>
+      <div v-if="programsRequiringReview.length === 0">
+        <!-- Current program profiles section -->
+        <div v-if="filter === 'current'">
+          <v-row>
+            <v-col>
+              <ECEHeader title="Current program profiles" />
+            </v-col>
+          </v-row>
+        </div>
+        <div v-else>
+          <v-row>
+            <v-col>
+              <ECEHeader title="All program profiles" />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <p>This page contains program profiles for your institution dating back to {{ earliestProfileYear }}.</p>
+            </v-col>
+          </v-row>
+        </div>
+      </div>      
       <v-row>
         <v-col
-          v-for="(program, index) in currentProgramProfiles"
+          v-for="(program, index) in displayProgramProfiles"
           :key="getProgramKey(program, index, 'current')"
           cols="12"
           md="6"
@@ -102,18 +118,30 @@
           <ProgramProfileCard :program="program" />
         </v-col>
       </v-row>
-
       <!-- Empty state -->
       <v-row
         v-if="
           programsRequiringReview.length === 0 &&
-          currentProgramProfiles.length === 0
+          displayProgramProfiles.length === 0
         "
       >
         <v-col cols="12">
           <p>No program profiles found.</p>
         </v-col>
       </v-row>
+      <div v-if=" filter === 'current' &&
+                  programsRequiringReview.length === 0">
+        <v-row>
+          <v-col>
+            <v-card variant="outlined" rounded="lg">           
+              <v-btn-toggle v-model="filter" color="primary" mandatory>
+                <v-btn value="all">View all program profiles<v-icon size="large" icon="mdi-arrow-right"/></v-btn>           
+              </v-btn-toggle>
+            </v-card>
+          </v-col>
+        </v-row>
+      </div>
+
     </div>
   </PageContainer>
 </template>
@@ -129,6 +157,8 @@ import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 import ECEHeader from "@/components/ECEHeader.vue";
+
+const PAGE_SIZE = 0;
 
 export default defineComponent({
   name: "ProgramProfiles",
@@ -147,7 +177,10 @@ export default defineComponent({
   data() {
     return {
       programs: [] as Components.Schemas.Program[],
+      programCount : -1,
+      page: 1,
       loading: true,
+      filter: "current",
     };
   },
   computed: {
@@ -160,10 +193,36 @@ export default defineComponent({
       );
     },
     currentProgramProfiles(): Components.Schemas.Program[] {
+      const yearStartDate = this.currentYearStart;
       return this.programs.filter(
-        (p) => "Approved" === p.status || "Inactive" === p.status,
+        (p) => "Approved" === p.status 
+            || "Inactive" === p.status).filter(
+              (p2) => {
+                const itemDate = new Date(p2.startDate!);
+                return yearStartDate <= itemDate;
+              });
+    },
+    allProgramProfiles(): Components.Schemas.Program[] {
+      return this.programs.filter(
+        (p) => p.status !== "Withdrawn",
       );
     },
+    displayProgramProfiles() {
+      return this.filter === "current" ? this.currentProgramProfiles : this.allProgramProfiles;
+    },
+    currentYearStart(): Date{
+      let yearStart;
+      const today = new Date();
+      if (today.getMonth() > 8){
+        yearStart = new Date(today.setMonth(8, 1));
+      }else{
+        yearStart = new Date(today.setFullYear(today.getFullYear() - 1, 8, 1));
+      }
+      return yearStart;
+    },
+    earliestProfileYear(): string {
+      return "2023";
+    }
   },
   async mounted() {
     await this.fetchPrograms();
@@ -177,9 +236,13 @@ export default defineComponent({
     ): string {
       return program.id ?? `${prefix}-${index}`;
     },
-    async fetchPrograms() {
-      const { data: programs } = await getPrograms();
-      this.programs = programs || [];
+    async fetchPrograms(page: number = 1) {
+      const params = { page, pageSize: PAGE_SIZE };
+      const response = await getPrograms("", [], params);
+      this.programs = response.data?.programs || [];
+      this.programCount = response.data?.totalProgramsCount || 0;
+
+      globalThis.scrollTo({ top: 0, behavior: "smooth" });
     },
   },
 });

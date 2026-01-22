@@ -29,9 +29,11 @@ public class ProgramHandlers(
     {
       ById = programId,
       ByPostSecondaryInstituteId = request.Program.PostSecondaryInstituteId
-    }, cancellationToken)).SingleOrDefault();
+    }, cancellationToken));
+    
+    var program = result.Programs?.SingleOrDefault();
 
-    return mapper.Map<Contract.Programs.Program>(result);
+    return mapper.Map<Contract.Programs.Program>(program);
   }
 
   public async Task<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
@@ -49,14 +51,16 @@ public class ProgramHandlers(
       ? mapper.Map<IEnumerable<Resources.Documents.Programs.ProgramStatus>>(request.ByStatus)
       : null;
 
-    var programs = await programRepository.Query(new ProgramQuery
+    var result = await programRepository.Query(new ProgramQuery
     {
       ById = request.ById,
       ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
-      ByStatus = statusFilter
+      ByStatus = statusFilter,
+      PageNumber = request.PageNumber,
+      PageSize = request.PageSize,   
     }, cancellationToken);
 
-    return new ProgramsQueryResults(mapper.Map<IEnumerable<Contract.Programs.Program>>(programs)!);
+    return new ProgramsQueryResults(mapper.Map<IEnumerable<Contract.Programs.Program>>(result.Programs), result.TotalProgramsCount);
   }
   
   public async Task<string> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
@@ -70,18 +74,18 @@ public class ProgramHandlers(
   {
     ArgumentNullException.ThrowIfNull(request);
     
-    var programs = await programRepository.Query(new ProgramQuery
+    var programResult = await programRepository.Query(new ProgramQuery
     {
       ById = request.ProgramId,
       ByStatus = new[] { ProgramStatus.Draft }
     }, cancellationToken);
     
-    if (!programs.Any())
+    if (!programResult.Programs!.Any())
     {
       return new SubmitProgramResult { ProgramId = null, Error = ProgramSubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "Draft program profile does not exist" } };
     }
     
-    var draftProgram = mapper.Map<Contract.Programs.Program>(programs.First());
+    var draftProgram = mapper.Map<Contract.Programs.Program>(programResult.Programs!.First());
     var instructions = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery() { ById = null }, cancellationToken);
     
     var validationEngine = validationResolver?.resolve(draftProgram.ProgramProfileType);
