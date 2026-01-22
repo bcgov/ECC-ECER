@@ -151,7 +151,7 @@ export default defineComponent({
         if (isNaN(numValue)) {
           return "Enter a valid number";
         }
-        if (v.startsWith("-") || numValue < 0) {
+        if (numValue < 0) {
           return "Must be positive";
         }
         return Rules.numberToDecimalPlaces(2)(v);
