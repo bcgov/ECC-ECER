@@ -155,8 +155,11 @@
         />
       </template>
       <ApplicationSummaryHeader text="References" />
+      <!-- do not show for ICRA applications refer to Compentencies Assessment -->
       <ApplicationSummaryActionListItem
-        v-if="showWorkExperience"
+        v-if="
+          showWorkExperience && applicationStatus?.applicationType !== 'ICRA'
+        "
         :active="
           totalObservedWorkExperienceHours < totalRequiredWorkExperienceHours
         "
@@ -196,6 +199,14 @@
               params: { applicationId: applicationId },
             })
         "
+      />
+      <!-- this item is only shown for ICRA applications -->
+      <ApplicationSummaryActionListItem
+        v-if="applicationStatus?.applicationType === 'ICRA'"
+        text="Competencies assessments"
+        :active="!competenciesAssessmentsReceivedForIcra"
+        :goTo="() => {}"
+        :show-link="false"
       />
       <ApplicationSummaryHeader
         v-if="showOtherInformation"
@@ -418,7 +429,10 @@
           "
         />
         <ApplicationSummaryActionListItem
-          v-if="addMoreWorkExperienceReferencesFlag"
+          v-if="
+            addMoreWorkExperienceReferencesFlag &&
+            applicationStatus?.applicationType !== 'ICRA'
+          "
           :text="`${totalRequiredWorkExperienceHours} approved hours of work experience with reference`"
           :go-to="
             () =>
@@ -648,6 +662,14 @@ export default defineComponent({
         this.userStore.unverifiedPreviousNames.length > 0 ||
         this.userStore.pendingforDocumentsPreviousNames.length > 0 ||
         this.userStore.readyForVerificationPreviousNames.length > 0
+      );
+    },
+    competenciesAssessmentsReceivedForIcra(): boolean {
+      return (
+        this.applicationStatus?.workExperienceReferencesStatus?.every(
+          (reference) =>
+            reference.status === "Submitted" || reference.status === "Rejected",
+        ) || false
       );
     },
   },
