@@ -65,16 +65,17 @@
               align="center"
               class="pl-4 mb-2 bg-white rounded-lg border"
             >
-              <v-col cols="8">
+              <v-col cols="12" md="8">
                 <span class="font-weight-bold">
                   {{ getCourseTitle(courseArea) }}
                 </span>
               </v-col>
-              <v-col>
+              <v-col v-if="mdAndUp">
                 <span>{{ courseArea.newHours }} hours</span>
               </v-col>
-              <v-col cols="auto" class="d-flex">
-                <v-divider vertical></v-divider>
+              <v-col cols="12" md="auto" class="d-flex align-center justify-space-between d-md-inline-flex justify-md-start">
+                <span v-if="smAndDown" class="mr-2">{{ courseArea.newHours }} hours</span>
+                <v-divider v-if="mdAndUp" vertical class="d-none d-md-block"></v-divider>
                 <v-btn
                   icon="mdi-pencil"
                   variant="plain"
@@ -110,9 +111,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import { defineComponent, type PropType, toRefs } from "vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
+import { useDisplay } from 'vuetify';
 
 interface CourseAreaOfInstructionWithCourse
   extends Components.Schemas.CourseAreaOfInstruction {
@@ -136,8 +138,12 @@ export default defineComponent({
   components: {},
   setup() {
     const configStore = useConfigStore();
+    const display = useDisplay();
+    const { mdAndUp, smAndDown } = toRefs(display);
     return {
       configStore,
+      mdAndUp,
+      smAndDown
     };
   },
   props: {
