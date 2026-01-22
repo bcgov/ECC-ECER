@@ -4,6 +4,7 @@ using ECER.Clients.PSPPortal.Server.Communications;
 using ECER.Managers.Registry.Contract.Communications;
 using Shouldly;
 using Xunit.Abstractions;
+using PspCommunicationCategory = ECER.Clients.PSPPortal.Server.Communications.CommunicationCategory;
 
 namespace ECER.Tests.Integration.PspApi;
 
@@ -25,6 +26,9 @@ public class CommunicationsTests : PspPortalWebAppScenarioBase
 
     var communications = await communicationsResponse.ReadAsJsonAsync<GetMessagesResponse>();
     communications!.Communications.ShouldNotBeNull();
+    communications.Communications.ShouldContain(c =>
+      c.Id == Fixture.communicationOneId &&
+      c.Category == PspCommunicationCategory.ProgramChangeRequest);
   }
 
   [Fact]
@@ -93,7 +97,8 @@ public class CommunicationsTests : PspPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
     var communication = new Clients.PSPPortal.Server.Communications.Communication()
     {
-      Text = faker.Lorem.Paragraph()
+      Text = faker.Lorem.Paragraph(),
+      Category = PspCommunicationCategory.ProgramChangeRequest
     };
     
     return communication;

@@ -233,6 +233,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         Id = Guid.NewGuid(),
         ecer_Message = message,
         ecer_Acknowledged = false,
+        ecer_PSPCommunicationCategory = ecer_PSPCommunicationCategories.ProgramChangeRequest,
+        ecer_EducationInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, testPostSecondaryInstitute.Id),
         StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
       };
       if (parentCommunicationId == null)
@@ -251,6 +253,20 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         context.AddLink(communication, Referencingecer_communication_ParentCommunicationid, parent);
       }
       
+    }
+    else
+    {
+      if (!communication.ecer_PSPCommunicationCategory.HasValue)
+      {
+        communication.ecer_PSPCommunicationCategory = ecer_PSPCommunicationCategories.ProgramChangeRequest;
+      }
+
+      if (communication.ecer_EducationInstitutionId == null)
+      {
+        communication.ecer_EducationInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, testPostSecondaryInstitute.Id);
+      }
+
+      context.UpdateObject(communication);
     }
 
     return communication;

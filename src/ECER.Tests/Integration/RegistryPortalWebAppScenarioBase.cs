@@ -442,6 +442,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         Id = Guid.NewGuid(),
         ecer_Message = message,
         ecer_Acknowledged = false,
+        ecer_PSPCommunicationCategory = ecer_PSPCommunicationCategories.ProgramChangeRequest,
         StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
       };
       if (parentCommunicationId == null)
@@ -465,6 +466,14 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       // Adding this statement causes duplicate key issue for all tests "Cannot insert duplicate key"
       //context.AddLink(authenticatedBcscUser, ecer_Communication.Fields.ecer_contact_ecer_communication_122, communication);
 #pragma warning restore S125 // Sections of code should not be commented out
+    }
+    else
+    {
+      if (!communication.ecer_PSPCommunicationCategory.HasValue)
+      {
+        communication.ecer_PSPCommunicationCategory = ecer_PSPCommunicationCategories.ProgramChangeRequest;
+        context.UpdateObject(communication);
+      }
     }
 
     return communication;
