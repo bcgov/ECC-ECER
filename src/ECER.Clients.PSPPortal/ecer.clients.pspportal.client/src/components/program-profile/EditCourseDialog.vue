@@ -187,10 +187,10 @@ export default defineComponent({
       if (validationResult === true) {
         delete this.hourErrors[areaId];
         delete this.invalidHours[areaId];
-        return;
       } else {
         this.hourErrors[areaId] = validationResult;
         this.invalidHours[areaId] = value;
+        return;
       }
 
       // Ensure courseAreaOfInstruction array exists
