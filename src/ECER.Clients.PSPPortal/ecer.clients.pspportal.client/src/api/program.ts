@@ -54,4 +54,41 @@ const createOrUpdateDraftApplication = async (
   });
 };
 
-export { createOrUpdateDraftApplication, getPrograms };
+const updateCourse = async (
+  programId: string,
+  courses: Components.Schemas.Course[],
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.CoursePut.PathParameters = {
+    id: programId,
+  };
+  const body: Paths.CoursePut.RequestBody = {
+    courses: courses,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.course_put(pathParameters, body),
+    key: "course_put",
+  });
+};
+
+const submitDraftProgramApplication = async (
+  programId: string,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const body: Components.Schemas.SubmitProgramRequest = {
+    programId: programId,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.program_post(null, body),
+    key: "program_post",
+  });
+};
+
+export {
+  createOrUpdateDraftApplication,
+  getPrograms,
+  submitDraftProgramApplication,
+  updateCourse,
+};

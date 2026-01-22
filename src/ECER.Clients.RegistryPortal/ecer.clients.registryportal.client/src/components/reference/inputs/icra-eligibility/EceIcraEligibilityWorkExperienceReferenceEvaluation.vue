@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
       <h2>Independent practice details</h2>
-      <div role="doc-subtitle">
+      <div class="mb-10" role="doc-subtitle">
         Please confirm the following information about the applicant's
         employment
       </div>
@@ -81,7 +81,7 @@
           <EceDateInput
             id="endDateInput"
             clearable
-            label="End date of hours"
+            label="End date of employment"
             :model-value="modelValue.endDate"
             :rules="[Rules.dateBeforeRule(modelValue.startDate || '')]"
             @update:model-value="updateField('endDate', $event)"

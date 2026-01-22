@@ -1,8 +1,10 @@
 using System.Net;
 using Alba;
+using ECER.Clients.PSPPortal.Server;
 using ECER.Clients.PSPPortal.Server.Programs;
 using Shouldly;
 using Xunit.Abstractions;
+using Program = ECER.Clients.PSPPortal.Server.Programs.Program;
 
 namespace ECER.Tests.Integration.PspApi;
 
@@ -305,12 +307,45 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   [Fact]
   public async Task SubmitDraftProgram__ReturnsBadRequest()
   {
-    var request = new SubmitProgramRequest(this.Fixture.programId!);
+    var request = new SubmitProgramRequest(this.Fixture.programIdWithTotals!);
     var postResponse = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
       _.Post.Json(request).ToUrl($"/api/programs");
       _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+  
+  [Fact]
+  public async Task SubmitDraftProgram__ReturnsOk()
+  {
+    
+    var areaOfInstructions = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Get.Url("/api/areaofinstructionlist");
+      _.StatusCodeShouldBeOk();
+    });
+  
+    var areaOfInstructionsPayload = await areaOfInstructions.ReadAsJsonAsync<AreaOfInstructionListResponse>();
+  
+    var allSneInstructions = areaOfInstructionsPayload.AreaOfInstruction
+      .Where(ai => ai.ProgramTypes.Contains(ProgramTypes.SNE))
+      .ToList();
+  
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(new UpdateCourseRequest(new []{ CreateCourseWithCourseAreaOfInstructionsAndHours(allSneInstructions) })).ToUrl($"/api/program/{Fixture.submitProgramId}/courses");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var request = new SubmitProgramRequest(this.Fixture.submitProgramId!);
+    var postResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Post.Json(request).ToUrl($"/api/programs");
+      _.StatusCodeShouldBeOk();
     });
   }
 
@@ -326,7 +361,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       ProgramType = ProgramTypes.SNE.ToString()
     };
   }
-  
+
   private Course CreateCourseWithCourseAreaOfInstructions()
   {
     return new Course
@@ -341,11 +376,38 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       {
         new CourseAreaOfInstruction()
         {
-          CourseAreaOfInstructionId = Guid.NewGuid().ToString(),
           AreaOfInstructionId = Fixture.AreaOfInstructionId,
           NewHours = "20.00"
         }
       }
     };
+  }
+  
+  private Course CreateCourseWithCourseAreaOfInstructionsAndHours(List<AreaOfInstruction> areaOfInstructions)
+  {
+    var courseAreaOfInstruction =  new List<CourseAreaOfInstruction>();
+
+    foreach (var ai in areaOfInstructions)
+    {
+      var ca = new CourseAreaOfInstruction()
+      {
+        AreaOfInstructionId = ai.Id,
+        NewHours = ai.MinimumHours == 0 ? "200" : Convert.ToString(ai.MinimumHours)
+      };
+      courseAreaOfInstruction.Add(ca);
+    }
+    
+    var course = new Course
+    {
+      CourseId = Fixture.courseId2,
+      CourseNumber = "201",
+      CourseTitle = "Course 201",
+      NewCourseNumber = "202",
+      NewCourseTitle = "Course 202",
+      ProgramType = ProgramTypes.SNE.ToString(),
+    };
+    
+    course.CourseAreaOfInstruction = courseAreaOfInstruction;
+    return course;
   }
 }

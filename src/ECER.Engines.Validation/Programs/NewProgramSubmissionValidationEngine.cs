@@ -10,25 +10,46 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     await Task.CompletedTask;
     var validationErrors = new List<string>();
 
+    if (program.ProgramTypes == null || !program.ProgramTypes.Any())
+    {
+      validationErrors.Add("No program types provided");
+      return new ValidationResults(validationErrors);
+    }
+   
     var basicCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.Basic)).ToList();
     var iteCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.ITE)).ToList();
     var sneCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.SNE)).ToList();
 
-    if (basicCourses != null)
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.Basic)) && (basicCourses == null || basicCourses.Count == 0))
+    {
+      validationErrors.Add("Must have courses for BASIC program type");
+    }
+    
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && (iteCourses == null || iteCourses.Count == 0))
+    {
+      validationErrors.Add("Must have courses for ITE program type");
+    }
+    
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.SNE)) && (sneCourses == null || sneCourses.Count == 0))
+    {
+      validationErrors.Add("Must have courses for SNE program type");
+    }
+    
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.Basic)) && basicCourses != null && basicCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(basicCourses, instructions));
     }
 
-    if (iteCourses != null)
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && iteCourses != null && iteCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(iteCourses, instructions));
-      validationErrors.AddRange(CheckTotalCourseHours(iteCourses));
+      validationErrors.AddRange(CheckTotalCourseHours(iteCourses, nameof(ProgramTypes.ITE)));
     }
     
-    if (sneCourses != null)
+    if (program.ProgramTypes.Contains(nameof(ProgramTypes.SNE)) && sneCourses != null && sneCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(sneCourses, instructions));
-      validationErrors.AddRange(CheckTotalCourseHours(sneCourses));
+      validationErrors.AddRange(CheckTotalCourseHours(sneCourses, nameof(ProgramTypes.SNE)));
     }
     return new ValidationResults(validationErrors);
   }
@@ -43,41 +64,43 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
         .SelectMany(c => c.CourseAreaOfInstruction!)
         .Where(ins => ins.AreaOfInstructionId == instruction.Id)
         .ToList();
-      
-      var totalHours = filteredInstructions.Count == 0 ? 0 : filteredInstructions
-        .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
-        .Sum(a => decimal.Parse(a.NewHours!));
-      
-      if (instruction.MinimumHours != decimal.Zero && totalHours < instruction.MinimumHours)
+
+      if (filteredInstructions.Count != 0)
       {
-        minHourErrors.Add("Minimum hours are required for instruction: " + instruction.Name);
-      } else if(instruction.MinimumHours == decimal.Zero && totalHours <= decimal.Zero)
-      {
-        minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
+        var totalHours = filteredInstructions
+          .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
+          .Sum(a => decimal.Parse(a.NewHours!));
+      
+        if (instruction.MinimumHours != decimal.Zero && totalHours < instruction.MinimumHours)
+        {
+          minHourErrors.Add("Minimum hours are required for instruction: " + instruction.Name);
+        } else if(instruction.MinimumHours == decimal.Zero && totalHours <= decimal.Zero)
+        {
+          minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
+        }
       }
     }
     return minHourErrors;
   }
   
-  public static List<string> CheckTotalCourseHours(IReadOnlyCollection<Course> courses)
+  public static List<string> CheckTotalCourseHours(IReadOnlyCollection<Course> courses, string programType)
   {
     var totalHourErrors = new List<string>();
     
-    foreach (var course in courses)
+    var allInstructionsForCourse = courses.Where(c => c.CourseAreaOfInstruction != null)
+      .SelectMany(c => c.CourseAreaOfInstruction!)
+      .ToList();
+    
+    var totalHours = allInstructionsForCourse.Count == 0 ? 0 
+        : allInstructionsForCourse
+        .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
+        .Sum(a => decimal.Parse(a.NewHours!));
+      
+    if (totalHours < 450)
     {
-      var areaOfInstructions = course.CourseAreaOfInstruction;
-      if (areaOfInstructions != null)
-      {
-        var totalHours = course.CourseAreaOfInstruction?
-          .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
-          .Sum(a => decimal.Parse(a.NewHours!)) ?? 0;
-
-        if (totalHours < 450)
-        {
-          totalHourErrors.Add("Total course hours must hit the minimum total required hours for course: " + course.NewCourseTitle);
-        }
-      }
+      totalHourErrors.Add("Total course hours must hit the minimum total required hours for program: " + programType);
     }
+    
     return totalHourErrors;
   }
 }

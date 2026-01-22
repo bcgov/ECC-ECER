@@ -40,8 +40,6 @@ export const useWizardStore = defineStore("wizard", {
       return stepId;
     },
     currentStepStage(state): ProgramStage {
-      console.log(this.steps);
-      console.log(state);
       const stage = this.steps[state.step - 1]?.stage;
       if (!stage) throw new Error("No current step stage found");
       return stage;

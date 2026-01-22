@@ -39,8 +39,10 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_Communication testCommunication2 = null!;
   private ecer_Program testProgram1 = null!;
   private ecer_Program testProgram2 = null!;
+  private ecer_Program submitDraftProgram = null!;
   private ecer_Program changeRequestProgram = null!;
   private ecer_Course testCourse = null!;
+  private ecer_Course testCourse2 = null!;
   
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
   private static readonly ProgramTypes[] AreaOfInstructionProgramTypeValues = { ProgramTypes.ITE, ProgramTypes.SNE };
@@ -59,9 +61,11 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string communicationTwoId => testCommunication2.Id.ToString();
   
   public string programId => testProgram1.Id.ToString();
+  public string submitProgramId => submitDraftProgram.Id.ToString();
   public string changeRequestProgramId => changeRequestProgram.Id.ToString();
   public string programIdWithTotals => testProgram2.Id.ToString(); 
   public string courseId => testCourse.Id.ToString();
+  public string courseId2 => testCourse2.Id.ToString();
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
   public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
@@ -110,7 +114,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
     testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
     changeRequestProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, true, "CR", "Draft");
-    testCourse = GetOrAddCourse(context, testProgram1);
+    submitDraftProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual3", "Draft");
+    testCourse = GetOrAddCourse(context, testProgram1, "101");
+    testCourse2 =  GetOrAddCourse(context, submitDraftProgram, "201");
     
     context.SaveChanges();
 
@@ -153,18 +159,27 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return requirement;
   }
   
-  private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program)
+  private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program, string courseCode)
   {
-    var existingCourse = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == "101");
+    var existingCourse = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == courseCode);
     if (existingCourse != null)
     {
+      context.LoadProperty(existingCourse, nameof(existingCourse.ecer_courseprovincialrequirement_CourseId));
+      if (existingCourse.ecer_courseprovincialrequirement_CourseId != null && existingCourse.ecer_courseprovincialrequirement_CourseId.Any())
+      {
+        foreach (var childEntity in existingCourse.ecer_courseprovincialrequirement_CourseId.ToList())
+        {
+          context.DeleteObject(childEntity);
+        }
+      }
       context.DeleteObject(existingCourse);
+      context.SaveChanges();
     }
 
     var course = new ecer_Course
       {
         ecer_CourseId = Guid.NewGuid(),
-        ecer_Code = "101",
+        ecer_Code = courseCode,
         ecer_CourseName = "Course 101",
         ecer_NewCourseHourDecimal = 20.00m,
         ecer_ProgramType = ecer_PSIProgramType.SNE,

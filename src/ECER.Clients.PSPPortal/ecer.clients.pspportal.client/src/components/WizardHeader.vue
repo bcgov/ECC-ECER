@@ -4,15 +4,20 @@
       <v-row>
         <v-col
           :class="[
-            mobile ? 'flex-column-reverse' : 'justify-space-between',
+            mobile ? 'flex-column' : 'justify-space-between',
             'd-flex',
+            'align-center',
           ]"
         >
+          <slot name="title"></slot>
           <div :class="[{ ['text-right mb-2']: mobile }]">
             <v-btn
               id="btnSaveAndExit"
               variant="outlined"
-              :loading="loadingStore.isLoading('draftprogram_put')"
+              :loading="
+                loadingStore.isLoading('draftprogram_put') ||
+                loadingStore.isLoading('course_put')
+              "
               @click="saveAndExit"
             >
               Save and exit
@@ -99,17 +104,23 @@ export default defineComponent({
     },
     async saveAndExit() {
       const valid = await this.validateForm();
+      const step = this.wizardStore.currentStep.stage;
 
-      if (!valid) {
+      // If user is in the middle of inputting courses they should be able to exit without validation midway.
+      // Also review step should not require validation to exit they should accept the terms right before submission.
+      if (
+        !valid &&
+        this.wizardStore.currentStep &&
+        step !== "EarlyChildhood" &&
+        step !== "InfantAndToddler" &&
+        step !== "SpecialNeeds" &&
+        step !== "Review"
+      ) {
         this.showSaveExitConfirmation = true;
       } else {
         await this.handleSaveDraft();
         this.goToDashboard();
       }
-    },
-    async changeCertification() {
-      this.showConfirmation = false;
-      this.router.push({ name: "application-certification" });
     },
     goToDashboard() {
       this.showSaveExitConfirmation = false; //prevents issue where router will stop responding
