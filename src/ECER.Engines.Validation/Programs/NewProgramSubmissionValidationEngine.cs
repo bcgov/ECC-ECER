@@ -37,37 +37,36 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     
     if (program.ProgramTypes.Contains(nameof(ProgramTypes.Basic)) && basicCourses != null && basicCourses.Count > 0)
     {
-      validationErrors.AddRange(CheckForMinimumHours(basicCourses, instructions));
+      validationErrors.AddRange(CheckForMinimumHours(basicCourses, instructions, nameof(ProgramTypes.ITE)));
     }
 
     if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && iteCourses != null && iteCourses.Count > 0)
     {
-      validationErrors.AddRange(CheckForMinimumHours(iteCourses, instructions));
+      validationErrors.AddRange(CheckForMinimumHours(iteCourses, instructions, nameof(ProgramTypes.ITE)));
       validationErrors.AddRange(CheckTotalCourseHours(iteCourses, nameof(ProgramTypes.ITE)));
     }
     
     if (program.ProgramTypes.Contains(nameof(ProgramTypes.SNE)) && sneCourses != null && sneCourses.Count > 0)
     {
-      validationErrors.AddRange(CheckForMinimumHours(sneCourses, instructions));
+      validationErrors.AddRange(CheckForMinimumHours(sneCourses, instructions, nameof(ProgramTypes.SNE)));
       validationErrors.AddRange(CheckTotalCourseHours(sneCourses, nameof(ProgramTypes.SNE)));
     }
     return new ValidationResults(validationErrors);
   }
 
-  public static List<string> CheckForMinimumHours(IReadOnlyCollection<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions)
+  public static List<string> CheckForMinimumHours(IReadOnlyCollection<Course> courses, IReadOnlyCollection<AreaOfInstruction> instructions, string programType)
   {
     var minHourErrors = new List<string>();
+    var instructionsByType = instructions.Where(ins => ins.ProgramTypes.Contains(programType));
     
-    foreach (var instruction in instructions)
+    foreach (var instruction in instructionsByType)
     {
       var filteredInstructions = courses.Where(c => c.CourseAreaOfInstruction != null)
         .SelectMany(c => c.CourseAreaOfInstruction!)
         .Where(ins => ins.AreaOfInstructionId == instruction.Id)
         .ToList();
-
-      if (filteredInstructions.Count != 0)
-      {
-        var totalHours = filteredInstructions
+      
+        var totalHours = filteredInstructions.Count == 0 ? 0 : filteredInstructions
           .Where(a => !string.IsNullOrWhiteSpace(a.NewHours))
           .Sum(a => decimal.Parse(a.NewHours!));
       
@@ -78,7 +77,6 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
         {
           minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
         }
-      }
     }
     return minHourErrors;
   }
