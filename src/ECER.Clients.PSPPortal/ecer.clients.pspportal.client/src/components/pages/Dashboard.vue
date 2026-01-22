@@ -292,8 +292,8 @@ export default defineComponent({
       this.educationInstitution = await getEducationInstitution();
     },
     async getProgramProfileData() {
-      const { data: programs } = await getPrograms("", ["Draft"]);
-      this.programsRequiringReview = programs ?? null;
+      const { data: programResults } = await getPrograms("", ["Draft"]);
+      this.programsRequiringReview = programResults?.programs ?? null;
     },
     setUserStoreValues() {
       if (this.pspUserProfile) {
