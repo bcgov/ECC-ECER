@@ -102,11 +102,14 @@
           </v-row>
           <v-row>
             <v-col>
-              <p>This page contains program profiles for your institution dating back to {{ earliestProfileYear }}.</p>
+              <p>
+                This page contains program profiles for your institution dating
+                back to {{ earliestProfileYear }}.
+              </p>
             </v-col>
           </v-row>
         </div>
-      </div>      
+      </div>
       <v-row>
         <v-col
           v-for="(program, index) in displayProgramProfiles"
@@ -129,19 +132,20 @@
           <p>No program profiles found.</p>
         </v-col>
       </v-row>
-      <div v-if=" filter === 'current' &&
-                  programsRequiringReview.length === 0">
+      <div v-if="filter === 'current' && programsRequiringReview.length === 0">
         <v-row>
           <v-col>
-            <v-card variant="outlined" rounded="lg">           
+            <v-card variant="outlined" rounded="lg">
               <v-btn-toggle v-model="filter" color="primary" mandatory>
-                <v-btn value="all">View all program profiles<v-icon size="large" icon="mdi-arrow-right"/></v-btn>           
+                <v-btn value="all">
+                  View all program profiles
+                  <v-icon size="large" icon="mdi-arrow-right" />
+                </v-btn>
               </v-btn-toggle>
             </v-card>
           </v-col>
         </v-row>
       </div>
-
     </div>
   </PageContainer>
 </template>
@@ -177,7 +181,7 @@ export default defineComponent({
   data() {
     return {
       programs: [] as Components.Schemas.Program[],
-      programCount : -1,
+      programCount: -1,
       page: 1,
       loading: true,
       filter: "current",
@@ -194,35 +198,34 @@ export default defineComponent({
     },
     currentProgramProfiles(): Components.Schemas.Program[] {
       const yearStartDate = this.currentYearStart;
-      return this.programs.filter(
-        (p) => "Approved" === p.status 
-            || "Inactive" === p.status).filter(
-              (p2) => {
-                const itemDate = new Date(p2.startDate!);
-                return yearStartDate <= itemDate;
-              });
+      return this.programs
+        .filter((p) => "Approved" === p.status || "Inactive" === p.status)
+        .filter((p2) => {
+          const itemDate = new Date(p2.startDate!);
+          return yearStartDate <= itemDate;
+        });
     },
     allProgramProfiles(): Components.Schemas.Program[] {
-      return this.programs.filter(
-        (p) => p.status !== "Withdrawn",
-      );
+      return this.programs.filter((p) => p.status !== "Withdrawn");
     },
     displayProgramProfiles() {
-      return this.filter === "current" ? this.currentProgramProfiles : this.allProgramProfiles;
+      return this.filter === "current"
+        ? this.currentProgramProfiles
+        : this.allProgramProfiles;
     },
-    currentYearStart(): Date{
+    currentYearStart(): Date {
       let yearStart;
       const today = new Date();
-      if (today.getMonth() > 8){
+      if (today.getMonth() > 8) {
         yearStart = new Date(today.setMonth(8, 1));
-      }else{
+      } else {
         yearStart = new Date(today.setFullYear(today.getFullYear() - 1, 8, 1));
       }
       return yearStart;
     },
     earliestProfileYear(): string {
       return "2023";
-    }
+    },
   },
   async mounted() {
     await this.fetchPrograms();

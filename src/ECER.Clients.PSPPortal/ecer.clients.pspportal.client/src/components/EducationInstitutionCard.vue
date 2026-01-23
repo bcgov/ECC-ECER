@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <v-row align="center" class="mb-4" justify="space-between">
+    <v-row align="center" justify="space-between">
       <v-col cols="auto">
         <h2>{{ educationInstitution.name }}</h2>
       </v-col>
@@ -18,7 +18,7 @@
       </v-col>
     </v-row>
 
-    <v-row class="mb-3">
+    <v-row>
       <v-col cols="12" sm="3">
         <span>Institution type:</span>
       </v-col>
@@ -27,7 +27,7 @@
       </v-col>
     </v-row>
 
-    <v-row class="mb-3">
+    <v-row>
       <v-col cols="12" sm="3">
         <span>Address:</span>
       </v-col>
