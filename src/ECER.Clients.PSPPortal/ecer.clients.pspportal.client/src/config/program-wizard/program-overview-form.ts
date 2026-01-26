@@ -61,8 +61,8 @@ const programOverviewForm: Form = {
       },
       getValue: (data) => data.draftApplication.programTypes?.join(", "),
     },
-    programName: {
-      id: "programName",
+    newProgramName: {
+      id: "newProgramName",
       component: EceTextField,
       props: {
         label: "Program name",
@@ -73,7 +73,7 @@ const programOverviewForm: Form = {
         lg: 6,
         xl: 4,
       },
-      getValue: (data) => data.draftApplication.programName,
+      getValue: (data) => data.draftApplication.newProgramName,
     },
   },
 };

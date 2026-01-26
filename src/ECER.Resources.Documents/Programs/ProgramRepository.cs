@@ -129,29 +129,29 @@ internal sealed class ProgramRepository : IProgramRepository
     await Task.CompletedTask;
     var program = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == Guid.Parse(id));
     if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
-    
+
     foreach (var course in incomingCourse)
     {
       var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(course.CourseId));
-      
+
       var courseExists = context.From(courses)
         .Join()
         .Include(c => c.ecer_courseprovincialrequirement_CourseId)
         .Execute()
         .SingleOrDefault();
-      
+
       if (courseExists != null)
       {
         if (!context.IsAttached(courseExists))
         {
           context.Attach(courseExists);
         }
-        
+
         courseExists.ecer_NewCode = !string.IsNullOrWhiteSpace(course.NewCourseNumber)
           ? course.NewCourseNumber
           : course.CourseNumber;
-        courseExists.ecer_NewCourseName = !string.IsNullOrWhiteSpace(course.NewCourseTitle) 
-          ? course.NewCourseTitle 
+        courseExists.ecer_NewCourseName = !string.IsNullOrWhiteSpace(course.NewCourseTitle)
+          ? course.NewCourseTitle
           : course.CourseTitle;
         context.UpdateObject(courseExists);
 
@@ -164,10 +164,10 @@ internal sealed class ProgramRepository : IProgramRepository
               var existingAreaOfInstruction =
                 courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
                   a.Id == Guid.Parse(areaOfInstruction.CourseAreaOfInstructionId));
-              
+
               if (existingAreaOfInstruction is not null)
               {
-                UpdateAreaOfInstruction(areaOfInstruction,  existingAreaOfInstruction);
+                UpdateAreaOfInstruction(areaOfInstruction, existingAreaOfInstruction);
               }
               else
               {
@@ -242,7 +242,7 @@ internal sealed class ProgramRepository : IProgramRepository
     {
       existingProgram.StatusCode = ecer_Program_StatusCode.Withdrawn;
       existingProgram.StateCode = ecer_program_statecode.Inactive;
-        
+
       context.UpdateObject(existingProgram);
     }
     context.SaveChanges();
@@ -257,15 +257,15 @@ internal sealed class ProgramRepository : IProgramRepository
     if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
 
     program.ecer_DeclarationDate = DateTime.Now;
-    
+
     var firstName = pspUser!.ecer_FirstName?.Trim() ?? string.Empty;
     var lastName = pspUser.ecer_LastName?.Trim() ?? string.Empty;
     program.ecer_UserName = $"{firstName} {lastName}".Trim();
-    
+
     program.StatusCode = ecer_Program_StatusCode.UnderRegistryReview;
     context.UpdateObject(program);
     context.AddLink(pspUser, ecer_Program.Fields.ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative, program);
-    
+
     context.SaveChanges();
     return id;
   }

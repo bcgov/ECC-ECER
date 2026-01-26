@@ -19,10 +19,11 @@ internal class ProgramRepositoryMapper : Profile
       .ForSourceMember(s => s.ProgramProfileType, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationUserName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramName, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
-      .ForMember(d => d.ecer_NewDescriptiveProgramName, opts => opts.MapFrom(s => s.ProgramName))
+      .ForMember(d => d.ecer_NewDescriptiveProgramName, opts => opts.MapFrom(s => s.ProgramName == s.NewProgramName ? string.Empty : s.NewProgramName))
       .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.PortalStage))
       .ForMember(d => d.ecer_PostSecondaryInstitution, opts => opts.Ignore())
       .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
@@ -35,7 +36,8 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.PortalStage, opts => opts.MapFrom(s => s.ecer_PortalStage))
       .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn))
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
-      .ForMember(d => d.ProgramName, opts => opts.MapFrom(s => s.ecer_NewDescriptiveProgramName == null ? s.ecer_DescriptiveProgramName : s.ecer_NewDescriptiveProgramName))
+      .ForMember(d => d.NewProgramName, opts => opts.MapFrom(s => s.ecer_NewDescriptiveProgramName == null ? s.ecer_DescriptiveProgramName : s.ecer_NewDescriptiveProgramName))
+      .ForMember(d => d.ProgramName, opts => opts.MapFrom(s => s.ecer_DescriptiveProgramName))
       .ForMember(d => d.PostSecondaryInstituteName, opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitutionName))
       .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_StartDate))
       .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
@@ -70,7 +72,7 @@ internal class ProgramRepositoryMapper : Profile
           status == ecer_Program_StatusCode.Withdrawn ? ProgramStatus.Withdrawn :
           status == ecer_Program_StatusCode.ChangeRequestInProgress ? ProgramStatus.ChangeRequestInProgress :
                                                                      ProgramStatus.Draft);
-    
+
     CreateMap<ecer_Course, Course>(MemberList.Destination)
       .ForMember(d => d.CourseId, opts => opts.MapFrom(s => s.ecer_CourseId))
       .ForMember(d => d.CourseNumber, opts => opts.MapFrom(s => s.ecer_Code))
@@ -80,7 +82,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.CourseAreaOfInstruction, opts => opts.MapFrom(s => s.ecer_courseprovincialrequirement_CourseId))
       .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType))
       .ReverseMap();
-    
+
     CreateMap<ecer_CourseProvincialRequirement, CourseAreaOfInstruction>(MemberList.Destination)
       .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours))
       .ForMember(d => d.CourseAreaOfInstructionId, opts => opts.MapFrom(s => s.Id))

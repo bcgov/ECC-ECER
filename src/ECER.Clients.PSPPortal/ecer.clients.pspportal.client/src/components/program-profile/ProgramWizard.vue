@@ -167,7 +167,7 @@ export default defineComponent({
             "yyyy",
           )
         : "";
-      return `${this.programStore.draftProgram.programName} ${startYear} - ${endYear}`;
+      return `${this.programStore.draftProgram.newProgramName} ${startYear} - ${endYear}`;
     },
     showSaveButtons() {
       return (

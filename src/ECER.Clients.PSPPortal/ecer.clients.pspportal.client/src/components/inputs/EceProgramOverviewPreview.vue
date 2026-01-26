@@ -106,7 +106,7 @@ export default defineComponent({
     programName() {
       const programNameId =
         this.wizardStore.wizardConfig.steps.programOverview?.form.components
-          .programName?.id || "";
+          .newProgramName?.id || "";
       return this.wizardStore.wizardData[programNameId];
     },
   },

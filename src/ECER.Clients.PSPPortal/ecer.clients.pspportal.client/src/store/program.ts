@@ -23,7 +23,7 @@ export const useProgramStore = defineStore("program", {
       createdOn: null,
       status: "Draft",
       name: null,
-      programName: null,
+      newProgramName: null,
     },
   }),
   persist: {
@@ -49,12 +49,12 @@ export const useProgramStore = defineStore("program", {
       const wizardStore = useWizardStore();
       this.draftProgram.portalStage =
         wizardStore.currentStepStage as ProgramStage;
-      const programNameId =
+      const newProgramNameId =
         wizardStore.wizardConfig.steps?.programOverview?.form.components
-          .programName?.id;
+          .newProgramName?.id;
 
-      this.draftProgram.programName = programNameId
-        ? wizardStore.wizardData[programNameId]
+      this.draftProgram.newProgramName = newProgramNameId
+        ? wizardStore.wizardData[newProgramNameId]
         : "";
       //If programType is offered add it to the array of program types ex. earlyChildhood === true => programTypes = ["Basic"]
       const basicStep =
@@ -97,7 +97,7 @@ export const useProgramStore = defineStore("program", {
         createdOn: null,
         status: "Draft",
         name: null,
-        programName: null,
+        newProgramName: null,
       };
     },
     async saveDraft(): Promise<

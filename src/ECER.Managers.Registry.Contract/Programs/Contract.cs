@@ -35,13 +35,14 @@ public enum ProgramSubmissionError
   DraftApplicationNotFound,
   DraftApplicationValidationFailed
 }
+
 public record Course
 {
   public string CourseId { get; set; } = null!;
   public string CourseNumber { get; set; } = null!;
   public string CourseTitle { get; set; } = null!;
-  public string? NewCourseNumber { get; set; } 
-  public string? NewCourseTitle { get; set; } 
+  public string? NewCourseNumber { get; set; }
+  public string? NewCourseTitle { get; set; }
   public IEnumerable<CourseAreaOfInstruction>? CourseAreaOfInstruction { get; set; }
   public string ProgramType { get; set; } = null!;
 }
@@ -67,6 +68,7 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public DateTime? CreatedOn { get; set; }
   public string? Name { get; set; }
   public string? ProgramName { get; set; }
+  public string? NewProgramName { get; set; }
   public string? PostSecondaryInstituteName { get; set; }
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
