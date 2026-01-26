@@ -32,6 +32,20 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task QueryCommunications_IncludesCategory()
+  {
+    // Arrange
+    var communicationId = Fixture.communicationOneId;
+
+    // Act
+    var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
+
+    // Assert
+    communications.Communications.ShouldHaveSingleItem();
+    communications.Communications.First().Category.ShouldBe(CommunicationCategory.ProgramChangeRequest);
+  }
+
+  [Fact]
   public async Task SeenCommunications_MarkAsSeen()
   {
     var communicationId = Fixture.communicationOneId;

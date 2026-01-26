@@ -2,12 +2,19 @@
 <template>
   <v-list-item
     :key="String(message.id)"
-    :title="String(message.subject)"
-    :subtitle="messageDate"
     :value="String(message.id)"
     :active="message.id == messageStore.currentMessage?.id"
     @click="handleClick"
   >
+    <template #title>
+      <div>{{ String(message.subject) }}</div>
+    </template>
+    <template #subtitle>
+      <div v-if="categoryLabel" class="text-body-2">
+        Category: {{ categoryLabel }}
+      </div>
+      <div class="text-body-2">{{ messageDate }}</div>
+    </template>
     <template #prepend>
       <div class="d-inline-flex flex-nowrap">
         <svg
@@ -34,6 +41,7 @@ import { getChildMessages, markMessageAsRead } from "@/api/message";
 import { useAlertStore } from "@/store/alert";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
+import { getCommunicationCategoryLabel } from "@/utils/communicationCategory";
 import { formatDate } from "@/utils/format";
 
 export default defineComponent({
@@ -58,6 +66,9 @@ export default defineComponent({
         String(this.message.latestMessageNotifiedOn),
         "LLL d, yyyy t",
       );
+    },
+    categoryLabel(): string {
+      return getCommunicationCategoryLabel(this.message.category);
     },
   },
 

@@ -30,6 +30,7 @@ public record UserCommunicationsStatusQuery
 
 public record Communication(string? Id)
 {
+  public CommunicationCategory? Category { get; set; }
   public string Subject { get; set; } = string.Empty;
   public string Body { get; set; } = string.Empty;
   public InitiatedFrom From { get; set; }
@@ -67,6 +68,19 @@ public enum CommunicationStatus
   NotifiedRecipient,
   Acknowledged,
   Inactive
+}
+
+public enum CommunicationCategory
+{
+  ProgramChangeRequest,
+  PracticumInquiry,
+  ECEProgramApplicationInquiry,
+  ECEProgramApplicationRequirements,
+  ProgramProfileInquiry,
+  IndividualEducationPlanIEP,
+  MeetingRequest,
+  RequestforAdditionalInformation,
+  Other
 }
 
 public enum InitiatedFrom

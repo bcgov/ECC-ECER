@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.Extensions.EnumMapping;
 
 namespace ECER.Clients.PSPPortal.Server.Communications
 {
@@ -8,6 +9,9 @@ namespace ECER.Clients.PSPPortal.Server.Communications
     {
       CreateMap<Managers.Registry.Contract.Communications.Communication, Communication>().ReverseMap();
       CreateMap<Managers.Registry.Contract.Communications.CommunicationDocument, CommunicationDocument>().ReverseMap();
+      CreateMap<Managers.Registry.Contract.Communications.CommunicationCategory, CommunicationCategory>()
+        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+        .ReverseMap();
     }
   }
 }

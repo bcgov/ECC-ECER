@@ -34,6 +34,21 @@
             </v-col>
           </v-row>
           <v-row class="mt-5">
+            <v-col cols="6">
+              <div>Category</div>
+              <v-select
+                v-model="category"
+                class="mt-2"
+                variant="outlined"
+                :items="communicationCategoryOptions"
+                item-title="label"
+                item-value="value"
+                :rules="[Rules.required('Required')]"
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row class="mt-5">
             <v-col>
               <div>Message</div>
               <v-textarea
@@ -102,11 +117,13 @@ import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
+import { communicationCategoryOptions } from "@/utils/communicationCategory";
 import * as Rules from "@/utils/formRules";
 import * as Functions from "@/utils/functions";
 interface NewMessage {
   text: string;
   subject: string;
+  category: Components.Schemas.CommunicationCategory | null;
   Rules: any;
   showCloseDialog: boolean;
   areAttachedFilesValid: boolean;
@@ -130,6 +147,7 @@ export default defineComponent({
       messageStore,
       loadingStore,
       alertStore,
+      communicationCategoryOptions,
       maxNumberOfFiles,
       router,
     };
@@ -144,6 +162,7 @@ export default defineComponent({
       formValid: false,
       attachments: [],
       subject: "",
+      category: null,
     };
   },
   methods: {
@@ -163,6 +182,7 @@ export default defineComponent({
           communication: {
             subject: this.subject,
             text: this.text,
+            category: this.category ?? undefined,
             documents: this.attachments,
           },
         });
