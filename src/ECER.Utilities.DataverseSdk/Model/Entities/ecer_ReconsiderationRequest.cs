@@ -36,19 +36,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Complete = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Complete = 621870003,
+		InReview = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InReview = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		New = 621870001,
+		New = 1,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]

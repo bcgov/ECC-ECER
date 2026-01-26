@@ -10,6 +10,18 @@
         ></v-btn>
         <v-divider :style="{ opacity: 1 }" />
         <h1 class="mt-5">Re: {{ messageThreadSubject }}</h1>
+        <v-row class="mt-5">
+          <v-col cols="6">
+            <div>Category</div>
+            <v-text-field
+              class="mt-2"
+              variant="outlined"
+              :model-value="messageThreadCategoryLabel"
+              readonly
+              hide-details="auto"
+            ></v-text-field>
+          </v-col>
+        </v-row>
         <v-form ref="replyForm" v-model="formValid">
           <v-row class="mt-5">
             <v-col>
@@ -80,6 +92,7 @@ import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
+import { getCommunicationCategoryLabel } from "@/utils/communicationCategory";
 import * as Rules from "@/utils/formRules";
 import * as Functions from "@/utils/functions";
 interface ReplyToMessageData {
@@ -102,12 +115,16 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const messageId = route.params?.messageId?.toString();
-    const messageThread = (await getChildMessages({ parentId: messageId })).data
-      ?.communications;
+    const messageThread =
+      (await getChildMessages({ parentId: messageId })).data?.communications ??
+      [];
     let messageThreadSubject = "";
+    let messageThreadCategory: Components.Schemas.CommunicationCategory | null =
+      null;
     const maxNumberOfFiles = 5;
     if (messageThread.length > 0) {
       messageThreadSubject = messageThread[0].subject;
+      messageThreadCategory = messageThread[0].category ?? null;
     }
 
     return {
@@ -118,6 +135,10 @@ export default defineComponent({
       router,
       messageId,
       messageThreadSubject,
+      messageThreadCategory,
+      messageThreadCategoryLabel: getCommunicationCategoryLabel(
+        messageThreadCategory,
+      ),
     };
   },
   data(): ReplyToMessageData {
@@ -148,6 +169,7 @@ export default defineComponent({
           communication: {
             id: this.messageId,
             text: this.text,
+            category: this.messageThreadCategory ?? undefined,
             documents: this.attachments,
           },
         });

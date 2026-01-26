@@ -29,6 +29,10 @@
             ></v-btn>
           </v-sheet>
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
+          <div v-if="messageCategoryLabel" class="mt-2 small">
+            <span class="font-weight-medium">Category:</span>
+            {{ messageCategoryLabel }}
+          </div>
 
           <div
             v-for="(message, index) in messageStore.currentThread"
@@ -116,6 +120,10 @@
       ></v-btn>
     </v-sheet>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
+    <div v-if="messageCategoryLabel" class="mt-2 small">
+      <span class="font-weight-medium">Category:</span>
+      {{ messageCategoryLabel }}
+    </div>
     <div
       v-for="(message, index) in messageStore.currentThread"
       :key="index"
@@ -183,6 +191,7 @@ import type { Communication } from "@/types/openapi";
 import { useRouter } from "vue-router";
 import DownloadFileLink from "../common/DownloadFileLink.vue";
 import { getCommunicationFile } from "@/api/message";
+import { getCommunicationCategoryLabel } from "@/utils/communicationCategory";
 
 export default defineComponent({
   name: "Message",
@@ -208,6 +217,11 @@ export default defineComponent({
       return message
         ? formatDate(String(message.notifiedOn), "LLL d, yyyy t")
         : "";
+    },
+    messageCategoryLabel(): string {
+      return getCommunicationCategoryLabel(
+        this.messageStore.currentMessage?.category,
+      );
     },
   },
   methods: {

@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Immediate Actions
+	/// Status of the Reconsideration Investigation Outcome
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_immediateactions_statecode
+	public enum ecer_reconsiderationinvestigationoutcome_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,28 +28,31 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Immediate Actions
+	/// Reason for the status of the Reconsideration Investigation Outcome
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_ImmediateActions_StatusCode
+	public enum ecer_ReconsiderationInvestigationOutcome_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Complete = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		InReview = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		New = 1,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_immediateactions")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_reconsiderationinvestigationoutcome")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_ImmediateActions : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ReconsiderationInvestigationOutcome : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_immediateactions entity
+		/// Available fields, a the time of codegen, for the ecer_reconsiderationinvestigationoutcome entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,22 +63,37 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_appealperiodendDate = "ecer_appealperiodenddate";
-			public const string ecer_appealrequest = "ecer_appealrequest";
-			public const string ecer_appealrequestName = "ecer_appealrequestname";
-			public const string ecer_ImmediateActionReason = "ecer_immediateactionreason";
-			public const string ecer_immediateactions_Investigation = "ecer_immediateactions_Investigation";
-			public const string ecer_ImmediateActionsId = "ecer_immediateactionsid";
-			public const string Id = "ecer_immediateactionsid";
-			public const string ecer_ImmediateActionType = "ecer_immediateactiontype";
-			public const string ecer_immediateactiontypeName = "ecer_immediateactiontypename";
-			public const string ecer_Investigation = "ecer_investigation";
-			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_bcgov_documenturl_ReconsiderationInvestigationOutcomeId = "ecer_bcgov_documenturl_ReconsiderationInvestigationOutcomeId";
+			public const string ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome = "ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome";
+			public const string ecer_DecisionDate = "ecer_decisiondate";
+			public const string ecer_DecisionDateLD = "ecer_decisiondateld";
+			public const string ecer_DecisionOutcome = "ecer_decisionoutcome";
+			public const string ecer_decisionoutcomeName = "ecer_decisionoutcomename";
+			public const string ecer_ExplanationandEvidence = "ecer_explanationandevidence";
+			public const string ecer_ImmediateActionId = "ecer_immediateactionid";
+			public const string ecer_ImmediateActionIdName = "ecer_immediateactionidname";
+			public const string ecer_InvestigationId = "ecer_investigationid";
+			public const string ecer_InvestigationIdName = "ecer_investigationidname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_OtherReason = "ecer_otherreason";
+			public const string ecer_Reason = "ecer_reason";
+			public const string ecer_reasonName = "ecer_reasonname";
+			public const string ecer_ReconsiderationDecisionCallDate = "ecer_reconsiderationdecisioncalldate";
+			public const string ecer_ReconsiderationDecisionCallDateLD = "ecer_reconsiderationdecisioncalldateld";
 			public const string ecer_reconsiderationinvestigationoutcome_ImmediateActionId = "ecer_reconsiderationinvestigationoutcome_ImmediateActionId";
-			public const string ecer_reconsiderationperiodenddate = "ecer_reconsiderationperiodenddate";
-			public const string ecer_ReconsiderationRequest = "ecer_reconsiderationrequest";
-			public const string ecer_reconsiderationrequestName = "ecer_reconsiderationrequestname";
+			public const string ecer_reconsiderationinvestigationoutcome_InvestigationId = "ecer_reconsiderationinvestigationoutcome_InvestigationId";
+			public const string ecer_reconsiderationinvestigationoutcome_RegistrantId = "ecer_reconsiderationinvestigationoutcome_RegistrantId";
+			public const string ecer_ReconsiderationInvestigationOutcomeId = "ecer_reconsiderationinvestigationoutcomeid";
+			public const string Id = "ecer_reconsiderationinvestigationoutcomeid";
+			public const string ecer_ReconsiderationLetterSentDate = "ecer_reconsiderationlettersentdate";
+			public const string ecer_ReconsiderationLetterSentDateLD = "ecer_reconsiderationlettersentdateld";
+			public const string ecer_RegistrantId = "ecer_registrantid";
+			public const string ecer_RegistrantIdName = "ecer_registrantidname";
+			public const string ecer_RegistrantIdYomiName = "ecer_registrantidyominame";
+			public const string ecer_SubmittedDate = "ecer_submitteddate";
+			public const string ecer_SubmittedDateLD = "ecer_submitteddateld";
+			public const string ecer_Type = "ecer_type";
+			public const string ecer_typeName = "ecer_typename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -102,19 +120,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_ImmediateActions(System.Guid id) : 
+		public ecer_ReconsiderationInvestigationOutcome(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_ImmediateActions(string keyName, object keyValue) : 
+		public ecer_ReconsiderationInvestigationOutcome(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_ImmediateActions(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ReconsiderationInvestigationOutcome(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -123,22 +141,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_ImmediateActions() : 
+		public ecer_ReconsiderationInvestigationOutcome() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_immediateactionsid";
+		public const string PrimaryIdAttribute = "ecer_reconsiderationinvestigationoutcomeid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_ImmediateActions";
+		public const string EntitySchemaName = "ecer_ReconsiderationInvestigationOutcome";
 		
-		public const string EntityLogicalName = "ecer_immediateactions";
+		public const string EntityLogicalName = "ecer_reconsiderationinvestigationoutcome";
 		
-		public const string EntityLogicalCollectionName = "ecer_immediateactionses";
+		public const string EntityLogicalCollectionName = "ecer_reconsiderationinvestigationoutcomes";
 		
-		public const string EntitySetName = "ecer_immediateactionses";
+		public const string EntitySetName = "ecer_reconsiderationinvestigationoutcomes";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -252,45 +270,60 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealperiodenddate")]
-		public System.Nullable<System.DateTime> ecer_appealperiodendDate
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondate")]
+		public System.Nullable<System.DateTime> ecer_DecisionDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_appealperiodenddate");
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_decisiondate");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_appealperiodenddate", value);
+				this.SetAttributeValue("ecer_decisiondate", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealrequest")]
-		public System.Nullable<bool> ecer_appealrequest
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondateld")]
+		public string ecer_DecisionDateLD
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_appealrequest");
+				return this.GetAttributeValue<string>("ecer_decisiondateld");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_appealrequest", value);
+				this.SetAttributeValue("ecer_decisiondateld", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealrequestname")]
-		public string ecer_appealrequestName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionoutcome")]
+		public virtual ecer_DecisionOutcome? ecer_DecisionOutcome
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_appealrequest"))
+				return ((ecer_DecisionOutcome?)(EntityOptionSetEnum.GetEnum(this, "ecer_decisionoutcome")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisionoutcome", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionoutcomename")]
+		public string ecer_decisionoutcomeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_decisionoutcome"))
 				{
-					return this.FormattedValues["ecer_appealrequest"];
+					return this.FormattedValues["ecer_decisionoutcome"];
 				}
 				else
 				{
@@ -299,86 +332,45 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionreason")]
-		public string ecer_ImmediateActionReason
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_explanationandevidence")]
+		public string ecer_ExplanationandEvidence
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_immediateactionreason");
+				return this.GetAttributeValue<string>("ecer_explanationandevidence");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_immediateactionreason", value);
+				this.SetAttributeValue("ecer_explanationandevidence", value);
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionsid")]
-		public System.Nullable<System.Guid> ecer_ImmediateActionsId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ImmediateActionId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_immediateactionsid");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_immediateactionid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_immediateactionsid", value);
-				if (value.HasValue)
+				this.SetAttributeValue("ecer_immediateactionid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionidname")]
+		public string ecer_ImmediateActionIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_immediateactionid"))
 				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionsid")]
-		public override System.Guid Id
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return base.Id;
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.ecer_ImmediateActionsId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactiontype")]
-		public virtual ecer_immediateaction? ecer_ImmediateActionType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_immediateaction?)(EntityOptionSetEnum.GetEnum(this, "ecer_immediateactiontype")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_immediateactiontype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactiontypename")]
-		public string ecer_immediateactiontypeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_immediateactiontype"))
-				{
-					return this.FormattedValues["ecer_immediateactiontype"];
+					return this.FormattedValues["ecer_immediateactionid"];
 				}
 				else
 				{
@@ -387,30 +379,30 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_InvestigationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigation");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigationid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_investigation", value);
+				this.SetAttributeValue("ecer_investigationid", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationname")]
-		public string ecer_InvestigationName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationidname")]
+		public string ecer_InvestigationIdName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_investigation"))
+				if (this.FormattedValues.Contains("ecer_investigationid"))
 				{
-					return this.FormattedValues["ecer_investigation"];
+					return this.FormattedValues["ecer_investigationid"];
 				}
 				else
 				{
@@ -434,45 +426,257 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationperiodenddate")]
-		public System.Nullable<System.DateTime> ecer_reconsiderationperiodenddate
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_otherreason")]
+		public string ecer_OtherReason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_reconsiderationperiodenddate");
+				return this.GetAttributeValue<string>("ecer_otherreason");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_reconsiderationperiodenddate", value);
+				this.SetAttributeValue("ecer_otherreason", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequest")]
-		public System.Nullable<bool> ecer_ReconsiderationRequest
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reason")]
+		public virtual ecer_ReconsiderationRequestReason? ecer_Reason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_reconsiderationrequest");
+				return ((ecer_ReconsiderationRequestReason?)(EntityOptionSetEnum.GetEnum(this, "ecer_reason")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_reconsiderationrequest", value);
+				this.SetAttributeValue("ecer_reason", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestname")]
-		public string ecer_reconsiderationrequestName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reasonname")]
+		public string ecer_reasonName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_reconsiderationrequest"))
+				if (this.FormattedValues.Contains("ecer_reason"))
 				{
-					return this.FormattedValues["ecer_reconsiderationrequest"];
+					return this.FormattedValues["ecer_reason"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationdecisioncalldate")]
+		public System.Nullable<System.DateTime> ecer_ReconsiderationDecisionCallDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_reconsiderationdecisioncalldate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationdecisioncalldate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationdecisioncalldateld")]
+		public string ecer_ReconsiderationDecisionCallDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_reconsiderationdecisioncalldateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationdecisioncalldateld", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationinvestigationoutcomeid")]
+		public System.Nullable<System.Guid> ecer_ReconsiderationInvestigationOutcomeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_reconsiderationinvestigationoutcomeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationinvestigationoutcomeid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationinvestigationoutcomeid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.ecer_ReconsiderationInvestigationOutcomeId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationlettersentdate")]
+		public System.Nullable<System.DateTime> ecer_ReconsiderationLetterSentDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_reconsiderationlettersentdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationlettersentdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationlettersentdateld")]
+		public string ecer_ReconsiderationLetterSentDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_reconsiderationlettersentdateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationlettersentdateld", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_RegistrantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_registrantid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_registrantid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidname")]
+		public string ecer_RegistrantIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_registrantid"))
+				{
+					return this.FormattedValues["ecer_registrantid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidyominame")]
+		public string ecer_RegistrantIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_registrantid"))
+				{
+					return this.FormattedValues["ecer_registrantid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_submitteddate")]
+		public System.Nullable<System.DateTime> ecer_SubmittedDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_submitteddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_submitteddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_submitteddateld")]
+		public string ecer_SubmittedDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_submitteddateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_submitteddateld", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_type")]
+		public virtual ecer_ReconsiderationInvestigationType? ecer_Type
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_ReconsiderationInvestigationType?)(EntityOptionSetEnum.GetEnum(this, "ecer_type")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_type", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_typename")]
+		public string ecer_typeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_type"))
+				{
+					return this.FormattedValues["ecer_type"];
 				}
 				else
 				{
@@ -744,15 +948,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Immediate Actions
+		/// Status of the Reconsideration Investigation Outcome
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_immediateactions_statecode? StateCode
+		public virtual ecer_reconsiderationinvestigationoutcome_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_immediateactions_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_reconsiderationinvestigationoutcome_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -779,15 +983,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Immediate Actions
+		/// Reason for the status of the Reconsideration Investigation Outcome
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_ImmediateActions_StatusCode? StatusCode
+		public virtual ecer_ReconsiderationInvestigationOutcome_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_ImmediateActions_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ReconsiderationInvestigationOutcome_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -863,39 +1067,98 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_reconsiderationinvestigationoutcome_ImmediateActionId
+		/// 1:N ecer_bcgov_documenturl_ReconsiderationInvestigationOutcomeId
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationinvestigationoutcome_ImmediateActionId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome> ecer_reconsiderationinvestigationoutcome_ImmediateActionId
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_ReconsiderationInvestigationOutcomeId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_ReconsiderationInvestigationOutcomeId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_reconsiderationinvestigationoutcome_ImmediateActionId", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_ReconsiderationInvestigationOutcomeId", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_reconsiderationinvestigationoutcome_ImmediateActionId", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_ReconsiderationInvestigationOutcomeId", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 ecer_immediateactions_Investigation
+		/// 1:N ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_immediateactions_Investigation")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_immediateactions_Investigation
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+			"outcome")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_immediateactions_Investigation", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+						"outcome", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_immediateactions_Investigation", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+						"outcome", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_reconsiderationinvestigationoutcome_ImmediateActionId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationinvestigationoutcome_ImmediateActionId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ImmediateActions ecer_reconsiderationinvestigationoutcome_ImmediateActionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ImmediateActions>("ecer_reconsiderationinvestigationoutcome_ImmediateActionId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ImmediateActions>("ecer_reconsiderationinvestigationoutcome_ImmediateActionId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_reconsiderationinvestigationoutcome_InvestigationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationinvestigationoutcome_InvestigationId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_reconsiderationinvestigationoutcome_InvestigationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_reconsiderationinvestigationoutcome_InvestigationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_reconsiderationinvestigationoutcome_InvestigationId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_reconsiderationinvestigationoutcome_RegistrantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationinvestigationoutcome_RegistrantId")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_reconsiderationinvestigationoutcome_RegistrantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_reconsiderationinvestigationoutcome_RegistrantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_reconsiderationinvestigationoutcome_RegistrantId", null, value);
 			}
 		}
 		
@@ -904,7 +1167,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_ImmediateActions(object anonymousType) : 
+		public ecer_ReconsiderationInvestigationOutcome(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -922,9 +1185,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_immediateactionsid"] = base.Id;
+                        Attributes["ecer_reconsiderationinvestigationoutcomeid"] = base.Id;
                         break;
-                    case "ecer_immediateactionsid":
+                    case "ecer_reconsiderationinvestigationoutcomeid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;
