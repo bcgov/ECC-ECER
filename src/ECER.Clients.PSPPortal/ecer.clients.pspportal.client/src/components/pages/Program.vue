@@ -93,7 +93,10 @@ export default defineComponent({
           "ChangeRequestInProgress",
           "Inactive",
         ]);
-        const program = response?.programs && response.programs.length > 0 ? response.programs[0] : null;
+        const program =
+          response?.programs && response.programs.length > 0
+            ? response.programs[0]
+            : null;
         this.program = program || null;
       } catch (error) {
         console.error("Error loading program:", error);

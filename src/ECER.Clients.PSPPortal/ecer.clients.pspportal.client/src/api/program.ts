@@ -14,22 +14,28 @@ const getPrograms = async (
     "UnderReview",
     "ChangeRequestInProgress",
   ],
-  {
-    page = 0,
-    pageSize = 0
-  } = {},
-): Promise<ApiResponse<Components.Schemas.GetProgramsResponse | null | undefined>> => {
+  { page = 0, pageSize = 0 } = {},
+): Promise<
+  ApiResponse<Components.Schemas.GetProgramsResponse | null | undefined>
+> => {
   const client = await getClient();
 
   const config: AxiosRequestConfig = {
-    params: {page, pageSize},
+    params: { page, pageSize },
   };
 
   return apiResultHandler.execute<Components.Schemas.GetProgramsResponse | null>(
-    { request: client.program_get({
-      id: id,
-      byStatus: statuses,
-    }, null, config), key: "program_get" },
+    {
+      request: client.program_get(
+        {
+          id: id,
+          byStatus: statuses,
+        },
+        null,
+        config,
+      ),
+      key: "program_get",
+    },
   );
 };
 

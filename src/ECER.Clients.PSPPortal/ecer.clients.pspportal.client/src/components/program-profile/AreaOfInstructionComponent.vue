@@ -383,7 +383,10 @@ export default defineComponent({
           "ChangeRequestInProgress",
           "Inactive",
         ]);
-        const program = programResult?.programs && programResult.programs.length > 0 ? programResult.programs[0] : null;
+        const program =
+          programResult?.programs && programResult.programs.length > 0
+            ? programResult.programs[0]
+            : null;
         if (program) {
           // Update the store with the reloaded program
           this.programStore.setDraftProgramFromProfile(program);

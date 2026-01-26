@@ -1,10 +1,12 @@
 <template>
-  <v-dialog :model-value="show" @update:model-value="handleDialogClose($event)" :persistent="saving">
+  <v-dialog
+    :model-value="show"
+    @update:model-value="handleDialogClose($event)"
+    :persistent="saving"
+  >
     <v-form ref="updateCourse">
       <v-card class="pa-4">
-        <v-card-title>
-          Update Course
-        </v-card-title>
+        <v-card-title>Update Course</v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
@@ -31,7 +33,10 @@
           <v-row>
             <v-col class="mb-6">
               <h3>Areas of instruction</h3>
-              <p>Indicate the number of hours this course satisfies for each area of instruction.</p>
+              <p>
+                Indicate the number of hours this course satisfies for each area
+                of instruction.
+              </p>
             </v-col>
           </v-row>
           <div v-for="area in areas" :key="area.id || undefined">
@@ -51,19 +56,32 @@
                   :rules="[validateHours]"
                 ></v-text-field>
               </v-col>
-              <v-col cols="6" md="3" lg="2" class="pr-3"><span v-if="area.minimumHours && area.minimumHours > 0"> / {{area.minimumHours}} hours required</span></v-col>
+              <v-col cols="6" md="3" lg="2" class="pr-3">
+                <span v-if="area.minimumHours && area.minimumHours > 0">
+                  / {{ area.minimumHours }} hours required
+                </span>
+              </v-col>
             </v-row>
-            
           </div>
         </v-card-text>
         <v-card-actions class="ml-4 mb-4">
-          <v-btn color="primary" variant="outlined"
-                 :disabled="saving"
-                 @click="handleCancel">Cancel</v-btn>
-          <v-btn color="primary" variant="flat"
-                 :loading="saving"
-                 :disabled="saving"
-                 @click="handleSave">Save changes</v-btn>
+          <v-btn
+            color="primary"
+            variant="outlined"
+            :disabled="saving"
+            @click="handleCancel"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="primary"
+            variant="flat"
+            :loading="saving"
+            :disabled="saving"
+            @click="handleSave"
+          >
+            Save changes
+          </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -72,34 +90,34 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType, toRaw, toRefs} from 'vue'
+import { defineComponent, type PropType, toRaw, toRefs } from "vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
-import type {Components} from "@/types/openapi";
-import {useConfigStore} from "@/store/config";
+import type { Components } from "@/types/openapi";
+import { useConfigStore } from "@/store/config";
 import * as Rules from "@/utils/formRules";
-import {number} from "@/utils/formRules";
+import { number } from "@/utils/formRules";
 import { useDisplay } from "vuetify";
 
 export default defineComponent({
   name: "EditCourseDialog",
-  components: {EceTextField},
+  components: { EceTextField },
   props: {
     course: {
       type: Object as PropType<Components.Schemas.Course | null>,
-      required: true
+      required: true,
     },
     programType: {
       type: String as PropType<Components.Schemas.ProgramTypes>,
-      required: true
+      required: true,
     },
     show: {
       type: Boolean,
-      default: false
+      default: false,
     },
     saving: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ["save", "cancel"],
   setup() {
@@ -109,7 +127,7 @@ export default defineComponent({
     return {
       configStore,
       mdAndUp,
-      smAndDown
+      smAndDown,
     };
   },
   data() {
@@ -126,18 +144,22 @@ export default defineComponent({
   created() {
     // Deep copy the course to avoid mutating the prop
     this.localCourse = this.course
-      ? structuredClone(toRaw(this.course)) as Components.Schemas.Course
+      ? (structuredClone(toRaw(this.course)) as Components.Schemas.Course)
       : null;
-    
+
     // Track which area IDs existed in the original course
     this.originalAreaIds = new Set(
       (this.course?.courseAreaOfInstruction || [])
-        .map(c => c.areaOfInstructionId)
-        .filter((id): id is string => id !== null && id !== undefined)
+        .map((c) => c.areaOfInstructionId)
+        .filter((id): id is string => id !== null && id !== undefined),
     );
-    
-    this.courseNumber = this.localCourse?.newCourseNumber ? this.localCourse?.newCourseNumber : this.localCourse?.courseNumber ?? "";
-    this.courseTitle = this.localCourse?.newCourseTitle ? this.localCourse?.newCourseTitle : this.localCourse?.courseTitle ?? "";
+
+    this.courseNumber = this.localCourse?.newCourseNumber
+      ? this.localCourse?.newCourseNumber
+      : (this.localCourse?.courseNumber ?? "");
+    this.courseTitle = this.localCourse?.newCourseTitle
+      ? this.localCourse?.newCourseTitle
+      : (this.localCourse?.courseTitle ?? "");
   },
   computed: {
     areas(): Components.Schemas.AreaOfInstruction[] {
@@ -156,7 +178,7 @@ export default defineComponent({
         }
         return Rules.numberToDecimalPlaces(2)(v);
       };
-    }
+    },
   },
   methods: {
     number,
@@ -173,7 +195,7 @@ export default defineComponent({
       }
       // Find existing entry for this area
       const areaInstruction = this.localCourse.courseAreaOfInstruction.find(
-        c => c.areaOfInstructionId === areaId
+        (c) => c.areaOfInstructionId === areaId,
       );
 
       return areaInstruction?.newHours ?? "0";
@@ -203,18 +225,20 @@ export default defineComponent({
 
       // Find existing entry for this area
       const existingCourseAreaOfInstruction = courseAreaOfInstruction.find(
-        c => c.areaOfInstructionId === areaId
+        (c) => c.areaOfInstructionId === areaId,
       );
 
       const wasInOriginal = this.originalAreaIds.has(areaId);
 
       if (hoursValue > 0) {
-        if (existingCourseAreaOfInstruction) { //update existing
+        if (existingCourseAreaOfInstruction) {
+          //update existing
           existingCourseAreaOfInstruction.newHours = value;
-        } else { //create new
+        } else {
+          //create new
           courseAreaOfInstruction.push({
             areaOfInstructionId: areaId,
-            newHours: value
+            newHours: value,
           });
         }
       } else if (existingCourseAreaOfInstruction && wasInOriginal) {
@@ -222,13 +246,16 @@ export default defineComponent({
         existingCourseAreaOfInstruction.newHours = "0";
       } else if (existingCourseAreaOfInstruction) {
         // Remove only if it was newly created (didn't exist in original)
-        this.localCourse.courseAreaOfInstruction = courseAreaOfInstruction.filter(c => c.areaOfInstructionId !== areaId);
+        this.localCourse.courseAreaOfInstruction =
+          courseAreaOfInstruction.filter(
+            (c) => c.areaOfInstructionId !== areaId,
+          );
       }
       // else it doesn't exist and hours is 0, so don't create it
     },
     handleSave() {
       if (this.localCourse) {
-        if(this.localCourse.courseNumber === this.courseNumber) {
+        if (this.localCourse.courseNumber === this.courseNumber) {
           this.localCourse.newCourseNumber = null;
         } else {
           this.localCourse.newCourseNumber = this.courseNumber;
@@ -247,10 +274,10 @@ export default defineComponent({
       this.$emit("cancel");
     },
     handleDialogClose(value: boolean) {
-      if(!value && !this.saving) {
+      if (!value && !this.saving) {
         this.handleCancel();
       }
-    }
-  }
-})
+    },
+  },
+});
 </script>

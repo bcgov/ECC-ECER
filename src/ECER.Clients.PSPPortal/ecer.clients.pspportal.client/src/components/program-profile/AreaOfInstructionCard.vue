@@ -73,9 +73,19 @@
               <v-col v-if="mdAndUp">
                 <span>{{ courseArea.newHours }} hours</span>
               </v-col>
-              <v-col cols="12" md="auto" class="d-flex align-center justify-space-between d-md-inline-flex justify-md-start">
-                <span v-if="smAndDown" class="mr-2">{{ courseArea.newHours }} hours</span>
-                <v-divider v-if="mdAndUp" vertical class="d-none d-md-block"></v-divider>
+              <v-col
+                cols="12"
+                md="auto"
+                class="d-flex align-center justify-space-between d-md-inline-flex justify-md-start"
+              >
+                <span v-if="smAndDown" class="mr-2">
+                  {{ courseArea.newHours }} hours
+                </span>
+                <v-divider
+                  v-if="mdAndUp"
+                  vertical
+                  class="d-none d-md-block"
+                ></v-divider>
                 <v-btn
                   icon="mdi-pencil"
                   variant="plain"
@@ -114,7 +124,7 @@
 import { defineComponent, type PropType, toRefs } from "vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
-import { useDisplay } from 'vuetify';
+import { useDisplay } from "vuetify";
 
 interface CourseAreaOfInstructionWithCourse
   extends Components.Schemas.CourseAreaOfInstruction {
@@ -143,7 +153,7 @@ export default defineComponent({
     return {
       configStore,
       mdAndUp,
-      smAndDown
+      smAndDown,
     };
   },
   props: {
@@ -229,8 +239,10 @@ export default defineComponent({
 
       // Ensure Program Development comes before Child Guidance
       return areas.sort((a, b) => {
-        const aIsProgramDevelopment = a.areaName === "Program Development, Curriculum and Foundations";
-        const bIsProgramDevelopment = b.areaName === "Program Development, Curriculum and Foundations";
+        const aIsProgramDevelopment =
+          a.areaName === "Program Development, Curriculum and Foundations";
+        const bIsProgramDevelopment =
+          b.areaName === "Program Development, Curriculum and Foundations";
         const aIsChildGuidance = a.areaName === "Child Guidance";
         const bIsChildGuidance = b.areaName === "Child Guidance";
 
