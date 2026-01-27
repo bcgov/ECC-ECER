@@ -108,6 +108,9 @@ internal sealed class ProgramRepository : IProgramRepository
       var existing = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == ecerProgram.ecer_ProgramId);
       if (existing == null) throw new InvalidOperationException($"ecer_Program '{ecerProgram.ecer_ProgramId}' not found");
 
+      //check for existing values, if they are the same do not map. 
+      ecerProgram.ecer_NewDescriptiveProgramName = existing.ecer_DescriptiveProgramName == ecerProgram.ecer_NewDescriptiveProgramName ? string.Empty : ecerProgram.ecer_NewDescriptiveProgramName;
+
       ecerProgram.StatusCode = existing.StatusCode ?? defaultStatus;
       if (string.IsNullOrWhiteSpace(ecerProgram.ecer_Name))
       {
