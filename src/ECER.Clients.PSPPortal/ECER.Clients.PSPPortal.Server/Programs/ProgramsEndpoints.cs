@@ -221,8 +221,7 @@ public record Program
 {
   public string? Id { get; set; }
 
-  [Required]
-  public string PortalStage { get; set; } = null!;
+  public string? PortalStage { get; set; }
   public ProgramStatus Status { get; set; } = ProgramStatus.Draft;
   public DateTime? CreatedOn { get; set; }
   public string? Name { get; set; }

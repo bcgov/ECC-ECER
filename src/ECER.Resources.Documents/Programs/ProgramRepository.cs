@@ -245,8 +245,20 @@ internal sealed class ProgramRepository : IProgramRepository
     {
       existingProgram.StatusCode = ecer_Program_StatusCode.Withdrawn;
       existingProgram.StateCode = ecer_program_statecode.Inactive;
-        
       context.UpdateObject(existingProgram);
+
+      // Update the original program profile back to Registry Review Complete
+      var fromProgramProfileId = existingProgram.ecer_FromProgramProfileId?.Id;
+      if (fromProgramProfileId != null)
+      {
+        var originalProgram = context.ecer_ProgramSet
+          .SingleOrDefault(p => p.ecer_ProgramId == fromProgramProfileId);
+        if (originalProgram != null)
+        {
+          originalProgram.StatusCode = ecer_Program_StatusCode.RegistryReviewComplete;
+          context.UpdateObject(originalProgram);
+        }
+      }
     }
     context.SaveChanges();
     return program.Id!;
