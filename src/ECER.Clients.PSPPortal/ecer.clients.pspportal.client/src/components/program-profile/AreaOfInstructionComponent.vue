@@ -50,7 +50,7 @@
   </div>
   <!-- this is to block the user from progressing if hours are not met -->
   <v-input
-    v-model="programStore.draftProgram.courses"
+    v-model="program.courses"
     :rules="generateRulesByProgramType()"
     :max-errors="5"
   ></v-input>
