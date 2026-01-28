@@ -86,6 +86,7 @@
       :program-type="programType"
       :include-total-hours="showTotalHours"
       :area-subtitles="generateSubtitleMap"
+      @reload-program="reloadProgram"
     >
       <template #description>
         <p>
@@ -114,6 +115,7 @@ import { useProgramStore } from "@/store/program";
 
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
+import { getPrograms } from "@/api/program";
 
 import * as Rules from "@/utils/formRules";
 
@@ -225,6 +227,32 @@ export default defineComponent({
   },
   methods: {
     formatDate,
+    async reloadProgram() {
+      const programId = this.programStore.draftProgram?.id;
+      if (!programId) {
+        return;
+      }
+      try {
+        const { data: programResult } = await getPrograms(programId, [
+          "Draft",
+          "Denied",
+          "Approved",
+          "UnderReview",
+          "ChangeRequestInProgress",
+          "Inactive",
+        ]);
+        const program =
+          programResult?.programs && programResult.programs.length > 0
+            ? programResult.programs[0]
+            : null;
+        if (program) {
+          // Update the store with the reloaded program
+          this.programStore.setDraftProgramFromProfile(program);
+        }
+      } catch (error) {
+        console.error("Error loading program:", error);
+      }
+    },
   },
 });
 </script>
