@@ -358,7 +358,6 @@ export default defineComponent({
           this.showEditCourseDialog = false;
           this.selectedCourse = null;
           this.saving = false;
-          // await this.loadProgram(this.program.id);
         }
       } catch (error) {
         this.saving = false;
