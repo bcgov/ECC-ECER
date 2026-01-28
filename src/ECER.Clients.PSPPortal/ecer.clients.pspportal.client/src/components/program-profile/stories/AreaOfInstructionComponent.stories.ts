@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { useConfigStore } from "@/store/config";
-import { useProgramStore } from "@/store/program";
 import type { Components } from "@/types/openapi";
 import AreaOfInstructionComponent from "../AreaOfInstructionComponent.vue";
 
@@ -136,8 +135,6 @@ const mockProgram: Components.Schemas.Program = {
 const withMockConfigStore = (storyFn: any, context: any) => {
   // Initialize store with mock data
   const configStore = useConfigStore();
-  const programStore = useProgramStore();
-  programStore.draftProgram = mockProgram;
   configStore.areaOfInstructionList = mockAreaOfInstructions;
 
   return storyFn(context);

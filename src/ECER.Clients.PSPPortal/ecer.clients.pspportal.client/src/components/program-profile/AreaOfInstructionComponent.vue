@@ -61,9 +61,8 @@ import { defineComponent, type PropType } from "vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
 import { useAlertStore } from "@/store/alert";
-import { useProgramStore } from "@/store/program";
 import { getAreaOfInstructionList } from "@/api/configuration";
-import { getPrograms, updateCourse } from "@/api/program";
+import { updateCourse } from "@/api/program";
 import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
 import EditCourseDialog from "./EditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
@@ -108,17 +107,15 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["courseEdit"],
+  emits: ["courseEdit", "reloadProgram"],
   setup() {
     const configStore = useConfigStore();
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
-    const programStore = useProgramStore();
     return {
       configStore,
       alertStore,
       loadingStore,
-      programStore,
     };
   },
   data() {
@@ -357,10 +354,11 @@ export default defineComponent({
           this.alertStore.setSuccessAlert(
             "Course has been updated successfully.",
           );
+          this.$emit("reloadProgram");
           this.showEditCourseDialog = false;
           this.selectedCourse = null;
           this.saving = false;
-          await this.loadProgram(this.program.id);
+          // await this.loadProgram(this.program.id);
         }
       } catch (error) {
         this.saving = false;
@@ -368,31 +366,6 @@ export default defineComponent({
         this.alertStore.setFailureAlert(
           "Sorry, something went wrong and your changes could not be saved. Try again later.",
         );
-      }
-    },
-    async loadProgram(programId?: string | null | undefined) {
-      if (!programId) {
-        return;
-      }
-      try {
-        const { data: programResult } = await getPrograms(programId, [
-          "Draft",
-          "Denied",
-          "Approved",
-          "UnderReview",
-          "ChangeRequestInProgress",
-          "Inactive",
-        ]);
-        const program =
-          programResult?.programs && programResult.programs.length > 0
-            ? programResult.programs[0]
-            : null;
-        if (program) {
-          // Update the store with the reloaded program
-          this.programStore.setDraftProgramFromProfile(program);
-        }
-      } catch (error) {
-        console.error("Error loading program:", error);
       }
     },
     generateRulesByProgramType() {
