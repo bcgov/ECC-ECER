@@ -1,4 +1,4 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using ECER.Clients.PSPPortal.Server.Programs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,6 +41,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_Program testProgram2 = null!;
   private ecer_Program submitDraftProgram = null!;
   private ecer_Program changeRequestProgram = null!;
+  private ecer_Program changeRequestFromProfile = null!;
   private ecer_Course testCourse = null!;
   private ecer_Course testCourse2 = null!;
   
@@ -63,6 +64,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string programId => testProgram1.Id.ToString();
   public string submitProgramId => submitDraftProgram.Id.ToString();
   public string changeRequestProgramId => changeRequestProgram.Id.ToString();
+  public string changeRequestFromProfileId => changeRequestFromProfile.Id.ToString();
   public string programIdWithTotals => testProgram2.Id.ToString(); 
   public string courseId => testCourse.Id.ToString();
   public string courseId2 => testCourse2.Id.ToString();
@@ -113,7 +115,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     
     testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
     testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
-    changeRequestProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, true, "CR", "Draft");
+    changeRequestFromProfile = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "CRFromProfile", "ChangeRequestInProgress", statusCode: ecer_Program_StatusCode.ChangeRequestInProgress);
+    changeRequestProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, true, "CR", "Draft", fromProfile: changeRequestFromProfile);
     submitDraftProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual3", "Draft");
     testCourse = GetOrAddCourse(context, testProgram1, "101");
     testCourse2 =  GetOrAddCourse(context, submitDraftProgram, "201");
@@ -189,7 +192,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return course;
   }
 
-  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute, bool addProgramTotals, bool isChangeRequest, string type, string status)
+  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute, bool addProgramTotals, bool isChangeRequest, string type, string status, ecer_Program? fromProfile = null, ecer_Program_StatusCode? statusCode = null)
   {
     var programName = $"{TestRunId}psp_program_{type}_{status}";
     var existingProgram = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_Name == programName);
@@ -201,7 +204,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     string[] sneProgramTypes = { "SNE" };
     var program = new ecer_Program
     {
-      StatusCode = ecer_Program_StatusCode.RequiresReview,
+      StatusCode = statusCode ?? ecer_Program_StatusCode.RequiresReview,
       ecer_ProgramId = Guid.NewGuid(),
       ecer_PortalStage = "stage1",
       ecer_StartDate = DateTime.UtcNow.Date,
@@ -217,6 +220,12 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       program.ecer_NewSNETotalHours = 10.00m;
       program.ecer_NewITETotalHours = 15.25m;
     }
+    
+    if (isChangeRequest && fromProfile != null)
+    {
+      program.ecer_FromProgramProfileId = new EntityReference(ecer_Program.EntityLogicalName, fromProfile.Id);
+    }
+    
     context.AddObject(program);
 
     return program;

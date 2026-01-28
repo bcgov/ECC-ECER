@@ -33,24 +33,45 @@
     </div>
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
-      <v-btn
-        v-if="status !== 'Draft'"
-        size="large"
-        variant="outlined"
-        color="primary"
-        @click="openProfile"
-      >
-        View
-      </v-btn>
-      <v-btn
-        v-else-if="!isActive"
-        size="large"
-        variant="outlined"
-        color="primary"
-        @click="openProfile"
-      >
-        Review now
-      </v-btn>
+      <v-row v-if="program?.programProfileType === 'ChangeRequest'">
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="openProfile"
+        >
+          View
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          size="large"
+          variant="flat"
+          color="error"
+          @click="withdraw"
+        >
+          Withdraw changes
+        </v-btn>
+      </v-row>
+      <v-row v-else-if="status !== 'Draft'">
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="openProfile"
+        >
+          View
+        </v-btn>
+      </v-row>
+      <v-row v-else-if="!isActive">
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="openProfile"
+        >
+          Review now
+        </v-btn>
+      </v-row>
       <v-row v-else>
         <v-btn
           size="large"
@@ -62,13 +83,26 @@
         </v-btn>
         <v-spacer />
         <p
-          v-if="isActive && status === 'Draft'"
+          v-if="!isActive && status === 'Draft'"
           class="mt-2 text-support-border-info"
         >
           REVIEW IN PROGRESS: {{ step }}/5
         </p>
       </v-row>
     </v-card-actions>
+    <ConfirmationDialog
+      :show="showWithdrawConfirmation"
+      :loading="isWithdrawing"
+      title="Withdraw Change Request"
+      accept-button-text="Withdraw"
+      cancel-button-text="Cancel"
+      @accept="confirmWithdraw"
+      @cancel="showWithdrawConfirmation = false"
+    >
+      <template #confirmation-text>
+        <p>Are you sure you want to withdraw this change request? All changes associated with this request will be deleted.</p>
+      </template>
+    </ConfirmationDialog>
   </v-card>
 </template>
 
@@ -78,9 +112,12 @@ import type { Components } from "@/types/openapi";
 import type { ProgramStage } from "@/types/wizard";
 import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
+import { withdrawProgram } from "@/api/program";
 
 export default defineComponent({
   name: "ProgramProfileCard",
+  components: { ConfirmationDialog },
   props: {
     program: {
       type: Object as PropType<Components.Schemas.Program>,
@@ -91,7 +128,13 @@ export default defineComponent({
     const router = useRouter();
     return { router };
   },
-  emits: ["review", "continue", "view"],
+  emits: ["review", "continue", "view", "withdrawn"],
+  data() {
+    return {
+      showWithdrawConfirmation: false,
+      isWithdrawing: false,
+    };
+  },
   computed: {
     name(): string {
       return this.program.name || "—";
@@ -165,6 +208,23 @@ export default defineComponent({
   methods: {
     openProfile() {
       this.router.push({ path: "/program/" + this.program.id });
+    },
+    withdraw() {
+      this.showWithdrawConfirmation = true;
+    },
+    async confirmWithdraw() {
+      this.isWithdrawing = true;
+      try {
+        const response = await withdrawProgram(this.program);
+        if (response.error) {
+          console.error("Failed to withdraw program:", response.error);
+        } else {
+          this.$emit("withdrawn");
+        }
+      } finally {
+        this.isWithdrawing = false;
+        this.showWithdrawConfirmation = false;
+      }
     },
     formatDate,
   },

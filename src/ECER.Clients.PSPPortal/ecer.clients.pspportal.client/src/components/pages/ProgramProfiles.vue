@@ -80,7 +80,7 @@
             md="6"
             lg="4"
           >
-            <ProgramProfileCard :program="program" />
+            <ProgramProfileCard :program="program" @withdrawn="fetchPrograms" />
           </v-col>
         </v-row>
       </div>
@@ -118,7 +118,7 @@
           md="6"
           lg="4"
         >
-          <ProgramProfileCard :program="program" />
+          <ProgramProfileCard :program="program" @withdrawn="fetchPrograms" />
         </v-col>
       </v-row>
       <!-- Empty state -->
@@ -221,6 +221,7 @@ export default defineComponent({
       } else {
         yearStart = new Date(today.setFullYear(today.getFullYear() - 1, 8, 1));
       }
+      yearStart.setHours(0, 0, 0, 0);
       return yearStart;
     },
     earliestProfileYear(): string {

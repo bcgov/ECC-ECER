@@ -302,6 +302,18 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var updatedProgram = updated.Programs!.First();
     updatedProgram.ShouldNotBeNull();
     updatedProgram.Status.ShouldBe(ProgramStatus.Withdrawn);
+    
+    // Verify the from profile status was updated back to Approved (RegistryReviewComplete)
+    var fromProfileResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.changeRequestFromProfileId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var fromProfileStatus = await fromProfileResponse.ReadAsJsonAsync<GetProgramsResponse>();
+    var fromProfile = fromProfileStatus.Programs!.First();
+    fromProfile.ShouldNotBeNull();
+    fromProfile.Status.ShouldBe(ProgramStatus.Approved);
   }
 
   [Fact]
