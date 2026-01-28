@@ -48,7 +48,8 @@
               ></v-select>
             </v-col>
           </v-row>
-          <v-row v-if="category === 'ProgramChangeRequest'" class="mt-5">
+          <template v-if="category === 'ProgramChangeRequest'">
+          <v-row class="mt-5">
             <v-col cols="12">
               <p class="mb-3">
                 Notify the Registry about changes to your program that affect program
@@ -69,7 +70,7 @@
               </p>
             </v-col>
           </v-row>
-          <v-row v-if="category === 'ProgramChangeRequest'">
+          <v-row>
             <v-col>
               <Callout class="mt-3" type="warning">
                 <h3>Need to make a change to a program profile?</h3>
@@ -77,6 +78,7 @@
               </Callout>
             </v-col>
           </v-row>
+          </template>
           <v-row class="mt-5">
             <v-col>
               <div>Message</div>
