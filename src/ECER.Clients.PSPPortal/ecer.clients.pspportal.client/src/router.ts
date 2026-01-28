@@ -47,10 +47,11 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/messages/new",
+      path: "/messages/new/:initialCategory?",
       name: "newMessage",
       component: () => import("./components/communication/NewMessage.vue"),
       meta: { requiresAuth: true },
+      props: true
     },
     {
       path: "/manage-users/:educationInstitutionName",
