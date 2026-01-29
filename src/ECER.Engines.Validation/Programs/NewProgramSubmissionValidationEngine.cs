@@ -10,43 +10,56 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     await Task.CompletedTask;
     var validationErrors = new List<string>();
 
-    if (program.ProgramTypes == null || !program.ProgramTypes.Any())
+    if (program.OfferedProgramTypes == null || !program.OfferedProgramTypes.Any())
     {
-      validationErrors.Add("No program types provided");
+      validationErrors.Add("No offered program types provided");
       return new ValidationResults(validationErrors);
     }
-   
+
+    if (program.ProgramTypes == null || !program.ProgramTypes.Any())
+    {
+      validationErrors.Add("No program types authorized");
+    }
+
+    foreach (var offeredProgramType in program.OfferedProgramTypes)
+    {
+        if (program.ProgramTypes != null && !program.ProgramTypes.Contains(offeredProgramType))
+      {
+        validationErrors.Add($"Not authorized to provide {offeredProgramType} program type");
+      }
+    }
+
     var basicCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.Basic)).ToList();
     var iteCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.ITE)).ToList();
     var sneCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.SNE)).ToList();
 
-    if (program.ProgramTypes.Contains(nameof(ProgramTypes.Basic)) && (basicCourses == null || basicCourses.Count == 0))
+    if (program.OfferedProgramTypes.Contains(nameof(ProgramTypes.Basic)) && (basicCourses == null || basicCourses.Count == 0))
     {
       validationErrors.Add("Must have courses for BASIC program type");
     }
     
-    if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && (iteCourses == null || iteCourses.Count == 0))
+    if (program.OfferedProgramTypes.Contains(nameof(ProgramTypes.ITE)) && (iteCourses == null || iteCourses.Count == 0))
     {
       validationErrors.Add("Must have courses for ITE program type");
     }
     
-    if (program.ProgramTypes.Contains(nameof(ProgramTypes.SNE)) && (sneCourses == null || sneCourses.Count == 0))
+    if (program.OfferedProgramTypes.Contains(nameof(ProgramTypes.SNE)) && (sneCourses == null || sneCourses.Count == 0))
     {
       validationErrors.Add("Must have courses for SNE program type");
     }
     
-    if (program.ProgramTypes.Contains(nameof(ProgramTypes.Basic)) && basicCourses != null && basicCourses.Count > 0)
+    if (program.OfferedProgramTypes.Contains(nameof(ProgramTypes.Basic)) && basicCourses != null && basicCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(basicCourses, instructions, nameof(ProgramTypes.Basic)));
     }
 
-    if (program.ProgramTypes.Contains(nameof(ProgramTypes.ITE)) && iteCourses != null && iteCourses.Count > 0)
+    if (program.OfferedProgramTypes.Contains(nameof(ProgramTypes.ITE)) && iteCourses != null && iteCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(iteCourses, instructions, nameof(ProgramTypes.ITE)));
       validationErrors.AddRange(CheckTotalCourseHours(iteCourses, nameof(ProgramTypes.ITE)));
     }
     
-    if (program.ProgramTypes.Contains(nameof(ProgramTypes.SNE)) && sneCourses != null && sneCourses.Count > 0)
+    if (program.OfferedProgramTypes.Contains(nameof(ProgramTypes.SNE)) && sneCourses != null && sneCourses.Count > 0)
     {
       validationErrors.AddRange(CheckForMinimumHours(sneCourses, instructions, nameof(ProgramTypes.SNE)));
       validationErrors.AddRange(CheckTotalCourseHours(sneCourses, nameof(ProgramTypes.SNE)));

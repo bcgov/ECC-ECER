@@ -1,5 +1,9 @@
 <template>
-  <PreviewCard :title="getTitle" :portal-stage="getPortalStage">
+  <PreviewCard
+    :title="getTitle"
+    :portal-stage="getPortalStage"
+    :editable="editable"
+  >
     <template #content>
       <v-row class="mb-4">
         <v-col cols="4">
@@ -8,7 +12,9 @@
         <v-col>
           <p class="small font-weight-bold">
             {{
-              programStore.draftProgram?.programTypes?.includes(programType)
+              programStore.draftProgram?.offeredProgramTypes?.includes(
+                programType,
+              )
                 ? "Yes"
                 : "No"
             }}
@@ -16,7 +22,9 @@
         </v-col>
       </v-row>
       <template
-        v-if="programStore.draftProgram?.programTypes?.includes(programType)"
+        v-if="
+          programStore.draftProgram?.offeredProgramTypes?.includes(programType)
+        "
       >
         <v-row
           class="mb-4"
@@ -82,6 +90,13 @@ export default defineComponent({
     return { configStore, programStore };
   },
   computed: {
+    editable(): boolean {
+      return (
+        this.programStore.draftProgram.programTypes?.includes(
+          this.programType,
+        ) || false
+      );
+    },
     getPortalStage(): ProgramStage {
       switch (this.programType) {
         case "Basic":

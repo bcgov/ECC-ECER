@@ -236,6 +236,7 @@ public record Program
   public string? DeclarationUserName { get; set; }
   public ProgramProfileType ProgramProfileType { get; set; }
   public IEnumerable<ProgramTypes>? ProgramTypes { get; set; }
+  public IEnumerable<string>? OfferedProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
 }
 
