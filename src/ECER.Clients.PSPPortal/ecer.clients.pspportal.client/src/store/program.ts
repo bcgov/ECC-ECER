@@ -66,16 +66,16 @@ export const useProgramStore = defineStore("program", {
       const infantAndToddlerStep =
         wizardStore?.wizardConfig?.steps?.infantAndToddler?.form.components
           .infantAndToddler?.id;
-      this.draftProgram.programTypes = [];
+      this.draftProgram.offeredProgramTypes = [];
       basicStep &&
         wizardStore.wizardData[basicStep] === true &&
-        this.draftProgram.programTypes?.push("Basic");
+        this.draftProgram.offeredProgramTypes?.push("Basic");
       specialNeedsStep &&
         wizardStore.wizardData[specialNeedsStep] === true &&
-        this.draftProgram.programTypes?.push("SNE");
+        this.draftProgram.offeredProgramTypes?.push("SNE");
       infantAndToddlerStep &&
         wizardStore.wizardData[infantAndToddlerStep] === true &&
-        this.draftProgram.programTypes?.push("ITE");
+        this.draftProgram.offeredProgramTypes?.push("ITE");
     },
     async upsertDraftApplication(): Promise<
       Components.Schemas.DraftProgramResponse | null | undefined
