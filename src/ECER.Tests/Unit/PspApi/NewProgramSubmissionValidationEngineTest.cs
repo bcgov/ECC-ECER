@@ -117,6 +117,7 @@ public class NewProgramSubmissionValidationEngineTest
     {
       PortalStage = "PortalStage",
       OfferedProgramTypes = programTypes,
+      ProgramTypes = programTypes,
       Courses = !addCourse ? null : new[]
       {
         new Course
