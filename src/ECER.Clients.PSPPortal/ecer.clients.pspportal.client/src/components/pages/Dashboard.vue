@@ -125,6 +125,31 @@
             </div>
           </Card>
         </v-col>
+        <v-col class="d-flex" cols="12" sm="6" md="4">
+          <Card class="d-flex flex-column">
+            <h2>Change requests</h2>
+            <p class="mt-4">Request a program change (for example, adding or removing courses) that affects program requirements or competencies.</p>
+            <div class="mt-auto">
+              <v-btn
+                variant="outlined"
+                size="large"
+                class="mt-4"
+                color="primary"
+                id="btnRequestChange"
+                @click="
+                  router.push({
+                    name: 'newMessage',
+                    params: {
+                      initialCategory: 'ProgramChangeRequest',
+                    },
+                  })
+                "
+              >
+                Request a change
+              </v-btn>
+            </div>
+          </Card>
+        </v-col>
       </v-row>
     </div>
   </PageContainer>
