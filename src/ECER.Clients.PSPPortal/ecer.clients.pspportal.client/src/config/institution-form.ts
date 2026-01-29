@@ -12,9 +12,10 @@ const institutionForm: Form = {
       id: "auspice",
       component: EceAuspice,
       props: {
-        label: "Institution type",
         rules: [Rules.required("Select your institution type")],
         maxLength: 50,
+        disabled: true,
+        readonly: true,
       },
       cols: {
         md: 8,
