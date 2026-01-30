@@ -16,7 +16,7 @@
         >
           <Component
             v-if="component.isInput !== false"
-            :is="component.component"
+            :is="getResolvedComponent(component)"
             v-bind="component.props"
             :model-value="formData[component.id as keyof {}]"
             @update:model-value="
@@ -33,7 +33,7 @@
           </Component>
           <Component
             v-else
-            :is="component.component"
+            :is="getResolvedComponent(component)"
             v-bind="component.props"
           />
         </v-col>
@@ -48,6 +48,7 @@ import { defineComponent, type PropType } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
 import profileInformationForm from "@/config/profile-form";
 import type { Form } from "@/types/form";
+import {useProgramStore} from "@/store/program.ts";
 
 export default defineComponent({
   name: "EcerForm",
@@ -62,6 +63,12 @@ export default defineComponent({
       default: () => ({}),
     },
   },
+  setup() {
+    const programStore = useProgramStore();
+    return {
+      programStore
+    };
+  },
   emits: {
     updatedFormData: (_formData: Record<string, any>) => true,
     updatedValidation: (_validation: boolean | null) => true,
@@ -72,6 +79,15 @@ export default defineComponent({
     },
     onFormValidationChanged(value: boolean | null) {
       this.$emit("updatedValidation", value);
+    },
+    getResolvedComponent(component: any): any {
+      if (component.getComponent) {
+        const dataSources = {
+          draftApplication: this.programStore.draftProgram,
+        };
+        return component.getComponent(dataSources);
+      }
+      return component.component;
     },
   },
 });

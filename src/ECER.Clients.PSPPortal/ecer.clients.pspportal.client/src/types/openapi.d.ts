@@ -189,6 +189,7 @@ declare namespace Components {
             programTypes?: ProgramTypes[] | null;
             offeredProgramTypes?: string[] | null;
             courses?: Course[] | null;
+            fromProgramProfileId?: string | null;
         }
         export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
         export type ProgramStatus = "Draft" | "UnderReview" | "Approved" | "Denied" | "Inactive" | "ChangeRequestInProgress" | "Withdrawn";

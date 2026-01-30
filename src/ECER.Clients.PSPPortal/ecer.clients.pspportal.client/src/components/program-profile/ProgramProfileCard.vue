@@ -33,7 +33,7 @@
     </div>
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
-      <v-row v-if="program?.programProfileType === 'ChangeRequest'">
+      <v-row v-if="program?.programProfileType === 'ChangeRequest' && status === 'Draft'">
         <v-btn
           size="large"
           variant="outlined"

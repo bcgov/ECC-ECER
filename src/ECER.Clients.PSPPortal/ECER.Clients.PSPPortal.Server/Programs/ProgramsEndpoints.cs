@@ -238,6 +238,7 @@ public record Program
   public IEnumerable<ProgramTypes>? ProgramTypes { get; set; }
   public IEnumerable<string>? OfferedProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
+  public string? FromProgramProfileId { get; set; }
 }
 
 public enum ProgramStatus
