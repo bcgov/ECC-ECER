@@ -50,6 +50,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ecer_Type))
       .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DeclarationDate))
       .ForMember(d => d.DeclarationUserName, opts => opts.MapFrom(s => s.ecer_UserName))
+      .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId != null ? s.ecer_FromProgramProfileId.Id.ToString() : null))
       ;
 
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
