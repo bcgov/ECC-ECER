@@ -48,7 +48,6 @@ import { defineComponent, type PropType } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
 import profileInformationForm from "@/config/profile-form";
 import type { Form } from "@/types/form";
-import {useProgramStore} from "@/store/program.ts";
 
 export default defineComponent({
   name: "EcerForm",
