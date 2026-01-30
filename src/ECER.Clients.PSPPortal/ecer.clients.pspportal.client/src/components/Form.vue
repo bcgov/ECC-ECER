@@ -16,7 +16,7 @@
         >
           <Component
             v-if="component.isInput !== false"
-            :is="getResolvedComponent(component)"
+            :is="component.component"
             v-bind="component.props"
             :model-value="formData[component.id as keyof {}]"
             @update:model-value="
@@ -33,7 +33,7 @@
           </Component>
           <Component
             v-else
-            :is="getResolvedComponent(component)"
+            :is="component.component"
             v-bind="component.props"
           />
         </v-col>
@@ -63,12 +63,6 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  setup() {
-    const programStore = useProgramStore();
-    return {
-      programStore
-    };
-  },
   emits: {
     updatedFormData: (_formData: Record<string, any>) => true,
     updatedValidation: (_validation: boolean | null) => true,
@@ -79,15 +73,6 @@ export default defineComponent({
     },
     onFormValidationChanged(value: boolean | null) {
       this.$emit("updatedValidation", value);
-    },
-    getResolvedComponent(component: any): any {
-      if (component.getComponent) {
-        const dataSources = {
-          draftApplication: this.programStore.draftProgram,
-        };
-        return component.getComponent(dataSources);
-      }
-      return component.component;
     },
   },
 });
