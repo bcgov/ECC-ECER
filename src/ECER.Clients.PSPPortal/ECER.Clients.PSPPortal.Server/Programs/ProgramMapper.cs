@@ -16,6 +16,7 @@ internal sealed class ProgramMapper : Profile
       .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ProgramProfileType))
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.Name))
       .ForMember(d => d.OfferedProgramTypes, opts => opts.MapFrom(s => s.OfferedProgramTypes != null ? s.OfferedProgramTypes.Select(type => type.ToString()) : null))
+      .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.FromProgramProfileId))
       .ReverseMap()
       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => ParseProgramTypes(s.ProgramTypes)))
       .ValidateMemberList(MemberList.Destination);

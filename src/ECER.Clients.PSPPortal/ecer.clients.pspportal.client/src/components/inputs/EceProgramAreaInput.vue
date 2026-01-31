@@ -10,41 +10,43 @@
     <p>You may continue to the next page</p>
   </template>
   <template v-else-if="authorizedToOfferProgramType">
-    <h2>Program offering</h2>
-    <br />
-    <p>
-      This program profile is for the following time period:
-      <strong>
-        {{
-          `${formatDate(wizardStore.wizardData?.startDate, "LLLL d, yyyy")} - ${formatDate(wizardStore.wizardData?.endDate, "LLLL d, yyyy")}`
-        }}
-      </strong>
-    </p>
-    <br />
-    <p>
-      Will your educational institution offer the
-      <strong>{{ generateProgramTypeTitle }}</strong>
-      program during this time period?
-    </p>
-    <v-radio-group
-      v-model="programOffered"
-      :rules="[Rules.requiredRadio()]"
-      @update:model-value="
-        (value) => $emit('update:model-value', value as boolean)
-      "
-    >
-      <v-radio label="Yes" :value="true"></v-radio>
-      <v-radio label="No" :value="false"></v-radio>
-    </v-radio-group>
-    <Callout v-if="!programOffered" type="warning">
-      <h3>You may continue to the next page</h3>
+      <template v-if="!isChangeRequest">
+      <h2>Program offering</h2>
+      <br />
       <p>
-        As you are not offering this program at this time, you do not have to
-        update the course hours for this {{ programType }} program.
+        This program profile is for the following time period:
+        <strong>
+          {{
+            `${formatDate(wizardStore.wizardData?.programOverview?.startDate, "LLLL d, yyyy")} - ${formatDate(wizardStore.wizardData?.programOverview?.endDate, "LLLL d, yyyy")}`
+          }}
+        </strong>
       </p>
       <br />
-      <p>Press continue to move through to the next page.</p>
-    </Callout>
+      <p>
+        Will your educational institution offer the
+        <strong>{{ generateProgramTypeTitle }}</strong>
+        program during this time period?
+      </p>
+      <v-radio-group
+        v-model="programOffered"
+        :rules="[Rules.requiredRadio()]"
+        @update:model-value="
+          (value) => $emit('update:model-value', value as boolean)
+        "
+      >
+        <v-radio label="Yes" :value="true"></v-radio>
+        <v-radio label="No" :value="false"></v-radio>
+      </v-radio-group>
+      </template>
+      <Callout v-if="!programOffered" type="warning">
+        <h3>You may continue to the next page</h3>
+        <p>
+          As you are not offering this program at this time, you do not have to
+          update the course hours for this {{ programType }} program.
+        </p>
+        <br />
+        <p>Press continue to move through to the next page.</p>
+      </Callout>
     <template v-else>
       <h2>Provincial requirements</h2>
       <br />
@@ -198,6 +200,9 @@ export default defineComponent({
         (total, area) => total + (area?.minimumHours || 0),
         0,
       );
+    },
+    isChangeRequest(): boolean {
+      return this.programStore.draftProgram.programProfileType==='ChangeRequest';
     },
     showTotalHours(): boolean {
       switch (this.programType) {

@@ -20,6 +20,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationUserName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.OfferedProgramTypes, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.FromProgramProfileId, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
@@ -49,6 +50,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ecer_Type))
       .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DeclarationDate))
       .ForMember(d => d.DeclarationUserName, opts => opts.MapFrom(s => s.ecer_UserName))
+      .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId != null ? s.ecer_FromProgramProfileId.Id.ToString() : null))
       ;
 
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
