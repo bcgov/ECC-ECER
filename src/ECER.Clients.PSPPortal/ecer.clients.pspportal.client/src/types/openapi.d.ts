@@ -172,7 +172,7 @@ declare namespace Components {
         }
         export interface Program {
             id?: string | null;
-            portalStage?: string | null;
+            portalStage?: string | null | null;
             status?: ProgramStatus;
             createdOn?: string | null; // date-time
             name?: string | null;
@@ -190,6 +190,7 @@ declare namespace Components {
             offeredProgramTypes?: string[] | null;
             courses?: Course[] | null;
             fromProgramProfileId?: string | null;
+            readyForReview?: boolean | null;
         }
         export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
         export type ProgramStatus = "Draft" | "UnderReview" | "Approved" | "Denied" | "Inactive" | "ChangeRequestInProgress" | "Withdrawn";
@@ -280,6 +281,21 @@ declare namespace Paths {
     namespace AreaOfInstructionGet {
         namespace Responses {
             export type $200 = Components.Schemas.AreaOfInstructionListResponse;
+        }
+    }
+    namespace ChangeprogramPut {
+        namespace Parameters {
+            export type Id = string;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        export type RequestBody = Components.Schemas.Program;
+        namespace Responses {
+            export type $200 = string;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
         }
     }
     namespace CommunicationPut {
@@ -724,6 +740,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProgramPost.Responses.$200>
   /**
+   * changeprogram_put - Initiate program profile change
+   */
+  'changeprogram_put'(
+    parameters?: Parameters<Paths.ChangeprogramPut.PathParameters> | null,
+    data?: Paths.ChangeprogramPut.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   'portal_invitation_get'(
@@ -983,6 +1007,16 @@ export interface PathsDictionary {
       data?: Paths.ProgramPost.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProgramPost.Responses.$200>
+  }
+  ['/api/changeprogram/{id}']: {
+    /**
+     * changeprogram_put - Initiate program profile change
+     */
+    'put'(
+      parameters?: Parameters<Paths.ChangeprogramPut.PathParameters> | null,
+      data?: Paths.ChangeprogramPut.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>
   }
   ['/api/PortalInvitations/{token}']: {
     /**

@@ -22,6 +22,7 @@ public record ProgramsQuery : IRequest<ProgramsQueryResults>
 public record UpdateCourseCommand(IEnumerable<Course> Course, string Id) : IRequest<string>;
 public record UpdateProgramCommand(Program Program) : IRequest<string>;
 public record SubmitProgramCommand(string ProgramId, string UserId) : IRequest<SubmitProgramResult>;
+public record ChangeProgramCommand(Program Program) : IRequest<string>;
 
 public record SubmitProgramResult
 {
@@ -80,6 +81,7 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public IEnumerable<Course>? Courses { get; set; }
   public IEnumerable<string>? OfferedProgramTypes { get; set; }
   public string? FromProgramProfileId { get; set; }
+  public bool? ReadyForReview { get; set; }
 }
 
 public enum ProgramStatus

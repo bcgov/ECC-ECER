@@ -110,10 +110,28 @@ const withdrawProgram = async (
   });
 };
 
+const initiateProgramChange = async (
+  program: Components.Schemas.Program,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramPut.PathParameters = {
+    id: program.id || "",
+  };
+  const body: Paths.ProgramPut.RequestBody = {
+    ...program,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.changeprogram_put(pathParameters, body),
+    key: "changeprogram_put",
+  });
+}
+
 export {
   createOrUpdateDraftApplication,
   getPrograms,
   submitDraftProgramApplication,
   updateCourse,
   withdrawProgram,
+  initiateProgramChange
 };

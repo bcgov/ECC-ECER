@@ -184,6 +184,33 @@ public class ProgramsEndpoints : IRegisterEndpoints
       .WithOpenApi("Submit a draft program profile", string.Empty, "program_post")
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
+
+    endpointRouteBuilder.MapPut("/api/changeprogram/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
+      bool IdIsNotGuid = !Guid.TryParse(id, out _);
+      if (IdIsNotGuid) return TypedResults.BadRequest("invalid program profile id");
+
+      if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
+
+      var userContext = ctx.User.GetUserContext()!;
+      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+
+      var existing = await messageBus.Send(new ContractProgramsQuery
+      {
+        ById = id,
+        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
+      }, ct);
+
+      if (!existing.Items.Any()) return TypedResults.NotFound();
+
+      var programId = await messageBus.Send(new ChangeProgramCommand(mapper.Map<ContractProgram>(request)), ct);
+      return TypedResults.Ok(programId);
+    })
+  .WithOpenApi("Initiate program profile change", string.Empty, "changeprogram_put")
+  .RequireAuthorization(PolicyNames)
+  .WithParameterValidation();
   }
 }
 
@@ -239,6 +266,7 @@ public record Program
   public IEnumerable<string>? OfferedProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
   public string? FromProgramProfileId { get; set; }
+  public bool? ReadyForReview { get; set; }
 }
 
 public enum ProgramStatus

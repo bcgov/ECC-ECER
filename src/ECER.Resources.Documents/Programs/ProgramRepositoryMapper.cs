@@ -51,6 +51,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DeclarationDate))
       .ForMember(d => d.DeclarationUserName, opts => opts.MapFrom(s => s.ecer_UserName))
       .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId != null ? s.ecer_FromProgramProfileId.Id.ToString() : null))
+      .ForMember(d => d.ReadyForReview, opts => opts.MapFrom(s => s.ecer_ReadyforReview.HasValue ? s.ecer_ReadyforReview.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       ;
 
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
