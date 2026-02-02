@@ -38,24 +38,22 @@
         <br />
         <h2>Review</h2>
         <br />
-        <li class="ml-10">
-          <ul>
+        <ul class="ml-10">
+          <li>
             We will review your submission and follow up with any requests for
             additional information, if needed
-          </ul>
-          <ul>
-            We will email you after we have reviewed your submission
-          </ul>
-        </li>
+          </li>
+          <li>We will email you after we have reviewed your submission</li>
+        </ul>
         <br />
         <h2>Status</h2>
         <br />
-        <li class="ml-10">
-          <ul>
+        <ul class="ml-10">
+          <li>
             You may view the status of your submission online in the PSP Portal
             dashboard
-          </ul>
-        </li>
+          </li>
+        </ul>
         <br />
       </template>
       <template
