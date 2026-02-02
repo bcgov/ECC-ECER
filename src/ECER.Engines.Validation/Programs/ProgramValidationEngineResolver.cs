@@ -22,6 +22,7 @@ public class ProgramValidationEngineResolver : IProgramValidationEngineResolver
     return programType switch
     {
       ProgramProfileType.AnnualReview => _serviceProvider.GetRequiredService<NewProgramSubmissionValidationEngine>(),
+      ProgramProfileType.ChangeRequest => _serviceProvider.GetRequiredService<NewProgramSubmissionValidationEngine>(),
       _ => throw new ArgumentOutOfRangeException(nameof(programType), programType, null)
     };
   }

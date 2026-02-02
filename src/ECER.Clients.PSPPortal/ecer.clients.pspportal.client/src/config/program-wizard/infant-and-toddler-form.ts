@@ -21,7 +21,7 @@ const infantAndToddlerForm: Form = {
       getValue: (data) =>
         (
           data.draftApplication as Components.Schemas.Program
-        )?.programTypes?.includes(ProgramType.ITE),
+        )?.offeredProgramTypes?.includes(ProgramType.ITE),
     },
   },
 };

@@ -78,36 +78,19 @@ export default defineComponent({
   },
   computed: {
     institutionName() {
-      const institutionNameId =
-        this.wizardStore.wizardConfig.steps.programOverview?.form.components
-          .program?.id || "";
-      return this.wizardStore.wizardData[institutionNameId];
+      return this.programStore.draftProgram?.postSecondaryInstituteName || "";
     },
     startDateFormatted() {
-      const startDateId =
-        this.wizardStore.wizardConfig.steps.programOverview?.form.components
-          .startDate?.id || "";
-      const startDate = this.wizardStore.wizardData[startDateId];
-      return formatDate(startDate, "LLLL d, yyyy");
+      return formatDate(this.programStore.draftProgram?.startDate || "", "LLL d, yyyy");
     },
     endDateFormatted() {
-      const endDateId =
-        this.wizardStore.wizardConfig.steps.programOverview?.form.components
-          .endDate?.id || "";
-      const endDate = this.wizardStore.wizardData[endDateId];
-      return formatDate(endDate, "LLLL d, yyyy");
+      return formatDate(this.programStore.draftProgram?.endDate || "", "LLL d, yyyy");
     },
     programTypes() {
-      const programTypeId =
-        this.wizardStore.wizardConfig.steps.programOverview?.form.components
-          .programTypes?.id || "";
-      return this.wizardStore.wizardData[programTypeId];
+      return this.programStore.draftProgram?.programTypes?.join(", ");
     },
     programName() {
-      const programNameId =
-        this.wizardStore.wizardConfig.steps.programOverview?.form.components
-          .programName?.id || "";
-      return this.wizardStore.wizardData[programNameId];
+      return this.programStore.draftProgram?.programName;
     },
   },
 });

@@ -21,7 +21,7 @@ const earlyChildhoodForm: Form = {
       getValue: (data) =>
         (
           data.draftApplication as Components.Schemas.Program
-        )?.programTypes?.includes(ProgramType.BASIC),
+        )?.offeredProgramTypes?.includes(ProgramType.BASIC),
     },
   },
 };

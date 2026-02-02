@@ -172,7 +172,7 @@ declare namespace Components {
         }
         export interface Program {
             id?: string | null;
-            portalStage: string;
+            portalStage?: string | null;
             status?: ProgramStatus;
             createdOn?: string | null; // date-time
             name?: string | null;
@@ -187,7 +187,9 @@ declare namespace Components {
             declarationUserName?: string | null;
             programProfileType?: ProgramProfileType;
             programTypes?: ProgramTypes[] | null;
+            offeredProgramTypes?: string[] | null;
             courses?: Course[] | null;
+            fromProgramProfileId?: string | null;
         }
         export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
         export type ProgramStatus = "Draft" | "UnderReview" | "Approved" | "Denied" | "Inactive" | "ChangeRequestInProgress" | "Withdrawn";

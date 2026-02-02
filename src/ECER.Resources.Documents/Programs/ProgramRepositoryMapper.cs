@@ -19,6 +19,8 @@ internal class ProgramRepositoryMapper : Profile
       .ForSourceMember(s => s.ProgramProfileType, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationUserName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.OfferedProgramTypes, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.FromProgramProfileId, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
@@ -27,7 +29,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.ecer_PostSecondaryInstitution, opts => opts.Ignore())
       .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
       .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
-      .ForMember(d => d.ecer_ProgramTypes, opts => opts.MapFrom(s => s.ProgramTypes != null ? s.ProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)) : null))
+      .ForMember(d => d.ecer_NewOfferingType, opts => opts.MapFrom(s => s.OfferedProgramTypes != null ? s.OfferedProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)) : null))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(Program.Id), opts => opts.MapFrom(s => s.ecer_ProgramId.HasValue ? s.ecer_ProgramId.Value.ToString() : null))
@@ -41,12 +43,14 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
       .ForMember(d => d.Courses, opts => opts.MapFrom(s => s.ecer_course_Programid))
       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null))
+      .ForMember(d => d.OfferedProgramTypes, opts => opts.MapFrom(s => (s.ecer_NewOfferingType == null || !s.ecer_NewOfferingType.Any()) ? s.ecer_OfferingType.Select(t => t.ToString()) : s.ecer_NewOfferingType.Select(t => t.ToString())))
       .ForMember(d => d.NewBasicTotalHours, opts => opts.MapFrom(s => s.ecer_NewBasicTotalHours))
       .ForMember(d => d.NewSneTotalHours, opts => opts.MapFrom(s => s.ecer_NewSNETotalHours))
       .ForMember(d => d.NewIteTotalHours, opts => opts.MapFrom(s => s.ecer_NewITETotalHours))
       .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ecer_Type))
       .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DeclarationDate))
       .ForMember(d => d.DeclarationUserName, opts => opts.MapFrom(s => s.ecer_UserName))
+      .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId != null ? s.ecer_FromProgramProfileId.Id.ToString() : null))
       ;
 
     CreateMap<ProgramStatus, ecer_Program_StatusCode>()
@@ -70,7 +74,7 @@ internal class ProgramRepositoryMapper : Profile
           status == ecer_Program_StatusCode.Withdrawn ? ProgramStatus.Withdrawn :
           status == ecer_Program_StatusCode.ChangeRequestInProgress ? ProgramStatus.ChangeRequestInProgress :
                                                                      ProgramStatus.Draft);
-    
+
     CreateMap<ecer_Course, Course>(MemberList.Destination)
       .ForMember(d => d.CourseId, opts => opts.MapFrom(s => s.ecer_CourseId))
       .ForMember(d => d.CourseNumber, opts => opts.MapFrom(s => s.ecer_Code))
@@ -80,7 +84,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.CourseAreaOfInstruction, opts => opts.MapFrom(s => s.ecer_courseprovincialrequirement_CourseId))
       .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType))
       .ReverseMap();
-    
+
     CreateMap<ecer_CourseProvincialRequirement, CourseAreaOfInstruction>(MemberList.Destination)
       .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours))
       .ForMember(d => d.CourseAreaOfInstructionId, opts => opts.MapFrom(s => s.Id))

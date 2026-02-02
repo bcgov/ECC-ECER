@@ -13,6 +13,7 @@
         item-value="value"
         clearable
         hide-details="auto"
+        v-bind="$attrs"
         @update:model-value="(value: Auspice) => auspiceChanged(value)"
       ></v-autocomplete>
     </v-col>
