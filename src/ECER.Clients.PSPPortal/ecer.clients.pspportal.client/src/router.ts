@@ -51,7 +51,7 @@ const router = createRouter({
       name: "newMessage",
       component: () => import("./components/communication/NewMessage.vue"),
       meta: { requiresAuth: true },
-      props: true
+      props: true,
     },
     {
       path: "/manage-users/:educationInstitutionName",

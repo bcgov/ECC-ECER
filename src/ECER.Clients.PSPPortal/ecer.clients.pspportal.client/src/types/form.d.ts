@@ -14,9 +14,7 @@ interface Form {
 interface Component {
   id: string;
   component: any;
-  getComponent?: (dataSources: {
-    draftApplication?: any;
-  }) => any;
+  getComponent?: (dataSources: { draftApplication?: any }) => any;
   props?: Record<string, any>;
   slots?: Record<string, string>;
   cols: {
