@@ -81,6 +81,7 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public IEnumerable<Course>? Courses { get; set; }
   public IEnumerable<string>? OfferedProgramTypes { get; set; }
   public bool ChangesMade { get; set; }
+  public string? FromProgramProfileId { get; set; }
 }
 
 public enum ProgramStatus

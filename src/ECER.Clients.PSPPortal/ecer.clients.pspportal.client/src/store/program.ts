@@ -49,13 +49,10 @@ export const useProgramStore = defineStore("program", {
       const wizardStore = useWizardStore();
       this.draftProgram.portalStage =
         wizardStore.currentStepStage as ProgramStage;
-      const programNameId =
-        wizardStore.wizardConfig.steps?.programOverview?.form.components
-          .programName?.id;
-
-      this.draftProgram.programName = programNameId
-        ? wizardStore.wizardData[programNameId]
-        : "";
+      this.draftProgram.programName =
+        wizardStore.wizardData.programOverview?.programName ?? "";
+      this.draftProgram.startDate =
+        wizardStore.wizardData.programOverview?.startDate ?? null;
       //If programType is offered add it to the array of program types ex. earlyChildhood === true => programTypes = ["Basic"]
       const basicStep =
         wizardStore?.wizardConfig?.steps?.earlyChildhood?.form.components

@@ -19,6 +19,7 @@ internal class ProgramMapper : Profile
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ProgramProfileType))
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.Name))
+      .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.FromProgramProfileId))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(Contract.Programs.Program.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.PostSecondaryInstituteId));

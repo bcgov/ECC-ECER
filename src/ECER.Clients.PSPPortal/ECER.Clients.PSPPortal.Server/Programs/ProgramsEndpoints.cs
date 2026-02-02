@@ -239,6 +239,7 @@ public record Program
   public IEnumerable<string>? OfferedProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
   public bool ChangesMade { get; set; }
+  public string? FromProgramProfileId { get; set; }
 }
 
 public enum ProgramStatus
