@@ -54,6 +54,7 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public float? NewIteTotalHours { get; set; }
   public string? DeclarationDate { get; set; }
   public string? DeclarationUserName { get; set; }
+  public bool ChangesMade { get; set; }
   public ProgramProfileType ProgramProfileType { get; set; }
   public IEnumerable<string>? ProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
