@@ -33,7 +33,11 @@
     </div>
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
-      <v-row v-if="program?.programProfileType === 'ChangeRequest' && status === 'Draft'">
+      <v-row
+        v-if="
+          program?.programProfileType === 'ChangeRequest' && status === 'Draft'
+        "
+      >
         <v-btn
           size="large"
           variant="outlined"
@@ -43,12 +47,7 @@
           View
         </v-btn>
         <v-spacer />
-        <v-btn
-          size="large"
-          variant="flat"
-          color="error"
-          @click="withdraw"
-        >
+        <v-btn size="large" variant="flat" color="error" @click="withdraw">
           Withdraw changes
         </v-btn>
       </v-row>
@@ -100,7 +99,10 @@
       @cancel="showWithdrawConfirmation = false"
     >
       <template #confirmation-text>
-        <p>Are you sure you want to withdraw this change request? All changes associated with this request will be deleted.</p>
+        <p>
+          Are you sure you want to withdraw this change request? All changes
+          associated with this request will be deleted.
+        </p>
       </template>
     </ConfirmationDialog>
   </v-card>
