@@ -150,6 +150,12 @@ const router = createRouter({
       name: "not-found",
       component: () => import("./components/pages/PageNotFound.vue"),
     },
+        {
+      path: "/program-applications",
+      component: () => import("./components/program-application/ProgramApplications.vue"),
+      name: "program-applications",
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
