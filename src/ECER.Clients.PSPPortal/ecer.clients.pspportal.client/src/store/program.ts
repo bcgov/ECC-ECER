@@ -49,13 +49,10 @@ export const useProgramStore = defineStore("program", {
       const wizardStore = useWizardStore();
       this.draftProgram.portalStage =
         wizardStore.currentStepStage as ProgramStage;
-      const programNameId =
-        wizardStore.wizardConfig.steps?.programOverview?.form.components
-          .programName?.id;
-
-      this.draftProgram.programName = programNameId
-        ? wizardStore.wizardData[programNameId]
-        : "";
+      this.draftProgram.programName =
+        wizardStore.wizardData.programOverview?.programName ?? "";
+      this.draftProgram.startDate =
+        wizardStore.wizardData.programOverview?.startDate ?? null;
       //If programType is offered add it to the array of program types ex. earlyChildhood === true => programTypes = ["Basic"]
       const basicStep =
         wizardStore?.wizardConfig?.steps?.earlyChildhood?.form.components
@@ -66,16 +63,16 @@ export const useProgramStore = defineStore("program", {
       const infantAndToddlerStep =
         wizardStore?.wizardConfig?.steps?.infantAndToddler?.form.components
           .infantAndToddler?.id;
-      this.draftProgram.programTypes = [];
+      this.draftProgram.offeredProgramTypes = [];
       basicStep &&
         wizardStore.wizardData[basicStep] === true &&
-        this.draftProgram.programTypes?.push("Basic");
+        this.draftProgram.offeredProgramTypes?.push("Basic");
       specialNeedsStep &&
         wizardStore.wizardData[specialNeedsStep] === true &&
-        this.draftProgram.programTypes?.push("SNE");
+        this.draftProgram.offeredProgramTypes?.push("SNE");
       infantAndToddlerStep &&
         wizardStore.wizardData[infantAndToddlerStep] === true &&
-        this.draftProgram.programTypes?.push("ITE");
+        this.draftProgram.offeredProgramTypes?.push("ITE");
     },
     async upsertDraftApplication(): Promise<
       Components.Schemas.DraftProgramResponse | null | undefined

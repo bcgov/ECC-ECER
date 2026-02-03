@@ -48,6 +48,37 @@
               ></v-select>
             </v-col>
           </v-row>
+          <template v-if="category === 'ProgramChangeRequest'">
+          <v-row class="mt-5">
+            <v-col cols="12">
+              <p class="mb-3">
+                Notify the Registry about changes to your program that affect program
+                requirements or competencies (for example, adding or removing courses,
+                changing practicum hours, etc.). Include:
+              </p>
+              <ul class="ml-6 mb-3">
+                <li>A description of the change</li>
+                <li>Its effective date</li>
+                <li>Relevant supporting documentation (for example, course outlines)</li>
+              </ul>
+              <p class="mb-3">
+                The ECE Registry will review your request and follow up with you for
+                additional information if needed.
+              </p>
+              <p>
+                <a href="#" class="text-primary">Learn more about program changes</a>
+              </p>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <Callout class="mt-3" type="warning">
+                <h3>Need to make a change to a program profile?</h3>
+                <p>For updates that do not affect requirements or competencies (for example, changing a course name), <a href="">update your program profile</a> instead.</p>
+              </Callout>
+            </v-col>
+          </v-row>
+          </template>
           <v-row class="mt-5">
             <v-col>
               <div>Message</div>
@@ -105,7 +136,7 @@
 </template>
 
 <script lang="ts">
-import type { ComponentPublicInstance } from "vue";
+import type {ComponentPublicInstance, PropType} from "vue";
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { VForm } from "vuetify/components";
@@ -120,6 +151,8 @@ import type { Components } from "@/types/openapi";
 import { communicationCategoryOptions } from "@/utils/communicationCategory";
 import * as Rules from "@/utils/formRules";
 import * as Functions from "@/utils/functions";
+import ECEHeader from "@/components/ECEHeader.vue";
+import Callout from "@/components/common/Callout.vue";
 interface NewMessage {
   text: string;
   subject: string;
@@ -134,7 +167,13 @@ interface NewMessage {
 
 export default defineComponent({
   name: "NewMessage",
-  components: { PageContainer, ConfirmationDialog, FileUploader },
+  components: {Callout, ECEHeader, PageContainer, ConfirmationDialog, FileUploader },
+  props: {
+    initialCategory: {
+      type: String as PropType<Components.Schemas.CommunicationCategory | null>,
+      default: null
+    }
+  },
   async setup() {
     const messageStore = useMessageStore();
     const loadingStore = useLoadingStore();
@@ -162,7 +201,7 @@ export default defineComponent({
       formValid: false,
       attachments: [],
       subject: "",
-      category: null,
+      category: this.initialCategory as Components.Schemas.CommunicationCategory | null
     };
   },
   methods: {

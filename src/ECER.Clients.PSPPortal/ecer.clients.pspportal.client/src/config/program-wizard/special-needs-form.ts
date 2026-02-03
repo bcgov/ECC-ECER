@@ -21,7 +21,7 @@ const specialNeedsForm: Form = {
       getValue: (data) =>
         (
           data.draftApplication as Components.Schemas.Program
-        )?.programTypes?.includes(ProgramType.SNE),
+        )?.offeredProgramTypes?.includes(ProgramType.SNE),
     },
   },
 };

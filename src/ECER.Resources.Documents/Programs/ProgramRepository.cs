@@ -110,6 +110,7 @@ internal sealed class ProgramRepository : IProgramRepository
 
       //check for existing values, if they are the same do not map. 
       ecerProgram.ecer_NewDescriptiveProgramName = existing.ecer_DescriptiveProgramName == ecerProgram.ecer_NewDescriptiveProgramName ? string.Empty : ecerProgram.ecer_NewDescriptiveProgramName;
+      ecerProgram.ecer_NewOfferingType = existing.ecer_OfferingType.SequenceEqual(ecerProgram.ecer_NewOfferingType) ? null : ecerProgram.ecer_NewOfferingType;
 
       ecerProgram.StatusCode = existing.StatusCode ?? defaultStatus;
       if (string.IsNullOrWhiteSpace(ecerProgram.ecer_Name))
