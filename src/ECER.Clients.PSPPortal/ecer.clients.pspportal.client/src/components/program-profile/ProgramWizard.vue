@@ -235,6 +235,7 @@ export default defineComponent({
         if (submitProgramResponse) {
           this.router.push({
             name: "programSubmitted",
+            params: { programProfileId: submitProgramResponse },
           });
         } else {
           this.alertStore.setFailureAlert(

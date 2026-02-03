@@ -7,8 +7,8 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
 using ContractProgramProfileType = ECER.Managers.Registry.Contract.Programs.ProgramProfileType;
@@ -63,8 +63,8 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .RequireAuthorization(PolicyNames)
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, 
-      HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions < PaginationSettings > paginationOptions) =>
+    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus,
+      HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
 
@@ -238,6 +238,7 @@ public record Program
   public IEnumerable<ProgramTypes>? ProgramTypes { get; set; }
   public IEnumerable<string>? OfferedProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
+  public bool ChangesMade { get; set; }
   public string? FromProgramProfileId { get; set; }
 }
 
