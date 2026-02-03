@@ -205,6 +205,12 @@ public class ProgramsEndpoints : IRegisterEndpoints
 
       if (!existing.Items.Any()) return TypedResults.NotFound();
 
+      if (existing.Items.First().Status != ContractProgramStatus.Approved
+        && existing.Items.First().ProgramProfileType != ContractProgramProfileType.ChangeRequest)
+      {
+        return TypedResults.BadRequest("update must be on an approved change request program");
+      }
+
       var programId = await messageBus.Send(new ChangeProgramCommand(mapper.Map<ContractProgram>(request)), ct);
       return TypedResults.Ok(programId);
     })
