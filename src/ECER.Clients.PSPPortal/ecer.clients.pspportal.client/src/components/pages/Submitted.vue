@@ -121,13 +121,7 @@ export default defineComponent({
     };
   },
   async mounted() {
-    const { data } = await getPrograms(this.programProfileId, [
-      "Draft",
-      "Denied",
-      "Approved",
-      "UnderReview",
-      "ChangeRequestInProgress",
-    ]);
+    const { data } = await getPrograms(this.programProfileId, []);
     this.programProfile = data?.programs?.[0];
 
     if (!this.programProfile) {
