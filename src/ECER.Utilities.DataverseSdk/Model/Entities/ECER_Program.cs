@@ -36,13 +36,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Archived = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ChangeRequestInProgress = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Denied = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		RegistryReviewComplete = 621870002,
@@ -120,6 +120,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Referencingecer_program_FromProgramProfileId = "ecer_program_FromProgramProfileId";
 			public const string ecer_program_PostSecondaryInstitution_ecer_pos = "ecer_program_PostSecondaryInstitution_ecer_pos";
 			public const string ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative = "ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative";
+			public const string ecer_programcampus_ProgramProfile = "ecer_programcampus_ProgramProfile";
 			public const string ecer_ProgramId = "ecer_programid";
 			public const string Id = "ecer_programid";
 			public const string ecer_ProgramRepresentative = "ecer_programrepresentative";
@@ -1567,6 +1568,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_FromProgramProfileId", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_programcampus_ProgramProfile
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programcampus_ProgramProfile")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramCampus> ecer_programcampus_ProgramProfile
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramCampus>("ecer_programcampus_ProgramProfile", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramCampus>("ecer_programcampus_ProgramProfile", null, value);
 			}
 		}
 		

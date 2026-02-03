@@ -171,6 +171,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_documenturl_CertificateId = "ecer_documenturl_CertificateId";
 			public const string ecer_documenturl_InvestigationId = "ecer_documenturl_InvestigationId";
 			public const string ecer_documenturl_PreviousNameId = "ecer_documenturl_PreviousNameId";
+			public const string ecer_documenturl_ProgramApplicationComponentGroupId = "ecer_documenturl_ProgramApplicationComponentGroupId";
+			public const string ecer_documenturl_ProgramApplicationComponentId = "ecer_documenturl_ProgramApplicationComponentId";
 			public const string ecer_DownloadDate = "ecer_downloaddate";
 			public const string ecer_icraeligibilityassessmentid = "ecer_icraeligibilityassessmentid";
 			public const string ecer_icraeligibilityassessmentidName = "ecer_icraeligibilityassessmentidname";
@@ -184,6 +186,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PreviousNameIdName = "ecer_previousnameidname";
 			public const string ecer_ProfessionalDevelopmentId = "ecer_professionaldevelopmentid";
 			public const string ecer_ProfessionalDevelopmentIdName = "ecer_professionaldevelopmentidname";
+			public const string ecer_ProgramApplicationComponentGroupId = "ecer_programapplicationcomponentgroupid";
+			public const string ecer_ProgramApplicationComponentGroupIdName = "ecer_programapplicationcomponentgroupidname";
+			public const string ecer_ProgramApplicationComponentId = "ecer_programapplicationcomponentid";
+			public const string ecer_ProgramApplicationComponentIdName = "ecer_programapplicationcomponentidname";
 			public const string ecer_programapplicationid = "ecer_programapplicationid";
 			public const string ecer_programapplicationidName = "ecer_programapplicationidname";
 			public const string ecer_ProgramProfileId = "ecer_programprofileid";
@@ -1425,6 +1431,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationcomponentgroupid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramApplicationComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programapplicationcomponentgroupid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programapplicationcomponentgroupid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationcomponentgroupidname")]
+		public string ecer_ProgramApplicationComponentGroupIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programapplicationcomponentgroupid"))
+				{
+					return this.FormattedValues["ecer_programapplicationcomponentgroupid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationcomponentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramApplicationComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programapplicationcomponentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programapplicationcomponentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationcomponentidname")]
+		public string ecer_ProgramApplicationComponentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programapplicationcomponentid"))
+				{
+					return this.FormattedValues["ecer_programapplicationcomponentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_programapplicationid
 		{
@@ -2502,6 +2572,44 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_documenturl_PreviousNameId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_documenturl_ProgramApplicationComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationcomponentgroupid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_ProgramApplicationComponentGroupId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup ecer_documenturl_ProgramApplicationComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_documenturl_ProgramApplicationComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_documenturl_ProgramApplicationComponentGroupId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_documenturl_ProgramApplicationComponentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationcomponentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_ProgramApplicationComponentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent ecer_documenturl_ProgramApplicationComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_documenturl_ProgramApplicationComponentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_documenturl_ProgramApplicationComponentId", null, value);
 			}
 		}
 		

@@ -68,6 +68,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantIdYomiName = "ecer_applicantidyominame";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_AppointedDecisionMakerId = "ecer_appointeddecisionmakerid";
+			public const string ecer_AppointedDecisionMakerIdName = "ecer_appointeddecisionmakeridname";
+			public const string ecer_AppointedDecisionMakerIdYomiName = "ecer_appointeddecisionmakeridyominame";
 			public const string ecer_bcgov_documenturl_ReconsiderationRequestId = "ecer_bcgov_documenturl_ReconsiderationRequestId";
 			public const string ecer_communication_ReconsiderationRequestId = "ecer_communication_ReconsiderationRequestId";
 			public const string ecer_DecisionCallDate = "ecer_decisioncalldate";
@@ -342,6 +345,55 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_applicationid"))
 				{
 					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appointeddecisionmakerid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_AppointedDecisionMakerId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_appointeddecisionmakerid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_appointeddecisionmakerid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appointeddecisionmakeridname")]
+		public string ecer_AppointedDecisionMakerIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_appointeddecisionmakerid"))
+				{
+					return this.FormattedValues["ecer_appointeddecisionmakerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appointeddecisionmakeridyominame")]
+		public string ecer_AppointedDecisionMakerIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_appointeddecisionmakerid"))
+				{
+					return this.FormattedValues["ecer_appointeddecisionmakerid"];
 				}
 				else
 				{
