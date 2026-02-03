@@ -8,6 +8,7 @@
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Binder"/>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Text.RegularExpressions" />
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />
   </ItemGroup>
 </Project>
