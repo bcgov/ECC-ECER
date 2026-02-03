@@ -38,7 +38,7 @@
     "@chromatic-com/storybook": "^5.0.0",
     "@storybook/addon-vitest": "^10.2.1",
     "@storybook/vue3-vite": "^10.2.1",
-    "@storybook/addon-docs": "^10.2.1",
+    "@storybook/addon-docs": "^10.2.4",
     "@tsconfig/node18": "^18.2.6",
     "@types/lodash": "^4.17.23",
     "@types/luxon": "^3.7.1",
