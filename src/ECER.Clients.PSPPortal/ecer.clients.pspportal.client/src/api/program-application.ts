@@ -6,12 +6,12 @@ import type { AxiosRequestConfig } from "axios";
 const apiResultHandler = new ApiResultHandler();
 
 const getProgramApplications = async (
-  id: string = "",
-  statuses: Components.Schemas.ApplicationStatus[] = [],
   params: {
     page: number;
     pageSize: number;
-},
+  },
+  id: string = "",
+  statuses: Components.Schemas.ApplicationStatus[] = [],
 ): Promise<
   ApiResponse<Components.Schemas.GetProgramApplicationResponse | null | undefined>
 > => {
