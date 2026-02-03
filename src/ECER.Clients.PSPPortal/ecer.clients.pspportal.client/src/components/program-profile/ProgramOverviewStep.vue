@@ -15,7 +15,9 @@
         label="Start date"
         :is-date="true"
         :rules="startDateRules"
-        @update:model-value="(v) => $emit('update:modelValue', { ...modelValue, startDate: v })"
+        @update:model-value="
+          (v) => $emit('update:modelValue', { ...modelValue, startDate: v })
+        "
       />
       <EceDisplayValue
         v-else
@@ -48,7 +50,10 @@
         :model-value="modelValue.programName"
         label="Program name"
         :rules="[rules.required('Required')]"
-        @update:model-value="(v: string) => $emit('update:modelValue', { ...modelValue, programName: v })"
+        @update:model-value="
+          (v: string) =>
+            $emit('update:modelValue', { ...modelValue, programName: v })
+        "
       />
     </v-col>
   </v-row>
@@ -62,7 +67,7 @@ import EceTextField from "@/components/inputs/EceTextField.vue";
 import * as rules from "@/utils/formRules";
 import { useProgramStore } from "@/store/program";
 import { formatDate } from "@/utils/format";
-import {getPrograms} from "@/api/program.ts";
+import { getPrograms } from "@/api/program.ts";
 
 export default defineComponent({
   name: "ProgramOverviewStep",
@@ -94,7 +99,7 @@ export default defineComponent({
     startDateRules(): Array<(v: string) => boolean | string> {
       const start = [this.fromProgramStartDate, this.draftProgram?.createdOn]
         .filter(Boolean)
-        .sort((a, b) => new Date(b!).getTime() - new Date(a!).getTime())[0];//take the latest date
+        .sort((a, b) => new Date(b!).getTime() - new Date(a!).getTime())[0]; //take the latest date
       const end = this.draftProgram?.endDate;
       if (!start || !end) return [rules.required("Required")];
 
@@ -113,33 +118,41 @@ export default defineComponent({
     },
   },
   async mounted() {
-    if (this.isChangeRequest && this.programStore.draftProgram?.fromProgramProfileId) {
+    if (
+      this.isChangeRequest &&
+      this.programStore.draftProgram?.fromProgramProfileId
+    ) {
       await this.fetchFromProgramCreatedOn();
     }
   },
   methods: {
     async fetchFromProgramCreatedOn() {
-      const fromProgramProfileId = this.programStore.draftProgram?.fromProgramProfileId;
+      const fromProgramProfileId =
+        this.programStore.draftProgram?.fromProgramProfileId;
       if (!fromProgramProfileId) {
         return;
       }
       try {
-        const { data: programResult } = await getPrograms(fromProgramProfileId, [
-          "Draft",
-          "Denied",
-          "Approved",
-          "UnderReview",
-          "ChangeRequestInProgress",
-          "Inactive",
-        ]);
-        const fromProgram = programResult?.programs && programResult.programs.length > 0
-          ? programResult.programs[0]
-          : null;
+        const { data: programResult } = await getPrograms(
+          fromProgramProfileId,
+          [
+            "Draft",
+            "Denied",
+            "Approved",
+            "UnderReview",
+            "ChangeRequestInProgress",
+            "Inactive",
+          ],
+        );
+        const fromProgram =
+          programResult?.programs && programResult.programs.length > 0
+            ? programResult.programs[0]
+            : null;
         this.fromProgramStartDate = fromProgram?.startDate;
       } catch (error) {
         console.error("Error loading from program:", error);
       }
     },
-  }
+  },
 });
 </script>
