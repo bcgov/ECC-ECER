@@ -1,6 +1,6 @@
 import { getClient } from "@/api/client";
 import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
-import type { Components, Paths } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 import type { AxiosRequestConfig } from "axios";
 
 const apiResultHandler = new ApiResultHandler();

@@ -109,10 +109,14 @@ export default defineComponent({
     ): string {
       return program.id ?? `${program.status}-${index}`;
     },
-    getStatues() {
-      return this.filter === 'active' 
-      ? this.activeStatus 
-      : this.filter === 'inactive' ? this.inactiveStatus : [...this.activeStatus, ...this.inactiveStatus];
+    getStatues() : Components.Schemas.ApplicationStatus[] {
+      if(this.filter === 'active') {
+        return this.activeStatus;
+      } else if(this.filter === 'inactive') {
+        return this.inactiveStatus;
+      } else {
+        return [...this.activeStatus, ...this.inactiveStatus];
+      }
     },
     async fetchPrograms(page: number = 1) {
       const params = { page, pageSize: PAGE_SIZE };
