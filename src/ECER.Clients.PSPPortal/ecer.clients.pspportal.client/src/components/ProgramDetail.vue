@@ -154,7 +154,6 @@ export default defineComponent({
           "Approved",
           "UnderReview",
           "ChangeRequestInProgress",
-          "Inactive",
         ])
       )?.data?.programs || [];
   },

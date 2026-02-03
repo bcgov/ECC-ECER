@@ -189,6 +189,7 @@ declare namespace Components {
             programTypes?: ProgramTypes[] | null;
             offeredProgramTypes?: string[] | null;
             courses?: Course[] | null;
+            changesMade?: boolean;
             fromProgramProfileId?: string | null;
             readyForReview?: boolean | null;
         }
