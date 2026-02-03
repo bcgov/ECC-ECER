@@ -101,8 +101,16 @@
       />
       <v-row v-if="showUpdateProgramProfileButton">
         <v-col color="primary">
-          <!-- TODO not implemented -->
-          <v-btn rounded="lg" color="primary">Update program profile</v-btn>
+          <v-btn  rounded="lg" 
+                  color="primary" 
+                  @click="
+                    router.push({
+                      name: 'initiate-program-update',
+                      params: { programId: program.id },
+                    });
+                    "
+                  >Update program profile
+                </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -192,6 +200,9 @@ export default defineComponent({
       });
       return true;
     },
+    chosenProgram(): Components.Schemas.Program {
+      return this.program;
+    }
   },
   methods: {
     printPage() {
