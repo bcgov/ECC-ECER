@@ -10,7 +10,7 @@
     <p>You may continue to the next page</p>
   </template>
   <template v-else-if="authorizedToOfferProgramType">
-      <template v-if="!isChangeRequest">
+    <template v-if="!isChangeRequest">
       <h2>Program offering</h2>
       <br />
       <p>
@@ -37,16 +37,16 @@
         <v-radio label="Yes" :value="true"></v-radio>
         <v-radio label="No" :value="false"></v-radio>
       </v-radio-group>
-      </template>
-      <Callout v-if="!programOffered" type="warning">
-        <h3>You may continue to the next page</h3>
-        <p>
-          As you are not offering this program at this time, you do not have to
-          update the course hours for this {{ programType }} program.
-        </p>
-        <br />
-        <p>Press continue to move through to the next page.</p>
-      </Callout>
+    </template>
+    <Callout v-if="!programOffered" type="warning">
+      <h3>You may continue to the next page</h3>
+      <p>
+        As you are not offering this program at this time, you do not have to
+        update the course hours for this {{ programType }} program.
+      </p>
+      <br />
+      <p>Press continue to move through to the next page.</p>
+    </Callout>
     <template v-else>
       <h2>Provincial requirements</h2>
       <br />
@@ -202,7 +202,9 @@ export default defineComponent({
       );
     },
     isChangeRequest(): boolean {
-      return this.programStore.draftProgram.programProfileType==='ChangeRequest';
+      return (
+        this.programStore.draftProgram.programProfileType === "ChangeRequest"
+      );
     },
     showTotalHours(): boolean {
       switch (this.programType) {

@@ -69,6 +69,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_communication_ecer_bulkpspcommunication = "ecer_communication_ecer_bulkpspcommunication";
 			public const string ecer_CommunicationType = "ecer_communicationtype";
 			public const string ecer_communicationtypeName = "ecer_communicationtypename";
+			public const string ecer_Instruction = "ecer_instruction";
 			public const string ecer_LastCommunicationSentOn = "ecer_lastcommunicationsenton";
 			public const string ecer_Message = "ecer_message";
 			public const string ecer_Name = "ecer_name";
@@ -329,6 +330,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_instruction")]
+		public string ecer_Instruction
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_instruction");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_instruction", value);
 			}
 		}
 		

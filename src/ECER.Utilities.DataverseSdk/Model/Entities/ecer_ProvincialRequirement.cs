@@ -66,6 +66,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificateTypeIdName = "ecer_certificatetypeidname";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
 			public const string ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement = "ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement";
+			public const string ecer_DisplayOrder = "ecer_displayorder";
 			public const string ecer_educationassessment_RequirementAreaId = "ecer_educationassessment_RequirementAreaId";
 			public const string ecer_IsForECEAssistant = "ecer_isforeceassistant";
 			public const string ecer_isforeceassistantName = "ecer_isforeceassistantname";
@@ -316,6 +317,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_displayorder")]
+		public string ecer_DisplayOrder
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_displayorder");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_displayorder", value);
 			}
 		}
 		
