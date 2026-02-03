@@ -141,7 +141,7 @@ export default defineComponent({
     },
     async fetchPrograms(page: number) {
       const params = { page, pageSize: PAGE_SIZE };
-      const response = await getProgramApplications("", this.getStatues(), params);
+      const response = await getProgramApplications(params, "", this.getStatues());
       this.programApplications = response.data?.applications || [];
       this.count = response.data?.count || 0;
 
