@@ -8,14 +8,17 @@ const apiResultHandler = new ApiResultHandler();
 const getProgramApplications = async (
   id: string = "",
   statuses: Components.Schemas.ApplicationStatus[] = [],
-  { page = 0, pageSize = 0 } = {},
+  params: {
+    page: number;
+    pageSize: number;
+},
 ): Promise<
   ApiResponse<Components.Schemas.GetProgramApplicationResponse | null | undefined>
 > => {
   const client = await getClient();
 
   const config: AxiosRequestConfig = {
-    params: { page, pageSize },
+    params: params,
   };
 
   return apiResultHandler.execute<Components.Schemas.GetProgramApplicationResponse | null>(

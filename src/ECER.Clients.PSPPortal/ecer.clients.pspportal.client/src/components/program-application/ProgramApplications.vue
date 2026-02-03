@@ -42,6 +42,15 @@
           <p>No program applications found.</p>
         </v-col>
       </v-row>
+
+      <v-pagination
+        v-if="programApplications.length > 0"
+        v-model="currentPage"
+        size="small"
+        class="mt-4"
+        elevation="2"
+        :length="totalPages"
+    ></v-pagination>
     </div>
   </PageContainer>
 </template>
@@ -57,7 +66,7 @@ import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 
-const PAGE_SIZE = 0;
+const PAGE_SIZE = 10;
 
 export default defineComponent({
   name: "ProgramApplications",
@@ -96,10 +105,22 @@ export default defineComponent({
   computed: {
     isLoading(): boolean {
       return this.loadingStore.isLoading("program_application_get") || this.loading;
-    }
+    },
+    currentPage: {
+      get() {
+        return this.page;
+      },
+      set(newValue: number) {
+        this.page = newValue;
+        this.fetchPrograms(newValue);
+      },
+    },
+    totalPages() {
+      return Math.ceil(this.programApplications.length / PAGE_SIZE);
+    },
   },
   async mounted() {
-    await this.fetchPrograms();
+    await this.fetchPrograms(this.page);
     this.loading = false;
   },
   methods: {
@@ -118,7 +139,7 @@ export default defineComponent({
         return [...this.activeStatus, ...this.inactiveStatus];
       }
     },
-    async fetchPrograms(page: number = 1) {
+    async fetchPrograms(page: number) {
       const params = { page, pageSize: PAGE_SIZE };
       const response = await getProgramApplications("", this.getStatues(), params);
       this.programApplications = response.data?.applications || [];
