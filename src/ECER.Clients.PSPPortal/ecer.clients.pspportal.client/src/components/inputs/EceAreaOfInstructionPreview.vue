@@ -133,10 +133,34 @@ export default defineComponent({
     getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction():
       | AreaOfInstructionWithCourseHoursMap
       | undefined {
-      return getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
-        this.programStore.draftProgram,
-        this.programType,
-      );
+      const unsortedMap =
+        getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
+          this.programStore.draftProgram,
+          this.programType,
+        );
+
+      if (!unsortedMap) {
+        return undefined;
+      }
+
+      // Sort by displayOrder from the area of instruction list
+      const sortedEntries = [...unsortedMap.entries()].sort((a, b) => {
+        const areaA = this.configStore.areaOfInstructionList?.find(
+          (area) => area.id === a[0],
+        );
+        const areaB = this.configStore.areaOfInstructionList?.find(
+          (area) => area.id === b[0],
+        );
+
+        const orderA = areaA?.displayOrder;
+        const orderB = areaB?.displayOrder;
+
+        if (orderA === null || orderA === undefined) return 1;
+        if (orderB === null || orderB === undefined) return -1;
+        return orderA.localeCompare(orderB, undefined, { numeric: true });
+      });
+
+      return new Map(sortedEntries);
     },
   },
   methods: {

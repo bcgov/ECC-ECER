@@ -108,6 +108,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_RepresentativeRole = "ecer_representativerole";
 			public const string ecer_representativeroleName = "ecer_representativerolename";
 			public const string ecer_Role = "ecer_role";
+			public const string ecer_SendWelcomeMessage = "ecer_sendwelcomemessage";
+			public const string ecer_sendwelcomemessageName = "ecer_sendwelcomemessagename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -854,6 +856,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_role", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sendwelcomemessage")]
+		public System.Nullable<bool> ecer_SendWelcomeMessage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_sendwelcomemessage");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_sendwelcomemessage", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sendwelcomemessagename")]
+		public string ecer_sendwelcomemessageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_sendwelcomemessage"))
+				{
+					return this.FormattedValues["ecer_sendwelcomemessage"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

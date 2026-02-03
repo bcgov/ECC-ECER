@@ -20,6 +20,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationUserName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.OfferedProgramTypes, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ChangesMade, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.FromProgramProfileId, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
@@ -50,6 +51,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ecer_Type))
       .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DeclarationDate))
       .ForMember(d => d.DeclarationUserName, opts => opts.MapFrom(s => s.ecer_UserName))
+      .ForMember(d => d.ChangesMade, opts => opts.MapFrom(s => s.ecer_ChangesMade == ecer_YesNoNull.Yes))
       .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId != null ? s.ecer_FromProgramProfileId.Id.ToString() : null))
       ;
 
@@ -59,7 +61,7 @@ internal class ProgramRepositoryMapper : Profile
           status == ProgramStatus.UnderReview ? ecer_Program_StatusCode.UnderRegistryReview :
           status == ProgramStatus.Approved ? ecer_Program_StatusCode.RegistryReviewComplete :
           status == ProgramStatus.Denied ? ecer_Program_StatusCode.Denied :
-          status == ProgramStatus.Inactive ? ecer_Program_StatusCode.Inactive :
+          status == ProgramStatus.Inactive ? ecer_Program_StatusCode.Archived :
           status == ProgramStatus.Withdrawn ? ecer_Program_StatusCode.Withdrawn :
           status == ProgramStatus.ChangeRequestInProgress ? ecer_Program_StatusCode.ChangeRequestInProgress :
                                                 ecer_Program_StatusCode.RequiresReview);
@@ -70,7 +72,7 @@ internal class ProgramRepositoryMapper : Profile
           status == ecer_Program_StatusCode.UnderRegistryReview ? ProgramStatus.UnderReview :
           status == ecer_Program_StatusCode.RegistryReviewComplete ? ProgramStatus.Approved :
           status == ecer_Program_StatusCode.Denied ? ProgramStatus.Denied :
-          status == ecer_Program_StatusCode.Inactive ? ProgramStatus.Inactive :
+          status == ecer_Program_StatusCode.Archived ? ProgramStatus.Inactive :
           status == ecer_Program_StatusCode.Withdrawn ? ProgramStatus.Withdrawn :
           status == ecer_Program_StatusCode.ChangeRequestInProgress ? ProgramStatus.ChangeRequestInProgress :
                                                                      ProgramStatus.Draft);

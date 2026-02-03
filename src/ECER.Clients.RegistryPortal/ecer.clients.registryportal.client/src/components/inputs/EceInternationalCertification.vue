@@ -70,6 +70,7 @@
           <EceTextField
             id="txtRegulatoryAuthorityPhoneNumber"
             v-model="phoneOfRegulatoryAuthority"
+            maxlength="100"
             label="Phone number of regulatory authority (optional)"
             :rules="[Rules.phoneNumber()]"
           ></EceTextField>
@@ -81,7 +82,7 @@
             id="txtRegulatoryAuthorityWebsite"
             v-model="websiteOfRegulatoryAuthority"
             label="Website of regulatory authority (optional)"
-            :rules="[Rules.website()]"
+            :rules="[Rules.website(), Rules.maxLength(100)]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -91,7 +92,7 @@
             id="txtRegulatoryAuthorityValidation"
             v-model="onlineCertificateValidationToolOfRegulatoryAuthority"
             label="Online certificate validation tool of regulatory authority (optional)"
-            :rules="[Rules.website()]"
+            :rules="[Rules.website(), Rules.maxLength(100)]"
           ></EceTextField>
         </v-col>
       </v-row>

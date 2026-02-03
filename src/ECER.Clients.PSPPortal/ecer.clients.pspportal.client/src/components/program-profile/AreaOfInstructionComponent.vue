@@ -149,11 +149,19 @@ export default defineComponent({
         (area) => area.name === "Child Guidance",
       );
 
+      let result = filtered;
       if (hasProgramDevelopment && hasChildGuidance) {
-        return filtered.filter((area) => area.name !== "Child Guidance");
+        result = filtered.filter((area) => area.name !== "Child Guidance");
       }
 
-      return filtered;
+      // Sort by displayOrder (null values go to the end)
+      return result.sort((a, b) => {
+        if (a.displayOrder === null || a.displayOrder === undefined) return 1;
+        if (b.displayOrder === null || b.displayOrder === undefined) return -1;
+        return a.displayOrder.localeCompare(b.displayOrder, undefined, {
+          numeric: true,
+        });
+      });
     },
     loading(): boolean {
       return (

@@ -18,6 +18,7 @@ declare namespace Components {
       name?: string | null;
       programTypes?: ProgramTypes[] | null;
       minimumHours?: number | null; // int32
+      displayOrder?: string | null;
     }
     export interface AreaOfInstructionListResponse {
       areaOfInstruction?: AreaOfInstruction[] | null;
@@ -210,6 +211,7 @@ declare namespace Components {
       programTypes?: ProgramTypes[] | null;
       offeredProgramTypes?: string[] | null;
       courses?: Course[] | null;
+      changesMade?: boolean;
       fromProgramProfileId?: string | null;
     }
     export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
