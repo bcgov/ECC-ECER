@@ -60,11 +60,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_ApplicationType = "ecer_applicationtype";
+			public const string ecer_applicationtypeName = "ecer_applicationtypename";
 			public const string ecer_Category = "ecer_category";
 			public const string ecer_categoryName = "ecer_categoryname";
 			public const string ecer_DeliveryMethod = "ecer_deliverymethod";
 			public const string ecer_deliverymethodName = "ecer_deliverymethodname";
+			public const string ecer_DisplayOrder = "ecer_displayorder";
+			public const string ecer_GroupName = "ecer_groupname";
+			public const string ecer_Instructions = "ecer_instructions";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_programapplicationcomponent_PSPComponentGroupId = "ecer_programapplicationcomponent_PSPComponentGroupId";
 			public const string ecer_programapplicationcomponentgroup_ComponentGroup = "ecer_programapplicationcomponentgroup_ComponentGroup";
 			public const string ecer_pspcomponent_ecer_pspcomponentgroup = "ecer_pspcomponent_ecer_pspcomponentgroup";
 			public const string ecer_PSPComponentGroupId = "ecer_pspcomponentgroupid";
@@ -245,6 +251,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationtype")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSIApplicationType> ecer_ApplicationType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSIApplicationType>(this, "ecer_applicationtype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_applicationtype", EntityOptionSetEnum.GetMultiEnum(this, "ecer_applicationtype", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationtypename")]
+		public string ecer_applicationtypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_applicationtype"))
+				{
+					return this.FormattedValues["ecer_applicationtype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_category")]
 		public virtual ecer_PSPComponentCategory? ecer_Category
 		{
@@ -306,6 +344,51 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_displayorder")]
+		public string ecer_DisplayOrder
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_displayorder");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_displayorder", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_groupname")]
+		public string ecer_GroupName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_groupname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_groupname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_instructions")]
+		public string ecer_Instructions
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_instructions");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_instructions", value);
 			}
 		}
 		
@@ -743,6 +826,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_programapplicationcomponent_PSPComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationcomponent_PSPComponentGroupId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent> ecer_programapplicationcomponent_PSPComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_PSPComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_PSPComponentGroupId", null, value);
 			}
 		}
 		
