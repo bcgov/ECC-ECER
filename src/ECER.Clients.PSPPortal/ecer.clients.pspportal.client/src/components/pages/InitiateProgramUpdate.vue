@@ -52,21 +52,22 @@
                   color="primary" 
                   @click="initiateUpdate">Start program profile update</v-btn>
         </div>
-        <div
-          v-if="program?.status === 'ChangeRequestInProgress' && !isReadyForReview()"
-          class="mt-8"
-        >
-          <v-progress-circular
-            class="mb-2"
-            color="primary"
-            indeterminate
-          ></v-progress-circular>
-          <h4>
-            Your request has been initiated. Please wait a few minutes while we prepare it for review. 
-            When ready, it will appear here and will also be available in your dashboard.
-          </h4>
-        </div>        
-
+        <div v-else>
+          <div
+            v-if="!isReadyForReview"
+            class="mt-8"
+          >
+            <v-progress-circular
+              class="mb-2"
+              color="primary"
+              indeterminate
+            ></v-progress-circular>
+            <h4>
+              Your request has been initiated. Please wait a few minutes while we prepare it for review. 
+              When ready, it will appear here and will also be available in your dashboard.
+            </h4>
+          </div>        
+        </div>
       </div>
     </div>
   </PageContainer>
@@ -132,6 +133,17 @@ export default defineComponent({
       }
       return types;
     },
+    isReadyForReview(): boolean {
+      if (this.newProgram == null || 
+          !this.newProgram?.readyForReview)
+      {        
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    },
   },
   async mounted() {
     await this.loadProgram();
@@ -142,12 +154,8 @@ export default defineComponent({
       this.loading = true;
       try {
         const { data: response } = await getPrograms(this.programId, [
-          "Draft",
-          "Denied",
           "Approved",
-          "UnderReview",
-          "ChangeRequestInProgress",
-          "Inactive",
+          "ChangeRequestInProgress"
         ]);
         const program =
           response?.programs && response.programs.length > 0
@@ -166,11 +174,6 @@ export default defineComponent({
         const { data: response } = await getPrograms(this.newProgramId);
         if(response?.programs && response.programs[0]){
           this.newProgram = response.programs[0];
-          if(this.newProgram.readyForReview){
-            /* Ready for review flag has been set. Stop polling. */
-            clearInterval(this.pollInterval)
-            this.router.replace("/program/" + this.newProgramId);
-          }
         }
       }
     },
@@ -184,24 +187,17 @@ export default defineComponent({
         if(response.data != null){
           this.newProgramId = response.data;       
           this.fetchNewProgram();
-          if (this.newProgram?.readyForReview){
-            this.router.replace("/program/" + this.newProgramId);
-          }else{
-            /* Poll the backend until the ready for review flag is set */
-            this.pollInterval = setInterval(() => {this.fetchNewProgram()}, INTERVAL_TIME);
-            setTimeout(() => {clearInterval(this.pollInterval)}, INTERVAL_TIME * 10);          }
+          /* Poll the backend until the ready for review flag is set */
+          this.pollInterval = setInterval(() => {
+            this.fetchNewProgram();
+            if(this.newProgram?.readyForReview){
+              /* Ready for review flag has been set. Stop polling. */
+              clearInterval(this.pollInterval);
+              this.router.replace("/program/" + this.newProgramId);
+            }
+          }, INTERVAL_TIME);
+          setTimeout(() => {clearInterval(this.pollInterval)}, INTERVAL_TIME * 10);          
         }
-      }
-    },
-    isReadyForReview(): boolean {
-      if (this.newProgram == null || 
-          !this.newProgram?.readyForReview)
-      {        
-        return false;
-      }
-      else
-      {
-        return true;
       }
     },
   },
