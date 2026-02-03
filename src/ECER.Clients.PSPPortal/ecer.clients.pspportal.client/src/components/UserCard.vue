@@ -47,7 +47,7 @@
             variant="outlined"
             color="primary"
             size="small"
-            @click="$emit('remove-access', user.id)"
+            @click="showDeactivateConfirmation = true"
             :disabled="user.id === currentUserId"
             :loading="isLoading"
           >
@@ -91,17 +91,44 @@
       </v-col>
     </v-row>
   </Card>
+  <ConfirmationDialog
+    :show="showDeactivateConfirmation"
+    :loading="isLoading"
+    title="Remove access"
+    accept-button-text="Remove access"
+    cancel-button-text="Cancel"
+    @accept="
+      $emit('remove-access', user.id);
+      showDeactivateConfirmation = false;
+    "
+    @cancel="showDeactivateConfirmation = false"
+  >
+    <template #confirmation-text>
+      <p>
+        You are about to remove access to this portal for:
+        <strong>{{ displayName }}</strong>
+      </p>
+      <br />
+      <p>
+        If you decide to reactivate this user's account later, you can invite
+        them to the portal again at that time.
+      </p>
+      <br />
+      <p><strong>Do you wish to continue?</strong></p>
+    </template>
+  </ConfirmationDialog>
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import Card from "@/components/Card.vue";
+import ConfirmationDialog from "./ConfirmationDialog.vue";
 import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "UserCard",
-  components: { Card },
+  components: { Card, ConfirmationDialog },
   props: {
     user: {
       type: Object as PropType<Components.Schemas.PspUserListItem>,
@@ -116,6 +143,11 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     return {
       loadingStore,
+    };
+  },
+  data() {
+    return {
+      showDeactivateConfirmation: false,
     };
   },
   emits: {
