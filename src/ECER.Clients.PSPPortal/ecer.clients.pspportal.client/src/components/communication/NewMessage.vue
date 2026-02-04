@@ -51,23 +51,25 @@
           <template v-if="category === 'ProgramChangeRequest'">
           <v-row class="mt-5">
             <v-col cols="12">
-              <p class="mb-3">
-                Notify the Registry about changes to your program that affect program
-                requirements or competencies (for example, adding or removing courses,
-                changing practicum hours, etc.). Include:
-              </p>
-              <ul class="ml-6 mb-3">
-                <li>A description of the change</li>
-                <li>Its effective date</li>
-                <li>Relevant supporting documentation (for example, course outlines)</li>
-              </ul>
-              <p class="mb-3">
-                The ECE Registry will review your request and follow up with you for
-                additional information if needed.
-              </p>
-              <p>
-                <a href="#" class="text-primary">Learn more about program changes</a>
-              </p>
+              <div class="d-flex flex-column ga-3">
+                <p class="mb-3">
+                  Notify the Registry about changes to your program that affect program
+                  requirements or competencies (for example, adding or removing courses,
+                  changing practicum hours, etc.). Include:
+                </p>
+                <ul class="ml-10 mb-3">
+                  <li>A description of the change</li>
+                  <li>Its effective date</li>
+                  <li>Relevant supporting documentation (for example, course outlines)</li>
+                </ul>
+                <p class="mb-3">
+                  The ECE Registry will review your request and follow up with you for
+                  additional information if needed.
+                </p>
+                <p>
+                  <a href="#" class="text-primary">Learn more about program changes</a>
+                </p>
+              </div>
             </v-col>
           </v-row>
           <v-row>
