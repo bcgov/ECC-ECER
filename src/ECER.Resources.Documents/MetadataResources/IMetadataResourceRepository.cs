@@ -25,7 +25,7 @@ public interface IMetadataResourceRepository
 
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
-public record AreaOfInstruction(string Id, string Name, IEnumerable<string> ProgramTypes, int? MinimumHours);
+public record AreaOfInstruction(string Id, string Name, IEnumerable<string> ProgramTypes, int? MinimumHours, string? DisplayOrder);
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
 public record SystemMessage(string Name, string Subject, string Message)

@@ -279,6 +279,13 @@ const website = (
     message;
 };
 
+const maxLength = (
+  length: number,
+  message = `Maximum length exceeded of ${length} characters`,
+) => {
+  return (v: string) => !v || v.length <= length || message;
+};
+
 export {
   atLeastOneOptionRequired,
   conditionalWrapper,
@@ -289,6 +296,7 @@ export {
   futureDateNotAllowedRule,
   hasCheckbox,
   validContactName,
+  maxLength,
   mustExistInList,
   number,
   numberToDecimalPlace as numberToDecimalPlaces,

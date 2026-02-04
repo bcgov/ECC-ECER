@@ -100,6 +100,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/program/:programId/initiate-update",
+      component: () => import("./components/pages/InitiateProgramUpdate.vue"),
+      name: "initiate-program-update",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/silent-callback",
       component: () => import("./components/pages/SilentCallback.vue"),
       meta: { requiresAuth: false },

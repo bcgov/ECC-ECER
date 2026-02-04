@@ -26,7 +26,7 @@
             <div class="d-flex flex-column ga-3 pb-5">
               <p>
                 The program profile review process is conducted annually by the
-                EDE Registry to ensure requirements are met for continued
+                ECE Registry to ensure requirements are met for continued
                 recognition in B.C.
               </p>
               <p class="font-weight-bold">
