@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 export function formatDate(
-  inputDate: string,
+  inputDate: string | null | undefined,
   toFormat: DateFormat = "yyyy-MM-dd",
 ) {
   if (inputDate) {
