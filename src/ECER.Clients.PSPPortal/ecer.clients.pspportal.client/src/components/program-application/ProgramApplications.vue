@@ -17,7 +17,7 @@
       <v-row>
         <v-col class="d-flex" cols="12">
           <p class="align-self-center mr-4"><strong>SHOW:</strong></p>
-          <v-btn-toggle v-model="filter" color="primary" mandatory @update:model-value="fetchPrograms()">
+          <v-btn-toggle v-model="filter" color="primary" mandatory @update:model-value="fetchPrograms(page)">
             <v-btn value="active">Active</v-btn>
             <v-btn value="inactive">Inactive</v-btn>
             <v-btn value="all">All</v-btn>
