@@ -10,11 +10,7 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
     await Task.CompletedTask;
     var validationErrors = new List<string>();
 
-    if (program.OfferedProgramTypes == null || !program.OfferedProgramTypes.Any())
-    {
-      validationErrors.Add("No offered program types provided");
-      return new ValidationResults(validationErrors);
-    }
+    ArgumentNullException.ThrowIfNull(program.OfferedProgramTypes);
 
     if (program.ProgramTypes == null || !program.ProgramTypes.Any())
     {
@@ -23,12 +19,12 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
 
     foreach (var offeredProgramType in program.OfferedProgramTypes)
     {
-        if (program.ProgramTypes != null && !program.ProgramTypes.Contains(offeredProgramType))
+      if (program.ProgramTypes != null && !program.ProgramTypes.Contains(offeredProgramType))
       {
         validationErrors.Add($"Not authorized to provide {offeredProgramType} program type");
       }
     }
-
+    
     var basicCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.Basic)).ToList();
     var iteCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.ITE)).ToList();
     var sneCourses = program.Courses?.Where(c => c.ProgramType == nameof(ProgramTypes.SNE)).ToList();
