@@ -13,7 +13,7 @@
 
     <Loading v-if="isLoading"></Loading>
 
-    <div v-else>
+    <div>
       <!-- Program profile review section - only shown when there are programs with Draft or UnderReview status -->
       <div v-if="programsRequiringReview.length > 0">
         <v-row>
