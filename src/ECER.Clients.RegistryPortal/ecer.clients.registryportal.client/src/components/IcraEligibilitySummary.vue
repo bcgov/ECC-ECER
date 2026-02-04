@@ -272,7 +272,8 @@ export default defineComponent({
           (reference) => {
             if (
               reference.status === "ICRAEligibilitySubmitted" ||
-              reference.status === "WaitingforResponse"
+              reference.status === "WaitingforResponse" ||
+              reference.status === "Draft"
             ) {
               return true;
             }

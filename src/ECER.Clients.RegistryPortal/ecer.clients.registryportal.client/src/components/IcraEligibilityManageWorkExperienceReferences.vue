@@ -138,7 +138,7 @@ import Loading from "./Loading.vue";
 import { useLoadingStore } from "@/store/loading";
 
 export default defineComponent({
-  name: "ManageWorkExperienceReferenceList",
+  name: "IcraEligibilityManageWorkExperienceReferenceList",
   components: { Breadcrumb, Callout, Loading },
   props: {
     icraEligibilityId: {
@@ -208,13 +208,12 @@ export default defineComponent({
     statusText(reference: Components.Schemas.EmploymentReferenceStatus) {
       switch (reference.status) {
         case "ICRAEligibilitySubmitted":
+        case "Draft":
           return "Not yet received";
         case "ApplicationSubmitted":
         case "Approved":
-        case "Draft":
         case "EligibilityResponseSubmitted":
         case "InProgress":
-
         case "Submitted":
         case "UnderReview":
         case "WaitingforResponse":
