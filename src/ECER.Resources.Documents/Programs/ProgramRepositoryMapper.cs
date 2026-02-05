@@ -1,4 +1,5 @@
 using AutoMapper;
+using ECER.Resources.Documents.Shared;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.Programs;

@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
-using Course = ECER.Resources.Documents.Programs.Course;
-using CourseAreaOfInstruction = ECER.Resources.Documents.Programs.CourseAreaOfInstruction;
+using Course = ECER.Resources.Documents.Shared.Course;
+using CourseAreaOfInstruction = ECER.Resources.Documents.Shared.CourseAreaOfInstruction;
 using Program = ECER.Resources.Documents.Programs.Program;
 using ProgramProfileType = ECER.Resources.Documents.Programs.ProgramProfileType;
 using ProgramStatus = ECER.Resources.Documents.Programs.ProgramStatus;
@@ -32,10 +32,10 @@ internal class ProgramMapper : Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<Contract.Programs.Course, Course>()
+    CreateMap<Contract.Shared.Course, Course>()
       .ReverseMap();
     
-    CreateMap<Contract.Programs.CourseAreaOfInstruction, CourseAreaOfInstruction>()
+    CreateMap<Contract.Shared.CourseAreaOfInstruction, CourseAreaOfInstruction>()
       .ReverseMap();
   }
 }
