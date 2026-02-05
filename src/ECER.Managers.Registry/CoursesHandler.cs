@@ -24,7 +24,7 @@ public class CoursesHandler(
         ByPostSecondaryInstituteId = request.PostSecondaryInstituteId,
       }, cancellationToken);
       
-      if (!programProfile.Programs!.Any()) throw new InvalidOperationException($"Program profile with '{request.Id}' not found");;
+      if (!programProfile.Programs!.Any()) throw new InvalidOperationException($"Program profile with '{request.Id}' not found");
     }
     var programId = await courseRepository.UpdateCourse(mapper.Map<IEnumerable<Resources.Documents.Shared.Course>>(request.Course)!, request.Id, cancellationToken);
     return programId;
