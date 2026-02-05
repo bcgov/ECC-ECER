@@ -173,7 +173,7 @@
                 size="large"
                 class="mt-4"
                 color="primary"
-                id="viewProgramApplications"
+                id="createProgramApplications"
                 @click="router.push('/program-application-info')"
               >
                 Apply
