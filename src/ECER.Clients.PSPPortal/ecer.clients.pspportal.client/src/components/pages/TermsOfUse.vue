@@ -44,8 +44,7 @@
           effect as a written signature for any functions requiring an
           electronic acknowledgement or electronic signature. You agree to be
           bound by your electronic signature in the same legal manner as a
-          handwritten signature. The Province reserves the right to suspend or
-          revoke access to the Post-Secondary Programs.
+          handwritten signature.
         </p>
       </v-col>
       <v-col cols="12">
