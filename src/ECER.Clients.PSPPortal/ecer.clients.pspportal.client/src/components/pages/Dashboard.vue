@@ -163,6 +163,26 @@
       <v-row align="stretch">
         <v-col class="d-flex" cols="12" sm="6" md="4">
           <Card class="d-flex flex-column">
+            <h2>Apply for a new program</h2>
+            <p class="mt-4">
+              Apply for a new recognized ECE Basic or Post-basic program.
+            </p>
+            <div class="mt-auto">
+              <v-btn
+                variant="outlined"
+                size="large"
+                class="mt-4"
+                color="primary"
+                id="createProgramApplications"
+                @click="router.push('/program-application-info')"
+              >
+                Apply
+              </v-btn>
+            </div>
+          </Card>
+        </v-col>
+        <v-col class="d-flex" cols="12" sm="6" md="4">
+          <Card class="d-flex flex-column">
             <h2>View all applications</h2>
             <p class="mt-4">
               View all applications for my educational institution and edit any draft applications.
