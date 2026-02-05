@@ -285,4 +285,24 @@ internal sealed class ProgramRepository : IProgramRepository
     context.SaveChanges();
     return id;
   }
+
+  public async Task<string> ChangeProgram(Program program, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var existingProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == Guid.Parse(program.Id!));
+    if (existingProgram == null) throw new InvalidOperationException($"ecer_Program '{program.Id}' not found");
+
+    /* Change the status to Change Request In Progress */
+    existingProgram.StatusCode = ecer_Program_StatusCode.ChangeRequestInProgress;
+    context.UpdateObject(existingProgram);
+    context.SaveChanges();
+
+    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileIdName == program.Name);
+    if (newProgram == null) throw new InvalidOperationException($"New program for ecer_Program '{program.Id}' not found");
+
+    var newProgramId = newProgram.ecer_ProgramId != null ? newProgram.ecer_ProgramId.ToString() : string.Empty;
+
+    return newProgramId!;
+  }
+
 }

@@ -87,14 +87,11 @@ public enum ApplicationStatus
 
 public enum ApplicationType
 {
-  AdditionalCampusatRecognizedInstitutionPrivateOnly,
-  CurriculumRevisionsatRecognizedInstitutionPublicPrivateContinuingEd,
-  NewCampusNotificationPublicOnly,
-  NewECEProgramPublicPrivateContinuingEd,
-  OnlineorHybridProgramPublicPrivateContinuingEd,
-  PostBasicProgramPublicPrivateContinuingEd,
-  SatelliteProgramPublicPrivateContinuingEd,
-  WorkIntegratedLearningProgramPublicOnly,
+  NewBasicPostBasicProgramHybridOnline,
+  NewBasicPostBasicProgramInperson,
+  NewDeliveryMethod,
+  PrivateNewCampusLocation,
+  SatelliteProgram,
 }
 
 public enum DeliveryType

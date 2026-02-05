@@ -126,7 +126,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCourse2 =  GetOrAddCourse(context, submitDraftProgram, "201");
 
     programApplication =
-      GetOrAddProgramApplication(context, testPostSecondaryInstitute, ecer_PSIApplicationType.PostBasicProgramPublicPrivateContinuingEd, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
+      GetOrAddProgramApplication(context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicPostBasicProgramInperson, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
     
     context.SaveChanges();
 

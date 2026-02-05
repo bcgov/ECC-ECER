@@ -63,20 +63,16 @@ const mapProgramStatus = (status: string ="") : string => {
 
 const mapApplicationType = (type: string ="") : string => {
   switch (type) {
-    case "AdditionalCampusatRecognizedInstitutionPrivateOnly":
-      return "Additional Campus at Recognized Institution";
-    case "CurriculumRevisionsatRecognizedInstitutionPublicPrivateContinuingEd":
-      return "Curriculum Revisions at Recognized Institution";
-    case "NewECEProgramPublicPrivateContinuingEd":
-      return "New ECE Program";
-    case "OnlineorHybridProgramPublicPrivateContinuingEd":
+    case "PrivateNewCampusLocation":
+      return "New campus";
+    case "NewDeliveryMethod":
+      return "New delivery method";
+    case "NewBasicPostBasicProgramHybridOnline":
       return "Online or Hybrid Program";
-    case "PostBasicProgramPublicPrivateContinuingEd":
-      return "Post-Basic Program";
-    case "SatelliteProgramPublicPrivateContinuingEd":
-      return "Satellite Program";
-    case "WorkIntegratedLearningProgramPublicOnly":
-      return "Work Integrated Learning Program(Public Only)";
+    case "NewBasicPostBasicProgramInperson":
+      return "New Basic / Post-basic Program";
+    case "SatelliteProgram":
+      return "Satellite program";
     default:
       return "-";
   }

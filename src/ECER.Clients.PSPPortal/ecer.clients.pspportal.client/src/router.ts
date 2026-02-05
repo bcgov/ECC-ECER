@@ -88,10 +88,23 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/program-application-info",
+      component: () => import("./components/pages/ProgramApplicationInfo.vue"),
+      name: "programApplicationInfo",
+      meta: { requiresAuth: true, requiresVerification: true },
+    },
+    {
       path: "/program-profiles",
       component: () => import("./components/pages/ProgramProfiles.vue"),
       name: "program-profiles",
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/program/:programId/initiate-update",
+      component: () => import("./components/pages/InitiateProgramUpdate.vue"),
+      name: "initiate-program-update",
+      meta: { requiresAuth: true },
+      props: true,
     },
     {
       path: "/silent-callback",

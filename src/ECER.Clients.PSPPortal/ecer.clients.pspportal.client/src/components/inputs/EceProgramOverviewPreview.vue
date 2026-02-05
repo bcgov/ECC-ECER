@@ -81,10 +81,16 @@ export default defineComponent({
       return this.programStore.draftProgram?.postSecondaryInstituteName || "";
     },
     startDateFormatted() {
-      return formatDate(this.programStore.draftProgram?.startDate || "", "LLL d, yyyy");
+      return formatDate(
+        this.programStore.draftProgram?.startDate || "",
+        "LLL d, yyyy",
+      );
     },
     endDateFormatted() {
-      return formatDate(this.programStore.draftProgram?.endDate || "", "LLL d, yyyy");
+      return formatDate(
+        this.programStore.draftProgram?.endDate || "",
+        "LLL d, yyyy",
+      );
     },
     programTypes() {
       return this.programStore.draftProgram?.programTypes?.join(", ");

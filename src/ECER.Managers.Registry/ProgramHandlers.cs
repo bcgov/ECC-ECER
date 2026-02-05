@@ -17,7 +17,8 @@ public class ProgramHandlers(
     IRequestHandler<ProgramsQuery, ProgramsQueryResults>,
     IRequestHandler<UpdateCourseCommand, string>,
     IRequestHandler<UpdateProgramCommand, string>,
-    IRequestHandler<SubmitProgramCommand, SubmitProgramResult>
+    IRequestHandler<SubmitProgramCommand, SubmitProgramResult>,
+    IRequestHandler<ChangeProgramCommand, string>
 {
   public async Task<Contract.Programs.Program?> Handle(SaveDraftProgramCommand request, CancellationToken cancellationToken)
   {
@@ -67,6 +68,13 @@ public class ProgramHandlers(
   {
     ArgumentNullException.ThrowIfNull(request);
     var programId = await programRepository.UpdateProgram(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
+    return programId;
+  }
+
+  public async Task<string> Handle(ChangeProgramCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var programId = await programRepository.ChangeProgram(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
     return programId;
   }
 

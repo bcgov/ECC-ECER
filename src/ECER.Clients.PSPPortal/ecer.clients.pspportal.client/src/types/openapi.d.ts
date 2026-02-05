@@ -14,12 +14,13 @@ declare namespace Components {
             } | null;
         }
         export type ApplicationStatus = "Draft" | "InterimRecognition" | "OnGoingRecognition" | "PendingReview" | "RefusetoApprove" | "ReviewAnalysis" | "RFAI" | "Submitted" | "Withdrawn";
-        export type ApplicationType = "AdditionalCampusatRecognizedInstitutionPrivateOnly" | "CurriculumRevisionsatRecognizedInstitutionPublicPrivateContinuingEd" | "NewCampusNotificationPublicOnly" | "NewECEProgramPublicPrivateContinuingEd" | "OnlineorHybridProgramPublicPrivateContinuingEd" | "PostBasicProgramPublicPrivateContinuingEd" | "SatelliteProgramPublicPrivateContinuingEd" | "WorkIntegratedLearningProgramPublicOnly";
+        export type ApplicationType = "NewBasicPostBasicProgramHybridOnline" | "NewBasicPostBasicProgramInperson" | "NewDeliveryMethod" | "PrivateNewCampusLocation" | "SatelliteProgram";
         export interface AreaOfInstruction {
             id?: string | null;
             name?: string | null;
             programTypes?: ProgramTypes[] | null;
             minimumHours?: number | null; // int32
+            displayOrder?: string | null;
         }
         export interface AreaOfInstructionListResponse {
             areaOfInstruction?: AreaOfInstruction[] | null;
@@ -198,6 +199,7 @@ declare namespace Components {
             courses?: Course[] | null;
             changesMade?: boolean;
             fromProgramProfileId?: string | null;
+            readyForReview?: boolean | null;
         }
         export interface ProgramApplication {
             id?: string | null;
@@ -298,6 +300,21 @@ declare namespace Paths {
     namespace AreaOfInstructionGet {
         namespace Responses {
             export type $200 = Components.Schemas.AreaOfInstructionListResponse;
+        }
+    }
+    namespace ChangeprogramPut {
+        namespace Parameters {
+            export type Id = string;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        export type RequestBody = Components.Schemas.Program;
+        namespace Responses {
+            export type $200 = string;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
         }
     }
     namespace CommunicationPut {
@@ -760,6 +777,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProgramPost.Responses.$200>
   /**
+   * changeprogram_put - Initiate program profile change
+   */
+  'changeprogram_put'(
+    parameters?: Parameters<Paths.ChangeprogramPut.PathParameters> | null,
+    data?: Paths.ChangeprogramPut.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>
+  /**
    * program_application_get - Handles program application queries
    */
   'program_application_get'(
@@ -1027,6 +1052,16 @@ export interface PathsDictionary {
       data?: Paths.ProgramPost.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProgramPost.Responses.$200>
+  }
+  ['/api/changeprogram/{id}']: {
+    /**
+     * changeprogram_put - Initiate program profile change
+     */
+    'put'(
+      parameters?: Parameters<Paths.ChangeprogramPut.PathParameters> | null,
+      data?: Paths.ChangeprogramPut.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>
   }
   ['/api/programApplications/{id}']: {
     /**

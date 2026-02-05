@@ -16,7 +16,7 @@ public class NewProgramSubmissionValidationEngineTest
   [Fact]
   public async Task Validate_CheckForMinimumHours_ProgramTypeBasic_WithMinHours_ReturnsSuccess()
   {
-    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["Basic"], 20);
+    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["Basic"], 20, "01");
     var areaOfInstructionList = new[] { areaOfInstruction };
 
     var program = CreateProgram(areaOfInstruction.Id, areaOfInstruction.ProgramTypes.ToList(), "20.00", true);
@@ -28,7 +28,7 @@ public class NewProgramSubmissionValidationEngineTest
   [Fact]
   public async Task Validate_CheckForMinimumHours_ProgramTypeBasic_WithZeroHours_ReturnsValidationError()
   {
-    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["Basic"], 20);
+    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["Basic"], 20, "01");
     var areaOfInstructionList = new[] { areaOfInstruction };
 
     var program = CreateProgram(areaOfInstruction.Id, areaOfInstruction.ProgramTypes.ToList(), "0.00", true);
@@ -42,7 +42,7 @@ public class NewProgramSubmissionValidationEngineTest
   [Fact]
   public async Task Validate_CheckForMinimumHours_ProgramTypeSne_WithZeroHours_ReturnsValidationError()
   {
-    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 0);
+    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 0, "01");
     var areaOfInstructionList = new[] { areaOfInstruction };
 
     var program = CreateProgram(areaOfInstruction.Id, areaOfInstruction.ProgramTypes.ToList(), "0.00", true);
@@ -56,8 +56,8 @@ public class NewProgramSubmissionValidationEngineTest
   [Fact]
   public async Task Validate_CheckForMinimumHours_ProgramTypeSne_WithZeroHours_AndUnmappedInstruction_ReturnsValidationError()
   {
-    var areaOfInstruction1 = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 450);
-    var areaOfInstruction2 = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 0);
+    var areaOfInstruction1 = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 450, "01");
+    var areaOfInstruction2 = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 0, "02");
     var areaOfInstructionList = new[] { areaOfInstruction1, areaOfInstruction2 };
 
     var program = CreateProgram(areaOfInstruction1.Id, areaOfInstruction1.ProgramTypes.ToList(), "450.00", true);
@@ -71,7 +71,7 @@ public class NewProgramSubmissionValidationEngineTest
   [Fact]
   public async Task Validate_CheckTotalCourseHours_ProgramTypeSne_WithZeroHours_ReturnsValidationError()
   {
-    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 40);
+    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 40, "03");
     var areaOfInstructionList = new[] { areaOfInstruction };
 
     var program = CreateProgram(areaOfInstruction.Id, areaOfInstruction.ProgramTypes.ToList(), "40.00", true);
@@ -85,7 +85,7 @@ public class NewProgramSubmissionValidationEngineTest
   [Fact]
   public async Task Validate_NoBasicCourses_ReturnsValidationError()
   {
-    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["Basic"], 40);
+    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["Basic"], 40, "04");
     var areaOfInstructionList = new[] { areaOfInstruction };
 
     var program = CreateProgram(areaOfInstruction.Id, areaOfInstruction.ProgramTypes.ToList(), "0.00", false);
@@ -99,7 +99,7 @@ public class NewProgramSubmissionValidationEngineTest
   [Fact]
   public async Task Validate_NotAuthorizedToProvideProgramTypeBasic_ReturnsValidationError()
   {
-    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["Basic"], 40);
+    var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["Basic"], 40, "04");
     var areaOfInstructionList = new[] { areaOfInstruction };
 
     var program = CreateProgram(areaOfInstruction.Id, areaOfInstruction.ProgramTypes.ToList(), "0.00", false);

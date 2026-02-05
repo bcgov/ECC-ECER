@@ -10,6 +10,7 @@ public interface IProgramRepository
   
   Task<string> UpdateProgram(Program program, CancellationToken cancellationToken);
   Task<string> SubmitProgramProfile(string id, string userId, CancellationToken cancellationToken);
+  Task<string> ChangeProgram(Program program, CancellationToken cancellationToken);
 }
 
 public record ProgramQuery
@@ -60,6 +61,7 @@ public record Program(string? Id, string PostSecondaryInstituteId)
   public IEnumerable<Course>? Courses { get; set; }
   public IEnumerable<string>? OfferedProgramTypes { get; set; }
   public string? FromProgramProfileId { get; set; }
+  public bool? ReadyForReview { get; set; }
 }
 
 public enum ProgramStatus

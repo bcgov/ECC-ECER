@@ -6,9 +6,23 @@
     class="pa-6 border-primary border-opacity-100 w-100"
   >
     <div class="d-flex justify-end">
-      <v-chip :color="chipColour" variant="flat" size="small">
-        {{ statusText }}
-      </v-chip>
+      <v-row>
+        <v-col></v-col>
+        <v-col v-if="program.programProfileType == 'ChangeRequest' && !isReadyForReview()"
+          class="d-flex justify-end">
+          <p>Loading...</p>
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            size="24"
+          ></v-progress-circular>
+        </v-col>
+        <v-col class="d-flex justify-end">
+          <v-chip :color="chipColour" variant="flat" size="small">
+            {{ statusText }}
+          </v-chip>
+        </v-col>
+      </v-row>
     </div>
 
     <div class="mb-4">
@@ -33,7 +47,11 @@
     </div>
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
-      <v-row v-if="program?.programProfileType === 'ChangeRequest' && status === 'Draft'">
+      <v-row
+        v-if="
+          program?.programProfileType === 'ChangeRequest' && status === 'Draft'
+        "
+      >
         <v-btn
           size="large"
           variant="outlined"
@@ -43,12 +61,7 @@
           View
         </v-btn>
         <v-spacer />
-        <v-btn
-          size="large"
-          variant="flat"
-          color="error"
-          @click="withdraw"
-        >
+        <v-btn size="large" variant="flat" color="error" @click="withdraw">
           Withdraw changes
         </v-btn>
       </v-row>
@@ -100,7 +113,10 @@
       @cancel="showWithdrawConfirmation = false"
     >
       <template #confirmation-text>
-        <p>Are you sure you want to withdraw this change request? All changes associated with this request will be deleted.</p>
+        <p>
+          Are you sure you want to withdraw this change request? All changes
+          associated with this request will be deleted.
+        </p>
       </template>
     </ConfirmationDialog>
   </v-card>
@@ -113,7 +129,9 @@ import type { ProgramStage } from "@/types/wizard";
 import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
-import { withdrawProgram } from "@/api/program";
+import { getPrograms, withdrawProgram } from "@/api/program";
+
+const INTERVAL_TIME = 30000;
 
 export default defineComponent({
   name: "ProgramProfileCard",
@@ -133,6 +151,9 @@ export default defineComponent({
     return {
       showWithdrawConfirmation: false,
       isWithdrawing: false,
+      readyForReview: false as boolean,
+      updatedProgram: this.program as Components.Schemas.Program,
+      pollInterval: 0 as any,
     };
   },
   computed: {
@@ -205,7 +226,29 @@ export default defineComponent({
       }
     },
   },
+  async mounted() {
+    if (this.program.programProfileType == "ChangeRequest"){
+        if (!this.program.readyForReview){
+          /* Poll the backend until the ready for review flag is set */
+          this.pollInterval = setInterval(() => {this.fetchProgram()}, INTERVAL_TIME);
+          setTimeout(() => {clearInterval(this.pollInterval)}, INTERVAL_TIME * 10);
+        }
+    }
+  },
   methods: {
+    async fetchProgram() {
+      const programId = this.program.id;
+      if (programId){
+        const { data: response } = await getPrograms(programId);
+        if(response?.programs && response.programs[0]){
+          this.updatedProgram = response.programs[0];
+          if(this.updatedProgram.readyForReview){
+            /* Ready for review flag has been set. Stop polling. */
+            clearInterval(this.pollInterval)
+          }
+        }
+      }
+    },
     openProfile() {
       this.router.push({ path: "/program/" + this.program.id });
     },
@@ -227,6 +270,16 @@ export default defineComponent({
       }
     },
     formatDate,
+    isReadyForReview(): boolean {
+      if (this.updatedProgram.readyForReview)
+      {        
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    },
   },
 });
 </script>
