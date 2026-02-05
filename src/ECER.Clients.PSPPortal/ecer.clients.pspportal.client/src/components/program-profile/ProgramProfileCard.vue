@@ -8,8 +8,10 @@
     <div class="d-flex justify-end">
       <v-row>
         <v-col></v-col>
-        <v-col v-if="showProgressMeter"
-          class="d-flex justify-end">
+        <v-col 
+          v-if="showProgressMeter"
+          class="d-flex justify-end"
+        >
           <p>Loading...</p>
           <v-progress-circular
             indeterminate
@@ -237,9 +239,9 @@ export default defineComponent({
   methods: {
     async fetchProgram() {
       const programId = this.program.id;
-      if (programId){
+      if (programId) {
         const { data: response } = await getPrograms(programId);
-        if(response?.programs && response.programs[0]){
+        if (response?.programs && response.programs[0]) {
           this.updatedProgram = response.programs[0];
         }
       }

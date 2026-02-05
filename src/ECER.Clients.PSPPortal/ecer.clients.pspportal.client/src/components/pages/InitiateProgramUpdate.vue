@@ -17,6 +17,7 @@
     <div>
       <div>
         <v-row>
+<<<<<<< story/ecer-5728
             <v-col>
               <div>
                 <svg width="36" height="4">
@@ -43,19 +44,61 @@
                   <li>Course hours (Note: total hours and competency requirements for all areas of instruction must be met)</li>
               </ul>           
             </v-col>
+=======
+          <v-col>
+            <h2>{{ program?.programName }} - {{ displayedTypes }}</h2>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <p>
+              Make updates to your program profile that do not affect program
+              requirements or competencies (for example, start date, course
+              name, etc.). You can indicate the date on which your changes come
+              into effect.
+            </p>
+
+            <p>
+              Review your program profile by clicking the button below and
+              update any of the following:
+            </p>
+            <ul class="ml-8">
+              <li>Program name</li>
+              <li>Program start date</li>
+              <li>Course code</li>
+              <li>Course name</li>
+              <li>
+                Course hours (Note: Total hours and competency requirements for
+                all areas of instruction must be met)
+              </li>
+            </ul>
+          </v-col>
+>>>>>>> master
         </v-row>
 
         <Callout class="mt-3" type="warning">
           <div class="d-flex flex-column ga-3">
+<<<<<<< story/ecer-5728
               <h3>Need to make a change to a program?</h3>
               <p>If your update will affect program requirements or competencies (for example, adding or removing courses), please 
                 <a @click="submitChangeRequest()">submit a change request</a> instead.</p>
               <p></p>
               <p>Learn more about program changes</p>
+=======
+            <p>Need to make a change to a program?</p>
+            <p>
+              If your update will affect program requirements or competencies
+              (for example, adding or removing courses), please submit a change
+              request instead.
+            </p>
+            <p></p>
+            <p>Learn more about program changes</p>
+>>>>>>> master
           </div>
         </Callout>
         <br /><br />
         <div v-if="program?.status != 'ChangeRequestInProgress'">
+<<<<<<< story/ecer-5728
           <v-btn  rounded="lg" 
                   color="primary" 
                   @click="initiateUpdate">Continue to program profile</v-btn>
@@ -65,16 +108,25 @@
             v-if="showProgressMeter"
             class="mt-8"
           >
+=======
+          <v-btn rounded="lg" color="primary" @click="initiateUpdate">
+            Start program profile update
+          </v-btn>
+        </div>
+        <div v-else>
+          <div v-if="!isReadyForReview" class="mt-8">
+>>>>>>> master
             <v-progress-circular
               class="mb-2"
               color="primary"
               indeterminate
             ></v-progress-circular>
             <h4>
-              Your request has been initiated. Please wait a few minutes while we prepare it for review. 
-              When ready, it will appear here and will also be available in your dashboard.
+              Your request has been initiated. Please wait a few minutes while
+              we prepare it for review. When ready, it will appear here and will
+              also be available in your dashboard.
             </h4>
-          </div>        
+          </div>
         </div>
       </div>
     </div>
@@ -103,7 +155,7 @@ export default defineComponent({
     PageContainer,
     Breadcrumb,
     Loading,
-    Callout
+    Callout,
   },
   setup() {
     const loadingStore = useLoadingStore();
@@ -135,19 +187,31 @@ export default defineComponent({
     },
     displayedTypes(): string {
       let types = "";
-      if (this.program?.programTypes != null && this.program?.programTypes?.length > 0){
+      if (
+        this.program?.programTypes != null &&
+        this.program?.programTypes?.length > 0
+      ) {
         const typeCount = this.program?.programTypes?.length;
         this.program?.programTypes?.forEach((type, index) => {
           types = types + type;
-          if (index < typeCount-1){
+          if (index < typeCount - 1) {
             types = types + ", ";
           }
         });
       }
       return types;
     },
+<<<<<<< story/ecer-5728
     showProgressMeter(): boolean {    
         return this.updateInProgress;
+=======
+    isReadyForReview(): boolean {
+      if (this.newProgram == null || !this.newProgram?.readyForReview) {
+        return false;
+      } else {
+        return true;
+      }
+>>>>>>> master
     },
   },
   async mounted() {
@@ -160,13 +224,13 @@ export default defineComponent({
       try {
         const { data: response } = await getPrograms(this.programId, [
           "Approved",
-          "ChangeRequestInProgress"
+          "ChangeRequestInProgress",
         ]);
         const program =
           response?.programs && response.programs.length > 0
             ? response.programs[0]
             : null;
-        this.program = program || null;       
+        this.program = program || null;
       } catch (error) {
         console.error("Error loading program:", error);
         this.program = null;
@@ -175,35 +239,41 @@ export default defineComponent({
       }
     },
     async fetchNewProgram() {
-      if (this.newProgramId){
+      if (this.newProgramId) {
         const { data: response } = await getPrograms(this.newProgramId);
-        if(response?.programs && response.programs[0]){
+        if (response?.programs && response.programs[0]) {
           this.newProgram = response.programs[0];
         }
       }
     },
     async initiateUpdate() {
+<<<<<<< story/ecer-5728
       if (this.program != null){
         this.updateInProgress = true;
+=======
+      if (this.program != null) {
+>>>>>>> master
         const response = await initiateProgramChange(this.program);
         if (response.error) {
           console.error("Failed to initiate program change:", response.error);
         }
         this.loadProgram();
-        if(response.data != null){
-          this.newProgramId = response.data;       
+        if (response.data != null) {
+          this.newProgramId = response.data;
           this.fetchNewProgram();
           /* Poll the backend until the ready for review flag is set */
           this.pollInterval = setInterval(() => {
             this.fetchNewProgram();
-            if(this.newProgram?.readyForReview){
+            if (this.newProgram?.readyForReview) {
               /* Ready for review flag has been set. Stop polling. */
               this.updateInProgress = false;
               clearInterval(this.pollInterval);
               this.router.replace("/program/" + this.newProgramId);
             }
           }, INTERVAL_TIME);
-          setTimeout(() => {clearInterval(this.pollInterval)}, INTERVAL_TIME * 10);          
+          setTimeout(() => {
+            clearInterval(this.pollInterval);
+          }, INTERVAL_TIME * 10);
         }
       }
     },

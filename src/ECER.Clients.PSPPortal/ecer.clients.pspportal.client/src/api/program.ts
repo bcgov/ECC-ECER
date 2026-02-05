@@ -125,7 +125,7 @@ const initiateProgramChange = async (
     request: client.changeprogram_put(pathParameters, body),
     key: "changeprogram_put",
   });
-}
+};
 
 export {
   createOrUpdateDraftApplication,
@@ -133,5 +133,5 @@ export {
   submitDraftProgramApplication,
   updateCourse,
   withdrawProgram,
-  initiateProgramChange
+  initiateProgramChange,
 };
