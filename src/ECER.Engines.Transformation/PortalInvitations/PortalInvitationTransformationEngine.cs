@@ -38,8 +38,8 @@ internal sealed class PortalInvitationTransformationEngine(IDataProtectionProvid
     var protector = dataProtectionProvider.CreateProtector(nameof(PortalInvitationTransformationEngine)).ToTimeLimitedDataProtector();
     var decryptedData = protector.Unprotect(encryptedData);
 
+    if (decryptedData.Contains(':')) { decryptedData = decryptedData.Split(':')[1]; } // To handle legacy tokens
     var portalInvitation = Guid.Parse(decryptedData);
-
     return new DecryptInviteTokenResponse(portalInvitation);
   }
 }
