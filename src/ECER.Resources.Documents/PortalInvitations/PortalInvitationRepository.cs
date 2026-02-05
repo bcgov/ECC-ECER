@@ -17,7 +17,7 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
   public async Task<PortalInvitation> Query(PortalInvitationQuery query, CancellationToken ct)
   {
     await Task.CompletedTask;
-    var portalInvitation = context.ecer_PortalInvitationSet.Single(pi => pi.ecer_PortalInvitationId == query.portalInvitationId);
+    var portalInvitation = context.ecer_PortalInvitationSet.SingleOrDefault(pi => pi.ecer_PortalInvitationId == query.portalInvitationId);
     var result = mapper.Map<PortalInvitation>(portalInvitation);
 
     if (portalInvitation != null && portalInvitation.ecer_Type == ecer_PortalInvitationTypes.PSIProgramRepresentative)
