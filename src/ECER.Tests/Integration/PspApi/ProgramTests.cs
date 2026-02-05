@@ -1,9 +1,9 @@
-using System.Net;
 using Alba;
 using ECER.Clients.PSPPortal.Server;
 using ECER.Clients.PSPPortal.Server.Courses;
 using ECER.Clients.PSPPortal.Server.Programs;
 using Shouldly;
+using System.Net;
 using Xunit.Abstractions;
 using Course = ECER.Clients.PSPPortal.Server.Shared.Course;
 using CourseAreaOfInstruction = ECER.Clients.PSPPortal.Server.Shared.CourseAreaOfInstruction;
@@ -28,16 +28,16 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var name = $"Draft Program {Guid.NewGuid():N}";
     var startDate = DateTime.UtcNow.Date;
     var endDate = DateTime.UtcNow.Date.AddYears(2);
-    var programTypes = BasicAndIteProgramTypes;
+    var offeredProgramTypes = BasicAndIteProgramTypes;
 
-    var draftResponse = await CreateDraftProgram(stage, name, startDate, endDate, programTypes);
+    var draftResponse = await CreateDraftProgram(stage, name, startDate, endDate, offeredProgramTypes);
 
     draftResponse.Program.Id.ShouldNotBeNull();
     draftResponse.Program.PortalStage.ShouldBe(stage);
     draftResponse.Program.Status.ShouldBe(ProgramStatus.Draft);
     draftResponse.Program.StartDate.ShouldBe(startDate);
     draftResponse.Program.EndDate.ShouldBe(endDate);
-    draftResponse.Program.ProgramTypes.ShouldBe(programTypes);
+    draftResponse.Program.OfferedProgramTypes.ShouldBe(offeredProgramTypes);
 
     var getResponse = await Host.Scenario(_ =>
     {
@@ -55,7 +55,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     fetched.PostSecondaryInstituteName.ShouldNotBeNull();
     fetched.StartDate.ShouldBe(startDate);
     fetched.EndDate.ShouldBe(endDate);
-    fetched.ProgramTypes.ShouldBe(programTypes);
+    fetched.OfferedProgramTypes.ShouldBe(offeredProgramTypes);
   }
 
   [Fact]
@@ -77,7 +77,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
         Name = initial.Program.Name,
         StartDate = updatedStartDate,
         EndDate = updatedEndDate,
-        ProgramTypes = updatedProgramTypes,
+        OfferedProgramTypes = updatedProgramTypes,
         ProgramName = "Program Name"
       })).ToUrl($"/api/draftprograms/{initial.Program.Id}");
       _.StatusCodeShouldBeOk();
@@ -90,7 +90,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     updated.Program.Name.ShouldNotBeNullOrWhiteSpace();
     updated.Program.StartDate.ShouldBe(updatedStartDate);
     updated.Program.EndDate.ShouldBe(updatedEndDate);
-    updated.Program.ProgramTypes.ShouldBe(updatedProgramTypes);
+    updated.Program.OfferedProgramTypes.ShouldBe(updatedProgramTypes);
     updated.Program.ProgramName.ShouldBe("Program Name");
 
     var getResponse = await Host.Scenario(_ =>
@@ -106,7 +106,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     fetched.Name.ShouldNotBeNullOrWhiteSpace();
     fetched.StartDate.ShouldBe(updatedStartDate);
     fetched.EndDate.ShouldBe(updatedEndDate);
-    fetched.ProgramTypes.ShouldBe(updatedProgramTypes);
+    fetched.OfferedProgramTypes.ShouldBe(updatedProgramTypes);
   }
 
   [Fact]
@@ -126,7 +126,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     });
   }
 
-  private async Task<DraftProgramResponse> CreateDraftProgram(string stage, string name, DateTime? startDate = null, DateTime? endDate = null, IEnumerable<ProgramTypes>? programTypes = null)
+  private async Task<DraftProgramResponse> CreateDraftProgram(string stage, string name, DateTime? startDate = null, DateTime? endDate = null, IEnumerable<ProgramTypes>? offeredProgramTypes = null)
   {
     var response = await Host.Scenario(_ =>
     {
@@ -137,7 +137,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
         Name = name,
         StartDate = startDate,
         EndDate = endDate,
-        ProgramTypes = programTypes,
+        OfferedProgramTypes = offeredProgramTypes,
       })).ToUrl("/api/draftprograms");
       _.StatusCodeShouldBeOk();
     });
@@ -146,7 +146,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     draft.ShouldNotBeNull();
     return draft!;
   }
-  
+
   [Fact]
   public async Task GetProgramProfile_ReturnsStatusOk()
   {
@@ -165,7 +165,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     firstProfile.NewSneTotalHours.ShouldBe("10");
     firstProfile.NewIteTotalHours.ShouldBe("15.25");
   }
-  
+
   [Fact]
   public async Task GetAllProgramProfiles_ReturnsStatusOk()
   {
@@ -175,15 +175,15 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Get.Url($"/api/programs/null");
       _.StatusCodeShouldBeOk();
     });
-  
+
     var status = await response.ReadAsJsonAsync<GetProgramsResponse>();
     status.ShouldNotBeNull();
-  
+
     var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.Count().ShouldBe(0);
   }
-  
+
   [Fact]
   public async Task UpdateProgram_Type_Draft_ReturnsBadRequest()
   {
@@ -195,7 +195,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     });
     var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
     var program = status.Programs!.First();
-    
+
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
@@ -203,7 +203,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
     });
   }
-  
+
   [Fact]
   public async Task UpdateProgram_Type_ChangeRequest_ReturnsOk()
   {
@@ -216,14 +216,14 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
     var program = status.Programs!.First();
     program.Status = ProgramStatus.Withdrawn;
-    
+
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
       _.Put.Json(program).ToUrl($"/api/program/{Fixture.changeRequestProgramId}");
       _.StatusCodeShouldBeOk();
     });
-    
+
     var updatedProgramResponse = await Host.Scenario(_ =>
     {
       _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
@@ -234,7 +234,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var updatedProgram = updated.Programs!.First();
     updatedProgram.ShouldNotBeNull();
     updatedProgram.Status.ShouldBe(ProgramStatus.Withdrawn);
-    
+
     // Verify the from profile status was updated back to Approved (RegistryReviewComplete)
     var fromProfileResponse = await Host.Scenario(_ =>
     {
@@ -249,9 +249,9 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task SubmitDraftProgram__ReturnsBadRequest()
+  public async Task SubmitDraftProgram_BadGuid_ReturnsBadRequest()
   {
-    var request = new SubmitProgramRequest(this.Fixture.programIdWithTotals!);
+    var request = new SubmitProgramRequest("Bad Guid");
     var postResponse = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
@@ -259,31 +259,30 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
     });
   }
-  
+
   [Fact]
   public async Task SubmitDraftProgram__ReturnsOk()
   {
-    
     var areaOfInstructions = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
       _.Get.Url("/api/areaofinstructionlist");
       _.StatusCodeShouldBeOk();
     });
-  
+
     var areaOfInstructionsPayload = await areaOfInstructions.ReadAsJsonAsync<AreaOfInstructionListResponse>();
-  
+
     var allSneInstructions = areaOfInstructionsPayload.AreaOfInstruction
       .Where(ai => ai.ProgramTypes.Contains(ProgramTypes.SNE))
       .ToList();
-  
+
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
       _.Put.Json(new UpdateCourseRequest(new []{ CreateCourseWithCourseAreaOfInstructionsAndHours(allSneInstructions) }, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.submitProgramId}");
       _.StatusCodeShouldBeOk();
     });
-    
+
     var request = new SubmitProgramRequest(this.Fixture.submitProgramId!);
     var postResponse = await Host.Scenario(_ =>
     {
@@ -295,7 +294,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   
   private Course CreateCourseWithCourseAreaOfInstructionsAndHours(List<AreaOfInstruction> areaOfInstructions)
   {
-    var courseAreaOfInstruction =  new List<CourseAreaOfInstruction>();
+    var courseAreaOfInstruction = new List<CourseAreaOfInstruction>();
 
     foreach (var ai in areaOfInstructions)
     {
@@ -306,7 +305,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       };
       courseAreaOfInstruction.Add(ca);
     }
-    
+
     var course = new Course
     {
       CourseId = Fixture.courseId2,
@@ -316,7 +315,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       NewCourseTitle = "Course 202",
       ProgramType = ProgramTypes.SNE.ToString(),
     };
-    
+
     course.CourseAreaOfInstruction = courseAreaOfInstruction;
     return course;
   }
