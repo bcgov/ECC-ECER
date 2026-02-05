@@ -132,8 +132,7 @@ import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import { getPrograms, withdrawProgram } from "@/api/program";
-
-const INTERVAL_TIME = 10000;
+import { IntervalTime } from "@/utils/constant";
 
 export default defineComponent({
   name: "ProgramProfileCard",
@@ -256,10 +255,10 @@ export default defineComponent({
           this.updateInProgress = false;
           clearInterval(this.pollInterval);
         }
-      }, INTERVAL_TIME);
+      }, IntervalTime.INTERVAL_10_SECONDS);
       setTimeout(() => {
         clearInterval(this.pollInterval)
-      }, INTERVAL_TIME * 10);
+      }, IntervalTime.INTERVAL_10_SECONDS * 10);
     },
     openProfile() {
       this.router.push({ path: "/program/" + this.program.id });

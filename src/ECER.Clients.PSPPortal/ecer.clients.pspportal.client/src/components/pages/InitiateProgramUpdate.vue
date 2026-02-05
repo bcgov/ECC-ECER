@@ -93,9 +93,7 @@ import type { Components } from "@/types/openapi";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Callout from "@/components/common/Callout.vue";
 import { getPrograms, initiateProgramChange } from "@/api/program";
-
-const PAGE_SIZE = 0;
-const INTERVAL_TIME = 10000;
+import { IntervalTime } from "@/utils/constant";
 
 export default defineComponent({
   name: "ProgramProfiles",
@@ -206,10 +204,10 @@ export default defineComponent({
               clearInterval(this.pollInterval);
               this.router.replace("/program/" + this.newProgramId);
             }
-          }, INTERVAL_TIME);
+          }, IntervalTime.INTERVAL_10_SECONDS);
           setTimeout(() => {
             clearInterval(this.pollInterval);
-          }, INTERVAL_TIME * 10);
+          }, IntervalTime.INTERVAL_10_SECONDS * 10);
         }
       }
     },
