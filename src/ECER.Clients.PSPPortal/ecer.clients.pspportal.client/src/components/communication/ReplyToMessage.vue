@@ -10,16 +10,9 @@
         ></v-btn>
         <v-divider :style="{ opacity: 1 }" />
         <h1 class="mt-5">Re: {{ messageThreadSubject }}</h1>
-        <v-row class="mt-5">
-          <v-col cols="6">
-            <div>Category</div>
-            <v-text-field
-              class="mt-2"
-              variant="outlined"
-              :model-value="messageThreadCategoryLabel"
-              readonly
-              hide-details="auto"
-            ></v-text-field>
+        <v-row class="mt-5" v-if="messageThreadCategory">
+          <v-col cols="auto">
+            {{ `Category: ${messageThreadCategoryLabel}` }}
           </v-col>
         </v-row>
         <v-form ref="replyForm" v-model="formValid">
