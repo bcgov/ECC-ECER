@@ -8,8 +8,12 @@
     <div class="d-flex justify-end">
       <v-row>
         <v-col></v-col>
-        <v-col v-if="program.programProfileType == 'ChangeRequest' && !isReadyForReview()"
-          class="d-flex justify-end">
+        <v-col
+          v-if="
+            program.programProfileType == 'ChangeRequest' && !isReadyForReview()
+          "
+          class="d-flex justify-end"
+        >
           <p>Loading...</p>
           <v-progress-circular
             indeterminate
@@ -227,24 +231,28 @@ export default defineComponent({
     },
   },
   async mounted() {
-    if (this.program.programProfileType == "ChangeRequest"){
-        if (!this.program.readyForReview){
-          /* Poll the backend until the ready for review flag is set */
-          this.pollInterval = setInterval(() => {this.fetchProgram()}, INTERVAL_TIME);
-          setTimeout(() => {clearInterval(this.pollInterval)}, INTERVAL_TIME * 10);
-        }
+    if (this.program.programProfileType == "ChangeRequest") {
+      if (!this.program.readyForReview) {
+        /* Poll the backend until the ready for review flag is set */
+        this.pollInterval = setInterval(() => {
+          this.fetchProgram();
+        }, INTERVAL_TIME);
+        setTimeout(() => {
+          clearInterval(this.pollInterval);
+        }, INTERVAL_TIME * 10);
+      }
     }
   },
   methods: {
     async fetchProgram() {
       const programId = this.program.id;
-      if (programId){
+      if (programId) {
         const { data: response } = await getPrograms(programId);
-        if(response?.programs && response.programs[0]){
+        if (response?.programs && response.programs[0]) {
           this.updatedProgram = response.programs[0];
-          if(this.updatedProgram.readyForReview){
+          if (this.updatedProgram.readyForReview) {
             /* Ready for review flag has been set. Stop polling. */
-            clearInterval(this.pollInterval)
+            clearInterval(this.pollInterval);
           }
         }
       }
@@ -271,12 +279,9 @@ export default defineComponent({
     },
     formatDate,
     isReadyForReview(): boolean {
-      if (this.updatedProgram.readyForReview)
-      {        
+      if (this.updatedProgram.readyForReview) {
         return true;
-      }
-      else
-      {
+      } else {
         return false;
       }
     },
