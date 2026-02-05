@@ -32,10 +32,5 @@ internal class ProgramMapper : Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<Contract.Shared.Course, Course>()
-      .ReverseMap();
-    
-    CreateMap<Contract.Shared.CourseAreaOfInstruction, CourseAreaOfInstruction>()
-      .ReverseMap();
   }
 }
