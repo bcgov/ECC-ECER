@@ -8,6 +8,7 @@
     <v-row>
       <v-col cols="12">
         <h1>Update a program profile</h1>
+        <br />
       </v-col>
     </v-row>
 
@@ -16,56 +17,54 @@
     <div>
       <div>
         <v-row>
-          <v-col>
-            <h2>{{ program?.programName }} - {{ displayedTypes }}</h2>
-          </v-col>
+            <v-col>
+              <div>
+                <svg width="36" height="4">
+                  <rect width="36" height="4" fill="#FFC72C" />
+                </svg>
+                <h2>{{ programTitle }}</h2>
+              </div>
+            </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12">
-            <p>
-              Make updates to your program profile that do not affect program
-              requirements or competencies (for example, start date, course
-              name, etc.). You can indicate the date on which your changes come
-              into effect.
-            </p>
-
-            <p>
-              Review your program profile by clicking the button below and
-              update any of the following:
-            </p>
-            <ul class="ml-8">
-              <li>Program name</li>
-              <li>Program start date</li>
-              <li>Course code</li>
-              <li>Course name</li>
-              <li>
-                Course hours (Note: Total hours and competency requirements for
-                all areas of instruction must be met)
-              </li>
-            </ul>
-          </v-col>
+            <v-col cols="12">
+              <p>
+                Make updates to your program profile that do not affect program requirements or competencies (for example, start date, course name, etc.). 
+                You can indicate the date on which your changes come into effect.
+              </p>
+              <br />
+              <p>Review your program profile by clicking the button below and update any of the following:</p>
+              <br />
+              <ul class="ml-8">
+                  <li>Program name</li>
+                  <li>Program start date</li>
+                  <li>Course code</li>
+                  <li>Course name</li>
+                  <li>Course hours (Note: total hours and competency requirements for all areas of instruction must be met)</li>
+              </ul>           
+            </v-col>
         </v-row>
 
         <Callout class="mt-3" type="warning">
           <div class="d-flex flex-column ga-3">
-            <p>Need to make a change to a program?</p>
-            <p>
-              If your update will affect program requirements or competencies
-              (for example, adding or removing courses), please submit a change
-              request instead.
-            </p>
-            <p></p>
-            <p>Learn more about program changes</p>
+              <h3>Need to make a change to a program?</h3>
+              <p>If your update will affect program requirements or competencies (for example, adding or removing courses), please 
+                <a @click="submitChangeRequest()">submit a change request</a> instead.</p>
+              <p></p>
+              <p>Learn more about program changes</p>
           </div>
         </Callout>
-
+        <br /><br />
         <div v-if="program?.status != 'ChangeRequestInProgress'">
-          <v-btn rounded="lg" color="primary" @click="initiateUpdate">
-            Start program profile update
-          </v-btn>
+          <v-btn  rounded="lg" 
+                  color="primary" 
+                  @click="initiateUpdate">Continue to program profile</v-btn>
         </div>
         <div v-else>
-          <div v-if="!isReadyForReview" class="mt-8">
+          <div
+            v-if="showProgressMeter"
+            class="mt-8"
+          >
             <v-progress-circular
               class="mb-2"
               color="primary"
@@ -87,21 +86,21 @@
 import { defineComponent } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Callout from "@/components/common/Callout.vue";
 import { getPrograms, initiateProgramChange } from "@/api/program";
-
-const PAGE_SIZE = 0;
-const INTERVAL_TIME = 30000;
+import { IntervalTime } from "@/utils/constant";
 
 export default defineComponent({
   name: "ProgramProfiles",
   components: {
     ECEHeader,
     PageContainer,
+    Breadcrumb,
     Loading,
     Callout,
   },
@@ -116,7 +115,7 @@ export default defineComponent({
       newProgram: null as Components.Schemas.Program | null,
       newProgramId: "" as string,
       loading: true,
-      updateInitiated: false,
+      updateInProgress: false,
       pollInterval: 0 as any,
     };
   },
@@ -129,6 +128,9 @@ export default defineComponent({
   computed: {
     isLoading(): boolean {
       return this.loadingStore.isLoading("program_get") || this.loading;
+    },
+    programTitle(): string {
+      return this.program?.name + " - " + this.displayedTypes;
     },
     displayedTypes(): string {
       let types = "";
@@ -146,12 +148,8 @@ export default defineComponent({
       }
       return types;
     },
-    isReadyForReview(): boolean {
-      if (this.newProgram == null || !this.newProgram?.readyForReview) {
-        return false;
-      } else {
-        return true;
-      }
+    showProgressMeter(): boolean {    
+        return this.updateInProgress;
     },
   },
   async mounted() {
@@ -187,7 +185,8 @@ export default defineComponent({
       }
     },
     async initiateUpdate() {
-      if (this.program != null) {
+      if (this.program != null){
+        this.updateInProgress = true;
         const response = await initiateProgramChange(this.program);
         if (response.error) {
           console.error("Failed to initiate program change:", response.error);
@@ -201,16 +200,25 @@ export default defineComponent({
             this.fetchNewProgram();
             if (this.newProgram?.readyForReview) {
               /* Ready for review flag has been set. Stop polling. */
+              this.updateInProgress = false;
               clearInterval(this.pollInterval);
               this.router.replace("/program/" + this.newProgramId);
             }
-          }, INTERVAL_TIME);
+          }, IntervalTime.INTERVAL_10_SECONDS);
           setTimeout(() => {
             clearInterval(this.pollInterval);
-          }, INTERVAL_TIME * 10);
+          }, IntervalTime.INTERVAL_10_SECONDS * 10);
         }
       }
     },
+    submitChangeRequest() {
+      this.router.push({
+        name: 'newMessage',
+          params: {
+            initialCategory: 'ProgramChangeRequest',
+          },
+      });
+    }
   },
 });
 </script>

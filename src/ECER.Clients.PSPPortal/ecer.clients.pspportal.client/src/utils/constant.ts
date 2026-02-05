@@ -55,3 +55,7 @@ export enum ProgramType {
   ITE = "ITE",
   SNE = "SNE",
 }
+
+export enum IntervalTime {
+  INTERVAL_10_SECONDS = 10000,
+}
