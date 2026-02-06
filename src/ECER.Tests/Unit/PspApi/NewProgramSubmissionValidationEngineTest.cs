@@ -1,5 +1,6 @@
 using ECER.Engines.Validation.Programs;
 using ECER.Managers.Registry.Contract.Programs;
+using ECER.Managers.Registry.Contract.Shared;
 using ECER.Resources.Documents.MetadataResources;
 
 namespace ECER.Tests.Unit.PspApi;
@@ -120,7 +121,7 @@ public class NewProgramSubmissionValidationEngineTest
       ProgramTypes = programTypes,
       Courses = !addCourse ? null : new[]
       {
-        new Course
+        new Course()
         {
           CourseId = Guid.NewGuid().ToString(),
           CourseNumber = "101",

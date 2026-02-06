@@ -125,6 +125,7 @@ declare namespace Components {
             fileId?: string | null;
             url?: string | null;
         }
+        export type FunctionType = "ProgramProfile" | "ProgramApplication";
         export interface GetMessagesResponse {
             communications?: Communication[] | null;
             totalMessagesCount?: number; // int32
@@ -288,6 +289,7 @@ declare namespace Components {
         }
         export interface UpdateCourseRequest {
             courses?: Course[] | null;
+            type?: FunctionType;
         }
         export interface VersionMetadata {
             version?: string | null;
@@ -1195,6 +1197,7 @@ export type DeliveryType = Components.Schemas.DeliveryType;
 export type DraftProgramResponse = Components.Schemas.DraftProgramResponse;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type FileResponse = Components.Schemas.FileResponse;
+export type FunctionType = Components.Schemas.FunctionType;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
 export type GetProgramApplicationResponse = Components.Schemas.GetProgramApplicationResponse;
 export type GetProgramsResponse = Components.Schemas.GetProgramsResponse;
