@@ -8,10 +8,7 @@
     <div class="d-flex justify-end">
       <v-row>
         <v-col></v-col>
-        <v-col 
-          v-if="showProgressMeter"
-          class="d-flex justify-end"
-        >
+        <v-col v-if="showProgressMeter" class="d-flex justify-end">
           <p>Loading...</p>
           <v-progress-circular
             indeterminate
@@ -231,7 +228,10 @@ export default defineComponent({
     },
   },
   async mounted() {
-    if (this.updatedProgram.programProfileType == "ChangeRequest" && !this.updatedProgram.readyForReview){
+    if (
+      this.updatedProgram.programProfileType == "ChangeRequest" &&
+      !this.updatedProgram.readyForReview
+    ) {
       this.startPolling();
     }
   },
@@ -250,14 +250,14 @@ export default defineComponent({
       this.updateInProgress = true;
       this.pollInterval = setInterval(() => {
         this.fetchProgram();
-        if(this.updatedProgram.readyForReview){
+        if (this.updatedProgram.readyForReview) {
           /* Ready for review flag has been set. Stop polling. */
           this.updateInProgress = false;
           clearInterval(this.pollInterval);
         }
       }, IntervalTime.INTERVAL_10_SECONDS);
       setTimeout(() => {
-        clearInterval(this.pollInterval)
+        clearInterval(this.pollInterval);
       }, IntervalTime.INTERVAL_10_SECONDS * 10);
     },
     openProfile() {
