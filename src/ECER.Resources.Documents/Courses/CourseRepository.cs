@@ -104,6 +104,10 @@ internal sealed class CourseRepository : ICourseRepository
       };
       context.AddObject(newAreaOfInstruction);
     }
+    else
+    {
+      throw new InvalidOperationException("Area of instruction not found");
+    }
   }
 
   private void UpdateAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_CourseProvincialRequirement existingAreaOfInstruction)
@@ -116,6 +120,10 @@ internal sealed class CourseRepository : ICourseRepository
     {
       existingAreaOfInstruction.ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours);
       context.UpdateObject(existingAreaOfInstruction);
+    }
+    else
+    {
+      throw new InvalidOperationException("Area of instruction not found");
     }
   }
 }

@@ -25,8 +25,10 @@ public class CoursesHandler(
       }, cancellationToken);
       
       if (!programProfile.Programs!.Any()) throw new InvalidOperationException($"Program profile with '{request.Id}' not found");
+      
+      var programId = await courseRepository.UpdateCourse(mapper.Map<IEnumerable<Resources.Documents.Shared.Course>>(request.Course)!, request.Id, cancellationToken);
+      return programId;
     }
-    var programId = await courseRepository.UpdateCourse(mapper.Map<IEnumerable<Resources.Documents.Shared.Course>>(request.Course)!, request.Id, cancellationToken);
-    return programId;
+    throw new InvalidOperationException("Operation not allowed");
   }
 }
