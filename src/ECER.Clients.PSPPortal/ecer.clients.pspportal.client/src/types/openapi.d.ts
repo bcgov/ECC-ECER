@@ -755,14 +755,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProgramGet.Responses.$200>
   /**
-   * course_put - Update a course for a program profile
-   */
-  'course_put'(
-    parameters?: Parameters<Paths.CoursePut.PathParameters> | null,
-    data?: Paths.CoursePut.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CoursePut.Responses.$200>
-  /**
    * program_put - Update program profile
    */
   'program_put'(
@@ -842,6 +834,14 @@ export interface OperationMethods {
     data?: Paths.EducationInstitutionPut.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>
+  /**
+   * course_put - Update a course for a program profile
+   */
+  'course_put'(
+    parameters?: Parameters<Paths.CoursePut.PathParameters> | null,
+    data?: Paths.CoursePut.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CoursePut.Responses.$200>
   /**
    * message_get - Paginated endpoint to get all user messages
    */
@@ -1025,16 +1025,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProgramGet.Responses.$200>
   }
-  ['/api/program/{id}/courses']: {
-    /**
-     * course_put - Update a course for a program profile
-     */
-    'put'(
-      parameters?: Parameters<Paths.CoursePut.PathParameters> | null,
-      data?: Paths.CoursePut.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CoursePut.Responses.$200>
-  }
   ['/api/program/{id}']: {
     /**
      * program_put - Update program profile
@@ -1130,6 +1120,16 @@ export interface PathsDictionary {
       data?: Paths.EducationInstitutionPut.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>
+  }
+  ['/api/courses/{id}']: {
+    /**
+     * course_put - Update a course for a program profile
+     */
+    'put'(
+      parameters?: Parameters<Paths.CoursePut.PathParameters> | null,
+      data?: Paths.CoursePut.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CoursePut.Responses.$200>
   }
   ['/api/messages/{parentId}']: {
     /**
