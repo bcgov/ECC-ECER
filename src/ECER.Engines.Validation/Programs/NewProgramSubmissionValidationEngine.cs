@@ -1,4 +1,5 @@
 using ECER.Managers.Registry.Contract.Programs;
+using ECER.Managers.Registry.Contract.Shared;
 using ECER.Resources.Documents.MetadataResources;
 
 namespace ECER.Engines.Validation.Programs;

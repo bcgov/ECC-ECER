@@ -1,9 +1,12 @@
 using Alba;
 using ECER.Clients.PSPPortal.Server;
+using ECER.Clients.PSPPortal.Server.Courses;
 using ECER.Clients.PSPPortal.Server.Programs;
 using Shouldly;
 using System.Net;
 using Xunit.Abstractions;
+using Course = ECER.Clients.PSPPortal.Server.Shared.Course;
+using CourseAreaOfInstruction = ECER.Clients.PSPPortal.Server.Shared.CourseAreaOfInstruction;
 using Program = ECER.Clients.PSPPortal.Server.Programs.Program;
 
 namespace ECER.Tests.Integration.PspApi;
@@ -182,77 +185,6 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task UpdateCourses_ReturnsStatusOk()
-  {
-    var response = await Host.Scenario(_ =>
-    {
-      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(new[] { CreateCourse() })).ToUrl($"/api/program/{Fixture.programId}/courses");
-      _.StatusCodeShouldBeOk();
-    });
-
-    var updateStatus = await response.ReadAsJsonAsync<string>();
-    updateStatus.ShouldNotBeNull();
-    updateStatus.ShouldBe(Fixture.programId);
-
-    var programResponse = await Host.Scenario(_ =>
-    {
-      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
-      _.Get.Url($"/api/programs/{this.Fixture.programId}");
-      _.StatusCodeShouldBeOk();
-    });
-    var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
-    status.ShouldNotBeNull();
-
-    var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
-    firstProfile.Courses.ShouldNotBeNull();
-    firstProfile.Courses.ElementAt(0).CourseNumber.ShouldBe("101");
-    firstProfile.Courses.ElementAt(0).CourseTitle.ShouldBe("Course 101");
-    firstProfile.Courses.ElementAt(0).NewCourseNumber.ShouldBe("102");
-    firstProfile.Courses.ElementAt(0).NewCourseTitle.ShouldBe("Course 102");
-  }
-
-  [Fact]
-  public async Task UpdateCourses_With_AreaOfInstructions_ReturnsStatusOk()
-  {
-    var response = await Host.Scenario(_ =>
-    {
-      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(new[] { CreateCourseWithCourseAreaOfInstructions() })).ToUrl($"/api/program/{Fixture.programId}/courses");
-      _.StatusCodeShouldBeOk();
-    });
-
-    var updateStatus = await response.ReadAsJsonAsync<string>();
-    updateStatus.ShouldNotBeNull();
-    updateStatus.ShouldBe(Fixture.programId);
-
-    var programResponse = await Host.Scenario(_ =>
-    {
-      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
-      _.Get.Url($"/api/programs/{this.Fixture.programId}");
-      _.StatusCodeShouldBeOk();
-    });
-    var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
-    status.ShouldNotBeNull();
-
-    var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
-    firstProfile.Courses.ShouldNotBeNull();
-    firstProfile.Courses.Count().ShouldNotBe(0);
-
-    var firstCourse = firstProfile.Courses.SingleOrDefault();
-    firstCourse.ShouldNotBeNull();
-    firstCourse.CourseNumber.ShouldBe("101");
-    firstCourse.CourseTitle.ShouldBe("Course 101");
-    firstCourse.NewCourseNumber.ShouldBe("102");
-    firstCourse.NewCourseTitle.ShouldBe("Course 102");
-
-    firstCourse.CourseAreaOfInstruction.ShouldNotBeNull();
-
-    var firstCourseAreaOfInstruction = firstCourse.CourseAreaOfInstruction.SingleOrDefault();
-    firstCourseAreaOfInstruction.ShouldNotBeNull();
-  }
-
-  [Fact]
   public async Task UpdateProgram_Type_Draft_ReturnsBadRequest()
   {
     var programResponse = await Host.Scenario(_ =>
@@ -347,7 +279,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(new[] { CreateCourseWithCourseAreaOfInstructionsAndHours(allSneInstructions) })).ToUrl($"/api/program/{Fixture.submitProgramId}/courses");
+      _.Put.Json(new UpdateCourseRequest(new []{ CreateCourseWithCourseAreaOfInstructionsAndHours(allSneInstructions) }, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.submitProgramId}");
       _.StatusCodeShouldBeOk();
     });
 
@@ -359,41 +291,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
   }
-
-  private Course CreateCourse()
-  {
-    return new Course
-    {
-      CourseId = Fixture.courseId,
-      CourseNumber = "101",
-      CourseTitle = "Course 101",
-      NewCourseNumber = "102",
-      NewCourseTitle = "Course 102",
-      ProgramType = ProgramTypes.SNE.ToString()
-    };
-  }
-
-  private Course CreateCourseWithCourseAreaOfInstructions()
-  {
-    return new Course
-    {
-      CourseId = Fixture.courseId,
-      CourseNumber = "101",
-      CourseTitle = "Course 101",
-      NewCourseNumber = "102",
-      NewCourseTitle = "Course 102",
-      ProgramType = ProgramTypes.SNE.ToString(),
-      CourseAreaOfInstruction = new[]
-      {
-        new CourseAreaOfInstruction()
-        {
-          AreaOfInstructionId = Fixture.AreaOfInstructionId,
-          NewHours = "20.00"
-        }
-      }
-    };
-  }
-
+  
   private Course CreateCourseWithCourseAreaOfInstructionsAndHours(List<AreaOfInstruction> areaOfInstructions)
   {
     var courseAreaOfInstruction = new List<CourseAreaOfInstruction>();
