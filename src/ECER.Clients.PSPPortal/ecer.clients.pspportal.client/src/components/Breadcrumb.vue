@@ -79,6 +79,16 @@ export default defineComponent({
             title: "Program applications",
             disabled: true,
             href: "/program-applications",
+          }
+        ];
+      }
+      if (this.route.name === "initiate-program-update") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Update a program profile",
+            disabled: true,
+            href: "/program/:programId/initiate-update",
           },
         ];
       }

@@ -17,10 +17,14 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
   public async Task<PortalInvitation> Query(PortalInvitationQuery query, CancellationToken ct)
   {
     await Task.CompletedTask;
-    var portalInvitation = context.ecer_PortalInvitationSet.Single(pi => pi.ecer_PortalInvitationId == query.portalInvitationId);
+    var portalInvitation = context.ecer_PortalInvitationSet.SingleOrDefault(pi => pi.ecer_PortalInvitationId == query.portalInvitationId);
+
+    if (portalInvitation == null)
+      throw new NotSupportedException($"PortalInvitation not found: {query.portalInvitationId}");
+
     var result = mapper.Map<PortalInvitation>(portalInvitation);
 
-    if (portalInvitation != null && portalInvitation.ecer_Type == ecer_PortalInvitationTypes.PSIProgramRepresentative)
+    if (portalInvitation.ecer_Type == ecer_PortalInvitationTypes.PSIProgramRepresentative)
     {
       var pspRep = context.ecer_ECEProgramRepresentativeSet.Single(pr => pr.ecer_ECEProgramRepresentativeId == portalInvitation!.ecer_psiprogramrepresentativeid.Id);
       var institute = context.ecer_PostSecondaryInstituteSet.Single(psi => psi.ecer_PostSecondaryInstituteId == pspRep.ecer_PostSecondaryInstitute.Id);

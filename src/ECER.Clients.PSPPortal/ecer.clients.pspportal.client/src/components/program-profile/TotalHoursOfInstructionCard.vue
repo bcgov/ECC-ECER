@@ -43,7 +43,7 @@
       </div>
       <p class="text-center font-weight-medium">
         The required hours of instruction have
-        <span v-if="!isCompleted">NOT</span>
+        <span v-if="!isCompleted">not</span>
         been met.
       </p>
     </v-card-text>
