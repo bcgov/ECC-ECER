@@ -3,9 +3,7 @@
     <div class="d-flex flex-column ga-10 mt-10">
       <h1>Access denied</h1>
       <h2 class="mt-20">
-        This portal invitation is for authentication with
-        {{ invitationInstitutionName }}, but the Business BCeID account you
-        logged in with is associated with {{ bceidBusinessName }}.
+        {{ accessDeniedMessage }}
       </h2>
       <div class="d-flex flex-column ga-3">
         <p>You may have followed an invalid link.</p>
@@ -24,20 +22,20 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { getPortalInvitation } from "@/api/portal-invitation";
 
-export default {
+export default defineComponent({
   name: "AccessDenied",
   async setup() {
-    let user;
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
     const { smAndDown } = useDisplay();
 
-    user = await oidcStore.getUser();
+    const user = await oidcStore.getUser();
     const bceidBusinessName = user?.profile?.bceid_business_name;
 
     const token = userStore.invitationToken;
@@ -47,9 +45,23 @@ export default {
     return {
       smAndDown,
       oidcStore,
-      invitationInstitutionName,
       bceidBusinessName,
+      invitationInstitutionName,
     };
   },
-};
+  computed: {
+    accessDeniedMessage(): string {
+      if (!this.invitationInstitutionName && !this.bceidBusinessName) {
+        return "The Business BCeID account you are logged in with is not associated with this institution.";
+      }
+      if (!this.invitationInstitutionName) {
+        return `The Business BCeID account you are logged in with (${this.bceidBusinessName}) is not associated with this institution.`;
+      }
+      if (!this.bceidBusinessName) {
+        return `This portal invitation is for authentication with ${this.invitationInstitutionName}, but the Business BCeID account you are logged in with is not associated with that institution.`;
+      }
+      return `This portal invitation is for authentication with ${this.invitationInstitutionName}, but the Business BCeID account you logged in with is associated with ${this.bceidBusinessName}.`;
+    },
+  },
+});
 </script>

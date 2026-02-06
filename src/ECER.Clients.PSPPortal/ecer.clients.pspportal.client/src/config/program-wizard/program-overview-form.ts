@@ -3,7 +3,7 @@ import ProgramOverviewStep from "@/components/program-profile/ProgramOverviewSte
 
 const programOverviewForm: Form = {
   id: "programOverviewForm",
-  title: "Program Overview",
+  title: "Program overview",
   components: {
     programOverview: {
       id: "programOverview",
