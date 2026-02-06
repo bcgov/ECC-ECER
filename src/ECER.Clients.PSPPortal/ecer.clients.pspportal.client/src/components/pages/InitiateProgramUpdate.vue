@@ -60,31 +60,29 @@
               If your update will affect program requirements or competencies
               (for example, adding or removing courses), please
               <a @click="submitChangeRequest()">
-                  <u>
-                    submit a change request
-                  </u>
-                </a>
+                <u>submit a change request</u>
+              </a>
               instead.
             </p>
             <p></p>
             <p>Learn more about program changes</p>
           </div>
         </Callout>
-        <br /><br />
+        <br />
+        <br />
         <div>
-          <v-btn  rounded="lg"
-                  :loading="showProgressMeter"
-                  :disabled="disableButton" 
-                  color="primary" 
-                  @click="initiateUpdate">
+          <v-btn
+            rounded="lg"
+            :loading="showProgressMeter"
+            :disabled="disableButton"
+            color="primary"
+            @click="initiateUpdate"
+          >
             Continue to program profile
-          </v-btn>       
+          </v-btn>
         </div>
         <div>
-          <div
-            v-if="showProgressMeter"
-            class="mt-8"
-          >
+          <div v-if="showProgressMeter" class="mt-8">
             <v-progress-circular
               class="mb-2"
               color="primary"
@@ -150,9 +148,9 @@ export default defineComponent({
       return this.loadingStore.isLoading("program_get") || this.loading;
     },
     programTitle(): string {
-      if (this.program?.name){
+      if (this.program?.name) {
         return this.program?.name + " - " + this.displayedTypes;
-      }else{
+      } else {
         return "";
       }
     },
@@ -172,12 +170,12 @@ export default defineComponent({
       }
       return types;
     },
-    showProgressMeter(): boolean {    
+    showProgressMeter(): boolean {
       return this.updateInProgress;
     },
     disableButton(): boolean {
-      return this.program?.status === 'ChangeRequestInProgress'
-    }
+      return this.program?.status === "ChangeRequestInProgress";
+    },
   },
   async mounted() {
     await this.loadProgram();
@@ -231,7 +229,7 @@ export default defineComponent({
       this.updateInProgress = true;
       this.pollInterval = setInterval(() => {
         this.fetchNewProgram();
-        if(this.newProgram?.readyForReview){
+        if (this.newProgram?.readyForReview) {
           /* Ready for review flag has been set. Stop polling. */
           this.updateInProgress = false;
           clearInterval(this.pollInterval);
@@ -239,7 +237,7 @@ export default defineComponent({
         }
       }, IntervalTime.INTERVAL_10_SECONDS);
       setTimeout(() => {
-        clearInterval(this.pollInterval)
+        clearInterval(this.pollInterval);
       }, IntervalTime.INTERVAL_10_SECONDS * 10);
     },
     submitChangeRequest() {
