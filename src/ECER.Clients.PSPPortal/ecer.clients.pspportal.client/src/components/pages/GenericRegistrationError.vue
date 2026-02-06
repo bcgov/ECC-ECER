@@ -1,9 +1,10 @@
 <template>
   <v-container>
     <div class="d-flex flex-column ga-10 mt-10">
-      <h1>Sorry, an error occurred</h1>
+      <h1>Sorry, an error occurred.</h1>
       <h2 class="mt-20">
-        An error occurred while registering your user. Please try again later.
+        An error occurred while registering your account. Please try again
+        later.
       </h2>
       <v-btn
         class="mt-8 align-self-start"
