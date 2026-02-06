@@ -112,6 +112,7 @@ import ECEHeader from "@/components/ECEHeader.vue";
 import Callout from "@/components/common/Callout.vue";
 import { getPrograms, initiateProgramChange } from "@/api/program";
 import { IntervalTime } from "@/utils/constant";
+import { useProgramStore } from "@/store/program";
 
 export default defineComponent({
   name: "ProgramProfiles",
@@ -124,8 +125,9 @@ export default defineComponent({
   },
   setup() {
     const loadingStore = useLoadingStore();
+    const programStore = useProgramStore();
     const router = useRouter();
-    return { loadingStore, router };
+    return { loadingStore, programStore, router };
   },
   data() {
     return {
@@ -179,6 +181,13 @@ export default defineComponent({
   },
   async mounted() {
     await this.loadProgram();
+    /* Check if a update request currently exists */
+    this.newProgram = this.programStore.updateRequestProgram;
+    if (this.newProgram && this.newProgram.id) {
+      this.newProgramId = this.newProgram.id;
+      this.startPolling();
+    }
+
     this.loading = false;
   },
   methods: {
@@ -206,6 +215,12 @@ export default defineComponent({
         const { data: response } = await getPrograms(this.newProgramId);
         if (response?.programs && response.programs[0]) {
           this.newProgram = response.programs[0];
+          if (this.newProgram && this.updateInProgress) {
+            // Update the store with the new program
+            this.programStore.setUpdateRequestProgramFromProfile(
+              this.newProgram,
+            );
+          }
         }
       }
     },
@@ -233,6 +248,7 @@ export default defineComponent({
           /* Ready for review flag has been set. Stop polling. */
           this.updateInProgress = false;
           clearInterval(this.pollInterval);
+          this.programStore.resetUpdateRequestProgram();
           this.router.replace("/program/" + this.newProgramId);
         }
       }, IntervalTime.INTERVAL_10_SECONDS);
