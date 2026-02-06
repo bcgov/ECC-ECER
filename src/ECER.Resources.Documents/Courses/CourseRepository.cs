@@ -15,20 +15,21 @@ internal sealed class CourseRepository : ICourseRepository
     this.context = context;
   }
 
-  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, CancellationToken cancellationToken)
+  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id,
+    CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    
+
     foreach (var course in incomingCourse)
     {
       var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(course.CourseId));
-      
+
       var courseExists = context.From(courses)
         .Join()
         .Include(c => c.ecer_courseprovincialrequirement_CourseId)
         .Execute()
         .SingleOrDefault();
-      
+
       if (courseExists != null)
       {
         if (!context.IsAttached(courseExists))
@@ -41,32 +42,7 @@ internal sealed class CourseRepository : ICourseRepository
         {
           foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
           {
-            if (areaOfInstruction.CourseAreaOfInstructionId != null)
-            {
-              var existingAreaOfInstruction =
-                courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
-                  a.Id == Guid.Parse(areaOfInstruction.CourseAreaOfInstructionId));
-              
-              if (existingAreaOfInstruction is not null)
-              {
-                UpdateAreaOfInstruction(areaOfInstruction,  existingAreaOfInstruction);
-              }
-              else
-              {
-                throw new InvalidOperationException("Cannot update course area of instruction. It does not exist.");
-              }
-            }
-            else
-            {
-              var existingAreaOfInstruction =
-                courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
-                  a.ecer_ProgramAreaId.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
-              if (existingAreaOfInstruction is not null)
-              {
-                throw new InvalidOperationException("Cannot add course area of instruction. One already exists for this area of instruction.");
-              }
-              CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
-            }
+            ManageAreaOfInstruction(areaOfInstruction, courseExists);
           }
         }
       }
@@ -75,11 +51,43 @@ internal sealed class CourseRepository : ICourseRepository
         throw new InvalidOperationException($"Course not found");
       }
     }
+
     context.SaveChanges();
     return id;
   }
 
-  private void UpdateCourseMetaData(Course course, ecer_Course courseExists)
+  private void ManageAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_Course courseExists){
+    if (areaOfInstruction.CourseAreaOfInstructionId != null)
+    {
+      var existingAreaOfInstruction =
+        courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
+          a.Id == Guid.Parse(areaOfInstruction.CourseAreaOfInstructionId));
+
+      if (existingAreaOfInstruction is not null)
+      {
+        UpdateAreaOfInstruction(areaOfInstruction, existingAreaOfInstruction);
+      }
+      else
+      {
+        throw new InvalidOperationException("Cannot update course area of instruction. It does not exist.");
+      }
+    }
+    else
+    {
+      var existingAreaOfInstruction =
+        courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
+          a.ecer_ProgramAreaId.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
+      if (existingAreaOfInstruction is not null)
+      {
+        throw new InvalidOperationException(
+          "Cannot add course area of instruction. One already exists for this area of instruction.");
+      }
+
+      CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
+    }
+  }
+
+private void UpdateCourseMetaData(Course course, ecer_Course courseExists)
   {
     if (!string.IsNullOrWhiteSpace(course.NewCourseNumber))
     {
