@@ -35,15 +35,8 @@ internal sealed class CourseRepository : ICourseRepository
         {
           context.Attach(courseExists);
         }
-        
-        courseExists.ecer_NewCode = !string.IsNullOrWhiteSpace(course.NewCourseNumber)
-          ? course.NewCourseNumber
-          : course.CourseNumber;
-        courseExists.ecer_NewCourseName = !string.IsNullOrWhiteSpace(course.NewCourseTitle) 
-          ? course.NewCourseTitle 
-          : course.CourseTitle;
-        context.UpdateObject(courseExists);
 
+        UpdateCourseMetaData(course, courseExists);
         if (course.CourseAreaOfInstruction != null)
         {
           foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
@@ -84,6 +77,30 @@ internal sealed class CourseRepository : ICourseRepository
     }
     context.SaveChanges();
     return id;
+  }
+
+  private void UpdateCourseMetaData(Course course, ecer_Course courseExists)
+  {
+    if (!string.IsNullOrWhiteSpace(course.NewCourseNumber))
+    {
+      var coursesWithSameNumber = 
+        context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_Code == course.NewCourseNumber && p.ecer_CourseId != Guid.Parse(course.CourseId))
+          .Take(1)
+          .ToList();
+
+      if (coursesWithSameNumber.Count > 0)
+      {
+        throw new InvalidOperationException("This course number already exists");
+      }
+    }
+        
+    courseExists.ecer_NewCode = !string.IsNullOrWhiteSpace(course.NewCourseNumber)
+      ? course.NewCourseNumber
+      : course.CourseNumber;
+    courseExists.ecer_NewCourseName = !string.IsNullOrWhiteSpace(course.NewCourseTitle) 
+      ? course.NewCourseTitle 
+      : course.CourseTitle;
+    context.UpdateObject(courseExists);
   }
 
   private void CreateNewAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_Course courseExists)

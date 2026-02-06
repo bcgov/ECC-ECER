@@ -1,3 +1,4 @@
+using System.Net;
 using Alba;
 using ECER.Clients.PSPPortal.Server;
 using ECER.Clients.PSPPortal.Server.Courses;
@@ -14,14 +15,28 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   public CoursesTest(ITestOutputHelper output, PspPortalWebAppFixture fixture) : base(output, fixture)
   {
   }
-  
-    [Fact]
-  public async Task UpdateCourses_ReturnsStatusOk()
+
+  [Fact]
+  public async Task UpdateCourses_ReturnsStatusInvalidOperation()
   {
+    var course = new[] { CreateCourse(101, "201" )};
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(new []{ CreateCourse() }, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.programId}");
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile))
+        .ToUrl($"/api/courses/{Fixture.programId}");
+      _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
+    });
+  }
+
+  [Fact]
+  public async Task UpdateCourses_ReturnsStatusOk()
+  {
+    var course = new[] { CreateCourse(101, "") };
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.programId}");
       _.StatusCodeShouldBeOk();
     });
     
@@ -42,7 +57,7 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.ElementAt(0).CourseNumber.ShouldBe("101");
     firstProfile.Courses.ElementAt(0).CourseTitle.ShouldBe("Course 101");
-    firstProfile.Courses.ElementAt(0).NewCourseNumber.ShouldBe("102");
+    firstProfile.Courses.ElementAt(0).NewCourseNumber.ShouldBe(course[0].NewCourseNumber);
     firstProfile.Courses.ElementAt(0).NewCourseTitle.ShouldBe("Course 102");
   }
   
@@ -77,8 +92,6 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     firstCourse.ShouldNotBeNull();
     firstCourse.CourseNumber.ShouldBe("101");
     firstCourse.CourseTitle.ShouldBe("Course 101");
-    firstCourse.NewCourseNumber.ShouldBe("102");
-    firstCourse.NewCourseTitle.ShouldBe("Course 102");
     
     firstCourse.CourseAreaOfInstruction.ShouldNotBeNull();
     
@@ -86,14 +99,14 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     firstCourseAreaOfInstruction.ShouldNotBeNull();
   }
   
-  private Course CreateCourse()
+  private Course CreateCourse(int courseNumber, string newNumber)
   {
     return new Course
     {
       CourseId = Fixture.courseId,
-      CourseNumber = "101",
+      CourseNumber = courseNumber.ToString(),
       CourseTitle = "Course 101",
-      NewCourseNumber = "102",
+      NewCourseNumber = !string.IsNullOrWhiteSpace(newNumber) ? newNumber : (courseNumber + 10).ToString(),
       NewCourseTitle = "Course 102",
       ProgramType = ProgramTypes.SNE.ToString()
     };
@@ -135,8 +148,6 @@ public class CoursesTest : PspPortalWebAppScenarioBase
       CourseId = Fixture.courseId,
       CourseNumber = "101",
       CourseTitle = "Course 101",
-      NewCourseNumber = "102",
-      NewCourseTitle = "Course 102",
       ProgramType = ProgramTypes.SNE.ToString(),
       CourseAreaOfInstruction = new []
       {
