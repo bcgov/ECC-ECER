@@ -94,6 +94,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/all-program-profiles",
+      component: () => import("./components/pages/AllProgramProfiles.vue"),
+      name: "all-program-profiles",
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/program/:programId/initiate-update",
       component: () => import("./components/pages/InitiateProgramUpdate.vue"),
       name: "initiate-program-update",

@@ -1,4 +1,20 @@
 import type { Components } from "@/types/openapi";
+import { DateTime } from "luxon";
+import { EARLIEST_PROFILE_YEAR } from "@/utils/constant";
+
+/**
+ * Checks if a program's start date is on or after the earliest profile year
+ * @param program - The program to check
+ * @returns true if the program's start date year is >= EARLIEST_PROFILE_YEAR
+ */
+export function shouldDisplayProfile(
+  program: Components.Schemas.Program,
+): boolean {
+  if (!program.startDate) {
+    return false;
+  }
+  return DateTime.fromISO(program.startDate).year >= EARLIEST_PROFILE_YEAR;
+}
 
 export function cleanPreferredName(
   firstName: string | null | undefined,
