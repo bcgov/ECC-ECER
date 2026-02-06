@@ -200,9 +200,9 @@ const dateBetweenRule = (
 ) => {
   return (v: string) => {
     if (v && startDate && endDate) {
-      const end = DateTime.fromISO(endDate);
-      const start = DateTime.fromISO(startDate);
-      const input = DateTime.fromJSDate(new Date(v));
+      const end = DateTime.fromISO(endDate).startOf("day");
+      const start = DateTime.fromISO(startDate).startOf("day");
+      const input = DateTime.fromISO(v).startOf("day");
 
       return (input <= end && input >= start) || message;
     }
