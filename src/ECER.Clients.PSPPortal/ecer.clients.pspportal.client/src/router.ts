@@ -107,6 +107,12 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/program-application-begin",
+      component: () => import("./components/pages/BeginProgramApplication.vue"),
+      name: "program-application-begin",
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/silent-callback",
       component: () => import("./components/pages/SilentCallback.vue"),
       meta: { requiresAuth: false },

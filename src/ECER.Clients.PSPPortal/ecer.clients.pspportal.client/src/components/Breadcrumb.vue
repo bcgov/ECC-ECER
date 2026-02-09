@@ -82,6 +82,26 @@ export default defineComponent({
           },
         ];
       }
+      if (this.route.name === "program-application-information") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Program application information",
+            disabled: true,
+            href: "/program-application-information",
+          },
+        ];
+      }
+      if (this.route.name === "program-application-begin") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Begin an application",
+            disabled: true,
+            href: "/program-application-begin",
+          },
+        ];
+      }
       return [];
     },
   },

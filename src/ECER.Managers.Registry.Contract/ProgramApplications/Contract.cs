@@ -2,6 +2,8 @@ using MediatR;
 
 namespace ECER.Managers.Registry.Contract.ProgramApplications;
 
+public record CreateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<ProgramApplication?>;
+
 public record ProgramApplicationQuery : IRequest<ProgramApplicationQueryResults>
 {
   public string? ById { get; set; }
