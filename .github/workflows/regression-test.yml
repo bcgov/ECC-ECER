@@ -11,12 +11,12 @@ jobs:
       fail-fast: false
     environment: dev
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         name: Checkout
       - name: cypress.env.json
         run: |
           echo '${{ secrets.CYPRESS_ENV_CI }}' > ./src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client/cypress.env.json
-      - uses: cypress-io/github-action@v6
+      - uses: cypress-io/github-action@v7
         with:
           browser: chrome
           working-directory: ././src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client

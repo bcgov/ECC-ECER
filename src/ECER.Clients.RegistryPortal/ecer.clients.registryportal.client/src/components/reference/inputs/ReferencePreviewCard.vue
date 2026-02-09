@@ -3,7 +3,13 @@
     <div class="float-right">
       <v-tooltip v-model="show" location="top">
         <template #activator="{ props }">
-          <v-btn icon="mdi-pencil" v-bind="props" :color="isValid ? 'primary' : 'error'" variant="plain" @click="setWizard(referenceStage)" />
+          <v-btn
+            icon="mdi-pencil"
+            v-bind="props"
+            :color="isValid ? 'primary' : 'error'"
+            variant="plain"
+            @click="setWizard(referenceStage)"
+          />
         </template>
         <span>Edit {{ title }}</span>
       </v-tooltip>
@@ -15,7 +21,8 @@
           <div class="small text-black">{{ subtitle }}</div>
           <p v-if="!isValid" class="small text-error">
             <v-icon icon="mdi-alert-circle" color="error" class="mr-2"></v-icon>
-            You must enter all required information in a valid format before submitting your application
+            You must enter all required information in a valid format before
+            submitting your application
           </p>
           <div class="mt-5 text-grey-dark"><slot name="content"></slot></div>
         </v-col>

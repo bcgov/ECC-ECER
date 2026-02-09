@@ -1,15 +1,24 @@
 <template>
   <v-card elevation="0" rounded="0" class="border-t border-b">
     <v-card-text>
-      <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-        <div v-if="!active">
+      <div
+        class="d-flex"
+        :class="[smAndUp ? 'space-between align-center' : 'flex-column']"
+      >
+        <div v-if="!active || !showLink">
           <p>{{ text }}</p>
         </div>
         <a v-else href="#" @click.prevent="buttonClick">
           <p class="text-links">{{ text }}</p>
         </a>
         <v-spacer></v-spacer>
-        <v-sheet rounded width="200px" class="py-2 text-center" :class="{ 'mt-2': !smAndUp }" :color="sheetColor">
+        <v-sheet
+          rounded
+          width="200px"
+          class="py-2 text-center"
+          :class="{ 'mt-2': !smAndUp }"
+          :color="sheetColor"
+        >
           <p>{{ statusText }}</p>
         </v-sheet>
       </div>
@@ -36,6 +45,11 @@ export default defineComponent({
     goTo: {
       type: Function,
       required: true,
+    },
+    showLink: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
   },
   setup: async () => {

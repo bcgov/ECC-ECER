@@ -7,10 +7,15 @@
       <ul class="ml-10">
         <li>Download a PDF of your active certificate(s)</li>
         <li>Renew your latest certificate</li>
-        <li>Renew another certificate type (e.g., if you do not meet the requirements for higher certification levels)</li>
+        <li>
+          Renew another certificate type (e.g., if you do not meet the
+          requirements for higher certification levels)
+        </li>
       </ul>
     </div>
-    <CertificationList :certifications="certificationStore.certifications ?? []" />
+    <CertificationList
+      :certifications="certificationStore.certifications ?? []"
+    />
   </v-container>
 </template>
 

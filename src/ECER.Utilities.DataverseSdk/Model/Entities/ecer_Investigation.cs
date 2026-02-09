@@ -306,6 +306,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_assigntomanagerforintakestagereviewName = "ecer_assigntomanagerforintakestagereviewname";
 			public const string ecer_AssigntoManagerforSummaryStageReview = "ecer_assigntomanagerforsummarystagereview";
 			public const string ecer_assigntomanagerforsummarystagereviewName = "ecer_assigntomanagerforsummarystagereviewname";
+			public const string ecer_AssigntoSIforReportReview = "ecer_assigntosiforreportreview";
+			public const string ecer_assigntosiforreportreviewName = "ecer_assigntosiforreportreviewname";
 			public const string ecer_assigntositeamforconclusionreview = "ecer_assigntositeamforconclusionreview";
 			public const string ecer_assigntositeamforconclusionreviewName = "ecer_assigntositeamforconclusionreviewname";
 			public const string ecer_AssigntoSITeamforIntakeReview = "ecer_assigntositeamforintakereview";
@@ -579,6 +581,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_recommendforpriorityassignmentName = "ecer_recommendforpriorityassignmentname";
 			public const string ecer_ReconRequest = "ecer_reconrequest";
 			public const string ecer_reconrequestName = "ecer_reconrequestname";
+			public const string ecer_reconsiderationinvestigationoutcome_InvestigationId = "ecer_reconsiderationinvestigationoutcome_InvestigationId";
 			public const string ecer_reconsiderationperiodenddate = "ecer_reconsiderationperiodenddate";
 			public const string ecer_ReferencesComplete = "ecer_referencescomplete";
 			public const string ecer_referencescompleteName = "ecer_referencescompletename";
@@ -632,6 +635,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_seniorinvestigatorid = "ecer_seniorinvestigatorid";
 			public const string ecer_seniorinvestigatoridName = "ecer_seniorinvestigatoridname";
 			public const string ecer_seniorinvestigatoridYomiName = "ecer_seniorinvestigatoridyominame";
+			public const string ecer_SIActiveStageReviewComplete = "ecer_siactivestagereviewcomplete";
+			public const string ecer_siactivestagereviewcompleteName = "ecer_siactivestagereviewcompletename";
 			public const string ecer_SIReportReviewComplete = "ecer_sireportreviewcomplete";
 			public const string ecer_sireportreviewcompleteName = "ecer_sireportreviewcompletename";
 			public const string ecer_SIReviewComplete = "ecer_sireviewcomplete";
@@ -1176,6 +1181,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_assigntomanagerforsummarystagereview"))
 				{
 					return this.FormattedValues["ecer_assigntomanagerforsummarystagereview"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntosiforreportreview")]
+		public System.Nullable<bool> ecer_AssigntoSIforReportReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_assigntosiforreportreview");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntosiforreportreview", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntosiforreportreviewname")]
+		public string ecer_assigntosiforreportreviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntosiforreportreview"))
+				{
+					return this.FormattedValues["ecer_assigntosiforreportreview"];
 				}
 				else
 				{
@@ -5965,6 +6002,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_siactivestagereviewcomplete")]
+		public System.Nullable<bool> ecer_SIActiveStageReviewComplete
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_siactivestagereviewcomplete");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_siactivestagereviewcomplete", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_siactivestagereviewcompletename")]
+		public string ecer_siactivestagereviewcompleteName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_siactivestagereviewcomplete"))
+				{
+					return this.FormattedValues["ecer_siactivestagereviewcomplete"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sireportreviewcomplete")]
 		public System.Nullable<bool> ecer_SIReportReviewComplete
 		{
@@ -7325,6 +7394,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationParallelProcessCommunication>("ecer_parallelprocesscommunicationinvestigation", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_reconsiderationinvestigationoutcome_InvestigationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationinvestigationoutcome_InvestigationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome> ecer_reconsiderationinvestigationoutcome_InvestigationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_reconsiderationinvestigationoutcome_InvestigationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_reconsiderationinvestigationoutcome_InvestigationId", null, value);
 			}
 		}
 		

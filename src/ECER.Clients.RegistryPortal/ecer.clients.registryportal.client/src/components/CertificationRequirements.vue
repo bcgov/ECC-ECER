@@ -1,10 +1,19 @@
 <template>
   <v-container>
     <Breadcrumb />
-    <div v-for="certificationType in certificationTypes" :key="certificationType">
-      <ECEAssistantRenewalRequirements v-if="certificationType === CertificationType.ECE_ASSISTANT" />
-      <ECEOneYearRenewalRequirements v-if="certificationType === CertificationType.ONE_YEAR" />
-      <ECEFiveYearRenewalRequirements v-if="certificationType === CertificationType.FIVE_YEAR" />
+    <div
+      v-for="certificationType in certificationTypes"
+      :key="certificationType"
+    >
+      <ECEAssistantRenewalRequirements
+        v-if="certificationType === CertificationType.ECE_ASSISTANT"
+      />
+      <ECEOneYearRenewalRequirements
+        v-if="certificationType === CertificationType.ONE_YEAR"
+      />
+      <ECEFiveYearRenewalRequirements
+        v-if="certificationType === CertificationType.FIVE_YEAR"
+      />
     </div>
   </v-container>
 </template>

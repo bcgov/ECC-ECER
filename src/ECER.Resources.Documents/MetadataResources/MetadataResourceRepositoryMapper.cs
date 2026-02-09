@@ -31,11 +31,24 @@ internal class MetadataResourceRepositoryMapper : Profile
         .ForCtorParam(nameof(Country.CountryId), opt => opt.MapFrom(src => src.ecer_CountryId))
         .ForCtorParam(nameof(Country.CountryName), opt => opt.MapFrom(src => src.ecer_Name))
         .ForCtorParam(nameof(Country.CountryCode), opt => opt.MapFrom(src => src.ecer_ShortName))
+        .ForCtorParam(nameof(Country.IsICRA), opt => opt.MapFrom(src => src.ecer_EligibleforICRA))
         .ValidateMemberList(MemberList.Destination)
         .ReverseMap()
         .ForMember(dest => dest.ecer_CountryId, opt => opt.MapFrom(src => src.CountryId))
         .ForMember(dest => dest.ecer_Name, opt => opt.MapFrom(src => src.CountryName))
+        .ForMember(dest => dest.ecer_EligibleforICRA, opt => opt.MapFrom(src => src.IsICRA))
         .ForMember(dest => dest.ecer_ShortName, opt => opt.MapFrom(src => src.CountryCode));
+
+    CreateMap<ecer_ProvincialRequirement, AreaOfInstruction>(MemberList.Source)
+        .ForCtorParam(nameof(AreaOfInstruction.Id), opt => opt.MapFrom(src => src.ecer_ProvincialRequirementId))
+        .ForCtorParam(nameof(AreaOfInstruction.Name), opt => opt.MapFrom(src => src.ecer_Name))
+        .ForCtorParam(nameof(AreaOfInstruction.ProgramTypes), opt => opt.MapFrom(src =>
+          src.ecer_CertificateLevels == null
+            ? Array.Empty<string>()
+            : src.ecer_CertificateLevels.Select(level => level.ToString())))
+        .ForCtorParam(nameof(AreaOfInstruction.MinimumHours), opt => opt.MapFrom(src => src.ecer_MinimumHours))
+        .ForCtorParam(nameof(AreaOfInstruction.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
+        .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)
        .ForCtorParam(nameof(PostSecondaryInstitution.Id), opt => opt.MapFrom(src => src.ecer_PostSecondaryInstituteId))
@@ -77,6 +90,11 @@ internal class MetadataResourceRepositoryMapper : Profile
         .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
         .ForMember(d => d.SingleText, opts => opts.MapFrom(s => s.ecer_SingleLineofText))
         .ForMember(d => d.MultiText, opts => opts.MapFrom(s => s.ecer_MultipleLineofText))
+        .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<bcgov_config, DynamicsConfig>(MemberList.Source)
+        .ForCtorParam(nameof(DynamicsConfig.Key), opts => opts.MapFrom(s => s.bcgov_Key))
+        .ForCtorParam(nameof(DynamicsConfig.Value), opts => opts.MapFrom(s => s.bcgov_Value))
         .ValidateMemberList(MemberList.Destination);
   }
 }

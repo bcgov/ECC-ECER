@@ -62,7 +62,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_ComponentGroup = "ecer_componentgroup";
 			public const string ecer_ComponentGroupName = "ecer_componentgroupname";
+			public const string ecer_documenturl_ProgramApplicationComponentGroupId = "ecer_documenturl_ProgramApplicationComponentGroupId";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId = "ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId = "ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId = "ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId";
 			public const string ecer_ProgramApplication = "ecer_programapplication";
 			public const string ecer_programapplicationcomponent_ComponentGroup = "ecer_programapplicationcomponent_ComponentGroup";
 			public const string ecer_programapplicationcomponentgroup_ComponentGroup = "ecer_programapplicationcomponentgroup_ComponentGroup";
@@ -70,6 +74,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramApplicationComponentGroupId = "ecer_programapplicationcomponentgroupid";
 			public const string Id = "ecer_programapplicationcomponentgroupid";
 			public const string ecer_ProgramApplicationName = "ecer_programapplicationname";
+			public const string ecer_RandomSuffix = "ecer_randomsuffix";
 			public const string ecer_RequirementsMet = "ecer_requirementsmet";
 			public const string ecer_RequirementsMetDate = "ecer_requirementsmetdate";
 			public const string ecer_requirementsmetName = "ecer_requirementsmetname";
@@ -366,6 +371,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_randomsuffix")]
+		public string ecer_RandomSuffix
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_randomsuffix");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_randomsuffix", value);
 			}
 		}
 		
@@ -794,6 +814,78 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_documenturl_ProgramApplicationComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_ProgramApplicationComponentGroupId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_documenturl_ProgramApplicationComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_ProgramApplicationComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_ProgramApplicationComponentGroupId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId", null, value);
 			}
 		}
 		

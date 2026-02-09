@@ -2,7 +2,9 @@
   <v-col
     v-if="
       (fromCertificate && fromCertificate.statusCode === 'Active') ||
-      (fromCertificate && fromCertificate.statusCode === 'Expired' && !expiredMoreThan5Years(fromCertificate))
+      (fromCertificate &&
+        fromCertificate.statusCode === 'Expired' &&
+        !expiredMoreThan5Years(fromCertificate))
     "
     cols="12"
   >
@@ -31,24 +33,36 @@
       <p>It's important to know that:</p>
       <ul class="ml-10">
         <li>You can only renew this certificate once</li>
-        <li>You cannot renew an ECE One Year Certificate if it has been expired for more than 5 years</li>
-        <li>After you renew you’ll only be able to apply for an ECE Five Year certificate or an ECE Assistant certificate</li>
+        <li>
+          You cannot renew an ECE One Year Certificate if it has been expired
+          for more than 5 years
+        </li>
+        <li>
+          After you renew you’ll only be able to apply for an ECE Five Year
+          certificate or an ECE Assistant certificate
+        </li>
       </ul>
     </div>
   </v-col>
   <v-col cols="12">
-    <ECEHeader title="Reason why you're renewing your ECE One Year certification" />
+    <ECEHeader
+      title="Reason why you're renewing your ECE One Year certification"
+    />
     <div class="d-flex flex-column ga-3 my-6">
       <p>
-        You will need to provide a reason for why you were unable to complete the required 500 hours of supervised work experience during the term of your ECE
-        One Year Certificate and/or why you were unable to provide a reference from the certified ECE who supervised the hours.
+        You will need to provide a reason for why you were unable to complete
+        the required 500 hours of supervised work experience during the term of
+        your ECE One Year Certificate and/or why you were unable to provide a
+        reference from the certified ECE who supervised the hours.
       </p>
       <p>
         If you've completed 500 hours, you should apply for
         <a
           class="cursor-pointer text-decoration-underline"
           @click="
-            applicationStore.draftApplication.certificationTypes = ['FiveYears'];
+            applicationStore.draftApplication.certificationTypes = [
+              'FiveYears',
+            ];
             applicationStore.draftApplication.applicationType = 'New';
           "
         >
@@ -61,24 +75,35 @@
   <v-col cols="12">
     <ECEHeader title="Character reference" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
+      <p>
+        You will need to provide a character reference. You'll enter their name
+        and email. We'll contact them later after you submit your application.
+      </p>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
         <li>Can speak to your character</li>
-        <li>Can speak to your ability to educate and care for young children</li>
+        <li>
+          Can speak to your ability to educate and care for young children
+        </li>
         <li>Has known you for at least 6 months</li>
         <li>Is not your relative, partner, spouse or yourself</li>
-        <li v-if="expired">Is not the same person as your work experience reference</li>
+        <li v-if="expired">
+          Is not the same person as your work experience reference
+        </li>
       </ul>
-      <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
+      <p>
+        We recommend the person is a certified ECE who has directly observed you
+        working with young children.
+      </p>
     </div>
   </v-col>
   <v-col v-if="expired" cols="12">
     <ECEHeader title="Work experience" />
     <div class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
-        can provide multiple references.
+        You need to have completed 400 hours of work experience and be able to
+        provide references to verify the hours. If you worked at multiple
+        locations, you can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">
@@ -88,7 +113,10 @@
       <p>The reference must:</p>
       <ul class="ml-10">
         <li>Be able to confirm you've completed the hours</li>
-        <li>Be a co-worker, supervisor, or a parent/guardian of a child you worked with</li>
+        <li>
+          Be a co-worker, supervisor, or a parent/guardian of a child you worked
+          with
+        </li>
         <li>Not be the same person you provide as a character reference</li>
       </ul>
     </div>
@@ -96,7 +124,10 @@
   <v-col v-if="expired" cols="12">
     <ECEHeader title="Professional development" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>To meet the professional development requirement, you need to have completed 40 hours of training.</p>
+      <p>
+        To meet the professional development requirement, you need to have
+        completed 40 hours of training.
+      </p>
       <h3>What courses or workshops are eligible?</h3>
       <p>Each course or workshop must:</p>
       <ul class="ml-10">
@@ -146,12 +177,17 @@ export default defineComponent({
     },
     formattedLatestCertificationEffectiveDate(): string {
       if (this.fromCertificate) {
-        return formatDate(this.fromCertificate.effectiveDate ?? "", "LLL d, yyyy");
+        return formatDate(
+          this.fromCertificate.effectiveDate ?? "",
+          "LLL d, yyyy",
+        );
       }
       return formatDate("", "LLL d, yyyy"); // Default to empty if no fromCertificate is specified
     },
     fromCertificate() {
-      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
+      return this.certificationStore.getCertificationById(
+        this.applicationStore.draftApplication.fromCertificate,
+      );
     },
   },
 });

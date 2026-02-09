@@ -1,0 +1,47 @@
+name: PSP Portal Build
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - master
+      - "release/**"
+    paths:
+      - src/**
+      - "!src/ECER.Clients.RegistryPortal/**"
+      - "!src/ECER.Clients.Api/**"
+      - "!src/ECER.Clients.E2ETestData/**"
+      - "!src/registry-portal.Dockerfile"
+      - "!src/api.Dockerfile"
+      - "!src/e2e-test-data.Dockerfile"
+      - .github/workflows/psp-portal-build.yml
+      - .github/workflows/build-template.yml
+
+  pull_request:
+    paths:
+      - src/**
+      - "!src/ECER.Clients.RegistryPortal/**"
+      - "!src/ECER.Clients.Api/**"
+      - "!src/ECER.Clients.E2ETestData/**"
+      - "!src/registry-portal.Dockerfile"
+      - "!src/api.Dockerfile"
+      - "!src/e2e-test-data.Dockerfile"
+      - .github/workflows/psp-portal-build.yml
+      - .github/workflows/build-template.yml
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      security-events: write
+    uses: ./.github/workflows/build-template.yml
+    with:
+      IMAGE_CONTEXT: src
+      IMAGE_FILE: src/psp-portal.Dockerfile
+      IMAGE_NAME: psp-portal
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+    secrets:
+      REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

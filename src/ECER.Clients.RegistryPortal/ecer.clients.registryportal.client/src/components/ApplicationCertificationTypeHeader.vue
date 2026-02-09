@@ -1,9 +1,19 @@
 <template>
   <div>
-    <h1 class="white" v-if="isLaborMobility">{{ `Transfer certification to ${certificationType}` }}</h1>
-    <h1 class="white" v-else-if="isRenewal">{{ `Application to renew ${certificationType} certification` }}</h1>
-    <h1 class="white" v-else>{{ `Application for ${certificationType} certification` }}</h1>
-    <div class="white" v-if="certificationTypes.includes(CertificationType.FIVE_YEAR)" role="doc-subtitle">
+    <h1 class="white" v-if="isLaborMobility">
+      {{ `Transfer certification to ${certificationType}` }}
+    </h1>
+    <h1 class="white" v-else-if="isRenewal">
+      {{ `Application to renew ${certificationType} certification` }}
+    </h1>
+    <h1 class="white" v-else>
+      {{ `Application for ${certificationType} certification` }}
+    </h1>
+    <div
+      class="white"
+      v-if="certificationTypes.includes(CertificationType.FIVE_YEAR)"
+      role="doc-subtitle"
+    >
       {{ certificationTypeSubtitleForFiveYear }}
     </div>
   </div>
@@ -42,11 +52,18 @@ export default defineComponent({
       let certificationType = "";
       if (this.certificationTypes?.includes(CertificationType.ECE_ASSISTANT)) {
         certificationType = "ECE Assistant";
-      } else if (this.certificationTypes?.includes(CertificationType.ONE_YEAR)) {
+      } else if (
+        this.certificationTypes?.includes(CertificationType.ONE_YEAR)
+      ) {
         certificationType = "ECE One Year";
-      } else if (this.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+      } else if (
+        this.certificationTypes?.includes(CertificationType.FIVE_YEAR)
+      ) {
         certificationType = "ECE Five Year";
-      } else if (this.certificationTypes?.includes(CertificationType.SNE) && this.certificationTypes?.includes(CertificationType.ITE)) {
+      } else if (
+        this.certificationTypes?.includes(CertificationType.SNE) &&
+        this.certificationTypes?.includes(CertificationType.ITE)
+      ) {
         certificationType = "ITE and SNE";
       } else if (this.certificationTypes?.includes(CertificationType.SNE)) {
         certificationType = "Special Needs Educator";
@@ -57,12 +74,18 @@ export default defineComponent({
     },
     certificationTypeSubtitleForFiveYear() {
       let certificationTypeSubtitle = "";
-      if (this.certificationTypes?.includes(CertificationType.ITE) && this.certificationTypes?.includes(CertificationType.SNE)) {
-        certificationTypeSubtitle = "Including certification for Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)";
+      if (
+        this.certificationTypes?.includes(CertificationType.ITE) &&
+        this.certificationTypes?.includes(CertificationType.SNE)
+      ) {
+        certificationTypeSubtitle =
+          "Including certification for Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)";
       } else if (this.certificationTypes?.includes(CertificationType.SNE)) {
-        certificationTypeSubtitle = "Including certification for Special Needs Educator (SNE)";
+        certificationTypeSubtitle =
+          "Including certification for Special Needs Educator (SNE)";
       } else if (this.certificationTypes?.includes(CertificationType.ITE)) {
-        certificationTypeSubtitle = "Including certification for Infant and Toddler Eductor (ITE)";
+        certificationTypeSubtitle =
+          "Including certification for Infant and Toddler Eductor (ITE)";
       }
 
       return certificationTypeSubtitle;

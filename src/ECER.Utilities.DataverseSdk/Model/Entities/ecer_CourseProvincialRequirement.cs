@@ -67,8 +67,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_courseprovincialrequirement_ProgramProfileId = "ecer_courseprovincialrequirement_ProgramProfileId";
 			public const string ecer_CourseProvincialRequirementId = "ecer_courseprovincialrequirementid";
 			public const string Id = "ecer_courseprovincialrequirementid";
+			public const string ecer_HasChanges = "ecer_haschanges";
+			public const string ecer_haschangesName = "ecer_haschangesname";
 			public const string ecer_Hours = "ecer_hours";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_NewHours = "ecer_newhours";
 			public const string ecer_ProgramAreaId = "ecer_programareaid";
 			public const string ecer_ProgramAreaIdName = "ecer_programareaidname";
 			public const string ecer_ProgramProfileId = "ecer_programprofileid";
@@ -322,6 +325,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_haschanges")]
+		public virtual ecer_HasChanges? ecer_HasChanges
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_HasChanges?)(EntityOptionSetEnum.GetEnum(this, "ecer_haschanges")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_haschanges", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_haschangesname")]
+		public string ecer_haschangesName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_haschanges"))
+				{
+					return this.FormattedValues["ecer_haschanges"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hours")]
 		public System.Nullable<decimal> ecer_Hours
 		{
@@ -349,6 +384,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newhours")]
+		public System.Nullable<decimal> ecer_NewHours
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_newhours");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_newhours", value);
 			}
 		}
 		

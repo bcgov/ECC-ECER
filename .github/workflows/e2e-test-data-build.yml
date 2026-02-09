@@ -10,8 +10,10 @@ on:
       - src/**
       - "!src/ECER.Clients.RegistryPortal/**"
       - "!src/ECER.Clients.Api/**"
+      - "!src/ECER.Clients.PSPPortal/**"
       - "!src/registry-portal.Dockerfile"
       - "!src/api.Dockerfile"
+      - "!src/psp-portal.Dockerfile"
       - .github/workflows/e2e-test-data-build.yml
       - .github/workflows/build-template.yml
 
@@ -20,9 +22,11 @@ on:
       - src/**
       - "!src/ECER.Clients.RegistryPortal/**"
       - "!src/ECER.Clients.Api/**"
+      - "!src/ECER.Clients.PSPPortal/**"
       - "!src/registry-portal.Dockerfile"
       - "!src/api.Dockerfile"
-      - .github/workflows/e2e-test-data-build.yml
+      - "!src/psp-portal.Dockerfile"
+      - .github/workflows/e2e-test-build.yml
       - .github/workflows/build-template.yml
 
 jobs:

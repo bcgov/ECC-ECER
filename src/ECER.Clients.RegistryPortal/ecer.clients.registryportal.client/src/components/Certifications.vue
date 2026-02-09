@@ -10,7 +10,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="application in applications" :key="application.submittedOn ? application.submittedOn : 'defaultKey'">
+          <tr
+            v-for="application in applications"
+            :key="
+              application.submittedOn ? application.submittedOn : 'defaultKey'
+            "
+          >
             <td>{{ application.id }}</td>
             <td>{{ application.status }}</td>
             <td>{{ application.submittedOn }}</td>

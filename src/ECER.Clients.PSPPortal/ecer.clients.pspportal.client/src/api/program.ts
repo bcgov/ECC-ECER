@@ -1,0 +1,137 @@
+import { getClient } from "@/api/client";
+import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
+import type { Components, Paths } from "@/types/openapi";
+import type { AxiosRequestConfig } from "axios";
+
+const apiResultHandler = new ApiResultHandler();
+
+const getPrograms = async (
+  id: string = "",
+  statuses: Components.Schemas.ProgramStatus[] = [
+    "Draft",
+    "Denied",
+    "Approved",
+    "UnderReview",
+    "ChangeRequestInProgress",
+  ],
+  { page = 0, pageSize = 0 } = {},
+): Promise<
+  ApiResponse<Components.Schemas.GetProgramsResponse | null | undefined>
+> => {
+  const client = await getClient();
+
+  const config: AxiosRequestConfig = {
+    params: { page, pageSize },
+  };
+
+  return apiResultHandler.execute<Components.Schemas.GetProgramsResponse | null>(
+    {
+      request: client.program_get(
+        {
+          id: id,
+          byStatus: statuses,
+        },
+        null,
+        config,
+      ),
+      key: "program_get",
+    },
+  );
+};
+
+const createOrUpdateDraftApplication = async (
+  program: Components.Schemas.Program,
+): Promise<
+  ApiResponse<Components.Schemas.DraftProgramResponse | null | undefined>
+> => {
+  const client = await getClient();
+  const body: Paths.DraftprogramPut.RequestBody = {
+    program: program,
+  };
+  const pathParameters: Paths.DraftprogramPut.PathParameters = {
+    id: program.id || "",
+  };
+
+  return apiResultHandler.execute<
+    Components.Schemas.DraftProgramResponse | null | undefined
+  >({
+    request: client.draftprogram_put(pathParameters, body),
+    key: "draftprogram_put",
+  });
+};
+
+const updateCourse = async (
+  programId: string,
+  courses: Components.Schemas.Course[],
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.CoursePut.PathParameters = {
+    id: programId,
+  };
+  const body: Paths.CoursePut.RequestBody = {
+    courses: courses,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.course_put(pathParameters, body),
+    key: "course_put",
+  });
+};
+
+const submitDraftProgramApplication = async (
+  programId: string,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const body: Components.Schemas.SubmitProgramRequest = {
+    programId: programId,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.program_post(null, body),
+    key: "program_post",
+  });
+};
+
+const withdrawProgram = async (
+  program: Components.Schemas.Program,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramPut.PathParameters = {
+    id: program.id || "",
+  };
+  const body: Paths.ProgramPut.RequestBody = {
+    ...program,
+    status: "Withdrawn",
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.program_put(pathParameters, body),
+    key: "program_put",
+  });
+};
+
+const initiateProgramChange = async (
+  program: Components.Schemas.Program,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramPut.PathParameters = {
+    id: program.id || "",
+  };
+  const body: Paths.ProgramPut.RequestBody = {
+    ...program,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.changeprogram_put(pathParameters, body),
+    key: "changeprogram_put",
+  });
+}
+
+export {
+  createOrUpdateDraftApplication,
+  getPrograms,
+  submitDraftProgramApplication,
+  updateCourse,
+  withdrawProgram,
+  initiateProgramChange
+};

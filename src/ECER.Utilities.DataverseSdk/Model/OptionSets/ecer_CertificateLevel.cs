@@ -18,10 +18,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ECE1YR = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ECE5YR = 621870002,
+		Basic = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ECEAssistant = 621870000,

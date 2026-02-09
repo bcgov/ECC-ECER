@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECER.Resources.Accounts.Communications;
+﻿namespace ECER.Resources.Accounts.Communications;
 
 public interface ICommunicationRepository
 {
-  Task<int> QueryStatus(string RegistrantId);
+  Task<int> QueryStatus(UserCommunicationsStatusQuery query);
 
   Task<CommunicationResult> Query(UserCommunicationQuery query);
 
@@ -26,10 +19,18 @@ public record UserCommunicationQuery
   public string? ByParentId { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
+}
+
+public record UserCommunicationsStatusQuery
+{
+  public string? ByRegistrantId { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
 }
 
 public record Communication(string? Id)
 {
+  public CommunicationCategory? Category { get; set; }
   public string Subject { get; set; } = string.Empty;
   public string Body { get; set; } = string.Empty;
   public InitiatedFrom From { get; set; }
@@ -39,7 +40,11 @@ public record Communication(string? Id)
   public bool DoNotReply { get; set; }
   public DateTime? LatestMessageNotifiedOn { get; set; }
   public string? ApplicationId { get; set; }
+  public string? IcraEligibilityId { get; set; }
   public bool? IsRead { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
+  public string? EducationInstituteName { get; set; }
+  public bool? IsPspUser { get; set; }
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }
 
@@ -65,11 +70,25 @@ public enum CommunicationStatus
   Inactive
 }
 
+public enum CommunicationCategory
+{
+  ProgramChangeRequest,
+  PracticumInquiry,
+  ECEProgramApplicationInquiry,
+  ECEProgramApplicationRequirements,
+  ProgramProfileInquiry,
+  IndividualEducationPlanIEP,
+  MeetingRequest,
+  RequestforAdditionalInformation,
+  Other
+}
+
 public enum InitiatedFrom
 {
   Investigation,
   PortalUser,
   Registry,
+  ProgramRepresentative
 }
 
 public record CommunicationsStatus

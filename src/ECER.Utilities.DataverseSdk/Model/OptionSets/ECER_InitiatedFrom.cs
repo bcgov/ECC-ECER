@@ -24,6 +24,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		PortalUser = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ProgramRepresentative = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Registry = 621870000,
 	}
 }

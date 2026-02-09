@@ -9,12 +9,31 @@
 
     <div class="d-flex flex-row justify-start ga-3 flex-wrap ma-4">
       <!-- Application status Draft -->
-      <v-card-actions v-if="applicationStore.applicationStatus === 'Draft' && applicationStore.applicationOrigin !== 'Manual'">
-        <v-btn size="large" variant="flat" color="warning" @click="router.push('/application')">
+      <v-card-actions
+        v-if="
+          applicationStore.applicationStatus === 'Draft' &&
+          applicationStore.applicationOrigin !== 'Manual'
+        "
+      >
+        <v-btn
+          size="large"
+          variant="flat"
+          color="warning"
+          @click="router.push('/application')"
+        >
           <v-icon size="large" icon="mdi-arrow-right" />
           Open application
         </v-btn>
-        <v-btn class="ma-0" size="large" variant="outlined" color="white" @click="$emit('cancel-application')">Cancel application</v-btn>
+        <v-btn
+          v-if="showCancelButton"
+          class="ma-0"
+          size="large"
+          variant="outlined"
+          color="white"
+          @click="$emit('cancel-application')"
+        >
+          Cancel application
+        </v-btn>
       </v-card-actions>
 
       <!-- Application status Submitted, Ready, In Progress, Pending Queue -->
@@ -28,7 +47,12 @@
           applicationStore.applicationStatus === 'Escalated'
         "
       >
-        <v-btn variant="flat" size="large" color="warning" @click="handleManageApplication">
+        <v-btn
+          variant="flat"
+          size="large"
+          color="warning"
+          @click="handleManageApplication"
+        >
           <v-icon size="large" icon="mdi-arrow-right" />
           Manage Application
         </v-btn>
@@ -36,7 +60,13 @@
 
       <!-- No application found -->
       <v-card-actions v-if="applicationStore.applicationStatus === undefined">
-        <v-btn variant="flat" size="large" color="warning" id="btnApplyNow" @click="handleStartNewApplication">
+        <v-btn
+          variant="flat"
+          size="large"
+          color="warning"
+          id="btnApplyNow"
+          @click="handleStartNewApplication"
+        >
           <v-icon size="large" icon="mdi-arrow-right" />
           Apply now
         </v-btn>
@@ -100,13 +130,19 @@ export default defineComponent({
           return "There are different types of certifications you can apply for. Visit the B.C. government website to learn about the types of Early Childhood Educator (ECE) certificates and which one you may qualify for.";
       }
     },
+    showCancelButton(): boolean {
+      return !this.applicationStore.isDraftApplicationIcra;
+    },
   },
   methods: {
     handleStartNewApplication() {
       this.router.push({ name: "application-certification" });
     },
     handleManageApplication() {
-      this.router.push({ name: "manageApplication", params: { applicationId: this.applicationStore?.application?.id } });
+      this.router.push({
+        name: "manageApplication",
+        params: { applicationId: this.applicationStore?.application?.id },
+      });
     },
   },
 });

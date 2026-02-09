@@ -4,7 +4,13 @@
     <h1 class="mb-5">Declaration and consent</h1>
     <p>You must read and agree to the following to apply for certification.</p>
     <br />
-    <p class="ml-10 multiline">{{ configStore.defaultContents.find((content) => content.name == "New BC Recognized Application")?.multiText }}</p>
+    <p class="ml-10 multiline">
+      {{
+        configStore.defaultContents.find(
+          (content) => content.name == "New BC Recognized Application",
+        )?.multiText
+      }}
+    </p>
 
     <v-form ref="declarationForm">
       <v-row>
@@ -22,16 +28,36 @@
 
       <v-row>
         <v-col cols="4">
-          <EceTextField :model-value="name" label="Your full legal name" :readonly="true" :rules="[]"></EceTextField>
+          <EceTextField
+            :model-value="name"
+            label="Your full legal name"
+            :readonly="true"
+            :rules="[]"
+          ></EceTextField>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="4">
-          <EceDateInput :model-value="date" label="Signed date" :readonly="true" :rules="[]"></EceDateInput>
+          <EceDateInput
+            :model-value="date"
+            label="Signed date"
+            :readonly="true"
+            :rules="[]"
+          ></EceDateInput>
         </v-col>
       </v-row>
     </v-form>
-    <v-btn class="mt-6" rounded="lg" color="primary" :loading="loadingStore.isLoading('draftapplication_put')" @click="continueClick" id="btnContinue">
+    <v-btn
+      class="mt-6"
+      rounded="lg"
+      color="primary"
+      :loading="
+        loadingStore.isLoading('draftapplication_put') ||
+        loadingStore.isLoading('icra_put')
+      "
+      @click="continueClick"
+      id="btnContinue"
+    >
       Continue
     </v-btn>
   </v-container>
@@ -39,7 +65,7 @@
 
 <script lang="ts">
 import { DateTime } from "luxon";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import type { VForm } from "vuetify/components";
 import { getProfile } from "@/api/profile";
 import Breadcrumb from "@/components/Breadcrumb.vue";
@@ -54,6 +80,9 @@ import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 import { useRouter } from "vue-router";
+import { useIcraStore } from "@/store/icra";
+
+export type StreamType = "Eligibility" | "Application";
 
 export default defineComponent({
   name: "Declaration",
@@ -65,6 +94,7 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
+    const icraStore = useIcraStore();
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -73,7 +103,23 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    return { Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router };
+    return {
+      Rules,
+      userStore,
+      applicationStore,
+      alertStore,
+      loadingStore,
+      configStore,
+      router,
+      icraStore,
+    };
+  },
+  props: {
+    stream: {
+      type: String as PropType<StreamType>,
+      required: false,
+      default: "Application",
+    },
   },
   data() {
     return {
@@ -83,27 +129,84 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.checkboxValue = this.applicationStore.draftApplication.signedDate ? true : false;
+    //check if user has a draftApplication in progress (They should not be coming to this screen vice versa)
+    if (
+      (this.stream === "Eligibility" &&
+        this.applicationStore.hasDraftApplication) ||
+      (this.stream === "Application" && this.icraStore.hasDraftIcraEligibility)
+    ) {
+      console.warn(
+        `User should not be trying to apply for ${this.stream === "Eligibility" ? "icra eligibility" : "an application"} if they have a ${this.stream === "Eligibility" ? "draft application" : "draft icra eligibility"} in progress. Sending user back to home page`,
+      );
+      this.router.push("/");
+    }
+    this.checkboxValue = this.applicationStore.draftApplication.signedDate
+      ? true
+      : false;
     this.name = this.userStore.fullName;
-    this.date =
-      this.applicationStore.hasDraftApplication && this.applicationStore?.draftApplication?.signedDate
-        ? formatDate(this.applicationStore?.draftApplication?.signedDate, "yyyy-MM-dd")
-        : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+    if (this.stream === "Application") {
+      this.date =
+        this.applicationStore.hasDraftApplication &&
+        this.applicationStore?.draftApplication?.signedDate
+          ? formatDate(
+              this.applicationStore?.draftApplication?.signedDate,
+              "yyyy-MM-dd",
+            )
+          : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+    } else if (this.stream === "Eligibility") {
+      this.date =
+        this.icraStore.hasDraftIcraEligibility &&
+        this.icraStore?.draftIcraEligibility?.signedDate
+          ? formatDate(
+              this.icraStore?.draftIcraEligibility?.signedDate,
+              "yyyy-MM-dd",
+            )
+          : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+    }
   },
   methods: {
     async continueClick() {
       const { valid } = await (this.$refs.declarationForm as VForm).validate();
       if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
         return;
       }
 
-      this.applicationStore.$patch({ draftApplication: { signedDate: this.date } });
+      if (this.stream === "Application") {
+        await this.applicationPath();
+      } else if (this.stream === "Eligibility") {
+        await this.eligibilityPath();
+      } else {
+        console.warn("unknown stream type");
+      }
+    },
+    async applicationPath() {
+      this.applicationStore.$patch({
+        draftApplication: { signedDate: this.date },
+      });
 
       let response = await this.applicationStore.upsertDraftApplication();
 
       if (response) {
         this.router.push("/application");
+      }
+    },
+    async eligibilityPath() {
+      this.icraStore.$patch({
+        draftIcraEligibility: {
+          signedDate: this.date,
+          portalStage: "ContactInformation",
+          understandAgreesApplication: this.checkboxValue,
+          fullLegalName: this.name,
+        },
+      });
+
+      let response = await this.icraStore.upsertDraftIcraEligibility();
+
+      if (response) {
+        this.router.push("/icra-eligibility");
       }
     },
   },

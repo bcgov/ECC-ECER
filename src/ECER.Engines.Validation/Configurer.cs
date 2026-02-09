@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using ECER.Engines.Validation.Applications;
+using ECER.Engines.Validation.ICRA;
+using ECER.Engines.Validation.Programs;
 using ECER.Infrastructure.Common;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,10 +14,22 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<NewApplicationSubmissionValidationEngine>();
     configurationContext.Services.AddTransient<LabourMobilityApplicationSubmissionValidationEngine>();
     configurationContext.Services.AddTransient<ApplicationRenewalValidationEngine>();
+    configurationContext.Services.AddTransient<IcraApplicationSubmissionValidationEngine>();
     configurationContext.Services.AddTransient<IApplicationValidationEngineResolver, ApplicationValidationEngineResolver>();
     configurationContext.Services.AddTransient<IApplicationValidationEngine>(provider =>
     {
       return provider.GetRequiredService<NewApplicationSubmissionValidationEngine>();
+    });
+
+    // ICRA
+    configurationContext.Services.AddTransient<IICRAValidationEngine, IcraEligibilitySubmissionValidationEngine>();
+    
+    //Program
+    configurationContext.Services.AddTransient<NewProgramSubmissionValidationEngine>();
+    configurationContext.Services.AddTransient<IProgramValidationEngineResolver, ProgramValidationEngineResolver>();
+    configurationContext.Services.AddTransient<IProgramValidationEngine>(provider =>
+    {
+      return provider.GetRequiredService<NewProgramSubmissionValidationEngine>();
     });
   }
 }

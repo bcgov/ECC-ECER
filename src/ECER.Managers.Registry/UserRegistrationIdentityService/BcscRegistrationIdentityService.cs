@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.MetadataResources;
@@ -75,4 +76,10 @@ internal sealed class BcscRegistrationIdentityService(IRegistrantRepository regi
       }
     }
   }
+
+  public Task<string> Resolve(RegisterNewPspUserCommand command, CancellationToken cancellationToken)
+  {
+    throw new NotImplementedException("BCSC registration does not support PSP users");
+  }
+
 }

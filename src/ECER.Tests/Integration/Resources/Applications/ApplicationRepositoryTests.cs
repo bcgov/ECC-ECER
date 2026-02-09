@@ -1,22 +1,19 @@
 ﻿using Alba;
-using Amazon;
 using AutoMapper;
 using Bogus;
-using Bogus.DataSets;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.MetadataResources;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System.Net.Http.Headers;
 using Xunit.Abstractions;
 using Xunit.Categories;
-using static StackExchange.Redis.Role;
 using Application = ECER.Resources.Documents.Applications.Application;
 using ApplicationStatus = ECER.Resources.Documents.Applications.ApplicationStatus;
 using CertificationType = ECER.Resources.Documents.Applications.CertificationType;
 using CharacterReference = ECER.Resources.Documents.Applications.CharacterReference;
 using Transcript = ECER.Resources.Documents.Applications.Transcript;
 using WorkExperienceReference = ECER.Resources.Documents.Applications.WorkExperienceReference;
-using System.Net.Http.Headers;
 
 namespace ECER.Tests.Integration.Resources.Applications;
 
@@ -464,8 +461,8 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var secondFileId = await UploadFile();
     var transcriptDocuments = new TranscriptDocuments(applicationId, transcript!.Id!)
     {
-        NewCourseOutlineFiles = new List<string> { firstFileId },
-        NewProgramConfirmationFiles = new List<string> { secondFileId }
+      NewCourseOutlineFiles = new List<string> { firstFileId },
+      NewProgramConfirmationFiles = new List<string> { secondFileId }
     };
 
     var result = await repository.SaveApplicationTranscript(transcriptDocuments, CancellationToken.None);
@@ -499,7 +496,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     var transcriptDocuments = new TranscriptDocuments(applicationId, transcript!.Id!)
     {
-        CourseOutlineOptions = CourseOutlineOptions.UploadNow
+      CourseOutlineOptions = CourseOutlineOptions.UploadNow
     };
 
     await repository.SaveApplicationTranscript(transcriptDocuments, CancellationToken.None);
@@ -527,7 +524,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.ApplicantId.ShouldBe(applicantId);
     var transcriptDocuments = new TranscriptDocuments(applicationId, transcript!.Id!)
     {
-        ProgramConfirmationOptions = ProgramConfirmationOptions.UploadNow
+      ProgramConfirmationOptions = ProgramConfirmationOptions.UploadNow
     };
 
     await repository.SaveApplicationTranscript(transcriptDocuments, CancellationToken.None);
@@ -536,6 +533,31 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var freshTranscript = freshApplication.FirstOrDefault()?.Transcripts.FirstOrDefault();
     freshTranscript.ShouldNotBeNull();
     freshTranscript.ProgramConfirmationOptions.ShouldBe(ProgramConfirmationOptions.UploadNow);
+  }
+
+  [Fact]
+  public async Task GetWorkExperienceReferenceById_WithValidId_ShouldReturnWorkExperienceReference()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var workExperienceReferences = new List<WorkExperienceReference>
+  {
+      CreateWorkExperienceReference()
+  };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      WorkExperienceReferences = workExperienceReferences
+    };
+    var applicationId = await repository.SaveApplication(application, CancellationToken.None);
+    applicationId.ShouldNotBeNull();
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
+    var savedApplication = query.ShouldHaveSingleItem();
+    savedApplication.WorkExperienceReferences.Count().ShouldBe(workExperienceReferences.Count);
+
+    var workExperienceReferenceId = savedApplication.WorkExperienceReferences.FirstOrDefault().ShouldNotBeNull().Id;
+
+    var workExperienceReference = await repository.GetWorkExperienceReferenceById(workExperienceReferenceId!, applicantId, CancellationToken.None);
+    workExperienceReference.ShouldNotBeNull();
+    workExperienceReference.Id.ShouldBe(workExperienceReferenceId);
   }
 
   private CharacterReference CreateCharacterReference()
@@ -624,5 +646,4 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     });
     return testFileId;
   }
-
 }

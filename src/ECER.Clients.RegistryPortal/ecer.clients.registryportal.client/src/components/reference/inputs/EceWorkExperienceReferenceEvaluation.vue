@@ -6,13 +6,17 @@
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           Applicant indicated you observed them work:
-          <b>{{ `${wizardStore.wizardData.workExperienceReferenceHours}` }} hours</b>
+          <b>
+            {{ `${wizardStore.wizardData.workExperienceReferenceHours}` }} hours
+          </b>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
-            :rules="[Rules.required('Enter a whole number greater than zero (0)')]"
+            :rules="[
+              Rules.required('Enter a whole number greater than zero (0)'),
+            ]"
             label="Total number of hours you observed the applicant working"
             maxlength="10"
             @keypress="isNumber($event)"
@@ -23,8 +27,17 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>How often did the applicant work or volunteer?</p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="updateField('workHoursType', $event)">
-            <v-radio v-for="(workHoursType, index) in workHoursTypeRadio" :key="index" :label="workHoursType.label" :value="workHoursType.value"></v-radio>
+          <v-radio-group
+            hide-details="auto"
+            :rules="[Rules.requiredRadio('Select an option')]"
+            @update:model-value="updateField('workHoursType', $event)"
+          >
+            <v-radio
+              v-for="(workHoursType, index) in workHoursTypeRadio"
+              :key="index"
+              :label="workHoursType.label"
+              :value="workHoursType.value"
+            ></v-radio>
           </v-radio-group>
         </v-col>
       </v-row>
@@ -67,7 +80,9 @@
           <EceTextField
             label="Specify Child Care Program"
             :rules="[Rules.required('Please specify child care program')]"
-            @update:model-value="updateField('childrenProgramTypeOther', $event)"
+            @update:model-value="
+              updateField('childrenProgramTypeOther', $event)
+            "
           ></EceTextField>
         </v-col>
       </v-row>
@@ -96,7 +111,12 @@
             label="Start date of hours"
             :model-value="modelValue.startDate"
             :max="today"
-            :rules="[Rules.required('Enter the start date of hours'), Rules.futureDateNotAllowedRule('Start date of hours cannot be in the future')]"
+            :rules="[
+              Rules.required('Enter the start date of hours'),
+              Rules.futureDateNotAllowedRule(
+                'Start date of hours cannot be in the future',
+              ),
+            ]"
             @update:model-value="updateField('startDate', $event)"
           ></EceDateInput>
         </v-col>
@@ -110,7 +130,9 @@
             :rules="[
               Rules.required('Enter the end date of hours'),
               Rules.dateBeforeRule(modelValue.startDate || ''),
-              Rules.futureDateNotAllowedRule('End date of hours cannot be in the future'),
+              Rules.futureDateNotAllowedRule(
+                'End date of hours cannot be in the future',
+              ),
             ]"
             @update:model-value="updateField('endDate', $event)"
           ></EceDateInput>
@@ -119,15 +141,24 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <h2>Relationship to applicant</h2>
-          <div role="doc-subtitle">You must have directly supervised (observed) the applicant working with children</div>
+          <div role="doc-subtitle">
+            You must have directly supervised (observed) the applicant working
+            with children
+          </div>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>What is your relationship to the applicant?</p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="referenceRelationshipChanged">
+          <v-radio-group
+            hide-details="auto"
+            :rules="[Rules.requiredRadio('Select an option')]"
+            @update:model-value="referenceRelationshipChanged"
+          >
             <v-radio
-              v-for="(workReferenceRelationship, index) in workReferenceRelationshipRadio"
+              v-for="(
+                workReferenceRelationship, index
+              ) in workReferenceRelationshipRadio"
               :key="index"
               :label="workReferenceRelationship.label"
               :value="workReferenceRelationship.value"
@@ -139,9 +170,15 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
             label="Specify Your relationship"
-            :rules="[Rules.required('Specify your relationship to the applicant. Your response should not exceed 100 characters')]"
+            :rules="[
+              Rules.required(
+                'Specify your relationship to the applicant. Your response should not exceed 100 characters',
+              ),
+            ]"
             maxlength="100"
-            @update:model-value="updateField('referenceRelationshipOther', $event)"
+            @update:model-value="
+              updateField('referenceRelationshipOther', $event)
+            "
           ></EceTextField>
         </v-col>
       </v-row>
@@ -156,7 +193,12 @@ import { defineComponent } from "vue";
 import CheckboxMultiple from "@/components/inputs/CheckboxMultiple.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-import { childcareAgeRangesCheckBox, childrenProgramTypeDropdown, workHoursTypeRadio, workReferenceRelationshipRadio } from "@/utils/constant";
+import {
+  childcareAgeRangesCheckBox,
+  childrenProgramTypeDropdown,
+  workHoursTypeRadio,
+  workReferenceRelationshipRadio,
+} from "@/utils/constant";
 import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
@@ -178,12 +220,20 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_workExReferenceData: Components.Schemas.WorkExperienceReferenceDetails) => true,
+    "update:model-value": (
+      _workExReferenceData: Components.Schemas.WorkExperienceReferenceDetails,
+    ) => true,
   },
   setup: () => {
     const wizardStore = useWizardStore();
 
-    return { wizardStore, childrenProgramTypeDropdown, workHoursTypeRadio, childcareAgeRangesCheckBox, workReferenceRelationshipRadio };
+    return {
+      wizardStore,
+      childrenProgramTypeDropdown,
+      workHoursTypeRadio,
+      childcareAgeRangesCheckBox,
+      workReferenceRelationshipRadio,
+    };
   },
   data() {
     return {
@@ -202,7 +252,10 @@ export default defineComponent({
   },
   methods: {
     isNumber,
-    updateField(fieldName: keyof Components.Schemas.WorkExperienceReferenceDetails, value: any) {
+    updateField(
+      fieldName: keyof Components.Schemas.WorkExperienceReferenceDetails,
+      value: any,
+    ) {
       this.$emit("update:model-value", {
         ...this.modelValue,
         [fieldName]: value,
@@ -217,15 +270,25 @@ export default defineComponent({
           childrenProgramTypeOther: "",
         });
       } else {
-        this.$emit("update:model-value", { ...this.modelValue, childrenProgramType: value });
+        this.$emit("update:model-value", {
+          ...this.modelValue,
+          childrenProgramType: value,
+        });
       }
     },
 
     referenceRelationshipChanged(value: any) {
       if (value === "Other") {
-        this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value });
+        this.$emit("update:model-value", {
+          ...this.modelValue,
+          referenceRelationship: value,
+        });
       } else {
-        this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value, referenceRelationshipOther: "" });
+        this.$emit("update:model-value", {
+          ...this.modelValue,
+          referenceRelationship: value,
+          referenceRelationshipOther: "",
+        });
       }
     },
   },

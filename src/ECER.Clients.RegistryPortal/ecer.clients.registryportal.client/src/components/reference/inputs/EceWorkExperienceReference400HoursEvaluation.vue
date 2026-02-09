@@ -9,9 +9,18 @@
           <p class="mb-3">The hours must:</p>
           <ul class="ml-10">
             <li>Be related to the field of early childhood education</li>
-            <li v-if="latestCertificateStatus === 'Expired'">Have been completed within the last 5 years</li>
-            <li v-else-if="latestCertificateStatus === 'Active' && latestCertificateExpiryDate > today">
-              Have been completed between the {{ formatDate(latestCertificateEffectiveDate, "LLL d, yyyy") }} and the {{ formatDate(today, "LLL d, yyyy") }}
+            <li v-if="latestCertificateStatus === 'Expired'">
+              Have been completed within the last 5 years
+            </li>
+            <li
+              v-else-if="
+                latestCertificateStatus === 'Active' &&
+                latestCertificateExpiryDate > today
+              "
+            >
+              Have been completed between the
+              {{ formatDate(latestCertificateEffectiveDate, "LLL d, yyyy") }}
+              and the {{ formatDate(today, "LLL d, yyyy") }}
             </li>
           </ul>
         </v-col>
@@ -19,14 +28,18 @@
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           Applicant indicated you observed them work:
-          <b>{{ `${wizardStore.wizardData.workExperienceReferenceHours}` }} hours</b>
+          <b>
+            {{ `${wizardStore.wizardData.workExperienceReferenceHours}` }} hours
+          </b>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
             label="Total number of hours the applicant worked"
-            :rules="[Rules.required('Enter a whole number greater than zero (0)')]"
+            :rules="[
+              Rules.required('Enter a whole number greater than zero (0)'),
+            ]"
             maxlength="10"
             @keypress="isNumber($event)"
             @update:model-value="updateField('hours', $event)"
@@ -36,8 +49,17 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>How often did the applicant work or volunteer?</p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="updateField('workHoursType', $event)">
-            <v-radio v-for="(workHoursType, index) in workHoursTypeRadio" :key="index" :label="workHoursType.label" :value="workHoursType.value"></v-radio>
+          <v-radio-group
+            hide-details="auto"
+            :rules="[Rules.requiredRadio('Select an option')]"
+            @update:model-value="updateField('workHoursType', $event)"
+          >
+            <v-radio
+              v-for="(workHoursType, index) in workHoursTypeRadio"
+              :key="index"
+              :label="workHoursType.label"
+              :value="workHoursType.value"
+            ></v-radio>
           </v-radio-group>
         </v-col>
       </v-row>
@@ -89,7 +111,12 @@
             label="Start date of hours"
             :model-value="modelValue.startDate"
             :max="today"
-            :rules="[Rules.required('Enter the start date of hours'), Rules.futureDateNotAllowedRule('Start date of hours cannot be in the future')]"
+            :rules="[
+              Rules.required('Enter the start date of hours'),
+              Rules.futureDateNotAllowedRule(
+                'Start date of hours cannot be in the future',
+              ),
+            ]"
             @update:model-value="updateField('startDate', $event)"
           ></EceDateInput>
         </v-col>
@@ -103,7 +130,9 @@
             :rules="[
               Rules.required('Enter the end date of hours'),
               Rules.dateBeforeRule(modelValue.startDate || ''),
-              Rules.futureDateNotAllowedRule('End date of hours cannot be in the future'),
+              Rules.futureDateNotAllowedRule(
+                'End date of hours cannot be in the future',
+              ),
             ]"
             @update:model-value="updateField('endDate', $event)"
           ></EceDateInput>
@@ -123,7 +152,9 @@
             @update:model-value="updateField('referenceRelationship', $event)"
           >
             <v-radio
-              v-for="(workReferenceRelationship, index) in workReference400HoursRelationshipRadio"
+              v-for="(
+                workReferenceRelationship, index
+              ) in workReference400HoursRelationshipRadio"
               :key="index"
               :label="workReferenceRelationship.label"
               :value="workReferenceRelationship.value"
@@ -162,7 +193,10 @@ import EceTextField from "@/components/inputs/EceTextField.vue";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-import { workHoursTypeRadio, workReference400HoursRelationshipRadio } from "@/utils/constant";
+import {
+  workHoursTypeRadio,
+  workReference400HoursRelationshipRadio,
+} from "@/utils/constant";
 import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
@@ -178,11 +212,17 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_workExReference400HoursData: Components.Schemas.WorkExperienceReferenceDetails) => true,
+    "update:model-value": (
+      _workExReference400HoursData: Components.Schemas.WorkExperienceReferenceDetails,
+    ) => true,
   },
   setup: () => {
     const wizardStore = useWizardStore();
-    return { wizardStore, workHoursTypeRadio, workReference400HoursRelationshipRadio };
+    return {
+      wizardStore,
+      workHoursTypeRadio,
+      workReference400HoursRelationshipRadio,
+    };
   },
   data() {
     return {
@@ -202,10 +242,14 @@ export default defineComponent({
       return this.wizardStore.wizardData.latestCertification.statusCode;
     },
     latestCertificateExpiryDate() {
-      return formatDate(this.wizardStore.wizardData.latestCertification.expiryDate);
+      return formatDate(
+        this.wizardStore.wizardData.latestCertification.expiryDate,
+      );
     },
     latestCertificateEffectiveDate() {
-      return formatDate(this.wizardStore.wizardData.latestCertification.effectiveDate);
+      return formatDate(
+        this.wizardStore.wizardData.latestCertification.effectiveDate,
+      );
     },
   },
   mounted() {
@@ -214,7 +258,10 @@ export default defineComponent({
   },
   methods: {
     isNumber,
-    updateField(fieldName: keyof Components.Schemas.WorkExperienceReferenceDetails, value: any) {
+    updateField(
+      fieldName: keyof Components.Schemas.WorkExperienceReferenceDetails,
+      value: any,
+    ) {
       this.$emit("update:model-value", {
         ...this.modelValue,
         [fieldName]: value,

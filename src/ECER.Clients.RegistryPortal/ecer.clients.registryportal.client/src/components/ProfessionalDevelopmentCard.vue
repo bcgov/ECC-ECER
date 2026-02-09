@@ -1,10 +1,18 @@
 <template>
-  <v-card min-width="100%" variant="elevated" rounded="lg" class="custom-card-styling" elevation="4">
+  <v-card
+    min-width="100%"
+    variant="elevated"
+    rounded="lg"
+    class="custom-card-styling"
+    elevation="4"
+  >
     <template #title>
       <v-card-title>
         <v-row>
           <v-col>
-            <p class="font-weight-bold">{{ professionalDevelopment.courseName }}</p>
+            <p class="font-weight-bold">
+              {{ professionalDevelopment.courseName }}
+            </p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col class="text-wrap" cols="auto">

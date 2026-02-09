@@ -4,8 +4,18 @@
       {{ title }}
     </h2>
     <br />
-    <v-radio-group :rules="rules" @update:model-value="(value) => $emit('update:model-value', value as string)">
-      <v-radio v-for="option in options" :key="option.key" :label="option.label" :value="option.key"></v-radio>
+    <v-radio-group
+      :rules="rules"
+      @update:model-value="
+        (value) => $emit('update:model-value', value as string)
+      "
+    >
+      <v-radio
+        v-for="option in options"
+        :key="option.key"
+        :label="option.label"
+        :value="option.key"
+      ></v-radio>
     </v-radio-group>
   </div>
 </template>

@@ -78,11 +78,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AreAllRead = "ecer_areallread";
 			public const string ecer_areallreadName = "ecer_areallreadname";
 			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
+			public const string ecer_BulkPSPCommunication = "ecer_bulkpspcommunication";
+			public const string ecer_BulkPSPCommunicationName = "ecer_bulkpspcommunicationname";
 			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
+			public const string ecer_communication_ecer_bulkpspcommunication = "ecer_communication_ecer_bulkpspcommunication";
+			public const string ecer_communication_EducationInstitutionId = "ecer_communication_EducationInstitutionId";
+			public const string ecer_communication_ICRAEligibilityAssessmentId = "ecer_communication_ICRAEligibilityAssessmentId";
 			public const string ecer_communication_Investigation_ecer_investig = "ecer_communication_Investigation_ecer_investig";
 			public const string Referencingecer_communication_ParentCommunicationid = "ecer_communication_ParentCommunicationid";
 			public const string ecer_communication_PresetContentsId = "ecer_communication_PresetContentsId";
+			public const string ecer_communication_ProgramProfileId = "ecer_communication_ProgramProfileId";
+			public const string ecer_communication_ProgramRepresentativeId = "ecer_communication_ProgramRepresentativeId";
 			public const string ecer_communication_PSPreferral_ecer_pspreferral = "ecer_communication_PSPreferral_ecer_pspreferral";
+			public const string ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome = "ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome";
+			public const string ecer_communication_ReconsiderationRequestId = "ecer_communication_ReconsiderationRequestId";
 			public const string ecer_communication_TranscriptId = "ecer_communication_TranscriptId";
 			public const string ecer_CommunicationId = "ecer_communicationid";
 			public const string Id = "ecer_communicationid";
@@ -95,13 +104,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ecer_post_program_app_communication = "ecer_ecer_post_program_app_communication";
 			public const string ecer_ecer_program_application_Id = "ecer_ecer_program_application_id";
 			public const string ecer_ecer_program_application_IdName = "ecer_ecer_program_application_idname";
+			public const string ecer_EducationInstitutionId = "ecer_educationinstitutionid";
+			public const string ecer_EducationInstitutionIdName = "ecer_educationinstitutionidname";
 			public const string ecer_FromOracle = "ecer_fromoracle";
 			public const string ecer_GenerateMessageReport = "ecer_generatemessagereport";
 			public const string ecer_generatemessagereportName = "ecer_generatemessagereportname";
+			public const string ecer_ICRAEligibilityAssessmentId = "ecer_icraeligibilityassessmentid";
+			public const string ecer_ICRAEligibilityAssessmentIdName = "ecer_icraeligibilityassessmentidname";
 			public const string ecer_InitiatedFrom = "ecer_initiatedfrom";
 			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_IsADN = "ecer_isadn";
+			public const string ecer_isadnName = "ecer_isadnname";
 			public const string ecer_IsLast = "ecer_islast";
 			public const string ecer_islastName = "ecer_islastname";
 			public const string ecer_IsRoot = "ecer_isroot";
@@ -113,6 +128,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_MergeContents = "ecer_mergecontents";
 			public const string ecer_mergecontentsName = "ecer_mergecontentsname";
+			public const string ecer_MergeInstruction = "ecer_mergeinstruction";
 			public const string ecer_Message = "ecer_message";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NotifyRecipient = "ecer_notifyrecipient";
@@ -121,8 +137,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ParentCommunicationidName = "ecer_parentcommunicationidname";
 			public const string ecer_PresetContentsId = "ecer_presetcontentsid";
 			public const string ecer_PresetContentsIdName = "ecer_presetcontentsidname";
+			public const string ecer_ProgramProfileId = "ecer_programprofileid";
+			public const string ecer_ProgramProfileIdName = "ecer_programprofileidname";
+			public const string ecer_ProgramRepresentativeId = "ecer_programrepresentativeid";
+			public const string ecer_ProgramRepresentativeIdName = "ecer_programrepresentativeidname";
+			public const string ecer_PSPCommunicationCategory = "ecer_pspcommunicationcategory";
+			public const string ecer_pspcommunicationcategoryName = "ecer_pspcommunicationcategoryname";
 			public const string ecer_PSPreferral = "ecer_pspreferral";
 			public const string ecer_PSPreferralName = "ecer_pspreferralname";
+			public const string ecer_ReconsiderationInvestigation = "ecer_reconsiderationinvestigation";
+			public const string ecer_ReconsiderationInvestigationName = "ecer_reconsiderationinvestigationname";
+			public const string ecer_ReconsiderationRequestId = "ecer_reconsiderationrequestid";
+			public const string ecer_ReconsiderationRequestIdName = "ecer_reconsiderationrequestidname";
 			public const string ecer_Registrantid = "ecer_registrantid";
 			public const string ecer_RegistrantidName = "ecer_registrantidname";
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
@@ -453,6 +479,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunication")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_BulkPSPCommunication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_bulkpspcommunication");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_bulkpspcommunication", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunicationname")]
+		public string ecer_BulkPSPCommunicationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_bulkpspcommunication"))
+				{
+					return this.FormattedValues["ecer_bulkpspcommunication"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
@@ -591,6 +649,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitutionid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_EducationInstitutionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_educationinstitutionid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_educationinstitutionid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitutionidname")]
+		public string ecer_EducationInstitutionIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_educationinstitutionid"))
+				{
+					return this.FormattedValues["ecer_educationinstitutionid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromoracle")]
 		public string ecer_FromOracle
 		{
@@ -630,6 +720,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_generatemessagereport"))
 				{
 					return this.FormattedValues["ecer_generatemessagereport"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_icraeligibilityassessmentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ICRAEligibilityAssessmentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_icraeligibilityassessmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_icraeligibilityassessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_icraeligibilityassessmentidname")]
+		public string ecer_ICRAEligibilityAssessmentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_icraeligibilityassessmentid"))
+				{
+					return this.FormattedValues["ecer_icraeligibilityassessmentid"];
 				}
 				else
 				{
@@ -694,6 +816,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_investigation"))
 				{
 					return this.FormattedValues["ecer_investigation"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadn")]
+		public System.Nullable<bool> ecer_IsADN
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isadn");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isadn", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadnname")]
+		public string ecer_isadnName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isadn"))
+				{
+					return this.FormattedValues["ecer_isadn"];
 				}
 				else
 				{
@@ -873,6 +1027,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_mergeinstruction")]
+		public string ecer_MergeInstruction
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_mergeinstruction");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_mergeinstruction", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_message")]
 		public string ecer_Message
 		{
@@ -1005,6 +1174,102 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofileid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramProfileId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programprofileid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programprofileid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofileidname")]
+		public string ecer_ProgramProfileIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programprofileid"))
+				{
+					return this.FormattedValues["ecer_programprofileid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programrepresentativeid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramRepresentativeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programrepresentativeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programrepresentativeid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programrepresentativeidname")]
+		public string ecer_ProgramRepresentativeIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programrepresentativeid"))
+				{
+					return this.FormattedValues["ecer_programrepresentativeid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspcommunicationcategory")]
+		public virtual ecer_PSPCommunicationCategories? ecer_PSPCommunicationCategory
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPCommunicationCategories?)(EntityOptionSetEnum.GetEnum(this, "ecer_pspcommunicationcategory")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_pspcommunicationcategory", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspcommunicationcategoryname")]
+		public string ecer_pspcommunicationcategoryName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_pspcommunicationcategory"))
+				{
+					return this.FormattedValues["ecer_pspcommunicationcategory"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspreferral")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_PSPreferral
 		{
@@ -1029,6 +1294,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_pspreferral"))
 				{
 					return this.FormattedValues["ecer_pspreferral"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationinvestigation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ReconsiderationInvestigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_reconsiderationinvestigation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationinvestigation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationinvestigationname")]
+		public string ecer_ReconsiderationInvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reconsiderationinvestigation"))
+				{
+					return this.FormattedValues["ecer_reconsiderationinvestigation"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ReconsiderationRequestId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_reconsiderationrequestid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationrequestid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestidname")]
+		public string ecer_ReconsiderationRequestIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reconsiderationrequestid"))
+				{
+					return this.FormattedValues["ecer_reconsiderationrequestid"];
 				}
 				else
 				{
@@ -1812,6 +2141,63 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// N:1 ecer_communication_ecer_bulkpspcommunication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunication")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ecer_bulkpspcommunication")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication ecer_communication_ecer_bulkpspcommunication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication>("ecer_communication_ecer_bulkpspcommunication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication>("ecer_communication_ecer_bulkpspcommunication", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_EducationInstitutionId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitutionid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_EducationInstitutionId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute ecer_communication_EducationInstitutionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_communication_EducationInstitutionId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_communication_EducationInstitutionId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_ICRAEligibilityAssessmentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_icraeligibilityassessmentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ICRAEligibilityAssessmentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment ecer_communication_ICRAEligibilityAssessmentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("ecer_communication_ICRAEligibilityAssessmentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("ecer_communication_ICRAEligibilityAssessmentId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 ecer_communication_Investigation_ecer_investig
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
@@ -1869,6 +2255,44 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// N:1 ecer_communication_ProgramProfileId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofileid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ProgramProfileId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Program ecer_communication_ProgramProfileId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_communication_ProgramProfileId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_communication_ProgramProfileId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_ProgramRepresentativeId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programrepresentativeid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ProgramRepresentativeId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative ecer_communication_ProgramRepresentativeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_communication_ProgramRepresentativeId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_communication_ProgramRepresentativeId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 ecer_communication_PSPreferral_ecer_pspreferral
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspreferral")]
@@ -1884,6 +2308,47 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_communication_PSPreferral_ecer_pspreferral", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationinvestigation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+			"outcome")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigationoutcome
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+						"outcome", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_communication_ReconsiderationInvestigation_ecer_reconsiderationinvestigation" +
+						"outcome", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_ReconsiderationRequestId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ReconsiderationRequestId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest ecer_communication_ReconsiderationRequestId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest>("ecer_communication_ReconsiderationRequestId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest>("ecer_communication_ReconsiderationRequestId", null, value);
 			}
 		}
 		

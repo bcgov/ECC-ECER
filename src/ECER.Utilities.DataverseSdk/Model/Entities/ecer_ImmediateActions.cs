@@ -72,6 +72,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_reconsiderationinvestigationoutcome_ImmediateActionId = "ecer_reconsiderationinvestigationoutcome_ImmediateActionId";
 			public const string ecer_reconsiderationperiodenddate = "ecer_reconsiderationperiodenddate";
 			public const string ecer_ReconsiderationRequest = "ecer_reconsiderationrequest";
 			public const string ecer_reconsiderationrequestName = "ecer_reconsiderationrequestname";
@@ -858,6 +859,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_reconsiderationinvestigationoutcome_ImmediateActionId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationinvestigationoutcome_ImmediateActionId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome> ecer_reconsiderationinvestigationoutcome_ImmediateActionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_reconsiderationinvestigationoutcome_ImmediateActionId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationInvestigationOutcome>("ecer_reconsiderationinvestigationoutcome_ImmediateActionId", null, value);
 			}
 		}
 		

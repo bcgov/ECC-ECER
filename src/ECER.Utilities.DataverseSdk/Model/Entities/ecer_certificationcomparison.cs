@@ -62,12 +62,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_application_certificationcomparisonid = "ecer_application_certificationcomparisonid";
 			public const string ecer_bccertificate = "ecer_bccertificate";
+			public const string ecer_certificationcomparison_ProvinceId = "ecer_certificationcomparison_ProvinceId";
 			public const string ecer_certificationcomparisonId = "ecer_certificationcomparisonid";
 			public const string Id = "ecer_certificationcomparisonid";
 			public const string ecer_certificationcomparisontransferringcertificate = "ecer_certificationcomparisontransferringcertificate";
 			public const string ecer_HourRequirementMet = "ecer_hourrequirementmet";
 			public const string ecer_hourrequirementmetName = "ecer_hourrequirementmetname";
 			public const string ecer_name = "ecer_name";
+			public const string ecer_ProvinceId = "ecer_provinceid";
+			public const string ecer_ProvinceIdName = "ecer_provinceidname";
 			public const string ecer_transferringcertificate = "ecer_transferringcertificate";
 			public const string ecer_transferringcertificateName = "ecer_transferringcertificatename";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -349,6 +352,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_provinceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_provinceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceidname")]
+		public string ecer_ProvinceIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_provinceid"))
+				{
+					return this.FormattedValues["ecer_provinceid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -780,6 +815,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_certificationcomparisonid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_certificationcomparison_ProvinceId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificationcomparison_ProvinceId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Province ecer_certificationcomparison_ProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_certificationcomparison_ProvinceId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_certificationcomparison_ProvinceId", null, value);
 			}
 		}
 		

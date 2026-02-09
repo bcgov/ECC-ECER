@@ -8,6 +8,7 @@ import { useFormStore } from "./store/form";
 import { useMessageStore } from "./store/message";
 import { useWizardStore } from "./store/wizard";
 import { useConfigStore } from "./store/config";
+import { useIcraStore } from "./store/icra";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -85,6 +86,7 @@ const router = createRouter({
       path: "/manage-application/:applicationId",
       name: "manageApplication",
       component: () => import("./components/ApplicationSummary.vue"),
+      props: true,
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
@@ -167,20 +169,23 @@ const router = createRouter({
     {
       path: "/manage-application/:applicationId/work-experience-references",
       name: "manageWorkExperienceReferences",
-      component: () => import("./components/ManageWorkExperienceReferenceList.vue"),
+      component: () =>
+        import("./components/ManageWorkExperienceReferenceList.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/manage-application/:applicationId/professional-development",
       name: "manageProfessionalDevelopment",
-      component: () => import("./components/ManageProfessionalDevelopmentList.vue"),
+      component: () =>
+        import("./components/ManageProfessionalDevelopmentList.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/application/certification",
-      component: () => import("./components/pages/ApplyForNewCertification.vue"),
+      component: () =>
+        import("./components/pages/ApplyForNewCertification.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       name: "application-certification",
     },
@@ -216,6 +221,7 @@ const router = createRouter({
       component: () => import("./components/Declaration.vue"),
       meta: { requiresAuth: true },
       name: "declaration",
+      props: { stream: "Application" },
     },
     {
       path: "/application/consent-required",
@@ -289,12 +295,143 @@ const router = createRouter({
       name: "lookup-certification",
     },
     {
+      path: "/icra-eligibility",
+      component: () => import("./components/pages/IcraEligibility.vue"),
+      meta: {
+        requiresAuth: true,
+        requiresVerification: true,
+        requiresICRAFeature: true,
+      },
+      beforeEnter: (to, from, next) => {
+        //guard to prevent users from coming here if they have a submitted in-progress ICRA Eligibility application
+        const icraStore = useIcraStore();
+        if (icraStore.hasSubmittedIcraEligibility) {
+          console.warn(
+            "User has a submitted ICRA Eligibility application, redirecting to home page.",
+          );
+          next({ path: "/" });
+        } else {
+          next();
+        }
+      },
+    },
+    {
+      path: "/icra-eligibility/check",
+      component: () =>
+        import("./components/pages/IcraEligibilityDisclaimer.vue"),
+      meta: {
+        requiresAuth: true,
+        requiresICRAFeature: true,
+        requiresVerification: true,
+      },
+      name: "icra-eligibility",
+    },
+    {
+      path: "/icra-eligibility/requirements",
+      name: "icra-eligibility-requirements",
+      component: () => import("./components/IcraEligibilityRequirements.vue"),
+      meta: {
+        requiresAuth: true,
+        requiresVerification: true,
+        requiresICRAFeature: true,
+      },
+    },
+    {
+      path: "/icra-eligibility/declaration",
+      component: () => import("./components/Declaration.vue"),
+      meta: { requiresAuth: true, requiresICRAFeature: true },
+      name: "icra-eligibility-declaration",
+      props: { stream: "Eligibility" },
+    },
+    {
+      path: "/icra-eligibility/submitted/:icraEligibilityId",
+      name: "icra-eligibility-submitted",
+      component: () =>
+        import("./components/pages/IcraEligibilitySubmitted.vue"),
+      props: true,
+      meta: {
+        requiresAuth: true,
+        requiresVerification: true,
+        requiresICRAFeature: true,
+      },
+    },
+    {
+      path: "/icra-eligibility/manage/:icraEligibilityId",
+      name: "manage-icra-eligibility",
+      component: () => import("./components/IcraEligibilitySummary.vue"),
+      props: true,
+      meta: {
+        requiresAuth: true,
+        requiresVerification: true,
+        requiresICRAFeature: true,
+      },
+    },
+    {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-references",
+      name: "manage-icra-eligibility-work-experience-references",
+      component: () =>
+        import("./components/IcraEligibilityManageWorkExperienceReferences.vue"),
+      props: true,
+      meta: {
+        requiresAuth: true,
+        requiresVerification: true,
+        requiresICRAFeature: true,
+      },
+    },
+    {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/:referenceId",
+      name: "view-icra-eligibility-work-experience-reference",
+      component: () =>
+        import("./components/IcraEligibilityViewWorkExperienceReference.vue"),
+      props: true,
+      meta: {
+        requiresAuth: true,
+        requiresVerification: true,
+        requiresICRAFeature: true,
+      },
+    },
+    {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/add",
+      name: "icra-eligibility-add-work-experience-reference",
+      component: () =>
+        import("./components/IcraEligibilityUpsertWorkExperienceReference.vue"),
+      props: (route) => ({
+        icraEligibilityId: route.params.icraEligibilityId,
+        type: "add",
+      }),
+      meta: {
+        requiresAuth: true,
+        requiresVerification: true,
+        requiresICRAFeature: true,
+      },
+    },
+    {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/:referenceId/replace",
+      name: "icra-eligibility-replace-work-experience-reference",
+      component: () =>
+        import("./components/IcraEligibilityUpsertWorkExperienceReference.vue"),
+      props: (route) => ({
+        icraEligibilityId: route.params.icraEligibilityId,
+        referenceId: route.params.referenceId,
+        type: "replace",
+      }),
+      meta: {
+        requiresAuth: true,
+        requiresVerification: true,
+        requiresICRAFeature: true,
+      },
+    },
+    {
       path: "/lookup/certification/record",
       component: () => import("./components/LookupCertificationRecord.vue"),
       meta: { requiresAuth: false },
       name: "lookup-certification-record",
     },
-    { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "not-found",
+      component: () => import("./components/pages/PageNotFound.vue"),
+    },
   ],
 });
 
@@ -346,7 +483,12 @@ router.beforeEach(async (to, _) => {
 
   // instead of having to check every route record with
   // to.matched.some(record => record.meta.requiresAuth)
-  if (!to.path.startsWith("/new-user") && to.meta.requiresAuth && user && !userStore.hasUserInfo) {
+  if (
+    !to.path.startsWith("/new-user") &&
+    to.meta.requiresAuth &&
+    user &&
+    !userStore.hasUserInfo
+  ) {
     return {
       path: "/new-user",
     };
@@ -368,7 +510,8 @@ router.beforeEach(async (to, _, next) => {
   const oidcStore = useOidcStore();
   const user = await oidcStore.getUser();
 
-  if (to.path.startsWith("/new-user") && user && userStore.hasUserInfo) next({ path: "/" });
+  if (to.path.startsWith("/new-user") && user && userStore.hasUserInfo)
+    next({ path: "/" });
   else next();
 });
 
@@ -376,7 +519,11 @@ router.beforeEach(async (to, _, next) => {
 router.beforeEach((to, from, next) => {
   const applicationStore = useApplicationStore();
 
-  if (from.path === "/application" && to.name !== "submitted" && applicationStore.hasDraftApplication) {
+  if (
+    from.path === "/application" &&
+    to.name !== "submitted" &&
+    applicationStore.hasDraftApplication
+  ) {
     applicationStore.saveDraft();
     next();
   } else next();
@@ -386,7 +533,11 @@ router.beforeEach((to, from, next) => {
 router.beforeEach((to, _, next) => {
   const applicationStore = useApplicationStore();
 
-  if (to.path === "/application" && applicationStore.applicationStatus === "Draft" && applicationStore.applicationOrigin === "Manual") {
+  if (
+    to.path === "/application" &&
+    applicationStore.applicationStatus === "Draft" &&
+    applicationStore.applicationOrigin === "Manual"
+  ) {
     next({ path: "/" });
   } else next();
 });
@@ -395,7 +546,21 @@ router.beforeEach((to, _, next) => {
 router.beforeEach((to, _, next) => {
   const applicationStore = useApplicationStore();
   if (to.path === "/application" && applicationStore.hasSubmittedApplication) {
-    console.warn("User has already submitted an application, redirecting to home page.");
+    console.warn(
+      "User has already submitted an application, redirecting to home page.",
+    );
+    next({ path: "/" });
+  } else next();
+});
+
+// Guard to prevent users from accessing ICRA routes if the flag is not enabled
+router.beforeEach((to, _, next) => {
+  const configStore = useConfigStore();
+  if (
+    to.meta.requiresICRAFeature &&
+    !configStore.applicationConfiguration.icraFeatureEnabled
+  ) {
+    console.warn("ICRA feature is not enabled, redirecting to home page.");
     next({ path: "/" });
   } else next();
 });

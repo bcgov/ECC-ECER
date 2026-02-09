@@ -22,8 +22,18 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     if (query.ById != null) countries = countries.Where(r => r.ecer_CountryId == Guid.Parse(query.ById));
     if (query.ByCode != null) countries = countries.Where(r => r.ecer_ShortName == query.ByCode);
     if (query.ByName != null) countries = countries.Where(r => r.ecer_Name == query.ByName);
+    if (query.ByICRA != null) countries = countries.Where(r => r.ecer_EligibleforICRA == query.ByICRA);
 
     return mapper.Map<IEnumerable<Country>>(countries)!.ToList();
+  }
+
+  public async Task<IEnumerable<AreaOfInstruction>> QueryAreaOfInstructions(AreaOfInstructionsQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var requirements = context.ecer_ProvincialRequirementSet.Where(r => r.StateCode == ecer_provincialrequirement_statecode.Active);
+    if (query.ById != null) requirements = requirements.Where(r => r.ecer_ProvincialRequirementId == Guid.Parse(query.ById));
+
+    return mapper.Map<IEnumerable<AreaOfInstruction>>(requirements)!.ToList();
   }
 
   public async Task<IEnumerable<PostSecondaryInstitution>> QueryPostSecondaryInstitutions(PostSecondaryInstitutionsQuery query, CancellationToken cancellationToken)
@@ -93,7 +103,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
       context.bcgov_DocumentUrlSet.Single(c => c.bcgov_DocumentUrlId == Guid.Parse(fileId));
 
     if (documentUrl == null) throw new InvalidOperationException($"documentUrl '{fileId}' not found");
-    if(documentUrl.ecer_DownloadDate == null)
+    if (documentUrl.ecer_DownloadDate == null)
     {
       documentUrl.ecer_DownloadDate = DateTime.UtcNow;
       context.UpdateObject(documentUrl);
@@ -111,5 +121,13 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
       .Execute();
 
     return mapper.Map<IEnumerable<DefaultContent>>(results)!.ToList();
+  }
+
+  public async Task<IEnumerable<DynamicsConfig>> QueryDynamicsConfiguration(DynamicsConfigQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var dynamicsConfig = context.bcgov_configSet.Where(config => config.bcgov_Group == "Portal" && config.StateCode == bcgov_config_statecode.Active);
+
+    return mapper.Map<IEnumerable<DynamicsConfig>>(dynamicsConfig)!.ToList();
   }
 }

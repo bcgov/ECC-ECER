@@ -1,4 +1,5 @@
-﻿using ECER.Utilities.Security;
+﻿using ECER.Managers.Registry.Contract.PspUsers;
+using ECER.Utilities.Security;
 using MediatR;
 
 namespace ECER.Managers.Registry.Contract.Registrants;
@@ -11,6 +12,7 @@ public record RegisterNewUserCommand(UserProfile Profile, UserIdentity Identity)
 public interface IRegistrationIdentityService
 {
   Task<string> Resolve(RegisterNewUserCommand command, CancellationToken cancellationToken);
+  Task<string> Resolve(RegisterNewPspUserCommand command, CancellationToken cancellationToken);
 }
 
 /// <summary>

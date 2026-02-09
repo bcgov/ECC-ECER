@@ -1,5 +1,12 @@
 <template>
-  <v-checkbox v-if="selectAll" :model-value="allSelected" label="Select All" :hide-details="true" density="compact" @click="selectAllToggle"></v-checkbox>
+  <v-checkbox
+    v-if="selectAll"
+    :model-value="allSelected"
+    label="Select All"
+    :hide-details="true"
+    density="compact"
+    @click="selectAllToggle"
+  ></v-checkbox>
   <v-input :model-value="itemSelection" :rules="rules">
     <div>
       <v-checkbox
@@ -71,7 +78,9 @@ export default defineComponent({
       if (this.allSelected) {
         this.itemSelection = [];
       } else {
-        this.itemSelection = this.$props.items.map((item: any) => item?.[this.$props.itemValue]) as [];
+        this.itemSelection = this.$props.items.map(
+          (item: any) => item?.[this.$props.itemValue],
+        ) as [];
       }
     },
   },

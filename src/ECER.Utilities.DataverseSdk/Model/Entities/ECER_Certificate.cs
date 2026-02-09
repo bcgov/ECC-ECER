@@ -114,6 +114,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PrintedDate = "ecer_printeddate";
 			public const string ecer_ReadyforCertificateCoverLetter = "ecer_readyforcertificatecoverletter";
 			public const string ecer_readyforcertificatecoverletterName = "ecer_readyforcertificatecoverlettername";
+			public const string ecer_reconsiderationrequest_FromCertificateId = "ecer_reconsiderationrequest_FromCertificateId";
 			public const string ecer_Registrantid = "ecer_registrantid";
 			public const string ecer_RegistrantidName = "ecer_registrantidname";
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
@@ -1348,6 +1349,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_certificate_ecer_investigation_CurrentCertificate", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_reconsiderationrequest_FromCertificateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationrequest_FromCertificateId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest> ecer_reconsiderationrequest_FromCertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest>("ecer_reconsiderationrequest_FromCertificateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest>("ecer_reconsiderationrequest_FromCertificateId", null, value);
 			}
 		}
 		

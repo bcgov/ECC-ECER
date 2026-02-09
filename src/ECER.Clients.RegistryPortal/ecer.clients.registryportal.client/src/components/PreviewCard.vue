@@ -3,16 +3,25 @@
     <v-card-title>
       <div class="d-flex justify-space-between align-center">
         <div>
-          <h2 class="text-wrap" :class="isValid ? 'text-black' : 'text-error'">{{ title }}</h2>
+          <h2 class="text-wrap" :class="isValid ? 'text-black' : 'text-error'">
+            {{ title }}
+          </h2>
           <p v-if="!isValid" class="small text-error text-wrap">
             <v-icon icon="mdi-alert-circle" color="error" class="mr-2"></v-icon>
-            You must enter all required information in a valid format before submitting your application
+            You must enter all required information in a valid format before
+            submitting your application
           </p>
         </div>
         <div v-if="editable">
           <v-tooltip v-model="show" location="top">
             <template #activator="{ props }">
-              <v-btn icon="mdi-pencil" v-bind="props" :color="isValid ? 'primary' : 'error'" variant="plain" @click="setWizard(portalStage)" />
+              <v-btn
+                icon="mdi-pencil"
+                v-bind="props"
+                :color="isValid ? 'primary' : 'error'"
+                variant="plain"
+                @click="setWizard(portalStage)"
+              />
             </template>
             <span>Edit {{ title }}</span>
           </v-tooltip>
@@ -31,7 +40,7 @@ import { defineComponent } from "vue";
 
 import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
-import type { ApplicationStage } from "@/types/wizard";
+import type { ApplicationStage, IcraEligibilityStage } from "@/types/wizard";
 
 export default defineComponent({
   name: "PreviewCard",
@@ -45,7 +54,7 @@ export default defineComponent({
       required: true,
     },
     portalStage: {
-      type: String as PropType<ApplicationStage>,
+      type: String as PropType<ApplicationStage | IcraEligibilityStage>,
       required: true,
     },
     editable: {
@@ -71,7 +80,7 @@ export default defineComponent({
     },
   },
   methods: {
-    setWizard(stage: ApplicationStage) {
+    setWizard(stage: ApplicationStage | IcraEligibilityStage) {
       this.wizardStore.setCurrentStep(stage);
       this.applicationStore.draftApplication.stage = stage;
     },

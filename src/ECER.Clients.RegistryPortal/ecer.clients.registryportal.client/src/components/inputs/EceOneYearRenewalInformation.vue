@@ -2,8 +2,13 @@
   <p>You need to provide the reason why you were unable to either:</p>
   <br />
   <ul class="ml-10">
-    <li>Complete the required 500 hours of supervised work experience during the term of your certificate</li>
-    <li>Get a reference contact from the certified ECE who supervised the hours</li>
+    <li>
+      Complete the required 500 hours of supervised work experience during the
+      term of your certificate
+    </li>
+    <li>
+      Get a reference contact from the certified ECE who supervised the hours
+    </li>
   </ul>
   <br />
   <v-row>
@@ -15,7 +20,12 @@
         value-key="oneYearRenewalExplanationChoice"
         :radio-rules="[Rules.requiredRadio('Select an option')]"
         :model-value="wizardStore.wizardData.oneYearRenewalExplanationChoice"
-        :additional-info-props="{ autoGrow: true, counter: 500, maxlength: 500, rules: [Rules.required('Enter a reason')] }"
+        :additional-info-props="{
+          autoGrow: true,
+          counter: 500,
+          maxlength: 500,
+          rules: [Rules.required('Enter a reason')],
+        }"
         :text-input-value="wizardStore.wizardData.renewalExplanationOther"
         @update:model-value="updateFields"
       >

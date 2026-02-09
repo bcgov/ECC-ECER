@@ -18,21 +18,43 @@
         ]"
       ></LinkBar>
     </v-row>
-    <v-row v-for="(prev, index) in [...(userStore.pendingforDocumentsPreviousNames || []), ...(userStore.unverifiedPreviousNames || [])]" :key="index">
+    <v-row
+      v-for="(prev, index) in [
+        ...(userStore.pendingforDocumentsPreviousNames || []),
+        ...(userStore.unverifiedPreviousNames || []),
+      ]"
+      :key="index"
+    >
       <v-container>
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
-            <p>You need to provide proof of name change to add this name to your account.</p>
-            <router-link :to="{ name: 'verify-previous-name', params: { previousNameId: prev.id } }">Add proof of name change document</router-link>
+            <p>
+              You need to provide proof of name change to add this name to your
+              account.
+            </p>
+            <router-link
+              :to="{
+                name: 'verify-previous-name',
+                params: { previousNameId: prev.id },
+              }"
+            >
+              Add proof of name change document
+            </router-link>
           </div>
         </Callout>
       </v-container>
     </v-row>
-    <v-row v-for="(prev, index) in userStore.readyForVerificationPreviousNames" :key="index">
+    <v-row
+      v-for="(prev, index) in userStore.readyForVerificationPreviousNames"
+      :key="index"
+    >
       <v-container>
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
-            <p>We have received your proof of name change document. We will review it shortly and add this name to your account.</p>
+            <p>
+              We have received your proof of name change document. We will
+              review it shortly and add this name to your account.
+            </p>
           </div>
         </Callout>
       </v-container>
@@ -61,8 +83,15 @@
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Previous names</p>
             <div v-if="userStore.verifiedPreviousNames.length > 0">
-              <p v-for="(prev, index) in userStore.verifiedPreviousNames" :key="index">
-                {{ prev.middleName ? `${prev.firstName} ${prev.middleName} ${prev.lastName}` : `${prev.firstName} ${prev.lastName}` }}
+              <p
+                v-for="(prev, index) in userStore.verifiedPreviousNames"
+                :key="index"
+              >
+                {{
+                  prev.middleName
+                    ? `${prev.firstName} ${prev.middleName} ${prev.lastName}`
+                    : `${prev.firstName} ${prev.lastName}`
+                }}
               </p>
             </div>
             <p v-else>—</p>
@@ -72,7 +101,12 @@
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Date of birth</p>
             <p>
-              {{ formatDate(userStore.userProfile?.dateOfBirth || "", "LLLL d, yyyy") }}
+              {{
+                formatDate(
+                  userStore.userProfile?.dateOfBirth || "",
+                  "LLLL d, yyyy",
+                )
+              }}
             </p>
           </div>
         </v-col>
@@ -106,7 +140,16 @@
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Mailing address</p>
-            <p v-if="areObjectsEqual(userStore.userProfile?.residentialAddress, userStore.userProfile?.mailingAddress)">Same as home address</p>
+            <p
+              v-if="
+                areObjectsEqual(
+                  userStore.userProfile?.residentialAddress,
+                  userStore.userProfile?.mailingAddress,
+                )
+              "
+            >
+              Same as home address
+            </p>
             <p
               v-else-if="
                 userStore.userProfile?.mailingAddress &&

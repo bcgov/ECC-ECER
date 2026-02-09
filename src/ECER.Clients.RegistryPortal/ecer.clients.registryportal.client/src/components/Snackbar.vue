@@ -11,10 +11,21 @@
       transition="slide-y-transition"
       class="snackbar"
     >
-      <v-alert :color="colour" :icon="icon" density="compact">{{ alertNotificationText }}</v-alert>
+      <v-alert :color="colour" :icon="icon" density="compact">
+        {{ alertNotificationText }}
+      </v-alert>
       <template #actions>
-        <v-btn text="true" :color="colour == AlertNotificationType.WARN ? 'black' : 'white'" v-bind="$attrs" @click="showSnackBar = false">
-          {{ alertNotificationQueue.length > 0 ? "Next (" + alertNotificationQueue.length + ")" : "Close" }}
+        <v-btn
+          text="true"
+          :color="colour == AlertNotificationType.WARN ? 'black' : 'white'"
+          v-bind="$attrs"
+          @click="showSnackBar = false"
+        >
+          {{
+            alertNotificationQueue.length > 0
+              ? "Next (" + alertNotificationQueue.length + ")"
+              : "Close"
+          }}
         </v-btn>
       </template>
     </v-snackbar>
@@ -44,7 +55,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(useAlertStore, ["alertNotificationText", "alertNotificationQueue", "alertNotification"]),
+    ...mapState(useAlertStore, [
+      "alertNotificationText",
+      "alertNotificationQueue",
+      "alertNotification",
+    ]),
     hasNotificationsPending() {
       return this.alertNotificationQueue.length > 0;
     },
@@ -69,7 +84,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useAlertStore, ["setAlertNotificationText", "setAlertNotification"]),
+    ...mapActions(useAlertStore, [
+      "setAlertNotificationText",
+      "setAlertNotification",
+    ]),
     setAlertType(alertType: String) {
       if (!alertType) {
         alertType = "";

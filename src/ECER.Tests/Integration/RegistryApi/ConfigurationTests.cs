@@ -1,11 +1,9 @@
 ﻿using Alba;
 using ECER.Clients.RegistryPortal.Server;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Admin;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
-using static Pipelines.Sockets.Unofficial.SocketConnection;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -160,5 +158,19 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
 
     var items = await response.ReadAsJsonAsync<CertificationComparison[]>();
     items.ShouldNotBeEmpty();
+  }
+
+  [Fact]
+  public async Task GetApplicationConfig_ReturnsApplicationConfig()
+  {
+    var configResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/configuration");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var config = await configResponse.ReadAsJsonAsync<ApplicationConfiguration>();
+    Assert.True(config.ICRAFeatureEnabled);
   }
 }

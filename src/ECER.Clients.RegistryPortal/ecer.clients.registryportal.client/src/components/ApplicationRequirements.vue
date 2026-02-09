@@ -2,21 +2,39 @@
   <v-container>
     <Breadcrumb />
 
+    <!-- ICRA -->
+    <template v-if="applicationStore.isDraftApplicationIcra">
+      <ECEIcraFiveYearRequirements
+        v-if="applicationStore.isDraftCertificateTypeFiveYears"
+      />
+    </template>
+
     <!-- Renewal -->
-    <template v-if="applicationStore.isDraftApplicationRenewal">
-      <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" :expired="fromCertificate?.statusCode === 'Expired'" />
+    <template v-else-if="applicationStore.isDraftApplicationRenewal">
+      <ECEAssistantRenewalRequirements
+        v-if="applicationStore.isDraftCertificateTypeEceAssistant"
+      />
+      <ECEOneYearRenewalRequirements
+        v-if="applicationStore.isDraftCertificateTypeOneYear"
+        :expired="fromCertificate?.statusCode === 'Expired'"
+      />
       <ECEFiveYearRenewalRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
         :expired="fromCertificate?.statusCode === 'Expired'"
-        :expired-more-than5-years="fromCertificate && expiredMoreThan5Years(fromCertificate)"
+        :expired-more-than5-years="
+          fromCertificate && expiredMoreThan5Years(fromCertificate)
+        "
       />
     </template>
 
     <!-- Labor Mobility -->
     <template v-else-if="applicationStore.isDraftApplicationLaborMobility">
-      <ECEAssistantLaborMobilityRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearLaborMobilityRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEAssistantLaborMobilityRequirements
+        v-if="applicationStore.isDraftCertificateTypeEceAssistant"
+      />
+      <ECEOneYearLaborMobilityRequirements
+        v-if="applicationStore.isDraftCertificateTypeOneYear"
+      />
       <ECEFiveYearLaborMobilityRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
         ref="ECEFiveYearLaborMobilityRequirements"
@@ -26,24 +44,49 @@
 
     <!-- Registrant -->
     <template v-else-if="userStore.isRegistrant">
-      <ECEAssistantRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEAssistantRequirements
+        v-if="applicationStore.isDraftCertificateTypeEceAssistant"
+      />
+      <ECEOneYearRequirements
+        v-if="applicationStore.isDraftCertificateTypeOneYear"
+      />
       <ECEFiveYearRegistrantRequirements
-        v-if="applicationStore.isDraftCertificateTypeFiveYears || applicationStore.draftApplication.certificationTypes?.length === 0"
+        v-if="
+          applicationStore.isDraftCertificateTypeFiveYears ||
+          applicationStore.draftApplication.certificationTypes?.length === 0
+        "
         ref="ECEFiveYearRegistrantRequirements"
       />
-      <ECESneRegistrantRequirements v-else-if="applicationStore.isDraftCertificateTypeSne" />
-      <ECEIteRegistrantRequirements v-else-if="applicationStore.isDraftCertificateTypeIte" />
+      <ECESneRegistrantRequirements
+        v-else-if="applicationStore.isDraftCertificateTypeSne"
+      />
+      <ECEIteRegistrantRequirements
+        v-else-if="applicationStore.isDraftCertificateTypeIte"
+      />
     </template>
 
     <!-- New -->
     <template v-else>
-      <ECEAssistantRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
-      <ECEFiveYearRequirements v-if="applicationStore.isDraftCertificateTypeFiveYears" />
+      <ECEAssistantRequirements
+        v-if="applicationStore.isDraftCertificateTypeEceAssistant"
+      />
+      <ECEOneYearRequirements
+        v-if="applicationStore.isDraftCertificateTypeOneYear"
+      />
+      <ECEFiveYearRequirements
+        v-if="applicationStore.isDraftCertificateTypeFiveYears"
+      />
     </template>
 
-    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick" id="btnApplyNow">Apply now</v-btn>
+    <v-btn
+      class="mt-6"
+      rounded="lg"
+      color="primary"
+      @click="continueClick"
+      id="btnApplyNow"
+    >
+      Apply now
+    </v-btn>
   </v-container>
 </template>
 
@@ -56,6 +99,7 @@ import ECEAssistantRenewalRequirements from "@/components/ECEAssistantRenewalReq
 import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue";
 import ECEFiveYearRenewalRequirements from "@/components/ECEFiveYearRenewalRequirements.vue";
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
+import ECEIcraFiveYearRequirements from "@/components/ECEIcraFiveYearRequirements.vue";
 import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequirements.vue";
 import ECEAssistantLaborMobilityRequirements from "./ECEAssistantLaborMobilityRequirements.vue";
 import ECEOneYearLaborMobilityRequirements from "./ECEOneYearLaborMobilityRequirements.vue";
@@ -87,6 +131,7 @@ export default defineComponent({
     ECEFiveYearRegistrantRequirements,
     ECEIteRegistrantRequirements,
     ECESneRegistrantRequirements,
+    ECEIcraFiveYearRequirements,
     Breadcrumb,
   },
 
@@ -102,7 +147,13 @@ export default defineComponent({
     const userStore = useUserStore();
     const router = useRouter();
 
-    return { applicationStore, certificationStore, userStore, router, expiredMoreThan5Years };
+    return {
+      applicationStore,
+      certificationStore,
+      userStore,
+      router,
+      expiredMoreThan5Years,
+    };
   },
   data() {
     return {
@@ -111,27 +162,40 @@ export default defineComponent({
   },
   computed: {
     isPostBasic() {
-      return this.applicationStore.draftApplication.certificationTypes?.some((type) => type === "Ite" || type === "Sne");
+      return this.applicationStore.draftApplication.certificationTypes?.some(
+        (type) => type === "Ite" || type === "Sne",
+      );
     },
     fromCertificate() {
-      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
+      return this.certificationStore.getCertificationById(
+        this.applicationStore.draftApplication.fromCertificate,
+      );
     },
   },
   methods: {
-    handleSpecializationSelection(payload?: Components.Schemas.CertificationType[]) {
+    handleSpecializationSelection(
+      payload?: Components.Schemas.CertificationType[],
+    ) {
       this.specializationSelection = payload ?? [];
     },
     async continueClick() {
-      if (this.applicationStore.draftApplication.certificationTypes?.length === 0) {
+      if (
+        this.applicationStore.draftApplication.certificationTypes?.length === 0
+      ) {
         // Validate specialization form
 
-        const formRef = (this.$refs.ECEFiveYearRegistrantRequirements as typeof ECEFiveYearRegistrantRequirements).$refs.SpecializedCertificationOptions.$refs
+        const formRef = (
+          this.$refs
+            .ECEFiveYearRegistrantRequirements as typeof ECEFiveYearRegistrantRequirements
+        ).$refs.SpecializedCertificationOptions.$refs
           .specializationForm as VForm;
 
         const { valid } = await formRef.validate();
         if (valid) {
           this.applicationStore.$patch({
-            draftApplication: { certificationTypes: this.specializationSelection },
+            draftApplication: {
+              certificationTypes: this.specializationSelection,
+            },
           });
           this.router.push({ name: "declaration" });
         }
@@ -143,7 +207,12 @@ export default defineComponent({
           this.applicationStore.isDraftCertificateTypeSne
         ) {
           this.applicationStore.$patch({
-            draftApplication: { certificationTypes: ["FiveYears", ...this.specializationSelection] },
+            draftApplication: {
+              certificationTypes: [
+                "FiveYears",
+                ...this.specializationSelection,
+              ],
+            },
           });
         }
         this.router.push({ name: "declaration" });
@@ -151,14 +220,19 @@ export default defineComponent({
         //for renewal applications we do not need to perform any additional checks. The certification types should be correctly set in the draft application store.
         this.router.push({ name: "declaration" });
       } else {
-        let currentTypes = this.applicationStore.draftApplication.certificationTypes || [];
+        let currentTypes =
+          this.applicationStore.draftApplication.certificationTypes || [];
 
         // Filter out "Ite" and "Sne" unless currentTypes *only* contains "Ite" or "Sne".
         // This corrects edge case where user clicks requirements and does not select a new path. We need to remove ITE + SNE or it will persist.
         currentTypes =
-          currentTypes.length === 1 && (currentTypes.includes("Ite") || currentTypes.includes("Sne"))
+          currentTypes.length === 1 &&
+          (currentTypes.includes("Ite") || currentTypes.includes("Sne"))
             ? currentTypes
-            : currentTypes.filter((certification) => certification !== "Ite" && certification !== "Sne");
+            : currentTypes.filter(
+                (certification) =>
+                  certification !== "Ite" && certification !== "Sne",
+              );
 
         const updatedTypes = [...currentTypes, ...this.specializationSelection];
 

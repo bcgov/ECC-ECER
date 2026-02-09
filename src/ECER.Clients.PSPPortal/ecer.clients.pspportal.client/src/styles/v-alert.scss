@@ -1,0 +1,19 @@
+@use "_colors.scss";
+
+.v-alert {
+  .v-alert-title {
+    font-weight: bold;
+  }
+  &.info {
+    background-color: #{colors.$alert-info};
+  }
+  &.warning {
+    background-color: #{colors.$alert-warning};
+  }
+  &.error {
+    background-color: #{colors.$alert-error};
+  }
+  &.success {
+    background-color: #{colors.$alert-success};
+  }
+}

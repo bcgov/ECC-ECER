@@ -57,7 +57,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           {
             return TypedResults.NotFound();
           }
-          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationValidationFailed || result.Error == SubmissionError.SubmittedApplicationAlreadyExists)
+          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationValidationFailed || result.Error == SubmissionError.SubmittedApplicationAlreadyExists || result.Error == SubmissionError.MissingApprovedIcraEligibility)
           {
             var problemDetails = new ProblemDetails
             {
@@ -485,9 +485,9 @@ public enum ApplicationStatus
   Ready,
   InProgress,
   PendingQueue,
+  PendingPSPConsultationNeeded,
   ReconsiderationDecision,
   AppealDecision,
-  PendingPSPConsultationNeeded
 }
 
 public enum ApplicationOrigin
@@ -620,13 +620,16 @@ public enum WorkExperienceRefStage
   Rejected,
   Submitted,
   UnderReview,
-  WaitingforResponse
+  WaitingforResponse,
+  ICRAEligibilitySubmitted,
+  EligibilityResponseSubmitted
 }
 
 public enum WorkExperienceTypes
 {
   Is400Hours,
   Is500Hours,
+  ICRA,
 }
 
 public enum CharacterReferenceStage

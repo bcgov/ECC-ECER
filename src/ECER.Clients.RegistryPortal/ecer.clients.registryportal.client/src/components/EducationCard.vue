@@ -1,15 +1,34 @@
 <template>
-  <v-card min-width="100%" variant="elevated" rounded="lg" class="custom-card-styling" elevation="4">
+  <v-card
+    min-width="100%"
+    variant="elevated"
+    rounded="lg"
+    class="custom-card-styling"
+    elevation="4"
+  >
     <template #title>
       <v-card-title>
-        <p v-if="education.postSecondaryInstitution == null" class="font-weight-bold">{{ education.educationalInstitutionName }}</p>
-        <p v-else class="font-weight-bold">{{ education.postSecondaryInstitution.name }}</p>
+        <p
+          v-if="education.postSecondaryInstitution == null"
+          class="font-weight-bold"
+        >
+          {{ education.educationalInstitutionName }}
+        </p>
+        <p v-else class="font-weight-bold">
+          {{ education.postSecondaryInstitution.name }}
+        </p>
       </v-card-title>
     </template>
     <template #append>
       <v-tooltip text="Edit Education" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editEducation" :loading="loadingStore.isLoading('draftapplication_put')" />
+          <v-btn
+            v-bind="props"
+            icon="mdi-pencil"
+            variant="plain"
+            @click="editEducation"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          />
         </template>
       </v-tooltip>
       <v-tooltip text="Delete Education" location="top">

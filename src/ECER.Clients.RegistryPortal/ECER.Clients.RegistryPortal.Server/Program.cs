@@ -90,7 +90,7 @@ internal class Program
         {
           policy
             .AddAuthenticationSchemes("kc")
-            .RequireClaim(RegistryPortalClaims.IdenityProvider)
+            .RequireClaim(RegistryPortalClaims.IdentityProvider)
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(RegistryPortalClaims.UserId)
             .RequireClaim(RegistryPortalClaims.Verified, "true")
@@ -108,7 +108,7 @@ internal class Program
         {
           policy
             .AddAuthenticationSchemes("kc")
-            .RequireClaim(RegistryPortalClaims.IdenityProvider)
+            .RequireClaim(RegistryPortalClaims.IdentityProvider)
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(RegistryPortalClaims.UserId)
             .RequireAuthenticatedUser();
@@ -117,7 +117,7 @@ internal class Program
         {
           policy
             .AddAuthenticationSchemes("kc")
-            .RequireClaim(RegistryPortalClaims.IdenityProvider)
+            .RequireClaim(RegistryPortalClaims.IdentityProvider)
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(RegistryPortalClaims.UserId)
             .RequireClaim(RegistryPortalClaims.Verified, "false")

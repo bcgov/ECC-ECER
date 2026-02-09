@@ -5,6 +5,7 @@ using ECER.Engines.Validation.Applications;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Applications;
+using ECER.Resources.Documents.ICRA;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
@@ -20,7 +21,8 @@ public class ApplicationHandlers(
      IApplicationRepository applicationRepository,
      IMapper mapper,
      IApplicationValidationEngineResolver validationResolver,
-     EcerContext ecerContext)
+     EcerContext ecerContext,
+     IICRARepository iCRARepository)
   : IRequestHandler<SaveDraftApplicationCommand, Contract.Applications.Application?>,
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
@@ -165,11 +167,22 @@ public class ApplicationHandlers(
     var draftApplication = mapper.Map<Contract.Applications.Application>(applications.SingleOrDefault(dst =>
       dst.Id == request.applicationId && dst.Status == Resources.Documents.Applications.ApplicationStatus.Draft));
     var submittedApplications = mapper.Map<IEnumerable<Contract.Applications.Application>>(applications.Where(dst => dst.Status != Resources.Documents.Applications.ApplicationStatus.Draft));
-    
+
     if (draftApplication == null)
     {
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
     }
+
+    ecerContext.BeginTransaction();
+    if (draftApplication.ApplicationType == Contract.Applications.ApplicationTypes.ICRA)
+    {
+      var result = await LinkIcraEligibilityToIcraApplication(draftApplication, request.userId, cancellationToken);
+      if (!result)
+      {
+        return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.MissingApprovedIcraEligibility, ValidationErrors = new List<string>() { "unable to find approved icra eligibility" } };
+      }
+    }
+
     var validationEngine = validationResolver?.Resolve(draftApplication.ApplicationType);
     var validationErrors = await validationEngine?.Validate(draftApplication)!;
     if (validationErrors.ValidationErrors.Any())
@@ -177,6 +190,7 @@ public class ApplicationHandlers(
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationValidationFailed, ValidationErrors = validationErrors.ValidationErrors };
     }
     var applicationId = await applicationRepository.Submit(draftApplication.Id!, cancellationToken);
+    ecerContext.CommitTransaction();
     var freshApplications = await applicationRepository.Query(new ApplicationQuery
     {
       ById = applicationId,
@@ -191,7 +205,7 @@ public class ApplicationHandlers(
     {
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.SubmittedApplicationAlreadyExists, ValidationErrors = new List<string>() { "submitted application already exists" } };
     }
-    
+
     return new ApplicationSubmissionResult() { Application = mapper.Map<IEnumerable<Contract.Applications.Application>>(freshApplications)!.FirstOrDefault() };
   }
 
@@ -240,13 +254,47 @@ public class ApplicationHandlers(
         submitReferenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest);
         break;
 
-      case InviteType.WorkExperienceReference:
-        submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+      case InviteType.WorkExperienceReferenceforApplication:
+        if (portalInvitation.ApplicantId is null)
+        {
+          throw new InvalidOperationException($"portal invite applicant id is null");
+        }
+        if (portalInvitation.WorkexperienceReferenceId is null)
+        {
+          throw new InvalidOperationException($"portal invite work experience reference id is null");
+        }
+        var workExperience = await applicationRepository.GetWorkExperienceReferenceById(portalInvitation.WorkexperienceReferenceId, portalInvitation.ApplicantId, cancellationToken);
+
+        if (workExperience is null)
+        {
+          throw new InvalidOperationException($"work experience reference not found for reference id: {portalInvitation.WorkexperienceReferenceId} and applicant id: {portalInvitation.ApplicantId}");
+        }
+        if (workExperience.Type == Resources.Documents.Applications.WorkExperienceTypes.ICRA)
+        {
+          submitReferenceRequest = mapper.Map<IcraWorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+        }
+        else if (workExperience.Type == Resources.Documents.Applications.WorkExperienceTypes.Is400Hours || workExperience.Type == Resources.Documents.Applications.WorkExperienceTypes.Is500Hours)
+        {
+          submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+        } else {
+          throw new InvalidOperationException($"unknown work experience reference type '{workExperience.Type}'");
+        }
+
+        break;
+
+      case InviteType.WorkExperienceReferenceforICRA:
+        var icraReferenceId = portalInvitation.WorkexperienceReferenceId!;
+        var icraPayload = mapper.Map<Resources.Documents.ICRA.ICRAWorkExperienceReferenceSubmissionRequest>(request.ICRAWorkExperienceReferenceSubmissionRequest!);
+        icraPayload.DateSigned = DateTime.Today;
+        await iCRARepository.SubmitEmploymentReference(icraReferenceId, icraPayload, cancellationToken);
         break;
     }
     submitReferenceRequest.PortalInvitation = portalInvitation;
     submitReferenceRequest.DateSigned = DateTime.Today;
-    await applicationRepository.SubmitReference(submitReferenceRequest, cancellationToken);
+    if (portalInvitation.InviteType == InviteType.CharacterReference || portalInvitation.InviteType == InviteType.WorkExperienceReferenceforApplication)
+    {
+      await applicationRepository.SubmitReference(submitReferenceRequest, cancellationToken);
+    }
     await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
     ecerContext.CommitTransaction();
     return ReferenceSubmissionResult.Success();
@@ -387,5 +435,29 @@ public class ApplicationHandlers(
     var applicationId = await applicationRepository.SaveApplication(mapper.Map<Resources.Documents.Applications.Application>(application)!, cancellationToken);
 
     return new AddProfessionalDevelopmentResult() { ApplicationId = applicationId, IsSuccess = true };
+  }
+
+  /*This method is specific for ICRA applications where we need to attach the application to icra eligility which will trigger a dynamics power automate flow to link up
+   * international certificates and work references */
+
+  private async Task<bool> LinkIcraEligibilityToIcraApplication(Contract.Applications.Application application, string userId, CancellationToken cancellationToken)
+  {
+    var icraEligibilities = await iCRARepository.Query(new ICRAQuery { ByApplicantId = userId }, cancellationToken);
+    var approvedIcraEligibility = icraEligibilities.FirstOrDefault(eligibility => eligibility.Status == ICRAStatus.Eligible);
+
+    if (approvedIcraEligibility == null)
+    {
+      //a validation error will be created by the submit application handler that called this method.
+      return false;
+    }
+
+    if (application.Id == null || approvedIcraEligibility.Id == null)
+    {
+      throw new InvalidOperationException($"application id is null {application.Id} or approvedIcraEligibility id is null {approvedIcraEligibility.Id}");
+    }
+
+    await iCRARepository.LinkIcraEligibilityToIcraApplication(application.Id, approvedIcraEligibility.Id, cancellationToken);
+
+    return true;
   }
 }

@@ -32,7 +32,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await Task.CompletedTask;
 
     var applications = context.ecer_ApplicationSet.Where(
-      a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled &&
+      a => a.StatusCode!.Value != ecer_Application_StatusCode.Withdrawn &&
       a.StatusCode!.Value != ecer_Application_StatusCode.Closed &&
       a.StatusCode!.Value != ecer_Application_StatusCode.Withdrawn);
 
@@ -154,7 +154,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Draft
       );
     if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
-    application.StatusCode = ecer_Application_StatusCode.Cancelled;
+    application.StatusCode = ecer_Application_StatusCode.Withdrawn;
     application.StateCode = ecer_application_statecode.Inactive;
     context.UpdateObject(application);
     context.SaveChanges();
@@ -167,6 +167,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     {
       CharacterReferenceSubmissionRequest req => await SubmitCharacterReference(request.PortalInvitation!.CharacterReferenceId!, req),
       WorkExperienceReferenceSubmissionRequest req => await SubmitWorkexperienceReference(request.PortalInvitation!.WorkexperienceReferenceId!, req),
+      IcraWorkExperienceReferenceSubmissionRequest req => await SubmitIcraWorkExperienceReference(request.PortalInvitation!.WorkexperienceReferenceId!, req),
       _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
     };
   }
@@ -174,7 +175,8 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
   public async Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken) => request.PortalInvitation!.InviteType switch
   {
     InviteType.CharacterReference => await OptOutCharacterReference(request),
-    InviteType.WorkExperienceReference => await OptOutWorkExperienceReference(request),
+    InviteType.WorkExperienceReferenceforApplication => await OptOutWorkExperienceReference(request),
+    InviteType.WorkExperienceReferenceforICRA => await OptOutWorkExperienceReference(request),
     _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
   };
 }

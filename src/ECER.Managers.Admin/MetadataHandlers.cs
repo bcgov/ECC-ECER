@@ -9,11 +9,13 @@ public class MetadataHandlers(
    IMetadataResourceRepository metadataResourceRepository,
    IMapper mapper) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
    IRequestHandler<Contract.Metadatas.CountriesQuery, CountriesQueryResults>,
+   IRequestHandler<Contract.Metadatas.AreaOfInstructionsQuery, AreaOfInstructionsQueryResults>,
    IRequestHandler<Contract.Metadatas.CertificationComparisonQuery, CertificationComparisonQueryResults>,
    IRequestHandler<Contract.Metadatas.PostSecondaryInstitutionsQuery, PostSecondaryInstitutionsQueryResults>,
    IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>,
    IRequestHandler<Contract.Metadatas.DefaultContentsQuery, DefaultContentsQueryResults>,
-   IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>
+   IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>,
+   IRequestHandler<Contract.Metadatas.DynamicsConfigQuery, DynamicsConfigQueryResults>
 {
   public async Task<PostSecondaryInstitutionsQueryResults> Handle(Contract.Metadatas.PostSecondaryInstitutionsQuery request, CancellationToken cancellationToken)
   {
@@ -32,14 +34,14 @@ public class MetadataHandlers(
       .GroupBy(x => new { x.TransferringCertificate!.Id, x.TransferringCertificate.CertificationType })
       .Select(g => new Contract.Metadatas.ComparisonRecord()
       {
-      TransferringCertificate = new Contract.Metadatas.OutOfProvinceCertificationType(g.Key.Id)
-      {
-        CertificationType = g.Key.CertificationType
-      },
-      Options = g.Select(item => new Contract.Metadatas.CertificationComparison(item.Id)
-      {
-        BcCertificate = item.BcCertificate
-      })
+        TransferringCertificate = new Contract.Metadatas.OutOfProvinceCertificationType(g.Key.Id)
+        {
+          CertificationType = g.Key.CertificationType
+        },
+        Options = g.Select(item => new Contract.Metadatas.CertificationComparison(item.Id)
+        {
+          BcCertificate = item.BcCertificate
+        })
       .ToList()
       })
       .ToList();
@@ -53,6 +55,14 @@ public class MetadataHandlers(
 
     var provinces = await metadataResourceRepository.QueryProvinces(new Resources.Documents.MetadataResources.ProvincesQuery() { ById = request.ById }, cancellationToken);
     return new ProvincesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.Province>>(provinces)!);
+  }
+
+  public async Task<AreaOfInstructionsQueryResults> Handle(Contract.Metadatas.AreaOfInstructionsQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var instructions = await metadataResourceRepository.QueryAreaOfInstructions(new Resources.Documents.MetadataResources.AreaOfInstructionsQuery() { ById = request.ById }, cancellationToken);
+    return new AreaOfInstructionsQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.AreaOfInstruction>>(instructions)!);
   }
 
   public async Task<SystemMessagesQueryResults> Handle(Contract.Metadatas.SystemMessagesQuery request, CancellationToken cancellationToken)
@@ -92,4 +102,11 @@ public class MetadataHandlers(
     return new IdentificationTypesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.IdentificationType>>(identificationTypes)!);
   }
 
+  public async Task<DynamicsConfigQueryResults> Handle(Contract.Metadatas.DynamicsConfigQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var dynamicsConfig = await metadataResourceRepository.QueryDynamicsConfiguration(new Resources.Documents.MetadataResources.DynamicsConfigQuery() { }, cancellationToken);
+    return new DynamicsConfigQueryResults(mapper.Map<Contract.Metadatas.DynamicsConfig>(dynamicsConfig)!);
+  }
 }

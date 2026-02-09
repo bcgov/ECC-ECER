@@ -8,9 +8,18 @@
     :model-value="modelValue"
     @update:model-value="modalValueUpdated"
   >
-    <v-radio v-for="(item, index) in items" :key="index" :label="item[itemLabel]" :value="item[itemValue]"></v-radio>
+    <v-radio
+      v-for="(item, index) in items"
+      :key="index"
+      :label="item[itemLabel]"
+      :value="item[itemValue]"
+    ></v-radio>
   </v-radio-group>
-  <slot v-if="triggerForAdditionalInformation" name="textAreaLabel" :for="`${additionalInfoKey}Label`"></slot>
+  <slot
+    v-if="triggerForAdditionalInformation"
+    name="textAreaLabel"
+    :for="`${additionalInfoKey}Label`"
+  ></slot>
   <v-textarea
     v-if="triggerForAdditionalInformation"
     v-bind="additionalInfoProps"
@@ -21,7 +30,9 @@
     persistent-counter
     variant="outlined"
     hide-details="auto"
-    @update:model-value="$emit('update:model-value', { [additionalInfoKey]: $event })"
+    @update:model-value="
+      $emit('update:model-value', { [additionalInfoKey]: $event })
+    "
   ></v-textarea>
 </template>
 
@@ -29,7 +40,10 @@
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
 
-import type { RadioWithAdditionalOption, RadioWithAdditionalOptionProps } from "@/types/input";
+import type {
+  RadioWithAdditionalOption,
+  RadioWithAdditionalOptionProps,
+} from "@/types/input";
 
 export default defineComponent({
   name: "RadioWithAdditionalOption",
@@ -90,7 +104,10 @@ export default defineComponent({
       if (this.triggerValues.includes(value)) {
         this.$emit("update:model-value", { [this.valueKey]: value });
       } else {
-        this.$emit("update:model-value", { [this.additionalInfoKey]: "", [this.valueKey]: value });
+        this.$emit("update:model-value", {
+          [this.additionalInfoKey]: "",
+          [this.valueKey]: value,
+        });
       }
     },
   },

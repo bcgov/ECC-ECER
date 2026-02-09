@@ -62,6 +62,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_Abbreviation = "ecer_abbreviation";
 			public const string ecer_application_lmprovinceid = "ecer_application_lmprovinceid";
+			public const string ecer_certificationcomparison_ProvinceId = "ecer_certificationcomparison_ProvinceId";
 			public const string ecer_characterreference_RefCertifiedProvinceId = "ecer_characterreference_RefCertifiedProvinceId";
 			public const string ecer_city_ProvinceId = "ecer_city_ProvinceId";
 			public const string ecer_CountryId = "ecer_countryid";
@@ -785,6 +786,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_lmprovinceid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_certificationcomparison_ProvinceId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificationcomparison_ProvinceId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison> ecer_certificationcomparison_ProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison>("ecer_certificationcomparison_ProvinceId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison>("ecer_certificationcomparison_ProvinceId", null, value);
 			}
 		}
 		

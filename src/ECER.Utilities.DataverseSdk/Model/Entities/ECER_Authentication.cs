@@ -66,6 +66,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_authentication_eceprogramrepresentative = "ecer_authentication_eceprogramrepresentative";
 			public const string ecer_AuthenticationId = "ecer_authenticationid";
 			public const string Id = "ecer_authenticationid";
+			public const string ecer_BCeIDBusinessName = "ecer_bceidbusinessname";
 			public const string ecer_contact_ecer_authentication_455 = "ecer_contact_ecer_authentication_455";
 			public const string ecer_Customerid = "ecer_customerid";
 			public const string ecer_CustomeridName = "ecer_customeridname";
@@ -289,6 +290,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_AuthenticationId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bceidbusinessname")]
+		public string ecer_BCeIDBusinessName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_bceidbusinessname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_bceidbusinessname", value);
 			}
 		}
 		

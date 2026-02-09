@@ -1,6 +1,11 @@
 <template>
   <p v-if="messageCount === 0">You have no messages.</p>
-  <v-list v-else-if="messageCount > 0" lines="two" class="flex-grow-1 message-list" style="padding: 0px">
+  <v-list
+    v-else-if="messageCount > 0"
+    lines="two"
+    class="flex-grow-1 message-list"
+    style="padding: 0px"
+  >
     <MessageListItem
       v-for="(message, index) in messages"
       :key="index"
@@ -8,7 +13,14 @@
       ref="messageListItems"
       @update:message-is-read="message.isRead = $event"
     />
-    <v-pagination v-if="messageCount > 0" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
+    <v-pagination
+      v-if="messageCount > 0"
+      v-model="currentPage"
+      size="small"
+      class="mt-4"
+      elevation="2"
+      :length="totalPages"
+    ></v-pagination>
   </v-list>
 </template>
 
@@ -63,14 +75,20 @@ export default defineComponent({
       this.messages = response.data?.communications || [];
       this.messageCount = response.data?.totalMessagesCount || 0;
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      globalThis.scrollTo({ top: 0, behavior: "smooth" });
 
       // After the list is rendered, select/load the first message if available
       await nextTick();
-      const messageListItems = this.$refs.messageListItems as Array<{ loadChildMessages: (id: string) => void }>;
+      const messageListItems = this.$refs.messageListItems as Array<{
+        loadChildMessages: (id: string) => void;
+      }>;
       if (this.messages.length > 0 && messageListItems && this.mdAndUp) {
         const firstItem = messageListItems[0];
-        if (firstItem && typeof firstItem.loadChildMessages === "function" && this.messages[0]?.id) {
+        if (
+          firstItem &&
+          typeof firstItem.loadChildMessages === "function" &&
+          this.messages[0]?.id
+        ) {
           firstItem.loadChildMessages(this.messages[0].id);
         }
       }

@@ -1,0 +1,17 @@
+@use "_colors.scss";
+
+.v-text-field {
+  &.v-input--readonly {
+    .v-field__overlay {
+      background-color: #f0f0f0;
+    }
+  }
+  &.v-input--disabled {
+    .v-field__overlay {
+      background-color: #f0f0f0;
+    }
+    .v-field {
+      opacity: 1;
+    }
+  }
+}

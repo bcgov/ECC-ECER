@@ -7,16 +7,20 @@ using MediatR;
 namespace ECER.Managers.Registry;
 
 public class CommunicationHandlers(ICommunicationRepository communicationRepository, IMapper mapper)
-  : IRequestHandler<UserCommunicationsStatusQuery, CommunicationsStatusResults>,
+  : IRequestHandler<Contract.Communications.UserCommunicationsStatusQuery, CommunicationsStatusResults>,
     IRequestHandler<Contract.Communications.UserCommunicationQuery, CommunicationsQueryResults>,
     IRequestHandler<MarkCommunicationAsSeenCommand, string>,
     IRequestHandler<SendMessageCommand, SendMessageResult>
 {
-  public async Task<CommunicationsStatusResults> Handle(UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
+  public async Task<CommunicationsStatusResults> Handle(Contract.Communications.UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var UnreadMessagesCount = await communicationRepository.QueryStatus(request.ByRegistrantId);
-    var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = UnreadMessagesCount > 0, Count = UnreadMessagesCount };
+    var unreadMessagesCount = await communicationRepository.QueryStatus(new Resources.Accounts.Communications.UserCommunicationsStatusQuery
+    {
+      ByRegistrantId = request.ByRegistrantId,
+      ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
+    });
+    var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = unreadMessagesCount > 0, Count = unreadMessagesCount };
     return new CommunicationsStatusResults(communicationsStatus!);
   }
 
@@ -34,6 +38,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
       PageNumber = request.PageNumber,
       PageSize = request.PageSize,
+      ByPostSecondaryInstituteId =  request.ByPostSecondaryInstituteId,
     });
 
     return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communication.Communications)!)
@@ -56,19 +61,28 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       Resources.Accounts.Communications.CommunicationStatus.Acknowledged
     };
 
-    var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
-    {
-      ById = request.communicationId,
-      ByRegistrantId = request.userId,
-      ByStatus = statuses
-    });
+    var communications = await communicationRepository.Query(
+      request.IsPspUser == true ? 
+        new Resources.Accounts.Communications.UserCommunicationQuery
+        {
+          ById = request.CommunicationId,
+          ByPostSecondaryInstituteId = request.PostSecondaryInstituteId,
+          ByStatus = statuses
+        }
+      :
+        new Resources.Accounts.Communications.UserCommunicationQuery
+        {
+          ById = request.CommunicationId,
+          ByRegistrantId = request.UserId,
+          ByStatus = statuses
+        });
 
     if (!communications.Communications!.Any())
     {
-      throw new InvalidOperationException($"Communication '{request.communicationId}' not found");
+      throw new InvalidOperationException($"Communication '{request.CommunicationId}' not found");
     }
 
-    var seenCommunicationId = await communicationRepository.MarkAsSeen(request.communicationId, cancellationToken);
+    var seenCommunicationId = await communicationRepository.MarkAsSeen(request.CommunicationId, cancellationToken);
 
     return seenCommunicationId;
   }

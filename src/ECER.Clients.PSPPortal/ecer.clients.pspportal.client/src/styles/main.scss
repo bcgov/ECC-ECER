@@ -1,0 +1,15 @@
+@use "typography.scss";
+@use "v-btn.scss";
+@use "v-navigation-drawer.scss";
+@use "v-expansion-panel.scss";
+@use "v-radio.scss";
+@use "v-checkbox.scss";
+@use "v-text-field.scss";
+@use "v-alert.scss";
+@use "v-list-item.scss";
+@use "v-stepper.scss";
+@use "v-label.scss";
+
+.multiline {
+  white-space: pre-line; /* turns \n into real line breaks */
+}

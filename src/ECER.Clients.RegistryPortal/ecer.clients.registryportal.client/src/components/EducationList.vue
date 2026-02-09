@@ -2,7 +2,11 @@
   <v-row>
     <!-- Five year variations Ite + Sne -->
     <v-col
-      v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIteAndSne' || applicationStore.draftApplicationFlow === 'FiveYearWithIteAndSneRegistrant'"
+      v-if="
+        applicationStore.draftApplicationFlow === 'FiveYearWithIteAndSne' ||
+        applicationStore.draftApplicationFlow ===
+          'FiveYearWithIteAndSneRegistrant'
+      "
     >
       <!--prettier-ignore-->
       <p class="mb-3">
@@ -14,7 +18,12 @@
         <li>Special needs early childhood educator training program</li>
       </ul>
     </v-col>
-    <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIte' || applicationStore.draftApplicationFlow === 'FiveYearWithIteRegistrant'">
+    <v-col
+      v-if="
+        applicationStore.draftApplicationFlow === 'FiveYearWithIte' ||
+        applicationStore.draftApplicationFlow === 'FiveYearWithIteRegistrant'
+      "
+    >
       <!--prettier-ignore-->
       <p class="mb-3">
         You must have completed:
@@ -24,7 +33,12 @@
         <li>Infant and toddler educator training program</li>
       </ul>
     </v-col>
-    <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithSne' || applicationStore.draftApplicationFlow === 'FiveYearWithSneRegistrant'">
+    <v-col
+      v-if="
+        applicationStore.draftApplicationFlow === 'FiveYearWithSne' ||
+        applicationStore.draftApplicationFlow === 'FiveYearWithSneRegistrant'
+      "
+    >
       <!--prettier-ignore-->
       <p class="mb-3">
         You must have completed:
@@ -36,7 +50,9 @@
     </v-col>
 
     <!-- Ite + Sne Only -->
-    <v-col v-if="applicationStore.draftApplicationFlow === 'IteAndSneRegistrant'">
+    <v-col
+      v-if="applicationStore.draftApplicationFlow === 'IteAndSneRegistrant'"
+    >
       <!--prettier-ignore-->
       <p class="mb-3">
         You must have completed:
@@ -47,10 +63,15 @@
       </ul>
     </v-col>
     <v-col v-if="applicationStore.draftApplicationFlow === 'IteRegistrant'">
-      <p class="mb-3">You must have completed an infant and toddler educator training program.</p>
+      <p class="mb-3">
+        You must have completed an infant and toddler educator training program.
+      </p>
     </v-col>
     <v-col v-if="applicationStore.draftApplicationFlow === 'SneRegistrant'">
-      <p class="mb-3">You must have completed a special needs early childhood educator training program.</p>
+      <p class="mb-3">
+        You must have completed a special needs early childhood educator
+        training program.
+      </p>
     </v-col>
 
     <!-- Five year or One year variation -->
@@ -66,7 +87,10 @@
 
     <!-- EceAssistant -->
     <v-col v-if="applicationStore.draftApplicationFlow === 'Assistant'">
-      <p class="mb-3">You must have completed a basic early childhood education course in at least one of the following:</p>
+      <p class="mb-3">
+        You must have completed a basic early childhood education course in at
+        least one of the following:
+      </p>
       <ul class="ml-10 mb-3">
         <li>Child guidance</li>
         <li>Child health, safety, and nutrition</li>
@@ -77,7 +101,10 @@
 
     <!-- renewal flows -->
     <v-col v-if="applicationStore.draftApplicationFlow === 'AssistantRenewal'">
-      <p class="mb-3">You must have completed a new course in a basic early childhood education program.</p>
+      <p class="mb-3">
+        You must have completed a new course in a basic early childhood
+        education program.
+      </p>
       <p class="mb-4">The course must:</p>
       <ul class="ml-10">
         <li>Have been completed within the last 5 years</li>
@@ -89,7 +116,10 @@
             program recognized by the ECE Registry
           </a>
         </li>
-        <li>Be a new course - it cannot be one you previously used in an application for an ECE Assistant certification</li>
+        <li>
+          Be a new course - it cannot be one you previously used in an
+          application for an ECE Assistant certification
+        </li>
       </ul>
     </v-col>
   </v-row>
@@ -143,7 +173,10 @@ export default defineComponent({
     },
   },
   methods: {
-    handleEdit(education: Components.Schemas.Transcript, educationId: string | number) {
+    handleEdit(
+      education: Components.Schemas.Transcript,
+      educationId: string | number,
+    ) {
       // Re-emit the event to the parent component
       this.$emit("edit", { education, educationId });
     },

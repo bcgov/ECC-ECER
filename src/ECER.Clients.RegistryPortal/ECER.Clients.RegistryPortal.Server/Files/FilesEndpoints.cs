@@ -92,7 +92,7 @@ public class FilesEndpoints : IRegisterEndpoints
       IOptions<UploaderSettings> uploaderOptions,
       CancellationToken ct) =>
   {
-    var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty)]), ct);
+    var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty)], TrackDownload: false), ct);
     var file = results.Items.SingleOrDefault();
     if (file == null) return TypedResults.NotFound();
     await messageBus.Send(new DeleteFileCommand(file), ct);

@@ -11,11 +11,14 @@ function extractColorsFromTheme(filePath: string): ColorMap {
   const content = fs.readFileSync(filePath, "utf-8");
   const colors: ColorMap = {};
 
-  const colorMatches = content.match(/(["']?)([^"'\s]+)\1\s*:\s*"#([A-Fa-f0-9]{6})"/g);
+  const colorMatches = content.match(
+    /(["']?)([^"'\s]+)\1\s*:\s*"#([A-Fa-f0-9]{6})"/g,
+  );
 
   if (colorMatches) {
     colorMatches.forEach((match) => {
-      const [, , key, value] = match.match(/(["']?)([^"'\s]+)\1\s*:\s*"#([A-Fa-f0-9]{6})"/) || [];
+      const [, , key, value] =
+        match.match(/(["']?)([^"'\s]+)\1\s*:\s*"#([A-Fa-f0-9]{6})"/) || [];
       if (key && value) {
         colors[key] = value.toLowerCase();
       }
@@ -34,7 +37,8 @@ function extractColorsFromScss(filePath: string): ColorMap {
 
   if (colorMatches) {
     colorMatches.forEach((match) => {
-      const [, key, value] = match.match(/\$([^:]+):\s*#([A-Fa-f0-9]{6})/) || [];
+      const [, key, value] =
+        match.match(/\$([^:]+):\s*#([A-Fa-f0-9]{6})/) || [];
       if (key && value) {
         colors[key] = value.toLowerCase();
       }
@@ -54,7 +58,11 @@ function compareColors(
 } {
   const missingInScss: string[] = [];
   const missingInTheme: string[] = [];
-  const mismatched: Array<{ key: string; themeValue: string; scssValue: string }> = [];
+  const mismatched: Array<{
+    key: string;
+    themeValue: string;
+    scssValue: string;
+  }> = [];
 
   // Check for colors in theme but not in SCSS
   Object.keys(themeColors).forEach((key) => {
@@ -98,8 +106,12 @@ function main() {
   const themeColors = extractColorsFromTheme(themePath);
   const scssColors = extractColorsFromScss(scssPath);
 
-  console.log(`📊 Found ${Object.keys(themeColors).length} colors in theme file`);
-  console.log(`📊 Found ${Object.keys(scssColors).length} colors in SCSS file\n`);
+  console.log(
+    `📊 Found ${Object.keys(themeColors).length} colors in theme file`,
+  );
+  console.log(
+    `📊 Found ${Object.keys(scssColors).length} colors in SCSS file\n`,
+  );
 
   const comparison = compareColors(themeColors, scssColors);
 

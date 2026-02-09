@@ -4,14 +4,20 @@ import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
 
 const apiResultHandler = new ApiResultHandler();
 
-const getReference = async (token: string): Promise<ApiResponse<Components.Schemas.PortalInvitationQueryResult | null | undefined>> => {
+const getReference = async (
+  token: string,
+): Promise<
+  ApiResponse<Components.Schemas.PortalInvitationQueryResult | null | undefined>
+> => {
   const client = await getClient();
 
   const pathParameters = {
     token: token,
   };
 
-  return apiResultHandler.execute<Components.Schemas.PortalInvitationQueryResult | null | undefined>({
+  return apiResultHandler.execute<
+    Components.Schemas.PortalInvitationQueryResult | null | undefined
+  >({
     request: client.references_get(pathParameters),
     suppressErrorToast: true,
   });
@@ -34,9 +40,17 @@ const optOutReference = async (
   });
 };
 
-const postCharacterReference = async (characterReferenceSubmission: Components.Schemas.CharacterReferenceSubmissionRequest): Promise<ApiResponse<any>> => {
+const postCharacterReference = async (
+  characterReferenceSubmission: Components.Schemas.CharacterReferenceSubmissionRequest,
+): Promise<ApiResponse<any>> => {
   const client = await getClient();
-  return apiResultHandler.execute({ request: client.character_reference_post(null, characterReferenceSubmission), key: "character_reference_post" });
+  return apiResultHandler.execute({
+    request: client.character_reference_post(
+      null,
+      characterReferenceSubmission,
+    ),
+    key: "character_reference_post",
+  });
 };
 
 const postWorkExperienceReference = async (
@@ -44,12 +58,30 @@ const postWorkExperienceReference = async (
 ): Promise<ApiResponse<any>> => {
   const client = await getClient();
   return apiResultHandler.execute({
-    request: client.workExperience_reference_post(null, workExperienceReferenceSubmission),
+    request: client.workExperience_reference_post(
+      null,
+      workExperienceReferenceSubmission,
+    ),
     key: "workExperience_reference_post",
   });
 };
 
-const resendCharacterReference = async (params: Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters): Promise<ApiResponse<any>> => {
+const postIcraEligibilityWorkExperienceReference = async (
+  icraEligibilityWorkExperienceSubmission: Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest,
+): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute({
+    request: client.icra_workExperience_reference_post(
+      null,
+      icraEligibilityWorkExperienceSubmission,
+    ),
+    key: "icra_workExperience_reference_post",
+  });
+};
+
+const resendCharacterReference = async (
+  params: Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters,
+): Promise<ApiResponse<any>> => {
   const client = await getClient();
   return apiResultHandler.execute({
     request: client.application_character_reference_resend_invite_post(params),
@@ -57,10 +89,13 @@ const resendCharacterReference = async (params: Paths.ApplicationCharacterRefere
   });
 };
 
-const resendWorkExperienceReference = async (params: Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters): Promise<ApiResponse<any>> => {
+const resendWorkExperienceReference = async (
+  params: Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters,
+): Promise<ApiResponse<any>> => {
   const client = await getClient();
   return apiResultHandler.execute({
-    request: client.application_work_experience_reference_resend_invite_post(params),
+    request:
+      client.application_work_experience_reference_resend_invite_post(params),
     key: "application_work_experience_reference_resend_invite_post",
   });
 };
@@ -71,7 +106,10 @@ const upsertWorkExperienceReference = async (
 ): Promise<ApiResponse<any>> => {
   const client = await getClient();
   return apiResultHandler.execute({
-    request: client.application_workexperiencereference_update_post(params, body),
+    request: client.application_workexperiencereference_update_post(
+      params,
+      body,
+    ),
     key: "application_workexperiencereference_update_post",
   });
 };
@@ -92,6 +130,7 @@ export {
   optOutReference,
   postCharacterReference,
   postWorkExperienceReference,
+  postIcraEligibilityWorkExperienceReference,
   resendCharacterReference,
   resendWorkExperienceReference,
   upsertCharacterReference,

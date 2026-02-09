@@ -5,11 +5,18 @@ namespace ECER.Managers.Registry.Contract.Communications;
 /// <summary>
 /// Invokes communication seen use case
 /// </summary>
-public record MarkCommunicationAsSeenCommand(string communicationId, string userId) : IRequest<string>;
+public record MarkCommunicationAsSeenCommand : IRequest<string>
+{
+  public string CommunicationId { get; set; } = null!;
+  public string UserId { get; set; } = null!;
+  public string? PostSecondaryInstituteId { get; set; }
+  public bool? IsPspUser { get; set; }
+}
 
 public record UserCommunicationsStatusQuery : IRequest<CommunicationsStatusResults>
 {
-  public string ByRegistrantId { get; set; } = null!;
+  public string? ByRegistrantId { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
 }
 
 public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
@@ -20,7 +27,8 @@ public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
-}
+  public string? ByPostSecondaryInstituteId { get; set; }
+} 
 public record CommunicationsQueryResults(IEnumerable<Communication> Items)
 {
   public int TotalMessagesCount { get; set; }
@@ -37,7 +45,8 @@ public class SendMessageResult
 
 public record Communication
 {
-  public string Id { get; set; } = null!;
+  public string? Id { get; set; }
+  public CommunicationCategory? Category { get; set; }
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
   public InitiatedFrom From { get; set; }
@@ -48,6 +57,10 @@ public record Communication
   public DateTime? LatestMessageNotifiedOn { get; set; }
   public bool? IsRead { get; set; }
   public string? ApplicationId { get; set; }
+  public string? IcraEligibilityId { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
+  public string? EducationInstituteName { get; set; }
+  public bool? IsPspUser { get; set; }
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }
 
@@ -67,11 +80,25 @@ public enum CommunicationStatus
   Inactive
 }
 
+public enum CommunicationCategory
+{
+  ProgramChangeRequest,
+  PracticumInquiry,
+  ECEProgramApplicationInquiry,
+  ECEProgramApplicationRequirements,
+  ProgramProfileInquiry,
+  IndividualEducationPlanIEP,
+  MeetingRequest,
+  RequestforAdditionalInformation,
+  Other
+}
+
 public enum InitiatedFrom
 {
   Investigation,
   PortalUser,
   Registry,
+  ProgramRepresentative,
 }
 
 public record CommunicationsStatusResults(CommunicationsStatus Status);

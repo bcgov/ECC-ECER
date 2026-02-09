@@ -1,6 +1,12 @@
 <template>
   <v-container>
-    <v-card :rounded="'0'" flat color="background-light" height="74px" width="100%">
+    <v-card
+      :rounded="'0'"
+      flat
+      color="background-light"
+      height="74px"
+      width="100%"
+    >
       <div class="d-flex flex-row align-center fill-height ga-10 mx-4">
         <div v-for="(link, index) in links" :key="index">
           <router-link :to="link.to">

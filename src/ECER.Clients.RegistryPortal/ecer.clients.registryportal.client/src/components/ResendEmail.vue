@@ -2,7 +2,8 @@
   <div class="d-flex flex-column ga-3">
     <h3 class="mt-4">Resend email</h3>
     <p>
-      We’ll send another email to the reference. It’ll include a link to the My ECE Registry to provide a reference for you. It may take a few minutes to
+      We’ll send another email to the reference. It’ll include a link to the My
+      ECE Registry to provide a reference for you. It may take a few minutes to
       receive the email.
       <br />
       <br />
@@ -13,12 +14,19 @@
       <li>Ask the person to check their spam folder</li>
       <li>Check you provided the correct email address</li>
     </ul>
-    <p>If you need to correct any information, choose to use a new reference below.</p>
+    <p>
+      If you need to correct any information, choose to use a new reference
+      below.
+    </p>
   </div>
   <v-btn
     :loading="
-      loadingStore.isLoading('application_character_reference_resend_invite_post') ||
-      loadingStore.isLoading('application_work_experience_reference_resend_invite_post')
+      loadingStore.isLoading(
+        'application_character_reference_resend_invite_post',
+      ) ||
+      loadingStore.isLoading(
+        'application_work_experience_reference_resend_invite_post',
+      )
     "
     class="mt-6"
     size="large"

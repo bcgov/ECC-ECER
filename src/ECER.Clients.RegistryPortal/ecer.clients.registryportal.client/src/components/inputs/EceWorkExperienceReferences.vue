@@ -2,7 +2,11 @@
   <v-row no-gutters>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
       <h2>{{ `${id ? "Edit" : "Add"} work experience reference` }}</h2>
-      <v-form ref="addWorkExperienceReferenceForm" validate-on="input" class="mt-6">
+      <v-form
+        ref="addWorkExperienceReferenceForm"
+        validate-on="input"
+        class="mt-6"
+      >
         <v-row>
           <v-col cols="12">
             <EceTextField
@@ -16,7 +20,12 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <EceTextField id="txtWorkReferenceFirstName" v-model="firstName" label="Reference first name" maxlength="100"></EceTextField>
+            <EceTextField
+              id="txtWorkReferenceFirstName"
+              v-model="firstName"
+              label="Reference first name"
+              maxlength="100"
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
@@ -24,7 +33,12 @@
             <EceTextField
               id="txtWorkReferenceEmail"
               v-model="email"
-              :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
+              :rules="[
+                Rules.required(),
+                Rules.email(
+                  'Enter your reference\'s email in the format \'name@email.com\'',
+                ),
+              ]"
               label="Reference email"
               maxlength="200"
             ></EceTextField>
@@ -35,7 +49,9 @@
             <EceTextField
               id="txtWorkReferencePhoneNumber"
               v-model="phoneNumber"
-              :rules="[Rules.phoneNumber('Enter your reference\'s valid phone number')]"
+              :rules="[
+                Rules.phoneNumber('Enter your reference\'s valid phone number'),
+              ]"
               label="Reference phone number (Optional)"
             ></EceTextField>
           </v-col>
@@ -65,58 +81,106 @@
           >
             Save reference
           </v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
+          <v-btn
+            rounded="lg"
+            variant="outlined"
+            @click="handleCancel"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          >
+            Cancel
+          </v-btn>
         </v-row>
       </v-form>
     </v-col>
     <div v-else-if="mode == 'list'" class="w-100">
       <div class="d-flex flex-column ga-3 my-6">
         <h3 v-if="applicationStore.isDraftApplicationRenewal">
-          {{ hoursRequired }} hours of work experience related to the field of early childhood education is required.
+          {{ hoursRequired }} hours of work experience related to the field of
+          early childhood education is required.
         </h3>
-        <h3 v-else>{{ hoursRequired }} hours of work experience is required.</h3>
+        <h3 v-else>
+          {{ hoursRequired }} hours of work experience is required.
+        </h3>
         <p>Your hours:</p>
         <ul v-if="applicationStore.isDraftApplicationRenewal" class="ml-10">
           <li>Be related to the field of early childhood education</li>
           <li v-if="fromCertificate?.statusCode != 'Expired'">
-            Have been completed within the term of your current certificate (between
-            {{ formatDate(fromCertificate?.effectiveDate ?? "", "LLLL d, yyyy") }} and {{ formatDate(fromCertificate?.expiryDate ?? "", "LLLL d, yyyy") }})
+            Have been completed within the term of your current certificate
+            (between
+            {{
+              formatDate(fromCertificate?.effectiveDate ?? "", "LLLL d, yyyy")
+            }}
+            and
+            {{ formatDate(fromCertificate?.expiryDate ?? "", "LLLL d, yyyy") }})
           </li>
           <li v-else>Have been completed within the last 5 years</li>
         </ul>
         <ul v-if="!applicationStore.isDraftApplicationRenewal" class="ml-10">
-          <li>Must have been completed after you started your education and within the last 5 years</li>
-          <li>Cannot include hours worked as part of your education on your practicum or work placement</li>
+          <li>
+            Must have been completed after you started your education and within
+            the last 5 years
+          </li>
+          <li>
+            Cannot include hours worked as part of your education on your
+            practicum or work placement
+          </li>
           <li>Can be work or volunteer hours</li>
         </ul>
-        <p v-if="applicationStore.isDraftApplicationRenewal">If you worked at multiple locations, add a reference for each location.</p>
-        <p v-if="!applicationStore.isDraftApplicationRenewal">If your hours were completed at multiple locations under the supervision of multiple ECEs:</p>
+        <p v-if="applicationStore.isDraftApplicationRenewal">
+          If you worked at multiple locations, add a reference for each
+          location.
+        </p>
+        <p v-if="!applicationStore.isDraftApplicationRenewal">
+          If your hours were completed at multiple locations under the
+          supervision of multiple ECEs:
+        </p>
         <ul v-if="!applicationStore.isDraftApplicationRenewal" class="ml-10">
-          <li>Provide a reference from each person who supervised your hours</li>
+          <li>
+            Provide a reference from each person who supervised your hours
+          </li>
           <li>You may enter up to 6 references</li>
         </ul>
       </div>
 
       <v-col v-if="hasDuplicateReferences" sm="12" md="10" lg="8" xl="6">
         <Alert type="error">
-          <p class="small">Your work experience reference(s) cannot be the same as your character reference</p>
+          <p class="small">
+            Your work experience reference(s) cannot be the same as your
+            character reference
+          </p>
         </Alert>
       </v-col>
       <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
-        <ProgressBar :total-hours="totalHours" :hours-required="hoursRequired" />
+        <ProgressBar
+          :total-hours="totalHours"
+          :hours-required="hoursRequired"
+        />
       </v-col>
       <v-col sm="12" md="10" lg="8" xl="6">
-        <WorkExperienceReferenceList :references="modelValue" @edit="handleEdit" @delete="handleDelete" />
+        <WorkExperienceReferenceList
+          :references="modelValue"
+          @edit="handleEdit"
+          @delete="handleDelete"
+        />
       </v-col>
       <v-row class="my-6">
         <v-col sm="12" md="10" lg="8" xl="6">
-          <Callout v-if="count >= 6 && totalHours < hoursRequired" title="Max limit reached" type="warning" class="mt-10">
-            You reached the limit of 6 work experience references but do not meet the {{ hoursRequired }} hour requirement. You can still proceed to submit your
-            application. The Registry will contact you to provide additional references for the remaining hours.
+          <Callout
+            v-if="count >= 6 && totalHours < hoursRequired"
+            title="Max limit reached"
+            type="warning"
+            class="mt-10"
+          >
+            You reached the limit of 6 work experience references but do not
+            meet the {{ hoursRequired }} hour requirement. You can still proceed
+            to submit your application. The Registry will contact you to provide
+            additional references for the remaining hours.
           </Callout>
           <p v-else-if="totalHours >= hoursRequired">
-            No additional work references may be added. You provided the required hours. After you submit your application, we’ll email the work references to
-            complete their reference. If needed, we'll contact you for additional information.
+            No additional work references may be added. You provided the
+            required hours. After you submit your application, we’ll email the
+            work references to complete their reference. If needed, we'll
+            contact you for additional information.
           </p>
           <v-btn
             id="btnAddWorkExperienceReference"
@@ -155,7 +219,9 @@ import { defineComponent } from "vue";
 import Alert from "@/components/Alert.vue";
 import Callout from "@/components/Callout.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
-import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@/components/WorkExperienceReferenceList.vue";
+import WorkExperienceReferenceList, {
+  type WorkExperienceReferenceData,
+} from "@/components/WorkExperienceReferenceList.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
@@ -173,15 +239,25 @@ import { expiredMoreThan5Years } from "@/utils/functions";
 
 export default defineComponent({
   name: "EceEdducation",
-  components: { WorkExperienceReferenceList, ProgressBar, Alert, Callout, EceTextField },
+  components: {
+    WorkExperienceReferenceList,
+    ProgressBar,
+    Alert,
+    Callout,
+    EceTextField,
+  },
   props: {
     modelValue: {
-      type: Object as () => { [id: string]: Components.Schemas.WorkExperienceReference },
+      type: Object as () => {
+        [id: string]: Components.Schemas.WorkExperienceReference;
+      },
       required: true,
     },
   },
   emits: {
-    "update:model-value": (_referenceData: { [id: string]: Components.Schemas.WorkExperienceReference }) => true,
+    "update:model-value": (_referenceData: {
+      [id: string]: Components.Schemas.WorkExperienceReference;
+    }) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -239,7 +315,10 @@ export default defineComponent({
       return Object.keys(this.modelValue).length + 1;
     },
     hasDuplicateReferences() {
-      if (Object.values(this.wizardStore.wizardData.referenceList).length === 0 || this.wizardStore.wizardData.characterReferences.length === 0) {
+      if (
+        Object.values(this.wizardStore.wizardData.referenceList).length === 0 ||
+        this.wizardStore.wizardData.characterReferences.length === 0
+      ) {
         return false;
       }
 
@@ -249,7 +328,9 @@ export default defineComponent({
         refSet.add(`${ref.firstName} ${ref.lastName}`);
       }
 
-      for (const ref of Object.values(this.wizardStore.wizardData.referenceList) as [Components.Schemas.WorkExperienceReference]) {
+      for (const ref of Object.values(
+        this.wizardStore.wizardData.referenceList,
+      ) as [Components.Schemas.WorkExperienceReference]) {
         if (refSet.has(`${ref.firstName} ${ref.lastName}`)) {
           return true;
         }
@@ -258,7 +339,9 @@ export default defineComponent({
       return false;
     },
     fromCertificate() {
-      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
+      return this.certificationStore.getCertificationById(
+        this.applicationStore.draftApplication.fromCertificate,
+      );
     },
   },
   mounted() {
@@ -269,7 +352,9 @@ export default defineComponent({
     isNumber,
     async handleSubmit() {
       // Validate the form
-      const { valid } = await (this.$refs.addWorkExperienceReferenceForm as any).validate();
+      const { valid } = await (
+        this.$refs.addWorkExperienceReferenceForm as any
+      ).validate();
 
       if (valid) {
         // Prepare the new or updated WorkExperienceReference data
@@ -280,7 +365,10 @@ export default defineComponent({
           emailAddress: this.email,
           phoneNumber: this.phoneNumber,
           hours: parseInt(this.hours!.toString()),
-          type: this.hoursRequired === 500 ? WorkExperienceType.IS_500_Hours : WorkExperienceType.IS_400_Hours,
+          type:
+            this.hoursRequired === 500
+              ? WorkExperienceType.IS_500_Hours
+              : WorkExperienceType.IS_400_Hours,
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
@@ -295,18 +383,25 @@ export default defineComponent({
         this.$emit("update:model-value", updatedModelValue);
 
         // Set success alert message
-        const message = this.modelValue[clientId] ? "You have successfully edited your reference." : "You have successfully added your reference.";
+        const message = this.modelValue[clientId]
+          ? "You have successfully edited your reference."
+          : "You have successfully added your reference.";
 
         await this.applicationStore.saveDraft();
         //we need to update wizardData with the latest information to avoid creating duplicate new entries
-        await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
+        await this.wizardStore.initializeWizard(
+          this.applicationStore.applicationConfiguration,
+          this.applicationStore.draftApplication,
+        );
 
         this.alertStore.setSuccessAlert(message);
 
         // Change mode to list
         this.mode = "list";
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     handleCancel() {
@@ -345,7 +440,10 @@ export default defineComponent({
 
       await this.applicationStore.saveDraft();
       //we need to update wizardData with the latest information to avoid creating duplicate new entries
-      await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
+      await this.wizardStore.initializeWizard(
+        this.applicationStore.applicationConfiguration,
+        this.applicationStore.draftApplication,
+      );
 
       await this.alertStore.setSuccessAlert("You have deleted your reference.");
     },

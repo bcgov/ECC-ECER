@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
@@ -12,13 +11,20 @@ public class ConfigurationEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/configuration", async (HttpContext ctx) =>
+    endpointRouteBuilder.MapGet("/api/configuration", async (HttpContext ctx, IMediator messageBus, CancellationToken ct) =>
     {
       await Task.CompletedTask;
       var configuration = ctx.RequestServices.GetRequiredService<IConfiguration>();
+
+      var dynamicsConfig = await messageBus.Send(new DynamicsConfigQuery(), ct);
       var appConfig = configuration.Get<ApplicationConfiguration>()!;
+
+      
+      appConfig.ICRAFeatureEnabled = dynamicsConfig.config.ICRAFeatureEnabled;
+
       return TypedResults.Ok(appConfig);
-    }).WithOpenApi("Returns the UI initial configuration", string.Empty, "configuration_get");
+    }).WithOpenApi("Returns the UI initial configuration", string.Empty, "configuration_get")
+      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
     endpointRouteBuilder.MapGet("/api/provincelist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
@@ -27,7 +33,6 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     })
       .WithOpenApi("Handles province queries", string.Empty, "province_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
-
 
     endpointRouteBuilder.MapGet("/api/defaultContents", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
@@ -93,6 +98,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
 public record ApplicationConfiguration
 {
   public Dictionary<string, OidcAuthenticationSettings> ClientAuthenticationMethods { get; set; } = [];
+  public bool ICRAFeatureEnabled { get; set; }
 }
 
 #pragma warning restore CA2227 // Collection properties should be read only
@@ -107,7 +113,7 @@ public record OidcAuthenticationSettings
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
-public record Country(string CountryId, string CountryName, string CountryCode);
+public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
 public record SystemMessage(string Name, string Subject, string Message)
 {
   public DateTime StartDate { get; set; }
@@ -128,21 +134,21 @@ public record IdentificationTypesQuery
   public bool? ForPrimary { get; set; }
   public bool? ForSecondary { get; set; }
 }
-  public record OutOfProvinceCertificationType(string Id)
-  {
-    public string? CertificationType { get; set; }
-  }
+public record OutOfProvinceCertificationType(string Id)
+{
+  public string? CertificationType { get; set; }
+}
 
-  public record CertificationComparison(string Id)
-  {
-    public string? BcCertificate { get; set; }
-  }
+public record CertificationComparison(string Id)
+{
+  public string? BcCertificate { get; set; }
+}
 
-  public record ComparisonRecord()
-  {
-    public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
-    public IEnumerable<CertificationComparison> Options { get; set; } = Array.Empty<CertificationComparison>();
-  }
+public record ComparisonRecord()
+{
+  public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
+  public IEnumerable<CertificationComparison> Options { get; set; } = Array.Empty<CertificationComparison>();
+}
 public record DefaultContent
 {
   public string? Name { get; set; }

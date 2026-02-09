@@ -5,12 +5,17 @@
       <br />
       <ul class="ml-10">
         <li>Can speak to your character</li>
-        <li>Can speak to your ability to educate and care for young children</li>
+        <li>
+          Can speak to your ability to educate and care for young children
+        </li>
         <li>Has known you for at least 6 months</li>
         <li>Is not your relative, partner, spouse, or yourself</li>
       </ul>
       <br />
-      <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
+      <p>
+        We recommend the person is a certified ECE who has directly observed you
+        working with young children.
+      </p>
       <br />
       <p v-if="wizardStore.hasStep('WorkReferences')">
         The person
@@ -22,7 +27,10 @@
   <v-row>
     <v-col v-if="hasDuplicateReferences" md="10" lg="8" xl="6">
       <Alert type="error">
-        <p class="small">Your character reference cannot be the same as your work experience reference(s)</p>
+        <p class="small">
+          Your character reference cannot be the same as your work experience
+          reference(s)
+        </p>
       </Alert>
     </v-col>
   </v-row>
@@ -54,8 +62,12 @@
       <EceTextField
         v-model="emailAddress"
         :rules="[
-          Rules.required('Enter your reference\'s email in the format \'name@email.com\''),
-          Rules.email('Enter your reference\'s email in the format \'name@email.com\''),
+          Rules.required(
+            'Enter your reference\'s email in the format \'name@email.com\'',
+          ),
+          Rules.email(
+            'Enter your reference\'s email in the format \'name@email.com\'',
+          ),
         ]"
         label="Email"
         id="txtReferenceEmail"
@@ -69,15 +81,24 @@
       <EceTextField
         id="txtReferencePhoneNumber"
         v-model="phoneNumber"
-        :rules="[Rules.phoneNumber('Enter your reference\'s valid phone number')]"
+        :rules="[
+          Rules.phoneNumber('Enter your reference\'s valid phone number'),
+        ]"
         label="Phone number (optional)"
         @update:model-value="updateCharacterReference()"
       ></EceTextField>
     </v-col>
   </v-row>
   <!-- this prevents form from proceeding if there are duplicates -->
-  <v-input auto-hide="auto" :model-value="modelValue" :rules="[!hasDuplicateReferences]"></v-input>
-  <p>After you submit your application, we'll send an email to this person. The email will have a link to an online form to provide a reference for you.</p>
+  <v-input
+    auto-hide="auto"
+    :model-value="modelValue"
+    :rules="[!hasDuplicateReferences]"
+  ></v-input>
+  <p>
+    After you submit your application, we'll send an email to this person. The
+    email will have a link to an online form to provide a reference for you.
+  </p>
 </template>
 
 <script lang="ts">
@@ -101,7 +122,9 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_characterReferencesData: Components.Schemas.CharacterReference) => true,
+    "update:model-value": (
+      _characterReferencesData: Components.Schemas.CharacterReference,
+    ) => true,
     updatedValidation: (_errorState: boolean) => true,
   },
   setup: () => {
@@ -116,20 +139,34 @@ export default defineComponent({
   },
   data() {
     return {
-      firstName: this.modelValue?.[0]?.firstName ? this.modelValue?.[0]?.firstName : "",
-      lastName: this.modelValue?.[0]?.lastName ? this.modelValue?.[0]?.lastName : "",
-      emailAddress: this.modelValue?.[0]?.emailAddress ? this.modelValue?.[0]?.emailAddress : "",
-      phoneNumber: this.modelValue?.[0]?.phoneNumber ? this.modelValue?.[0]?.phoneNumber : "",
+      firstName: this.modelValue?.[0]?.firstName
+        ? this.modelValue?.[0]?.firstName
+        : "",
+      lastName: this.modelValue?.[0]?.lastName
+        ? this.modelValue?.[0]?.lastName
+        : "",
+      emailAddress: this.modelValue?.[0]?.emailAddress
+        ? this.modelValue?.[0]?.emailAddress
+        : "",
+      phoneNumber: this.modelValue?.[0]?.phoneNumber
+        ? this.modelValue?.[0]?.phoneNumber
+        : "",
       Rules,
     };
   },
   computed: {
     hasDuplicateReferences() {
-      if (!this.wizardStore.wizardData.referenceList || !this.wizardStore.wizardData.characterReferences) {
+      if (
+        !this.wizardStore.wizardData.referenceList ||
+        !this.wizardStore.wizardData.characterReferences
+      ) {
         //flow doesn't have reference list of character references return false
         return false;
       }
-      if (Object.values(this.wizardStore.wizardData.referenceList).length === 0 || this.wizardStore.wizardData.characterReferences.length === 0) {
+      if (
+        Object.values(this.wizardStore.wizardData.referenceList).length === 0 ||
+        this.wizardStore.wizardData.characterReferences.length === 0
+      ) {
         return false;
       }
 
@@ -139,7 +176,9 @@ export default defineComponent({
         refSet.add(`${ref.firstName} ${ref.lastName}`);
       }
 
-      for (const ref of Object.values(this.wizardStore.wizardData.referenceList) as [Components.Schemas.WorkExperienceReference]) {
+      for (const ref of Object.values(
+        this.wizardStore.wizardData.referenceList,
+      ) as [Components.Schemas.WorkExperienceReference]) {
         if (refSet.has(`${ref.firstName} ${ref.lastName}`)) {
           return true;
         }
@@ -152,7 +191,12 @@ export default defineComponent({
     isNumber,
     async updateCharacterReference() {
       this.$emit("update:model-value", [
-        { firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress, phoneNumber: this.phoneNumber },
+        {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          emailAddress: this.emailAddress,
+          phoneNumber: this.phoneNumber,
+        },
       ] as Components.Schemas.CharacterReference);
     },
   },

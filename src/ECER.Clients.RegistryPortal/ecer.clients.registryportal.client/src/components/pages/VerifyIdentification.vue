@@ -3,13 +3,19 @@
     <Breadcrumb />
     <h1>Verify your identity</h1>
     <div class="d-flex flex-column ga-4">
-      <p>Before you can access your full My ECE Registry account, we need to verify your identity.</p>
+      <p>
+        Before you can access your full My ECE Registry account, we need to
+        verify your identity.
+      </p>
 
       <p>To verify your identity:</p>
       <ol class="ml-10">
         <li>Provide photos of 2 government-issued IDs</li>
         <li>We will review your ID</li>
-        <li>We will send you a message when your account is ready in 2-3 business days</li>
+        <li>
+          We will send you a message when your account is ready in 2-3 business
+          days
+        </li>
       </ol>
     </div>
     <v-form ref="verifyIdentificationForm">
@@ -23,9 +29,14 @@
 
         <ul class="ml-10">
           <li>
-            Show the exact names as your account: {{ userStore.userProfile?.firstName }} {{ userStore.userProfile?.middleName }}
+            Show the exact names as your account:
+            {{ userStore.userProfile?.firstName }}
+            {{ userStore.userProfile?.middleName }}
             {{ userStore.userProfile?.lastName }}
-            <v-tooltip text="If this name does not match your ID, you will need to contact us to have it updated." location="top">
+            <v-tooltip
+              text="If this name does not match your ID, you will need to contact us to have it updated."
+              location="top"
+            >
               <template #activator="{ props }">
                 <v-icon v-bind="props" icon="mdi-help-circle" variant="plain" />
               </template>
@@ -48,7 +59,9 @@
         <p>Make sure the photo of your ID:</p>
         <ul class="ml-10">
           <li>Is clear and not blurry</li>
-          <li>Shows your full ID and does not cut off any part of the document</li>
+          <li>
+            Shows your full ID and does not cut off any part of the document
+          </li>
         </ul>
       </div>
       <div class="mt-12">
@@ -73,7 +86,9 @@
           :user-files="generateUserPrimaryFileArray"
           class="mt-1"
           @update:files="handlePrimaryFileUpload"
-          :rules="[Rules.atLeastOneOptionRequired('You must add at least one file')]"
+          :rules="[
+            Rules.atLeastOneOptionRequired('You must add at least one file'),
+          ]"
         />
       </div>
       <div class="mt-12">
@@ -88,7 +103,13 @@
             variant="outlined"
             label=""
             v-model="secondaryIdType"
-            :rules="[Rules.required('Select your secondary ID type'), Rules.notSameAs(primaryIdType, 'Select a different type of ID than your primary ID')]"
+            :rules="[
+              Rules.required('Select your secondary ID type'),
+              Rules.notSameAs(
+                primaryIdType,
+                'Select a different type of ID than your primary ID',
+              ),
+            ]"
           ></v-select>
         </label>
         <label>Upload file</label>
@@ -98,7 +119,9 @@
           :user-files="generateUserSecondaryFileArray"
           class="mt-1"
           @update:files="handleSecondaryFileUpload"
-          :rules="[Rules.atLeastOneOptionRequired('You must add at least one file')]"
+          :rules="[
+            Rules.atLeastOneOptionRequired('You must add at least one file'),
+          ]"
         />
       </div>
       <v-btn
@@ -130,8 +153,16 @@ import { useDisplay } from "vuetify";
 import type { FileItem } from "@/components/UploadFileItem.vue";
 import ECEHeader from "../ECEHeader.vue";
 import { useConfigStore } from "@/store/config";
-import type { Components, IdentificationType, ProfileIdentification } from "@/types/openapi";
-import { parseHumanFileSize, removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
+import type {
+  Components,
+  IdentificationType,
+  ProfileIdentification,
+} from "@/types/openapi";
+import {
+  parseHumanFileSize,
+  removeElementByIndex,
+  replaceElementByIndex,
+} from "@/utils/functions";
 import { useLoadingStore } from "@/store/loading";
 import * as Functions from "@/utils/functions";
 import { useAlertStore } from "@/store/alert";
@@ -141,7 +172,14 @@ import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "VerifyIdentification",
-  components: { PageContainer, Breadcrumb, IconCard, ECEHeader, Callout, FileUploader },
+  components: {
+    PageContainer,
+    Breadcrumb,
+    IconCard,
+    ECEHeader,
+    Callout,
+    FileUploader,
+  },
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
@@ -151,7 +189,17 @@ export default defineComponent({
     const router = useRouter();
     const { smAndDown } = useDisplay();
     const alertStore = useAlertStore();
-    return { userStore, oidcStore, configStore, route, router, smAndDown, Rules, alertStore, loadingStore };
+    return {
+      userStore,
+      oidcStore,
+      configStore,
+      route,
+      router,
+      smAndDown,
+      Rules,
+      alertStore,
+      loadingStore,
+    };
   },
   data() {
     return {
@@ -170,7 +218,9 @@ export default defineComponent({
   },
   methods: {
     async handleSubmit() {
-      const { valid } = await (this.$refs.verifyIdentificationForm as VForm).validate();
+      const { valid } = await (
+        this.$refs.verifyIdentificationForm as VForm
+      ).validate();
 
       if (valid) {
         const identification: ProfileIdentification = {
@@ -185,7 +235,9 @@ export default defineComponent({
           this.router.push("/");
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     async handlePrimaryFileUpload(filesArray: any[]) {
@@ -212,7 +264,10 @@ export default defineComponent({
           }
 
           // If file is valid and fully uploaded, add to attachments
-          if (this.arePrimaryAttachedFilesValid && !this.isFileUploadInProgress) {
+          if (
+            this.arePrimaryAttachedFilesValid &&
+            !this.isFileUploadInProgress
+          ) {
             this.primaryIdFiles.push({
               id: file.fileId,
               name: file.file.name,
@@ -247,7 +302,10 @@ export default defineComponent({
           }
 
           // If file is valid and fully uploaded, add to attachments
-          if (this.areSecondaryAttachedFilesValid && !this.isFileUploadInProgress) {
+          if (
+            this.areSecondaryAttachedFilesValid &&
+            !this.isFileUploadInProgress
+          ) {
             this.secondaryIdFiles.push({
               id: file.fileId,
               name: file.file.name,

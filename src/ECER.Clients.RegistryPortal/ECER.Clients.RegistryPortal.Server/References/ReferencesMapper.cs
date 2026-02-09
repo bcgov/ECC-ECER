@@ -13,5 +13,6 @@ public class ReferencesMapper : Profile
     CreateMap<WorkExperienceReferenceSubmissionRequest, Managers.Registry.Contract.Applications.WorkExperienceReferenceSubmissionRequest>();
     CreateMap<WorkExperienceReferenceCompetenciesAssessment, Managers.Registry.Contract.Applications.WorkExperienceReferenceCompetenciesAssessment>();
     CreateMap<WorkExperienceReferenceDetails, Managers.Registry.Contract.Applications.WorkExperienceReferenceDetails>();
+    CreateMap<ICRAWorkExperienceReferenceSubmissionRequest, Managers.Registry.Contract.ICRA.ICRAWorkExperienceReferenceSubmissionRequest>();
   }
 }
