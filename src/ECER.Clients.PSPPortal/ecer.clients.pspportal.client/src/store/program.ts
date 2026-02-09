@@ -13,7 +13,6 @@ import { useWizardStore } from "./wizard";
 
 export interface ProgramState {
   draftProgram: Components.Schemas.Program;
-  updateRequestProgram: Components.Schemas.Program;
 }
 
 export const useProgramStore = defineStore("program", {
@@ -26,14 +25,6 @@ export const useProgramStore = defineStore("program", {
       name: null,
       programName: null,
     },
-    updateRequestProgram: {
-      id: undefined,
-      portalStage: null,
-      createdOn: null,
-      status: undefined,
-      name: null,
-      programName: null,
-    },
   }),
   persist: {
     pick: ["draftProgram", "updateRequestProgram"],
@@ -41,9 +32,6 @@ export const useProgramStore = defineStore("program", {
   getters: {
     hasDraftProgram(state): boolean {
       return state.draftProgram.id !== undefined;
-    },
-    hasUpdateRequestProgram(state): boolean {
-      return state.updateRequestProgram.id !== undefined;
     },
     applicationConfiguration(): Wizard {
       return programWizard;
