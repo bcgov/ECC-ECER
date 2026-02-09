@@ -112,20 +112,5 @@ export const useProgramStore = defineStore("program", {
       );
       return submissionResponse;
     },
-    setUpdateRequestProgramFromProfile(
-      program: Components.Schemas.Program,
-    ): void {
-      this.updateRequestProgram = program;
-    },
-    resetUpdateRequestProgram(): void {
-      this.updateRequestProgram = {
-        id: undefined,
-        portalStage: null,
-        createdOn: null,
-        status: undefined,
-        name: null,
-        programName: null,
-      };
-    },
   },
 });
