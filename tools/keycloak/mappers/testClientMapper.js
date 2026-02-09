@@ -349,6 +349,7 @@ let clientArray = [
     redirectUris: [
       "https://uat-ecer-psp-portal.apps.silver.devops.gov.bc.ca/*",
       "https://test-ecer-psp-portal.apps.silver.devops.gov.bc.ca/*",
+      "https://uat.ecepostsecondaryprograms.gov.bc.ca/*",
     ],
     webOrigins: ["+"],
     notBefore: 0,
