@@ -1,14 +1,24 @@
 <template>
   <v-container>
     <div class="d-flex flex-column ga-10 mt-10">
-      <h1>Required invitation</h1>
+      <h1>Access denied.</h1>
       <h2 class="mt-20">
-        You must have an invitation to successfully authenticate with the ECE
-        Post-Secondary Programs Portal.
+        Access to the ECER Post-Secondary Programs portal is limited to program
+        representatives for recognized educational institutions.
       </h2>
       <div class="d-flex flex-column ga-3">
-        <p>ensure you have an invitation from the ECE Registry.</p>
-        <p>Contact the ECE Registry if you require help.</p>
+        <p>
+          If you are a program representative for a recognized institution,
+          another program representative with access to the ECER Post-Secondary
+          Programs portal can send you an invitation from their dashboard.
+        </p>
+        <!-- prettier-ignore -->
+        <p>
+          If you need additional support, please contact the Registry at
+          <a href="mailto:ECERegistry.Programs@gov.bc.ca">
+            ECERegistry.Programs@gov.bc.ca
+          </a>.
+        </p>
       </div>
       <v-btn
         class="mt-8 align-self-start"

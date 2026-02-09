@@ -16,8 +16,8 @@
           <v-col>
             Send a message to the ECE Registry.
             <span class="font-weight-bold">
-              Please note that all program representatives at your institution
-              will be able to read and reply to this thread.
+              Please note that all users that have access to the PSP Portal at
+              your institution will be able to read and reply to this thread.
             </span>
           </v-col>
         </v-row>
@@ -51,30 +51,29 @@
           <template v-if="category === 'ProgramChangeRequest'">
             <v-row class="mt-5">
               <v-col cols="12">
-                <div class="d-flex flex-column ga-3">
-                  <p class="mb-3">
-                    Notify the Registry about changes to your program that affect
-                    program requirements or competencies (for example, adding or
-                    removing courses, changing practicum hours, etc.). Include:
-                  </p>
-                  <ul class="ml-6 mb-3">
-                    <li>A description of the change</li>
-                    <li>Its effective date</li>
-                    <li>
-                      Relevant supporting documentation (for example, course
-                      outlines)
-                    </li>
-                  </ul>
-                  <p class="mb-3">
-                    The ECE Registry will review your request and follow up with
-                    you for additional information if needed.
-                  </p>
-                  <p>
-                    <a href="#" class="text-primary">
-                      Learn more about program changes
-                    </a>
-                  </p>
-                </div>
+                <p class="mb-3">
+                  Notify the ECE Registry about changes to your program that
+                  affect program requirements or competencies (for example,
+                  adding or removing courses, changing practicum hours, etc.).
+                  Include:
+                </p>
+                <ul class="ml-6 mb-3">
+                  <li>A description of the change</li>
+                  <li>Its effective date</li>
+                  <li>
+                    Relevant supporting documentation (for example, course
+                    outlines)
+                  </li>
+                </ul>
+                <p class="mb-3">
+                  The ECE Registry will review your request and follow up with
+                  you for additional information if needed.
+                </p>
+                <p>
+                  <a href="#" class="text-primary">
+                    Learn more about program changes
+                  </a>
+                </p>
               </v-col>
             </v-row>
             <v-row>
@@ -84,7 +83,9 @@
                   <p>
                     For updates that do not affect requirements or competencies
                     (for example, changing a course name),
-                    <a href="">update your program profile</a>
+                    <router-link :to="{ name: 'program-profiles' }">
+                      update your program profile
+                    </router-link>
                     instead.
                   </p>
                 </Callout>
@@ -165,6 +166,7 @@ import * as Rules from "@/utils/formRules";
 import * as Functions from "@/utils/functions";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Callout from "@/components/common/Callout.vue";
+import type router from "@/router";
 interface NewMessage {
   text: string;
   subject: string;
