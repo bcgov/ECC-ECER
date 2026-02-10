@@ -128,8 +128,8 @@ let clientArray = [
   },
   {
     clientId: "childcare-ecer-dev",
-    name: "",
-    description: "ECER Registry Portal Client",
+    name: "ECER Registry Client",
+    description: "client used for ECER Registry Portal login",
     rootUrl: "",
     adminUrl: "",
     baseUrl: "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca",
