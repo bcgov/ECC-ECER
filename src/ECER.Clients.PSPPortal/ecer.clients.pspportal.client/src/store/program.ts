@@ -27,7 +27,7 @@ export const useProgramStore = defineStore("program", {
     },
   }),
   persist: {
-    pick: ["draftProgram", "updateRequestProgram"],
+    pick: ["draftProgram"],
   },
   getters: {
     hasDraftProgram(state): boolean {
