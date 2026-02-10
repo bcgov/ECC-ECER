@@ -11,7 +11,7 @@
       </v-col>
     </v-row>
 
-    <Loading v-if="isLoading && !updateInProgress"></Loading>
+    <Loading v-if="isLoading"></Loading>
 
     <div v-else>
       <!-- Program profile review section - only shown when there are programs with Draft or UnderReview status -->
@@ -158,15 +158,13 @@ export default defineComponent({
   data() {
     return {
       programs: [] as Components.Schemas.Program[],
-      programCount: -1,
-      page: 1,
-      loading: true,
-      pollInterval: 0 as any,
+      isPolling: false,
+      pollInterval: null as ReturnType<typeof setInterval> | null,
     };
   },
   computed: {
     isLoading(): boolean {
-      return this.loadingStore.isLoading("program_get") || this.loading;
+      return this.loadingStore.isLoading("program_get") && !this.isPolling;
     },
     programsRequiringReview(): Components.Schemas.Program[] {
       return this.programs.filter(
@@ -181,62 +179,57 @@ export default defineComponent({
     currentProgramProfiles(): Components.Schemas.Program[] {
       return this.programs.filter(
         (p) =>
-          "Approved" === p.status || "ChangeRequestInProgress" === p.status,
+          p.status === "Approved" || p.status === "ChangeRequestInProgress",
       );
     },
-    currentYearStart(): Date {
-      let yearStart;
-      const today = new Date();
-      if (today.getMonth() > 8) {
-        yearStart = new Date(today.setMonth(8, 1));
-      } else {
-        yearStart = new Date(today.setFullYear(today.getFullYear() - 1, 8, 1));
-      }
-      yearStart.setHours(0, 0, 0, 0);
-      return yearStart;
-    },
     updateInProgress(): boolean {
-      this.programs.forEach((program: Components.Schemas.Program) => {
-        if( program.programProfileType == "ChangeRequest" &&
-            program.status == "Draft" &&
-            (program.readyForReview == null || !program.readyForReview )){
-              console.log("updateInProgress is true");
-              return true;
-        }
-      });
-      console.log("updateInProgress is false");
-      return false;
+      return this.programs.some(
+        (program: Components.Schemas.Program) =>
+          program.programProfileType === "ChangeRequest" &&
+          program.status === "Draft" &&
+          !program.readyForReview,
+      );
     },
   },
   async mounted() {
     await this.fetchPrograms();
-    console.log(this.programs);
     if (this.updateInProgress) {
       this.startPolling();
     }
-    this.loading = false;
+  },
+  beforeUnmount() {
+    this.stopPolling();
   },
   methods: {
-    async fetchPrograms(page: number = 1) {
-      const params = { page, pageSize: PAGE_SIZE };
-      const response = await getPrograms("", [], params);
+    async fetchPrograms() {
+      const response = await getPrograms("", [], {
+        page: 1,
+        pageSize: PAGE_SIZE,
+      });
       this.programs = response.data?.programs || [];
-      this.programCount = response.data?.totalProgramsCount || 0;
     },
-    async startPolling() {
-      /* Poll the backend until the ready for review flag is set */
-      console.log("Start polling");
+    stopPolling() {
+      if (this.pollInterval) {
+        clearInterval(this.pollInterval);
+        this.pollInterval = null;
+      }
+      this.isPolling = false;
+    },
+    startPolling() {
+      this.isPolling = true;
+
       this.pollInterval = setInterval(async () => {
         await this.fetchPrograms();
         if (!this.updateInProgress) {
-          console.log("Stop polling");
-          /* Ready for review flag has been set. Stop polling. */
-          clearInterval(this.pollInterval);
+          this.stopPolling();
         }
       }, IntervalTime.INTERVAL_10_SECONDS);
-      setTimeout(() => {
-        clearInterval(this.pollInterval);
-      }, IntervalTime.INTERVAL_10_SECONDS * 10);
+
+      // Stop polling after 10 attempts
+      setTimeout(
+        () => this.stopPolling(),
+        IntervalTime.INTERVAL_10_SECONDS * 10,
+      );
     },
   },
 });

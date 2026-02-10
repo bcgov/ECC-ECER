@@ -132,7 +132,7 @@ export default defineComponent({
       program: null as Components.Schemas.Program | null,
       newProgram: null as Components.Schemas.Program | null,
       updateInProgress: false,
-      pollInterval: 0 as any,
+      pollInterval: null as ReturnType<typeof setInterval> | null,
     };
   },
   props: {
@@ -196,6 +196,9 @@ export default defineComponent({
       this.startPolling();
     }
   },
+  beforeUnmount() {
+    this.stopPolling();
+  },
   methods: {
     async loadProgram() {
       try {
@@ -234,22 +237,29 @@ export default defineComponent({
       await this.fetchNewProgram();
       this.startPolling();
     },
+    stopPolling() {
+      if (this.pollInterval) {
+        clearInterval(this.pollInterval);
+        this.pollInterval = null;
+      }
+      this.updateInProgress = false;
+    },
     startPolling() {
-      /* Poll the backend until the ready for review flag is set */
       this.updateInProgress = true;
+
       this.pollInterval = setInterval(async () => {
         await this.fetchNewProgram();
         if (this.newProgram?.readyForReview && this.newProgram?.id) {
-          /* Ready for review flag has been set. Stop polling. */
-          this.updateInProgress = false;
-          clearInterval(this.pollInterval);
+          this.stopPolling();
           this.router.replace("/program/" + this.newProgram.id);
         }
       }, IntervalTime.INTERVAL_10_SECONDS);
-      setTimeout(() => {
-        clearInterval(this.pollInterval);
-        this.updateInProgress = false;
-      }, IntervalTime.INTERVAL_10_SECONDS * 10);
+
+      // Stop polling after 10 attempts
+      setTimeout(
+        () => this.stopPolling(),
+        IntervalTime.INTERVAL_10_SECONDS * 10,
+      );
     },
     submitChangeRequest() {
       this.router.push({

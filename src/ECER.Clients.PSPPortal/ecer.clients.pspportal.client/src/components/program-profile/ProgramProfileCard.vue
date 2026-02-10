@@ -220,10 +220,12 @@ export default defineComponent({
       }
     },
     updateInProgress(): boolean {
-      if( this.program.programProfileType == "ChangeRequest" &&
-          this.program.status == "Draft" &&
-          !this.program.readyForReview ){
-            return true;
+      if (
+        this.program.programProfileType == "ChangeRequest" &&
+        this.program.status == "Draft" &&
+        !this.program.readyForReview
+      ) {
+        return true;
       }
       return false;
     },
