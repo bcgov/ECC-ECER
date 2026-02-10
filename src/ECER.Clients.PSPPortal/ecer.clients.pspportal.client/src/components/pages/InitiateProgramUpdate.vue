@@ -254,12 +254,6 @@ export default defineComponent({
           this.router.replace("/program/" + this.newProgram.id);
         }
       }, IntervalTime.INTERVAL_10_SECONDS);
-
-      // Stop polling after 10 attempts
-      setTimeout(
-        () => this.stopPolling(),
-        IntervalTime.INTERVAL_10_SECONDS * 10,
-      );
     },
     submitChangeRequest() {
       this.router.push({

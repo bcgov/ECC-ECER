@@ -224,12 +224,6 @@ export default defineComponent({
           this.stopPolling();
         }
       }, IntervalTime.INTERVAL_10_SECONDS);
-
-      // Stop polling after 10 attempts
-      setTimeout(
-        () => this.stopPolling(),
-        IntervalTime.INTERVAL_10_SECONDS * 10,
-      );
     },
   },
 });
