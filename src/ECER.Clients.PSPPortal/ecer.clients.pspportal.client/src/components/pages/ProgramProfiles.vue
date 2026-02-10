@@ -11,7 +11,7 @@
       </v-col>
     </v-row>
 
-    <Loading v-if="isLoading"></Loading>
+    <Loading v-if="isLoading && !updateInProgress"></Loading>
 
     <div v-else>
       <!-- Program profile review section - only shown when there are programs with Draft or UnderReview status -->
@@ -77,6 +77,7 @@
         <ProgramProfilesList
           :programs="programsRequiringReview"
           @withdrawn="fetchPrograms"
+          @polling="fetchPrograms"
         />
       </div>
 
@@ -89,6 +90,7 @@
       <ProgramProfilesList
         :programs="currentProgramProfiles"
         @withdrawn="fetchPrograms"
+        @polling="fetchPrograms"
       />
       <!-- Empty state -->
       <v-row
@@ -124,7 +126,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { DateTime } from "luxon";
 import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
@@ -135,6 +136,7 @@ import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 import ECEHeader from "@/components/ECEHeader.vue";
+import { IntervalTime } from "@/utils/constant";
 
 const PAGE_SIZE = 0;
 
@@ -159,6 +161,7 @@ export default defineComponent({
       programCount: -1,
       page: 1,
       loading: true,
+      pollInterval: 0 as any,
     };
   },
   computed: {
@@ -192,9 +195,25 @@ export default defineComponent({
       yearStart.setHours(0, 0, 0, 0);
       return yearStart;
     },
+    updateInProgress(): boolean {
+      this.programs.forEach((program: Components.Schemas.Program) => {
+        if( program.programProfileType == "ChangeRequest" &&
+            program.status == "Draft" &&
+            (program.readyForReview == null || !program.readyForReview )){
+              console.log("updateInProgress is true");
+              return true;
+        }
+      });
+      console.log("updateInProgress is false");
+      return false;
+    },
   },
   async mounted() {
     await this.fetchPrograms();
+    console.log(this.programs);
+    if (this.updateInProgress) {
+      this.startPolling();
+    }
     this.loading = false;
   },
   methods: {
@@ -203,8 +222,21 @@ export default defineComponent({
       const response = await getPrograms("", [], params);
       this.programs = response.data?.programs || [];
       this.programCount = response.data?.totalProgramsCount || 0;
-
-      globalThis.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    async startPolling() {
+      /* Poll the backend until the ready for review flag is set */
+      console.log("Start polling");
+      this.pollInterval = setInterval(async () => {
+        await this.fetchPrograms();
+        if (!this.updateInProgress) {
+          console.log("Stop polling");
+          /* Ready for review flag has been set. Stop polling. */
+          clearInterval(this.pollInterval);
+        }
+      }, IntervalTime.INTERVAL_10_SECONDS);
+      setTimeout(() => {
+        clearInterval(this.pollInterval);
+      }, IntervalTime.INTERVAL_10_SECONDS * 10);
     },
   },
 });

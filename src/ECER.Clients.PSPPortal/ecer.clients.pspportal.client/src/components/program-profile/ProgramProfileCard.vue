@@ -8,7 +8,7 @@
     <div class="d-flex justify-end">
       <v-row>
         <v-col></v-col>
-        <v-col v-if="showProgressMeter" class="d-flex justify-end">
+        <v-col v-if="updateInProgress" class="d-flex justify-end">
           <p>Loading...</p>
           <v-progress-circular
             indeterminate
@@ -128,8 +128,7 @@ import type { ProgramStage } from "@/types/wizard";
 import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
-import { getPrograms, withdrawProgram } from "@/api/program";
-import { IntervalTime } from "@/utils/constant";
+import { withdrawProgram } from "@/api/program";
 
 export default defineComponent({
   name: "ProgramProfileCard",
@@ -149,9 +148,6 @@ export default defineComponent({
     return {
       showWithdrawConfirmation: false,
       isWithdrawing: false,
-      updateInProgress: false as boolean,
-      updatedProgram: this.program as Components.Schemas.Program,
-      pollInterval: 0 as any,
     };
   },
   computed: {
@@ -223,43 +219,16 @@ export default defineComponent({
           return "Requires review";
       }
     },
-    showProgressMeter(): boolean {
-      return this.updateInProgress;
+    updateInProgress(): boolean {
+      if( this.program.programProfileType == "ChangeRequest" &&
+          this.program.status == "Draft" &&
+          !this.program.readyForReview ){
+            return true;
+      }
+      return false;
     },
-  },
-  async mounted() {
-    if (
-      this.updatedProgram.programProfileType == "ChangeRequest" &&
-      !this.updatedProgram.readyForReview
-    ) {
-      this.startPolling();
-    }
   },
   methods: {
-    async fetchProgram() {
-      const programId = this.program.id;
-      if (programId) {
-        const { data: response } = await getPrograms(programId);
-        if (response?.programs && response.programs[0]) {
-          this.updatedProgram = response.programs[0];
-        }
-      }
-    },
-    startPolling() {
-      /* Poll the backend until the ready for review flag is set */
-      this.updateInProgress = true;
-      this.pollInterval = setInterval(() => {
-        this.fetchProgram();
-        if (this.updatedProgram.readyForReview) {
-          /* Ready for review flag has been set. Stop polling. */
-          this.updateInProgress = false;
-          clearInterval(this.pollInterval);
-        }
-      }, IntervalTime.INTERVAL_10_SECONDS);
-      setTimeout(() => {
-        clearInterval(this.pollInterval);
-      }, IntervalTime.INTERVAL_10_SECONDS * 10);
-    },
     openProfile() {
       this.router.push({ path: "/program/" + this.program.id });
     },
