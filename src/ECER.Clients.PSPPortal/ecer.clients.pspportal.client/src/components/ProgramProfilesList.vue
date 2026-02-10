@@ -29,7 +29,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["withdrawn"],
   computed: {
     filteredPrograms(): Components.Schemas.Program[] {
       return this.programs.filter(shouldDisplayProfile);
