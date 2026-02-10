@@ -52,7 +52,9 @@
               <p class="small">Start date</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">{{ program?.startDate }}</p>
+              <p class="small font-weight-bold">
+                {{ formatDate(program?.startDate, "dd-MMM-yyyy") }}
+              </p>
             </v-col>
           </v-row>
           <v-row>
@@ -60,7 +62,9 @@
               <p class="small">End date</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">{{ program?.endDate }}</p>
+              <p class="small font-weight-bold">
+                {{ formatDate(program?.endDate, "dd-MMM-yyyy") }}
+              </p>
             </v-col>
           </v-row>
           <v-row>
@@ -101,16 +105,18 @@
       />
       <v-row v-if="showUpdateProgramProfileButton">
         <v-col color="primary">
-          <v-btn  rounded="lg" 
-                  color="primary" 
-                  @click="
-                    router.push({
-                      name: 'initiate-program-update',
-                      params: { programId: program.id },
-                    });
-                    "
-                  >Update program profile
-                </v-btn>
+          <v-btn
+            rounded="lg"
+            color="primary"
+            @click="
+              router.push({
+                name: 'initiate-program-update',
+                params: { programId: program.id },
+              })
+            "
+          >
+            Update program profile
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -126,6 +132,7 @@ import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
 import { getPrograms } from "@/api/program";
 import { DateTime } from "luxon";
+import { formatDate } from "@/utils/format";
 
 import Loading from "./Loading.vue";
 import ProgramDetailAreaOfInstructionCard from "./ProgramDetailAreaOfInstructionCard.vue";
@@ -202,12 +209,13 @@ export default defineComponent({
     },
     chosenProgram(): Components.Schemas.Program {
       return this.program;
-    }
+    },
   },
   methods: {
     printPage() {
       globalThis.print();
     },
+    formatDate,
   },
 });
 </script>

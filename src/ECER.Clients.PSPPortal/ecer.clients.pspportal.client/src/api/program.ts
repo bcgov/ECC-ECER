@@ -70,6 +70,7 @@ const updateCourse = async (
   };
   const body: Paths.CoursePut.RequestBody = {
     courses: courses,
+    type: "ProgramProfile",
   };
 
   return apiResultHandler.execute<string | null | undefined>({
@@ -125,7 +126,7 @@ const initiateProgramChange = async (
     request: client.changeprogram_put(pathParameters, body),
     key: "changeprogram_put",
   });
-}
+};
 
 export {
   createOrUpdateDraftApplication,
@@ -133,5 +134,5 @@ export {
   submitDraftProgramApplication,
   updateCourse,
   withdrawProgram,
-  initiateProgramChange
+  initiateProgramChange,
 };

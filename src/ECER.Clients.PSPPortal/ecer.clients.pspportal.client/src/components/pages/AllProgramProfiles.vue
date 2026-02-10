@@ -1,0 +1,100 @@
+<template>
+  <PageContainer>
+    <v-row>
+      <v-col cols="12">
+        <Breadcrumb />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <h1>All Program Profiles</h1>
+      </v-col>
+    </v-row>
+
+    <Loading v-if="isLoading"></Loading>
+
+    <div v-else>
+      <v-row>
+        <v-col>
+          <p>
+            This page contains program profiles for your institution dating back
+            to {{ earliestProfileYear }}.
+          </p>
+        </v-col>
+      </v-row>
+      <ProgramProfilesList
+        :programs="allProgramProfiles"
+        @withdrawn="fetchPrograms"
+      />
+      <!-- Empty state -->
+      <v-row v-if="allProgramProfiles.length === 0">
+        <v-col cols="12">
+          <p>No program profiles found.</p>
+        </v-col>
+      </v-row>
+    </div>
+  </PageContainer>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import PageContainer from "@/components/PageContainer.vue";
+import Loading from "@/components/Loading.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
+import ProgramProfilesList from "@/components/ProgramProfilesList.vue";
+import { getPrograms } from "@/api/program";
+import { useLoadingStore } from "@/store/loading";
+import type { Components } from "@/types/openapi";
+import ECEHeader from "@/components/ECEHeader.vue";
+import { EARLIEST_PROFILE_YEAR } from "@/utils/constant";
+
+const PAGE_SIZE = 0;
+
+export default defineComponent({
+  name: "AllProgramProfiles",
+  components: {
+    ECEHeader,
+    PageContainer,
+    Loading,
+    Breadcrumb,
+    ProgramProfilesList,
+  },
+  setup() {
+    const loadingStore = useLoadingStore();
+    return { loadingStore };
+  },
+  data() {
+    return {
+      programs: [] as Components.Schemas.Program[],
+      page: 1,
+      loading: true,
+    };
+  },
+  computed: {
+    isLoading(): boolean {
+      return this.loadingStore.isLoading("program_get") || this.loading;
+    },
+    allProgramProfiles(): Components.Schemas.Program[] {
+      return this.programs.filter(
+        (p) => p.status !== "Withdrawn" && p.status !== "Denied",
+      );
+    },
+    earliestProfileYear(): number {
+      return EARLIEST_PROFILE_YEAR;
+    },
+  },
+  async mounted() {
+    await this.fetchPrograms();
+    this.loading = false;
+  },
+  methods: {
+    async fetchPrograms(page: number = 1) {
+      const params = { page, pageSize: PAGE_SIZE };
+      const response = await getPrograms("", [], params);
+      this.programs = response.data?.programs || [];
+
+      globalThis.scrollTo({ top: 0, behavior: "smooth" });
+    },
+  },
+});
+</script>

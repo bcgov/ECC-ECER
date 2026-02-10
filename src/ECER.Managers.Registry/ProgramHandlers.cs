@@ -15,7 +15,6 @@ public class ProgramHandlers(
     IProgramValidationEngineResolver validationResolver)
   : IRequestHandler<SaveDraftProgramCommand, Contract.Programs.Program?>,
     IRequestHandler<ProgramsQuery, ProgramsQueryResults>,
-    IRequestHandler<UpdateCourseCommand, string>,
     IRequestHandler<UpdateProgramCommand, string>,
     IRequestHandler<SubmitProgramCommand, SubmitProgramResult>,
     IRequestHandler<ChangeProgramCommand, string>
@@ -35,13 +34,6 @@ public class ProgramHandlers(
     var program = result.Programs?.SingleOrDefault();
 
     return mapper.Map<Contract.Programs.Program>(program);
-  }
-
-  public async Task<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
-  {
-    ArgumentNullException.ThrowIfNull(request);
-    var programId = await programRepository.UpdateCourse(mapper.Map<IEnumerable<Resources.Documents.Programs.Course>>(request.Course)!, request.Id, cancellationToken);
-    return programId;
   }
 
   public async Task<ProgramsQueryResults> Handle(ProgramsQuery request, CancellationToken cancellationToken)

@@ -5,6 +5,7 @@ using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.PortalInvitations;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
+using ECER.Resources.Documents.Courses;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
 using ECER.Resources.Documents.ProgramApplications;
 using ECER.Resources.Documents.Programs;
@@ -22,6 +23,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<ICRA.IICRARepository, ICRA.ICRARepository>();
     configurationContext.Services.AddTransient<IPostSecondaryInstituteRepository, PostSecondaryInstituteRepository>();
     configurationContext.Services.AddTransient<IProgramRepository, ProgramRepository>();
+    configurationContext.Services.AddTransient<ICourseRepository, CourseRepository>();
     configurationContext.Services.AddTransient<IProgramApplicationRepository, ProgramApplicationRepository>();
   }
 }

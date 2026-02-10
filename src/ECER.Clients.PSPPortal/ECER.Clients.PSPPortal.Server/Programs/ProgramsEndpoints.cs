@@ -14,9 +14,9 @@ using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
 using ContractProgramProfileType = ECER.Managers.Registry.Contract.Programs.ProgramProfileType;
 using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQuery;
 using ContractProgramStatus = ECER.Managers.Registry.Contract.Programs.ProgramStatus;
+using Course = ECER.Clients.PSPPortal.Server.Shared.Course;
 using SaveDraftProgramCommand = ECER.Managers.Registry.Contract.Programs.SaveDraftProgramCommand;
 using SubmitProgramCommand = ECER.Managers.Registry.Contract.Programs.SubmitProgramCommand;
-using UpdateCourseCommand = ECER.Managers.Registry.Contract.Programs.UpdateCourseCommand;
 using UpdateProgramCommand = ECER.Managers.Registry.Contract.Programs.UpdateProgramCommand;
 
 namespace ECER.Clients.PSPPortal.Server.Programs;
@@ -94,34 +94,6 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .WithOpenApi("Handles program queries", string.Empty, "program_get")
     .RequireAuthorization(PolicyNames)
     .WithParameterValidation();
-
-    endpointRouteBuilder.MapPut("/api/program/{id}/courses", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, UpdateCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
-      {
-        if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
-        bool IdIsNotGuid = !Guid.TryParse(id, out _);
-
-        if (IdIsNotGuid) return TypedResults.BadRequest("invalid program profile id");
-
-        var userContext = ctx.User.GetUserContext()!;
-        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
-        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
-
-        var results = await messageBus.Send(new ContractProgramsQuery
-        {
-          ById = id,
-          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
-          ByStatus = new[] { ContractProgramStatus.Draft }
-        }, ct);
-
-        if (!results.Items.Any()) return TypedResults.NotFound();
-        var mappedCourses = mapper.Map<IEnumerable<Managers.Registry.Contract.Programs.Course>>(request.Courses);
-
-        var result = await messageBus.Send(new UpdateCourseCommand(mappedCourses, id), ct);
-        return TypedResults.Ok(result);
-      })
-      .WithOpenApi("Update a course for a program profile", string.Empty, "course_put")
-      .RequireAuthorization(PolicyNames)
-      .WithParameterValidation();
 
     endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
@@ -222,33 +194,9 @@ public class ProgramsEndpoints : IRegisterEndpoints
 
 public record SaveDraftProgramRequest(Program Program);
 
-public record UpdateCourseRequest(IEnumerable<Course>? Courses);
-
 public record DraftProgramResponse(Program Program);
 
 public record SubmitProgramRequest(string ProgramId);
-
-public record CourseAreaOfInstruction
-{
-  public string CourseAreaOfInstructionId { get; set; } = null!;
-  public string? NewHours { get; set; }
-  public string AreaOfInstructionId { get; set; } = null!;
-}
-
-public record Course
-{
-  [Required]
-  public string CourseId { get; set; } = null!;
-  [Required]
-  public string CourseNumber { get; set; } = null!;
-  [Required]
-  public string CourseTitle { get; set; } = null!;
-  public string? NewCourseNumber { get; set; }
-  public string? NewCourseTitle { get; set; }
-  public IEnumerable<CourseAreaOfInstruction>? CourseAreaOfInstruction { get; set; }
-  [Required]
-  public string ProgramType { get; set; } = null!;
-}
 
 public record Program
 {
@@ -269,7 +217,7 @@ public record Program
   public string? DeclarationUserName { get; set; }
   public ProgramProfileType ProgramProfileType { get; set; }
   public IEnumerable<ProgramTypes>? ProgramTypes { get; set; }
-  public IEnumerable<string>? OfferedProgramTypes { get; set; }
+  public IEnumerable<ProgramTypes>? OfferedProgramTypes { get; set; }
   public IEnumerable<Course>? Courses { get; set; }
   public bool ChangesMade { get; set; }
   public string? FromProgramProfileId { get; set; }
