@@ -68,6 +68,12 @@ internal sealed class ProgramRepository : IProgramRepository
       results = results.Where(p => p.StatusCode != null && statuses.Contains(p.StatusCode.Value)).ToList();
     }
 
+    if (query.ByFromProgramProfileId != null)
+    {
+      var fromProgramProfileId = Guid.Parse(query.ByFromProgramProfileId);
+      results = results.Where(p => p.ecer_FromProgramProfileId != null && p.ecer_FromProgramProfileId.Id == fromProgramProfileId).ToList();
+    }
+
     return new ProgramResult
     {
       Programs = mapper.Map<IEnumerable<Program>>(results)!,
@@ -167,15 +173,15 @@ internal sealed class ProgramRepository : IProgramRepository
     if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
 
     program.ecer_DeclarationDate = DateTime.Now;
-    
+
     var firstName = pspUser!.ecer_FirstName?.Trim() ?? string.Empty;
     var lastName = pspUser.ecer_LastName?.Trim() ?? string.Empty;
     program.ecer_UserName = $"{firstName} {lastName}".Trim();
-    
+
     program.StatusCode = ecer_Program_StatusCode.UnderRegistryReview;
     context.UpdateObject(program);
     context.AddLink(pspUser, ecer_Program.Fields.ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative, program);
-    
+
     context.SaveChanges();
     return id;
   }

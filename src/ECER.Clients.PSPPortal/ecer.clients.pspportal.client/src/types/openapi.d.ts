@@ -210,7 +210,7 @@ declare namespace Components {
       declarationUserName?: string | null;
       programProfileType?: ProgramProfileType;
       programTypes?: ProgramTypes[] | null;
-      offeredProgramTypes?: string[] | null;
+      offeredProgramTypes?: ProgramTypes[] | null;
       courses?: Course[] | null;
       changesMade?: boolean;
       fromProgramProfileId?: string | null;
@@ -478,6 +478,7 @@ declare namespace Paths {
   namespace ProgramGet {
     namespace Parameters {
       export type ByStatus = Components.Schemas.ProgramStatus[];
+      export type FromProgramId = string;
       export type Id = string;
     }
     export interface PathParameters {
@@ -485,6 +486,7 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       byStatus?: Parameters.ByStatus;
+      fromProgramId?: Parameters.FromProgramId;
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetProgramsResponse;
