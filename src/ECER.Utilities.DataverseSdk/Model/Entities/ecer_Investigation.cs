@@ -456,6 +456,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_functiontwodName = "ecer_functiontwodname";
 			public const string ecer_FunctionTwoE = "ecer_functiontwoe";
 			public const string ecer_functiontwoeName = "ecer_functiontwoename";
+			public const string ecer_GenerateTemplateContent = "ecer_generatetemplatecontent";
+			public const string ecer_generatetemplatecontentName = "ecer_generatetemplatecontentname";
 			public const string ecer_HasComplainantBeenInformedForContact = "ecer_hascomplainantbeeninformedforcontact";
 			public const string ecer_hascomplainantbeeninformedforcontactName = "ecer_hascomplainantbeeninformedforcontactname";
 			public const string ecer_health_authorities = "ecer_health_authorities";
@@ -3406,6 +3408,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_functiontwoe"))
 				{
 					return this.FormattedValues["ecer_functiontwoe"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatetemplatecontent")]
+		public System.Nullable<bool> ecer_GenerateTemplateContent
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_generatetemplatecontent");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generatetemplatecontent", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatetemplatecontentname")]
+		public string ecer_generatetemplatecontentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generatetemplatecontent"))
+				{
+					return this.FormattedValues["ecer_generatetemplatecontent"];
 				}
 				else
 				{
