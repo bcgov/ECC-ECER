@@ -12,10 +12,10 @@ public class CoursesHandler(
   ICourseRepository courseRepository,
   IProgramApplicationRepository  programApplicationRepository,
   IMapper mapper)
-: IRequestHandler<UpdateCommand, string>, 
-  IRequestHandler<SaveCommand, string>
+: IRequestHandler<UpdateCourseCommand, string>, 
+  IRequestHandler<SaveCourseCommand, string>
 {
-  public async Task<string> Handle(UpdateCommand request, CancellationToken cancellationToken)
+  public async Task<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);
@@ -48,7 +48,7 @@ public class CoursesHandler(
     throw new InvalidOperationException("Operation not allowed");
   }
   
-  public async Task<string> Handle(SaveCommand request, CancellationToken cancellationToken)
+  public async Task<string> Handle(SaveCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);

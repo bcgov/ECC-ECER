@@ -28,7 +28,7 @@ public class CoursesEndpoint : IRegisterEndpoints
         
         var mappedCourses = mapper.Map<IEnumerable<Managers.Registry.Contract.Shared.Course>>(request.Courses);
 
-        var result = await messageBus.Send(new UpdateCommand(mappedCourses, id, request.Type.ToString(), programRep.PostSecondaryInstituteId), ct);
+        var result = await messageBus.Send(new UpdateCourseCommand(mappedCourses, id, request.Type.ToString(), programRep.PostSecondaryInstituteId), ct);
         return TypedResults.Ok(result);
       })
       .WithOpenApi("Update a course for a program profile", string.Empty, "course_put")
@@ -42,7 +42,7 @@ public class CoursesEndpoint : IRegisterEndpoints
 
         if (IdIsNotGuid) return TypedResults.BadRequest("invalid id");
 
-        if (request.Type == FunctionType.ProgramProfile) return TypedResults.BadRequest("Adding courses not allowed");
+        if (request.Type == FunctionType.ProgramProfile) return TypedResults.BadRequest("User cannot add courses for a Program Profile");
 
         var existing = await messageBus.Send(new ProgramApplicationQuery { ById = id }, ct);
         if (!existing.Items.Any()) return TypedResults.NotFound();
@@ -51,9 +51,9 @@ public class CoursesEndpoint : IRegisterEndpoints
         var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
         if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
         
-        var mappedCourses = mapper.Map<Managers.Registry.Contract.Shared.Course>(request.Course);
+        var mappedCourse = mapper.Map<Managers.Registry.Contract.Shared.Course>(request.Course);
 
-        var result = await messageBus.Send(new SaveCommand(mappedCourses, id, programRep.PostSecondaryInstituteId), ct);
+        var result = await messageBus.Send(new SaveCourseCommand(mappedCourse, id, programRep.PostSecondaryInstituteId), ct);
         return TypedResults.Ok(result);
       })
       .WithOpenApi("Add a course for a program profile", string.Empty, "course_post")
