@@ -20,16 +20,11 @@
       <p class="font-weight-bold">{{ programType }}</p>
       <p class="mt-2">DELIVERY TYPE:</p>
       <p class="font-weight-bold">{{ deliveryType }}</p>
-
     </div>
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
       <v-row>
-        <v-btn
-          size="large"
-          variant="outlined"
-          color="primary"
-        >
+        <v-btn size="large" variant="outlined" color="primary">
           {{ buttonText }}
         </v-btn>
       </v-row>
@@ -43,7 +38,12 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
-import { mapProgramStatus, mapApplicationType, mapDeliveryType, mapProgramType } from "@/api/program-application";
+import {
+  mapProgramStatus,
+  mapApplicationType,
+  mapDeliveryType,
+  mapProgramType,
+} from "@/api/program-application";
 
 export default defineComponent({
   name: "ProgramApplicationCard",
@@ -60,34 +60,35 @@ export default defineComponent({
   },
   emits: [],
   data() {
-    return {
-
-    };
+    return {};
   },
   computed: {
     applicationType(): string {
-      return this.programApplication.programApplicationType 
-      ? mapApplicationType(this.programApplication.programApplicationType) 
-      : "-";
+      return this.programApplication.programApplicationType
+        ? mapApplicationType(this.programApplication.programApplicationType)
+        : "-";
     },
     programName(): string {
       return this.programApplication.programApplicationName || "—";
     },
-    deliveryType() : string {
-      return this.programApplication.deliveryType 
-      ? mapDeliveryType(this.programApplication.deliveryType)
-      : "—";
+    deliveryType(): string {
+      return this.programApplication.deliveryType
+        ? mapDeliveryType(this.programApplication.deliveryType)
+        : "—";
     },
     programType(): string {
-      return this.programApplication.programType 
-      ? mapProgramType(this.programApplication.programType) 
-      : "-"
+      return this.programApplication.programType
+        ? mapProgramType(this.programApplication.programType)
+        : "-";
     },
     status(): string {
       return this.programApplication.status || "Draft";
     },
     buttonText(): string {
-      if(this.programApplication.status === "Draft" || this.programApplication.status === "RFAI") {
+      if (
+        this.programApplication.status === "Draft" ||
+        this.programApplication.status === "RFAI"
+      ) {
         return "Edit";
       }
       return "View";

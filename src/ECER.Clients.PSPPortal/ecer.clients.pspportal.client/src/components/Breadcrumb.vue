@@ -79,7 +79,7 @@ export default defineComponent({
             title: "Program applications",
             disabled: true,
             href: "/program-applications",
-          }
+          },
         ];
       }
       if (this.route.name === "all-program-profiles") {

@@ -13,7 +13,9 @@ const getProgramApplications = async (
   id: string = "",
   statuses: Components.Schemas.ApplicationStatus[] = [],
 ): Promise<
-  ApiResponse<Components.Schemas.GetProgramApplicationResponse | null | undefined>
+  ApiResponse<
+    Components.Schemas.GetProgramApplicationResponse | null | undefined
+  >
 > => {
   const client = await getClient();
 
@@ -36,7 +38,7 @@ const getProgramApplications = async (
   );
 };
 
-const mapProgramStatus = (status: string ="") : string => {
+const mapProgramStatus = (status: string = ""): string => {
   switch (status) {
     case "Draft":
       return "Draft";
@@ -61,7 +63,7 @@ const mapProgramStatus = (status: string ="") : string => {
   }
 };
 
-const mapApplicationType = (type: string ="") : string => {
+const mapApplicationType = (type: string = ""): string => {
   switch (type) {
     case "PrivateNewCampusLocation":
       return "New campus";
@@ -78,7 +80,7 @@ const mapApplicationType = (type: string ="") : string => {
   }
 };
 
-const mapDeliveryType = (type: string ="") : string => {
+const mapDeliveryType = (type: string = ""): string => {
   switch (type) {
     case "Hybrid":
       return "Hybrid";
@@ -95,7 +97,7 @@ const mapDeliveryType = (type: string ="") : string => {
   }
 };
 
-const mapProgramType = (type: string ="") : string => {
+const mapProgramType = (type: string = ""): string => {
   switch (type) {
     case "ECEBasic":
       return "ECE (Basic)";
@@ -115,5 +117,5 @@ export {
   mapProgramStatus,
   mapApplicationType,
   mapDeliveryType,
-  mapProgramType
+  mapProgramType,
 };
