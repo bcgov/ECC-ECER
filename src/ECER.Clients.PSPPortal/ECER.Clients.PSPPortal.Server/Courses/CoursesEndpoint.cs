@@ -1,12 +1,12 @@
-using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
+using ECER.Managers.Registry.Contract.Courses;
+using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using UpdateCourseCommand = ECER.Managers.Registry.Contract.Courses.UpdateCourseCommand;
 
 namespace ECER.Clients.PSPPortal.Server.Courses;
 
@@ -28,16 +28,43 @@ public class CoursesEndpoint : IRegisterEndpoints
         
         var mappedCourses = mapper.Map<IEnumerable<Managers.Registry.Contract.Shared.Course>>(request.Courses);
 
-        var result = await messageBus.Send(new UpdateCourseCommand(mappedCourses, id, request.Type.ToString(), programRep.PostSecondaryInstituteId), ct);
+        var result = await messageBus.Send(new UpdateCommand(mappedCourses, id, request.Type.ToString(), programRep.PostSecondaryInstituteId), ct);
         return TypedResults.Ok(result);
       })
       .WithOpenApi("Update a course for a program profile", string.Empty, "course_put")
+      .RequireAuthorization(PolicyNames)
+      .WithParameterValidation();
+    
+    endpointRouteBuilder.MapPost("/api/courses/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, AddCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+      {
+        if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("id cannot be null or whitespace");
+        bool IdIsNotGuid = !Guid.TryParse(id, out _);
+
+        if (IdIsNotGuid) return TypedResults.BadRequest("invalid id");
+
+        if (request.Type == FunctionType.ProgramProfile) return TypedResults.BadRequest("Adding courses not allowed");
+
+        var existing = await messageBus.Send(new ProgramApplicationQuery { ById = id }, ct);
+        if (!existing.Items.Any()) return TypedResults.NotFound();
+
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+        
+        var mappedCourses = mapper.Map<Managers.Registry.Contract.Shared.Course>(request.Course);
+
+        var result = await messageBus.Send(new SaveCommand(mappedCourses, id, programRep.PostSecondaryInstituteId), ct);
+        return TypedResults.Ok(result);
+      })
+      .WithOpenApi("Add a course for a program profile", string.Empty, "course_post")
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
   }
 }
 
 public record UpdateCourseRequest(IEnumerable<Course>? Courses, FunctionType Type);
+
+public record AddCourseRequest(Course? Course, FunctionType Type);
 
 public enum FunctionType
 {

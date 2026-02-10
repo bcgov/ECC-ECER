@@ -3,7 +3,8 @@ using MediatR;
 
 namespace ECER.Managers.Registry.Contract.Courses;
 
-public record UpdateCourseCommand(IEnumerable<Course> Course, string Id, string Type, string PostSecondaryInstituteId) : IRequest<string>;
+public record UpdateCommand(IEnumerable<Course> Course, string Id, string Type, string PostSecondaryInstituteId) : IRequest<string>;
+public record SaveCommand(Course Course, string Id, string PostSecondaryInstituteId) : IRequest<string>;
 
 public enum FunctionType
 {
