@@ -160,6 +160,44 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .WithOpenApi("Adds a new psp user to an institution", string.Empty, "psp_user_add")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
+
+    endpointRouteBuilder.MapPut("api/users/manage/{programRepId}/resend",
+      async Task<Results<Ok, NotFound, BadRequest<string>>> (string programRepId, HttpContext ctx, CancellationToken ct, IMediator bus) =>
+      {
+        if (!Guid.TryParse(programRepId, out _))
+        {
+          return TypedResults.BadRequest("Program reprepresentative id not a valid guid");
+        }
+
+        var user = ctx.User.GetUserContext()!;
+        var currentRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = user.Identity }, ct)).Items.SingleOrDefault();
+        if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
+        {
+          return TypedResults.NotFound();
+        }
+
+        var targetRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ById = programRepId }, ct)).Items.SingleOrDefault();
+        if (targetRep == null || targetRep.PostSecondaryInstituteId != currentRep.PostSecondaryInstituteId)
+        {
+          return TypedResults.BadRequest($"Program representative not found or does not belong to user's institute {currentRep.PostSecondaryInstituteId}");
+        }
+
+        if (targetRep.AccessToPortal == ContractPortalAccessStatus.Active)
+        {
+          return TypedResults.BadRequest($"Program representative {targetRep.Id} already has portal access");
+        }
+
+        if (targetRep.AccessToPortal == ContractPortalAccessStatus.Disabled)
+        {
+          return TypedResults.BadRequest($"Program representative {targetRep.Id} already is in disabled state");
+        }
+
+        await bus.Send(new ResendPspRepInviteCommand(programRepId, user.UserId), ct);
+        return TypedResults.Ok();
+      })
+      .WithOpenApi("Resends a portal invitation for PSP representative within the current user's institution", string.Empty, "psp_user_manage_resend_invitation_put")
+      .RequireAuthorization("psp_user")
+      .WithParameterValidation();
   }
 }
 

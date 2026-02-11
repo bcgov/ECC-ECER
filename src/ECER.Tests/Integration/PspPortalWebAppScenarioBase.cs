@@ -30,8 +30,10 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_ECEProgramRepresentative secondaryProgramRepresentative = null!;
   private ecer_ECEProgramRepresentative tertiaryProgramRepresentative = null!;
   private ecer_ECEProgramRepresentative inactiveProgramRepresentative = null!;
+  private ecer_ECEProgramRepresentative inactiveProgramRepresentativeDoesNotChange = null!;
   private ecer_PostSecondaryInstitute otherPostSecondaryInstitute = null!;
   private ecer_ECEProgramRepresentative otherInstituteRepresentative = null!;
+  private ecer_ECEProgramRepresentative invitedPspUserToReinvite = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private ecer_ProvincialRequirement testAreaOfInstruction = null!;
   private UserIdentity testPspIdentity = null!;
@@ -56,7 +58,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string SecondaryPspUserId => secondaryProgramRepresentative.Id.ToString();
   public string TertiaryPspUserId => tertiaryProgramRepresentative.Id.ToString();
   public string InactivePspUserId => inactiveProgramRepresentative.Id.ToString();
+  public string InactiveProgramRepresentativeDoesNotChangeId => inactiveProgramRepresentativeDoesNotChange.Id.ToString(); //this program representative will not change from disabled state. Useful for negative regression testing
   public string OtherInstitutePspUserId => otherInstituteRepresentative.Id.ToString();
+  public string InvitedPspUserToReinviteId => invitedPspUserToReinvite.Id.ToString();
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
@@ -105,8 +109,10 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     secondaryProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_secondary", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
     tertiaryProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_tertiary", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     inactiveProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_inactive", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Disabled);
+    inactiveProgramRepresentativeDoesNotChange = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_inactive_does_not_change", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Disabled);
     otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, $"{TestRunId}psp_institute_other");
     otherInstituteRepresentative = GetOrAddProgramRepresentative(context, otherPostSecondaryInstitute, $"{TestRunId}psp_rep_other", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
+    invitedPspUserToReinvite = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_reinvite", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
     testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
     testAreaOfInstruction = GetOrAddAreaOfInstruction(context);
 
