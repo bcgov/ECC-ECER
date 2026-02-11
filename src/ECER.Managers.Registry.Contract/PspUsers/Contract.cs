@@ -107,3 +107,8 @@ public record ReactivatePspRepCommand(string ProgramRepresentativeId, string psp
 /// Request to set a PSP program representative as Primary for their institution
 /// </summary>
 public record SetPrimaryPspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
+
+/// <summary>
+/// Request to set a PSP program representative as Primary for their institution
+/// </summary>
+public record ResendPspRepInviteCommand(string ProgramRepresentativeId, string pspRepId) : IRequest<string>;

@@ -179,7 +179,8 @@ export default defineComponent({
         this.loadingStore.isLoading("psp_user_manage_get") ||
         this.loadingStore.isLoading("psp_user_manage_deactivate_post") ||
         this.loadingStore.isLoading("psp_user_manage_reactivate_post") ||
-        this.loadingStore.isLoading("psp_user_manage_set_primary_post")
+        this.loadingStore.isLoading("psp_user_manage_set_primary_post") ||
+        this.loadingStore.isLoading("psp_user_manage_resend_invitation_put")
       );
     },
   },
