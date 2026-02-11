@@ -304,8 +304,9 @@ declare namespace Components {
       programId?: string | null;
     }
     export interface UpdateCourseRequest {
-      courses?: Course[] | null;
+      course?: Course;
       type?: FunctionType;
+      id?: string | null;
     }
     export interface VersionMetadata {
       version?: string | null;
@@ -362,10 +363,10 @@ declare namespace Paths {
   }
   namespace CoursePut {
     namespace Parameters {
-      export type Id = string;
+      export type CourseId = string;
     }
     export interface PathParameters {
-      id: Parameters.Id;
+      courseId: Parameters.CourseId;
     }
     export type RequestBody = Components.Schemas.UpdateCourseRequest;
     namespace Responses {
@@ -1099,7 +1100,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
   };
-  ["/api/courses/{id}"]: {
+  ["/api/courses/{courseId}"]: {
     /**
      * course_put - Update a course for a program profile
      */
