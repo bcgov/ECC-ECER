@@ -31,7 +31,7 @@ public class CoursesHandler(
       
       if (!programProfile.Programs!.Any()) throw new InvalidOperationException($"Program profile with '{request.Id}' not found");
       
-      var programId = await courseRepository.UpdateCourse(mapper.Map<IEnumerable<Resources.Documents.Shared.Course>>(request.Course)!, request.Id, false, cancellationToken);
+      var programId = await courseRepository.UpdateCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, false, cancellationToken);
       return programId;
     } else if (request.Type == nameof(FunctionType.ProgramApplication))
     {
@@ -42,7 +42,7 @@ public class CoursesHandler(
         }, cancellationToken);
       if (!programApplication.Items!.Any()) throw new InvalidOperationException($"Program application with '{request.Id}' not found");
       
-      var programId = await courseRepository.UpdateCourse(mapper.Map<IEnumerable<Resources.Documents.Shared.Course>>(request.Course)!, request.Id, true, cancellationToken);
+      var programId = await courseRepository.UpdateCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, true, cancellationToken);
       return programId;
     }
     throw new InvalidOperationException("Operation not allowed");

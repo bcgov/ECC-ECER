@@ -297,10 +297,11 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       .Where(ai => ai.ProgramTypes.Contains(ProgramTypes.SNE))
       .ToList();
 
+    var course = CreateCourseWithCourseAreaOfInstructionsAndHours(allSneInstructions);
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(new[] { CreateCourseWithCourseAreaOfInstructionsAndHours(allSneInstructions) }, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.submitProgramId}");
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.submitProgramId)).ToUrl($"/api/courses/{course.CourseId}");
       _.StatusCodeShouldBeOk();
     });
 
