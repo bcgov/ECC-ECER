@@ -150,6 +150,23 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     context.SaveChanges();
   }
 
+  public async Task ResendInvitation(string pspUserId, string pspRepId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    if (!Guid.TryParse(pspUserId, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {pspUserId} is not a valid GUID");
+
+    var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
+    if (pspUser == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} not found");
+
+    var pspRep = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(pspRepId));
+    if (pspRep == null) throw new InvalidOperationException($"psp representative with id {pspRepId} not found");
+
+    pspUser.ecer_InvitetoPortal = true;
+    setAddedByUserRepField(pspRep, pspUser);
+    context.UpdateObject(pspUser);
+    context.SaveChanges();
+  }
+
   public async Task SetPrimary(string pspUserId, CancellationToken ct)
   {
     await Task.CompletedTask;

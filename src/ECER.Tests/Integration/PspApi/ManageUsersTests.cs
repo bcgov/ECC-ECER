@@ -91,7 +91,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
-      _.Post.Url($"/api/users/manage/{Fixture.SecondaryPspUserId}/set-primary");
+      _.Post.Url($"/api/users/manage/{Fixture.InactiveProgramRepresentativeDoesNotChangeId}/set-primary");
       _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
     });
 
@@ -203,5 +203,34 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     newUser.Profile.Role.ShouldBe(RepoPspUserRole.Secondary);
 
     await unitTestRepository.DeletePspRep(result.Id, CancellationToken.None);
+  }
+
+  [Fact]
+  public async Task ResendInvitationUser_DifferentInstitution_InactiveProgramRep_ReturnsBadRequest()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Put.Url($"/api/users/manage/{Fixture.OtherInstitutePspUserId}/resend");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
+    });
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Put.Url($"/api/users/manage/{Fixture.InactiveProgramRepresentativeDoesNotChangeId}/resend");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
+  public async Task ResendInvitation_ProgramRep_ReturnsOk()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Put.Url($"/api/users/manage/{Fixture.InvitedPspUserToReinviteId}/resend");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.OK);
+    });
   }
 }
