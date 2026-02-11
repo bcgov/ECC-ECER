@@ -40,6 +40,7 @@
       :show="showEditCourseDialog"
       :program-type="programType"
       :course="selectedCourse"
+      :courseList="program?.courses || []"
       :saving="saving"
       @save="handleCourseSave"
       @cancel="
