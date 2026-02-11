@@ -15,43 +15,37 @@ internal sealed class CourseRepository : ICourseRepository
     this.context = context;
   }
 
-  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id,
-    CancellationToken cancellationToken)
+  public async Task<string> UpdateCourse(Course course, string id, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
+    var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(course.CourseId));
 
-    foreach (var course in incomingCourse)
+    var courseExists = context.From(courses)
+      .Join()
+      .Include(c => c.ecer_courseprovincialrequirement_CourseId)
+      .Execute()
+      .SingleOrDefault();
+
+    if (courseExists != null)
     {
-      var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(course.CourseId));
-
-      var courseExists = context.From(courses)
-        .Join()
-        .Include(c => c.ecer_courseprovincialrequirement_CourseId)
-        .Execute()
-        .SingleOrDefault();
-
-      if (courseExists != null)
+      if (!context.IsAttached(courseExists))
       {
-        if (!context.IsAttached(courseExists))
-        {
-          context.Attach(courseExists);
-        }
-
-        UpdateCourseMetaData(course, courseExists, id);
-        if (course.CourseAreaOfInstruction != null)
-        {
-          foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
-          {
-            ManageAreaOfInstruction(areaOfInstruction, courseExists);
-          }
-        }
+        context.Attach(courseExists);
       }
-      else
+
+      UpdateCourseMetaData(course, courseExists, id);
+      if (course.CourseAreaOfInstruction != null)
       {
-        throw new InvalidOperationException($"Course not found");
+        foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
+        {
+          ManageAreaOfInstruction(areaOfInstruction, courseExists);
+        }
       }
     }
-
+    else
+    {
+      throw new InvalidOperationException($"Course not found");
+    }
     context.SaveChanges();
     return id;
   }

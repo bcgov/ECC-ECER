@@ -19,12 +19,12 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   [Fact]
   public async Task UpdateCourses_ReturnsStatusInvalidOperation()
   {
-    var course = new[] { CreateCourse(101, "201" )};
+    var course = CreateCourse(101, "109" );
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile))
-        .ToUrl($"/api/courses/{Fixture.programId}");
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.programId))
+        .ToUrl($"/api/courses/{course.CourseId}");
       _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
   }
@@ -32,11 +32,11 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   [Fact]
   public async Task UpdateCourses_ReturnsStatusOk()
   {
-    var course = new[] { CreateCourse(101, "") };
+    var course = CreateCourse(101, "");
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.programId}");
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.programId)).ToUrl($"/api/courses/{course.CourseId}");
       _.StatusCodeShouldBeOk();
     });
     
@@ -57,17 +57,18 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.ElementAt(0).CourseNumber.ShouldBe("101");
     firstProfile.Courses.ElementAt(0).CourseTitle.ShouldBe("Course 101");
-    firstProfile.Courses.ElementAt(0).NewCourseNumber.ShouldBe(course[0].NewCourseNumber);
+    firstProfile.Courses.ElementAt(0).NewCourseNumber.ShouldBe(course.NewCourseNumber);
     firstProfile.Courses.ElementAt(0).NewCourseTitle.ShouldBe("Course 102");
   }
   
   [Fact]
   public async Task UpdateCourses_With_AreaOfInstructions_ReturnsStatusOk()
   {
+    var course = CreateCourseWithCourseAreaOfInstructions();
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(new []{ CreateCourseWithCourseAreaOfInstructions() }, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.programId}");
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.programId)).ToUrl($"/api/courses/{course.CourseId}");
       _.StatusCodeShouldBeOk();
     });
     
