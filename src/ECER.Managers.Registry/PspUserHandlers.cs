@@ -167,7 +167,7 @@ public class PspUserHandlers(
       throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} already has portal access or is in disabled state");
     }
 
-    await pspRepRepository.Reactivate(request.ProgramRepresentativeId, request.pspRepId, cancellationToken);
+    await pspRepRepository.ResendInvitation(request.ProgramRepresentativeId, request.pspRepId, cancellationToken);
 
     return request.ProgramRepresentativeId;
   }
