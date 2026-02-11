@@ -17,11 +17,13 @@ internal sealed class CourseRepository : ICourseRepository
     this.mapper = mapper;
   }
 
-  public async Task<string> DeleteCourse(string courseId, CancellationToken cancellationToken)
+  public async Task<string> DeleteCourse(string courseId, string postSecondaryInstituteId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     
-    var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(courseId));
+    var courses = context.ecer_CourseSet.AsQueryable().Where(p => 
+      p.ecer_CourseId == Guid.Parse(courseId)
+      && p.ecer_postsecondaryinstitutionid.Id == Guid.Parse(postSecondaryInstituteId));
 
     var courseExists = context.From(courses)
       .Join()

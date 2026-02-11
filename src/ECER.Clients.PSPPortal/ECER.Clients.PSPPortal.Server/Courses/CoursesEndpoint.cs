@@ -71,7 +71,7 @@ public class CoursesEndpoint : IRegisterEndpoints
         var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
         if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
         
-        var deletedCourseId = await messageBus.Send(new DeleteCourseCommand(courseId), ct);
+        var deletedCourseId = await messageBus.Send(new DeleteCourseCommand(courseId, programRep.PostSecondaryInstituteId), ct);
         return TypedResults.Ok(deletedCourseId);
       })
       .WithOpenApi("Deletes a course", "string.Empty", "course_delete")

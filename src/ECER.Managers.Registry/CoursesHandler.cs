@@ -64,7 +64,7 @@ public class CoursesHandler(
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.CourseId);
-    var courseId = await courseRepository.DeleteCourse(request.CourseId, cancellationToken);
+    var courseId = await courseRepository.DeleteCourse(request.CourseId, request.PostSecondaryInstituteId, cancellationToken);
     return courseId;
   }
 }
