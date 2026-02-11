@@ -6,4 +6,5 @@ public interface ICourseRepository
 {
   Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, bool isProgramApplication, CancellationToken cancellationToken);
   Task<string> AddCourse(Course incomingCourse, string id, string postSecondaryInstituteId, CancellationToken cancellationToken);
+  Task<string> DeleteCourse(string courseId, string postSecondaryInstituteId, CancellationToken cancellationToken);
 }

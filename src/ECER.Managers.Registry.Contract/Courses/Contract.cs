@@ -5,6 +5,7 @@ namespace ECER.Managers.Registry.Contract.Courses;
 
 public record UpdateCourseCommand(IEnumerable<Course> Course, string Id, string Type, string PostSecondaryInstituteId) : IRequest<string>;
 public record SaveCourseCommand(Course Course, string Id, string PostSecondaryInstituteId) : IRequest<string>;
+public record DeleteCourseCommand(string CourseId, string PostSecondaryInstituteId) : IRequest<string>;
 
 public enum FunctionType
 {
