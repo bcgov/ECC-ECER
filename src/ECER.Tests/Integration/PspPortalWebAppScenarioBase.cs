@@ -1,4 +1,3 @@
-using ECER.Clients.PSPPortal.Server.Programs;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,7 +47,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_Course testCourse2 = null!;
 
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
-  private static readonly ProgramTypes[] AreaOfInstructionProgramTypeValues = { ProgramTypes.ITE, ProgramTypes.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
@@ -75,7 +73,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
   public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
-  public static IEnumerable<ProgramTypes> AreaOfInstructionProgramTypes => AreaOfInstructionProgramTypeValues;
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -139,8 +136,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_ProvincialRequirement GetOrAddAreaOfInstruction(EcerContext context)
   {
     var instructionName = $"{TestRunId}psp_area_instruction";
-    var requirement = context.ecer_ProvincialRequirementSet.FirstOrDefault(r => r.ecer_Name == instructionName);
+    var requirement = context.ecer_ProvincialRequirementSet.FirstOrDefault(areaOfInstruction => areaOfInstruction.StateCode == ecer_provincialrequirement_statecode.Active);
 
+    //Only create if we don't already have one that exists. There should always be one in dynamics
     if (requirement == null)
     {
       var requirementId = Guid.NewGuid();
@@ -155,14 +153,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         StatusCode = ecer_ProvincialRequirement_StatusCode.Active
       };
       context.AddObject(requirement);
-    }
-    else
-    {
-      requirement.ecer_MinimumHours = DefaultAreaOfInstructionMinimumHours;
-      requirement.ecer_CertificateLevels = AreaOfInstructionCertificateLevels;
-      requirement.StateCode = ecer_provincialrequirement_statecode.Active;
-      requirement.StatusCode = ecer_ProvincialRequirement_StatusCode.Active;
-      context.UpdateObject(requirement);
     }
 
     return requirement;
