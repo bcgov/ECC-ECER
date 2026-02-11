@@ -30,13 +30,17 @@ internal sealed class CourseRepository : ICourseRepository
     var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
     if (institute == null) throw new InvalidOperationException($"Post secondary institute '{postSecondaryInstituteId}' not found");
     
+    var applicationId = Guid.Parse(id);
+    var programApplication = context.ecer_PostSecondaryInstituteProgramApplicaitonSet
+      .SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == applicationId);
+    
     if (!string.IsNullOrWhiteSpace(incomingCourse.CourseNumber))
     {
       var coursesWithSameNumber = 
         context.ecer_CourseSet.AsQueryable().Where(p => 
             p.ecer_Code == incomingCourse.CourseNumber
-            && p.ecer_postsecondaryinstitutionid.Id == instituteId
-            && p.ecer_ProgramType.ToString() == incomingCourse.ProgramType
+            && p.ecer_ProgramApplication.Id == applicationId
+            && p.ecer_programtypeName == incomingCourse.ProgramType
             )
           .Take(1)
           .ToList();
@@ -46,10 +50,6 @@ internal sealed class CourseRepository : ICourseRepository
         throw new InvalidOperationException($"This course with course number {incomingCourse.CourseNumber} already exists");
       }
     }
-    
-    var applicationId = Guid.Parse(id);
-    var programApplication = context.ecer_PostSecondaryInstituteProgramApplicaitonSet
-      .SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == applicationId);
     
     var ecerCourse = mapper.Map<ecer_Course>(incomingCourse)!;
     ecerCourse.Id = Guid.NewGuid();
