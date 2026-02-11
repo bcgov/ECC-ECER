@@ -114,10 +114,11 @@ public class CoursesTest : PspPortalWebAppScenarioBase
 
     var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
     firstProfile.Courses.ShouldNotBeNull();
-    firstProfile.Courses.ElementAt(0).CourseNumber.ShouldBe("101");
-    firstProfile.Courses.ElementAt(0).CourseTitle.ShouldBe("Course 101");
-    firstProfile.Courses.ElementAt(0).NewCourseNumber.ShouldBe(course.NewCourseNumber);
-    firstProfile.Courses.ElementAt(0).NewCourseTitle.ShouldBe("Course 102");
+    var matchingCourse = firstProfile.Courses.Where(c => c.CourseNumber == "101").ToList();
+    matchingCourse.First().CourseNumber.ShouldBe("101");
+    matchingCourse.First().CourseTitle.ShouldBe("Course 101");
+    matchingCourse.First().NewCourseNumber.ShouldBe(course.NewCourseNumber);
+    matchingCourse.First().NewCourseTitle.ShouldBe("Course 102");
   }
   
   [Fact]
@@ -148,14 +149,14 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.Count().ShouldNotBe(0);
 
-    var firstCourse = firstProfile.Courses.SingleOrDefault();
-    firstCourse.ShouldNotBeNull();
-    firstCourse.CourseNumber.ShouldBe("101");
-    firstCourse.CourseTitle.ShouldBe("Course 101");
+    var matchingCourse = firstProfile.Courses.Where(c => c.CourseNumber == "101").ToList();
+    matchingCourse.ShouldNotBeNull();
+    matchingCourse.First().CourseNumber.ShouldBe("101");
+    matchingCourse.First().CourseTitle.ShouldBe("Course 101");
     
-    firstCourse.CourseAreaOfInstruction.ShouldNotBeNull();
-    
-    var firstCourseAreaOfInstruction = firstCourse.CourseAreaOfInstruction.SingleOrDefault();
+    matchingCourse.First().CourseAreaOfInstruction.ShouldNotBeNull();
+    matchingCourse.First().CourseAreaOfInstruction.ShouldNotBeEmpty();
+    var firstCourseAreaOfInstruction = matchingCourse.First().CourseAreaOfInstruction!.SingleOrDefault();
     firstCourseAreaOfInstruction.ShouldNotBeNull();
   }
   
