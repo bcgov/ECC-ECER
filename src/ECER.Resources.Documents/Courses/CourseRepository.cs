@@ -96,7 +96,7 @@ private void UpdateCourseMetaData(Course course, ecer_Course courseExists, strin
             p.ecer_Code == course.NewCourseNumber 
             && p.ecer_CourseId != Guid.Parse(course.CourseId)
             && p.ecer_course_Programid.Id == Guid.Parse(programProfileId)
-            && p.ecer_ProgramType.ToString() == course.ProgramType
+            && p.ecer_programtypeName == course.ProgramType
             )
           .Take(1)
           .ToList();
