@@ -3,8 +3,9 @@ import type {
   PspUserListItem,
   PspUserProfile,
   NewPspUserResponse,
+  Paths,
 } from "@/types/openapi";
-import ApiResultHandler from "@/utils/apiResultHandler";
+import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
 const apiResultHandler = new ApiResultHandler();
 
 const getUsers = async (): Promise<PspUserListItem[] | null> => {
@@ -33,6 +34,21 @@ const reactivateUser = async (programRepId: string): Promise<void> => {
   });
 };
 
+const resendInviteUser = async (
+  programRepId: string,
+): Promise<
+  ApiResponse<Paths.PspUserManageResendInvitationPut.Responses.$200>
+> => {
+  const client = await getClient();
+  return apiResultHandler.execute({
+    request: client.psp_user_manage_resend_invitation_put({
+      programRepId,
+    }),
+    suppressErrorToast: true,
+    key: "psp_user_manage_resend_invitation_put",
+  });
+};
+
 const setPrimaryUser = async (programRepId: string): Promise<void> => {
   const client = await getClient();
   await apiResultHandler.execute({
@@ -52,4 +68,11 @@ const addUser = async (
   return response?.data ?? null;
 };
 
-export { getUsers, deactivateUser, setPrimaryUser, addUser, reactivateUser };
+export {
+  getUsers,
+  deactivateUser,
+  setPrimaryUser,
+  addUser,
+  reactivateUser,
+  resendInviteUser,
+};

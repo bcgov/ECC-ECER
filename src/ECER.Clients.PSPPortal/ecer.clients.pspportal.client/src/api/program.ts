@@ -15,8 +15,8 @@ const getPrograms = async (
     "ChangeRequestInProgress",
   ],
   {
-    page = 0,
-    pageSize = 0,
+    page,
+    pageSize,
     fromProgramId,
   }: { page?: number; pageSize?: number; fromProgramId?: string } = {},
 ): Promise<
@@ -67,15 +67,16 @@ const createOrUpdateDraftApplication = async (
 
 const updateCourse = async (
   programId: string,
-  courses: Components.Schemas.Course[],
+  course: Components.Schemas.Course,
 ): Promise<ApiResponse<string | null | undefined>> => {
   const client = await getClient();
   const pathParameters: Paths.CoursePut.PathParameters = {
-    id: programId,
+    courseId: course.courseId,
   };
   const body: Paths.CoursePut.RequestBody = {
-    courses: courses,
+    course: course,
     type: "ProgramProfile",
+    id: programId,
   };
 
   return apiResultHandler.execute<string | null | undefined>({

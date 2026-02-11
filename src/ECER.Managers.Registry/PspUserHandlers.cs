@@ -28,7 +28,8 @@ public class PspUserHandlers(
     IRequestHandler<DeactivatePspRepCommand, string>,
     IRequestHandler<ReactivatePspRepCommand, string>,
     IRequestHandler<SetPrimaryPspRepCommand, string>,
-    IRequestHandler<AddPspRepCommand, string>
+    IRequestHandler<AddPspRepCommand, string>,
+    IRequestHandler<ResendPspRepInviteCommand, string>
 {
   /// <summary>
   /// Handles search psp program rep use case
@@ -146,6 +147,29 @@ public class PspUserHandlers(
     var profile = mapper.Map<Resources.Accounts.PspReps.PspUserProfile>(request.userProfile);
     await pspRepRepository.Add(profile, request.postSecondaryInstitutionId, request.pspRepId, cancellationToken);
     return request.userProfile.Id!;
+  }
+
+  /// <summary>
+  /// Handles resending a psp user portal invite
+  /// </summary>
+  public async Task<string> Handle(ResendPspRepInviteCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var pspUser = (await pspRepRepository.Query(new PspRepQuery
+    {
+      ById = request.ProgramRepresentativeId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (pspUser == null) throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} not found");
+    if (pspUser.AccessToPortal == RepoPortalAccessStatus.Active || pspUser.AccessToPortal == RepoPortalAccessStatus.Disabled)
+    {
+      throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} already has portal access or is in disabled state");
+    }
+
+    await pspRepRepository.ResendInvitation(request.ProgramRepresentativeId, request.pspRepId, cancellationToken);
+
+    return request.ProgramRepresentativeId;
   }
 
   /// <summary>

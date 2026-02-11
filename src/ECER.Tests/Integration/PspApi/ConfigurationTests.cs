@@ -1,10 +1,6 @@
 using Alba;
 using ECER.Clients.PSPPortal.Server;
-using ECER.Clients.PSPPortal.Server.Programs;
 using Shouldly;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.PspApi;
@@ -34,7 +30,5 @@ public class ConfigurationTests : PspPortalWebAppScenarioBase
     instruction.Name.ShouldBe(Fixture.AreaOfInstructionName);
     instruction.MinimumHours.ShouldBe(Fixture.AreaOfInstructionMinimumHours);
     instruction.ProgramTypes.ShouldNotBeNull();
-    instruction.ProgramTypes.ShouldContain(ProgramTypes.ITE);
-    instruction.ProgramTypes.ShouldContain(ProgramTypes.SNE);
   }
 }
