@@ -6,7 +6,7 @@ import type { AxiosRequestConfig } from "axios";
 const apiResultHandler = new ApiResultHandler();
 
 const getPrograms = async (
-  id: string = "",
+  id?: string,
   statuses: Components.Schemas.ProgramStatus[] = [
     "Draft",
     "Denied",
@@ -14,7 +14,11 @@ const getPrograms = async (
     "UnderReview",
     "ChangeRequestInProgress",
   ],
-  { page = 0, pageSize = 0 } = {},
+  {
+    page = 0,
+    pageSize = 0,
+    fromProgramId,
+  }: { page?: number; pageSize?: number; fromProgramId?: string } = {},
 ): Promise<
   ApiResponse<Components.Schemas.GetProgramsResponse | null | undefined>
 > => {
@@ -28,8 +32,9 @@ const getPrograms = async (
     {
       request: client.program_get(
         {
-          id: id,
+          id: id || "",
           byStatus: statuses,
+          fromProgramId: fromProgramId,
         },
         null,
         config,

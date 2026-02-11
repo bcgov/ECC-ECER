@@ -1,4 +1,3 @@
-using System.Linq;
 using AutoMapper;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
@@ -56,18 +55,18 @@ public class ManageUsersEndpoints : IRegisterEndpoints
         {
           return TypedResults.NotFound();
         }
-        
+
         if (targetRep.Profile.Role == (Managers.Registry.Contract.PspUsers.PspUserRole?)PspUserRole.Primary)
         {
           return TypedResults.BadRequest("Cannot deactivate the primary representative. Please set another representative as primary before deactivating this user.");
         }
-        
+
         if (user.UserId == programRepId)
         {
           return TypedResults.BadRequest("Cannot deactivate your own account");
         }
 
-        await bus.Send(new DeactivatePspRepCommand(programRepId), ct);
+        await bus.Send(new DeactivatePspRepCommand(programRepId, user.UserId), ct);
         return TypedResults.Ok();
       })
       .WithOpenApi("Deactivates a PSP representative for the current user's institution", string.Empty, "psp_user_manage_deactivate_post")
@@ -100,7 +99,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
           return TypedResults.BadRequest("User already has portal access");
         }
 
-        await bus.Send(new ReactivatePspRepCommand(programRepId), ct);
+        await bus.Send(new ReactivatePspRepCommand(programRepId, user.UserId), ct);
         return TypedResults.Ok();
       })
       .WithOpenApi("Reactivates a PSP representative for the current user's institution", string.Empty, "psp_user_manage_reactivate_post")
@@ -127,7 +126,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
         {
           return TypedResults.NotFound();
         }
-        
+
         if (targetRep.AccessToPortal != ContractPortalAccessStatus.Active)
         {
           return TypedResults.BadRequest("Cannot set a representative who does not have active portal access as primary.");
@@ -139,8 +138,8 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .WithOpenApi("Sets the specified PSP representative as Primary for the current user's institution", string.Empty, "psp_user_manage_set_primary_post")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
-    
-    endpointRouteBuilder.MapPost("api/users/manage/add", 
+
+    endpointRouteBuilder.MapPost("api/users/manage/add",
       async Task<Results<Ok<NewPspUserResponse>, BadRequest<string>, NotFound>> (PspUserProfile userProfile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
       {
         var user = ctx.User.GetUserContext()!;
@@ -149,13 +148,13 @@ public class ManageUsersEndpoints : IRegisterEndpoints
         {
           return TypedResults.NotFound();
         }
-        
+
         var newPspUser = mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(userProfile)!;
         var newPspUserId = Guid.NewGuid().ToString();
         newPspUser.Id = newPspUserId;
-        
-        await bus.Send(new AddPspRepCommand(newPspUser, currentRep.PostSecondaryInstituteId), ct);
-        
+
+        await bus.Send(new AddPspRepCommand(newPspUser, currentRep.PostSecondaryInstituteId, currentRep.Id), ct);
+
         return TypedResults.Ok(new NewPspUserResponse(newPspUserId));
       })
       .WithOpenApi("Adds a new psp user to an institution", string.Empty, "psp_user_add")

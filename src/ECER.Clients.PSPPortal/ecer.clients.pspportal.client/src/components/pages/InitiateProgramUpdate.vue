@@ -14,7 +14,7 @@
 
     <Loading v-if="isLoading"></Loading>
 
-    <div>
+    <div v-else>
       <div>
         <v-row>
           <v-col>
@@ -73,7 +73,7 @@
         <div>
           <v-btn
             rounded="lg"
-            :loading="showProgressMeter"
+            :loading="updateInProgress"
             :disabled="disableButton"
             color="primary"
             @click="initiateUpdate"
@@ -82,7 +82,7 @@
           </v-btn>
         </div>
         <div>
-          <div v-if="showProgressMeter" class="mt-8">
+          <div v-if="updateInProgress" class="mt-8">
             <v-progress-circular
               class="mb-2"
               color="primary"
@@ -131,10 +131,8 @@ export default defineComponent({
     return {
       program: null as Components.Schemas.Program | null,
       newProgram: null as Components.Schemas.Program | null,
-      newProgramId: "" as string,
-      loading: true,
       updateInProgress: false,
-      pollInterval: 0 as any,
+      pollInterval: null as ReturnType<typeof setInterval> | null,
     };
   },
   props: {
@@ -145,7 +143,9 @@ export default defineComponent({
   },
   computed: {
     isLoading(): boolean {
-      return this.loadingStore.isLoading("program_get") || this.loading;
+      return (
+        this.loadingStore.isLoading("program_get") && !this.updateInProgress
+      );
     },
     programTitle(): string {
       if (this.program?.name) {
@@ -170,75 +170,90 @@ export default defineComponent({
       }
       return types;
     },
-    showProgressMeter(): boolean {
-      return this.updateInProgress;
-    },
     disableButton(): boolean {
       return this.program?.status === "ChangeRequestInProgress";
     },
   },
   async mounted() {
     await this.loadProgram();
-    this.loading = false;
+
+    /* Check if an update request currently exists and start polling if needed */
+    await this.fetchNewProgram();
+
+    /* If newProgram is already ready, navigate to it */
+    if (this.newProgram?.readyForReview && this.newProgram?.id) {
+      this.router.replace("/program/" + this.newProgram.id);
+      return;
+    }
+
+    /* Start polling if there's an update in progress (either we have a newProgram not ready, 
+       or the original program status indicates a change request is in progress) */
+    const hasUnreadyNewProgram =
+      this.newProgram && !this.newProgram.readyForReview;
+    const changeInProgress = this.program?.status === "ChangeRequestInProgress";
+
+    if (hasUnreadyNewProgram || changeInProgress) {
+      this.startPolling();
+    }
+  },
+  beforeUnmount() {
+    this.stopPolling();
   },
   methods: {
     async loadProgram() {
-      this.loading = true;
       try {
         const { data: response } = await getPrograms(this.programId, [
           "Approved",
           "ChangeRequestInProgress",
         ]);
-        const program =
-          response?.programs && response.programs.length > 0
-            ? response.programs[0]
-            : null;
-        this.program = program || null;
+        this.program = response?.programs?.[0] ?? null;
       } catch (error) {
         console.error("Error loading program:", error);
         this.program = null;
-      } finally {
-        this.loading = false;
       }
     },
     async fetchNewProgram() {
-      if (this.newProgramId) {
-        const { data: response } = await getPrograms(this.newProgramId);
-        if (response?.programs && response.programs[0]) {
-          this.newProgram = response.programs[0];
-        }
+      try {
+        const { data: response } = await getPrograms(undefined, undefined, {
+          fromProgramId: this.programId,
+        });
+        this.newProgram = response?.programs?.[0] ?? null;
+      } catch (error) {
+        console.error("Error fetching new program:", error);
       }
     },
     async initiateUpdate() {
-      if (this.program != null) {
-        this.updateInProgress = true;
-        const response = await initiateProgramChange(this.program);
-        if (response.error) {
-          console.error("Failed to initiate program change:", response.error);
-        }
-        this.loadProgram();
-        if (response.data != null) {
-          this.newProgramId = response.data;
-          this.fetchNewProgram();
-          this.startPolling();
-        }
+      if (!this.program) return;
+
+      this.updateInProgress = true;
+      const response = await initiateProgramChange(this.program);
+
+      if (response.error) {
+        console.error("Failed to initiate program change:", response.error);
+        this.updateInProgress = false;
+        return;
       }
+
+      await this.fetchNewProgram();
+      this.startPolling();
+    },
+    stopPolling() {
+      if (this.pollInterval) {
+        clearInterval(this.pollInterval);
+        this.pollInterval = null;
+      }
+      this.updateInProgress = false;
     },
     startPolling() {
-      /* Poll the backend until the ready for review flag is set */
       this.updateInProgress = true;
-      this.pollInterval = setInterval(() => {
-        this.fetchNewProgram();
-        if (this.newProgram?.readyForReview) {
-          /* Ready for review flag has been set. Stop polling. */
-          this.updateInProgress = false;
-          clearInterval(this.pollInterval);
-          this.router.replace("/program/" + this.newProgramId);
+
+      this.pollInterval = setInterval(async () => {
+        await this.fetchNewProgram();
+        if (this.newProgram?.readyForReview && this.newProgram?.id) {
+          this.stopPolling();
+          this.router.replace("/program/" + this.newProgram.id);
         }
       }, IntervalTime.INTERVAL_10_SECONDS);
-      setTimeout(() => {
-        clearInterval(this.pollInterval);
-      }, IntervalTime.INTERVAL_10_SECONDS * 10);
     },
     submitChangeRequest() {
       this.router.push({
