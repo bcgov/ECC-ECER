@@ -4,5 +4,5 @@ namespace ECER.Resources.Documents.Courses;
 
 public interface ICourseRepository
 {
-  Task<string> UpdateCourse(Course incomingCourse, string id, CancellationToken cancellationToken);
+  Task<string> UpdateCourse(Course course, string id, CancellationToken cancellationToken);
 }
