@@ -26,12 +26,12 @@ public interface IPspRepRepository
   /// <summary>
   /// Disables portal access for a Psp representative and removes authentication
   /// </summary>
-  Task Deactivate(string pspUserId, CancellationToken ct);
+  Task Deactivate(string pspUserId, string pspRepId, CancellationToken ct);
 
   /// <summary>
   /// Re-enables portal access for a Psp representative and triggers a new invitation
   /// </summary>
-  Task Reactivate(string pspUserId, CancellationToken ct);
+  Task Reactivate(string pspUserId, string pspRepId, CancellationToken ct);
 
   /// <summary>
   /// Sets the specified Psp representative as Primary and others in the same institution to Secondary
@@ -41,7 +41,7 @@ public interface IPspRepRepository
   /// <summary>
   /// Adds a new Psp representative's profile
   /// </summary>
-  Task Add(PspUserProfile profile, string postSecondaryInstitutionId, CancellationToken ct);
+  Task Add(PspUserProfile profile, string postSecondaryInstitutionId, string pspRepId, CancellationToken ct);
 }
 
 public record PspRepQuery
