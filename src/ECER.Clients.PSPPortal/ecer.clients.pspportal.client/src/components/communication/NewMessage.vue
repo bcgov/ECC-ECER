@@ -21,6 +21,9 @@
             </span>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>Begin by selecting a subject for your message.</v-col>
+        </v-row>
         <v-form ref="messageForm" v-model="formValid">
           <v-row class="mt-5">
             <v-col cols="6">
@@ -53,10 +56,10 @@
               <v-col cols="12">
                 <p class="mb-3">
                   Notify the ECE Registry about changes to your program that
-                  affect program requirements or competencies (for example,
-                  adding or removing courses, changing practicum hours, etc.).
+                  affect program requirements or competencies.
                   Include:
                 </p>
+                <br/>
                 <ul class="ml-6 mb-3">
                   <li>A description of the change</li>
                   <li>Its effective date</li>
@@ -65,15 +68,78 @@
                     outlines)
                   </li>
                 </ul>
+                <br/>
                 <p class="mb-3">
                   The ECE Registry will review your request and follow up with
                   you for additional information if needed.
                 </p>
-                <p>
-                  <a href="#" class="text-primary">
-                    Learn more about program changes
-                  </a>
-                </p>
+                <br />
+                <v-expansion-panels>
+                  <v-expansion-panel>
+                    <v-expansion-panel-title>
+                      <h3>Learn more about program changes</h3>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                      <div>
+                        Program changes are divided into two categories:
+                        <br />
+                        <br />
+                        <div style="padding-left: 20px">
+                          <ol>
+                            <li>
+                              Changes that do not require ECE Registry approval,
+                              which include: 
+                              <ul style="list-style-type: disc">
+                                <li>
+                                  Renaming course codes and course names without
+                                  changes to content 
+                                </li>
+                                <li>
+                                  Reducing or increasing course hours
+                                  while remaining within the minimum hours for
+                                  each area of instruction and not altering the
+                                  already approved competencies or
+                                  learning objectives for each area of
+                                  instruction  
+                                </li>
+                              </ul>
+                            </li>
+                            <br />
+                            <li>
+                              Changes that require ECE Registry approval,
+                              which include: 
+                              <ul style="list-style-type: disc">
+                                <li>
+                                  Any changes that might alter the ECE Registry
+                                  approved program coursework that meets
+                                  the minimum provincial requirements for
+                                  certification 
+                                </li>
+                                <li>
+                                  Updating the course description or
+                                  learning objectives that might directly impact the
+                                  student’s ability to demonstrate any of the
+                                  required occupational standards set out in
+                                  the BC Child Care Sector Occupational
+                                  Competencies   
+                                </li>
+                                <li>
+                                  Removing a course if the required competencies
+                                  are not already covered in that area of
+                                  instruction in the approved program profile 
+                                </li>
+                                <li>
+                                  Adding a course to the approved program
+                                  profile
+                                </li>
+                              </ul>
+                            </li>
+                          </ol>
+                        </div>
+                      </div>
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </v-col>
             </v-row>
             <v-row>
@@ -81,8 +147,7 @@
                 <Callout class="mt-3" type="warning">
                   <h3>Need to make a change to a program profile?</h3>
                   <p>
-                    For updates that do not affect requirements or competencies
-                    (for example, changing a course name),
+                    For updates that do not affect requirements or competencies,
                     <router-link :to="{ name: 'program-profiles' }">
                       update your program profile
                     </router-link>
