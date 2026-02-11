@@ -62,8 +62,7 @@ internal sealed class CourseRepository : ICourseRepository
     return ecerCourse.Id.ToString();
   }
 
-  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id,
-    CancellationToken cancellationToken)
+  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, bool isProgramApplication, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -84,7 +83,7 @@ internal sealed class CourseRepository : ICourseRepository
           context.Attach(courseExists);
         }
 
-        UpdateCourseMetaData(course, courseExists, id);
+        UpdateCourseMetaData(course, courseExists, id, isProgramApplication);
         if (course.CourseAreaOfInstruction != null)
         {
           foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
@@ -134,15 +133,24 @@ internal sealed class CourseRepository : ICourseRepository
     }
   }
 
-private void UpdateCourseMetaData(Course course, ecer_Course courseExists, string programProfileId)
+private void UpdateCourseMetaData(Course course, ecer_Course courseExists, string id, bool isProgramApplication)
   {
     if (!string.IsNullOrWhiteSpace(course.NewCourseNumber))
     {
-      var coursesWithSameNumber = 
+      var coursesWithSameNumber = isProgramApplication ?
+          context.ecer_CourseSet.AsQueryable().Where(p => 
+              p.ecer_Code == course.NewCourseNumber 
+              && p.ecer_CourseId != Guid.Parse(course.CourseId)
+              && p.ecer_ProgramApplication.Id == Guid.Parse(id)
+              && p.ecer_programtypeName == course.ProgramType
+            )
+            .Take(1)
+            .ToList()
+      :
         context.ecer_CourseSet.AsQueryable().Where(p => 
             p.ecer_Code == course.NewCourseNumber 
             && p.ecer_CourseId != Guid.Parse(course.CourseId)
-            && p.ecer_course_Programid.Id == Guid.Parse(programProfileId)
+            && p.ecer_course_Programid.Id == Guid.Parse(id)
             && p.ecer_programtypeName == course.ProgramType
             )
           .Take(1)
