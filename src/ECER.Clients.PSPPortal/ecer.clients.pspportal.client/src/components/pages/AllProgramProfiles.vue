@@ -67,7 +67,7 @@ export default defineComponent({
     PageContainer,
     Loading,
     Breadcrumb,
-    ProgramProfilesList
+    ProgramProfilesList,
   },
   setup() {
     const loadingStore = useLoadingStore();
@@ -103,7 +103,7 @@ export default defineComponent({
     },
     totalPages() {
       return Math.ceil(this.programs.length / PAGE_SIZE);
-    }
+    },
   },
   async mounted() {
     await this.fetchPrograms(this.page);
@@ -116,7 +116,7 @@ export default defineComponent({
       this.programs = response.data?.programs || [];
 
       globalThis.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    },
   },
 });
 </script>

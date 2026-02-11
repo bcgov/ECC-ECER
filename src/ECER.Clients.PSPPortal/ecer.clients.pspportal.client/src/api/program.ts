@@ -76,7 +76,7 @@ const updateCourse = async (
   const body: Paths.CoursePut.RequestBody = {
     course: course,
     type: "ProgramProfile",
-    id: programId
+    id: programId,
   };
 
   return apiResultHandler.execute<string | null | undefined>({
