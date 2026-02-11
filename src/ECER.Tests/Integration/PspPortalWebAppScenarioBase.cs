@@ -36,7 +36,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_ProvincialRequirement testAreaOfInstruction = null!;
   private UserIdentity testPspIdentity = null!;
   private ecer_Communication testCommunication1 = null!;
-  private ecer_Communication testCommunication2 = null!;
   private ecer_Program testProgram1 = null!;
   private ecer_Program testProgram2 = null!;
   private ecer_Program submitDraftProgram = null!;
@@ -61,7 +60,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string OtherInstitutePspUserId => otherInstituteRepresentative.Id.ToString();
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public string communicationOneId => testCommunication1.Id.ToString();
-  public string communicationTwoId => testCommunication2.Id.ToString();
 
   public string programId => testProgram1.Id.ToString();
   public string submitProgramId => submitDraftProgram.Id.ToString();
@@ -115,7 +113,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testAreaOfInstruction = GetOrAddAreaOfInstruction(context);
 
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
-    testCommunication2 = GetOrAddCommunication(context, "comm2", null);
 
     testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
     testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
@@ -127,8 +124,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
 
     programApplication =
       GetOrAddProgramApplication(context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
-    
-    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
 
     context.SaveChanges();
 

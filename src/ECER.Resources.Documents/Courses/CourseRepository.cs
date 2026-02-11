@@ -17,6 +17,32 @@ internal sealed class CourseRepository : ICourseRepository
     this.mapper = mapper;
   }
 
+  public async Task<string> DeleteCourse(string courseId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    
+    var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(courseId));
+
+    var courseExists = context.From(courses)
+      .Join()
+      .Include(c => c.ecer_courseprovincialrequirement_CourseId)
+      .Execute()
+      .SingleOrDefault();
+
+    if (courseExists == null)
+    {
+      throw new InvalidOperationException($"Course {courseId} does not exists");
+    } 
+    
+    if (!context.IsAttached(courseExists))
+    {
+      context.Attach(courseExists);
+    }
+    context.DeleteObject(courseExists);
+    context.SaveChanges();
+    return courseId;
+  }
+
   public async Task<string> AddCourse(Course incomingCourse, string id, string postSecondaryInstituteId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;

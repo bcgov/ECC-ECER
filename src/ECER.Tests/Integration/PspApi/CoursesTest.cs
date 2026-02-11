@@ -24,7 +24,7 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.programApplicationId}");
+      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramProfile, Fixture.programApplicationId)).ToUrl($"/api/courses");
       _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
     });
   }
@@ -36,20 +36,41 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramApplication)).ToUrl($"/api/courses/{Fixture.programApplicationId}");
+      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramApplication, Fixture.programApplicationId)).ToUrl($"/api/courses");
       _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
   }
   
   [Fact]
-  public async Task AddCourse_WhenNewCourse_ReturnsOK()
+  public async Task DeleteCourse_CourseDoesNotExist_ReturnsStatusInvalidOperation()
   {
-    var course =  CreateCourseWithCourseAreaOfInstructions();
-    course.CourseTitle = "Test_psp_add_course";
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramApplication)).ToUrl($"/api/courses/{Fixture.programApplicationId}");
+      _.Delete.Url($"/api/courses/{Guid.NewGuid()}");
+      _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
+    });
+  }
+  
+  [Fact]
+  public async Task AddCourseAndDeleteCourse_WhenNewCourse_ReturnsOK()
+  {
+    var course =  CreateCourseWithCourseAreaOfInstructions();
+    course.CourseTitle = "Test_psp_add_course";
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramApplication, Fixture.programApplicationId)).ToUrl($"/api/courses");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var newCourseId = await response.ReadAsJsonAsync<string>();
+    newCourseId.ShouldNotBeNull();
+    
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Delete.Url($"/api/courses/{newCourseId}");
       _.StatusCodeShouldBeOk();
     });
   }

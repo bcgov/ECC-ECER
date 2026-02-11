@@ -13,7 +13,8 @@ public class CoursesHandler(
   IProgramApplicationRepository  programApplicationRepository,
   IMapper mapper)
 : IRequestHandler<UpdateCourseCommand, string>, 
-  IRequestHandler<SaveCourseCommand, string>
+  IRequestHandler<SaveCourseCommand, string>,
+  IRequestHandler<DeleteCourseCommand, string>
 {
   public async Task<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
   {
@@ -56,6 +57,14 @@ public class CoursesHandler(
     Infrastructure.Common.Utility.ThrowIfNullOrEmpty(request.Course.CourseAreaOfInstruction, nameof(request.Course.CourseAreaOfInstruction));
     
     var courseId = await courseRepository.AddCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, request.PostSecondaryInstituteId, cancellationToken);
+    return courseId;
+  }
+  
+  public async Task<string> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    ArgumentNullException.ThrowIfNull(request.CourseId);
+    var courseId = await courseRepository.DeleteCourse(request.CourseId, cancellationToken);
     return courseId;
   }
 }
