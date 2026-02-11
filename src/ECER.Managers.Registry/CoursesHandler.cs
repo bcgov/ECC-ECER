@@ -20,7 +20,6 @@ public class CoursesHandler(
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);
-    Infrastructure.Common.Utility.ThrowIfNullOrEmpty(request.Course, nameof(request.Course));
 
     if (request.Type == nameof(FunctionType.ProgramProfile))
     {
