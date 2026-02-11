@@ -60,12 +60,16 @@ public class CoursesEndpoint : IRegisterEndpoints
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
     
-    endpointRouteBuilder.MapDelete("/api/courses/{courseId}", async Task<Results<Ok<string>, BadRequest<string>>> (string courseId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    endpointRouteBuilder.MapDelete("/api/courses/{courseId}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string courseId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
       {
         if (string.IsNullOrWhiteSpace(courseId)) return TypedResults.BadRequest("course id cannot be null or whitespace");
         bool IdIsNotGuid = !Guid.TryParse(courseId, out _);
 
         if (IdIsNotGuid) return TypedResults.BadRequest("invalid course id");
+        
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
         
         var deletedCourseId = await messageBus.Send(new DeleteCourseCommand(courseId), ct);
         return TypedResults.Ok(deletedCourseId);
