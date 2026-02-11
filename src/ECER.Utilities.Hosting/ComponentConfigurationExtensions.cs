@@ -12,7 +12,7 @@ public static class ComponentConfigurationExtensions
 #pragma warning disable CA2000 // Dispose objects before losing scope
     using var loggerFactory = new LoggerFactory().AddSerilog(logger);
 #pragma warning restore CA2000 // Dispose objects before losing scope
-    var assemblies = ReflectionExtensions.DiscoverLocalAessemblies();
+    var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
     foreach (var config in assemblies.SelectMany(a => a.CreateInstancesOf<IConfigureComponents>()))
     {
       var configurationContext = new ConfigurationContext(webApplicationBuilder.Services, webApplicationBuilder.Configuration, loggerFactory.CreateLogger(config.GetType()));

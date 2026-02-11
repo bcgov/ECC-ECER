@@ -1,6 +1,6 @@
+using ECER.Clients.PSPPortal.Server.Programs;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
-using ECER.Clients.PSPPortal.Server.Programs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,12 +62,12 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
-  
+
   public string programId => testProgram1.Id.ToString();
   public string submitProgramId => submitDraftProgram.Id.ToString();
   public string changeRequestProgramId => changeRequestProgram.Id.ToString();
   public string changeRequestFromProfileId => changeRequestFromProfile.Id.ToString();
-  public string programIdWithTotals => testProgram2.Id.ToString(); 
+  public string programIdWithTotals => testProgram2.Id.ToString();
   public string courseId => testCourse.Id.ToString();
   public string courseId2 => testCourse2.Id.ToString();
   
@@ -113,10 +113,10 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     otherInstituteRepresentative = GetOrAddProgramRepresentative(context, otherPostSecondaryInstitute, $"{TestRunId}psp_rep_other", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
     testAreaOfInstruction = GetOrAddAreaOfInstruction(context);
-    
+
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, "comm2", null);
-    
+
     testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
     testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
     changeRequestFromProfile = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "CRFromProfile", "ChangeRequestInProgress", statusCode: ecer_Program_StatusCode.ChangeRequestInProgress);
@@ -128,6 +128,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     programApplication =
       GetOrAddProgramApplication(context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicPostBasicProgramInperson, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
     
+    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
+
     context.SaveChanges();
 
     //load dependent properties
@@ -190,7 +192,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
 
     return requirement;
   }
-  
+
   private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program, string courseCode)
   {
     var existingCourse = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == courseCode);
@@ -209,14 +211,14 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     }
 
     var course = new ecer_Course
-      {
-        ecer_CourseId = Guid.NewGuid(),
-        ecer_Code = courseCode,
-        ecer_CourseName = "Course 101",
-        ecer_NewCourseHourDecimal = 20.00m,
-        ecer_ProgramType = ecer_PSIProgramType.SNE,
-        ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
-      };
+    {
+      ecer_CourseId = Guid.NewGuid(),
+      ecer_Code = courseCode,
+      ecer_CourseName = "Course 101",
+      ecer_NewCourseHourDecimal = 20.00m,
+      ecer_ProgramType = ecer_PSIProgramType.SNE,
+      ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
+    };
     context.AddObject(course);
     return course;
   }
@@ -229,7 +231,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     {
       context.DeleteObject(existingProgram);
     }
-    
+
     string[] sneProgramTypes = { "SNE" };
     var program = new ecer_Program
     {
@@ -241,7 +243,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       ecer_ProgramTypes = sneProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)),
       ecer_PostSecondaryInstitution = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
     };
-    program.ecer_Type = isChangeRequest ? ecer_ProgramProfileType.ChangeRequest :  ecer_ProgramProfileType.AnnualReview;
+    program.ecer_Type = isChangeRequest ? ecer_ProgramProfileType.ChangeRequest : ecer_ProgramProfileType.AnnualReview;
 
     if (addProgramTotals)
     {
@@ -249,17 +251,17 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       program.ecer_NewSNETotalHours = 10.00m;
       program.ecer_NewITETotalHours = 15.25m;
     }
-    
+
     if (isChangeRequest && fromProfile != null)
     {
       program.ecer_FromProgramProfileId = new EntityReference(ecer_Program.EntityLogicalName, fromProfile.Id);
     }
-    
+
     context.AddObject(program);
 
     return program;
   }
-  
+
   private ecer_Communication GetOrAddCommunication(EcerContext context, string message, Guid? parentCommunicationId)
   {
     var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_EducationInstitutionId.Id == testPostSecondaryInstitute.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
@@ -290,7 +292,6 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         };
         context.AddLink(communication, Referencingecer_communication_ParentCommunicationid, parent);
       }
-      
     }
     else
     {
@@ -357,7 +358,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         ecer_Role = "Program Representative",
         ecer_RepresentativeRole = ecer_RepresentativeRole.Primary,
         ecer_AccessToPortal = access,
-        ecer_HasAcceptedTermsofUse = true,
+        ecer_HasAcceptedTermsofUse = access == ecer_AccessToPortal.Active, //we need to set this to false so dynamics doesn't set the user back to active
         StateCode = ecer_eceprogramrepresentative_statecode.Active,
         StatusCode = ecer_ECEProgramRepresentative_StatusCode.Active,
         ecer_PostSecondaryInstitute = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
@@ -419,5 +420,4 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
 
     return portalInvitation;
   }
-
 }

@@ -14,26 +14,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_PSIApplicationType
+	public enum ecer_PSPAdmissionOptions
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		AddOnlineorHybridDeliveryMethod = 621870002,
+		ClosedECEcohort = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		CurriculumRevisionsatRecognizedInstitution = 621870004,
+		Individualcourseenrollment = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NewBasicECEPostBasicProgram = 621870000,
+		Openenrollment = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NewCampusatRecognizedPrivateInstitution = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SatelliteProgram = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		WorkIntegratedLearningProgram = 621870005,
+		Other = 621870003,
 	}
 }
 #pragma warning restore CS1591
