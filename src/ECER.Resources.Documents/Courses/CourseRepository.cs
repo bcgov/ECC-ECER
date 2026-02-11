@@ -21,19 +21,6 @@ internal sealed class CourseRepository : ICourseRepository
   {
     await Task.CompletedTask;
     
-    if (!string.IsNullOrWhiteSpace(incomingCourse.CourseNumber))
-    {
-      var coursesWithSameNumber = 
-        context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_Code == incomingCourse.CourseNumber)
-          .Take(1)
-          .ToList();
-
-      if (coursesWithSameNumber.Count > 0)
-      {
-        throw new InvalidOperationException($"This course with course number {incomingCourse.CourseNumber} already exists");
-      }
-    }
-    
     if (string.IsNullOrWhiteSpace(postSecondaryInstituteId))
     {
       throw new InvalidOperationException("Post secondary institute id is required");
@@ -42,6 +29,23 @@ internal sealed class CourseRepository : ICourseRepository
     var instituteId = Guid.Parse(postSecondaryInstituteId);
     var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
     if (institute == null) throw new InvalidOperationException($"Post secondary institute '{postSecondaryInstituteId}' not found");
+    
+    if (!string.IsNullOrWhiteSpace(incomingCourse.CourseNumber))
+    {
+      var coursesWithSameNumber = 
+        context.ecer_CourseSet.AsQueryable().Where(p => 
+            p.ecer_Code == incomingCourse.CourseNumber
+            && p.ecer_postsecondaryinstitutionid.Id == instituteId
+            && p.ecer_ProgramType.ToString() == incomingCourse.ProgramType
+            )
+          .Take(1)
+          .ToList();
+
+      if (coursesWithSameNumber.Count > 0)
+      {
+        throw new InvalidOperationException($"This course with course number {incomingCourse.CourseNumber} already exists");
+      }
+    }
     
     var applicationId = Guid.Parse(id);
     var programApplication = context.ecer_PostSecondaryInstituteProgramApplicaitonSet
