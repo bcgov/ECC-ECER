@@ -257,7 +257,7 @@ export default defineComponent({
     },
     submitChangeRequest() {
       this.router.push({
-        name: "newMessage",
+        name: "new-message",
         params: {
           initialCategory: "ProgramChangeRequest",
         },

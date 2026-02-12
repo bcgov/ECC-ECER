@@ -141,7 +141,7 @@
                 id="btnRequestChange"
                 @click="
                   router.push({
-                    name: 'newMessage',
+                    name: 'new-message',
                     params: {
                       initialCategory: 'ProgramChangeRequest',
                     },

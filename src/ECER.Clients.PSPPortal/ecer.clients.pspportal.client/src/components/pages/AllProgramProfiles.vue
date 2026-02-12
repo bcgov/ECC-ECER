@@ -23,6 +23,21 @@
         </v-col>
       </v-row>
 
+      <v-row>
+        <v-col>
+          <!-- prettier-ignore -->
+          <p>
+            We are working to resolve technical issues affecting 2023/2024 and
+            2024/2025 program profile data in the PSP Portal. If you require
+            further assistance with a 2023/2024 or 2024/2025 program profile,
+            please contact the PSP Team by
+            <router-link :to="{ name: 'new-message' }">
+              sending a message
+            </router-link>.
+          </p>
+        </v-col>
+      </v-row>
+
       <ProgramProfilesList
         :programs="allProgramProfiles"
         @withdrawn="fetchPrograms(page)"
