@@ -71,60 +71,53 @@
                   <h3>Learn more about program changes</h3>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text>
-                  <div>
-                    Program changes are divided into two categories:
-                    <br />
-                    <br />
-                    <div style="padding-left: 20px">
-                      <ol>
+                  Program changes are divided into two categories:
+                  <br />
+                  <br />
+                  <ol class="ml-10">
+                    <li>
+                      Changes that do not require ECE Registry approval,
+                      which include: 
+                      <ul style="list-style-type: disc">
                         <li>
-                          Changes that do not require ECE Registry approval,
-                          which include: 
-                          <ul style="list-style-type: disc">
-                            <li>
-                              Renaming course codes and course names without
-                              changes to content 
-                            </li>
-                            <li>
-                              Reducing or increasing course hours
-                              while remaining within the minimum hours for each
-                              area of instruction and not altering the already
-                              approved competencies or learning objectives for
-                              each area of instruction  
-                            </li>
-                          </ul>
+                          Renaming course codes and course names without changes
+                          to content 
                         </li>
-                        <br />
                         <li>
-                          Changes that require ECE Registry approval,
-                          which include: 
-                          <ul style="list-style-type: disc">
-                            <li>
-                              Any changes that might alter the ECE Registry
-                              approved program coursework that meets
-                              the minimum provincial requirements for
-                              certification 
-                            </li>
-                            <li>
-                              Updating the course description or
-                              learning objectives that might directly impact the
-                              student’s ability to demonstrate any of the
-                              required occupational standards set out in the BC
-                              Child Care Sector Occupational Competencies   
-                            </li>
-                            <li>
-                              Removing a course if the required competencies are
-                              not already covered in that area of instruction in
-                              the approved program profile 
-                            </li>
-                            <li>
-                              Adding a course to the approved program profile
-                            </li>
-                          </ul>
+                          Reducing or increasing course hours
+                          while remaining within the minimum hours for each area
+                          of instruction and not altering the already approved
+                          competencies or learning objectives for each area of
+                          instruction  
                         </li>
-                      </ol>
-                    </div>
-                  </div>
+                      </ul>
+                    </li>
+                    <br />
+                    <li>
+                      Changes that require ECE Registry approval,
+                      which include: 
+                      <ul style="list-style-type: disc">
+                        <li>
+                          Any changes that might alter the ECE Registry approved
+                          program coursework that meets the minimum provincial
+                          requirements for certification 
+                        </li>
+                        <li>
+                          Updating the course description or
+                          learning objectives that might directly impact the
+                          student’s ability to demonstrate any of the required
+                          occupational standards set out in the BC Child Care
+                          Sector Occupational Competencies   
+                        </li>
+                        <li>
+                          Removing a course if the required competencies are not
+                          already covered in that area of instruction in the
+                          approved program profile 
+                        </li>
+                        <li>Adding a course to the approved program profile</li>
+                      </ul>
+                    </li>
+                  </ol>
                 </v-expansion-panel-text>
               </v-expansion-panel>
             </v-expansion-panels>
