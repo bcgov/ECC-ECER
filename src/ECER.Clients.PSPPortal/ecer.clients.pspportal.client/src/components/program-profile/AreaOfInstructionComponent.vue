@@ -350,7 +350,8 @@ export default defineComponent({
       }
       this.saving = true;
       try {
-        const { error } = await updateCourse(this.program.id, 
+        const { error } = await updateCourse(
+          this.program.id,
           updatedCourse as Components.Schemas.Course,
         );
 
