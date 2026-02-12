@@ -17,7 +17,6 @@
     "e2e-chrome": "cypress run --browser chrome --headed",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare": "husky",
     "validate-colors": "tsx scripts/validate-colors.ts"
   },
   "dependencies": {
@@ -61,7 +60,6 @@
     "eslint-plugin-storybook": "^10.2.0",
     "eslint-plugin-unused-imports": "^4.3.0",
     "eslint-plugin-vue": "^10.7.0",
-    "husky": "^9.1.7",
     "openapicmd": "^2.7.0",
     "playwright": "^1.58.0",
     "prettier": "^3.8.1",

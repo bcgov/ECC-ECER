@@ -59,7 +59,6 @@
     "eslint-plugin-storybook": "^10.2.1",
     "eslint-plugin-unused-imports": "^4.3.0",
     "eslint-plugin-vue": "^10.7.0",
-    "husky": "^9.1.7",
     "openapicmd": "^2.7.0",
     "playwright": "^1.58.0",
     "storybook": "^10.2.1",

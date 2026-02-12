@@ -4,6 +4,16 @@
 
 The ECER Replacement project aims to build a robust, extensible system that serves all functions of ECE Registry. See the [official web site](https://www.gov.bc.ca/earlychildhoodeducator) for more information about the registry.
 
+## Getting Started
+
+After cloning the repository, run the following command in the root directory to set up git hooks:
+
+```bash
+npm install
+```
+
+This will configure pre-commit hooks that automatically validate code formatting and colors before each commit.
+
 ## Project Status
 
 TBD
