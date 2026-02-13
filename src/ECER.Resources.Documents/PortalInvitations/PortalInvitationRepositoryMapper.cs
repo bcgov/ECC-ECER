@@ -22,6 +22,7 @@ internal sealed class PortalInvitationMapper : Profile
       .ForMember(d => d.InviteType, opts => opts.MapFrom(s => s.ecer_Type))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
       .ForMember(d => d.BceidBusinessName, opts => opts.Ignore())
+      .ForMember(d => d.PostSecondaryInstitutionName, opts => opts.Ignore())
       .ForMember(d => d.IsLinked, opts => opts.Ignore())
       ;
 

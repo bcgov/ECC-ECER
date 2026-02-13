@@ -28,6 +28,7 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
     {
       var pspRep = context.ecer_ECEProgramRepresentativeSet.Single(pr => pr.ecer_ECEProgramRepresentativeId == portalInvitation!.ecer_psiprogramrepresentativeid.Id);
       var institute = context.ecer_PostSecondaryInstituteSet.Single(psi => psi.ecer_PostSecondaryInstituteId == pspRep.ecer_PostSecondaryInstitute.Id);
+      result.PostSecondaryInstitutionName = institute.ecer_Name;
       if (institute.ecer_BusinessBCeID != null)
       {
         result.IsLinked = true;

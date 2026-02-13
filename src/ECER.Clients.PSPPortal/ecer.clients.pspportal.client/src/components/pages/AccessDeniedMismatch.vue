@@ -1,14 +1,11 @@
 <template>
   <v-container>
     <div class="d-flex flex-column ga-10 mt-10">
-      <h1>Access denied</h1>
+      <h1>Access denied.</h1>
       <h2 class="mt-20">
         {{ accessDeniedMessage }}
       </h2>
-      <div class="d-flex flex-column ga-3">
-        <p>You may have followed an invalid link.</p>
-        <p>Contact the ECE Registry if you require help.</p>
-      </div>
+      <p>{{ accessDeniedSubMessage }}</p>
       <v-btn
         class="mt-8 align-self-start"
         @click="oidcStore.logout"
@@ -40,27 +37,35 @@ export default defineComponent({
 
     const token = userStore.invitationToken;
     const { data } = await getPortalInvitation(token as string);
-    const invitationInstitutionName = data?.portalInvitation?.bceidBusinessName;
+    const postSecondaryInstitutionName =
+      data?.portalInvitation?.postSecondaryInstitutionName;
+    const dynamicsBceidBusinessName = data?.portalInvitation?.bceidBusinessName;
 
     return {
       smAndDown,
       oidcStore,
       bceidBusinessName,
-      invitationInstitutionName,
+      postSecondaryInstitutionName,
+      dynamicsBceidBusinessName,
     };
   },
   computed: {
     accessDeniedMessage(): string {
-      if (!this.invitationInstitutionName && !this.bceidBusinessName) {
+      if (!this.postSecondaryInstitutionName && !this.bceidBusinessName) {
         return "The Business BCeID account you are logged in with is not associated with this institution.";
       }
-      if (!this.invitationInstitutionName) {
+      if (!this.postSecondaryInstitutionName) {
         return `The Business BCeID account you are logged in with (${this.bceidBusinessName}) is not associated with this institution.`;
       }
       if (!this.bceidBusinessName) {
-        return `This portal invitation is for authentication with ${this.invitationInstitutionName}, but the Business BCeID account you are logged in with is not associated with that institution.`;
+        return `This portal invitation is for authentication with ${this.postSecondaryInstitutionName}, but the Business BCeID account you are logged in with is not associated with that institution.`;
       }
-      return `This portal invitation is for authentication with ${this.invitationInstitutionName}, but the Business BCeID account you logged in with is associated with ${this.bceidBusinessName}.`;
+      return `This portal invitation is for authentication with ${this.postSecondaryInstitutionName}, but the Business BCeID account you logged in with is associated with ${this.bceidBusinessName}.`;
+    },
+    accessDeniedSubMessage(): string {
+      return this.dynamicsBceidBusinessName
+        ? `The Business BCeID account listed in our records is ${this.dynamicsBceidBusinessName}. Please contact the ECE Registry if this is incorrect.`
+        : "";
     },
   },
 });
