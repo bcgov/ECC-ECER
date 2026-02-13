@@ -14,16 +14,17 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.ProgramApplicationName))
       .ForMember(d => d.ecer_ApplicationType, opts => opts.MapFrom(s => s.ProgramApplicationType))
-      .ForMember(d => d.ecer_ProvincialCertificationTypeOffered, opts => opts.MapFrom(s => s.ProgramType))
+      .ForMember(d => d.ecer_ProgramType, opts => opts.MapFrom(s => s.ProgramTypes))
       .ForMember(d => d.ecer_DeliveryType, opts => opts.MapFrom(s => s.DeliveryType))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(ProgramApplication.Id), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstituteProgramApplicaitonId.HasValue ? s.ecer_PostSecondaryInstituteProgramApplicaitonId.Value.ToString() : null))
       .ForCtorParam(nameof(ProgramApplication.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitute.Id.ToString()))
       .ForMember(d => d.ProgramApplicationName, opts => opts.MapFrom(s => s.ecer_Name))
-      .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProvincialCertificationTypeOffered))
+      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramType))
       .ForMember(d => d.DeliveryType, opts => opts.MapFrom(s => s.ecer_DeliveryType))
       .ForMember(d => d.ProgramApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationType))
+      .ForMember(d => d.ComponentsGenerationCompleted, opts => opts.MapFrom(s => s.ecer_ComponentsGenerationCompleted))
       ;
 
     CreateMap<ApplicationStatus, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode>()
@@ -35,7 +36,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
     CreateMap<DeliveryType, ecer_PSIDeliveryType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
-    CreateMap<ProvincialCertificationTypeOffered, ecer_PSIProvincialCertificationTypeOffered>()
+    CreateMap<ProgramCertificationType, ecer_PSIProgramType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
   }

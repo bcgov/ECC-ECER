@@ -6,9 +6,18 @@
     class="pa-6 border-primary border-opacity-100 w-100"
   >
     <div class="d-flex justify-end">
-      <v-chip :color="chipColour" variant="flat" size="small">
-        {{ statusText }}
-      </v-chip>
+      <v-row>
+        <v-col></v-col>
+        <v-col v-if="isStillLoading" class="d-flex justify-end">
+          <p>Loading...</p>
+          <v-progress-circular indeterminate color="primary" size="24" />
+        </v-col>
+        <v-col class="d-flex justify-end">
+          <v-chip :color="chipColour" variant="flat" size="small">
+            {{ statusText }}
+          </v-chip>
+        </v-col>
+      </v-row>
     </div>
 
     <div class="mb-4">
@@ -20,16 +29,11 @@
       <p class="font-weight-bold">{{ programType }}</p>
       <p class="mt-2">DELIVERY TYPE:</p>
       <p class="font-weight-bold">{{ deliveryType }}</p>
-
     </div>
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
       <v-row>
-        <v-btn
-          size="large"
-          variant="outlined"
-          color="primary"
-        >
+        <v-btn size="large" variant="outlined" color="primary">
           {{ buttonText }}
         </v-btn>
       </v-row>
@@ -43,7 +47,15 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
-import { mapProgramStatus, mapApplicationType, mapDeliveryType, mapProgramType } from "@/api/program-application";
+import {
+  getProgramApplicationReady,
+  mapProgramStatus,
+  mapApplicationType,
+  mapDeliveryType,
+  mapProgramType,
+} from "@/api/program-application";
+
+const POLL_INTERVAL_MS = 10000;
 
 export default defineComponent({
   name: "ProgramApplicationCard",
@@ -61,33 +73,54 @@ export default defineComponent({
   emits: [],
   data() {
     return {
-
+      pollTimeoutId: null as ReturnType<typeof setTimeout> | null,
+      localApplication: null as Components.Schemas.ProgramApplication | null, //for managing is loading
     };
   },
+  mounted() {
+    if (this.isStillLoading && this.programApplication?.id) {
+      this.pollTimeoutId = setTimeout(this.checkReady, POLL_INTERVAL_MS);
+    }
+  },
+  beforeUnmount() {
+    if (this.pollTimeoutId != null) {
+      clearTimeout(this.pollTimeoutId);
+      this.pollTimeoutId = null;
+    }
+  },
   computed: {
+    displayedApplication(): Components.Schemas.ProgramApplication {
+      return this.localApplication ?? this.programApplication;
+    },
+    isStillLoading(): boolean {
+      return this.displayedApplication.componentsGenerationCompleted !== true;
+    },
     applicationType(): string {
-      return this.programApplication.programApplicationType 
-      ? mapApplicationType(this.programApplication.programApplicationType) 
-      : "-";
+      return this.displayedApplication.programApplicationType
+        ? mapApplicationType(this.displayedApplication.programApplicationType)
+        : "-";
     },
     programName(): string {
-      return this.programApplication.programApplicationName || "—";
+      return this.displayedApplication.programApplicationName || "—";
     },
-    deliveryType() : string {
-      return this.programApplication.deliveryType 
-      ? mapDeliveryType(this.programApplication.deliveryType)
-      : "—";
+    deliveryType(): string {
+      return this.displayedApplication.deliveryType
+        ? mapDeliveryType(this.displayedApplication.deliveryType)
+        : "—";
     },
     programType(): string {
-      return this.programApplication.programType 
-      ? mapProgramType(this.programApplication.programType) 
-      : "-"
+      const types = this.displayedApplication.programTypes;
+      if (!types?.length) return "—";
+      return types.map(mapProgramType).join(", ");
     },
     status(): string {
-      return this.programApplication.status || "Draft";
+      return this.displayedApplication.status || "Draft";
     },
     buttonText(): string {
-      if(this.programApplication.status === "Draft" || this.programApplication.status === "RFAI") {
+      if (
+        this.displayedApplication.status === "Draft" ||
+        this.displayedApplication.status === "RFAI"
+      ) {
         return "Edit";
       }
       return "View";
@@ -118,6 +151,20 @@ export default defineComponent({
   },
   methods: {
     formatDate,
+    async checkReady() {
+      const id = this.programApplication?.id;
+      if (!id) return;
+      const result = await getProgramApplicationReady(id);
+      if (result.error) return;
+      if (result.data?.componentsGenerationCompleted === true) {
+        this.localApplication = {
+          ...this.programApplication,
+          componentsGenerationCompleted: true,
+        };
+        return;
+      }
+      this.pollTimeoutId = setTimeout(this.checkReady, POLL_INTERVAL_MS);
+    },
   },
 });
 </script>

@@ -185,7 +185,8 @@
           <Card class="d-flex flex-column">
             <h2>View all applications</h2>
             <p class="mt-4">
-              View all applications for my educational institution and edit any draft applications.
+              View all applications for my educational institution and edit any
+              draft applications.
             </p>
             <div class="mt-auto">
               <v-btn
@@ -200,7 +201,7 @@
               </v-btn>
             </div>
           </Card>
-        </v-col>  
+        </v-col>
       </v-row>
     </div>
   </PageContainer>

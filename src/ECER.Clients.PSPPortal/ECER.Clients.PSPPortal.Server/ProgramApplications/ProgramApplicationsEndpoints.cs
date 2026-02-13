@@ -29,16 +29,18 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-      var programApplication = new ProgramApplication(null, programRep.PostSecondaryInstituteId)
+      var programApplication = new ProgramApplication
       {
+        PostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
         ProgramApplicationName = request.ProgramApplicationName,
-        ProgramApplicationType = request.ProgramApplicationType,
-        ProgramType = request.ProgramType,
+        ProgramApplicationType = ApplicationType.NewBasicECEPostBasicProgram,
+        ProgramTypes = request.ProgramTypes,
         DeliveryType = request.DeliveryType,
         Status = ApplicationStatus.Draft
       };
 
-      var created = await messageBus.Send(new CreateProgramApplicationCommand(programApplication), ct);
+      var contractApplication = mapper.Map<Managers.Registry.Contract.ProgramApplications.ProgramApplication>(programApplication);
+      var created = await messageBus.Send(new CreateProgramApplicationCommand(contractApplication), ct);
       if (created == null) return TypedResults.BadRequest(new ProblemDetails { Title = "Failed to create program application" });
 
       return TypedResults.Ok(new CreateProgramApplicationResponse(mapper.Map<ProgramApplication>(created)));
@@ -90,8 +92,9 @@ public record ProgramApplication
   public string? ProgramApplicationName { get; set; }
   public ApplicationType? ProgramApplicationType { get; set; }
   public ApplicationStatus? Status { get; set; }
-  public ProvincialCertificationTypeOffered? ProgramType { get; set; }
+  public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
+  public bool? ComponentsGenerationCompleted { get; set; }
 }
 
 public record GetProgramApplicationResponse
@@ -105,6 +108,7 @@ public record CreateProgramApplicationRequest
   public string? ProgramApplicationName { get; set; }
   public ApplicationType? ProgramApplicationType { get; set; }
   public ProvincialCertificationTypeOffered? ProgramType { get; set; }
+  public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
 }
 
@@ -112,24 +116,29 @@ public record CreateProgramApplicationResponse(ProgramApplication ProgramApplica
 
 public enum ApplicationStatus
 {
+  Denied,
   Draft,
+  Inactive,
   InterimRecognition,
   OnGoingRecognition,
+  PendingDecision,
   PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
   RFAI,
+  SiteVisitRequired,
   Submitted,
   Withdrawn
 }
 
 public enum ApplicationType
 {
-  NewBasicPostBasicProgramHybridOnline,
-  NewBasicPostBasicProgramInperson,
-  NewDeliveryMethod,
-  PrivateNewCampusLocation,
+  AddOnlineorHybridDeliveryMethod,
+  CurriculumRevisionsatRecognizedInstitution,
+  NewBasicECEPostBasicProgram,
+  NewCampusatRecognizedPrivateInstitution,
   SatelliteProgram,
+  WorkIntegratedLearningProgram,
 }
 
 public enum DeliveryType
@@ -137,8 +146,6 @@ public enum DeliveryType
   Hybrid,
   Inperson,
   Online,
-  Satellite,
-  WorkIntegratedLearning
 }
 
 public enum ProvincialCertificationTypeOffered
@@ -146,5 +153,12 @@ public enum ProvincialCertificationTypeOffered
   ECEBasic,
   ITE,
   ITESNE,
+  SNE
+}
+
+public enum ProgramCertificationType
+{
+  Basic,
+  ITE,
   SNE
 }

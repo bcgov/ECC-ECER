@@ -17,7 +17,12 @@
       <v-row>
         <v-col class="d-flex" cols="12">
           <p class="align-self-center mr-4"><strong>SHOW:</strong></p>
-          <v-btn-toggle v-model="filter" color="primary" mandatory @update:model-value="fetchPrograms(page)">
+          <v-btn-toggle
+            v-model="filter"
+            color="primary"
+            mandatory
+            @update:model-value="fetchPrograms(page)"
+          >
             <v-btn value="active">Active</v-btn>
             <v-btn value="inactive">Inactive</v-btn>
             <v-btn value="all">All</v-btn>
@@ -50,7 +55,7 @@
         class="mt-4"
         elevation="2"
         :length="totalPages"
-    ></v-pagination>
+      ></v-pagination>
     </div>
   </PageContainer>
 </template>
@@ -88,23 +93,26 @@ export default defineComponent({
       page: 1,
       loading: true,
       filter: "active",
-      activeStatus: ["Draft",
+      activeStatus: [
+        "Draft",
         "InterimRecognition",
         "OnGoingRecognition",
         "PendingReview",
         "ReviewAnalysis",
         "RFAI",
-        "Submitted"
+        "Submitted",
       ] as Components.Schemas.ApplicationStatus[],
       inactiveStatus: [
         "RefusetoApprove",
-        "Withdrawn"
-      ] as Components.Schemas.ApplicationStatus[]
+        "Withdrawn",
+      ] as Components.Schemas.ApplicationStatus[],
     };
   },
   computed: {
     isLoading(): boolean {
-      return this.loadingStore.isLoading("program_application_get") || this.loading;
+      return (
+        this.loadingStore.isLoading("program_application_get") || this.loading
+      );
     },
     currentPage: {
       get() {
@@ -126,14 +134,14 @@ export default defineComponent({
   methods: {
     getProgramKey(
       program: Components.Schemas.ProgramApplication,
-      index: number
+      index: number,
     ): string {
       return program.id ?? `${program.status}-${index}`;
     },
-    getStatues() : Components.Schemas.ApplicationStatus[] {
-      if(this.filter === 'active') {
+    getStatues(): Components.Schemas.ApplicationStatus[] {
+      if (this.filter === "active") {
         return this.activeStatus;
-      } else if(this.filter === 'inactive') {
+      } else if (this.filter === "inactive") {
         return this.inactiveStatus;
       } else {
         return [...this.activeStatus, ...this.inactiveStatus];
@@ -141,7 +149,11 @@ export default defineComponent({
     },
     async fetchPrograms(page: number) {
       const params = { page, pageSize: PAGE_SIZE };
-      const response = await getProgramApplications(params, "", this.getStatues());
+      const response = await getProgramApplications(
+        params,
+        "",
+        this.getStatues(),
+      );
       this.programApplications = response.data?.applications || [];
       this.count = response.data?.count || 0;
 

@@ -8,7 +8,8 @@ const meta: Meta<typeof ProgramApplicationCard> = {
   tags: ["autodocs"],
   argTypes: {
     programApplication: {
-      description: "The program application object containing profile information",
+      description:
+        "The program application object containing profile information",
     },
   },
   decorators: [
@@ -25,9 +26,9 @@ const baseProgram: Components.Schemas.ProgramApplication = {
   id: "c21d913a-e2ec-f011-8406-7ced8d050c09",
   postSecondaryInstituteId: "c21d913a-e2ec-f011-8406-7ced8d050c08",
   programApplicationName: "Bachelor of Education",
-  programApplicationType: "NewBasicPostBasicProgramInperson",
+  programApplicationType: "NewBasicECEPostBasicProgram",
   programType: "ECEBasic",
-  deliveryType: "Hybrid"
+  deliveryType: "Hybrid",
 };
 
 export const Draft: Story = {
@@ -70,7 +71,7 @@ export const RefusetoApprove: Story = {
   args: {
     programApplication: {
       ...baseProgram,
-      status: "RefusetoApprove"
+      status: "RefusetoApprove",
     },
   },
 };
