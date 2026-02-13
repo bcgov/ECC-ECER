@@ -52,6 +52,7 @@ import {
   mapApplicationType,
   mapDeliveryType,
   mapProgramType,
+  getProgramApplicationById,
 } from "@/api/program-application";
 
 const POLL_INTERVAL_MS = 10000;
@@ -153,7 +154,7 @@ export default defineComponent({
     async checkReady() {
       const id = this.programApplication?.id;
       if (!id) return;
-      const result = await getProgramApplicationReady(id);
+      const result = await getProgramApplicationById(id);
       if (result.error) return;
       if (result.data?.componentsGenerationCompleted === true) {
         this.localApplication = {

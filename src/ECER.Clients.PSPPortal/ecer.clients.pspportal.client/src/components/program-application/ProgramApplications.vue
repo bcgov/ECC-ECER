@@ -11,7 +11,7 @@
       </v-col>
     </v-row>
 
-    <Loading v-if="isLoading"></Loading>
+    <Loading v-if="loading"></Loading>
 
     <div class="mt-4" v-else>
       <v-row>
