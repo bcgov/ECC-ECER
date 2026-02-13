@@ -8,16 +8,16 @@
           text="Close"
           @click="showCloseDialog = true"
         ></v-btn>
-        <v-divider :style="{ opacity: 1 }" />
+        <v-divider class="mb-5" :style="{ opacity: 1 }" />
         <v-row>
-          <v-col>New message</v-col>
+          <v-col><h2>New message</h2></v-col>
         </v-row>
         <v-row>
           <v-col>
             Send a message to the ECE Registry.
             <span class="font-weight-bold">
-              Please note that all users that have access to the PSP Portal at
-              your institution will be able to read and reply to this thread.
+              Please note that all program representatives at your institution
+              will be able to read and reply to this thread.
             </span>
           </v-col>
         </v-row>
@@ -211,7 +211,7 @@ import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { VForm } from "vuetify/components";
 import FileUploader from "@/components/common/FileUploader.vue";
-import { getChildMessages, sendMessage } from "@/api/message";
+import { sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useAlertStore } from "@/store/alert";
