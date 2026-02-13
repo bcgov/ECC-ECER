@@ -229,7 +229,7 @@ let clientArray = [
         },
       },
     ],
-    defaultClientScopes: ["address", "profile", "email"],
+    defaultClientScopes: ["address", "profile", "email", "basic"],
     optionalClientScopes: [],
     access: {
       view: true,
