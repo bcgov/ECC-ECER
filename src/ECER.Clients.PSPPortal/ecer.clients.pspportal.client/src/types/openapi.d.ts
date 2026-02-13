@@ -14,21 +14,26 @@ declare namespace Components {
       } | null;
     }
     export type ApplicationStatus =
+      | "Denied"
       | "Draft"
+      | "Inactive"
       | "InterimRecognition"
       | "OnGoingRecognition"
+      | "PendingDecision"
       | "PendingReview"
       | "RefusetoApprove"
       | "ReviewAnalysis"
       | "RFAI"
+      | "SiteVisitRequired"
       | "Submitted"
       | "Withdrawn";
     export type ApplicationType =
-      | "NewBasicPostBasicProgramHybridOnline"
-      | "NewBasicPostBasicProgramInperson"
-      | "NewDeliveryMethod"
-      | "PrivateNewCampusLocation"
-      | "SatelliteProgram";
+      | "AddOnlineorHybridDeliveryMethod"
+      | "CurriculumRevisionsatRecognizedInstitution"
+      | "NewBasicECEPostBasicProgram"
+      | "NewCampusatRecognizedPrivateInstitution"
+      | "SatelliteProgram"
+      | "WorkIntegratedLearningProgram";
     export interface AreaOfInstruction {
       id?: string | null;
       name?: string | null;
@@ -129,12 +134,17 @@ declare namespace Components {
       newHours?: string | null;
       areaOfInstructionId?: string | null;
     }
-    export type DeliveryType =
-      | "Hybrid"
-      | "Inperson"
-      | "Online"
-      | "Satellite"
-      | "WorkIntegratedLearning";
+    export interface CreateProgramApplicationRequest {
+      programApplicationName?: string | null;
+      programApplicationType?: ApplicationType;
+      programType?: ProvincialCertificationTypeOffered;
+      programTypes?: ProgramCertificationType[] | null;
+      deliveryType?: DeliveryType;
+    }
+    export interface CreateProgramApplicationResponse {
+      programApplication?: ProgramApplication;
+    }
+    export type DeliveryType = "Hybrid" | "Inperson" | "Online";
     export interface DraftProgramResponse {
       program?: Program;
     }
@@ -206,6 +216,7 @@ declare namespace Components {
       pspProgramRepresentativeId?: string | null;
       inviteType?: InviteType;
       bceidBusinessName?: string | null;
+      postSecondaryInstitutionName?: string | null;
       isLinked?: boolean;
     }
     export interface PortalInvitationQueryResult {
@@ -248,9 +259,11 @@ declare namespace Components {
       programApplicationName?: string | null;
       programApplicationType?: ApplicationType;
       status?: ApplicationStatus;
-      programType?: ProvincialCertificationTypeOffered;
+      programTypes?: ProgramCertificationType[] | null;
       deliveryType?: DeliveryType;
+      componentsGenerationCompleted?: boolean | null;
     }
+    export type ProgramCertificationType = "Basic" | "ITE" | "SNE";
     export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
     export type ProgramStatus =
       | "Draft"
@@ -529,6 +542,15 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetProgramApplicationResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationPost {
+    export type RequestBody =
+      Components.Schemas.CreateProgramApplicationRequest;
+    namespace Responses {
+      export type $200 = Components.Schemas.CreateProgramApplicationResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -852,6 +874,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>;
   /**
+   * program_application_post - Create a draft program application
+   */
+  "program_application_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.ProgramApplicationPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationPost.Responses.$200>;
+  /**
    * program_application_get - Handles program application queries
    */
   "program_application_get"(
@@ -1143,6 +1173,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>;
   };
+  ["/api/programApplications"]: {
+    /**
+     * program_application_post - Create a draft program application
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ProgramApplicationPost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationPost.Responses.$200>;
+  };
   ["/api/programApplications/{id}"]: {
     /**
      * program_application_get - Handles program application queries
@@ -1288,6 +1328,10 @@ export type Country = Components.Schemas.Country;
 export type Course = Components.Schemas.Course;
 export type CourseAreaOfInstruction =
   Components.Schemas.CourseAreaOfInstruction;
+export type CreateProgramApplicationRequest =
+  Components.Schemas.CreateProgramApplicationRequest;
+export type CreateProgramApplicationResponse =
+  Components.Schemas.CreateProgramApplicationResponse;
 export type DeliveryType = Components.Schemas.DeliveryType;
 export type DraftProgramResponse = Components.Schemas.DraftProgramResponse;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
@@ -1311,6 +1355,8 @@ export type PortalInvitationQueryResult =
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type Program = Components.Schemas.Program;
 export type ProgramApplication = Components.Schemas.ProgramApplication;
+export type ProgramCertificationType =
+  Components.Schemas.ProgramCertificationType;
 export type ProgramProfileType = Components.Schemas.ProgramProfileType;
 export type ProgramStatus = Components.Schemas.ProgramStatus;
 export type ProgramTypes = Components.Schemas.ProgramTypes;

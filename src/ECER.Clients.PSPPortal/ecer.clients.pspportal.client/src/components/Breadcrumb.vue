@@ -72,16 +72,6 @@ export default defineComponent({
           },
         ];
       }
-      if (this.route.name === "program-applications") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Program applications",
-            disabled: true,
-            href: "/program-applications",
-          },
-        ];
-      }
       if (this.route.name === "all-program-profiles") {
         return [
           { title: "Home", disabled: false, href: "/" },
@@ -104,6 +94,46 @@ export default defineComponent({
             title: "Update a program profile",
             disabled: true,
             href: "/program/:programId/initiate-update",
+          },
+        ];
+      }
+      if (this.route.name === "program-applications") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Program applications",
+            disabled: true,
+            href: "/program-applications",
+          },
+        ];
+      }
+      if (this.route.name === "program-application-information") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Program application information",
+            disabled: true,
+            href: "/program-application-information",
+          },
+        ];
+      }
+      if (this.route.name === "program-application-begin") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Begin an application",
+            disabled: true,
+            href: "/program-application-begin",
+          },
+        ];
+      }
+      if (this.route.name === "messages") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Messages",
+            disabled: true,
+            href: "/communication/new-message",
           },
         ];
       }

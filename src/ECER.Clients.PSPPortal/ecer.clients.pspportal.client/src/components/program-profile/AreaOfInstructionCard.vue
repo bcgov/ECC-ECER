@@ -14,7 +14,10 @@
         <v-card-title class="pl-0">
           <strong>{{ areaGroup.areaName }}</strong>
         </v-card-title>
-        <v-card-subtitle v-if="areaGroup.subtitle" class="pl-0 pb-4">
+        <v-card-subtitle
+          v-if="areaGroup.subtitle"
+          class="pl-0 pb-4 text-grey-very-dark"
+        >
           {{ areaGroup.subtitle }}
         </v-card-subtitle>
         <div
@@ -96,9 +99,7 @@
           </template>
         </div>
 
-        <p v-else class="mb-4">
-          No courses added yet for this area.
-        </p>
+        <p v-else class="mb-4">No courses added yet for this area.</p>
       </div>
       <v-row
         v-if="groupedAreas.length > 0"
@@ -113,9 +114,7 @@
         </v-col>
       </v-row>
 
-      <p v-if="groupedAreas.length === 0">
-        No courses added yet.
-      </p>
+      <p v-if="groupedAreas.length === 0">No courses added yet.</p>
     </v-card-text>
   </v-card>
 </template>

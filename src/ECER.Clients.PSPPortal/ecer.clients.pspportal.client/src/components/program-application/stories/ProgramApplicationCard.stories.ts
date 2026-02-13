@@ -26,7 +26,7 @@ const baseProgram: Components.Schemas.ProgramApplication = {
   id: "c21d913a-e2ec-f011-8406-7ced8d050c09",
   postSecondaryInstituteId: "c21d913a-e2ec-f011-8406-7ced8d050c08",
   programApplicationName: "Bachelor of Education",
-  programApplicationType: "NewBasicPostBasicProgramInperson",
+  programApplicationType: "NewBasicECEPostBasicProgram",
   programType: "ECEBasic",
   deliveryType: "Hybrid",
 };

@@ -1,0 +1,12 @@
+{
+  "name": "ecc-ecer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Early Childhood Educator Registry",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

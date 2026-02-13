@@ -66,6 +66,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EducationalInstitutionId = "ecer_educationalinstitutionid";
 			public const string ecer_EducationalInstitutionId_ecer_postsecondaryinstitute = "ecer_EducationalInstitutionId_ecer_postsecondaryinstitute";
 			public const string ecer_EducationalInstitutionIdName = "ecer_educationalinstitutionidname";
+			public const string ecer_Enddate = "ecer_enddate";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_ProgramApplicationId = "ecer_programapplicationid";
 			public const string ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton";
@@ -75,6 +76,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramProfileId = "ecer_programprofileid";
 			public const string ecer_ProgramProfileId_ecer_program = "ecer_ProgramProfileId_ecer_program";
 			public const string ecer_ProgramProfileIdName = "ecer_programprofileidname";
+			public const string ecer_Startdate = "ecer_startdate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -315,6 +317,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_enddate")]
+		public System.Nullable<System.DateTime> ecer_Enddate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_enddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_enddate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -432,6 +449,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_startdate")]
+		public System.Nullable<System.DateTime> ecer_Startdate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_startdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_startdate", value);
 			}
 		}
 		

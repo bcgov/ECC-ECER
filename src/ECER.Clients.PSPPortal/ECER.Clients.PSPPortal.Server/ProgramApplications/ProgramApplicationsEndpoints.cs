@@ -3,12 +3,15 @@ using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.PspUsers;
+using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
 using ContractApplicationStatus = ECER.Managers.Registry.Contract.ProgramApplications.ApplicationStatus;
+using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 using ContractProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
 
 namespace ECER.Clients.PSPPortal.Server.ProgramApplications;
@@ -18,6 +21,33 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     const string policyNames = "psp_user";
+
+    endpointRouteBuilder.MapPost("/api/programApplications", async Task<Results<Ok<CreateProgramApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (
+      CreateProgramApplicationRequest request, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var userContext = ctx.User.GetUserContext()!;
+      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+
+      var programApplication = new ProgramApplication
+      {
+        PostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
+        ProgramApplicationName = request.ProgramApplicationName,
+        ProgramApplicationType = ApplicationType.NewBasicECEPostBasicProgram,
+        ProgramTypes = request.ProgramTypes,
+        DeliveryType = request.DeliveryType,
+        Status = ApplicationStatus.Draft
+      };
+
+      var contractApplication = mapper.Map<Managers.Registry.Contract.ProgramApplications.ProgramApplication>(programApplication);
+      var created = await messageBus.Send(new CreateProgramApplicationCommand(contractApplication), ct);
+      if (created == null) return TypedResults.BadRequest(new ProblemDetails { Title = "Failed to create program application" });
+
+      return TypedResults.Ok(new CreateProgramApplicationResponse(mapper.Map<ProgramApplication>(created)));
+    })
+    .WithOpenApi("Create a draft program application", string.Empty, "program_application_post")
+    .RequireAuthorization(policyNames)
+    .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/programApplications/{id?}", async Task<Results<Ok<GetProgramApplicationResponse>, NotFound>> (
       string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
@@ -62,8 +92,9 @@ public record ProgramApplication
   public string? ProgramApplicationName { get; set; }
   public ApplicationType? ProgramApplicationType { get; set; }
   public ApplicationStatus? Status { get; set; }
-  public ProvincialCertificationTypeOffered? ProgramType { get; set; }
+  public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
+  public bool? ComponentsGenerationCompleted { get; set; }
 }
 
 public record GetProgramApplicationResponse
@@ -72,26 +103,42 @@ public record GetProgramApplicationResponse
   public int Count { get; set; }
 }
 
+public record CreateProgramApplicationRequest
+{
+  public string? ProgramApplicationName { get; set; }
+  public ApplicationType? ProgramApplicationType { get; set; }
+  public ProvincialCertificationTypeOffered? ProgramType { get; set; }
+  public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
+  public DeliveryType? DeliveryType { get; set; }
+}
+
+public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
+
 public enum ApplicationStatus
 {
+  Denied,
   Draft,
+  Inactive,
   InterimRecognition,
   OnGoingRecognition,
+  PendingDecision,
   PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
   RFAI,
+  SiteVisitRequired,
   Submitted,
   Withdrawn
 }
 
 public enum ApplicationType
 {
-  NewBasicPostBasicProgramHybridOnline,
-  NewBasicPostBasicProgramInperson,
-  NewDeliveryMethod,
-  PrivateNewCampusLocation,
+  AddOnlineorHybridDeliveryMethod,
+  CurriculumRevisionsatRecognizedInstitution,
+  NewBasicECEPostBasicProgram,
+  NewCampusatRecognizedPrivateInstitution,
   SatelliteProgram,
+  WorkIntegratedLearningProgram,
 }
 
 public enum DeliveryType
@@ -99,8 +146,6 @@ public enum DeliveryType
   Hybrid,
   Inperson,
   Online,
-  Satellite,
-  WorkIntegratedLearning
 }
 
 public enum ProvincialCertificationTypeOffered
@@ -108,5 +153,12 @@ public enum ProvincialCertificationTypeOffered
   ECEBasic,
   ITE,
   ITESNE,
+  SNE
+}
+
+public enum ProgramCertificationType
+{
+  Basic,
+  ITE,
   SNE
 }

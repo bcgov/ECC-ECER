@@ -2,6 +2,7 @@ namespace ECER.Resources.Documents.ProgramApplications;
 
 public interface IProgramApplicationRepository
 {
+  Task<string> Create(ProgramApplication programApplication, CancellationToken cancellationToken);
   Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken);
 }
 
@@ -22,28 +23,35 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public ApplicationType? ProgramApplicationType { get; set; }
   public ApplicationStatus? Status { get; set; }
   public ProvincialCertificationTypeOffered? ProgramType { get; set; }
+  public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
+  public bool? ComponentsGenerationCompleted { get; set; }
 }
 public enum ApplicationStatus
 {
+  Denied,
   Draft,
+  Inactive,
   InterimRecognition,
   OnGoingRecognition,
+  PendingDecision,
   PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
   RFAI,
+  SiteVisitRequired,
   Submitted,
   Withdrawn
 }
 
 public enum ApplicationType
 {
-  NewBasicPostBasicProgramHybridOnline,
-  NewBasicPostBasicProgramInperson,
-  NewDeliveryMethod,
-  PrivateNewCampusLocation,
+  AddOnlineorHybridDeliveryMethod,
+  CurriculumRevisionsatRecognizedInstitution,
+  NewBasicECEPostBasicProgram,
+  NewCampusatRecognizedPrivateInstitution,
   SatelliteProgram,
+  WorkIntegratedLearningProgram,
 }
 
 public enum DeliveryType
@@ -51,8 +59,6 @@ public enum DeliveryType
   Hybrid,
   Inperson,
   Online,
-  Satellite,
-  WorkIntegratedLearning
 }
 
 public enum ProvincialCertificationTypeOffered
@@ -60,5 +66,12 @@ public enum ProvincialCertificationTypeOffered
   ECEBasic,
   ITE,
   ITESNE,
+  SNE
+}
+
+public enum ProgramCertificationType
+{
+  Basic,
+  ITE,
   SNE
 }

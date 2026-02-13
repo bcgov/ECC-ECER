@@ -71,9 +71,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string programIdWithTotals => testProgram2.Id.ToString();
   public string courseId => testCourse.Id.ToString();
   public string courseId2 => testCourse2.Id.ToString();
+  public string courseId3 => testCourse3.Id.ToString();
   
   public string programApplicationId => programApplication.Id.ToString();
-  public string courseId3 => testCourse3.Id.ToString();
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
   public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
@@ -111,7 +111,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     tertiaryProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_tertiary", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     inactiveProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_inactive", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Disabled);
     inactiveProgramRepresentativeDoesNotChange = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_inactive_does_not_change", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Disabled);
-    otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, $"{TestRunId}psp_institute_other");
+    otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, $"Test_psp_institute_other");
     otherInstituteRepresentative = GetOrAddProgramRepresentative(context, otherPostSecondaryInstitute, $"{TestRunId}psp_rep_other", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     invitedPspUserToReinvite = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_reinvite", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
     testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
@@ -126,13 +126,11 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     submitDraftProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual3", "Draft");
     testCourse = GetOrAddCourse(context, testProgram1, "101");
     testCourse2 =  GetOrAddCourse(context, submitDraftProgram, "201");
+    testCourse3 = GetOrAddCourse(context, testProgram1, "109");
 
     programApplication =
       GetOrAddProgramApplication(context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
     
-    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
-    testCourse3 = GetOrAddCourse(context, testProgram1, "109");
-
     context.SaveChanges();
 
     //load dependent properties

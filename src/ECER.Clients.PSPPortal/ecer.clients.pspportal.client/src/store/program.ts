@@ -36,6 +36,12 @@ export const useProgramStore = defineStore("program", {
     applicationConfiguration(): Wizard {
       return programWizard;
     },
+    programName(state) {
+      return (
+        state.draftProgram.programName ||
+        state.draftProgram.postSecondaryInstituteName
+      );
+    },
   },
   actions: {
     setDraftProgramFromProfile(program: Components.Schemas.Program): void {

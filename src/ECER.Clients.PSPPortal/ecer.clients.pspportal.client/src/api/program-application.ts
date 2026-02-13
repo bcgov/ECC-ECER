@@ -65,16 +65,18 @@ const mapProgramStatus = (status: string = ""): string => {
 
 const mapApplicationType = (type: string = ""): string => {
   switch (type) {
-    case "PrivateNewCampusLocation":
+    case "NewCampusatRecognizedPrivateInstitution":
       return "New campus";
-    case "NewDeliveryMethod":
-      return "New delivery method";
-    case "NewBasicPostBasicProgramHybridOnline":
-      return "Online or Hybrid Program";
-    case "NewBasicPostBasicProgramInperson":
-      return "New Basic / Post-basic Program";
+    case "AddOnlineorHybridDeliveryMethod":
+      return "Add online or hybrid delivery method";
+    case "NewBasicECEPostBasicProgram":
+      return "New Basic ECE / Post Basic Program";
     case "SatelliteProgram":
       return "Satellite program";
+    case "CurriculumRevisionsatRecognizedInstitution":
+      return "Curriculum revisions at recognized institution";
+    case "WorkIntegratedLearningProgram":
+      return "Work integrated learning program";
     default:
       return "-";
   }
@@ -99,12 +101,10 @@ const mapDeliveryType = (type: string = ""): string => {
 
 const mapProgramType = (type: string = ""): string => {
   switch (type) {
-    case "ECEBasic":
+    case "Basic":
       return "ECE (Basic)";
     case "ITE":
       return "ITE";
-    case "ITESNE":
-      return "ITE & SNE";
     case "SNE":
       return "SNE";
     default:
@@ -112,7 +112,72 @@ const mapProgramType = (type: string = ""): string => {
   }
 };
 
+export interface ProgramApplicationReadyResponse {
+  componentsGenerationCompleted: boolean;
+}
+
+const getProgramApplicationReady = async (
+  id: string,
+): Promise<ApiResponse<ProgramApplicationReadyResponse | null | undefined>> => {
+  const client = await getClient();
+  const axios = client as unknown as {
+    get: (url: string) => Promise<{ data: ProgramApplicationReadyResponse }>;
+  };
+  const result =
+    await apiResultHandler.execute<ProgramApplicationReadyResponse | null>({
+      request: axios.get(
+        `/api/programApplications/${encodeURIComponent(id)}/ready`,
+      ) as Promise<
+        import("axios").AxiosResponse<ProgramApplicationReadyResponse>
+      >,
+    });
+  if (result.error) return { data: null, error: result.error };
+  return { data: result.data ?? null, error: null };
+};
+
+const getProgramApplicationById = async (
+  id: string,
+): Promise<
+  ApiResponse<Components.Schemas.ProgramApplication | null | undefined>
+> => {
+  const client = await getClient();
+  const result =
+    await apiResultHandler.execute<Components.Schemas.GetProgramApplicationResponse | null>(
+      {
+        request: client.program_application_get(
+          { id, byStatus: [] },
+          null,
+          {} as AxiosRequestConfig,
+        ),
+        key: "program_application_get",
+      },
+    );
+  if (result.error) return { data: null, error: result.error };
+  const application = result.data?.applications?.[0] ?? null;
+  return { data: application, error: null };
+};
+
+const createProgramApplication = async (
+  request: Components.Schemas.CreateProgramApplicationRequest,
+): Promise<
+  ApiResponse<
+    Components.Schemas.CreateProgramApplicationResponse | null | undefined
+  >
+> => {
+  const client = await getClient();
+
+  return apiResultHandler.execute<Components.Schemas.CreateProgramApplicationResponse | null>(
+    {
+      request: client.program_application_post(null, request),
+      key: "program_application_post",
+    },
+  );
+};
+
 export {
+  createProgramApplication,
+  getProgramApplicationById,
+  getProgramApplicationReady,
   getProgramApplications,
   mapProgramStatus,
   mapApplicationType,

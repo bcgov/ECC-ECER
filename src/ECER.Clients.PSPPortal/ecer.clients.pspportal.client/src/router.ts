@@ -48,7 +48,7 @@ const router = createRouter({
     },
     {
       path: "/messages/new/:initialCategory?",
-      name: "newMessage",
+      name: "new-message",
       component: () => import("./components/communication/NewMessage.vue"),
       meta: { requiresAuth: true },
       props: true,
@@ -94,6 +94,13 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
+      path: "/program-application/:programApplicationId",
+      component: () => import("./components/pages/ProgramApplication.vue"),
+      name: "programApplication",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
+    {
       path: "/program-profiles",
       component: () => import("./components/pages/ProgramProfiles.vue"),
       name: "program-profiles",
@@ -111,6 +118,12 @@ const router = createRouter({
       name: "initiate-program-update",
       meta: { requiresAuth: true },
       props: true,
+    },
+    {
+      path: "/program-application-begin",
+      component: () => import("./components/pages/BeginProgramApplication.vue"),
+      name: "program-application-begin",
+      meta: { requiresAuth: true },
     },
     {
       path: "/silent-callback",
