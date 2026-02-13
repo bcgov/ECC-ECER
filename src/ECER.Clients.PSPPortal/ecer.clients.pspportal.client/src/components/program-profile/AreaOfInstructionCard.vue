@@ -14,7 +14,10 @@
         <v-card-title class="pl-0">
           <strong>{{ areaGroup.areaName }}</strong>
         </v-card-title>
-        <v-card-subtitle v-if="areaGroup.subtitle" class="pl-0 pb-4">
+        <v-card-subtitle
+          v-if="areaGroup.subtitle"
+          class="pl-0 pb-4 text-grey-very-dark"
+        >
           {{ areaGroup.subtitle }}
         </v-card-subtitle>
         <div
