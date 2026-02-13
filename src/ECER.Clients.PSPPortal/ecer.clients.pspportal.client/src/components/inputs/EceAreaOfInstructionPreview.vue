@@ -54,20 +54,20 @@
             </div>
           </v-col>
         </v-row>
-      </template>
-      <template v-if="nonAllocatedCourses?.length > 0 && isOfferingCourse()">
-        <v-row>
-          <v-col cols="4">Non-allocated courses</v-col>
-          <v-col cols="8">
-            <div v-for="course in nonAllocatedCourses">
-              <v-row no-gutters>
-                <v-col cols="6">
-                  <strong>{{ getNonAllocatedTitle(course) }}</strong>
-                </v-col>
-              </v-row>
-            </div>
-          </v-col>
-        </v-row>
+        <template v-if="nonAllocatedCourses?.length > 0">
+          <v-row>
+            <v-col cols="4">Non-allocated courses</v-col>
+            <v-col cols="8">
+              <div v-for="course in nonAllocatedCourses">
+                <v-row no-gutters>
+                  <v-col cols="6">
+                    <strong>{{ getNonAllocatedTitle(course) }}</strong>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-col>
+          </v-row>
+        </template>
       </template>
     </template>
   </PreviewCard>
@@ -210,11 +210,6 @@ export default defineComponent({
     },
     getNonAllocatedTitle(course: Components.Schemas.Course): string {
       return getCourseTitle(course);
-    },
-    isOfferingCourse(): boolean | undefined {
-      return this.programStore.draftProgram?.offeredProgramTypes?.includes(
-        this.programType,
-      );
     },
   },
 });
