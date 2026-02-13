@@ -36,6 +36,7 @@ public record PortalInvitation(string? Id)
   public string? PspProgramRepresentativeId { get; set; }
   public InviteType? InviteType { get; set; }
   public string? BceidBusinessName { get; set; }
+  public string? PostSecondaryInstitutionName { get; set; }
   public bool IsLinked { get; set; }
 }
 
