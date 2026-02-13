@@ -356,8 +356,9 @@ declare namespace Components {
       programId?: string | null;
     }
     export interface UpdateCourseRequest {
-      courses?: Course[] | null;
+      course?: Course;
       type?: FunctionType;
+      id?: string | null;
     }
     export interface VersionMetadata {
       version?: string | null;
@@ -414,10 +415,10 @@ declare namespace Paths {
   }
   namespace CoursePut {
     namespace Parameters {
-      export type Id = string;
+      export type CourseId = string;
     }
     export interface PathParameters {
-      id: Parameters.Id;
+      courseId: Parameters.CourseId;
     }
     export type RequestBody = Components.Schemas.UpdateCourseRequest;
     namespace Responses {
@@ -556,6 +557,7 @@ declare namespace Paths {
   namespace ProgramGet {
     namespace Parameters {
       export type ByStatus = Components.Schemas.ProgramStatus[];
+      export type FromProgramId = string;
       export type Id = string;
     }
     export interface PathParameters {
@@ -563,6 +565,7 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       byStatus?: Parameters.ByStatus;
+      fromProgramId?: Parameters.FromProgramId;
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetProgramsResponse;
@@ -628,6 +631,19 @@ declare namespace Paths {
     }
   }
   namespace PspUserManageReactivatePost {
+    namespace Parameters {
+      export type ProgramRepId = string;
+    }
+    export interface PathParameters {
+      programRepId: Parameters.ProgramRepId;
+    }
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace PspUserManageResendInvitationPut {
     namespace Parameters {
       export type ProgramRepId = string;
     }
@@ -782,6 +798,14 @@ export interface OperationMethods {
     data?: Paths.PspUserAdd.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserAdd.Responses.$200>;
+  /**
+   * psp_user_manage_resend_invitation_put - Resends a portal invitation for PSP representative within the current user's institution
+   */
+  "psp_user_manage_resend_invitation_put"(
+    parameters?: Parameters<Paths.PspUserManageResendInvitationPut.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserManageResendInvitationPut.Responses.$200>;
   /**
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
@@ -1058,6 +1082,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserAdd.Responses.$200>;
   };
+  ["/api/users/manage/{programRepId}/resend"]: {
+    /**
+     * psp_user_manage_resend_invitation_put - Resends a portal invitation for PSP representative within the current user's institution
+     */
+    "put"(
+      parameters?: Parameters<Paths.PspUserManageResendInvitationPut.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserManageResendInvitationPut.Responses.$200>;
+  };
   ["/api/users/profile"]: {
     /**
      * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
@@ -1217,7 +1251,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
   };
-  ["/api/courses/{id}"]: {
+  ["/api/courses/{courseId}"]: {
     /**
      * course_put - Update a course for a program profile
      */

@@ -96,7 +96,7 @@
           </template>
         </div>
 
-        <p v-else class="text-grey-darken-1 mb-4">
+        <p v-else class="mb-4">
           No courses added yet for this area.
         </p>
       </div>
@@ -113,7 +113,7 @@
         </v-col>
       </v-row>
 
-      <p v-if="groupedAreas.length === 0" class="text-grey-darken-1">
+      <p v-if="groupedAreas.length === 0">
         No courses added yet.
       </p>
     </v-card-text>

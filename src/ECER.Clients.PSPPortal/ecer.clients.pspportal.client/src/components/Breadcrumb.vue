@@ -72,6 +72,16 @@ export default defineComponent({
           },
         ];
       }
+      if (this.route.name === "program-applications") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Program applications",
+            disabled: true,
+            href: "/program-applications",
+          },
+        ];
+      }
       if (this.route.name === "all-program-profiles") {
         return [
           { title: "Home", disabled: false, href: "/" },

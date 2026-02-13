@@ -40,6 +40,7 @@
       :show="showEditCourseDialog"
       :program-type="programType"
       :course="selectedCourse"
+      :courseList="program?.courses || []"
       :saving="saving"
       @save="handleCourseSave"
       @cancel="
@@ -349,9 +350,9 @@ export default defineComponent({
       }
       this.saving = true;
       try {
-        const { error } = await updateCourse(this.program.id, [
+        const { error } = await updateCourse(this.program.id, 
           updatedCourse as Components.Schemas.Course,
-        ]);
+        );
 
         if (error) {
           this.alertStore.setFailureAlert(

@@ -22,9 +22,10 @@
           </p>
         </v-col>
       </v-row>
+
       <ProgramProfilesList
         :programs="allProgramProfiles"
-        @withdrawn="fetchPrograms"
+        @withdrawn="fetchPrograms(page)"
       />
       <!-- Empty state -->
       <v-row v-if="allProgramProfiles.length === 0">
@@ -32,6 +33,15 @@
           <p>No program profiles found.</p>
         </v-col>
       </v-row>
+
+      <v-pagination
+        v-if="programs.length > 0"
+        v-model="currentPage"
+        size="small"
+        class="mt-4"
+        elevation="2"
+        :length="totalPages"
+      ></v-pagination>
     </div>
   </PageContainer>
 </template>
@@ -41,14 +51,14 @@ import { defineComponent } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import ProgramProfilesList from "@/components/ProgramProfilesList.vue";
 import { getPrograms } from "@/api/program";
 import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
 import ECEHeader from "@/components/ECEHeader.vue";
 import { EARLIEST_PROFILE_YEAR } from "@/utils/constant";
+import ProgramProfilesList from "@/components/ProgramProfilesList.vue";
 
-const PAGE_SIZE = 0;
+const PAGE_SIZE = 10;
 
 export default defineComponent({
   name: "AllProgramProfiles",
@@ -82,13 +92,25 @@ export default defineComponent({
     earliestProfileYear(): number {
       return EARLIEST_PROFILE_YEAR;
     },
+    currentPage: {
+      get() {
+        return this.page;
+      },
+      set(newValue: number) {
+        this.page = newValue;
+        this.fetchPrograms(newValue);
+      },
+    },
+    totalPages() {
+      return Math.ceil(this.programs.length / PAGE_SIZE);
+    },
   },
   async mounted() {
-    await this.fetchPrograms();
+    await this.fetchPrograms(this.page);
     this.loading = false;
   },
   methods: {
-    async fetchPrograms(page: number = 1) {
+    async fetchPrograms(page: number) {
       const params = { page, pageSize: PAGE_SIZE };
       const response = await getPrograms("", [], params);
       this.programs = response.data?.programs || [];

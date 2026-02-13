@@ -33,7 +33,6 @@ export const useProgramStore = defineStore("program", {
     hasDraftProgram(state): boolean {
       return state.draftProgram.id !== undefined;
     },
-
     applicationConfiguration(): Wizard {
       return programWizard;
     },

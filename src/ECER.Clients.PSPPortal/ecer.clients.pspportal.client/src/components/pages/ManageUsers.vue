@@ -177,9 +177,11 @@ import {
   getUsers,
   reactivateUser,
   setPrimaryUser,
+  resendInviteUser,
 } from "@/api/manage-users";
 import type { PspUserListItem } from "@/types/openapi";
 import { useUserStore } from "@/store/user";
+import { useAlertStore } from "@/store/alert";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -193,9 +195,11 @@ export default defineComponent({
   },
   setup() {
     const userStore = useUserStore();
+    const alertStore = useAlertStore();
     const router = useRouter();
     return {
       userStore,
+      alertStore,
       router,
     };
   },
@@ -225,9 +229,16 @@ export default defineComponent({
         await this.loadUsers();
       }
     },
-    handleResendInvitation(userId: string | null | undefined) {
-      // TODO: Implement resend invitation handler
-      console.log("Resend invitation:", userId);
+    async handleResendInvitation(userId: string | null | undefined) {
+      if (userId) {
+        const response = await resendInviteUser(userId);
+        if (response.error) {
+          this.alertStore.setFailureAlert("Failed to resend this invitation.");
+          return;
+        }
+        await this.loadUsers();
+        this.alertStore.setSuccessAlert("Invitation sent.");
+      }
     },
     async handleReactivate(userId: string | null | undefined) {
       if (userId) {

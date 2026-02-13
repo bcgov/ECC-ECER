@@ -16,6 +16,7 @@ public record ProgramsQuery : IRequest<ProgramsQueryResults>
   public string? ById { get; set; }
   public string? ByPostSecondaryInstituteId { get; set; }
   public IEnumerable<ProgramStatus>? ByStatus { get; set; }
+  public string? ByFromProgramProfileId { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
 }

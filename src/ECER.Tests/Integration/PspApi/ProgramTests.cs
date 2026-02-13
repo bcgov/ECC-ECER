@@ -185,6 +185,27 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetProgramProfiles_ByFromProgramId_ReturnsMatchingProgram()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs?fromProgramId={this.Fixture.changeRequestFromProfileId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var status = await response.ReadAsJsonAsync<GetProgramsResponse>();
+    status.ShouldNotBeNull();
+    status.Programs.ShouldNotBeNull();
+    status.Programs.Count().ShouldBe(1);
+
+    var program = status.Programs.First();
+    program.Id.ShouldBe(this.Fixture.changeRequestProgramId);
+    program.FromProgramProfileId.ShouldBe(this.Fixture.changeRequestFromProfileId);
+    program.ProgramProfileType.ShouldBe(ProgramProfileType.ChangeRequest);
+  }
+
+  [Fact]
   public async Task UpdateProgram_Type_Draft_ReturnsBadRequest()
   {
     var programResponse = await Host.Scenario(_ =>
@@ -276,10 +297,11 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       .Where(ai => ai.ProgramTypes.Contains(ProgramTypes.SNE))
       .ToList();
 
+    var course = CreateCourseWithCourseAreaOfInstructionsAndHours(allSneInstructions);
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(new []{ CreateCourseWithCourseAreaOfInstructionsAndHours(allSneInstructions) }, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.submitProgramId}");
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.submitProgramId)).ToUrl($"/api/courses/{course.CourseId}");
       _.StatusCodeShouldBeOk();
     });
 
@@ -291,7 +313,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
   }
-  
+
   private Course CreateCourseWithCourseAreaOfInstructionsAndHours(List<AreaOfInstruction> areaOfInstructions)
   {
     var courseAreaOfInstruction = new List<CourseAreaOfInstruction>();

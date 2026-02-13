@@ -1,5 +1,6 @@
 using System.Net;
 using Alba;
+using Bogus;
 using ECER.Clients.PSPPortal.Server;
 using ECER.Clients.PSPPortal.Server.Courses;
 using ECER.Clients.PSPPortal.Server.Programs;
@@ -15,16 +16,74 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   public CoursesTest(ITestOutputHelper output, PspPortalWebAppFixture fixture) : base(output, fixture)
   {
   }
-
+  
   [Fact]
-  public async Task UpdateCourses_ReturnsStatusInvalidOperation()
+  public async Task AddCourse_WhenTypeProgramProfile_ReturnsStatusBadRequest()
   {
-    var course = new[] { CreateCourse(101, "201" )};
+    var course =  CreateCourse(101, "201" );
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramProfile, Fixture.programApplicationId)).ToUrl($"/api/courses");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+  
+  [Fact]
+  public async Task AddCourse_WhenCourseNumberAlreadyExists_ReturnsStatusInvalidOperation()
+  {
+    var course =  CreateCourse(101, "201" );
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramApplication, Fixture.programApplicationId)).ToUrl($"/api/courses");
+      _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
+    });
+  }
+  
+  [Fact]
+  public async Task DeleteCourse_CourseDoesNotExist_ReturnsStatusInvalidOperation()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Delete.Url($"/api/courses/{Guid.NewGuid()}");
+      _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
+    });
+  }
+  
+  [Fact]
+  public async Task AddCourseAndDeleteCourse_WhenNewCourse_ReturnsOK()
+  {
+    var course =  CreateCourseWithCourseAreaOfInstructions();
+    course.CourseTitle = "Test_psp_add_course";
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile))
-        .ToUrl($"/api/courses/{Fixture.programId}");
+      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramApplication, Fixture.programApplicationId)).ToUrl($"/api/courses");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var newCourseId = await response.ReadAsJsonAsync<string>();
+    newCourseId.ShouldNotBeNull();
+    
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Delete.Url($"/api/courses/{newCourseId}");
+      _.StatusCodeShouldBeOk();
+    });
+  }
+
+  [Fact]
+  public async Task UpdateCourses_WhenCourseNumberAlreadyExists_ReturnsStatusInvalidOperation()
+  {
+    var course = CreateCourse(101, "109" );
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.programId))
+        .ToUrl($"/api/courses/{course.CourseId}");
       _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
   }
@@ -32,11 +91,11 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   [Fact]
   public async Task UpdateCourses_ReturnsStatusOk()
   {
-    var course = new[] { CreateCourse(101, "") };
+    var course = CreateCourse(101, "");
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.programId}");
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.programId)).ToUrl($"/api/courses/{course.CourseId}");
       _.StatusCodeShouldBeOk();
     });
     
@@ -55,19 +114,21 @@ public class CoursesTest : PspPortalWebAppScenarioBase
 
     var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
     firstProfile.Courses.ShouldNotBeNull();
-    firstProfile.Courses.ElementAt(0).CourseNumber.ShouldBe("101");
-    firstProfile.Courses.ElementAt(0).CourseTitle.ShouldBe("Course 101");
-    firstProfile.Courses.ElementAt(0).NewCourseNumber.ShouldBe(course[0].NewCourseNumber);
-    firstProfile.Courses.ElementAt(0).NewCourseTitle.ShouldBe("Course 102");
+    var matchingCourse = firstProfile.Courses.Where(c => c.CourseNumber == "101").ToList();
+    matchingCourse.First().CourseNumber.ShouldBe("101");
+    matchingCourse.First().CourseTitle.ShouldBe("Course 101");
+    matchingCourse.First().NewCourseNumber.ShouldBe(course.NewCourseNumber);
+    matchingCourse.First().NewCourseTitle.ShouldBe("Course 102");
   }
   
   [Fact]
   public async Task UpdateCourses_With_AreaOfInstructions_ReturnsStatusOk()
   {
+    var course = CreateCourseWithCourseAreaOfInstructions();
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(new UpdateCourseRequest(new []{ CreateCourseWithCourseAreaOfInstructions() }, FunctionType.ProgramProfile)).ToUrl($"/api/courses/{Fixture.programId}");
+      _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.programId)).ToUrl($"/api/courses/{course.CourseId}");
       _.StatusCodeShouldBeOk();
     });
     
@@ -88,14 +149,14 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.Count().ShouldNotBe(0);
 
-    var firstCourse = firstProfile.Courses.SingleOrDefault();
-    firstCourse.ShouldNotBeNull();
-    firstCourse.CourseNumber.ShouldBe("101");
-    firstCourse.CourseTitle.ShouldBe("Course 101");
+    var matchingCourse = firstProfile.Courses.Where(c => c.CourseNumber == "101").ToList();
+    matchingCourse.ShouldNotBeNull();
+    matchingCourse.First().CourseNumber.ShouldBe("101");
+    matchingCourse.First().CourseTitle.ShouldBe("Course 101");
     
-    firstCourse.CourseAreaOfInstruction.ShouldNotBeNull();
-    
-    var firstCourseAreaOfInstruction = firstCourse.CourseAreaOfInstruction.SingleOrDefault();
+    matchingCourse.First().CourseAreaOfInstruction.ShouldNotBeNull();
+    matchingCourse.First().CourseAreaOfInstruction.ShouldNotBeEmpty();
+    var firstCourseAreaOfInstruction = matchingCourse.First().CourseAreaOfInstruction!.SingleOrDefault();
     firstCourseAreaOfInstruction.ShouldNotBeNull();
   }
   
@@ -111,42 +172,14 @@ public class CoursesTest : PspPortalWebAppScenarioBase
       ProgramType = ProgramTypes.SNE.ToString()
     };
   }
-
-  
-  private Course CreateCourseWithCourseAreaOfInstructionsAndHours(List<AreaOfInstruction> areaOfInstructions)
-  {
-    var courseAreaOfInstruction =  new List<CourseAreaOfInstruction>();
-
-    foreach (var ai in areaOfInstructions)
-    {
-      var ca = new CourseAreaOfInstruction()
-      {
-        AreaOfInstructionId = ai.Id,
-        NewHours = ai.MinimumHours == 0 ? "200" : Convert.ToString(ai.MinimumHours)
-      };
-      courseAreaOfInstruction.Add(ca);
-    }
-    
-    var course = new Course
-    {
-      CourseId = Fixture.courseId2,
-      CourseNumber = "201",
-      CourseTitle = "Course 201",
-      NewCourseNumber = "202",
-      NewCourseTitle = "Course 202",
-      ProgramType = ProgramTypes.SNE.ToString(),
-    };
-    
-    course.CourseAreaOfInstruction = courseAreaOfInstruction;
-    return course;
-  }
   
   private Course CreateCourseWithCourseAreaOfInstructions()
   {
+    var faker = new Faker("en_CA");
     return new Course
     {
       CourseId = Fixture.courseId,
-      CourseNumber = "101",
+      CourseNumber = faker.Random.Number(0, 999).ToString(),
       CourseTitle = "Course 101",
       ProgramType = ProgramTypes.SNE.ToString(),
       CourseAreaOfInstruction = new []

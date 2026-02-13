@@ -14,7 +14,7 @@
                 id="txtCourseNumber"
                 v-model="courseNumber"
                 label="Course number"
-                :rules="[Rules.required()]"
+                :rules="[Rules.required(), generateSameCourseNumberRule()]"
                 :disabled="saving"
               ></EceTextField>
             </v-col>
@@ -104,6 +104,10 @@ export default defineComponent({
   props: {
     course: {
       type: Object as PropType<Components.Schemas.Course | null>,
+      required: true,
+    },
+    courseList: {
+      type: Array as PropType<Components.Schemas.Course[]>,
       required: true,
     },
     programType: {
@@ -199,6 +203,20 @@ export default defineComponent({
       );
 
       return areaInstruction?.newHours ?? "0";
+    },
+    generateSameCourseNumberRule() {
+      return (v: string) => {
+        let duplicateCourseNumber = this.courseList.some((course) => {
+          return (
+            course.courseNumber === v &&
+            course.courseId !== this.localCourse?.courseId &&
+            course.programType === this.localCourse?.programType
+          );
+        });
+        return duplicateCourseNumber
+          ? "This course number already exists in this program profile"
+          : true;
+      };
     },
     setAreaHours(areaId: string | null | undefined, value: string) {
       if (!areaId || !this.localCourse) {

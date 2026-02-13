@@ -9,49 +9,118 @@ namespace ECER.Resources.Documents.Courses;
 internal sealed class CourseRepository : ICourseRepository
 {
   private readonly EcerContext context;
+  private readonly IMapper mapper;
 
-  public CourseRepository(EcerContext context)
+  public CourseRepository(EcerContext context, IMapper mapper)
   {
     this.context = context;
+    this.mapper = mapper;
   }
 
-  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id,
-    CancellationToken cancellationToken)
+  public async Task<string> DeleteCourse(string courseId, string postSecondaryInstituteId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
+    
+    var courses = context.ecer_CourseSet.AsQueryable().Where(p => 
+      p.ecer_CourseId == Guid.Parse(courseId)
+      && p.ecer_postsecondaryinstitutionid.Id == Guid.Parse(postSecondaryInstituteId));
 
-    foreach (var course in incomingCourse)
+    var courseExists = context.From(courses)
+      .Join()
+      .Include(c => c.ecer_courseprovincialrequirement_CourseId)
+      .Execute()
+      .SingleOrDefault();
+
+    if (courseExists == null)
     {
-      var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(course.CourseId));
+      throw new InvalidOperationException($"Course {courseId} does not exists");
+    } 
+    
+    if (!context.IsAttached(courseExists))
+    {
+      context.Attach(courseExists);
+    }
+    context.DeleteObject(courseExists);
+    context.SaveChanges();
+    return courseId;
+  }
 
-      var courseExists = context.From(courses)
-        .Join()
-        .Include(c => c.ecer_courseprovincialrequirement_CourseId)
-        .Execute()
-        .SingleOrDefault();
-
-      if (courseExists != null)
-      {
-        if (!context.IsAttached(courseExists))
-        {
-          context.Attach(courseExists);
-        }
-
-        UpdateCourseMetaData(course, courseExists);
-        if (course.CourseAreaOfInstruction != null)
-        {
-          foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
-          {
-            ManageAreaOfInstruction(areaOfInstruction, courseExists);
-          }
-        }
-      }
-      else
-      {
-        throw new InvalidOperationException($"Course not found");
-      }
+  public async Task<string> AddCourse(Course incomingCourse, string id, string postSecondaryInstituteId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    
+    if (string.IsNullOrWhiteSpace(postSecondaryInstituteId))
+    {
+      throw new InvalidOperationException("Post secondary institute id is required");
     }
 
+    var instituteId = Guid.Parse(postSecondaryInstituteId);
+    var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
+    if (institute == null) throw new InvalidOperationException($"Post secondary institute '{postSecondaryInstituteId}' not found");
+    
+    var applicationId = Guid.Parse(id);
+    var programApplication = context.ecer_PostSecondaryInstituteProgramApplicaitonSet
+      .SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == applicationId);
+    
+    if (!string.IsNullOrWhiteSpace(incomingCourse.CourseNumber))
+    {
+      var coursesWithSameNumber = 
+        context.ecer_CourseSet.AsQueryable().Where(p => 
+            p.ecer_Code == incomingCourse.CourseNumber
+            && p.ecer_ProgramApplication.Id == applicationId
+            && p.ecer_programtypeName == incomingCourse.ProgramType
+            )
+          .Take(1)
+          .ToList();
+
+      if (coursesWithSameNumber.Count > 0)
+      {
+        throw new InvalidOperationException($"This course with course number {incomingCourse.CourseNumber} already exists");
+      }
+    }
+    
+    var ecerCourse = mapper.Map<ecer_Course>(incomingCourse)!;
+    ecerCourse.Id = Guid.NewGuid();
+    
+    context.AddObject(ecerCourse);
+    context.AddLink(ecerCourse, new Relationship(ecer_Course.Fields.ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution), institute);
+    context.AddLink(ecerCourse, new Relationship(ecer_Course.Fields.ecer_course_ProgramApplication_ecer_postsecond), programApplication);
+    
+    context.SaveChanges();
+    return ecerCourse.Id.ToString();
+  }
+
+  public async Task<string> UpdateCourse(Course course, string id, bool isProgramApplication, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(course.CourseId));
+
+    var courseExists = context.From(courses)
+      .Join()
+      .Include(c => c.ecer_courseprovincialrequirement_CourseId)
+      .Execute()
+      .SingleOrDefault();
+
+    if (courseExists != null)
+    {
+      if (!context.IsAttached(courseExists))
+      {
+        context.Attach(courseExists);
+      }
+
+      UpdateCourseMetaData(course, courseExists, id, isProgramApplication);
+      if (course.CourseAreaOfInstruction != null)
+      {
+        foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
+        {
+          ManageAreaOfInstruction(areaOfInstruction, courseExists);
+        }
+      }
+    }
+    else
+    {
+      throw new InvalidOperationException($"Course not found");
+    }
     context.SaveChanges();
     return id;
   }
@@ -87,12 +156,26 @@ internal sealed class CourseRepository : ICourseRepository
     }
   }
 
-private void UpdateCourseMetaData(Course course, ecer_Course courseExists)
+private void UpdateCourseMetaData(Course course, ecer_Course courseExists, string id, bool isProgramApplication)
   {
     if (!string.IsNullOrWhiteSpace(course.NewCourseNumber))
     {
-      var coursesWithSameNumber = 
-        context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_Code == course.NewCourseNumber && p.ecer_CourseId != Guid.Parse(course.CourseId))
+      var coursesWithSameNumber = isProgramApplication ?
+          context.ecer_CourseSet.AsQueryable().Where(p => 
+              p.ecer_Code == course.NewCourseNumber 
+              && p.ecer_CourseId != Guid.Parse(course.CourseId)
+              && p.ecer_ProgramApplication.Id == Guid.Parse(id)
+              && p.ecer_programtypeName == course.ProgramType
+            )
+            .Take(1)
+            .ToList()
+      :
+        context.ecer_CourseSet.AsQueryable().Where(p => 
+            p.ecer_Code == course.NewCourseNumber 
+            && p.ecer_CourseId != Guid.Parse(course.CourseId)
+            && p.ecer_course_Programid.Id == Guid.Parse(id)
+            && p.ecer_programtypeName == course.ProgramType
+            )
           .Take(1)
           .ToList();
 

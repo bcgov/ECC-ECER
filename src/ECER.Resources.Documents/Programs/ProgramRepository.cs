@@ -24,18 +24,34 @@ internal sealed class ProgramRepository : IProgramRepository
     var programs = context.ecer_ProgramSet.AsQueryable();
 
     if (query.ById != null) programs = programs.Where(p => p.ecer_ProgramId == Guid.Parse(query.ById));
+    
+    if (query.ByPostSecondaryInstituteId != null)
+    {
+      var instituteId = Guid.Parse(query.ByPostSecondaryInstituteId);
+      programs = programs.Where(p => p.ecer_PostSecondaryInstitution.Id == instituteId);
+    }
 
-    programs = programs.OrderByDescending(p => p.CreatedOn);
+    if (query.ByStatus != null && query.ByStatus.Any())
+    {
+      var statuses = mapper.Map<IEnumerable<ecer_Program_StatusCode>>(query.ByStatus)!.ToList();
+      programs = programs.WhereIn(item => item.StatusCode!.Value, statuses);
+    }
+
+    if (query.ByFromProgramProfileId != null)
+    {
+      var fromProgramProfileId = Guid.Parse(query.ByFromProgramProfileId);
+      programs = programs.Where(p => p.ecer_FromProgramProfileId.Id == fromProgramProfileId);
+    }
 
     int paginatedTotalProgramCount = 0;
     if (query.PageNumber > 0)
     {
       paginatedTotalProgramCount = context.From(programs).Aggregate().Count();
-      programs = programs.OrderByDescending(item => item.CreatedOn).Skip(query.PageNumber).Take(query.PageSize);
+      programs = programs.OrderByDescending(item => item.ecer_StartDate).Skip(query.PageNumber).Take(query.PageSize);
     }
     else
     {
-      programs = programs.OrderByDescending(item => item.CreatedOn);
+      programs = programs.OrderByDescending(item => item.ecer_StartDate);
     }
 
     List<ecer_Program> results;
@@ -54,18 +70,6 @@ internal sealed class ProgramRepository : IProgramRepository
       results = context.From(programs)
         .Execute()
         .ToList();
-    }
-
-    if (query.ByPostSecondaryInstituteId != null)
-    {
-      var instituteId = Guid.Parse(query.ByPostSecondaryInstituteId);
-      results = results.Where(p => p.ecer_PostSecondaryInstitution != null && p.ecer_PostSecondaryInstitution.Id == instituteId).ToList();
-    }
-
-    if (query.ByStatus != null && query.ByStatus.Any())
-    {
-      var statuses = mapper.Map<IEnumerable<ecer_Program_StatusCode>>(query.ByStatus)!.ToList();
-      results = results.Where(p => p.StatusCode != null && statuses.Contains(p.StatusCode.Value)).ToList();
     }
 
     return new ProgramResult
@@ -167,15 +171,15 @@ internal sealed class ProgramRepository : IProgramRepository
     if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
 
     program.ecer_DeclarationDate = DateTime.Now;
-    
+
     var firstName = pspUser!.ecer_FirstName?.Trim() ?? string.Empty;
     var lastName = pspUser.ecer_LastName?.Trim() ?? string.Empty;
     program.ecer_UserName = $"{firstName} {lastName}".Trim();
-    
+
     program.StatusCode = ecer_Program_StatusCode.UnderRegistryReview;
     context.UpdateObject(program);
     context.AddLink(pspUser, ecer_Program.Fields.ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative, program);
-    
+
     context.SaveChanges();
     return id;
   }

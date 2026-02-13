@@ -11,7 +11,7 @@ public interface IPspRepRepository
   /// Attach identity to a Psp representative
   /// </summary>
   Task<string> AttachIdentity(PspUser user, CancellationToken ct);
-  
+
   /// <summary>
   /// Query Psp representatives
   /// </summary>
@@ -26,22 +26,27 @@ public interface IPspRepRepository
   /// <summary>
   /// Disables portal access for a Psp representative and removes authentication
   /// </summary>
-  Task Deactivate(string pspUserId, CancellationToken ct);
+  Task Deactivate(string pspUserId, string pspRepId, CancellationToken ct);
 
   /// <summary>
   /// Re-enables portal access for a Psp representative and triggers a new invitation
   /// </summary>
-  Task Reactivate(string pspUserId, CancellationToken ct);
+  Task Reactivate(string pspUserId, string pspRepId, CancellationToken ct);
 
   /// <summary>
   /// Sets the specified Psp representative as Primary and others in the same institution to Secondary
   /// </summary>
   Task SetPrimary(string pspUserId, CancellationToken ct);
-  
+
   /// <summary>
   /// Adds a new Psp representative's profile
   /// </summary>
-  Task Add(PspUserProfile profile, string postSecondaryInstitutionId, CancellationToken ct);
+  Task Add(PspUserProfile profile, string postSecondaryInstitutionId, string pspRepId, CancellationToken ct);
+
+  /// <summary>
+  /// Resend portal invitation for a psp representative
+  /// </summary>
+  Task ResendInvitation(string pspUserId, string pspRepId, CancellationToken ct);
 }
 
 public record PspRepQuery
@@ -54,7 +59,7 @@ public record PspRepQuery
 public record PspUser
 {
   public string Id { get; set; } = null!;
-  
+
   public IEnumerable<UserIdentity> Identities { get; set; } = Array.Empty<UserIdentity>();
   public PspUserProfile Profile { get; set; } = null!;
   public PortalAccessStatus? AccessToPortal { get; set; }
@@ -79,6 +84,7 @@ public enum PspUserRole
 {
   /// <summary>Primary (for email/communications</summary>
   Primary,
+
   /// <summary>Secondary</summary>
   Secondary
 }
