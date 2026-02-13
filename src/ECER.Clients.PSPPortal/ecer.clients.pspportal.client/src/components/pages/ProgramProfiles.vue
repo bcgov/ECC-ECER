@@ -77,6 +77,7 @@
         <ProgramProfilesList
           :programs="programsRequiringReview"
           @withdrawn="fetchPrograms"
+          @polling="fetchPrograms"
         />
       </div>
 
@@ -89,6 +90,7 @@
       <ProgramProfilesList
         :programs="currentProgramProfiles"
         @withdrawn="fetchPrograms"
+        @polling="fetchPrograms"
       />
       <!-- Empty state -->
       <v-row
@@ -124,7 +126,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { DateTime } from "luxon";
 import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
@@ -135,8 +136,9 @@ import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 import ECEHeader from "@/components/ECEHeader.vue";
+import { IntervalTime } from "@/utils/constant";
 
-const PAGE_SIZE = 0;
+const PAGE_SIZE = 10;
 
 export default defineComponent({
   name: "ProgramProfiles",
@@ -156,14 +158,13 @@ export default defineComponent({
   data() {
     return {
       programs: [] as Components.Schemas.Program[],
-      programCount: -1,
-      page: 1,
-      loading: true,
+      isPolling: false,
+      pollInterval: null as ReturnType<typeof setInterval> | null,
     };
   },
   computed: {
     isLoading(): boolean {
-      return this.loadingStore.isLoading("program_get") || this.loading;
+      return this.loadingStore.isLoading("program_get") && !this.isPolling;
     },
     programsRequiringReview(): Components.Schemas.Program[] {
       return this.programs.filter(
@@ -178,33 +179,51 @@ export default defineComponent({
     currentProgramProfiles(): Components.Schemas.Program[] {
       return this.programs.filter(
         (p) =>
-          "Approved" === p.status || "ChangeRequestInProgress" === p.status,
+          p.status === "Approved" || p.status === "ChangeRequestInProgress",
       );
     },
-    currentYearStart(): Date {
-      let yearStart;
-      const today = new Date();
-      if (today.getMonth() > 8) {
-        yearStart = new Date(today.setMonth(8, 1));
-      } else {
-        yearStart = new Date(today.setFullYear(today.getFullYear() - 1, 8, 1));
-      }
-      yearStart.setHours(0, 0, 0, 0);
-      return yearStart;
+    updateInProgress(): boolean {
+      return this.programs.some(
+        (program: Components.Schemas.Program) =>
+          program.programProfileType === "ChangeRequest" &&
+          program.status === "Draft" &&
+          !program.readyForReview,
+      );
     },
   },
   async mounted() {
     await this.fetchPrograms();
-    this.loading = false;
+    if (this.updateInProgress) {
+      this.startPolling();
+    }
+  },
+  beforeUnmount() {
+    this.stopPolling();
   },
   methods: {
-    async fetchPrograms(page: number = 1) {
-      const params = { page, pageSize: PAGE_SIZE };
-      const response = await getPrograms("", [], params);
+    async fetchPrograms() {
+      const response = await getPrograms("", [], {
+        page: 1,
+        pageSize: PAGE_SIZE,
+      });
       this.programs = response.data?.programs || [];
-      this.programCount = response.data?.totalProgramsCount || 0;
+    },
+    stopPolling() {
+      if (this.pollInterval) {
+        clearInterval(this.pollInterval);
+        this.pollInterval = null;
+      }
+      this.isPolling = false;
+    },
+    startPolling() {
+      this.isPolling = true;
 
-      globalThis.scrollTo({ top: 0, behavior: "smooth" });
+      this.pollInterval = setInterval(async () => {
+        await this.fetchPrograms();
+        if (!this.updateInProgress) {
+          this.stopPolling();
+        }
+      }, IntervalTime.INTERVAL_10_SECONDS);
     },
   },
 });

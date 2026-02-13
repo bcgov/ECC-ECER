@@ -4,3 +4,4 @@
 src/key-*.xml
 .env
 .envrc
+node_modules

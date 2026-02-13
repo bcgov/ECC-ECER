@@ -48,7 +48,7 @@ const router = createRouter({
     },
     {
       path: "/messages/new/:initialCategory?",
-      name: "newMessage",
+      name: "new-message",
       component: () => import("./components/communication/NewMessage.vue"),
       meta: { requiresAuth: true },
       props: true,

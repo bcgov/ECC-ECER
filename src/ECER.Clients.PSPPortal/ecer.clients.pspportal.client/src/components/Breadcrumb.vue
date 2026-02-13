@@ -127,6 +127,16 @@ export default defineComponent({
           },
         ];
       }
+      if (this.route.name === "messages") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Messages",
+            disabled: true,
+            href: "/communication/new-message",
+          },
+        ];
+      }
       return [];
     },
   },

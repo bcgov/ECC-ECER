@@ -33,9 +33,14 @@ export const useProgramStore = defineStore("program", {
     hasDraftProgram(state): boolean {
       return state.draftProgram.id !== undefined;
     },
-
     applicationConfiguration(): Wizard {
       return programWizard;
+    },
+    programName(state) {
+      return (
+        state.draftProgram.programName ||
+        state.draftProgram.postSecondaryInstituteName
+      );
     },
   },
   actions: {
