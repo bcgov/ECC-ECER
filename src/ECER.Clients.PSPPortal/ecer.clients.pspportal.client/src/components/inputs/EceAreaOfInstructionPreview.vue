@@ -55,6 +55,20 @@
           </v-col>
         </v-row>
       </template>
+      <template v-if="nonAllocatedCourses?.length > 0 && isOfferingCourse()">
+        <v-row>
+          <v-col cols="4">Non-allocated courses</v-col>
+          <v-col cols="8">
+            <div v-for="course in nonAllocatedCourses">
+              <v-row no-gutters>
+                <v-col cols="6">
+                  <strong>{{ getNonAllocatedTitle(course) }}</strong>
+                </v-col>
+              </v-row>
+            </div>
+          </v-col>
+        </v-row>
+      </template>
     </template>
   </PreviewCard>
 </template>
@@ -63,7 +77,11 @@
 import { defineComponent, type PropType } from "vue";
 import type { Components } from "@/types/openapi";
 import type { ProgramStage } from "@/types/wizard";
-import { getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction } from "@/utils/functions";
+import {
+  getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction,
+  getNonAllocatedCoursesByType,
+  getCourseTitle,
+} from "@/utils/functions";
 
 import { useConfigStore } from "@/store/config";
 import { useProgramStore } from "@/store/program";
@@ -162,6 +180,19 @@ export default defineComponent({
 
       return new Map(sortedEntries);
     },
+    nonAllocatedCourses(): Components.Schemas.Course[] {
+      return getNonAllocatedCoursesByType(
+        this.programStore.draftProgram,
+        this.programType,
+      ).sort((a, b) => {
+        if (a.courseNumber > b.courseNumber) {
+          return 1;
+        } else if (a.courseNumber < b.courseNumber) {
+          return -1;
+        }
+        return 0;
+      });
+    },
   },
   methods: {
     getCourseName(course: CourseAreaDetail): string {
@@ -176,6 +207,14 @@ export default defineComponent({
       }
 
       return "";
+    },
+    getNonAllocatedTitle(course: Components.Schemas.Course): string {
+      return getCourseTitle(course);
+    },
+    isOfferingCourse(): boolean | undefined {
+      return this.programStore.draftProgram?.offeredProgramTypes?.includes(
+        this.programType,
+      );
     },
   },
 });
