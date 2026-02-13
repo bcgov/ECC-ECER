@@ -48,7 +48,6 @@ import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import {
-  getProgramApplicationReady,
   mapProgramStatus,
   mapApplicationType,
   mapDeliveryType,

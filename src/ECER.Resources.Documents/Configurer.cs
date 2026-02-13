@@ -23,7 +23,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<ICRA.IICRARepository, ICRA.ICRARepository>();
     configurationContext.Services.AddTransient<IPostSecondaryInstituteRepository, PostSecondaryInstituteRepository>();
     configurationContext.Services.AddTransient<IProgramRepository, ProgramRepository>();
-    configurationContext.Services.AddTransient<ICourseRepository, CourseRepository>();
     configurationContext.Services.AddTransient<IProgramApplicationRepository, ProgramApplicationRepository>();
+    configurationContext.Services.AddTransient<ICourseRepository, CourseRepository>();
   }
 }
