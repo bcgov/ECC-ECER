@@ -65,7 +65,7 @@ export default defineComponent({
     accessDeniedSubMessage(): string {
       return this.dynamicsBceidBusinessName
         ? `The Business BCeID account listed in our records is ${this.dynamicsBceidBusinessName}. Please contact the ECE Registry if this is incorrect.`
-        : "";
+        : "You may have followed an invalid link. Contact the ECE Registry if you require help.";
     },
   },
 });
