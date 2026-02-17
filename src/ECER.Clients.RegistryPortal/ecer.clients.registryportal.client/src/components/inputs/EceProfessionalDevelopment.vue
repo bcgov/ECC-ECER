@@ -65,7 +65,7 @@
             label="Name of the organization who offered this training"
             tooltip-text="Provide the name of the school, organization, or instructor that offered the training or issued the certificate. 
 They should be able to confirm you completed the course or workshop."
-            maxlength="300"
+            maxlength="100"
             :rules="[
               Rules.required(
                 'Enter the name of the organization that offered this training',
@@ -216,6 +216,7 @@ They should be able to confirm you completed the course or workshop."
                     'Enter your reference\'s valid phone number',
                   ),
                 ]"
+                maxLength="100"
                 color="primary"
               ></EceTextField>
             </v-col>
@@ -236,6 +237,7 @@ They should be able to confirm you completed the course or workshop."
                 id="txtOrganizationEmailAddress"
                 v-model="organizationEmailAddress"
                 label="Email address"
+                maxLength="100"
                 :rules="[
                   Rules.required(
                     'Enter the email address of your course or workshop contact',
