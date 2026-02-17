@@ -26,9 +26,9 @@
             <v-col cols="12">
               <div class="d-flex flex-column ga-3 pb-5">
                 <p>
-                  The program profile review process is conducted annually by
-                  the ECE Registry to ensure requirements are met for continued
-                  recognition in B.C.
+                  The program profile review process is conducted annually to
+                  ensure minimum provincial requirements for certification are
+                  met.
                 </p>
                 <p class="font-weight-bold">
                   You will need to review your program profile for accuracy and

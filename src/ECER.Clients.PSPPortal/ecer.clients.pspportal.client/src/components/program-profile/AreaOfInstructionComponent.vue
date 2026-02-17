@@ -70,8 +70,7 @@ import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
 import Loading from "@/components/Loading.vue";
 import { useLoadingStore } from "@/store/loading";
-
-const MIN_HOURS_ITE_SNE = 450;
+import { MIN_HOURS_ITE_SNE } from "@/utils/constant";
 
 interface CourseAreaOfInstructionWithCourse
   extends Components.Schemas.CourseAreaOfInstruction {
@@ -123,7 +122,7 @@ export default defineComponent({
     return {
       areaOfInstructionList: [] as Components.Schemas.AreaOfInstruction[],
       saving: false,
-      requiredHours: 450,
+      requiredHours: MIN_HOURS_ITE_SNE,
       selectedCourse: null as Components.Schemas.Course | null,
       showEditCourseDialog: false,
     };

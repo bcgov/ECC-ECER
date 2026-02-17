@@ -21,8 +21,8 @@
       complete their review
     </li>
     <li>
-      I understand that I am submitting this information on behalf of [name of
-      institution]
+      I understand that I am submitting this information on behalf of this
+      institution
     </li>
   </ul>
 </template>
