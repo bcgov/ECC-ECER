@@ -24,8 +24,8 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     var status = await response.ReadAsJsonAsync<GetProgramApplicationResponse>();
     status.ShouldNotBeNull();
     
-    var firstApplication = status.Applications!.FirstOrDefault().ShouldNotBeNull();
-    firstApplication.Status.ShouldBe(ApplicationStatus.RFAI);
+    var firstApplication = status.Applications!.Where(app => app.Id == Fixture.programApplicationId).ShouldNotBeNull();
+    firstApplication.First().Status.ShouldBe(ApplicationStatus.RFAI);
   }
   
   [Fact]
@@ -44,5 +44,28 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     var firstApplication = status.Applications!.FirstOrDefault().ShouldNotBeNull();
     firstApplication.Status.ShouldBe(ApplicationStatus.RFAI);
     firstApplication.DeliveryType.ShouldBe(DeliveryType.Hybrid);
+  }
+  
+  [Fact]
+  public async Task UpdateProgramApplication_Type_Draft_ToWithdraw_ReturnsOk()
+  {
+    var program = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programApplications/{this.Fixture.draftProgramApplicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+  
+    var status = await program.ReadAsJsonAsync<GetProgramApplicationResponse>();
+    status.ShouldNotBeNull();
+    var application = status.Applications!.First();
+    application.Status = ApplicationStatus.Withdrawn;
+  
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(application).ToUrl($"/api/programApplications/{Fixture.draftProgramApplicationId}");
+      _.StatusCodeShouldBeOk();
+    });
   }
 }

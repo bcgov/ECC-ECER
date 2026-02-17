@@ -49,6 +49,22 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     return entity.ecer_PostSecondaryInstituteProgramApplicaitonId!.Value.ToString();
   }
 
+  public async Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var existingApplication = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == Guid.Parse(application.Id!));
+    if (existingApplication == null) throw new InvalidOperationException($"ecer_Program '{application.Id}' not found");
+
+    if (application.Status == ApplicationStatus.Withdrawn)
+    {
+      existingApplication.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Withdrawn;
+      existingApplication.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Inactive;
+      context.UpdateObject(existingApplication);
+    }
+    context.SaveChanges();
+    return application.Id!;
+  }
+
   public async Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;

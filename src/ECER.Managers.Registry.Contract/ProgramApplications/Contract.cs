@@ -13,6 +13,8 @@ public record ProgramApplicationQuery : IRequest<ProgramApplicationQueryResults>
   public int PageSize { get; set; }
 }
 
+public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
+
 public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
 {
   public string? ProgramApplicationName { get; set; }

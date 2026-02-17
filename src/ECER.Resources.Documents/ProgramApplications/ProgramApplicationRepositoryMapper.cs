@@ -6,22 +6,25 @@ namespace ECER.Resources.Documents.ProgramApplications;
 
 internal class ProgramApplicationRepositoryMapper : Profile
 {
+
   public ProgramApplicationRepositoryMapper()
   {
     CreateMap<ProgramApplication, ecer_PostSecondaryInstituteProgramApplicaiton>(MemberList.Source)
       .ForSourceMember(s => s.PostSecondaryInstituteId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ComponentsGenerationCompleted, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_PostSecondaryInstituteProgramApplicaitonId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.ProgramApplicationName))
       .ForMember(d => d.ecer_ApplicationType, opts => opts.MapFrom(s => s.ProgramApplicationType))
-      .ForMember(d => d.ecer_ProgramType, opts => opts.MapFrom(s => s.ProgramTypes))
+      .ForMember(d => d.ecer_ProgramType, opts => opts.MapFrom(s => s.ProgramTypes != null ? s.ProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(nameof(t))) : null))
       .ForMember(d => d.ecer_DeliveryType, opts => opts.MapFrom(s => s.DeliveryType))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(ProgramApplication.Id), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstituteProgramApplicaitonId.HasValue ? s.ecer_PostSecondaryInstituteProgramApplicaitonId.Value.ToString() : null))
       .ForCtorParam(nameof(ProgramApplication.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitute.Id.ToString()))
       .ForMember(d => d.ProgramApplicationName, opts => opts.MapFrom(s => s.ecer_Name))
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramType))
+      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => !s.ecer_ProgramType.Any() ? s.ecer_ProgramType.Select(t => t.ToString()) : null))
       .ForMember(d => d.DeliveryType, opts => opts.MapFrom(s => s.ecer_DeliveryType))
       .ForMember(d => d.ProgramApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationType))
       .ForMember(d => d.ComponentsGenerationCompleted, opts => opts.MapFrom(s => s.ecer_ComponentsGenerationCompleted))

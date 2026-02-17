@@ -47,6 +47,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_Course testCourse3 = null!;
 
   private ecer_PostSecondaryInstituteProgramApplicaiton programApplication = null!;
+  private ecer_PostSecondaryInstituteProgramApplicaiton draftProgramApplication = null!;
   
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
@@ -71,9 +72,11 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string programIdWithTotals => testProgram2.Id.ToString();
   public string courseId => testCourse.Id.ToString();
   public string courseId2 => testCourse2.Id.ToString();
-  public string courseId3 => testCourse3.Id.ToString();
   
   public string programApplicationId => programApplication.Id.ToString();
+  public string draftProgramApplicationId => draftProgramApplication.Id.ToString();
+  public string courseId3 => testCourse3.Id.ToString();
+
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
   public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
@@ -129,8 +132,13 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCourse3 = GetOrAddCourse(context, testProgram1, "109");
 
     programApplication =
-      GetOrAddProgramApplication(context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
+      GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
+    draftProgramApplication = 
+      GetOrAddProgramApplication("Test_psp_program_application_withdraw", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
     
+    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
+    testCourse3 = GetOrAddCourse(context, testProgram1, "109");
+
     context.SaveChanges();
 
     //load dependent properties
@@ -140,9 +148,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     context.SaveChanges();
   }
   
-  private ecer_PostSecondaryInstituteProgramApplicaiton GetOrAddProgramApplication(EcerContext context, ecer_PostSecondaryInstitute institute, ecer_PSIApplicationType type, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode statusCode)
+  private ecer_PostSecondaryInstituteProgramApplicaiton GetOrAddProgramApplication(string name, EcerContext context, ecer_PostSecondaryInstitute institute, ecer_PSIApplicationType type, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode statusCode)
   {
-    var programName = $"Test_psp_program_application_{type}_{statusCode}";
+    var programName = $"{name}_{type}_{statusCode}";
     var programApplicationE = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.FirstOrDefault(r => r.ecer_Name == programName);
     if (programApplicationE == null)
     {
@@ -157,6 +165,11 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         ecer_PostSecondaryInstitute = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
       };
       context.AddObject(programApplicationE);
+    } else if (programApplicationE.StatusCode == ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Withdrawn)
+    {
+      programApplicationE.StatusCode = statusCode;
+      programApplicationE.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Active;
+      context.UpdateObject(programApplicationE);
     }
     
     return programApplicationE;

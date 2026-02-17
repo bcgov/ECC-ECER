@@ -1,4 +1,5 @@
 using AutoMapper;
+using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Resources.Documents.ProgramApplications;
 using MediatR;
 using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
@@ -12,7 +13,8 @@ public class ProgramApplicationHandler(
     IProgramApplicationRepository programApplicationRepository,
     IMapper mapper)
   : IRequestHandler<CreateProgramApplicationCommand, Contract.ProgramApplications.ProgramApplication?>,
-    IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>
+    IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>,
+    IRequestHandler<UpdateProgramApplicationCommand, string>
 {
   public async Task<Contract.ProgramApplications.ProgramApplication?> Handle(CreateProgramApplicationCommand request, CancellationToken cancellationToken)
   {
@@ -29,6 +31,14 @@ public class ProgramApplicationHandler(
 
     var created = result.Items.FirstOrDefault();
     return created != null ? mapper.Map<Contract.ProgramApplications.ProgramApplication>(created) : null;
+  }
+
+
+  public async Task<string> Handle(UpdateProgramApplicationCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var programId = await programApplicationRepository.UpdateProgramApplication(mapper.Map<Resources.Documents.ProgramApplications.ProgramApplication>(request.ProgramApplication)!, cancellationToken);
+    return programId;
   }
 
   public async Task<ProgramApplicationQueryResults> Handle(ProgramApplicationQuery request, CancellationToken cancellationToken)

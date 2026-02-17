@@ -8,6 +8,11 @@ import type {
 
 declare namespace Components {
   namespace Schemas {
+    export interface AddCourseRequest {
+      course?: Course;
+      type?: FunctionType;
+      applicationId?: string | null;
+    }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
         [name: string]: OidcAuthenticationSettings;
@@ -414,6 +419,27 @@ declare namespace Paths {
       export type $200 = Components.Schemas.Country[];
     }
   }
+  namespace CourseDelete {
+    namespace Parameters {
+      export type CourseId = string;
+    }
+    export interface PathParameters {
+      courseId: Parameters.CourseId;
+    }
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace CoursePost {
+    export type RequestBody = Components.Schemas.AddCourseRequest;
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace CoursePut {
     namespace Parameters {
       export type CourseId = string;
@@ -551,6 +577,20 @@ declare namespace Paths {
       Components.Schemas.CreateProgramApplicationRequest;
     namespace Responses {
       export type $200 = Components.Schemas.CreateProgramApplicationResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationPut {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody = Components.Schemas.ProgramApplication;
+    namespace Responses {
+      export type $200 = string;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -893,6 +933,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProgramApplicationGet.Responses.$200>;
   /**
+   * program_application_put - Update program application
+   */
+  "program_application_put"(
+    parameters?: Parameters<Paths.ProgramApplicationPut.PathParameters> | null,
+    data?: Paths.ProgramApplicationPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationPut.Responses.$200>;
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   "portal_invitation_get"(
@@ -948,6 +996,24 @@ export interface OperationMethods {
     data?: Paths.CoursePut.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CoursePut.Responses.$200>;
+  /**
+   * course_delete - Deletes a course
+   *
+   * string.Empty
+   */
+  "course_delete"(
+    parameters?: Parameters<Paths.CourseDelete.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CourseDelete.Responses.$200>;
+  /**
+   * course_post - Add a course for a program profile
+   */
+  "course_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CoursePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CoursePost.Responses.$200>;
   /**
    * message_get - Paginated endpoint to get all user messages
    */
@@ -1195,6 +1261,14 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ProgramApplicationGet.Responses.$200>;
+    /**
+     * program_application_put - Update program application
+     */
+    "put"(
+      parameters?: Parameters<Paths.ProgramApplicationPut.PathParameters> | null,
+      data?: Paths.ProgramApplicationPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationPut.Responses.$200>;
   };
   ["/api/PortalInvitations/{token}"]: {
     /**
@@ -1261,6 +1335,26 @@ export interface PathsDictionary {
       data?: Paths.CoursePut.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CoursePut.Responses.$200>;
+    /**
+     * course_delete - Deletes a course
+     *
+     * string.Empty
+     */
+    "delete"(
+      parameters?: Parameters<Paths.CourseDelete.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CourseDelete.Responses.$200>;
+  };
+  ["/api/courses"]: {
+    /**
+     * course_post - Add a course for a program profile
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CoursePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CoursePost.Responses.$200>;
   };
   ["/api/messages/{parentId}"]: {
     /**
@@ -1306,6 +1400,7 @@ export interface PathsDictionary {
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
 
+export type AddCourseRequest = Components.Schemas.AddCourseRequest;
 export type ApplicationConfiguration =
   Components.Schemas.ApplicationConfiguration;
 export type ApplicationStatus = Components.Schemas.ApplicationStatus;
