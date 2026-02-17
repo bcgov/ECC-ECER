@@ -208,7 +208,7 @@ export default defineComponent({
         const subtitle =
           this.areaSubtitles[areaId] ||
           (areaOfInstruction?.minimumHours
-            ? `A minimum of ${areaOfInstruction.minimumHours} is required.`
+            ? `A minimum of ${areaOfInstruction.minimumHours} hours is required.`
             : "");
         const minimumHours = areaOfInstruction?.minimumHours || 0;
 

@@ -65,23 +65,15 @@
       </ul>
       <ul v-else-if="programType === 'ITE'" class="ml-10">
         <li>
-          ITE education must total a minimum of
-          {{ calculateMinimumHoursRequired }} hours, including practicum
+          ITE education must total a minimum of 450 hours, including practicum
         </li>
-        <li>
-          Practicum must account for a minimum of
-          {{ calculatePracticumHours }} hours
-        </li>
+        <li>Practicum must account for a minimum of 200 hours</li>
       </ul>
       <ul v-else-if="programType === 'SNE'" class="ml-10">
         <li>
-          SNE education must total a minimum of
-          {{ calculateMinimumHoursRequired }} hours, including practicum
+          SNE education must total a minimum of 450 hours, including practicum
         </li>
-        <li>
-          Practicum must account for a minimum of
-          {{ calculatePracticumHours }} hours
-        </li>
+        <li>Practicum must account for a minimum of 200 hours</li>
       </ul>
       <br />
       <p>
