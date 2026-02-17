@@ -67,7 +67,8 @@ declare namespace Components {
       | "PendingQueue"
       | "PendingPSPConsultationNeeded"
       | "ReconsiderationDecision"
-      | "AppealDecision";
+      | "AppealDecision"
+      | "NotSubmitted";
     export type ApplicationStatusReasonDetail =
       | "Actioned"
       | "BeingAssessed"
