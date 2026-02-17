@@ -90,6 +90,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostSecondaryInstituteCampusId = "ecer_postsecondaryinstitutecampusid";
 			public const string Id = "ecer_postsecondaryinstitutecampusid";
 			public const string ecer_postsecondaryinstituteName = "ecer_postsecondaryinstitutename";
+			public const string ecer_ProgramIntake = "ecer_programintake";
+			public const string ecer_programintakeName = "ecer_programintakename";
 			public const string ecer_province = "ecer_province";
 			public const string ecer_provinceName = "ecer_provincename";
 			public const string ecer_SatelliteorTemporaryLocation = "ecer_satelliteortemporarylocation";
@@ -590,6 +592,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintake")]
+		public virtual ecer_PSPProgramIntake? ecer_ProgramIntake
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPProgramIntake?)(EntityOptionSetEnum.GetEnum(this, "ecer_programintake")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programintake", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintakename")]
+		public string ecer_programintakeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programintake"))
+				{
+					return this.FormattedValues["ecer_programintake"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_province")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_province
 		{
@@ -621,7 +655,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+    
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_satelliteortemporarylocation")]
 		public virtual ecer_YesNoNull? ecer_SatelliteorTemporaryLocation
 		{
