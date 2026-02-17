@@ -37,7 +37,10 @@
           md="6"
           lg="4"
         >
-          <ProgramApplicationCard :program-application="programApplication" />
+          <ProgramApplicationCard
+            :program-application="programApplication"
+            :refresh-application-list="fetchPrograms(page)"
+          />
         </v-col>
       </v-row>
 

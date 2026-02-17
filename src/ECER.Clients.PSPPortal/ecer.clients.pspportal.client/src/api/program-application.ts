@@ -1,6 +1,6 @@
 import { getClient } from "@/api/client";
 import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
-import type { Components } from "@/types/openapi";
+import type { Components, Paths } from "@/types/openapi";
 import type { AxiosRequestConfig } from "axios";
 
 const apiResultHandler = new ApiResultHandler();
@@ -36,6 +36,24 @@ const getProgramApplications = async (
       key: "program_application_get",
     },
   );
+};
+
+const withdrawProgramApplication = async (
+  application: Components.Schemas.ProgramApplication,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramApplicationPut.PathParameters = {
+    id: application.id || "",
+  };
+  const body: Paths.ProgramApplicationPut.RequestBody = {
+    ...application,
+    status: "Withdrawn",
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.program_application_put(pathParameters, body),
+    key: "program_application_put",
+  });
 };
 
 const mapProgramStatus = (status: string = ""): string => {
@@ -183,4 +201,5 @@ export {
   mapApplicationType,
   mapDeliveryType,
   mapProgramType,
+  withdrawProgramApplication,
 };

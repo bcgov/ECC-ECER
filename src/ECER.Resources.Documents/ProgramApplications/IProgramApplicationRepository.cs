@@ -4,6 +4,7 @@ public interface IProgramApplicationRepository
 {
   Task<string> Create(ProgramApplication programApplication, CancellationToken cancellationToken);
   Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken);
+  Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken);
 }
 
 public record ProgramApplicationQuery

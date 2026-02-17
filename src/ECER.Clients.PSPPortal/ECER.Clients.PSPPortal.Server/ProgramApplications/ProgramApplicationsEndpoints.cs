@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
-using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Managers.Registry.Contract.ProgramApplications;
+using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
@@ -51,7 +51,8 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
 
     endpointRouteBuilder.MapGet("/api/programApplications/{id?}", async Task<Results<Ok<GetProgramApplicationResponse>, NotFound>> (
       string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
-    {bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
+    {
+      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
 
       // Get pagination parameters from the query string with default values
       var pageNumber = int.TryParse(ctx.Request.Query[paginationOptions.Value.PageProperty], out var page) && page > 0 ? page : paginationOptions.Value.DefaultPageNumber;
@@ -79,6 +80,34 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new GetProgramApplicationResponse() { Applications = mapper.Map<IEnumerable<ProgramApplication>>(results.Items), Count = results.Count });
     })
     .WithOpenApi("Handles program application queries", string.Empty, "program_application_get")
+    .RequireAuthorization(policyNames)
+    .WithParameterValidation();
+    
+  endpointRouteBuilder.MapPut("/api/programApplications/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, ProgramApplication request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
+      bool IdIsNotGuid = !Guid.TryParse(id, out _);
+      if (IdIsNotGuid) return TypedResults.BadRequest("invalid program application id");
+  
+      if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
+  
+      var userContext = ctx.User.GetUserContext()!;
+      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+  
+      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+      {
+        ById = id,
+        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
+        ByStatus = new[] { ContractApplicationStatus.Draft }
+      }, ct);
+  
+      if (!existing.Items.Any()) return TypedResults.NotFound();
+  
+      var programId = await messageBus.Send(new UpdateProgramApplicationCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ProgramApplication>(request)), ct);
+      return TypedResults.Ok(programId);
+    })
+    .WithOpenApi("Update program application", string.Empty, "program_application_put")
     .RequireAuthorization(policyNames)
     .WithParameterValidation();
   }

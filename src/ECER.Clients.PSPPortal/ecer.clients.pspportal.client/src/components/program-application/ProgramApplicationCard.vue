@@ -36,8 +36,38 @@
         <v-btn size="large" variant="outlined" color="primary">
           {{ buttonText }}
         </v-btn>
+        <v-spacer />
+        <v-btn
+          v-if="displayedApplication?.status === 'Draft'"
+          size="large"
+          variant="flat"
+          color="error"
+          @click="showWithdrawConfirmation = !showWithdrawConfirmation"
+        >
+          Withdraw
+        </v-btn>
       </v-row>
     </v-card-actions>
+
+    <ConfirmationDialog
+      :show="showWithdrawConfirmation"
+      :loading="isWithdrawing"
+      title="Withdraw application"
+      accept-button-text="Withdraw application"
+      cancel-button-text="Cancel"
+      @accept="confirmWithdraw"
+      @cancel="showWithdrawConfirmation = false"
+    >
+      <template #confirmation-text>
+        <p class="font-weight-bold">
+          Are you sure you want to withdraw the application {{ programName }}?
+        </p>
+        <p>
+          Once withdrawn, the application will no longer be considered. This
+          action cannot be undone.
+        </p>
+      </template>
+    </ConfirmationDialog>
   </v-card>
 </template>
 
@@ -53,6 +83,7 @@ import {
   mapDeliveryType,
   mapProgramType,
   getProgramApplicationById,
+  withdrawProgramApplication,
 } from "@/api/program-application";
 
 const POLL_INTERVAL_MS = 10000;
@@ -70,9 +101,11 @@ export default defineComponent({
     const router = useRouter();
     return { router };
   },
-  emits: [],
+  emits: ["refresh-application-list"],
   data() {
     return {
+      showWithdrawConfirmation: false,
+      isWithdrawing: false,
       pollTimeoutId: null as ReturnType<typeof setTimeout> | null,
       localApplication: null as Components.Schemas.ProgramApplication | null, //for managing is loading
     };
@@ -164,6 +197,22 @@ export default defineComponent({
         return;
       }
       this.pollTimeoutId = setTimeout(this.checkReady, POLL_INTERVAL_MS);
+    },
+    async confirmWithdraw() {
+      this.isWithdrawing = true;
+      try {
+        const response = await withdrawProgramApplication(
+          this.programApplication,
+        );
+        if (response.error) {
+          console.error("Failed to withdraw program:", response.error);
+        } else {
+          this.$emit("refresh-application-list");
+        }
+      } finally {
+        this.isWithdrawing = false;
+        this.showWithdrawConfirmation = false;
+      }
     },
   },
 });
