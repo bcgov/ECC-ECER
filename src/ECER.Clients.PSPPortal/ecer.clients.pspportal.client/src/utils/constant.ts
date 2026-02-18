@@ -55,3 +55,6 @@ export enum IntervalTime {
 
 // Earliest year for program profiles to be displayed
 export const EARLIEST_PROFILE_YEAR = 2023;
+
+// Minimum total course hours required for ITE and SNE program types
+export const MIN_HOURS_ITE_SNE = 450;

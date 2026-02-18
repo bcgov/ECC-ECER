@@ -86,7 +86,7 @@
                   "
                   @click="handleSubmit"
                 >
-                  Submit
+                  Submit program profile
                 </v-btn>
               </v-col>
             </v-row>
