@@ -655,7 +655,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-    
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_satelliteortemporarylocation")]
 		public virtual ecer_YesNoNull? ecer_SatelliteorTemporaryLocation
 		{
