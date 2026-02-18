@@ -1,6 +1,7 @@
 using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
+using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
@@ -9,7 +10,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.ComponentModel.DataAnnotations;
 using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
 using ContractProgramProfileType = ECER.Managers.Registry.Contract.Programs.ProgramProfileType;
 using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQuery;
@@ -94,6 +94,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
     })
     .WithOpenApi("Handles program queries", string.Empty, "program_get")
     .RequireAuthorization(PolicyNames)
+    .AddGuidValidation("id")
     .WithParameterValidation();
 
     endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
@@ -201,6 +202,7 @@ public record SubmitProgramRequest(string ProgramId);
 
 public record Program
 {
+  [ValidGuid]
   public string? Id { get; set; }
 
   public string? PortalStage { get; set; }

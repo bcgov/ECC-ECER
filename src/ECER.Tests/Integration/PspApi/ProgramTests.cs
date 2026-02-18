@@ -172,7 +172,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
-      _.Get.Url($"/api/programs/null");
+      _.Get.Url($"/api/programs");
       _.StatusCodeShouldBeOk();
     });
 
@@ -206,6 +206,17 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetProgramProfiles_WithInvalidGuid_ReturnsBadRequest()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/not-a-guid");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
   public async Task UpdateProgram_Type_Draft_ReturnsBadRequest()
   {
     var programResponse = await Host.Scenario(_ =>
@@ -222,6 +233,28 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
       _.Put.Json(program).ToUrl($"/api/program/{Fixture.programId}");
       _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
+  public async Task UpdateProgram_InvalidGuidObject_ReturnsBadRequest()
+  {
+    var programResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.programId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
+    var program = status.Programs!.First();
+
+    program.Id = "This is not a guid";
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(program).ToUrl($"/api/program/{Fixture.programId}");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
     });
   }
 
