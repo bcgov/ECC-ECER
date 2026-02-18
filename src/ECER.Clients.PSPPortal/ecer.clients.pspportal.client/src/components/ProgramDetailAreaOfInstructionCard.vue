@@ -55,6 +55,22 @@
             </div>
           </v-col>
         </v-row>
+        <v-row
+          v-if="getNonAllocatedCoursesByType(program, programType).length > 0"
+          no-gutters
+        >
+          <template
+            v-for="unallocatedCourse in getNonAllocatedCoursesByType(
+              program,
+              programType,
+            )"
+          >
+            <v-col cols="4">Non-allocated courses</v-col>
+            <v-col cols="8">
+              <strong>{{ getCourseTitle(unallocatedCourse) }}</strong>
+            </v-col>
+          </template>
+        </v-row>
       </template>
     </v-card-text>
   </v-card>
@@ -64,7 +80,11 @@
 import { defineComponent, type PropType } from "vue";
 import { useDisplay } from "vuetify";
 import type { Components } from "@/types/openapi";
-import { getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction } from "@/utils/functions";
+import {
+  getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction,
+  getNonAllocatedCoursesByType,
+  getCourseTitle,
+} from "@/utils/functions";
 
 import { useLoadingStore } from "@/store/loading";
 import { useConfigStore } from "@/store/config";
@@ -136,6 +156,8 @@ export default defineComponent({
 
       return "";
     },
+    getNonAllocatedCoursesByType,
+    getCourseTitle,
   },
 });
 </script>

@@ -35,7 +35,7 @@
             </p>
             <br />
             <p>
-              Review your program profile by clicking the button below and
+              Review your program profile by clicking on the button below and
               update any of the following:
             </p>
             <br />
@@ -312,7 +312,7 @@ export default defineComponent({
     },
     submitChangeRequest() {
       this.router.push({
-        name: "newMessage",
+        name: "new-message",
         params: {
           initialCategory: "ProgramChangeRequest",
         },

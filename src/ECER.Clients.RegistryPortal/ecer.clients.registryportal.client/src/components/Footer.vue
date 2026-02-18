@@ -5,7 +5,7 @@
     color="black"
     class="mb-3"
   />
-  <v-footer>
+  <v-footer class="d-print-none">
     <v-container>
       <div class="w-100 justify-space-between d-sm-flex-column d-md-flex">
         <div>

@@ -305,6 +305,10 @@ export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
   filteredCourses?.forEach((course: Components.Schemas.Course) => {
     course.courseAreaOfInstruction?.forEach(
       (area: Components.Schemas.CourseAreaOfInstruction) => {
+        if (area?.newHours === "0") {
+          //if courseAreaOfInstruction has 0 newHours we will not show it. Do not add to map
+          return;
+        }
         if (courseAreaOfInstructionMap.has(area.areaOfInstructionId)) {
           //areaOfInstructionExists -> append to array
           courseAreaOfInstructionMap.get(area.areaOfInstructionId).push({
@@ -326,4 +330,44 @@ export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
     );
   });
   return courseAreaOfInstructionMap;
+}
+
+export function getNonAllocatedCoursesByType(
+  program: Components.Schemas.Program,
+  programType: Components.Schemas.ProgramTypes,
+) {
+  if (!program?.courses) {
+    return [];
+  }
+
+  let filteredCourses = program?.courses?.filter(
+    (course: Components.Schemas.Course) => course.programType === programType,
+  );
+
+  return filteredCourses.filter((course) => {
+    if (
+      !course.courseAreaOfInstruction ||
+      course.courseAreaOfInstruction.length === 0
+    ) {
+      return true;
+    }
+    return course.courseAreaOfInstruction.every(
+      (area) => !area.newHours || Number.parseFloat(area.newHours) === 0,
+    );
+  });
+}
+
+export function getCourseTitle(course: Components.Schemas.Course): string {
+  const courseNumber = course.courseNumber || "";
+  const courseTitle = course.courseTitle || "";
+
+  if (courseNumber && courseTitle) {
+    return `${courseNumber} - ${courseTitle}`;
+  } else if (courseNumber) {
+    return courseNumber;
+  } else if (courseTitle) {
+    return courseTitle;
+  } else {
+    return "Untitled Course";
+  }
 }

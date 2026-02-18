@@ -8,9 +8,9 @@
           text="Close"
           @click="showCloseDialog = true"
         ></v-btn>
-        <v-divider :style="{ opacity: 1 }" />
+        <v-divider class="mb-5" :style="{ opacity: 1 }" />
         <v-row>
-          <v-col>New message</v-col>
+          <v-col><h2>New message</h2></v-col>
         </v-row>
         <v-row>
           <v-col>
@@ -20,9 +20,6 @@
               your institution will be able to read and reply to this thread.
             </span>
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col>Begin by selecting a subject for your message.</v-col>
         </v-row>
         <v-form ref="messageForm" v-model="formValid">
           <v-row class="mt-5">
@@ -211,7 +208,7 @@ import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { VForm } from "vuetify/components";
 import FileUploader from "@/components/common/FileUploader.vue";
-import { getChildMessages, sendMessage } from "@/api/message";
+import { sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useAlertStore } from "@/store/alert";

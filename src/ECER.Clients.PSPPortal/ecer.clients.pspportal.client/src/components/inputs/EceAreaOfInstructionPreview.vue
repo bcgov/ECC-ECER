@@ -26,6 +26,11 @@
           programStore.draftProgram?.offeredProgramTypes?.includes(programType)
         "
       >
+        <v-row class="mb-4" no-gutters>
+          <v-col cols="4">Area of Instruction</v-col>
+          <v-col cols="4">Course number and name</v-col>
+          <v-col cols="4">Hours</v-col>
+        </v-row>
         <v-row
           class="mb-4"
           v-for="[
@@ -54,6 +59,20 @@
             </div>
           </v-col>
         </v-row>
+        <template v-if="nonAllocatedCourses?.length > 0">
+          <v-row>
+            <v-col cols="4">Non-allocated courses</v-col>
+            <v-col cols="8">
+              <div v-for="course in nonAllocatedCourses">
+                <v-row no-gutters>
+                  <v-col cols="6">
+                    <strong>{{ getNonAllocatedTitle(course) }}</strong>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-col>
+          </v-row>
+        </template>
       </template>
     </template>
   </PreviewCard>
@@ -63,7 +82,11 @@
 import { defineComponent, type PropType } from "vue";
 import type { Components } from "@/types/openapi";
 import type { ProgramStage } from "@/types/wizard";
-import { getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction } from "@/utils/functions";
+import {
+  getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction,
+  getNonAllocatedCoursesByType,
+  getCourseTitle,
+} from "@/utils/functions";
 
 import { useConfigStore } from "@/store/config";
 import { useProgramStore } from "@/store/program";
@@ -162,6 +185,19 @@ export default defineComponent({
 
       return new Map(sortedEntries);
     },
+    nonAllocatedCourses(): Components.Schemas.Course[] {
+      return getNonAllocatedCoursesByType(
+        this.programStore.draftProgram,
+        this.programType,
+      ).sort((a, b) => {
+        if (a.courseNumber > b.courseNumber) {
+          return 1;
+        } else if (a.courseNumber < b.courseNumber) {
+          return -1;
+        }
+        return 0;
+      });
+    },
   },
   methods: {
     getCourseName(course: CourseAreaDetail): string {
@@ -176,6 +212,9 @@ export default defineComponent({
       }
 
       return "";
+    },
+    getNonAllocatedTitle(course: Components.Schemas.Course): string {
+      return getCourseTitle(course);
     },
   },
 });

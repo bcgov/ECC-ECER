@@ -180,6 +180,7 @@ declare namespace Components {
       pspProgramRepresentativeId?: string | null;
       inviteType?: InviteType;
       bceidBusinessName?: string | null;
+      postSecondaryInstitutionName?: string | null;
       isLinked?: boolean;
     }
     export interface PortalInvitationQueryResult {

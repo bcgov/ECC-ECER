@@ -488,6 +488,7 @@ public enum ApplicationStatus
   PendingPSPConsultationNeeded,
   ReconsiderationDecision,
   AppealDecision,
+  NotSubmitted,
 }
 
 public enum ApplicationOrigin

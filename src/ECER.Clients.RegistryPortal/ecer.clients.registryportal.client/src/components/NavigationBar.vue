@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar height="80" elevation="0" border>
+  <v-app-bar class="d-print-none" height="80" elevation="0" border>
     <v-container>
       <v-row align="center">
         <router-link to="/">
