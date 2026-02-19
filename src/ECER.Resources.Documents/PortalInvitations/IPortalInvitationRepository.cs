@@ -20,6 +20,7 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public InviteType? InviteType { get; set; }
   public PortalInvitationStatusCode? StatusCode { get; set; }
   public string? BceidBusinessName { get; set; }
+  public string? PostSecondaryInstitutionName { get; set; }
   public bool IsLinked { get; set; }
 }
 

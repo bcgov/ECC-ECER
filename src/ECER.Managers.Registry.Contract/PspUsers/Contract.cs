@@ -8,7 +8,6 @@ namespace ECER.Managers.Registry.Contract.PspUsers;
 /// </summary>
 public record RegisterNewPspUserCommand(string Id, PspUserProfile Profile, UserIdentity Identity) : IRequest<string>;
 
-
 /// <summary>
 /// Invokes a psp rep query use case
 /// </summary>
@@ -48,6 +47,7 @@ public enum PspUserRole
 {
   /// <summary>Primary (for email/communications</summary>
   Primary,
+
   /// <summary>Secondary</summary>
   Secondary
 }
@@ -89,21 +89,26 @@ public enum RegisterPspUserError
   BceidBusinessIdDoesNotMatch,
 }
 
-public record AddPspRepCommand(PspUserProfile userProfile, string postSecondaryInstitutionId) : IRequest<string>;
+public record AddPspRepCommand(PspUserProfile userProfile, string postSecondaryInstitutionId, string pspRepId) : IRequest<string>;
 
 public record UpdatePspRepProfileCommand(PspUser User) : IRequest<string>;
 
 /// <summary>
 /// Request to deactivate a PSP program representative
 /// </summary>
-public record DeactivatePspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
+public record DeactivatePspRepCommand(string ProgramRepresentativeId, string pspRepId) : IRequest<string>;
 
 /// <summary>
 /// Request to reactivate a PSP program representative
 /// </summary>
-public record ReactivatePspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
+public record ReactivatePspRepCommand(string ProgramRepresentativeId, string pspRepId) : IRequest<string>;
 
 /// <summary>
 /// Request to set a PSP program representative as Primary for their institution
 /// </summary>
 public record SetPrimaryPspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
+
+/// <summary>
+/// Request to set a PSP program representative as Primary for their institution
+/// </summary>
+public record ResendPspRepInviteCommand(string ProgramRepresentativeId, string pspRepId) : IRequest<string>;

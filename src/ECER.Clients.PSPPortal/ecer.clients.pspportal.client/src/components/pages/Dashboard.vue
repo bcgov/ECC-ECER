@@ -141,7 +141,7 @@
                 id="btnRequestChange"
                 @click="
                   router.push({
-                    name: 'newMessage',
+                    name: 'new-message',
                     params: {
                       initialCategory: 'ProgramChangeRequest',
                     },
@@ -294,8 +294,10 @@ export default defineComponent({
     }
 
     if (this.pspUserProfile && this.pspUserProfile.hasAcceptedTermsOfUse) {
-      this.getInstitutionData();
-      this.getProgramProfileData();
+      await Promise.all([
+        this.getInstitutionData(),
+        this.getProgramProfileData(),
+      ]);
     } else {
       this.router.replace("/new-user");
     }
@@ -311,6 +313,7 @@ export default defineComponent({
         this.loadingStore.isLoading("psp_user_register_post") ||
         this.loadingStore.isLoading("education_institution_get") ||
         this.loadingStore.isLoading("education_institution_put") ||
+        this.loadingStore.isLoading("program_get") ||
         this.loading
       );
     },

@@ -33,7 +33,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Program types</p>
+          <p class="small">Program type(s)</p>
         </v-col>
         <v-col>
           <p id="programTypes" class="small font-weight-bold">

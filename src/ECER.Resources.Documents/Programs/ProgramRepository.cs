@@ -24,18 +24,34 @@ internal sealed class ProgramRepository : IProgramRepository
     var programs = context.ecer_ProgramSet.AsQueryable();
 
     if (query.ById != null) programs = programs.Where(p => p.ecer_ProgramId == Guid.Parse(query.ById));
+    
+    if (query.ByPostSecondaryInstituteId != null)
+    {
+      var instituteId = Guid.Parse(query.ByPostSecondaryInstituteId);
+      programs = programs.Where(p => p.ecer_PostSecondaryInstitution.Id == instituteId);
+    }
 
-    programs = programs.OrderByDescending(p => p.CreatedOn);
+    if (query.ByStatus != null && query.ByStatus.Any())
+    {
+      var statuses = mapper.Map<IEnumerable<ecer_Program_StatusCode>>(query.ByStatus)!.ToList();
+      programs = programs.WhereIn(item => item.StatusCode!.Value, statuses);
+    }
+
+    if (query.ByFromProgramProfileId != null)
+    {
+      var fromProgramProfileId = Guid.Parse(query.ByFromProgramProfileId);
+      programs = programs.Where(p => p.ecer_FromProgramProfileId.Id == fromProgramProfileId);
+    }
 
     int paginatedTotalProgramCount = 0;
     if (query.PageNumber > 0)
     {
       paginatedTotalProgramCount = context.From(programs).Aggregate().Count();
-      programs = programs.OrderByDescending(item => item.CreatedOn).Skip(query.PageNumber).Take(query.PageSize);
+      programs = programs.OrderByDescending(item => item.ecer_StartDate).Skip(query.PageNumber).Take(query.PageSize);
     }
     else
     {
-      programs = programs.OrderByDescending(item => item.CreatedOn);
+      programs = programs.OrderByDescending(item => item.ecer_StartDate);
     }
 
     List<ecer_Program> results;
@@ -54,18 +70,6 @@ internal sealed class ProgramRepository : IProgramRepository
       results = context.From(programs)
         .Execute()
         .ToList();
-    }
-
-    if (query.ByPostSecondaryInstituteId != null)
-    {
-      var instituteId = Guid.Parse(query.ByPostSecondaryInstituteId);
-      results = results.Where(p => p.ecer_PostSecondaryInstitution != null && p.ecer_PostSecondaryInstitution.Id == instituteId).ToList();
-    }
-
-    if (query.ByStatus != null && query.ByStatus.Any())
-    {
-      var statuses = mapper.Map<IEnumerable<ecer_Program_StatusCode>>(query.ByStatus)!.ToList();
-      results = results.Where(p => p.StatusCode != null && statuses.Contains(p.StatusCode.Value)).ToList();
     }
 
     return new ProgramResult
@@ -128,112 +132,6 @@ internal sealed class ProgramRepository : IProgramRepository
     return ecerProgram.ecer_ProgramId.Value.ToString();
   }
 
-  public async Task<string> UpdateCourse(IEnumerable<Course> incomingCourse, string id, CancellationToken cancellationToken)
-  {
-    await Task.CompletedTask;
-    var program = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == Guid.Parse(id));
-    if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
-    
-    foreach (var course in incomingCourse)
-    {
-      var courses = context.ecer_CourseSet.AsQueryable().Where(p => p.ecer_CourseId == Guid.Parse(course.CourseId));
-      
-      var courseExists = context.From(courses)
-        .Join()
-        .Include(c => c.ecer_courseprovincialrequirement_CourseId)
-        .Execute()
-        .SingleOrDefault();
-      
-      if (courseExists != null)
-      {
-        if (!context.IsAttached(courseExists))
-        {
-          context.Attach(courseExists);
-        }
-        
-        courseExists.ecer_NewCode = !string.IsNullOrWhiteSpace(course.NewCourseNumber)
-          ? course.NewCourseNumber
-          : course.CourseNumber;
-        courseExists.ecer_NewCourseName = !string.IsNullOrWhiteSpace(course.NewCourseTitle) 
-          ? course.NewCourseTitle 
-          : course.CourseTitle;
-        context.UpdateObject(courseExists);
-
-        if (course.CourseAreaOfInstruction != null)
-        {
-          foreach (var areaOfInstruction in course.CourseAreaOfInstruction)
-          {
-            if (areaOfInstruction.CourseAreaOfInstructionId != null)
-            {
-              var existingAreaOfInstruction =
-                courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
-                  a.Id == Guid.Parse(areaOfInstruction.CourseAreaOfInstructionId));
-              
-              if (existingAreaOfInstruction is not null)
-              {
-                UpdateAreaOfInstruction(areaOfInstruction,  existingAreaOfInstruction);
-              }
-              else
-              {
-                throw new InvalidOperationException("Cannot update course area of instruction. It does not exist.");
-              }
-            }
-            else
-            {
-              var existingAreaOfInstruction =
-                courseExists.ecer_courseprovincialrequirement_CourseId.SingleOrDefault(a =>
-                  a.ecer_ProgramAreaId.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
-              if (existingAreaOfInstruction is not null)
-              {
-                throw new InvalidOperationException("Cannot add course area of instruction. One already exists for this area of instruction.");
-              }
-              CreateNewAreaOfInstruction(areaOfInstruction, courseExists);
-            }
-          }
-        }
-      }
-      else
-      {
-        throw new InvalidOperationException($"Course not found");
-      }
-    }
-    context.SaveChanges();
-    return program.Id.ToString();
-  }
-
-  private void CreateNewAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_Course courseExists)
-  {
-    var instructionArea =
-      context.ecer_ProvincialRequirementSet.SingleOrDefault(r =>
-        r.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
-
-    if (instructionArea != null)
-    {
-      var newAreaOfInstruction = new ecer_CourseProvincialRequirement
-      {
-        Id = Guid.NewGuid(),
-        ecer_Hours = 0,
-        ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours),
-        ecer_CourseId = new EntityReference(ecer_Course.EntityLogicalName, courseExists.Id),
-        ecer_ProgramAreaId = new EntityReference(ecer_ProvincialRequirement.EntityLogicalName, instructionArea.Id)
-      };
-      context.AddObject(newAreaOfInstruction);
-    }
-  }
-
-  private void UpdateAreaOfInstruction(CourseAreaOfInstruction areaOfInstruction, ecer_CourseProvincialRequirement existingAreaOfInstruction)
-  {
-    var instructionArea =
-      context.ecer_ProvincialRequirementSet.SingleOrDefault(r =>
-        r.Id == Guid.Parse(areaOfInstruction.AreaOfInstructionId));
-
-    if (instructionArea != null)
-    {
-      existingAreaOfInstruction.ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours);
-      context.UpdateObject(existingAreaOfInstruction);
-    }
-  }
-
   public async Task<string> UpdateProgram(Program program, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
@@ -273,15 +171,15 @@ internal sealed class ProgramRepository : IProgramRepository
     if (program == null) throw new InvalidOperationException($"ecer_Program '{id}' not found");
 
     program.ecer_DeclarationDate = DateTime.Now;
-    
+
     var firstName = pspUser!.ecer_FirstName?.Trim() ?? string.Empty;
     var lastName = pspUser.ecer_LastName?.Trim() ?? string.Empty;
     program.ecer_UserName = $"{firstName} {lastName}".Trim();
-    
+
     program.StatusCode = ecer_Program_StatusCode.UnderRegistryReview;
     context.UpdateObject(program);
     context.AddLink(pspUser, ecer_Program.Fields.ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative, program);
-    
+
     context.SaveChanges();
     return id;
   }

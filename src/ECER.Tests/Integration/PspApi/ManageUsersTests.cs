@@ -2,8 +2,8 @@ using Alba;
 using Bogus;
 using ECER.Clients.PSPPortal.Server.Users;
 using ECER.Resources.Accounts.PspReps;
-using ECER.Utilities.DataverseSdk.Model;
 using ECER.Resources.E2ETests.UnitTest;
+using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
@@ -15,14 +15,13 @@ namespace ECER.Tests.Integration.PspApi;
 
 public class ManageUsersTests : PspPortalWebAppScenarioBase
 {
-
   private readonly IUnitTestRepository unitTestRepository;
 
   public ManageUsersTests(ITestOutputHelper output, PspPortalWebAppFixture fixture) : base(output, fixture)
   {
     unitTestRepository = Fixture.Services.GetRequiredService<IUnitTestRepository>();
-
   }
+
   private PspUserProfile CreatePspProfile()
   {
     var profile = new Faker<PspUserProfile>("en_CA")
@@ -55,7 +54,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
   [Fact]
   public async Task DeactivateUser_InSameInstitution_SetsAccessToDisabled()
   {
-    var deactivateResponse = await Host.Scenario(_ =>
+    await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
       _.Post.Url($"/api/users/manage/{Fixture.SecondaryPspUserId}/deactivate");
@@ -64,6 +63,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
 
     var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
     var rep = (await repo.Query(new PspRepQuery { ById = Fixture.SecondaryPspUserId }, CancellationToken.None)).Single();
+
     rep.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Disabled);
   }
 
@@ -91,7 +91,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
-      _.Post.Url($"/api/users/manage/{Fixture.SecondaryPspUserId}/set-primary");
+      _.Post.Url($"/api/users/manage/{Fixture.InactiveProgramRepresentativeDoesNotChangeId}/set-primary");
       _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
     });
 
@@ -181,6 +181,7 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     var target = (await repo.Query(new PspRepQuery { ById = Fixture.TertiaryPspUserId }, CancellationToken.None)).Single();
     target.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Active);
   }
+
   [Fact]
   public async Task InvitePspRep_SuccessfullyInvitesNewUser()
   {
@@ -202,5 +203,34 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     newUser.Profile.Role.ShouldBe(RepoPspUserRole.Secondary);
 
     await unitTestRepository.DeletePspRep(result.Id, CancellationToken.None);
+  }
+
+  [Fact]
+  public async Task ResendInvitationUser_DifferentInstitution_InactiveProgramRep_ReturnsBadRequest()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Put.Url($"/api/users/manage/{Fixture.OtherInstitutePspUserId}/resend");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
+    });
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Put.Url($"/api/users/manage/{Fixture.InactiveProgramRepresentativeDoesNotChangeId}/resend");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
+  public async Task ResendInvitation_ProgramRep_ReturnsOk()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Put.Url($"/api/users/manage/{Fixture.InvitedPspUserToReinviteId}/resend");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.OK);
+    });
   }
 }

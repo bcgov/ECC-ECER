@@ -1,10 +1,3 @@
-import type {
-  CheckBoxWrapper,
-  DropdownWrapper,
-  RadioButtonWrapper,
-} from "@/types/form";
-import type { Components } from "@/types/openapi";
-
 export enum ApplicationState {
   IN_PROGRESS = 0,
   COMPLETED = 1,
@@ -55,3 +48,13 @@ export enum ProgramType {
   ITE = "ITE",
   SNE = "SNE",
 }
+
+export enum IntervalTime {
+  INTERVAL_10_SECONDS = 10000,
+}
+
+// Earliest year for program profiles to be displayed
+export const EARLIEST_PROFILE_YEAR = 2023;
+
+// Minimum total course hours required for ITE and SNE program types
+export const MIN_HOURS_ITE_SNE = 450;

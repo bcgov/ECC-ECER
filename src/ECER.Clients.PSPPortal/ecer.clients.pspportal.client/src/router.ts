@@ -48,7 +48,7 @@ const router = createRouter({
     },
     {
       path: "/messages/new/:initialCategory?",
-      name: "newMessage",
+      name: "new-message",
       component: () => import("./components/communication/NewMessage.vue"),
       meta: { requiresAuth: true },
       props: true,
@@ -91,6 +91,12 @@ const router = createRouter({
       path: "/program-profiles",
       component: () => import("./components/pages/ProgramProfiles.vue"),
       name: "program-profiles",
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/all-program-profiles",
+      component: () => import("./components/pages/AllProgramProfiles.vue"),
+      name: "all-program-profiles",
       meta: { requiresAuth: true },
     },
     {

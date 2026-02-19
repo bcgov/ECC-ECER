@@ -72,6 +72,41 @@ export default defineComponent({
           },
         ];
       }
+      if (this.route.name === "all-program-profiles") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Program profiles",
+            disabled: false,
+            href: "/program-profiles",
+          },
+          {
+            title: "All program profiles",
+            disabled: true,
+            href: "/all-program-profiles",
+          },
+        ];
+      }
+      if (this.route.name === "initiate-program-update") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Update a program profile",
+            disabled: true,
+            href: "/program/:programId/initiate-update",
+          },
+        ];
+      }
+      if (this.route.name === "messages") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Messages",
+            disabled: true,
+            href: "/communication/new-message",
+          },
+        ];
+      }
       return [];
     },
   },

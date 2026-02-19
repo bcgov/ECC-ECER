@@ -8,16 +8,16 @@
           text="Close"
           @click="showCloseDialog = true"
         ></v-btn>
-        <v-divider :style="{ opacity: 1 }" />
+        <v-divider class="mb-5" :style="{ opacity: 1 }" />
         <v-row>
-          <v-col>New message</v-col>
+          <v-col><h2>New message</h2></v-col>
         </v-row>
         <v-row>
           <v-col>
             Send a message to the ECE Registry.
             <span class="font-weight-bold">
-              Please note that all program representatives at your institution
-              will be able to read and reply to this thread.
+              Please note that all users that have access to the PSP Portal at
+              your institution will be able to read and reply to this thread.
             </span>
           </v-col>
         </v-row>
@@ -52,10 +52,10 @@
             <v-row class="mt-5">
               <v-col cols="12">
                 <p class="mb-3">
-                  Notify the Registry about changes to your program that affect
-                  program requirements or competencies (for example, adding or
-                  removing courses, changing practicum hours, etc.). Include:
+                  Notify the ECE Registry about changes to your program that
+                  affect program requirements or competencies. Include:
                 </p>
+                <br />
                 <ul class="ml-6 mb-3">
                   <li>A description of the change</li>
                   <li>Its effective date</li>
@@ -64,15 +64,71 @@
                     outlines)
                   </li>
                 </ul>
+                <br />
                 <p class="mb-3">
                   The ECE Registry will review your request and follow up with
                   you for additional information if needed.
                 </p>
-                <p>
-                  <a href="#" class="text-primary">
-                    Learn more about program changes
-                  </a>
-                </p>
+                <br />
+                <v-expansion-panels>
+                  <v-expansion-panel>
+                    <v-expansion-panel-title>
+                      <h3>Learn more about program changes</h3>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                      Program changes are divided into two categories:
+                      <br />
+                      <br />
+                      <ol class="ml-10">
+                        <li>
+                          Changes that do not require ECE Registry approval,
+                          which include: 
+                          <ul style="list-style-type: disc">
+                            <li>
+                              Renaming course codes and course names without
+                              changes to content 
+                            </li>
+                            <li>
+                              Reducing or increasing course hours
+                              while remaining within the minimum hours for each
+                              area of instruction and not altering the already
+                              approved competencies or learning objectives for
+                              each area of instruction  
+                            </li>
+                          </ul>
+                        </li>
+                        <br />
+                        <li>
+                          Changes that require ECE Registry approval,
+                          which include: 
+                          <ul style="list-style-type: disc">
+                            <li>
+                              Any changes that might alter the ECE Registry
+                              approved program coursework that meets
+                              the minimum provincial requirements for
+                              certification 
+                            </li>
+                            <li>
+                              Updating the course description or
+                              learning objectives that might directly impact the
+                              student’s ability to demonstrate any of the
+                              required occupational standards set out in the BC
+                              Child Care Sector Occupational Competencies   
+                            </li>
+                            <li>
+                              Removing a course if the required competencies are
+                              not already covered in that area of instruction in
+                              the approved program profile 
+                            </li>
+                            <li>
+                              Adding a course to the approved program profile
+                            </li>
+                          </ul>
+                        </li>
+                      </ol>
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </v-col>
             </v-row>
             <v-row>
@@ -80,9 +136,10 @@
                 <Callout class="mt-3" type="warning">
                   <h3>Need to make a change to a program profile?</h3>
                   <p>
-                    For updates that do not affect requirements or competencies
-                    (for example, changing a course name),
-                    <a href="">update your program profile</a>
+                    For updates that do not affect requirements or competencies,
+                    <router-link :to="{ name: 'program-profiles' }">
+                      update your program profile
+                    </router-link>
                     instead.
                   </p>
                 </Callout>
@@ -151,7 +208,7 @@ import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { VForm } from "vuetify/components";
 import FileUploader from "@/components/common/FileUploader.vue";
-import { getChildMessages, sendMessage } from "@/api/message";
+import { sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useAlertStore } from "@/store/alert";
@@ -163,6 +220,7 @@ import * as Rules from "@/utils/formRules";
 import * as Functions from "@/utils/functions";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Callout from "@/components/common/Callout.vue";
+import type router from "@/router";
 interface NewMessage {
   text: string;
   subject: string;

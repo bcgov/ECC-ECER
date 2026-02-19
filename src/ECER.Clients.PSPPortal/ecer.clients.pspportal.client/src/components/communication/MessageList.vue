@@ -105,7 +105,7 @@ export default defineComponent({
     },
     createNewMessage() {
       this.router.push({
-        name: "newMessage",
+        name: "new-message",
       });
       this.messageStore.currentMessage = null;
     },

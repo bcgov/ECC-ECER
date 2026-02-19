@@ -58,3 +58,4 @@ jobs:
 
           oc tag -n ${{env.OPENSHIFT_NAMESPACE}} --alias=true registry-portal:${{github.event.inputs.version}} registry-portal:${{env.APP_ENVIRONMENT_DESTINATION}}
           oc tag -n ${{env.OPENSHIFT_NAMESPACE}} --alias=true api:${{github.event.inputs.version}} api:${{env.APP_ENVIRONMENT_DESTINATION}}
+          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} --alias=true psp-portal:${{github.event.inputs.version}} psp-portal:${{env.APP_ENVIRONMENT_DESTINATION}}

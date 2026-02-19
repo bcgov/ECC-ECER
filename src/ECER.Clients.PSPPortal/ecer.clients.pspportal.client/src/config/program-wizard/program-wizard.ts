@@ -10,7 +10,7 @@ const programWizard: Wizard = {
   steps: {
     programOverview: {
       stage: "ProgramOverview",
-      title: "Program Overview",
+      title: "Program overview",
       form: programOverviewForm,
       key: "item.1",
     },
@@ -34,7 +34,7 @@ const programWizard: Wizard = {
     },
     review: {
       stage: "Review",
-      title: "Confirm and submit",
+      title: "Review and submit",
       form: reviewForm,
       key: "item.5",
     },

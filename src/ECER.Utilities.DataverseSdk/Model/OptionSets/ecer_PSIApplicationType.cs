@@ -18,19 +18,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NewBasicPostBasicProgramHybridOnline = 621870001,
+		AddOnlineorHybridDeliveryMethod = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NewBasicPostBasicProgramInperson = 621870000,
+		CurriculumRevisionsatRecognizedInstitution = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NewDeliveryMethod = 621870002,
+		NewBasicECEPostBasicProgram = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PrivateNewCampusLocation = 621870004,
+		NewCampusatRecognizedPrivateInstitution = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SatelliteProgram = 621870003,
+		SatelliteProgram = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		WorkIntegratedLearningProgram = 621870005,
 	}
 }
 #pragma warning restore CS1591

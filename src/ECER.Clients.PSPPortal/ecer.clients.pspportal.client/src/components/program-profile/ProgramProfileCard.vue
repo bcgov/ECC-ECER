@@ -8,8 +8,7 @@
     <div class="d-flex justify-end">
       <v-row>
         <v-col></v-col>
-        <v-col v-if="program.programProfileType == 'ChangeRequest' && !isReadyForReview()"
-          class="d-flex justify-end">
+        <v-col v-if="updateInProgress" class="d-flex justify-end">
           <p>Loading...</p>
           <v-progress-circular
             indeterminate
@@ -129,9 +128,7 @@ import type { ProgramStage } from "@/types/wizard";
 import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
-import { getPrograms, withdrawProgram } from "@/api/program";
-
-const INTERVAL_TIME = 30000;
+import { withdrawProgram } from "@/api/program";
 
 export default defineComponent({
   name: "ProgramProfileCard",
@@ -151,9 +148,6 @@ export default defineComponent({
     return {
       showWithdrawConfirmation: false,
       isWithdrawing: false,
-      readyForReview: false as boolean,
-      updatedProgram: this.program as Components.Schemas.Program,
-      pollInterval: 0 as any,
     };
   },
   computed: {
@@ -225,30 +219,15 @@ export default defineComponent({
           return "Requires review";
       }
     },
-  },
-  async mounted() {
-    if (this.program.programProfileType == "ChangeRequest"){
-        if (!this.program.readyForReview){
-          /* Poll the backend until the ready for review flag is set */
-          this.pollInterval = setInterval(() => {this.fetchProgram()}, INTERVAL_TIME);
-          setTimeout(() => {clearInterval(this.pollInterval)}, INTERVAL_TIME * 10);
-        }
-    }
+    updateInProgress(): boolean {
+      return (
+        this.program.programProfileType === "ChangeRequest" &&
+        this.program.status === "Draft" &&
+        !this.program.readyForReview
+      );
+    },
   },
   methods: {
-    async fetchProgram() {
-      const programId = this.program.id;
-      if (programId){
-        const { data: response } = await getPrograms(programId);
-        if(response?.programs && response.programs[0]){
-          this.updatedProgram = response.programs[0];
-          if(this.updatedProgram.readyForReview){
-            /* Ready for review flag has been set. Stop polling. */
-            clearInterval(this.pollInterval)
-          }
-        }
-      }
-    },
     openProfile() {
       this.router.push({ path: "/program/" + this.program.id });
     },
@@ -270,16 +249,6 @@ export default defineComponent({
       }
     },
     formatDate,
-    isReadyForReview(): boolean {
-      if (this.updatedProgram.readyForReview)
-      {        
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-    },
   },
 });
 </script>

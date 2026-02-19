@@ -15,7 +15,6 @@ public class ProgramHandlers(
     IProgramValidationEngineResolver validationResolver)
   : IRequestHandler<SaveDraftProgramCommand, Contract.Programs.Program?>,
     IRequestHandler<ProgramsQuery, ProgramsQueryResults>,
-    IRequestHandler<UpdateCourseCommand, string>,
     IRequestHandler<UpdateProgramCommand, string>,
     IRequestHandler<SubmitProgramCommand, SubmitProgramResult>,
     IRequestHandler<ChangeProgramCommand, string>
@@ -31,17 +30,10 @@ public class ProgramHandlers(
       ById = programId,
       ByPostSecondaryInstituteId = request.Program.PostSecondaryInstituteId
     }, cancellationToken));
-    
+
     var program = result.Programs?.SingleOrDefault();
 
     return mapper.Map<Contract.Programs.Program>(program);
-  }
-
-  public async Task<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
-  {
-    ArgumentNullException.ThrowIfNull(request);
-    var programId = await programRepository.UpdateCourse(mapper.Map<IEnumerable<Resources.Documents.Programs.Course>>(request.Course)!, request.Id, cancellationToken);
-    return programId;
   }
 
   public async Task<ProgramsQueryResults> Handle(ProgramsQuery request, CancellationToken cancellationToken)
@@ -57,13 +49,14 @@ public class ProgramHandlers(
       ById = request.ById,
       ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
       ByStatus = statusFilter,
+      ByFromProgramProfileId = request.ByFromProgramProfileId,
       PageNumber = request.PageNumber,
-      PageSize = request.PageSize,   
+      PageSize = request.PageSize,
     }, cancellationToken);
 
     return new ProgramsQueryResults(mapper.Map<IEnumerable<Contract.Programs.Program>>(result.Programs), result.TotalProgramsCount);
   }
-  
+
   public async Task<string> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
@@ -81,21 +74,21 @@ public class ProgramHandlers(
   public async Task<SubmitProgramResult> Handle(SubmitProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    
+
     var programResult = await programRepository.Query(new ProgramQuery
     {
       ById = request.ProgramId,
       ByStatus = new[] { ProgramStatus.Draft }
     }, cancellationToken);
-    
+
     if (!programResult.Programs!.Any())
     {
       return new SubmitProgramResult { ProgramId = null, Error = ProgramSubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "Draft program profile does not exist" } };
     }
-    
+
     var draftProgram = mapper.Map<Contract.Programs.Program>(programResult.Programs!.First());
     var instructions = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery() { ById = null }, cancellationToken);
-    
+
     var validationEngine = validationResolver?.resolve(draftProgram.ProgramProfileType);
     var validationErrors = await validationEngine?.Validate(draftProgram, instructions.ToList())!;
     if (validationErrors.ValidationErrors.Any())

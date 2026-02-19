@@ -39,7 +39,7 @@
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
       <EceDisplayValue
-        label="Program types"
+        label="Program type(s)"
         :model-value="modelValue?.programTypes"
       />
     </v-col>
