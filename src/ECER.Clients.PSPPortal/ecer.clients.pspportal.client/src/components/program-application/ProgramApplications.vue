@@ -11,7 +11,7 @@
       </v-col>
     </v-row>
 
-    <Loading v-if="loading"></Loading>
+    <Loading v-if="initialLoad"></Loading>
 
     <div class="mt-4" v-else>
       <v-row>
@@ -21,7 +21,7 @@
             v-model="filter"
             color="primary"
             mandatory
-            @update:model-value="fetchPrograms(page)"
+            @update:model-value="loadPrograms(page)"
           >
             <v-btn value="active">Active</v-btn>
             <v-btn value="inactive">Inactive</v-btn>
@@ -39,7 +39,7 @@
         >
           <ProgramApplicationCard
             :program-application="programApplication"
-            :refresh-application-list="fetchPrograms(page)"
+            @refresh-application-list="loadPrograms(page)"
           />
         </v-col>
       </v-row>
@@ -75,6 +75,7 @@ import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 
 const PAGE_SIZE = 10;
+const POLL_INTERVAL_MS = 10000;
 
 export default defineComponent({
   name: "ProgramApplications",
@@ -85,16 +86,15 @@ export default defineComponent({
     ProgramApplicationCard,
   },
   setup() {
-    const loadingStore = useLoadingStore();
     const router = useRouter();
-    return { loadingStore, router };
+    return { router };
   },
   data() {
     return {
       programApplications: [] as Components.Schemas.ProgramApplication[],
       count: -1,
       page: 1,
-      loading: true,
+      initialLoad: true,
       filter: "active",
       activeStatus: [
         "Draft",
@@ -109,12 +109,13 @@ export default defineComponent({
         "RefusetoApprove",
         "Withdrawn",
       ] as Components.Schemas.ApplicationStatus[],
+      pollTimeoutId: null as ReturnType<typeof setTimeout> | null,
     };
   },
   computed: {
-    isLoading(): boolean {
-      return (
-        this.loadingStore.isLoading("program_application_get") || this.loading
+    hasAnyNotReady(): boolean {
+      return this.programApplications.some(
+        (app) => app.componentsGenerationCompleted !== true,
       );
     },
     currentPage: {
@@ -122,19 +123,29 @@ export default defineComponent({
         return this.page;
       },
       set(newValue: number) {
+        this.clearPoll();
         this.page = newValue;
-        this.fetchPrograms(newValue);
+        this.loadPrograms(newValue);
       },
     },
     totalPages() {
-      return Math.ceil(this.programApplications.length / PAGE_SIZE);
+      return Math.ceil(this.count / PAGE_SIZE);
     },
   },
   async mounted() {
-    await this.fetchPrograms(this.page);
-    this.loading = false;
+    await this.loadPrograms(this.page);
+    this.initialLoad = false;
+  },
+  beforeUnmount() {
+    this.clearPoll();
   },
   methods: {
+    clearPoll() {
+      if (this.pollTimeoutId != null) {
+        clearTimeout(this.pollTimeoutId);
+        this.pollTimeoutId = null;
+      }
+    },
     getProgramKey(
       program: Components.Schemas.ProgramApplication,
       index: number,
@@ -151,6 +162,7 @@ export default defineComponent({
       }
     },
     async fetchPrograms(page: number) {
+      this.clearPoll();
       const params = { page, pageSize: PAGE_SIZE };
       const response = await getProgramApplications(
         params,
@@ -159,8 +171,18 @@ export default defineComponent({
       );
       this.programApplications = response.data?.applications || [];
       this.count = response.data?.count || 0;
-
+      if (this.hasAnyNotReady) {
+        this.pollTimeoutId = setTimeout(
+          () => this.fetchPrograms(this.page),
+          POLL_INTERVAL_MS,
+        );
+      }
+    },
+    async loadPrograms(page: number) {
+      this.initialLoad = true;
+      await this.fetchPrograms(page);
       globalThis.scrollTo({ top: 0, behavior: "smooth" });
+      this.initialLoad = false;
     },
   },
 });

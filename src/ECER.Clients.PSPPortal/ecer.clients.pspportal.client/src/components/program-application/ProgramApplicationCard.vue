@@ -8,13 +8,15 @@
     <div class="d-flex justify-end">
       <v-row>
         <v-col></v-col>
-        <v-col v-if="isStillLoading" class="d-flex justify-end">
-          <p>Loading...</p>
-          <v-progress-circular indeterminate color="primary" size="24" />
-        </v-col>
         <v-col class="d-flex justify-end">
           <v-chip :color="chipColour" variant="flat" size="small">
-            {{ statusText }}
+            <div :class="isStillLoading ? 'pr-2' : ''">{{ statusText }}</div>
+            <v-progress-circular
+              v-if="isStillLoading"
+              indeterminate
+              color="primary"
+              size="18"
+            />
           </v-chip>
         </v-col>
       </v-row>
@@ -38,7 +40,7 @@
         </v-btn>
         <v-spacer />
         <v-btn
-          v-if="displayedApplication?.status === 'Draft'"
+          v-if="programApplication?.status === 'Draft'"
           size="large"
           variant="flat"
           color="error"
@@ -82,11 +84,8 @@ import {
   mapApplicationType,
   mapDeliveryType,
   mapProgramType,
-  getProgramApplicationById,
   withdrawProgramApplication,
 } from "@/api/program-application";
-
-const POLL_INTERVAL_MS = 10000;
 
 export default defineComponent({
   name: "ProgramApplicationCard",
@@ -106,53 +105,37 @@ export default defineComponent({
     return {
       showWithdrawConfirmation: false,
       isWithdrawing: false,
-      pollTimeoutId: null as ReturnType<typeof setTimeout> | null,
-      localApplication: null as Components.Schemas.ProgramApplication | null, //for managing is loading
     };
   },
-  mounted() {
-    if (this.isStillLoading && this.programApplication?.id) {
-      this.pollTimeoutId = setTimeout(this.checkReady, POLL_INTERVAL_MS);
-    }
-  },
-  beforeUnmount() {
-    if (this.pollTimeoutId != null) {
-      clearTimeout(this.pollTimeoutId);
-      this.pollTimeoutId = null;
-    }
-  },
   computed: {
-    displayedApplication(): Components.Schemas.ProgramApplication {
-      return this.localApplication ?? this.programApplication;
-    },
     isStillLoading(): boolean {
-      return this.displayedApplication.componentsGenerationCompleted !== true;
+      return this.programApplication.componentsGenerationCompleted !== true;
     },
     applicationType(): string {
-      return this.displayedApplication.programApplicationType
-        ? mapApplicationType(this.displayedApplication.programApplicationType)
+      return this.programApplication.programApplicationType
+        ? mapApplicationType(this.programApplication.programApplicationType)
         : "-";
     },
     programName(): string {
-      return this.displayedApplication.programApplicationName || "—";
+      return this.programApplication.programApplicationName || "—";
     },
     deliveryType(): string {
-      return this.displayedApplication.deliveryType
-        ? mapDeliveryType(this.displayedApplication.deliveryType)
+      return this.programApplication.deliveryType
+        ? mapDeliveryType(this.programApplication.deliveryType)
         : "—";
     },
     programType(): string {
-      const types = this.displayedApplication.programTypes;
+      const types = this.programApplication.programTypes;
       if (!types?.length) return "—";
       return types.map(mapProgramType).join(", ");
     },
     status(): string {
-      return this.displayedApplication.status || "Draft";
+      return this.programApplication.status || "Draft";
     },
     buttonText(): string {
       if (
-        this.displayedApplication.status === "Draft" ||
-        this.displayedApplication.status === "RFAI"
+        this.programApplication.status === "Draft" ||
+        this.programApplication.status === "RFAI"
       ) {
         return "Edit";
       }
@@ -179,25 +162,15 @@ export default defineComponent({
       }
     },
     statusText(): string {
-      return mapProgramStatus(this.status);
+      let status = mapProgramStatus(this.status);
+      if (this.isStillLoading && status === "Draft") {
+        status = "Initiating";
+      }
+      return status;
     },
   },
   methods: {
     formatDate,
-    async checkReady() {
-      const id = this.programApplication?.id;
-      if (!id) return;
-      const result = await getProgramApplicationById(id);
-      if (result.error) return;
-      if (result.data?.componentsGenerationCompleted === true) {
-        this.localApplication = {
-          ...this.programApplication,
-          componentsGenerationCompleted: true,
-        };
-        return;
-      }
-      this.pollTimeoutId = setTimeout(this.checkReady, POLL_INTERVAL_MS);
-    },
     async confirmWithdraw() {
       this.isWithdrawing = true;
       try {
