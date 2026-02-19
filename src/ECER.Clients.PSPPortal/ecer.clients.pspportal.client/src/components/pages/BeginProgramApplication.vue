@@ -78,7 +78,7 @@
         <v-col>
           <p class="pb-3">Provincial certification type</p>
           <v-input
-            v-model="checkBoxPlaceHolder"
+            v-model="provincialCertificationTypeValues"
             label="Provincial certification type"
             :rules="[
               Rules.atLeastOneOptionRequired(
@@ -90,7 +90,7 @@
             <v-row dense>
               <v-col cols="12">
                 <v-checkbox
-                  v-model="checkBoxPlaceHolder"
+                  v-model="provincialCertificationTypeValues"
                   value="Basic"
                   label="Early childhood education (Basic)"
                   density="compact"
@@ -99,7 +99,7 @@
               </v-col>
               <v-col cols="12">
                 <v-checkbox
-                  v-model="checkBoxPlaceHolder"
+                  v-model="provincialCertificationTypeValues"
                   label="Infant and Toddler Educator (ITE)"
                   value="ITE"
                   density="compact"
@@ -108,7 +108,7 @@
               </v-col>
               <v-col cols="12">
                 <v-checkbox
-                  v-model="checkBoxPlaceHolder"
+                  v-model="provincialCertificationTypeValues"
                   label="Special Needs Educator (SNE)"
                   value="SNE"
                   density="compact"
@@ -124,7 +124,7 @@
           <p class="pb-3">Delivery method(s)</p>
           <v-radio-group
             id="programConfirmationRadio"
-            v-model="radiobuttonplaceholder"
+            v-model="programConfirmationValue"
             color="primary"
             :rules="[Rules.required('Select a delivery method')]"
           >
@@ -190,24 +190,10 @@ export default defineComponent({
   data() {
     return {
       programName: "" as string,
-      checkBoxPlaceHolder: [] as string[],
-      radiobuttonplaceholder: "" as string,
+      provincialCertificationTypeValues: [] as string[],
+      programConfirmationValue: "" as string,
       Rules,
     };
-  },
-  computed: {
-    programTypes(): Components.Schemas.ProgramCertificationType[] {
-      return this.checkBoxPlaceHolder.filter(
-        (v): v is Components.Schemas.ProgramCertificationType =>
-          v === "Basic" || v === "ITE" || v === "SNE",
-      );
-    },
-    deliveryType(): Components.Schemas.DeliveryType | undefined {
-      const value = this.radiobuttonplaceholder;
-      if (value === "Inperson" || value === "Hybrid" || value === "Online")
-        return value;
-      return undefined;
-    },
   },
   methods: {
     async createApplication() {
@@ -219,8 +205,11 @@ export default defineComponent({
 
       const request: Components.Schemas.CreateProgramApplicationRequest = {
         programApplicationName: this.programName,
-        programTypes: this.programTypes,
-        deliveryType: this.deliveryType,
+        programTypes: this
+          .provincialCertificationTypeValues as Components.Schemas.ProgramCertificationType[],
+        deliveryType: this.programConfirmationValue as
+          | Components.Schemas.DeliveryType
+          | undefined,
       };
 
       const { data, error } = await createProgramApplication(request);

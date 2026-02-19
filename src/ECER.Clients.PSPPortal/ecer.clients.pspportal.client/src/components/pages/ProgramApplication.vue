@@ -25,11 +25,11 @@
             size="56"
             class="mb-4"
           />
-          <h3 class="mb-3">Preparing your application</h3>
+          <h3 class="mb-3">Preparing profile for review</h3>
           <p class="ma-0">
-            Your request has been initiated. Please wait a few minutes while we
-            prepare it for review. When ready, it will appear here and will also
-            be available in your dashboard.
+            Please wait a few minutes while we prepare it for review. When
+            ready, it will appear here and will also be available in your
+            dashboard.
           </p>
         </v-card>
       </v-col>
@@ -42,14 +42,7 @@
             Program application:
             {{ application.programApplicationName ?? application.id }}
           </p>
-          <v-btn
-            class="mt-4"
-            variant="text"
-            color="primary"
-            :to="{ name: 'program-applications' }"
-          >
-            Back to program applications
-          </v-btn>
+          Placeholder for now
         </v-col>
       </v-row>
     </template>
@@ -61,14 +54,6 @@
             Unable to load this program application. It may not exist or you may
             not have access.
           </p>
-          <v-btn
-            class="mt-2"
-            variant="text"
-            color="primary"
-            :to="{ name: 'program-applications' }"
-          >
-            Back to program applications
-          </v-btn>
         </Callout>
       </v-col>
     </v-row>
