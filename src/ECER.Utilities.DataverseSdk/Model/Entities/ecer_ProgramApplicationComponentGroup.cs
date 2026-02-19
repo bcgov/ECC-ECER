@@ -66,6 +66,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ComponentGroupName = "ecer_componentgroupname";
 			public const string ecer_DisplayOrder = "ecer_displayorder";
 			public const string ecer_documenturl_ProgramApplicationComponentGroupId = "ecer_documenturl_ProgramApplicationComponentGroupId";
+			public const string ecer_EntryProgress = "ecer_entryprogress";
+			public const string ecer_entryprogressName = "ecer_entryprogressname";
 			public const string ecer_GroupName = "ecer_groupname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId = "ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId";
@@ -337,6 +339,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_displayorder", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_entryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_EntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_entryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_entryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_entryprogressname")]
+		public string ecer_entryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_entryprogress"))
+				{
+					return this.FormattedValues["ecer_entryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

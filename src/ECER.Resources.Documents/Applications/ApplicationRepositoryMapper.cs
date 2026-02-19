@@ -118,6 +118,7 @@ internal class ApplicationRepositoryMapper : Profile
             status == ApplicationStatus.PendingPSPConsultationNeeded ? ecer_Application_StatusCode.PendingPSPConsultationNeeded :
             status == ApplicationStatus.ReconsiderationDecision ? ecer_Application_StatusCode.ReconsiderationDecision :
             status == ApplicationStatus.AppealDecision ? ecer_Application_StatusCode.AppealDecision :
+            status == ApplicationStatus.NotSubmitted ? ecer_Application_StatusCode.NotSubmitted :
             ecer_Application_StatusCode.Draft);
 
 
@@ -138,7 +139,7 @@ internal class ApplicationRepositoryMapper : Profile
             status == ecer_Application_StatusCode.PendingPSPConsultationNeeded ? ApplicationStatus.PendingPSPConsultationNeeded :
             status == ecer_Application_StatusCode.ReconsiderationDecision ? ApplicationStatus.ReconsiderationDecision :
             status == ecer_Application_StatusCode.AppealDecision ? ApplicationStatus.AppealDecision :
-            status == ecer_Application_StatusCode.NotSubmitted ? ApplicationStatus.Draft :
+            status == ecer_Application_StatusCode.NotSubmitted ? ApplicationStatus.NotSubmitted :
             ApplicationStatus.Draft);
 
 

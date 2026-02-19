@@ -50,7 +50,7 @@
       <v-col cols="12">
         <p>
           The Province reserves the right to suspend or revoke access to the
-          Post-Secondary Programs.
+          Post-Secondary Programs portal.
         </p>
       </v-col>
     </v-row>

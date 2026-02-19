@@ -305,6 +305,10 @@ export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
   filteredCourses?.forEach((course: Components.Schemas.Course) => {
     course.courseAreaOfInstruction?.forEach(
       (area: Components.Schemas.CourseAreaOfInstruction) => {
+        if (area?.newHours === "0") {
+          //if courseAreaOfInstruction has 0 newHours we will not show it. Do not add to map
+          return;
+        }
         if (courseAreaOfInstructionMap.has(area.areaOfInstructionId)) {
           //areaOfInstructionExists -> append to array
           courseAreaOfInstructionMap.get(area.areaOfInstructionId).push({

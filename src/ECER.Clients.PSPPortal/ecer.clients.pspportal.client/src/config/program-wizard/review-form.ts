@@ -77,7 +77,7 @@ const reviewForm: Form = {
       id: "declaration",
       component: EceCheckbox,
       props: {
-        label: "I understand and agree with the statements above",
+        label: "I understand and agree with the statements above.",
         rules: [Rules.hasCheckbox("required")],
       },
       cols: {
