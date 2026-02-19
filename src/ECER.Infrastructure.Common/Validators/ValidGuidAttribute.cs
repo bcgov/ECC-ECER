@@ -1,4 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/*This is a custom attribute validator for our records objects
+ * It checks whether the object property is a valid guid in our endpoint layer records objects
+ * works with parameter validation .WithParameterValidation();
+ *
+ *** How to use ***
+ * Create a record in the endpoint layer with the following attribute
+ * public record Program
+ * {
+ *   [ValidGuid]
+ *   public string? Id { get; set; }
+ * }
+ *
+ * in endpoint builder use .WithParameterValidation()
+ */
+
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.PSPPortal.Server.Programs
 {
