@@ -152,25 +152,21 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   {
     var programName = $"{name}_{type}_{statusCode}";
     var programApplicationE = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.FirstOrDefault(r => r.ecer_Name == programName);
-    if (programApplicationE == null)
+    if (programApplicationE != null)
     {
-      programApplicationE = new ecer_PostSecondaryInstituteProgramApplicaiton
-      {
-        StatusCode = statusCode,
-        ecer_Name = programName,
-        ecer_PostSecondaryInstituteProgramApplicaitonId = Guid.NewGuid(),
-        ecer_ProvincialCertificationTypeOffered =  ecer_PSIProvincialCertificationTypeOffered.ECEBasic,
-        ecer_DeliveryType =  ecer_PSIDeliveryType.Hybrid,
-        ecer_ApplicationType =  type,
-        ecer_PostSecondaryInstitute = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
-      };
-      context.AddObject(programApplicationE);
-    } else if (programApplicationE.StatusCode == ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Withdrawn)
-    {
-      programApplicationE.StatusCode = statusCode;
-      programApplicationE.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Active;
-      context.UpdateObject(programApplicationE);
+      context.DeleteObject(programApplicationE);
     }
+    programApplicationE = new ecer_PostSecondaryInstituteProgramApplicaiton
+    {
+      StatusCode = statusCode,
+      ecer_Name = programName,
+      ecer_PostSecondaryInstituteProgramApplicaitonId = Guid.NewGuid(),
+      ecer_ProvincialCertificationTypeOffered =  ecer_PSIProvincialCertificationTypeOffered.ECEBasic,
+      ecer_DeliveryType =  ecer_PSIDeliveryType.Hybrid,
+      ecer_ApplicationType =  type,
+      ecer_PostSecondaryInstitute = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
+    };
+    context.AddObject(programApplicationE);
     
     return programApplicationE;
   }
