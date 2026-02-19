@@ -119,6 +119,13 @@ declare namespace Components {
     export interface CommunicationsStatusResults {
       status?: CommunicationsStatus;
     }
+    export interface ComponentGroupMetadata {
+      id?: string | null;
+      name?: string | null;
+      status?: string | null;
+      categoryName?: string | null;
+      displayOrder?: number; // int32
+    }
     export interface Country {
       countryId?: string | null;
       countryName?: string | null;
@@ -555,6 +562,19 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace ProgramApplicationComponentsGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ComponentGroupMetadata[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace ProgramApplicationGet {
     namespace Parameters {
       export type ByStatus = Components.Schemas.ApplicationStatus[];
@@ -941,6 +961,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProgramApplicationPut.Responses.$200>;
   /**
+   * program_application_components_get - Gets component groups
+   */
+  "program_application_components_get"(
+    parameters?: Parameters<Paths.ProgramApplicationComponentsGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationComponentsGet.Responses.$200>;
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   "portal_invitation_get"(
@@ -1270,6 +1298,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ProgramApplicationPut.Responses.$200>;
   };
+  ["/api/programApplications/{id}/components"]: {
+    /**
+     * program_application_components_get - Gets component groups
+     */
+    "get"(
+      parameters?: Parameters<Paths.ProgramApplicationComponentsGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationComponentsGet.Responses.$200>;
+  };
   ["/api/PortalInvitations/{token}"]: {
     /**
      * portal_invitation_get - Handles portal invitation queries
@@ -1419,6 +1457,7 @@ export type CommunicationStatus = Components.Schemas.CommunicationStatus;
 export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults =
   Components.Schemas.CommunicationsStatusResults;
+export type ComponentGroupMetadata = Components.Schemas.ComponentGroupMetadata;
 export type Country = Components.Schemas.Country;
 export type Course = Components.Schemas.Course;
 export type CourseAreaOfInstruction =
