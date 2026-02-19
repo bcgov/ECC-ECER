@@ -41,5 +41,13 @@ internal class ProgramApplicationRepositoryMapper : Profile
     CreateMap<ProgramCertificationType, ecer_PSIProgramType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
+    
+    CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupMetadata>(MemberList.Source)
+      .ForCtorParam(nameof(ComponentGroupMetadata.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentGroupId))
+      .ForCtorParam(nameof(ComponentGroupMetadata.Name), opt => opt.MapFrom(src => src.ecer_GroupName))
+      .ForCtorParam(nameof(ComponentGroupMetadata.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
+      .ForCtorParam(nameof(ComponentGroupMetadata.Status), opt => opt.MapFrom(src => src.ecer_EntryProgress))
+      .ForCtorParam(nameof(ComponentGroupMetadata.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
+      .ValidateMemberList(MemberList.Destination);
   }
 }

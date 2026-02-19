@@ -5,8 +5,14 @@ public interface IProgramApplicationRepository
   Task<string> Create(ProgramApplication programApplication, CancellationToken cancellationToken);
   Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken);
   Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken);
+  Task<IEnumerable<ComponentGroupMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
 }
 
+public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
+public record ComponentGroupQuery
+{
+  public string? ByProgramApplicationId { get; set; }
+}
 public record ProgramApplicationQuery
 {
   public string? ById { get; set; }

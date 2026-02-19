@@ -110,6 +110,35 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .WithOpenApi("Update program application", string.Empty, "program_application_put")
     .RequireAuthorization(policyNames)
     .WithParameterValidation();
+  
+  endpointRouteBuilder.MapGet("/api/programApplications/{id}/components", async Task<Results<Ok<IEnumerable<ComponentGroupMetadata>>, BadRequest<string>, NotFound>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
+      bool IdIsNotGuid = !Guid.TryParse(id, out _);
+      if (IdIsNotGuid) return TypedResults.BadRequest("invalid program application id");
+  
+      var userContext = ctx.User.GetUserContext()!;
+      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+  
+      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+      {
+        ById = id,
+        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
+      }, ct);
+  
+      if (!existing.Items.Any()) return TypedResults.NotFound();
+      
+      var componentGroups = await messageBus.Send(new ComponentGroupQuery
+      {
+        ByProgramApplicationId = id,
+      }, ct);
+
+      return TypedResults.Ok(mapper.Map<IEnumerable<ComponentGroupMetadata>>(componentGroups));
+    })
+    .WithOpenApi("Gets component groups", string.Empty, "program_application_components_get")
+    .RequireAuthorization(policyNames)
+    .WithParameterValidation();
   }
 }
 
@@ -142,6 +171,7 @@ public record CreateProgramApplicationRequest
 }
 
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
+public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
 
 public enum ApplicationStatus
 {

@@ -13,6 +13,13 @@ public record ProgramApplicationQuery : IRequest<ProgramApplicationQueryResults>
   public int PageSize { get; set; }
 }
 
+public record ComponentGroupQuery : IRequest<IEnumerable<ComponentGroupMetadata>>
+{
+  public string? ByProgramApplicationId { get; set; }
+}
+
+public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
+
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 
 public record ProgramApplication(string? Id, string PostSecondaryInstituteId)

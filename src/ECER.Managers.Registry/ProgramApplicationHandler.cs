@@ -3,6 +3,8 @@ using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Resources.Documents.ProgramApplications;
 using MediatR;
 using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
+using ComponentGroupMetadata = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupMetadata;
+using ComponentGroupQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupQuery;
 using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 using ProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
 using ProgramApplicationQueryResults = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQueryResults;
@@ -14,7 +16,8 @@ public class ProgramApplicationHandler(
     IMapper mapper)
   : IRequestHandler<CreateProgramApplicationCommand, Contract.ProgramApplications.ProgramApplication?>,
     IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>,
-    IRequestHandler<UpdateProgramApplicationCommand, string>
+    IRequestHandler<UpdateProgramApplicationCommand, string>,
+    IRequestHandler<ComponentGroupQuery, IEnumerable<ComponentGroupMetadata>>
 {
   public async Task<Contract.ProgramApplications.ProgramApplication?> Handle(CreateProgramApplicationCommand request, CancellationToken cancellationToken)
   {
@@ -59,5 +62,15 @@ public class ProgramApplicationHandler(
     }, cancellationToken);
 
     return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<Contract.ProgramApplications.ProgramApplication>>(result.Items), result.Count);
+  }
+  
+  public async Task<IEnumerable<ComponentGroupMetadata>> Handle(ComponentGroupQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var result = await programApplicationRepository.QueryComponentGroups(new Resources.Documents.ProgramApplications.ComponentGroupQuery()
+    {
+      ByProgramApplicationId = request.ByProgramApplicationId, 
+    }, cancellationToken);
+    return mapper.Map<IEnumerable<ComponentGroupMetadata>>(result);
   }
 }

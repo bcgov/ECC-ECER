@@ -18,6 +18,10 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<ICRAEligibilityHandlers>();
     configurationContext.Services.AddTransient<RegistrantHandlers>();
     configurationContext.Services.AddTransient<ProgramHandlers>();
+    configurationContext.Services.AddTransient<CoursesHandler>();
+    configurationContext.Services.AddTransient<PostSecondaryInstituteHandlers>();
+    configurationContext.Services.AddTransient<ProgramApplicationHandler>();
+    configurationContext.Services.AddTransient<PspUserHandlers>();
     configurationContext.Services.AddTransient<PortalInvitationHandlers>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, ReferencePortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, IcraReferencePortalInvitationVerificationHandler>();
