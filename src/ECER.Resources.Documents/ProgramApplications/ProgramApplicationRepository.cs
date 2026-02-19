@@ -104,4 +104,16 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     
     return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<ProgramApplication>>(results)!, query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count);
   }
+  public async Task<IEnumerable<ComponentGroupMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var categoryGroups = context.ecer_ProgramApplicationComponentGroupSet.AsQueryable();
+    
+    //Filter by Id
+    if (query.ByProgramApplicationId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplication.Id == Guid.Parse(query.ByProgramApplicationId));
+    var results = context.From(categoryGroups)
+      .Execute();
+
+    return mapper.Map<IEnumerable<ComponentGroupMetadata>>(results)!.ToList();
+  }
 }

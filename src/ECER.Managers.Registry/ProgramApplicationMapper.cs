@@ -2,6 +2,7 @@ using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
 using ECER.Managers.Registry.Contract.ProgramApplications;
 using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
+using ComponentGroupMetadata = ECER.Resources.Documents.ProgramApplications.ComponentGroupMetadata;
 using ResourcesProgramCertificationType = ECER.Resources.Documents.ProgramApplications.ProgramCertificationType;
 
 namespace ECER.Managers.Registry;
@@ -37,5 +38,7 @@ internal class ProgramApplicationMapper: Profile
     CreateMap<Contract.ProgramApplications.ProgramCertificationType, ResourcesProgramCertificationType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
+    
+    CreateMap<Contract.ProgramApplications.ComponentGroupMetadata,ComponentGroupMetadata>().ReverseMap();
   }
 }
