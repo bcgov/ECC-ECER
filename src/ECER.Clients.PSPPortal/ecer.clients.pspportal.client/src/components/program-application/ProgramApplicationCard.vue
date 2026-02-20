@@ -35,7 +35,12 @@
 
     <v-card-actions class="d-flex flex-row justify-start ga-3 flex-wrap">
       <v-row>
-        <v-btn size="large" variant="outlined" color="primary">
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="primary"
+          @click="handleButtonAction"
+        >
           {{ buttonText }}
         </v-btn>
         <v-spacer />
@@ -186,6 +191,19 @@ export default defineComponent({
         this.isWithdrawing = false;
         this.showWithdrawConfirmation = false;
       }
+    },
+
+    handleButtonAction(): void {
+      if (this.buttonText === "Edit") {
+        this.editApplication();
+      }
+    },
+
+    editApplication(): void {
+      this.$router.push({
+        name: "programApplication",
+        params: { programApplicationId: this.programApplication.id },
+      });
     },
   },
 });

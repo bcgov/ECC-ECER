@@ -371,3 +371,51 @@ export function getCourseTitle(course: Components.Schemas.Course): string {
     return "Untitled Course";
   }
 }
+
+export function groupByCategoryName(
+  categoryGroups: Components.Schemas.ComponentGroupMetadata[],
+): ComponentGroupNavigationMap | undefined {
+  const map = new Map();
+  categoryGroups.forEach((group: Components.Schemas.ComponentGroupMetadata) => {
+    const category = group.categoryName;
+
+    if (map.has(category)) {
+      map.get(category).push({
+        id: group.id,
+        name: group.name,
+        status: group.status,
+        categoryName: group.categoryName,
+        displayOrder: group.displayOrder,
+        statusIcon: mapStatusIcons(group.status),
+        navigationRoute: "/component/" + group.id,
+      } as ComponentGroupNavigation);
+    } else {
+      map.set(category, [
+        {
+          id: group.id,
+          name: group.name,
+          status: group.status,
+          categoryName: group.categoryName,
+          displayOrder: group.displayOrder,
+          statusIcon: mapStatusIcons(group.status),
+          navigationRoute: "/component/" + group.id,
+        } as ComponentGroupNavigation,
+      ]);
+    }
+  });
+
+  return map;
+}
+
+function mapStatusIcons(status: string | null | undefined): string {
+  switch (status) {
+    case "ToDo":
+      return "mdi-circle-outline";
+    case "InProgress":
+      return "mdi-circle-half-full";
+    case "Completed":
+      return "mdi-check-circle";
+    default:
+      return "mdi-circle-outline";
+  }
+}
