@@ -5,6 +5,24 @@
       indeterminate
       color="primary"
     ></v-progress-linear>
+    <v-row v-else-if="program && updateInProgress" justify="center">
+      <v-col cols="12" md="8" lg="6">
+        <v-card flat rounded="lg" class="pa-8 text-center">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            size="56"
+            class="mb-4"
+          />
+          <h3 class="mb-3">Preparing your change request</h3>
+          <p class="ma-0">
+            Your request has been initiated. Please wait a few minutes while we
+            prepare it for review. When ready, it will appear here and will also
+            be available in your dashboard.
+          </p>
+        </v-card>
+      </v-col>
+    </v-row>
     <ProgramWizard
       v-else-if="isDraftOrInProgress && program"
       :program-id="programId"
@@ -38,6 +56,8 @@ import ProgramDetail from "../ProgramDetail.vue";
 import Alert from "@/components/Alert.vue";
 import type { Components } from "@/types/openapi";
 
+const POLL_INTERVAL_MS = 10000;
+
 export default defineComponent({
   name: "Program",
   components: {
@@ -55,6 +75,7 @@ export default defineComponent({
     return {
       loading: true,
       program: null as Components.Schemas.Program | null,
+      pollTimeoutId: null as ReturnType<typeof setTimeout> | null,
     };
   },
   computed: {
@@ -63,6 +84,13 @@ export default defineComponent({
         return false;
       }
       return this.program.status === "Draft";
+    },
+    updateInProgress(): boolean {
+      return (
+        this.program?.programProfileType === "ChangeRequest" &&
+        this.program?.status === "Draft" &&
+        !this.program?.readyForReview
+      );
     },
   },
   async setup() {
@@ -81,9 +109,18 @@ export default defineComponent({
   async mounted() {
     await this.loadProgram();
   },
+  beforeUnmount() {
+    this.clearPoll();
+  },
   methods: {
-    async loadProgram() {
-      this.loading = true;
+    clearPoll() {
+      if (this.pollTimeoutId != null) {
+        clearTimeout(this.pollTimeoutId);
+        this.pollTimeoutId = null;
+      }
+    },
+    async fetchProgram() {
+      this.clearPoll();
       try {
         const { data: response } = await getPrograms(this.programId, [
           "Draft",
@@ -98,12 +135,22 @@ export default defineComponent({
             ? response.programs[0]
             : null;
         this.program = program || null;
+
+        if (this.updateInProgress) {
+          this.pollTimeoutId = setTimeout(
+            () => this.fetchProgram(),
+            POLL_INTERVAL_MS,
+          );
+        }
       } catch (error) {
         console.error("Error loading program:", error);
         this.program = null;
-      } finally {
-        this.loading = false;
       }
+    },
+    async loadProgram() {
+      this.loading = true;
+      await this.fetchProgram();
+      this.loading = false;
     },
   },
 });
