@@ -1,84 +1,80 @@
 <template>
-  <PageContainer>
-    <v-row>
-      <v-col cols="12">
-        <Breadcrumb />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
-        <h1 class="mb-4">Program application</h1>
-      </v-col>
-    </v-row>
+  <Loading v-if="initialLoad && !application" />
 
-    <Loading v-if="initialLoad && !application" />
+  <v-row
+    v-else-if="application && !application.componentsGenerationCompleted"
+    justify="center"
+  >
+    <v-col cols="12" md="8" lg="6">
+      <v-card flat rounded="lg" class="pa-8 text-center">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+          size="56"
+          class="mb-4"
+        />
+        <h3 class="mb-3">Preparing profile for review</h3>
+        <p class="ma-0">
+          Please wait a few minutes while we prepare it for review. When ready,
+          it will appear here and will also be available in your dashboard.
+        </p>
+      </v-card>
+    </v-col>
+  </v-row>
 
-    <v-row
-      v-else-if="application && !application.componentsGenerationCompleted"
-      justify="center"
-    >
-      <v-col cols="12" md="8" lg="6">
-        <v-card flat rounded="lg" class="pa-8 text-center">
-          <v-progress-circular
-            indeterminate
-            color="primary"
-            size="56"
-            class="mb-4"
-          />
-          <h3 class="mb-3">Preparing profile for review</h3>
-          <p class="ma-0">
-            Please wait a few minutes while we prepare it for review. When
-            ready, it will appear here and will also be available in your
-            dashboard.
-          </p>
-        </v-card>
-      </v-col>
-    </v-row>
+  <template v-else-if="application?.componentsGenerationCompleted">
+    <ProgramApplication
+      :programApplicationId="programApplicationId"
+      :programApplicationName="programName"
+    ></ProgramApplication>
+  </template>
 
-    <template v-else-if="application?.componentsGenerationCompleted">
-      <v-row>
-        <v-col cols="12">
-          <p>
-            Program application:
-            {{ application.programApplicationName ?? application.id }}
-          </p>
-          Placeholder for now
-        </v-col>
-      </v-row>
-    </template>
-
-    <v-row v-else-if="loadError">
-      <v-col cols="12">
-        <Callout title="Error" type="error">
-          <p>
-            Unable to load this program application. It may not exist or you may
-            not have access.
-          </p>
-        </Callout>
-      </v-col>
-    </v-row>
-  </PageContainer>
+  <v-row v-else-if="loadError">
+    <v-col cols="12">
+      <Callout title="Error" type="error">
+        <p>
+          Unable to load this program application. It may not exist or you may
+          not have access.
+        </p>
+      </Callout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useDisplay } from "vuetify";
 import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Callout from "@/components/common/Callout.vue";
 import Loading from "@/components/Loading.vue";
 import { getProgramApplicationById } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
+import ProgramApplication from "@/components/program-application/ProgramApplication.vue";
 
 const POLL_INTERVAL_MS = 10000;
 
 export default defineComponent({
-  name: "ProgramApplication",
-  components: { PageContainer, Breadcrumb, Callout, Loading },
+  name: "ProgramApplicationContainer",
+  components: {
+    PageContainer,
+    Breadcrumb,
+    Callout,
+    Loading,
+    ProgramApplication,
+  },
   props: {
     programApplicationId: {
       type: String,
       required: true,
     },
+  },
+  setup() {
+    const { mobile } = useDisplay();
+
+    return {
+      mobile,
+    };
   },
   data() {
     return {
@@ -87,6 +83,11 @@ export default defineComponent({
       loadError: false,
       pollTimeoutId: null as ReturnType<typeof setTimeout> | null,
     };
+  },
+  computed: {
+    programName(): string {
+      return this.application?.programApplicationName || "—";
+    },
   },
   mounted() {
     this.fetchApplication();
@@ -127,6 +128,7 @@ export default defineComponent({
       }
       this.pollTimeoutId = setTimeout(this.checkReady, POLL_INTERVAL_MS);
     },
+    saveAndExit() {},
   },
 });
 </script>

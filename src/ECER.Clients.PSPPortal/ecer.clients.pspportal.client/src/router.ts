@@ -94,13 +94,6 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
-      path: "/program-application/:programApplicationId",
-      component: () => import("./components/pages/ProgramApplication.vue"),
-      name: "programApplication",
-      meta: { requiresAuth: true, requiresVerification: true },
-      props: true,
-    },
-    {
       path: "/program-profiles",
       component: () => import("./components/pages/ProgramProfiles.vue"),
       name: "program-profiles",
@@ -188,6 +181,24 @@ const router = createRouter({
         import("./components/program-application/ProgramApplications.vue"),
       name: "program-applications",
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/program-application/:programApplicationId",
+      component: () =>
+        import("./components/pages/ProgramApplicationContainer.vue"),
+      name: "programApplication",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+      children: [
+        {
+          path: "component/:componentGroupId",
+          component: () =>
+            import("./components/program-application/ProgramApplicationComponent.vue"),
+          name: "program-application-component",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+      ],
     },
   ],
 });

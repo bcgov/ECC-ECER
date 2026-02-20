@@ -95,6 +95,20 @@ const createProgramApplication = async (
   );
 };
 
+const getComponentGroupMetadata = async (
+  id: string,
+): Promise<ApiResponse<Components.Schemas.ComponentGroupMetadata[]>> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramApplicationComponentsGet.PathParameters = {
+    id: id,
+  };
+
+  return apiResultHandler.execute<Components.Schemas.ComponentGroupMetadata[]>({
+    request: client.program_application_components_get(pathParameters),
+    key: "program_application_components_get",
+  });
+};
+
 const mapProgramStatus = (status: string = ""): string => {
   switch (status) {
     case "Draft":
@@ -178,4 +192,5 @@ export {
   mapDeliveryType,
   mapProgramType,
   withdrawProgramApplication,
+  getComponentGroupMetadata,
 };
