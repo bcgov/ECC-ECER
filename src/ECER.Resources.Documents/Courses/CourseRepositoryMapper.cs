@@ -19,7 +19,7 @@ internal class CourseRepositoryMapper : Profile
       .ReverseMap();
 
     CreateMap<ecer_CourseProvincialRequirement, CourseAreaOfInstruction>(MemberList.Destination)
-      .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours))
+      .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours ?? Decimal.Zero))
       .ForMember(d => d.CourseAreaOfInstructionId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.AreaOfInstructionId, opts => opts.MapFrom(s => s.ecer_ProgramAreaId.Id))
       .ReverseMap();
