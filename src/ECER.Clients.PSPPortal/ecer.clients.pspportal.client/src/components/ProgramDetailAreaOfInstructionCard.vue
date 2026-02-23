@@ -59,21 +59,17 @@
           v-if="getNonAllocatedCoursesByType(program, programType).length > 0"
           no-gutters
         >
-          <v-col cols="4">Non-allocated courses</v-col>
-          <v-col cols="8">
-            <div
-              v-for="unallocatedCourse in getNonAllocatedCoursesByType(
-                program,
-                programType,
-              )"
-            >
-              <v-row no-gutters>
-                <v-col cols="6">
-                  <strong>{{ getCourseTitle(unallocatedCourse) }}</strong>
-                </v-col>
-              </v-row>
-            </div>
-          </v-col>
+          <template
+            v-for="unallocatedCourse in getNonAllocatedCoursesByType(
+              program,
+              programType,
+            )"
+          >
+            <v-col cols="4">Non-allocated courses</v-col>
+            <v-col cols="8">
+              <strong>{{ getCourseTitle(unallocatedCourse) }}</strong>
+            </v-col>
+          </template>
         </v-row>
       </template>
     </v-card-text>
