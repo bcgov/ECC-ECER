@@ -210,6 +210,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Assigned = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		AwaitingAssignment = 621870023,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ClosedLinkedtoPrimary = 621870012,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -220,6 +223,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ConclusionReview = 621870018,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DirectorReview = 621870022,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ERConclusionReview = 621870025,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
@@ -240,10 +249,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		InvestigationModerate = 621870013,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ManagerReview = 621870021,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Monitoring = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		MonitoringReview = 621870024,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		New = 621870010,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NotificationProcess = 621870020,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		OutofMandate_Active = 621870019,
@@ -284,6 +302,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_allegation_Investigation_ecer_investigati = "ecer_allegation_Investigation_ecer_investigati";
+			public const string ecer_AllFindingsAddressed = "ecer_allfindingsaddressed";
+			public const string ecer_allfindingsaddressedName = "ecer_allfindingsaddressedname";
 			public const string ecer_Appeal = "ecer_appeal";
 			public const string ecer_appealName = "ecer_appealname";
 			public const string ecer_appealperiodendDate = "ecer_appealperiodenddate";
@@ -557,6 +577,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_notificationofinvestigationletterreviewedName = "ecer_notificationofinvestigationletterreviewedname";
 			public const string ecer_OccupationalCompetencies = "ecer_occupationalcompetencies";
 			public const string ecer_occupationalcompetenciesName = "ecer_occupationalcompetenciesname";
+			public const string ecer_OnHold = "ecer_onhold";
+			public const string ecer_onholdName = "ecer_onholdname";
 			public const string ecer_OpenApplication = "ecer_openapplication";
 			public const string ecer_OpenApplicationName = "ecer_openapplicationname";
 			public const string ecer_OpenInvestigationIntake = "ecer_openinvestigationintake";
@@ -846,6 +868,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_allfindingsaddressed")]
+		public System.Nullable<bool> ecer_AllFindingsAddressed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_allfindingsaddressed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_allfindingsaddressed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_allfindingsaddressedname")]
+		public string ecer_allfindingsaddressedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_allfindingsaddressed"))
+				{
+					return this.FormattedValues["ecer_allfindingsaddressed"];
 				}
 				else
 				{
@@ -4780,6 +4834,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_occupationalcompetencies"))
 				{
 					return this.FormattedValues["ecer_occupationalcompetencies"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_onhold")]
+		public System.Nullable<bool> ecer_OnHold
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_onhold");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_onhold", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_onholdname")]
+		public string ecer_onholdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_onhold"))
+				{
+					return this.FormattedValues["ecer_onhold"];
 				}
 				else
 				{

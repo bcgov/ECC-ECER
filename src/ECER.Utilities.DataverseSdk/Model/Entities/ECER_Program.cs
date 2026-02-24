@@ -99,6 +99,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_FromProgramProfileIdName = "ecer_fromprogramprofileidname";
 			public const string ecer_HasChanges = "ecer_haschanges";
 			public const string ecer_haschangesName = "ecer_haschangesname";
+			public const string ecer_HasRequestedforChanges = "ecer_hasrequestedforchanges";
+			public const string ecer_hasrequestedforchangesName = "ecer_hasrequestedforchangesname";
 			public const string ecer_IdNumber = "ecer_idnumber";
 			public const string ecer_ITECoursesTotalHours = "ecer_itecoursestotalhours";
 			public const string ecer_Name = "ecer_name";
@@ -578,6 +580,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_haschanges"))
 				{
 					return this.FormattedValues["ecer_haschanges"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasrequestedforchanges")]
+		public System.Nullable<bool> ecer_HasRequestedforChanges
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hasrequestedforchanges");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hasrequestedforchanges", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasrequestedforchangesname")]
+		public string ecer_hasrequestedforchangesName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hasrequestedforchanges"))
+				{
+					return this.FormattedValues["ecer_hasrequestedforchanges"];
 				}
 				else
 				{
