@@ -14,20 +14,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_PSPAdmissionOptions
+	public enum ecer_PSPProgramIntake
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ClosedECEcohort = 621870000,
+		Intermittent = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Individualcourseenrollment = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Openenrollment = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Other = 621870003,
+		Regularized = 621870000,
 	}
 }
 #pragma warning restore CS1591
