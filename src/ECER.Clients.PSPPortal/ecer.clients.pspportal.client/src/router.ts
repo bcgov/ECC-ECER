@@ -193,8 +193,24 @@ const router = createRouter({
         {
           path: "component/:componentGroupId",
           component: () =>
-            import("./components/program-application/ProgramApplicationComponent.vue"),
+            import("./components/program-application/components/ProgramApplicationComponent.vue"),
           name: "program-application-component",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/info",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationInformation.vue"),
+          name: "program-application-component-info",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/institute-info",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationInstituteInfo.vue"),
+          name: "program-application-institute-info",
           meta: { requiresAuth: true, requiresVerification: true },
           props: true,
         },

@@ -407,7 +407,7 @@ export function groupByCategoryName(
   return map;
 }
 
-function mapStatusIcons(status: string | null | undefined): string {
+export function mapStatusIcons(status: string | null | undefined): string {
   switch (status) {
     case "ToDo":
       return "mdi-circle-outline";
