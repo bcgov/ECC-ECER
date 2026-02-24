@@ -112,6 +112,82 @@ public class NewProgramSubmissionValidationEngineTest
     Assert.Contains("Not authorized to provide Basic program type", errorMessage);
   }
 
+  [Fact]
+  public async Task Validate_CheckForMinimumHours_WithChildAreaLinkedToParent_CombinedHoursPassMinimum_ReturnsSuccess()
+  {
+    var parentId = Guid.NewGuid().ToString();
+    var childId = Guid.NewGuid().ToString();
+
+    var parentArea = new AreaOfInstruction(parentId, "Parent_Area", ["Basic"], 20, "01");
+    var childArea = new AreaOfInstruction(childId, "Child_Area", ["Basic"], null, "01a", parentId);
+    var areaOfInstructionList = new[] { parentArea, childArea };
+
+    // 15 hours in parent area alone is below the minimum of 20
+    var program = CreateProgram(parentId, ["Basic"], "15.00", true);
+
+    // Add 10 hours in the child area — combined (15 + 10 = 25) should satisfy the parent's minimum
+    program.Courses = program.Courses!.Append(new Course()
+    {
+      CourseId = Guid.NewGuid().ToString(),
+      CourseNumber = "201",
+      CourseTitle = "Course 201",
+      NewCourseNumber = "202",
+      NewCourseTitle = "Course 202",
+      ProgramType = "Basic",
+      CourseAreaOfInstruction = new[]
+      {
+        new CourseAreaOfInstruction()
+        {
+          AreaOfInstructionId = childId,
+          CourseAreaOfInstructionId = Guid.NewGuid().ToString(),
+          NewHours = "10.00"
+        }
+      }
+    }).ToArray();
+
+    var result = await validator.Validate(program, areaOfInstructionList);
+    Assert.Empty(result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_CheckForMinimumHours_WithChildAreaLinkedToParent_ChildFailsOwnMinimumIndependently_ReturnsValidationError()
+  {
+    var parentId = Guid.NewGuid().ToString();
+    var childId = Guid.NewGuid().ToString();
+
+    // Parent passes when child hours are included (15 + 10 = 25 >= 20)
+    // Child fails on its own hours (10 < 12)
+    var parentArea = new AreaOfInstruction(parentId, "Parent_Area", ["Basic"], 20, "01");
+    var childArea = new AreaOfInstruction(childId, "Child_Area", ["Basic"], 12, "01a", parentId);
+    var areaOfInstructionList = new[] { parentArea, childArea };
+
+    var program = CreateProgram(parentId, ["Basic"], "15.00", true);
+
+    program.Courses = program.Courses!.Append(new Course()
+    {
+      CourseId = Guid.NewGuid().ToString(),
+      CourseNumber = "201",
+      CourseTitle = "Course 201",
+      NewCourseNumber = "202",
+      NewCourseTitle = "Course 202",
+      ProgramType = "Basic",
+      CourseAreaOfInstruction = new[]
+      {
+        new CourseAreaOfInstruction()
+        {
+          AreaOfInstructionId = childId,
+          CourseAreaOfInstructionId = Guid.NewGuid().ToString(),
+          NewHours = "10.00"
+        }
+      }
+    }).ToArray();
+
+    var result = await validator.Validate(program, areaOfInstructionList);
+    Assert.NotEmpty(result.ValidationErrors);
+    Assert.Single(result.ValidationErrors);
+    Assert.Contains("Minimum hours are required for instruction: Child_Area", result.ValidationErrors.First());
+  }
+
   private Program CreateProgram(string areaOfInstructionId, List<string> programTypes, string newHours, bool addCourse)
   {
     return new Program(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
