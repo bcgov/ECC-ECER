@@ -355,6 +355,8 @@ let clientArray = [
     redirectUris: [
       "https://dev-ecer-psp-portal.apps.silver.devops.gov.bc.ca",
       "https://dev-ecer-psp-portal.apps.silver.devops.gov.bc.ca/logout-callback",
+      "https://efxdev-ecer-psp-portal.apps.silver.devops.gov.bc.ca",
+      "https://efxdev-ecer-psp-portal.apps.silver.devops.gov.bc.ca/logout-callback",
       "http://localhost:5130/*",
     ],
     webOrigins: ["+"],
