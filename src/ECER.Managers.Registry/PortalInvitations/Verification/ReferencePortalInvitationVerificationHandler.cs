@@ -34,15 +34,15 @@ public class ReferencePortalInvitationVerificationHandler(
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
 
-    var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id });
-    var latestCertification = certifications.FirstOrDefault();
-
     var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();
     if (application == null)
     {
       return PortalInvitationVerificationQueryResult.Failure("Application not found");
     }
+
+    var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id, ById = application.FromCertificate?.ToString() });
+    var latestCertification = certifications.FirstOrDefault();
 
     var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
 
@@ -79,6 +79,7 @@ public class ReferencePortalInvitationVerificationHandler(
     result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
+    result.ApplicationCreatedOn = application.CreatedOn;
 
     return PortalInvitationVerificationQueryResult.Success(result);
   }

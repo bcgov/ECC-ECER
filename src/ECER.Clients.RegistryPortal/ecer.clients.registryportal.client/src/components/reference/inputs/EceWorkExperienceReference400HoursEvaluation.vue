@@ -116,6 +116,22 @@
               Rules.futureDateNotAllowedRule(
                 'Start date of hours cannot be in the future',
               ),
+              Rules.conditionalWrapper(
+                latestCertificateStatus === 'Active',
+                Rules.dateBetweenRule(
+                  latestCertificateEffectiveDate || '',
+                  latestCertificateExpiryDate || '',
+                  'The start date of your course or workshop must be within the term of your current certificate',
+                ),
+              ),
+              Rules.conditionalWrapper(
+                latestCertificateStatus === 'Expired',
+                Rules.dateRuleRange(
+                  applicationCreatedOn || '',
+                  5,
+                  'The start date of your course or workshop must be within the last five years',
+                ),
+              ),
             ]"
             @update:model-value="updateField('startDate', $event)"
           ></EceDateInput>
@@ -237,6 +253,9 @@ export default defineComponent({
     fiveYearsAgo() {
       const fiveYearsBack = DateTime.now().minus({ years: 5 });
       return formatDate(fiveYearsBack.toString());
+    },
+    applicationCreatedOn() {
+      return this.wizardStore.wizardData.applicationCreatedOn;
     },
     latestCertificateStatus(): Components.Schemas.CertificateStatusCode {
       return this.wizardStore.wizardData.latestCertification.statusCode;

@@ -37,6 +37,7 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public string? ApplicantFirstName { get; set; }
   public string? ApplicantLastName { get; set; }
   public string? ApplicationId { get; set; }
+  public DateTime? ApplicationCreatedOn { get; set; }
   public IEnumerable<CertificationType>? CertificationTypes { get; set; }
   public string? WorkexperienceReferenceId { get; set; }
   public string? CharacterReferenceId { get; set; }
