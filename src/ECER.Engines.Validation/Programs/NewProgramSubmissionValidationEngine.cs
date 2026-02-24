@@ -94,7 +94,7 @@ internal sealed class NewProgramSubmissionValidationEngine : IProgramValidationE
       {
         minHourErrors.Add("Minimum hours are required for instruction: " + instruction.Name);
       }
-      else if (instruction.MinimumHours == decimal.Zero && totalHours <= decimal.Zero)
+      else if (instruction.MinimumHours == decimal.Zero && totalHours <= decimal.Zero && instruction.ParentAreaOfInstructionId == null)
       {
         minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
       }

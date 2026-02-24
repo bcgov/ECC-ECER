@@ -188,6 +188,24 @@ public class NewProgramSubmissionValidationEngineTest
     Assert.Contains("Minimum hours are required for instruction: Child_Area", result.ValidationErrors.First());
   }
 
+  [Fact]
+  public async Task Validate_CheckForMinimumHours_ChildAreaWithZeroMinimumHoursAndNoDirectCourses_SkipsZeroHoursCheck_ReturnsSuccess()
+  {
+    var parentId = Guid.NewGuid().ToString();
+    var childId = Guid.NewGuid().ToString();
+
+    // Child has MinimumHours == 0 and no courses assigned directly to it
+    // Parent has enough hours on its own (25 >= 20)
+    var parentArea = new AreaOfInstruction(parentId, "Parent_Area", ["Basic"], 20, "01");
+    var childArea = new AreaOfInstruction(childId, "Child_Area", ["Basic"], 0, "01a", parentId);
+    var areaOfInstructionList = new[] { parentArea, childArea };
+
+    var program = CreateProgram(parentId, ["Basic"], "25.00", true);
+
+    var result = await validator.Validate(program, areaOfInstructionList);
+    Assert.Empty(result.ValidationErrors);
+  }
+
   private Program CreateProgram(string areaOfInstructionId, List<string> programTypes, string newHours, bool addCourse)
   {
     return new Program(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
