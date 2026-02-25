@@ -36,7 +36,15 @@
             >
               B.C. Child Care Sector Occupational Competencies
             </a>
-            (CCSOC), and the Linking Competencies document.
+            (CCSOC), and the
+            <a
+              href="https://www2.gov.bc.ca/assets/download/C7D2FE264133456082776F45D4C69500"
+              class="text-primary text-decoration-underline"
+              target="_blank"
+            >
+              Linking Competencies
+            </a>
+            document.
           </p>
           <div>
             <p>
@@ -179,9 +187,19 @@
       <v-col cols="12">
         <ECEHeader title="Related documents" />
         <div class="d-flex flex-column mt-4">
-          <p>Child Care Sector Occupational Competencies</p>
-          <p>Child Care Sector Occupational Competencies Assessment Tool</p>
-          <p>Linking Competencies</p>
+          <a
+            href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+            target="_blank"
+          >
+            B.C. Child Care Sector Occupational Competencies
+          </a>
+          <a
+            href="https://www2.gov.bc.ca/assets/download/C7D2FE264133456082776F45D4C69500"
+            target="_blank"
+          >
+            B.C. Child Care Sector Occupational Competencies Assessment Tool
+            with Linking Competencies
+          </a>
           <p class="mt-3">
             If you need additional documentation, please
             <router-link to="/messages/new">
