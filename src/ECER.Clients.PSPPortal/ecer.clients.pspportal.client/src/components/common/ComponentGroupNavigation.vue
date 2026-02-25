@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-list active-color="primary">
+    <v-list color="primary">
       <v-list-item
         class="ml-4"
         :to="{
@@ -28,6 +28,7 @@
       <div
         v-for="[category, componentGroups] in groupByCategoryName"
         :key="category"
+        v-if="applicationStatus === 'Draft'"
       >
         <v-list-group>
           <template #activator="{ props }">
@@ -63,7 +64,13 @@
         </v-list-group>
       </div>
 
-      <v-list-group value="Program profile">
+      <v-list-group
+        v-if="
+          applicationType === 'NewBasicECEPostBasicProgram' &&
+          applicationStatus === 'Draft'
+        "
+        value="Program profile"
+      >
         <template #activator="{ props }">
           <v-list-item
             v-bind="props"
@@ -135,6 +142,14 @@ export default defineComponent({
     },
     programTypes: {
       type: Array,
+      required: true,
+    },
+    applicationStatus: {
+      type: String,
+      required: true,
+    },
+    applicationType: {
+      type: String,
       required: true,
     },
   },
