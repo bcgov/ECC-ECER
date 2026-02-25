@@ -419,3 +419,16 @@ export function mapStatusIcons(status: string | null | undefined): string {
       return "mdi-circle-outline";
   }
 }
+
+export function mapStatusColor(icon: string): string {
+  switch (icon) {
+    case "mdi-circle-outline":
+      return "grey";
+    case "mdi-circle-half-full":
+      return "success";
+    case "mdi-check-circle":
+      return "success";
+    default:
+      return "grey";
+  }
+}

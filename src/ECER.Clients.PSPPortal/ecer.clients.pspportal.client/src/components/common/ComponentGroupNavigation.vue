@@ -1,31 +1,29 @@
 <template>
   <v-container fluid>
-    <v-list>
-      <v-list-item class="nav-item ml-4">
-        <router-link
-          :to="{
-            name: 'program-application-component-info',
-            params: { programApplicationId: programApplicationId },
-          }"
-        >
-          <v-list-item-title>
-            <v-icon>mdi-text-box-outline</v-icon>
-            Program application info
-          </v-list-item-title>
-        </router-link>
+    <v-list active-color="primary">
+      <v-list-item
+        class="ml-4"
+        :to="{
+          name: 'program-application-component-info',
+          params: { programApplicationId: programApplicationId },
+        }"
+      >
+        <v-list-item-title>
+          <v-icon>mdi-text-box-outline</v-icon>
+          Program application info
+        </v-list-item-title>
       </v-list-item>
-      <v-list-item class="nav-item ml-4">
-        <router-link
-          :to="{
-            name: 'program-application-institute-info',
-            params: { programApplicationId: programApplicationId },
-          }"
-        >
-          <v-list-item-title>
-            <v-icon color="success">mdi-circle-half-full</v-icon>
-            Institution and program info
-          </v-list-item-title>
-        </router-link>
+      <v-list-item
+        class="ml-4"
+        :to="{
+          name: 'program-application-institute-info',
+          params: { programApplicationId: programApplicationId },
+        }"
+      >
+        <v-list-item-title>
+          <v-icon color="success">mdi-circle-half-full</v-icon>
+          Institution and program info
+        </v-list-item-title>
       </v-list-item>
       <div
         v-for="[category, componentGroups] in groupByCategoryName"
@@ -37,7 +35,7 @@
               <v-list-item-title
                 class="ml-4 text-support-border-info font-weight-bold"
               >
-                <v-icon color="success">
+                <v-icon :color="mapStatusColor(categoryStatus(category))">
                   {{ categoryStatus(category) }}
                 </v-icon>
                 {{ category }}
@@ -47,23 +45,20 @@
           <v-list-item
             v-for="componentGroup in componentGroups"
             :key="componentGroup.id"
+            :to="
+              '/program-application/' +
+              programApplicationId +
+              componentGroup.navigationRoute
+            "
           >
-            <router-link
-              :to="
-                '/program-application/' +
-                programApplicationId +
-                componentGroup.navigationRoute
-              "
-            >
-              <v-list-item class="nav-item">
-                <v-list-item-title>
-                  <v-icon color="success">
-                    {{ componentGroup.statusIcon }}
-                  </v-icon>
-                  {{ componentGroup.name }}
-                </v-list-item-title>
-              </v-list-item>
-            </router-link>
+            <v-list-item>
+              <v-list-item-title>
+                <v-icon :color="mapStatusColor(componentGroup.statusIcon)">
+                  {{ componentGroup.statusIcon }}
+                </v-icon>
+                {{ componentGroup.name }}
+              </v-list-item-title>
+            </v-list-item>
           </v-list-item>
         </v-list-group>
       </div>
@@ -74,24 +69,18 @@
             v-bind="props"
             class="ml-4 text-support-border-info font-weight-bold"
           >
+            <v-icon color="black">mdi-table</v-icon>
             Program profile
           </v-list-item>
         </template>
 
         <v-list-item v-for="(type, index) in programTypes" :key="index">
-          <router-link
-            :to="{
-              name: '',
-              params: { programApplicationId: programApplicationId },
-            }"
-          >
-            <v-list-item class="nav-item">
-              <v-list-item-title>
-                <v-icon color="success">mdi-circle-outline</v-icon>
-                {{ type }}
-              </v-list-item-title>
-            </v-list-item>
-          </router-link>
+          <v-list-item>
+            <v-list-item-title>
+              <v-icon>mdi-table</v-icon>
+              {{ type }}
+            </v-list-item-title>
+          </v-list-item>
         </v-list-item>
       </v-list-group>
 
@@ -101,50 +90,30 @@
             v-bind="props"
             class="ml-4 text-support-border-info font-weight-bold"
           >
+            <v-icon color="grey">mdi-circle-outline</v-icon>
             Review and submit
           </v-list-item>
         </template>
 
-        <v-list-item class="nav-item ml-4">
-          <router-link
-            :to="{
-              name: '',
-              params: { programApplicationId: programApplicationId },
-            }"
-          >
-            <v-list-item-title>
-              <v-icon>mdi-text-box-outline</v-icon>
-              Review Responses
-            </v-list-item-title>
-          </router-link>
+        <v-list-item class="ml-4">
+          <v-list-item-title>
+            <v-icon>mdi-text-box-outline</v-icon>
+            Review Responses
+          </v-list-item-title>
         </v-list-item>
 
-        <v-list-item class="nav-item ml-4">
-          <router-link
-            :to="{
-              name: '',
-              params: { programApplicationId: programApplicationId },
-            }"
-          >
-            <v-list-item-title>
-              <v-icon>mdi-text-box-outline</v-icon>
-              Review program profiles
-            </v-list-item-title>
-          </router-link>
+        <v-list-item class="ml-4">
+          <v-list-item-title>
+            <v-icon>mdi-text-box-outline</v-icon>
+            Review program profiles
+          </v-list-item-title>
         </v-list-item>
 
-        <v-list-item class="nav-item ml-4">
-          <router-link
-            :to="{
-              name: '',
-              params: { programApplicationId: programApplicationId },
-            }"
-          >
-            <v-list-item-title>
-              <v-icon color="success">mdi-check-circle</v-icon>
-              Submit application
-            </v-list-item-title>
-          </router-link>
+        <v-list-item class="ml-4">
+          <v-list-item-title>
+            <v-icon color="grey">mdi-circle-outline</v-icon>
+            Submit application
+          </v-list-item-title>
         </v-list-item>
       </v-list-group>
     </v-list>
@@ -155,7 +124,7 @@
 import { defineComponent } from "vue";
 import { getComponentGroupMetadata } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
-import { groupByCategoryName } from "@/utils/functions";
+import { groupByCategoryName, mapStatusColor } from "@/utils/functions";
 
 export default defineComponent({
   name: "ComponentGroupNavigation",
@@ -185,6 +154,7 @@ export default defineComponent({
   },
   unmounted() {},
   methods: {
+    mapStatusColor,
     async getComponentGroups() {
       const response = await getComponentGroupMetadata(
         this.programApplicationId,
@@ -200,7 +170,7 @@ export default defineComponent({
         if (statuses.every((status) => status === "Completed")) {
           return "mdi-check-circle";
         }
-        if (statuses.every((status) => status === "ToDo")) {
+        if (statuses.every((status) => status === "ToDo" || status === null)) {
           return "mdi-circle-outline";
         }
         return "mdi-circle-half-full";
@@ -217,10 +187,6 @@ export default defineComponent({
 });
 </script>
 <style scope>
-.nav-item {
-  color: black !important;
-}
-
 a {
   text-decoration: none;
   color: black !important;
@@ -228,5 +194,10 @@ a {
 
 a:hover {
   cursor: pointer;
+}
+
+.v-list-item--active {
+  background-color: light-blue !important;
+  border-radius: 8px;
 }
 </style>
