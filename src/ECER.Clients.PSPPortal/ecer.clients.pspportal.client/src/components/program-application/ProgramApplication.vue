@@ -1,11 +1,12 @@
 <template>
   <ProgramApplicationHeader
-    :programApplicationName="programApplicationName"
+    :programApplicationName="programApplication.programApplicationName"
   ></ProgramApplicationHeader>
   <v-row>
     <v-col cols="3">
       <ComponentGroupNavigation
         :programApplicationId="programApplicationId"
+        :program-types="programApplication.programTypes"
       ></ComponentGroupNavigation>
     </v-col>
     <v-col>
@@ -33,8 +34,8 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    programApplicationName: {
-      type: String,
+    programApplication: {
+      type: Object,
       required: true,
     },
     componentGroupId: {

@@ -25,7 +25,7 @@
   <template v-else-if="application?.componentsGenerationCompleted">
     <ProgramApplication
       :programApplicationId="programApplicationId"
-      :programApplicationName="programName"
+      :program-application="application"
     ></ProgramApplication>
   </template>
 
