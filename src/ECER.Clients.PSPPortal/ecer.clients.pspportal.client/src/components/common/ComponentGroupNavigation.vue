@@ -163,7 +163,7 @@ export default defineComponent({
       this.loadStep();
     },
     categoryStatus(key: string) {
-      var statuses = groupByCategoryName(this.componentGroups)
+      let statuses = groupByCategoryName(this.componentGroups)
         ?.get(key)
         ?.map((group) => group.status);
       if (statuses !== undefined && statuses.length > 0) {
