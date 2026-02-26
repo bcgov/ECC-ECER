@@ -28,7 +28,7 @@ public record ComponentGroupWithComponentsQuery : IRequest<ComponentGroupWithCom
   public string? ByComponentGroupId { get; set; }
 }
 
-public record ProgramApplicationComponent(string Id, string Name, string? Question, string? DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
 
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 

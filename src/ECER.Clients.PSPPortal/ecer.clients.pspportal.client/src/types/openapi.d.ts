@@ -124,11 +124,8 @@ declare namespace Components {
       name?: string | null;
       status?: string | null;
       categoryName?: string | null;
-      displayOrder?: string | null;
+      displayOrder?: number; // int32
     }
-    /**
-     * Component group by id: group fields plus components on one object (flat response).
-     */
     export interface ComponentGroupWithComponents {
       id?: string | null;
       name?: string | null;
@@ -291,7 +288,7 @@ declare namespace Components {
       id?: string | null;
       name?: string | null;
       question?: string | null;
-      displayOrder?: string | null;
+      displayOrder?: number; // int32
       answer?: string | null;
       fileIds?: string[] | null;
     }
@@ -592,8 +589,7 @@ declare namespace Paths {
       componentGroupId: Parameters.ComponentGroupId;
     }
     namespace Responses {
-      export type $200 =
-        /* Component group by id: group fields plus components on one object (flat response). */ Components.Schemas.ComponentGroupWithComponents;
+      export type $200 = Components.Schemas.ComponentGroupWithComponents;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }

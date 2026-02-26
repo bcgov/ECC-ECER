@@ -195,10 +195,9 @@ public record CreateProgramApplicationRequest
 }
 
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
-public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, string? DisplayOrder);
-/// <summary>Component group by id: group fields plus components on one object (flat response).</summary>
+public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
-public record ProgramApplicationComponent(string Id, string Name, string? Question, string? DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
 
 public enum ApplicationStatus
 {
