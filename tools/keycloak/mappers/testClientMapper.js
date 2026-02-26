@@ -357,6 +357,8 @@ let clientArray = [
       "https://uat-ecer-psp-portal.apps.silver.devops.gov.bc.ca/logout-callback",
       "https://uat.ecepostsecondaryprograms.gov.bc.ca",
       "https://uat.ecepostsecondaryprograms.gov.bc.ca/logout-callback",
+      "https://efxtest-ecer-psp-portal.apps.silver.devops.gov.bc.ca",
+      "https://efxtest-ecer-psp-portal.apps.silver.devops.gov.bc.ca/logout-callback",
     ],
     webOrigins: ["+"],
     notBefore: 0,
