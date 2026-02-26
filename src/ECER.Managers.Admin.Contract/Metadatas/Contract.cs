@@ -66,7 +66,7 @@ public record PostSecondaryInstitutionsQueryResults(IEnumerable<PostSecondaryIns
 public record DynamicsConfigQueryResults(DynamicsConfig config);
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
-public record AreaOfInstruction(string Id, string Name, IEnumerable<string> ProgramTypes, int? MinimumHours, string? DisplayOrder);
+public record AreaOfInstruction(string Id, string Name, IEnumerable<string> ProgramTypes, int? MinimumHours, string? DisplayOrder, string? ParentAreaOfInstructionId);
 public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 public record DynamicsConfig(bool ICRAFeatureEnabled);

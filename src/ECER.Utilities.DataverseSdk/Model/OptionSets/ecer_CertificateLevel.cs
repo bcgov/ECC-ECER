@@ -21,9 +21,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Basic = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ECEAssistant = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ITE = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

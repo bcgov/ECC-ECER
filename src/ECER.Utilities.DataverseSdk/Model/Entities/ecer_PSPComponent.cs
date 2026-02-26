@@ -60,8 +60,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_ApplicationType = "ecer_applicationtype";
-			public const string ecer_applicationtypeName = "ecer_applicationtypename";
 			public const string ecer_Category = "ecer_category";
 			public const string ecer_categoryName = "ecer_categoryname";
 			public const string ecer_Component = "ecer_component";
@@ -72,15 +70,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DisplayOrder = "ecer_displayorder";
 			public const string ecer_Filter = "ecer_filter";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_programapplicationcomponent_PSPComponent_ecer_pspcomponent = "ecer_programapplicationcomponent_PSPComponent_ecer_pspcomponent";
 			public const string ecer_pspcomponent_ecer_pspcomponentgroup = "ecer_pspcomponent_ecer_pspcomponentgroup";
 			public const string ecer_PSPComponentId = "ecer_pspcomponentid";
 			public const string Id = "ecer_pspcomponentid";
-			public const string ecer_Question = "ecer_question";
-			public const string ecer_RequiresAnswer = "ecer_requiresanswer";
-			public const string ecer_requiresanswerName = "ecer_requiresanswername";
-			public const string ecer_RequiresDocument = "ecer_requiresdocument";
-			public const string ecer_requiresdocumentName = "ecer_requiresdocumentname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -249,38 +241,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationtype")]
-		public virtual System.Collections.Generic.IEnumerable<ecer_PSIApplicationType> ecer_ApplicationType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return EntityOptionSetEnum.GetMultiEnum<ecer_PSIApplicationType>(this, "ecer_applicationtype");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_applicationtype", EntityOptionSetEnum.GetMultiEnum(this, "ecer_applicationtype", value));
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationtypename")]
-		public string ecer_applicationtypeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_applicationtype"))
-				{
-					return this.FormattedValues["ecer_applicationtype"];
 				}
 				else
 				{
@@ -483,85 +443,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_PSPComponentId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_question")]
-		public string ecer_Question
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_question");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_question", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requiresanswer")]
-		public System.Nullable<bool> ecer_RequiresAnswer
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_requiresanswer");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_requiresanswer", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requiresanswername")]
-		public string ecer_requiresanswerName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_requiresanswer"))
-				{
-					return this.FormattedValues["ecer_requiresanswer"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requiresdocument")]
-		public System.Nullable<bool> ecer_RequiresDocument
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_requiresdocument");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_requiresdocument", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requiresdocumentname")]
-		public string ecer_requiresdocumentName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_requiresdocument"))
-				{
-					return this.FormattedValues["ecer_requiresdocument"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		
@@ -943,24 +824,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_programapplicationcomponent_PSPComponent_ecer_pspcomponent
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationcomponent_PSPComponent_ecer_pspcomponent")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent> ecer_programapplicationcomponent_PSPComponent_ecer_pspcomponent
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_PSPComponent_ecer_pspcomponent", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_PSPComponent_ecer_pspcomponent", null, value);
 			}
 		}
 		

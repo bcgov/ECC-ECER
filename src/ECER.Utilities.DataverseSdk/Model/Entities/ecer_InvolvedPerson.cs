@@ -67,7 +67,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Status of the Involved Person
+	/// Status of the Involved Person (Intake)
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -82,7 +82,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Involved Person
+	/// Reason for the status of the Involved Person (Intake)
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]

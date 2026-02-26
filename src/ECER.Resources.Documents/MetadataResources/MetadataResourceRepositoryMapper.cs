@@ -48,6 +48,7 @@ internal class MetadataResourceRepositoryMapper : Profile
             : src.ecer_CertificateLevels.Select(level => level.ToString())))
         .ForCtorParam(nameof(AreaOfInstruction.MinimumHours), opt => opt.MapFrom(src => src.ecer_MinimumHours))
         .ForCtorParam(nameof(AreaOfInstruction.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
+        .ForCtorParam(nameof(AreaOfInstruction.ParentAreaOfInstructionId), opt => opt.MapFrom(src => src.ecer_ParentAreaofInstructionId != null ? src.ecer_ParentAreaofInstructionId.Id.ToString() : null))
         .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)
