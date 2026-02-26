@@ -150,6 +150,7 @@ public record ProgramApplication
   public string? ProgramApplicationName { get; set; }
   public ApplicationType? ProgramApplicationType { get; set; }
   public ApplicationStatus? Status { get; set; }
+  public ApplicationStatusReasonDetail? StatusReasonDetail { get; set; }
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
@@ -184,10 +185,17 @@ public enum ApplicationStatus
   PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
-  RFAI,
   SiteVisitRequired,
   Submitted,
   Withdrawn
+}
+
+public enum ApplicationStatusReasonDetail
+{
+  Pendingdecision,
+  Recognitionevaluationmeeting,
+  RFAIreceived,
+  RFAIrequested,
 }
 
 public enum ApplicationType
