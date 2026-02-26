@@ -543,6 +543,7 @@ declare namespace Components {
       applicantFirstName?: string | null;
       applicantLastName?: string | null;
       applicationId?: string | null;
+      applicationSubmittedOn?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
       workexperienceReferenceId?: string | null;
       characterReferenceId?: string | null;

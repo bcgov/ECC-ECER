@@ -50,10 +50,13 @@ public class ReferencePortalInvitationVerificationHandler(
     {
       case Contract.PortalInvitations.PortalInvitationStatusCode.Completed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Expired:
         return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Cancelled:
         return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Failed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }
@@ -79,7 +82,7 @@ public class ReferencePortalInvitationVerificationHandler(
     result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
-    result.ApplicationCreatedOn = application.CreatedOn;
+    result.ApplicationSubmittedOn = application.SubmittedOn;
 
     return PortalInvitationVerificationQueryResult.Success(result);
   }
