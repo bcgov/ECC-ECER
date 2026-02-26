@@ -117,16 +117,18 @@ const mapProgramStatus = (status: string = ""): string => {
       return "Interim recognition";
     case "OnGoingRecognition":
       return "On-going recognition";
+    case "PendingDecision":
+      return "Pending decision";
     case "PendingReview":
       return "Pending review";
     case "RefusetoApprove":
       return "Refuse to approve";
     case "ReviewAnalysis":
       return "Under ECE Registry review";
-    case "RFAI":
-      return "Additional information requested";
     case "Submitted":
       return "Submitted";
+    case "Inactive":
+      return "Archived";
     case "Withdrawn":
       return "Withdrawn";
     default:

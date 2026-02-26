@@ -28,10 +28,14 @@ declare namespace Components {
       | "PendingReview"
       | "RefusetoApprove"
       | "ReviewAnalysis"
-      | "RFAI"
       | "SiteVisitRequired"
       | "Submitted"
       | "Withdrawn";
+    export type ApplicationStatusReasonDetail =
+      | "Pendingdecision"
+      | "Recognitionevaluationmeeting"
+      | "RFAIreceived"
+      | "RFAIrequested";
     export type ApplicationType =
       | "AddOnlineorHybridDeliveryMethod"
       | "CurriculumRevisionsatRecognizedInstitution"
@@ -271,6 +275,7 @@ declare namespace Components {
       programApplicationName?: string | null;
       programApplicationType?: ApplicationType;
       status?: ApplicationStatus;
+      statusReasonDetail?: ApplicationStatusReasonDetail;
       programTypes?: ProgramCertificationType[] | null;
       deliveryType?: DeliveryType;
       componentsGenerationCompleted?: boolean | null;
@@ -638,9 +643,7 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.SubmitProgramRequest;
     namespace Responses {
       export type $200 = string;
-      export type $400 =
-        | Components.Schemas.ProblemDetails
-        | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -1442,6 +1445,8 @@ export type AddCourseRequest = Components.Schemas.AddCourseRequest;
 export type ApplicationConfiguration =
   Components.Schemas.ApplicationConfiguration;
 export type ApplicationStatus = Components.Schemas.ApplicationStatus;
+export type ApplicationStatusReasonDetail =
+  Components.Schemas.ApplicationStatusReasonDetail;
 export type ApplicationType = Components.Schemas.ApplicationType;
 export type AreaOfInstruction = Components.Schemas.AreaOfInstruction;
 export type AreaOfInstructionListResponse =
