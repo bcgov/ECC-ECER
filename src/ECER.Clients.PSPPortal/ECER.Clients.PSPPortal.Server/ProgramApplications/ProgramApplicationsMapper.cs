@@ -39,6 +39,8 @@ internal sealed class ProgramApplicationsMapper: Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<ComponentGroupMetadata,Managers.Registry.Contract.ProgramApplications.ComponentGroupMetadata>().ReverseMap();
+    CreateMap<ComponentGroupMetadata, Managers.Registry.Contract.ProgramApplications.ComponentGroupMetadata>().ReverseMap();
+    CreateMap<ProgramApplicationComponent, Managers.Registry.Contract.ProgramApplications.ProgramApplicationComponent>().ReverseMap();
+    CreateMap<ComponentGroupWithComponents, Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>().ReverseMap();
   }
 }

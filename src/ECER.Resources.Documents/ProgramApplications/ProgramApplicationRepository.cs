@@ -116,4 +116,21 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
 
     return mapper.Map<IEnumerable<ComponentGroupMetadata>>(results)!.ToList();
   }
+
+  public async Task<ComponentGroupResults?> QueryComponentGroupById(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    if (string.IsNullOrWhiteSpace(query.ByComponentGroupId) || string.IsNullOrWhiteSpace(query.ByProgramApplicationId))
+      return null;
+    var groupId = Guid.Parse(query.ByComponentGroupId);
+    var appId = Guid.Parse(query.ByProgramApplicationId);
+    var componentGroups = context.ecer_ProgramApplicationComponentGroupSet
+      .Where(g => g.ecer_ProgramApplicationComponentGroupId == groupId && g.ecer_ProgramApplication.Id == appId);
+    var entity = context.From(componentGroups)
+      .Join()
+      .Include(e => e.ecer_programapplicationcomponentgroup_ComponentGroup)
+      .Include(e => e.ecer_programapplicationcomponent_ComponentGroup)
+      .Execute().SingleOrDefault();
+    return mapper.Map<ComponentGroupResults>(entity);
+  }
 }

@@ -126,6 +126,15 @@ declare namespace Components {
       categoryName?: string | null;
       displayOrder?: number; // int32
     }
+    export interface ComponentGroupWithComponents {
+      id?: string | null;
+      name?: string | null;
+      instruction?: string | null;
+      status?: string | null;
+      categoryName?: string | null;
+      displayOrder?: number; // int32
+      components?: ProgramApplicationComponent[] | null;
+    }
     export interface Country {
       countryId?: string | null;
       countryName?: string | null;
@@ -274,6 +283,14 @@ declare namespace Components {
       programTypes?: ProgramCertificationType[] | null;
       deliveryType?: DeliveryType;
       componentsGenerationCompleted?: boolean | null;
+    }
+    export interface ProgramApplicationComponent {
+      id?: string | null;
+      name?: string | null;
+      question?: string | null;
+      displayOrder?: number; // int32
+      answer?: string | null;
+      fileIds?: string[] | null;
     }
     export type ProgramCertificationType = "Basic" | "ITE" | "SNE";
     export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
@@ -562,6 +579,21 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace ProgramApplicationComponentGroupComponentsGet {
+    namespace Parameters {
+      export type ComponentGroupId = string;
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+      componentGroupId: Parameters.ComponentGroupId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ComponentGroupWithComponents;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace ProgramApplicationComponentsGet {
     namespace Parameters {
       export type Id = string;
@@ -638,9 +670,7 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.SubmitProgramRequest;
     namespace Responses {
       export type $200 = string;
-      export type $400 =
-        | Components.Schemas.ProblemDetails
-        | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -968,6 +998,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProgramApplicationComponentsGet.Responses.$200>;
+  /**
+   * program_application_component_group_components_get - Gets program application components by component group id
+   */
+  "program_application_component_group_components_get"(
+    parameters?: Parameters<Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationComponentGroupComponentsGet.Responses.$200>;
   /**
    * portal_invitation_get - Handles portal invitation queries
    */
@@ -1308,6 +1346,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ProgramApplicationComponentsGet.Responses.$200>;
   };
+  ["/api/programApplications/{id}/componentGroups/{componentGroupId}/components"]: {
+    /**
+     * program_application_component_group_components_get - Gets program application components by component group id
+     */
+    "get"(
+      parameters?: Parameters<Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationComponentGroupComponentsGet.Responses.$200>;
+  };
   ["/api/PortalInvitations/{token}"]: {
     /**
      * portal_invitation_get - Handles portal invitation queries
@@ -1458,6 +1506,8 @@ export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults =
   Components.Schemas.CommunicationsStatusResults;
 export type ComponentGroupMetadata = Components.Schemas.ComponentGroupMetadata;
+export type ComponentGroupWithComponents =
+  Components.Schemas.ComponentGroupWithComponents;
 export type Country = Components.Schemas.Country;
 export type Course = Components.Schemas.Course;
 export type CourseAreaOfInstruction =
@@ -1489,6 +1539,8 @@ export type PortalInvitationQueryResult =
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type Program = Components.Schemas.Program;
 export type ProgramApplication = Components.Schemas.ProgramApplication;
+export type ProgramApplicationComponent =
+  Components.Schemas.ProgramApplicationComponent;
 export type ProgramCertificationType =
   Components.Schemas.ProgramCertificationType;
 export type ProgramProfileType = Components.Schemas.ProgramProfileType;
