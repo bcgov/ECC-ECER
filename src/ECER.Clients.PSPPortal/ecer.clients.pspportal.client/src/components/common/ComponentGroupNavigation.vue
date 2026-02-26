@@ -1,8 +1,7 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pl-0">
     <v-list color="primary">
       <v-list-item
-        class="ml-4"
         :to="{
           name: 'program-application-component-info',
           params: { programApplicationId: programApplicationId },
@@ -14,7 +13,6 @@
         </v-list-item-title>
       </v-list-item>
       <v-list-item
-        class="ml-4"
         :to="{
           name: 'program-application-institute-info',
           params: { programApplicationId: programApplicationId },
@@ -34,7 +32,7 @@
           <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title
-                class="ml-4 text-support-border-info font-weight-bold"
+                class="text-support-border-info font-weight-bold"
               >
                 <v-icon :color="mapStatusColor(categoryStatus(category))">
                   {{ categoryStatus(category) }}
@@ -74,7 +72,7 @@
         <template #activator="{ props }">
           <v-list-item
             v-bind="props"
-            class="ml-4 text-support-border-info font-weight-bold"
+            class="text-support-border-info font-weight-bold"
           >
             <v-icon color="black">mdi-table</v-icon>
             Program profile
@@ -95,28 +93,28 @@
         <template #activator="{ props }">
           <v-list-item
             v-bind="props"
-            class="ml-4 text-support-border-info font-weight-bold"
+            class="text-support-border-info font-weight-bold"
           >
             <v-icon color="grey">mdi-circle-outline</v-icon>
             Review and submit
           </v-list-item>
         </template>
 
-        <v-list-item class="ml-4">
+        <v-list-item>
           <v-list-item-title>
             <v-icon>mdi-text-box-outline</v-icon>
             Review Responses
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item class="ml-4">
+        <v-list-item>
           <v-list-item-title>
             <v-icon>mdi-text-box-outline</v-icon>
             Review program profiles
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item class="ml-4">
+        <v-list-item>
           <v-list-item-title>
             <v-icon color="grey">mdi-circle-outline</v-icon>
             Submit application

@@ -2,34 +2,36 @@
   <ProgramApplicationHeader
     :programApplicationName="programApplication.programApplicationName"
   ></ProgramApplicationHeader>
-  <v-row>
-    <v-col cols="3">
-      <div v-if="$vuetify.display.smAndDown">
-        <v-btn id="btnToggleMenu" icon @click="drawer = true">
-          <v-icon>mdi-menu</v-icon>
-        </v-btn>
-      </div>
-      <ComponentGroupNavigation
-        v-else
-        :programApplicationId="programApplicationId"
-        :program-types="programApplication.programTypes"
-        :application-status="programApplication.status"
-        :application-type="programApplication.programApplicationType"
-      ></ComponentGroupNavigation>
-
-      <v-navigation-drawer temporary v-model="drawer" width="350">
+  <v-container>
+    <v-row>
+      <v-col cols="auto">
+        <div v-if="$vuetify.display.smAndDown">
+          <v-btn id="btnToggleMenu" icon @click="drawer = true">
+            <v-icon>mdi-menu</v-icon>
+          </v-btn>
+        </div>
         <ComponentGroupNavigation
+          v-else
           :programApplicationId="programApplicationId"
           :program-types="programApplication.programTypes"
           :application-status="programApplication.status"
           :application-type="programApplication.programApplicationType"
         ></ComponentGroupNavigation>
-      </v-navigation-drawer>
-    </v-col>
-    <v-col>
-      <router-view />
-    </v-col>
-  </v-row>
+
+        <v-navigation-drawer temporary v-model="drawer" width="350">
+          <ComponentGroupNavigation
+            :programApplicationId="programApplicationId"
+            :program-types="programApplication.programTypes"
+            :application-status="programApplication.status"
+            :application-type="programApplication.programApplicationType"
+          ></ComponentGroupNavigation>
+        </v-navigation-drawer>
+      </v-col>
+      <v-col>
+        <router-view />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">

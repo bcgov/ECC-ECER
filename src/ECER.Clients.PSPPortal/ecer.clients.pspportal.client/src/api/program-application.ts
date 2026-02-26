@@ -109,6 +109,30 @@ const getComponentGroupMetadata = async (
   });
 };
 
+const getComponentGroupComponents = async (
+  programApplicationId: string,
+  componentGroupId: string,
+): Promise<
+  ApiResponse<
+    Components.Schemas.ComponentGroupWithComponents | null | undefined
+  >
+> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters =
+    {
+      id: programApplicationId,
+      componentGroupId,
+    };
+
+  return apiResultHandler.execute<
+    Components.Schemas.ComponentGroupWithComponents | null | undefined
+  >({
+    request:
+      client.program_application_component_group_components_get(pathParameters),
+    key: "program_application_component_group_components_get",
+  });
+};
+
 const mapProgramStatus = (status: string = ""): string => {
   switch (status) {
     case "Draft":
@@ -189,10 +213,11 @@ export {
   createProgramApplication,
   getProgramApplicationById,
   getProgramApplications,
+  getComponentGroupComponents,
+  getComponentGroupMetadata,
   mapProgramStatus,
   mapApplicationType,
   mapDeliveryType,
   mapProgramType,
   withdrawProgramApplication,
-  getComponentGroupMetadata,
 };
