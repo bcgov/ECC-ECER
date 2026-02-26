@@ -132,7 +132,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCourse3 = GetOrAddCourse(context, testProgram1, "109");
 
     programApplication =
-      GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
+      GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.ReviewAnalysis);
     draftProgramApplication = 
       GetOrAddProgramApplication("Test_psp_program_application_withdraw", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
     

@@ -36,6 +36,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Approved = 621870014,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Archived = 621870013,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Denied = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -51,22 +57,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 		OnGoingRecognition = 621870008,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PendingDecision = 621870004,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PendingReview = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		RefusetoApprove = 621870012,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ReviewAnalysis = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		RFAI = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SiteVisitRequired = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Submitted = 621870009,
@@ -184,6 +178,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_InterimRecognitionDate = "ecer_interimrecognitiondate";
 			public const string ecer_InterimRecognitionExpiryDate = "ecer_interimrecognitionexpirydate";
 			public const string ecer_interimrecognitionextendeduntil = "ecer_interimrecognitionextendeduntil";
+			public const string ecer_InterimRecognitionExtendedUntilShort = "ecer_interimrecognitionextendeduntilshort";
 			public const string ecer_interimrecognitionextensionlettersent = "ecer_interimrecognitionextensionlettersent";
 			public const string ecer_interimrecognitionextensionlettersentName = "ecer_interimrecognitionextensionlettersentname";
 			public const string ecer_interimrecognitionextensionreadyforreview = "ecer_interimrecognitionextensionreadyforreview";
@@ -381,6 +376,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_statementofpurposedescription = "ecer_statementofpurposedescription";
 			public const string ecer_statementofqualifications = "ecer_statementofqualifications";
 			public const string ecer_statementofstandards = "ecer_statementofstandards";
+			public const string ecer_statusreasondetail = "ecer_statusreasondetail";
+			public const string ecer_statusreasondetailName = "ecer_statusreasondetailname";
 			public const string ecer_SupportingEvidenceAccess = "ecer_supportingevidenceaccess";
 			public const string ecer_SupportingEvidenceAdministration = "ecer_supportingevidenceadministration";
 			public const string ecer_SupportingEvidenceAdmissionCriteria = "ecer_supportingevidenceadmissioncriteria";
@@ -1908,6 +1905,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_interimrecognitionextendeduntil", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextendeduntilshort")]
+		public System.Nullable<System.DateTime> ecer_InterimRecognitionExtendedUntilShort
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_interimrecognitionextendeduntilshort");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_interimrecognitionextendeduntilshort", value);
 			}
 		}
 		
@@ -4761,6 +4773,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_statementofstandards", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_statusreasondetail")]
+		public virtual ecer_Statusreasondetail? ecer_statusreasondetail
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_Statusreasondetail?)(EntityOptionSetEnum.GetEnum(this, "ecer_statusreasondetail")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_statusreasondetail", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_statusreasondetailname")]
+		public string ecer_statusreasondetailName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_statusreasondetail"))
+				{
+					return this.FormattedValues["ecer_statusreasondetail"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

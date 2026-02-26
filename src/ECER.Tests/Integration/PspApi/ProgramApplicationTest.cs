@@ -67,7 +67,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     status.ShouldNotBeNull();
     
     var firstApplication = status.Applications!.Where(app => app.Id == Fixture.programApplicationId).ShouldNotBeNull();
-    firstApplication.First().Status.ShouldBe(ApplicationStatus.RFAI);
+    firstApplication.First().Status.ShouldBe(ApplicationStatus.ReviewAnalysis);
   }
 
   [Fact]
@@ -84,7 +84,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     status.ShouldNotBeNull();
 
     var firstApplication = status.Applications!.FirstOrDefault().ShouldNotBeNull();
-    firstApplication.Status.ShouldBe(ApplicationStatus.RFAI);
+    firstApplication.Status.ShouldBe(ApplicationStatus.ReviewAnalysis);
     firstApplication.DeliveryType.ShouldBe(DeliveryType.Hybrid);
   }
   
