@@ -46,12 +46,7 @@ internal class ProgramRepositoryMapper : Profile
       .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
       .ForMember(d => d.Courses, opts => opts.MapFrom(s => s.ecer_course_Programid))
       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null))
-      .ForMember(d => d.OfferedProgramTypes, opts => opts.MapFrom(s =>
-        (s.ecer_NewOfferingType != null && s.ecer_NewOfferingType.Any())
-          ? s.ecer_NewOfferingType.Select(t => t.ToString())
-          : (s.ecer_OfferingType != null && s.ecer_OfferingType.Any())
-            ? s.ecer_OfferingType.Select(t => t.ToString())
-            : (s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null)))
+      .ForMember(d => d.OfferedProgramTypes, opts => opts.MapFrom(s => (s.ecer_NewOfferingType == null || !s.ecer_NewOfferingType.Any()) ? s.ecer_OfferingType.Select(t => t.ToString()) : s.ecer_NewOfferingType.Select(t => t.ToString())))
       .ForMember(d => d.NewBasicTotalHours, opts => opts.MapFrom(s => s.ecer_NewBasicTotalHours))
       .ForMember(d => d.NewSneTotalHours, opts => opts.MapFrom(s => s.ecer_NewSNETotalHours))
       .ForMember(d => d.NewIteTotalHours, opts => opts.MapFrom(s => s.ecer_NewITETotalHours))
