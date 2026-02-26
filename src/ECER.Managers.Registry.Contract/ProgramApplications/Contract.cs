@@ -20,6 +20,16 @@ public record ComponentGroupQuery : IRequest<IEnumerable<ComponentGroupMetadata>
 
 public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
 
+public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
+
+public record ComponentGroupWithComponentsQuery : IRequest<ComponentGroupWithComponents?>
+{
+  public string? ByProgramApplicationId { get; set; }
+  public string? ByComponentGroupId { get; set; }
+}
+
+public record ProgramApplicationComponent(string Id, string Name, string? Question, string? DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 
 public record ProgramApplication(string? Id, string PostSecondaryInstituteId)

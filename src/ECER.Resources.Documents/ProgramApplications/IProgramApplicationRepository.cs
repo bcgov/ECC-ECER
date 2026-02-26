@@ -6,13 +6,25 @@ public interface IProgramApplicationRepository
   Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken);
   Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken);
   Task<IEnumerable<ComponentGroupMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
+  Task<ComponentGroupResults?> QueryComponentGroupById(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
 }
+
+public record ComponentGroupResults(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 
 public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
 public record ComponentGroupQuery
 {
   public string? ByProgramApplicationId { get; set; }
 }
+
+public record ComponentGroupWithComponentsQuery
+{
+  public string? ByProgramApplicationId { get; set; }
+  public string? ByComponentGroupId { get; set; }
+}
+
+public record ProgramApplicationComponent(string Id, string Name, string? Question, string? DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+
 public record ProgramApplicationQuery
 {
   public string? ById { get; set; }

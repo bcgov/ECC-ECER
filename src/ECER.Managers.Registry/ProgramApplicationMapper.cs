@@ -39,6 +39,7 @@ internal class ProgramApplicationMapper: Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<Contract.ProgramApplications.ComponentGroupMetadata,ComponentGroupMetadata>().ReverseMap();
+    CreateMap<Contract.ProgramApplications.ComponentGroupMetadata, ComponentGroupMetadata>().ReverseMap();
+    CreateMap<Contract.ProgramApplications.ProgramApplicationComponent, Resources.Documents.ProgramApplications.ProgramApplicationComponent>().ReverseMap();
   }
 }
