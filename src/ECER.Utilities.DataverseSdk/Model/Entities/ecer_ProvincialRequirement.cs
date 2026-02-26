@@ -73,12 +73,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LegacyRequiredAreaID = "ecer_legacyrequiredareaid";
 			public const string ecer_MinimumHours = "ecer_minimumhours";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_ParentAreaofInstructionId = "ecer_parentareaofinstructionid";
-			public const string ecer_ParentAreaofInstructionIdName = "ecer_parentareaofinstructionidname";
 			public const string ecer_ProgramDevelopmentInProgress = "ecer_programdevelopmentinprogress";
 			public const string ecer_programdevelopmentinprogressName = "ecer_programdevelopmentinprogressname";
 			public const string ecer_provincialrequirement_CertificateTypeId = "ecer_provincialrequirement_CertificateTypeId";
-			public const string Referencingecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement = "ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement";
 			public const string ecer_ProvincialRequirementId = "ecer_provincialrequirementid";
 			public const string Id = "ecer_provincialrequirementid";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -97,7 +94,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
-			public const string Referencedecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement = "Referencedecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement";
 			public const string StateCode = "statecode";
 			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
@@ -416,38 +412,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentareaofinstructionid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_ParentAreaofInstructionId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_parentareaofinstructionid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_parentareaofinstructionid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentareaofinstructionidname")]
-		public string ecer_ParentAreaofInstructionIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_parentareaofinstructionid"))
-				{
-					return this.FormattedValues["ecer_parentareaofinstructionid"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		
@@ -963,24 +927,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement> Referencedecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>("ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement", Microsoft.Xrm.Sdk.EntityRole.Referenced);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>("ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
-			}
-		}
-		
-		/// <summary>
 		/// N:1 ecer_provincialrequirement_CertificateTypeId
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeid")]
@@ -996,25 +942,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_provincialrequirement_CertificateTypeId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentareaofinstructionid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
-		public ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement Referencingecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>("ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement", Microsoft.Xrm.Sdk.EntityRole.Referencing);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>("ecer_provincialrequirement_ParentAreaofInstructionId_ecer_provincialrequirement", Microsoft.Xrm.Sdk.EntityRole.Referencing, value);
 			}
 		}
 		

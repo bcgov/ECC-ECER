@@ -72,7 +72,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CountryId = "ecer_countryid";
 			public const string ecer_CountryIdName = "ecer_countryidname";
 			public const string ecer_documentfulladdress = "ecer_documentfulladdress";
-			public const string ecer_documentfullstreetaddress = "ecer_documentfullstreetaddress";
 			public const string ecer_eceprogramrepresentative_PostSecondaryIns = "ecer_eceprogramrepresentative_PostSecondaryIns";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
 			public const string ecer_ECESchoolordepartment = "ecer_eceschoolordepartment";
@@ -112,6 +111,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_psiinstitutiontypeName = "ecer_psiinstitutiontypename";
 			public const string ecer_pspobservation_postsecondaryinstitutionid_ecer_postsecondaryinstitute = "ecer_pspobservation_postsecondaryinstitutionid_ecer_postsecondaryinstitute";
 			public const string ecer_pspreferral_pspinstitution_ecer_postsecondaryinstitute = "ecer_pspreferral_pspinstitution_ecer_postsecondaryinstitute";
+			public const string ecer_PTIRUInstitutionID = "ecer_ptiruinstitutionid";
 			public const string ecer_StateProvince = "ecer_stateprovince";
 			public const string ecer_Street1 = "ecer_street1";
 			public const string ecer_Street2 = "ecer_street2";
@@ -430,16 +430,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<string>("ecer_documentfulladdress");
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfullstreetaddress")]
-		public string ecer_documentfullstreetaddress
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_documentfullstreetaddress");
 			}
 		}
 		
@@ -852,6 +842,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ptiruinstitutionid")]
+		public string ecer_PTIRUInstitutionID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_ptiruinstitutionid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ptiruinstitutionid", value);
 			}
 		}
 		

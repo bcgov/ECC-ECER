@@ -14,20 +14,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_CertificateLevel
+	public enum ecer_PSPDeliveryMethodforInstructor
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Basic = 621870002,
+		Inpersonsitevisits = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ECEAssistant = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ITE = 621870004,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SNE = 621870003,
+		Virtualsitevisits = 621870001,
 	}
 }
 #pragma warning restore CS1591
