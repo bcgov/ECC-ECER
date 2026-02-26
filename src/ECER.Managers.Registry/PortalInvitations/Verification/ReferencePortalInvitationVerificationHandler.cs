@@ -41,7 +41,7 @@ public class ReferencePortalInvitationVerificationHandler(
       return PortalInvitationVerificationQueryResult.Failure("Application not found");
     }
 
-    var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id, ById = application.FromCertificate?.ToString() });
+    var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id, ById = !string.IsNullOrEmpty(application.FromCertificate?.ToString()) ? application.FromCertificate.ToString() : null });
     var latestCertification = certifications.FirstOrDefault();
 
     var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);

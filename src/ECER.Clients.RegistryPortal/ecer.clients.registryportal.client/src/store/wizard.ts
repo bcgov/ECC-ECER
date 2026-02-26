@@ -341,6 +341,7 @@ export const useWizardStore = defineStore("wizard", {
       this.setWizardData({
         applicantFirstName: portalInvitation.applicantFirstName,
         applicantLastName: portalInvitation.applicantLastName,
+        applicationSubmittedOn: portalInvitation.applicationSubmittedOn,
         referenceFirstName: portalInvitation.referenceFirstName,
         referenceLastName: portalInvitation.referenceLastName,
         inviteType: portalInvitation.inviteType,
