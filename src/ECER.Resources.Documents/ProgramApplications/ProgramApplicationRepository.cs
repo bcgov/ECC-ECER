@@ -130,7 +130,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       .Join()
       .Include(e => e.ecer_programapplicationcomponentgroup_ComponentGroup)
       .Include(e => e.ecer_programapplicationcomponent_ComponentGroup)
-      .Execute().FirstOrDefault();
-    return entity == null ? null : mapper.Map<ComponentGroupResults>(entity);
+      .Execute().SingleOrDefault();
+    return mapper.Map<ComponentGroupResults>(entity);
   }
 }
