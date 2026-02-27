@@ -34,9 +34,6 @@ public class ReferencePortalInvitationVerificationHandler(
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
 
-    var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id });
-    var latestCertification = certifications.FirstOrDefault();
-
     var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();
     if (application == null)
@@ -44,16 +41,22 @@ public class ReferencePortalInvitationVerificationHandler(
       return PortalInvitationVerificationQueryResult.Failure("Application not found");
     }
 
+    var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id, ById = !string.IsNullOrEmpty(application.FromCertificate?.ToString()) ? application.FromCertificate.ToString() : null });
+    var fromCertificate = certifications.FirstOrDefault();
+
     var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
 
     switch (result.StatusCode)
     {
       case Contract.PortalInvitations.PortalInvitationStatusCode.Completed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Expired:
         return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Cancelled:
         return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Failed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }
@@ -71,14 +74,15 @@ public class ReferencePortalInvitationVerificationHandler(
       }
     }
 
-    if (latestCertification != null)
+    if (fromCertificate != null)
     {
-      result.LatestCertification = mapper.Map<Contract.Certifications.Certification>(latestCertification);
+      result.FromCertificate = mapper.Map<Contract.Certifications.Certification>(fromCertificate);
     }
 
     result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
+    result.ApplicationSubmittedOn = application.SubmittedOn;
 
     return PortalInvitationVerificationQueryResult.Success(result);
   }

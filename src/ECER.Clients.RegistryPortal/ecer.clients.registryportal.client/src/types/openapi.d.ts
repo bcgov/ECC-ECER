@@ -543,13 +543,14 @@ declare namespace Components {
       applicantFirstName?: string | null;
       applicantLastName?: string | null;
       applicationId?: string | null;
+      applicationSubmittedOn?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
       workexperienceReferenceId?: string | null;
       characterReferenceId?: string | null;
       inviteType?: InviteType;
       workExperienceReferenceHours?: number | null; // int32
       workExperienceType?: WorkExperienceTypes;
-      latestCertification?: Certification;
+      fromCertificate?: Certification;
     }
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
