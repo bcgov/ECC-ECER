@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
+using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
@@ -139,6 +140,29 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .WithOpenApi("Gets component groups", string.Empty, "program_application_components_get")
     .RequireAuthorization(policyNames)
     .WithParameterValidation();
+
+  endpointRouteBuilder.MapGet("/api/programApplications/{id}/componentGroups/{componentGroupId}/components", async Task<Results<Ok<ComponentGroupWithComponents>, BadRequest<string>, NotFound>> (string id, string componentGroupId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var userContext = ctx.User.GetUserContext()!;
+      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+
+      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+      {
+        ById = id,
+        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
+      }, ct);
+      if (!existing.Items.Any()) return TypedResults.NotFound();
+
+      var result = await messageBus.Send(new ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponentsQuery { ByProgramApplicationId = id, ByComponentGroupId = componentGroupId }, ct);
+      if (result == null) return TypedResults.NotFound();
+
+      return TypedResults.Ok(mapper.Map<ComponentGroupWithComponents>(result));
+    })
+    .WithOpenApi("Gets program application components by component group id", string.Empty, "program_application_component_group_components_get")
+    .RequireAuthorization(policyNames)
+    .AddGuidValidation("id").AddGuidValidation("componentGroupId")
+    .WithParameterValidation();
   }
 }
 
@@ -150,6 +174,7 @@ public record ProgramApplication
   public string? ProgramApplicationName { get; set; }
   public ApplicationType? ProgramApplicationType { get; set; }
   public ApplicationStatus? Status { get; set; }
+  public ApplicationStatusReasonDetail? StatusReasonDetail { get; set; }
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
@@ -172,22 +197,30 @@ public record CreateProgramApplicationRequest
 
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
 public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
+public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
 
 public enum ApplicationStatus
 {
+  Approved,
+  Archived,
   Denied,
   Draft,
   Inactive,
   InterimRecognition,
   OnGoingRecognition,
-  PendingDecision,
-  PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
-  RFAI,
-  SiteVisitRequired,
   Submitted,
   Withdrawn
+}
+
+public enum ApplicationStatusReasonDetail
+{
+  Pendingdecision,
+  Recognitionevaluationmeeting,
+  RFAIreceived,
+  RFAIrequested,
 }
 
 public enum ApplicationType

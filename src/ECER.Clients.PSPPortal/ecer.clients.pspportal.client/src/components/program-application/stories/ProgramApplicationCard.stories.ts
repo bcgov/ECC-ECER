@@ -31,65 +31,22 @@ const baseProgram: Components.Schemas.ProgramApplication = {
   deliveryType: "Hybrid",
 };
 
+export const Initiating: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "Draft",
+      componentsGenerationCompleted: false,
+    },
+  },
+};
+
 export const Draft: Story = {
   args: {
     programApplication: {
       ...baseProgram,
       status: "Draft",
-    },
-  },
-};
-
-export const InterimRecognition: Story = {
-  args: {
-    programApplication: {
-      ...baseProgram,
-      status: "InterimRecognition",
-    },
-  },
-};
-
-export const OnGoingRecognition: Story = {
-  args: {
-    programApplication: {
-      ...baseProgram,
-      status: "OnGoingRecognition",
-    },
-  },
-};
-
-export const PendingReview: Story = {
-  args: {
-    programApplication: {
-      ...baseProgram,
-      status: "PendingReview",
-    },
-  },
-};
-
-export const RefusetoApprove: Story = {
-  args: {
-    programApplication: {
-      ...baseProgram,
-      status: "RefusetoApprove",
-    },
-  },
-};
-
-export const ReviewAnalysis: Story = {
-  args: {
-    programApplication: {
-      ...baseProgram,
-      status: "ReviewAnalysis",
-    },
-  },
-};
-
-export const RFAI: Story = {
-  args: {
-    programApplication: {
-      ...baseProgram,
-      status: "RFAI",
+      componentsGenerationCompleted: true,
     },
   },
 };
@@ -103,11 +60,94 @@ export const Submitted: Story = {
   },
 };
 
+export const ReviewAndAnalysis: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "ReviewAnalysis",
+    },
+  },
+};
+
+export const ReviewAndAnalysisWithRFAI: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "ReviewAnalysis",
+      statusReasonDetail: "RFAIrequested",
+    },
+  },
+};
+
+export const InterimRecognition: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "InterimRecognition",
+    },
+  },
+};
+
+export const InterimRecognitionWithRFAI: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "InterimRecognition",
+      statusReasonDetail: "RFAIrequested",
+    },
+  },
+};
+
+export const OnGoingRecognition: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "OnGoingRecognition",
+    },
+  },
+};
+
+export const Approved: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "Approved",
+    },
+  },
+};
+
+export const Archived: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "Archived",
+    },
+  },
+};
+
 export const Withdrawn: Story = {
   args: {
     programApplication: {
       ...baseProgram,
       status: "Withdrawn",
+    },
+  },
+};
+
+export const RefuseToApprove: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "RefusetoApprove",
+    },
+  },
+};
+
+export const Inactive: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "Inactive",
     },
   },
 };

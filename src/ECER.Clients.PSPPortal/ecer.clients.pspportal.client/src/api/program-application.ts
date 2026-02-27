@@ -109,24 +109,50 @@ const getComponentGroupMetadata = async (
   });
 };
 
+const getComponentGroupComponents = async (
+  programApplicationId: string,
+  componentGroupId: string,
+): Promise<
+  ApiResponse<
+    Components.Schemas.ComponentGroupWithComponents | null | undefined
+  >
+> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters =
+    {
+      id: programApplicationId,
+      componentGroupId,
+    };
+
+  return apiResultHandler.execute<
+    Components.Schemas.ComponentGroupWithComponents | null | undefined
+  >({
+    request:
+      client.program_application_component_group_components_get(pathParameters),
+    key: "program_application_component_group_components_get",
+  });
+};
+
 const mapProgramStatus = (status: string = ""): string => {
   switch (status) {
     case "Draft":
       return "Draft";
+    case "Approved":
+      return "Approved";
+    case "Archived":
+      return "Archived";
     case "InterimRecognition":
       return "Interim recognition";
     case "OnGoingRecognition":
       return "On-going recognition";
-    case "PendingReview":
-      return "Pending review";
     case "RefusetoApprove":
       return "Refuse to approve";
     case "ReviewAnalysis":
       return "Under ECE Registry review";
-    case "RFAI":
-      return "Additional information requested";
     case "Submitted":
       return "Submitted";
+    case "Inactive":
+      return "Archived";
     case "Withdrawn":
       return "Withdrawn";
     default:
@@ -187,10 +213,11 @@ export {
   createProgramApplication,
   getProgramApplicationById,
   getProgramApplications,
+  getComponentGroupComponents,
+  getComponentGroupMetadata,
   mapProgramStatus,
   mapApplicationType,
   mapDeliveryType,
   mapProgramType,
   withdrawProgramApplication,
-  getComponentGroupMetadata,
 };

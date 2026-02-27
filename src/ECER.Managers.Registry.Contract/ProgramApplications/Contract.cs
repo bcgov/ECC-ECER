@@ -20,6 +20,16 @@ public record ComponentGroupQuery : IRequest<IEnumerable<ComponentGroupMetadata>
 
 public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
 
+public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
+
+public record ComponentGroupWithComponentsQuery : IRequest<ComponentGroupWithComponents?>
+{
+  public string? ByProgramApplicationId { get; set; }
+  public string? ByComponentGroupId { get; set; }
+}
+
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 
 public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
@@ -27,6 +37,7 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public string? ProgramApplicationName { get; set; }
   public ApplicationType? ProgramApplicationType { get; set; }
   public ApplicationStatus? Status { get; set; }
+  public ApplicationStatusReasonDetail? StatusReasonDetail { get; set; }
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
@@ -35,19 +46,25 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
 public record ProgramApplicationQueryResults(IEnumerable<ProgramApplication> Items, int Count);
 public enum ApplicationStatus
 {
+  Approved,
+  Archived,
   Denied,
   Draft,
   Inactive,
   InterimRecognition,
   OnGoingRecognition,
-  PendingDecision,
-  PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
-  RFAI,
-  SiteVisitRequired,
   Submitted,
   Withdrawn
+}
+
+public enum ApplicationStatusReasonDetail
+{
+  Pendingdecision,
+  Recognitionevaluationmeeting,
+  RFAIreceived,
+  RFAIrequested,
 }
 
 public enum ApplicationType

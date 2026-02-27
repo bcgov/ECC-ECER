@@ -6,13 +6,25 @@ public interface IProgramApplicationRepository
   Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken);
   Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken);
   Task<IEnumerable<ComponentGroupMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
+  Task<ComponentGroupResults?> QueryComponentGroupById(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
 }
+
+public record ComponentGroupResults(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 
 public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
 public record ComponentGroupQuery
 {
   public string? ByProgramApplicationId { get; set; }
 }
+
+public record ComponentGroupWithComponentsQuery
+{
+  public string? ByProgramApplicationId { get; set; }
+  public string? ByComponentGroupId { get; set; }
+}
+
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+
 public record ProgramApplicationQuery
 {
   public string? ById { get; set; }
@@ -29,25 +41,32 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public string? ProgramApplicationName { get; set; }
   public ApplicationType? ProgramApplicationType { get; set; }
   public ApplicationStatus? Status { get; set; }
+  public ApplicationStatusReasonDetail? StatusReasonDetail { get; set; }
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
 }
 public enum ApplicationStatus
 {
+  Approved,
+  Archived,
   Denied,
   Draft,
   Inactive,
   InterimRecognition,
   OnGoingRecognition,
-  PendingDecision,
-  PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
-  RFAI,
-  SiteVisitRequired,
   Submitted,
   Withdrawn
+}
+
+public enum ApplicationStatusReasonDetail
+{
+  Pendingdecision,
+  Recognitionevaluationmeeting,
+  RFAIreceived,
+  RFAIrequested,
 }
 
 public enum ApplicationType
