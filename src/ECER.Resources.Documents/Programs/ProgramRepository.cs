@@ -1,7 +1,6 @@
 using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
-using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Programs;
@@ -24,7 +23,7 @@ internal sealed class ProgramRepository : IProgramRepository
     var programs = context.ecer_ProgramSet.AsQueryable();
 
     if (query.ById != null) programs = programs.Where(p => p.ecer_ProgramId == Guid.Parse(query.ById));
-    
+
     if (query.ByPostSecondaryInstituteId != null)
     {
       var instituteId = Guid.Parse(query.ByPostSecondaryInstituteId);
@@ -64,6 +63,9 @@ internal sealed class ProgramRepository : IProgramRepository
         .IncludeNested(t => t.ecer_courseprovincialrequirement_CourseId)
         .Execute()
         .ToList();
+
+      //only return courses that are active
+      results.ForEach(result => result.ecer_course_Programid = result.ecer_course_Programid.Where(course => course.StatusCode == ecer_Course_StatusCode.Active).ToList());
     }
     else
     {
@@ -112,7 +114,7 @@ internal sealed class ProgramRepository : IProgramRepository
       var existing = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_ProgramId == ecerProgram.ecer_ProgramId);
       if (existing == null) throw new InvalidOperationException($"ecer_Program '{ecerProgram.ecer_ProgramId}' not found");
 
-      //check for existing values, if they are the same do not map. 
+      //check for existing values, if they are the same do not map.
       ecerProgram.ecer_NewDescriptiveProgramName = existing.ecer_DescriptiveProgramName == ecerProgram.ecer_NewDescriptiveProgramName ? string.Empty : ecerProgram.ecer_NewDescriptiveProgramName;
       ecerProgram.ecer_NewOfferingType = existing.ecer_OfferingType.SequenceEqual(ecerProgram.ecer_NewOfferingType) ? null : ecerProgram.ecer_NewOfferingType;
 
@@ -202,5 +204,4 @@ internal sealed class ProgramRepository : IProgramRepository
 
     return newProgramId!;
   }
-
 }
