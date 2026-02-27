@@ -43,7 +43,10 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
       }
     }
 
-    var results = context.From(institutes).Execute();
+    var results = context.From(institutes)
+      .Join()
+      .Include(c => c.ecer_postsecondaryinstitutecampus_postsecondaryinstitute_ecer_postsecondaryinstitute)
+      .Execute();
     
     return mapper.Map<IEnumerable<PostSecondaryInstitute>>(results)!.ToList();
   }

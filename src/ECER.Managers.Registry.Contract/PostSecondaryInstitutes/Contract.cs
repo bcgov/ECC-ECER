@@ -32,7 +32,10 @@ public record PostSecondaryInstitute
   public string? Province { get; set; }
   public string? Country { get; set; }
   public string? PostalCode { get; set; }
+  public IEnumerable<Campus>? Campuses { get; set; }
 };
+
+public record Campus(string Id, string Name);
 
 public enum Auspice
 {
