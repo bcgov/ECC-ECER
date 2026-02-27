@@ -177,25 +177,13 @@ export default defineComponent({
   },
   computed: {
     showUpdateProgramProfileButton(): boolean {
-      if (this.program?.status === "Inactive") {
-        return false;
-      }
-
-      if (
-        this.program?.status === "Approved" ||
-        this.program?.status === "UnderReview" ||
-        this.program?.status === "ChangeRequestInProgress"
-      ) {
-        return true;
-      }
-
-      if (!this.thisIsTheLatestProfile) {
-        //another profile exists for the next year
-        return false;
-      }
-
-      //default
-      return false;
+      return (
+        this.program?.status !== "Inactive" && // (1) status is active
+        this.thisIsTheLatestProfile && // (3) next year's profile does NOT exist
+        (this.program?.status === "Approved" || // (2) Registry Review Complete
+          (this.program?.status === "UnderReview" && // (2) Requires Review + Change Request
+            this.program?.programProfileType === "ChangeRequest"))
+      );
     },
     thisIsTheLatestProfile(): boolean {
       //check if there is a profile that exists next year
