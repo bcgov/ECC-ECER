@@ -19,19 +19,22 @@ declare namespace Components {
       } | null;
     }
     export type ApplicationStatus =
+      | "Approved"
+      | "Archived"
       | "Denied"
       | "Draft"
       | "Inactive"
       | "InterimRecognition"
       | "OnGoingRecognition"
-      | "PendingDecision"
-      | "PendingReview"
       | "RefusetoApprove"
       | "ReviewAnalysis"
-      | "RFAI"
-      | "SiteVisitRequired"
       | "Submitted"
       | "Withdrawn";
+    export type ApplicationStatusReasonDetail =
+      | "Pendingdecision"
+      | "Recognitionevaluationmeeting"
+      | "RFAIreceived"
+      | "RFAIrequested";
     export type ApplicationType =
       | "AddOnlineorHybridDeliveryMethod"
       | "CurriculumRevisionsatRecognizedInstitution"
@@ -280,6 +283,7 @@ declare namespace Components {
       programApplicationName?: string | null;
       programApplicationType?: ApplicationType;
       status?: ApplicationStatus;
+      statusReasonDetail?: ApplicationStatusReasonDetail;
       programTypes?: ProgramCertificationType[] | null;
       deliveryType?: DeliveryType;
       componentsGenerationCompleted?: boolean | null;
@@ -1490,6 +1494,8 @@ export type AddCourseRequest = Components.Schemas.AddCourseRequest;
 export type ApplicationConfiguration =
   Components.Schemas.ApplicationConfiguration;
 export type ApplicationStatus = Components.Schemas.ApplicationStatus;
+export type ApplicationStatusReasonDetail =
+  Components.Schemas.ApplicationStatusReasonDetail;
 export type ApplicationType = Components.Schemas.ApplicationType;
 export type AreaOfInstruction = Components.Schemas.AreaOfInstruction;
 export type AreaOfInstructionListResponse =

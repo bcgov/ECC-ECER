@@ -10,9 +10,11 @@
         <v-col></v-col>
         <v-col class="d-flex justify-end">
           <v-chip :color="chipColour" variant="flat" size="small">
-            <div :class="isStillLoading ? 'pr-2' : ''">{{ statusText }}</div>
+            <div :class="isStillLoading && status === 'Draft' ? 'pr-2' : ''">
+              {{ statusText }}
+            </div>
             <v-progress-circular
-              v-if="isStillLoading"
+              v-if="isStillLoading && status === 'Draft'"
               indeterminate
               color="primary"
               size="18"
@@ -116,6 +118,9 @@ export default defineComponent({
     isStillLoading(): boolean {
       return this.programApplication.componentsGenerationCompleted !== true;
     },
+    isRFAI(): boolean {
+      return this.programApplication.statusReasonDetail === "RFAIrequested";
+    },
     applicationType(): string {
       return this.programApplication.programApplicationType
         ? mapApplicationType(this.programApplication.programApplicationType)
@@ -138,20 +143,18 @@ export default defineComponent({
       return this.programApplication.status || "Draft";
     },
     buttonText(): string {
-      if (
-        this.programApplication.status === "Draft" ||
-        this.programApplication.status === "RFAI"
-      ) {
+      if (this.status === "Draft" || this.isRFAI) {
         return "Edit";
       }
       return "View";
     },
     chipColour(): string | undefined {
+      if (this.isRFAI) return "warning";
       switch (this.status) {
         case "Draft":
           return "warning";
-        case "RFAI":
-          return "warning";
+        case "Approved":
+          return "success";
         case "InterimRecognition":
           return "success";
         case "OnGoingRecognition":
@@ -162,11 +165,14 @@ export default defineComponent({
           return "primary";
         case "ReviewAnalysis":
           return "primary";
+        case "PendingDecision":
+          return "primary";
         default:
           return "grey-darkest";
       }
     },
     statusText(): string {
+      if (this.isRFAI) return "Additional information requested";
       let status = mapProgramStatus(this.status);
       if (this.isStillLoading && status === "Draft") {
         status = "Initiating";
