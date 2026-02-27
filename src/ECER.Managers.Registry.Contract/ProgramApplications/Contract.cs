@@ -46,16 +46,15 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
 public record ProgramApplicationQueryResults(IEnumerable<ProgramApplication> Items, int Count);
 public enum ApplicationStatus
 {
+  Approved,
+  Archived,
   Denied,
   Draft,
   Inactive,
   InterimRecognition,
   OnGoingRecognition,
-  PendingDecision,
-  PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
-  SiteVisitRequired,
   Submitted,
   Withdrawn
 }

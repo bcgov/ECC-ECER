@@ -202,16 +202,15 @@ public record ProgramApplicationComponent(string Id, string Name, string? Questi
 
 public enum ApplicationStatus
 {
+  Approved,
+  Archived,
   Denied,
   Draft,
   Inactive,
   InterimRecognition,
   OnGoingRecognition,
-  PendingDecision,
-  PendingReview,
   RefusetoApprove,
   ReviewAnalysis,
-  SiteVisitRequired,
   Submitted,
   Withdrawn
 }

@@ -137,14 +137,14 @@ const mapProgramStatus = (status: string = ""): string => {
   switch (status) {
     case "Draft":
       return "Draft";
+    case "Approved":
+      return "Approved";
+    case "Archived":
+      return "Archived";
     case "InterimRecognition":
       return "Interim recognition";
     case "OnGoingRecognition":
       return "On-going recognition";
-    case "PendingDecision":
-      return "Pending decision";
-    case "PendingReview":
-      return "Pending review";
     case "RefusetoApprove":
       return "Refuse to approve";
     case "ReviewAnalysis":

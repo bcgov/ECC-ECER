@@ -19,16 +19,15 @@ declare namespace Components {
       } | null;
     }
     export type ApplicationStatus =
+      | "Approved"
+      | "Archived"
       | "Denied"
       | "Draft"
       | "Inactive"
       | "InterimRecognition"
       | "OnGoingRecognition"
-      | "PendingDecision"
-      | "PendingReview"
       | "RefusetoApprove"
       | "ReviewAnalysis"
-      | "SiteVisitRequired"
       | "Submitted"
       | "Withdrawn";
     export type ApplicationStatusReasonDetail =

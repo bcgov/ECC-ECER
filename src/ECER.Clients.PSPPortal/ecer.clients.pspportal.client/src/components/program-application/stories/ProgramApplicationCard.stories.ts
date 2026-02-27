@@ -107,11 +107,20 @@ export const OnGoingRecognition: Story = {
   },
 };
 
-export const PendingDecision: Story = {
+export const Approved: Story = {
   args: {
     programApplication: {
       ...baseProgram,
-      status: "PendingDecision",
+      status: "Approved",
+    },
+  },
+};
+
+export const Archived: Story = {
+  args: {
+    programApplication: {
+      ...baseProgram,
+      status: "Archived",
     },
   },
 };
@@ -130,15 +139,6 @@ export const RefuseToApprove: Story = {
     programApplication: {
       ...baseProgram,
       status: "RefusetoApprove",
-    },
-  },
-};
-
-export const PendingReview: Story = {
-  args: {
-    programApplication: {
-      ...baseProgram,
-      status: "PendingReview",
     },
   },
 };

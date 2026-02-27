@@ -153,6 +153,8 @@ export default defineComponent({
       switch (this.status) {
         case "Draft":
           return "warning";
+        case "Approved":
+          return "success";
         case "InterimRecognition":
           return "success";
         case "OnGoingRecognition":
