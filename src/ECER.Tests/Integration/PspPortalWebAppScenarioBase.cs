@@ -132,7 +132,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCourse3 = GetOrAddCourse(context, testProgram1, "109");
 
     programApplication =
-      GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.RFAI);
+      GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.ReviewAnalysis, ecer_Statusreasondetail.RFAIrequested);
     draftProgramApplication = 
       GetOrAddProgramApplication("Test_psp_program_application_withdraw", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
     
@@ -148,7 +148,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     context.SaveChanges();
   }
   
-  private ecer_PostSecondaryInstituteProgramApplicaiton GetOrAddProgramApplication(string name, EcerContext context, ecer_PostSecondaryInstitute institute, ecer_PSIApplicationType type, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode statusCode)
+  private ecer_PostSecondaryInstituteProgramApplicaiton GetOrAddProgramApplication(string name, EcerContext context, ecer_PostSecondaryInstitute institute, ecer_PSIApplicationType type, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode statusCode, ecer_Statusreasondetail? statusReasonDetail = null)
   {
     var programName = $"{name}_{type}_{statusCode}";
     var programApplicationE = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.FirstOrDefault(r => r.ecer_Name == programName);
@@ -159,6 +159,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     programApplicationE = new ecer_PostSecondaryInstituteProgramApplicaiton
     {
       StatusCode = statusCode,
+      ecer_statusreasondetail = statusReasonDetail,
       ecer_Name = programName,
       ecer_PostSecondaryInstituteProgramApplicaitonId = Guid.NewGuid(),
       ecer_ProvincialCertificationTypeOffered =  ecer_PSIProvincialCertificationTypeOffered.ECEBasic,
@@ -167,7 +168,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       ecer_PostSecondaryInstitute = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
     };
     context.AddObject(programApplicationE);
-    
+
     return programApplicationE;
   }
 

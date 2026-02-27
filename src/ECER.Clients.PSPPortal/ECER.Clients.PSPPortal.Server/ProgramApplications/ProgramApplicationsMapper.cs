@@ -15,11 +15,16 @@ internal sealed class ProgramApplicationsMapper: Profile
       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ProgramTypes))
       .ForMember(d => d.DeliveryType, opts => opts.MapFrom(s => s.DeliveryType))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status))
+      .ForMember(d => d.StatusReasonDetail, opts => opts.MapFrom(s => s.StatusReasonDetail))
       .ForMember(d => d.ComponentsGenerationCompleted, opts => opts.MapFrom(s => s.ComponentsGenerationCompleted))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
     
     CreateMap<ApplicationStatus, Managers.Registry.Contract.ProgramApplications.ApplicationStatus>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<ApplicationStatusReasonDetail, Managers.Registry.Contract.ProgramApplications.ApplicationStatusReasonDetail>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     

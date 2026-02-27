@@ -14,6 +14,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForSourceMember(s => s.ComponentsGenerationCompleted, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_PostSecondaryInstituteProgramApplicaitonId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
+      .ForMember(d => d.ecer_statusreasondetail, opts => opts.MapFrom(s => s.StatusReasonDetail))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.ProgramApplicationName))
       .ForMember(d => d.ecer_ApplicationType, opts => opts.MapFrom(s => s.ProgramApplicationType))
       .ForMember(d => d.ecer_ProgramType, opts => opts.MapFrom(s => s.ProgramTypes))
@@ -23,6 +24,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(ProgramApplication.Id), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstituteProgramApplicaitonId.HasValue ? s.ecer_PostSecondaryInstituteProgramApplicaitonId.Value.ToString() : null))
       .ForCtorParam(nameof(ProgramApplication.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitute.Id.ToString()))
       .ForMember(d => d.ProgramApplicationName, opts => opts.MapFrom(s => s.ecer_Name))
+      .ForMember(d => d.StatusReasonDetail, opts => opts.MapFrom(s => s.ecer_statusreasondetail))
       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramType))
       .ForMember(d => d.DeliveryType, opts => opts.MapFrom(s => s.ecer_DeliveryType))
       .ForMember(d => d.ProgramApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationType))
@@ -30,6 +32,9 @@ internal class ProgramApplicationRepositoryMapper : Profile
       ;
 
     CreateMap<ApplicationStatus, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    CreateMap<ApplicationStatusReasonDetail, ecer_Statusreasondetail>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     CreateMap<ApplicationType, ecer_PSIApplicationType>()
