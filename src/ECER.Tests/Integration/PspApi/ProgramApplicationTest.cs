@@ -1,4 +1,3 @@
-using System.Net;
 using Alba;
 using ECER.Clients.PSPPortal.Server.ProgramApplications;
 using Shouldly;
@@ -65,9 +64,9 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
 
     var status = await response.ReadAsJsonAsync<GetProgramApplicationResponse>();
     status.ShouldNotBeNull();
-    
+
     var firstApplication = status.Applications!.Where(app => app.Id == Fixture.programApplicationId).ShouldNotBeNull();
-    firstApplication.First().Status.ShouldBe(ApplicationStatus.RFAI);
+    firstApplication.First().Status.ShouldBe(ApplicationStatus.Draft);
   }
 
   [Fact]
@@ -84,10 +83,10 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     status.ShouldNotBeNull();
 
     var firstApplication = status.Applications!.FirstOrDefault().ShouldNotBeNull();
-    firstApplication.Status.ShouldBe(ApplicationStatus.RFAI);
+    firstApplication.Status.ShouldBe(ApplicationStatus.Draft);
     firstApplication.DeliveryType.ShouldBe(DeliveryType.Hybrid);
   }
-  
+
   [Fact]
   public async Task UpdateProgramApplication_Type_Draft_ToWithdraw_ReturnsOk()
   {
@@ -97,12 +96,12 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
       _.Get.Url($"/api/programApplications/{this.Fixture.draftProgramApplicationId}");
       _.StatusCodeShouldBeOk();
     });
-  
+
     var status = await program.ReadAsJsonAsync<GetProgramApplicationResponse>();
     status.ShouldNotBeNull();
     var application = status.Applications!.First();
     application.Status = ApplicationStatus.Withdrawn;
-  
+
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
