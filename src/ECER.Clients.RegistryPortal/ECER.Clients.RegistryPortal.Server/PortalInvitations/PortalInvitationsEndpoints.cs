@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Clients.RegistryPortal.Server.Applications;
-using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Clients.RegistryPortal.Server.Certifications;
+using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -44,7 +44,7 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public InviteType? InviteType { get; set; }
   public int? WorkExperienceReferenceHours { get; set; }
   public WorkExperienceTypes? WorkExperienceType { get; set; }
-  public Certification? LatestCertification { get; set; }
+  public Certification? FromCertificate { get; set; }
 }
 
 public enum InviteType

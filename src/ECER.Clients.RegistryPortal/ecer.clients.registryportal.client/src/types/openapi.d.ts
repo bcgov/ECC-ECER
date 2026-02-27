@@ -550,7 +550,7 @@ declare namespace Components {
       inviteType?: InviteType;
       workExperienceReferenceHours?: number | null; // int32
       workExperienceType?: WorkExperienceTypes;
-      latestCertification?: Certification;
+      fromCertificate?: Certification;
     }
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;

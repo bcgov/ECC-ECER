@@ -42,7 +42,7 @@ public class ReferencePortalInvitationVerificationHandler(
     }
 
     var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id, ById = !string.IsNullOrEmpty(application.FromCertificate?.ToString()) ? application.FromCertificate.ToString() : null });
-    var latestCertification = certifications.FirstOrDefault();
+    var fromCertificate = certifications.FirstOrDefault();
 
     var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
 
@@ -74,9 +74,9 @@ public class ReferencePortalInvitationVerificationHandler(
       }
     }
 
-    if (latestCertification != null)
+    if (fromCertificate != null)
     {
-      result.LatestCertification = mapper.Map<Contract.Certifications.Certification>(latestCertification);
+      result.FromCertificate = mapper.Map<Contract.Certifications.Certification>(fromCertificate);
     }
 
     result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;

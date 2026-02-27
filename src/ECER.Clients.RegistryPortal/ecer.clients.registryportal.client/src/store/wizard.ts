@@ -394,7 +394,7 @@ export const useWizardStore = defineStore("wizard", {
         workExperienceReferenceHours:
           portalInvitation.workExperienceReferenceHours,
         workExperienceType: portalInvitation.workExperienceType,
-        latestCertification: portalInvitation.latestCertification,
+        fromCertificate: portalInvitation.fromCertificate,
         ...(wizard?.steps?.review?.form?.inputs
           ?.confirmProvidedInformationIsRight?.id && {
           [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight
