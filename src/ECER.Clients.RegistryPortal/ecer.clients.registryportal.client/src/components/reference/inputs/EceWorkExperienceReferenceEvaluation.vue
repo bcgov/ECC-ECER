@@ -116,6 +116,11 @@
               Rules.futureDateNotAllowedRule(
                 'Start date of hours cannot be in the future',
               ),
+              Rules.dateBetweenRule(
+                fiveYearsAgoFromApplicationSubmittedOn || '',
+                today,
+                `The start date must be between ${formatDate(fiveYearsAgoFromApplicationSubmittedOn || '', 'LLL d, yyyy')} and today`,
+              ),
             ]"
             @update:model-value="updateField('startDate', $event)"
           ></EceDateInput>
@@ -132,6 +137,11 @@
               Rules.dateBeforeRule(modelValue.startDate || ''),
               Rules.futureDateNotAllowedRule(
                 'End date of hours cannot be in the future',
+              ),
+              Rules.dateBetweenRule(
+                fiveYearsAgoFromApplicationSubmittedOn || '',
+                today,
+                `The end date must be between ${formatDate(fiveYearsAgoFromApplicationSubmittedOn || '', 'LLL d, yyyy')} and today`,
               ),
             ]"
             @update:model-value="updateField('endDate', $event)"
@@ -245,12 +255,19 @@ export default defineComponent({
     today() {
       return formatDate(DateTime.now().toString());
     },
+    fiveYearsAgoFromApplicationSubmittedOn() {
+      const fiveYearsBack = DateTime.fromISO(
+        this.wizardStore.wizardData.applicationSubmittedOn,
+      ).minus({ years: 5 });
+      return formatDate(fiveYearsBack.toString());
+    },
   },
   mounted() {
     // Set Work Exp Ref Type as 500 Hours
     this.updateField("workExperienceType", WorkExperienceType.IS_500_Hours);
   },
   methods: {
+    formatDate,
     isNumber,
     updateField(
       fieldName: keyof Components.Schemas.WorkExperienceReferenceDetails,

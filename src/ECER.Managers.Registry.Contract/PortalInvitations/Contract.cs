@@ -23,6 +23,7 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public string? ApplicantFirstName { get; set; }
   public string? ApplicantLastName { get; set; }
   public string? ApplicationId { get; set; }
+  public DateTime? ApplicationSubmittedOn { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public string? WorkexperienceReferenceId { get; set; }
   public string? CharacterReferenceId { get; set; }
@@ -31,7 +32,7 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public PortalInvitationStatusCode? StatusCode { get; set; }
   public int? WorkExperienceReferenceHours { get; set; }
   public WorkExperienceTypes? WorkExperienceType { get; set; }
-  public Certification? LatestCertification { get; set; }
+  public Certification? FromCertificate { get; set; }
   public string? BceidBusinessName { get; set; }
   public string? PostSecondaryInstitutionName { get; set; }
   public bool IsLinked { get; set; }

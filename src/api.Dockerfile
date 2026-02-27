@@ -14,6 +14,9 @@ RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh \
     && apt-get install nodejs -y --no-install-recommends \
     && apt-get clean
 
+# Skip installing cypress binaries it was causing intermittent network issues when building dockerfile via npm install. 
+ENV CYPRESS_INSTALL_BINARY=0
+
 WORKDIR /src
 # Copy the main source project files
 COPY ["ECER.sln", ".editorconfig", "Directory.Build.props", "Directory.Packages.props", "global.json", "./"]
