@@ -79,7 +79,10 @@
           </v-list-item>
         </template>
 
-        <v-list-item v-for="(type, index) in programTypes" :key="index">
+        <v-list-item
+          v-for="(type, index) in programTypes"
+          :key="`program-type-${type}-${index}`"
+        >
           <v-list-item
             :to="{
               name: 'program-application-program-profile-area-of-instruction',
@@ -147,15 +150,21 @@ export default defineComponent({
       required: true,
     },
     programTypes: {
-      type: Array,
+      type: Array as () => Components.Schemas.ProgramTypes[] | null | undefined,
       required: true,
     },
     applicationStatus: {
-      type: String,
+      type: String as () =>
+        | Components.Schemas.ApplicationStatus
+        | null
+        | undefined,
       required: true,
     },
     applicationType: {
-      type: String,
+      type: String as () =>
+        | Components.Schemas.ApplicationType
+        | null
+        | undefined,
       required: true,
     },
   },

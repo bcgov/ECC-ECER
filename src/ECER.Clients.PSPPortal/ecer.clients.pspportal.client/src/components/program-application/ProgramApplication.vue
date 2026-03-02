@@ -1,6 +1,6 @@
 <template>
   <ProgramApplicationHeader
-    :programApplicationName="programApplication.programApplicationName"
+    :programApplicationName="programApplication.programApplicationName || ''"
   ></ProgramApplicationHeader>
   <v-container>
     <v-row>
@@ -40,6 +40,7 @@ import { useDisplay } from "vuetify";
 import PageContainer from "@/components/PageContainer.vue";
 import ComponentGroupNavigation from "@/components/common/ComponentGroupNavigation.vue";
 import ProgramApplicationHeader from "./ProgramApplicationHeader.vue";
+import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "ProgramApplication",
@@ -54,7 +55,7 @@ export default defineComponent({
       required: true,
     },
     programApplication: {
-      type: Object,
+      type: Object as () => Components.Schemas.ProgramApplication,
       required: true,
     },
     componentGroupId: {

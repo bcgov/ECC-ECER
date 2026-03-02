@@ -486,11 +486,13 @@ declare namespace Paths {
   namespace CoursesGet {
     namespace Parameters {
       export type Id = string;
+      export type ProgramTypes = Components.Schemas.ProgramTypes[];
       export type Type = Components.Schemas.FunctionType;
     }
     export interface QueryParameters {
       type: Parameters.Type;
-      id?: Parameters.Id;
+      id: Parameters.Id;
+      programTypes?: Parameters.ProgramTypes;
     }
     namespace Responses {
       export type $200 = Components.Schemas.Course[];

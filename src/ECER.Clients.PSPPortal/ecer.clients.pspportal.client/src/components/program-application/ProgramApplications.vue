@@ -100,9 +100,7 @@ export default defineComponent({
         "Draft",
         "InterimRecognition",
         "OnGoingRecognition",
-        "PendingReview",
         "ReviewAnalysis",
-        "RFAI",
         "Submitted",
       ] as Components.Schemas.ApplicationStatus[],
       inactiveStatus: [

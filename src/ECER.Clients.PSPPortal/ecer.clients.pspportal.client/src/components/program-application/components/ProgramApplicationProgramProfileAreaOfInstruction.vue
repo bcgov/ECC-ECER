@@ -1,45 +1,48 @@
 <template>
-  <h2>Provincial requirements</h2>
-  <br />
-  <ul v-if="programType === 'Basic'" class="ml-10">
-    <li>
-      Basic ECE education must total a minimum of
-      {{ calculateMinimumHoursRequired }} hours, including practicum
-    </li>
-    <li>
-      Practicum must account for a minimum of
-      {{ calculatePracticumHours }} hours
-    </li>
-    <li>
-      Each area of instruction has a minimum number of required course hours
-    </li>
-  </ul>
-  <ul v-else-if="programType === 'ITE'" class="ml-10">
-    <li>
-      ITE education must total a minimum of {{ MIN_HOURS_ITE_SNE }} hours,
-      including practicum
-    </li>
-    <li>Practicum must account for a minimum of 200 hours</li>
-  </ul>
-  <ul v-else-if="programType === 'SNE'" class="ml-10">
-    <li>
-      SNE education must total a minimum of {{ MIN_HOURS_ITE_SNE }} hours,
-      including practicum
-    </li>
-    <li>Practicum must account for a minimum of 200 hours</li>
-  </ul>
-  <br />
-  <p>
-    For a detailed description of Provincial requirements, refer to
-    <a
-      href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
-      target="_blank"
-    >
-      Table 1, 2 or 3 of the Child Care Occupational Competencies.
-    </a>
-  </p>
-  <br />
-  <AreaOfInstructionComponent
+  <Loading v-if="loadingStore.isLoading('courses_get')" />
+  <template v-else>
+    {{ courses }}
+    <h2>Provincial requirements</h2>
+    <br />
+    <ul v-if="programType === 'Basic'" class="ml-10">
+      <li>
+        Basic ECE education must total a minimum of
+        {{ calculateMinimumHoursRequired }} hours, including practicum
+      </li>
+      <li>
+        Practicum must account for a minimum of
+        {{ calculatePracticumHours }} hours
+      </li>
+      <li>
+        Each area of instruction has a minimum number of required course hours
+      </li>
+    </ul>
+    <ul v-else-if="programType === 'ITE'" class="ml-10">
+      <li>
+        ITE education must total a minimum of {{ MIN_HOURS_ITE_SNE }} hours,
+        including practicum
+      </li>
+      <li>Practicum must account for a minimum of 200 hours</li>
+    </ul>
+    <ul v-else-if="programType === 'SNE'" class="ml-10">
+      <li>
+        SNE education must total a minimum of {{ MIN_HOURS_ITE_SNE }} hours,
+        including practicum
+      </li>
+      <li>Practicum must account for a minimum of 200 hours</li>
+    </ul>
+    <br />
+    <p>
+      For a detailed description of Provincial requirements, refer to
+      <a
+        href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+        target="_blank"
+      >
+        Table 1, 2 or 3 of the Child Care Occupational Competencies.
+      </a>
+    </p>
+    <br />
+    <!-- <AreaOfInstructionComponent
     :program="programStore.draftProgram"
     :program-type="programType"
     :include-total-hours="showTotalHours"
@@ -60,26 +63,30 @@
         than one area of instruction.
       </p>
     </template>
-  </AreaOfInstructionComponent>
+  </AreaOfInstructionComponent> -->
+  </template>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useConfigStore } from "@/store/config";
+import { useLoadingStore } from "@/store/loading";
 
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
-import { getPrograms } from "@/api/program";
+import { getCourses } from "@/api/course";
 
 import * as Rules from "@/utils/formRules";
 import { MIN_HOURS_ITE_SNE } from "@/utils/constant";
 
+import Loading from "@/components/Loading.vue";
 // import Callout from "../common/Callout.vue";
 // import AreaOfInstructionComponent from "../program-profile/AreaOfInstructionComponent.vue";
 
 export default defineComponent({
   name: "EceProgramAreaInput",
   components: {
+    Loading,
     /*Callout, AreaOfInstructionComponent*/
   },
   props: {
@@ -95,9 +102,11 @@ export default defineComponent({
   emits: {},
   setup: () => {
     const configStore = useConfigStore();
+    const loadingStore = useLoadingStore();
 
     return {
       configStore,
+      loadingStore,
     };
   },
   data() {
@@ -106,13 +115,18 @@ export default defineComponent({
       Rules,
       MIN_HOURS_ITE_SNE,
       programApplication: null as Components.Schemas.ProgramApplication | null,
+      courses: [] as Components.Schemas.Course[] | undefined,
     };
   },
-  mounted() {
+  async mounted() {
+    await this.loadCourses();
     this.filteredAreasOfInstruction =
       this.configStore.areaOfInstructionList.filter((area) =>
         area.programTypes?.includes(this.programType),
       );
+  },
+  watch: {
+    programType: "loadCourses",
   },
   computed: {
     generateProgramTypeTitle(): string {
@@ -178,6 +192,13 @@ export default defineComponent({
   },
   methods: {
     formatDate,
+    async loadCourses() {
+      this.courses = await getCourses(
+        this.programApplicationId,
+        "ProgramApplication",
+        [this.programType],
+      );
+    },
     async reloadProgram() {
       console.warn("Not implemented yet");
       //   const programId = this.programStore.draftProgram?.id;
