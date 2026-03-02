@@ -48,6 +48,7 @@ declare namespace Components {
       programTypes?: ProgramTypes[] | null;
       minimumHours?: number | null; // int32
       displayOrder?: string | null;
+      parentAreaOfInstructionId?: string | null;
     }
     export interface AreaOfInstructionListResponse {
       areaOfInstruction?: AreaOfInstruction[] | null;
@@ -478,6 +479,21 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.UpdateCourseRequest;
     namespace Responses {
       export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace CoursesGet {
+    namespace Parameters {
+      export type Id = string;
+      export type Type = Components.Schemas.FunctionType;
+    }
+    export interface QueryParameters {
+      type: Parameters.Type;
+      id?: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Course[];
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -1077,6 +1093,16 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CourseDelete.Responses.$200>;
   /**
+   * courses_get - Gets courses by program profile id or program application id depending on type
+   *
+   * string.Empty
+   */
+  "courses_get"(
+    parameters?: Parameters<Paths.CoursesGet.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CoursesGet.Responses.$200>;
+  /**
    * course_post - Add a course for a program profile
    */
   "course_post"(
@@ -1445,6 +1471,16 @@ export interface PathsDictionary {
       data?: Paths.CoursePost.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CoursePost.Responses.$200>;
+    /**
+     * courses_get - Gets courses by program profile id or program application id depending on type
+     *
+     * string.Empty
+     */
+    "get"(
+      parameters?: Parameters<Paths.CoursesGet.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CoursesGet.Responses.$200>;
   };
   ["/api/messages/{parentId}"]: {
     /**

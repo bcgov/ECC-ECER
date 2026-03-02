@@ -80,7 +80,15 @@
         </template>
 
         <v-list-item v-for="(type, index) in programTypes" :key="index">
-          <v-list-item>
+          <v-list-item
+            :to="{
+              name: 'program-application-program-profile-area-of-instruction',
+              params: {
+                programApplicationId: programApplicationId,
+                programType: type,
+              },
+            }"
+          >
             <v-list-item-title>
               <v-icon>mdi-table</v-icon>
               {{ type }}

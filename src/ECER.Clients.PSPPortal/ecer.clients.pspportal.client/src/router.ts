@@ -214,6 +214,14 @@ const router = createRouter({
           meta: { requiresAuth: true, requiresVerification: true },
           props: true,
         },
+        {
+          path: "component/program-profile/:programType",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationProgramProfileAreaOfInstruction.vue"),
+          name: "program-application-program-profile-area-of-instruction",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
       ],
     },
   ],
