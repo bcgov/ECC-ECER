@@ -112,4 +112,41 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
   }
+  
+  [Fact]
+  public async Task UpdateProgramApplication_Type_Draft_ReturnsOk()
+  {
+    var program = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programApplications/{this.Fixture.draftProgramApplication2Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var status = await program.ReadAsJsonAsync<GetProgramApplicationResponse>();
+    status.ShouldNotBeNull();
+    var application = status.Applications!.First();
+    application.EnrollmentOptions = new [] { WorkHoursType.FullTime };
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(application).ToUrl($"/api/programApplications/{Fixture.draftProgramApplication2Id}");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var updatedProgram = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programApplications/{this.Fixture.draftProgramApplication2Id}");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var updatedProgramStatus = await updatedProgram.ReadAsJsonAsync<GetProgramApplicationResponse>();
+    updatedProgramStatus.ShouldNotBeNull();
+    var updatedApplication = status.Applications!.First();
+    updatedApplication.EnrollmentOptions.ShouldNotBeNull();
+    updatedApplication.EnrollmentOptions.ShouldNotBeEmpty();
+    updatedApplication.EnrollmentOptions.ShouldContain(WorkHoursType.FullTime);
+  }
 }

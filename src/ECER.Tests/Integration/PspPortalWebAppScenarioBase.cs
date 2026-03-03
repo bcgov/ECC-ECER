@@ -48,6 +48,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_PostSecondaryInstituteProgramApplicaiton programApplication = null!;
   private ecer_PostSecondaryInstituteProgramApplicaiton draftProgramApplication = null!;
+  private ecer_PostSecondaryInstituteProgramApplicaiton draftProgramApplication2 = null!;
   
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
@@ -75,6 +76,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   
   public string programApplicationId => programApplication.Id.ToString();
   public string draftProgramApplicationId => draftProgramApplication.Id.ToString();
+  public string draftProgramApplication2Id => draftProgramApplication2.Id.ToString();
   public string courseId3 => testCourse3.Id.ToString();
 
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
@@ -135,6 +137,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.ReviewAnalysis, ecer_Statusreasondetail.RFAIrequested);
     draftProgramApplication = 
       GetOrAddProgramApplication("Test_psp_program_application_withdraw", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
+    
+    draftProgramApplication2 = 
+      GetOrAddProgramApplication("Test_psp_program_application_update", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
     
     testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
     testCourse3 = GetOrAddCourse(context, testProgram1, "109");
