@@ -25,4 +25,25 @@ const getCourses = async (
   ).data;
 };
 
-export { getCourses };
+const updateCourse = async (
+  programId: string,
+  course: Components.Schemas.Course,
+  type: Components.Schemas.FunctionType,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.CoursePut.PathParameters = {
+    courseId: course.courseId,
+  };
+  const body: Paths.CoursePut.RequestBody = {
+    course: course,
+    type: type,
+    id: programId,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.course_put(pathParameters, body),
+    key: "course_put",
+  });
+};
+
+export { getCourses, updateCourse };

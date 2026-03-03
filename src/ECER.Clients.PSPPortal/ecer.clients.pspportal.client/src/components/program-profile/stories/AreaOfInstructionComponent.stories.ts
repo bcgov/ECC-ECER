@@ -131,6 +131,86 @@ const mockProgram: Components.Schemas.Program = {
   ],
 };
 
+// Mock courses data
+const mockCourses: Components.Schemas.Course[] = [
+  // Courses with allocated hours for area-1
+  {
+    courseId: "1",
+    courseNumber: "ECE 101",
+    courseTitle: "Introduction to Child Development",
+    programType: "Basic",
+    courseAreaOfInstruction: [
+      {
+        courseAreaOfInstructionId: "course-area-1",
+        newHours: "15.00",
+        areaOfInstructionId: "area-1",
+      },
+      {
+        courseAreaOfInstructionId: "course-area-2",
+        newHours: "10.00",
+        areaOfInstructionId: "area-2",
+      },
+    ],
+  },
+  {
+    courseId: "2",
+    courseNumber: "ECE 102",
+    courseTitle: "Early Learning Theories",
+    programType: "Basic",
+    courseAreaOfInstruction: [
+      {
+        courseAreaOfInstructionId: "course-area-3",
+        newHours: "20.00",
+        areaOfInstructionId: "area-1",
+      },
+    ],
+  },
+  // Course with allocated hours for area-2
+  {
+    courseId: "3",
+    courseNumber: "HSN 101",
+    courseTitle: "Nutrition Basics",
+    programType: "Basic",
+    courseAreaOfInstruction: [
+      {
+        courseAreaOfInstructionId: "course-area-4",
+        newHours: "15.00",
+        areaOfInstructionId: "area-2",
+      },
+    ],
+  },
+  // Non-allocated course (no courseAreaOfInstruction)
+  {
+    courseId: "4",
+    courseNumber: "ECE 200",
+    courseTitle: "Professional Development",
+    programType: "Basic",
+    courseAreaOfInstruction: null,
+  },
+  // Non-allocated course (empty courseAreaOfInstruction)
+  {
+    courseId: "5",
+    courseNumber: "ECE 250",
+    courseTitle: "Child Care Administration",
+    programType: "Basic",
+    courseAreaOfInstruction: [],
+  },
+  // Non-allocated course (courseAreaOfInstruction with no valid areaId or hours)
+  {
+    courseId: "6",
+    courseNumber: "ECE 300",
+    courseTitle: "Special Topics",
+    programType: "Basic",
+    courseAreaOfInstruction: [
+      {
+        courseAreaOfInstructionId: "course-area-5",
+        newHours: "0",
+        areaOfInstructionId: null,
+      },
+    ],
+  },
+];
+
 // Decorator that initializes the store before rendering
 const withMockConfigStore = (storyFn: any, context: any) => {
   // Initialize store with mock data
@@ -152,10 +232,20 @@ const meta = {
       description:
         "The program type to filter areas of instruction and courses",
     },
-    program: {
+    courses: {
       control: "object",
+      description: "The courses array containing course information",
+    },
+    id: {
+      control: "text",
       description:
-        "The program object containing courses and program information",
+        "represents the program profile id or program application id",
+    },
+    type: {
+      control: "select",
+      options: ["ProgramProfile", "ProgramApplication"],
+      description:
+        "The type of the parent component (ProgramProfile or ProgramApplication)",
     },
     areaSubtitles: {
       control: "object",
@@ -169,7 +259,7 @@ const meta = {
   },
   args: {
     programType: "Basic" as Components.Schemas.ProgramTypes,
-    program: mockProgram,
+    courses: mockCourses,
     areaSubtitles: {},
     includeTotalHours: false,
   },
@@ -189,9 +279,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     programType: "Basic",
-    program: mockProgram,
+    courses: mockCourses,
     areaSubtitles: {},
     includeTotalHours: false,
+    id: "mock-program-profile-guid",
+    type: "ProgramProfile",
   },
   render: (args) => ({
     components: { AreaOfInstructionComponent },
@@ -216,9 +308,11 @@ export const Default: Story = {
 export const WithTotalHours: Story = {
   args: {
     programType: "Basic",
-    program: mockProgram,
+    courses: mockCourses,
     areaSubtitles: {},
     includeTotalHours: true,
+    id: "mock-program-profile-guid",
+    type: "ProgramProfile",
   },
   render: (args) => ({
     components: { AreaOfInstructionComponent },
@@ -240,25 +334,24 @@ export const WithTotalHours: Story = {
 export const WithEmptyArea: Story = {
   args: {
     programType: "Basic",
-    program: {
-      ...mockProgram,
-      courses: [
-        // Only courses for area-1, so area-2 and area-3 should show with no courses
-        {
-          courseId: "1",
-          courseNumber: "ECE 101",
-          courseTitle: "Introduction to Child Development",
-          programType: "Basic",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-1",
-              newHours: "15.00",
-              areaOfInstructionId: "area-1",
-            },
-          ],
-        },
-      ],
-    },
+    courses: [
+      // Only courses for area-1, so area-2 and area-3 should show with no courses
+      {
+        courseId: "1",
+        courseNumber: "ECE 101",
+        courseTitle: "Introduction to Child Development",
+        programType: "Basic",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-1",
+            newHours: "15.00",
+            areaOfInstructionId: "area-1",
+          },
+        ],
+      },
+    ],
+    id: "mock-program-profile-guid",
+    type: "ProgramProfile",
     areaSubtitles: {},
     includeTotalHours: false,
   },
@@ -282,70 +375,70 @@ export const WithEmptyArea: Story = {
 export const WithChildGuidanceCombined: Story = {
   args: {
     programType: "Basic",
-    program: {
-      ...mockProgram,
-      courses: [
-        // Course for Program Development, Curriculum and Foundations
-        {
-          courseId: "1",
-          courseNumber: "ECE 301",
-          courseTitle: "Curriculum Development",
-          programType: "Basic",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-6",
-              newHours: "20.00",
-              areaOfInstructionId: "area-4",
-            },
-          ],
-        },
-        {
-          courseId: "2",
-          courseNumber: "ECE 302",
-          courseTitle: "Program Planning",
-          programType: "Basic",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-7",
-              newHours: "15.00",
-              areaOfInstructionId: "area-4",
-            },
-          ],
-        },
-        // Course for Child Guidance
-        {
-          courseId: "3",
-          courseNumber: "ECE 303",
-          courseTitle: "Positive Guidance Strategies",
-          programType: "Basic",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-8",
-              newHours: "10.00",
-              areaOfInstructionId: "area-5",
-            },
-          ],
-        },
-        {
-          courseId: "4",
-          courseNumber: "ECE 304",
-          courseTitle: "Behavior Management",
-          programType: "Basic",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-9",
-              newHours: "8.00",
-              areaOfInstructionId: "area-5",
-            },
-          ],
-        },
-      ],
-    },
+
+    courses: [
+      // Course for Program Development, Curriculum and Foundations
+      {
+        courseId: "1",
+        courseNumber: "ECE 301",
+        courseTitle: "Curriculum Development",
+        programType: "Basic",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-6",
+            newHours: "20.00",
+            areaOfInstructionId: "area-4",
+          },
+        ],
+      },
+      {
+        courseId: "2",
+        courseNumber: "ECE 302",
+        courseTitle: "Program Planning",
+        programType: "Basic",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-7",
+            newHours: "15.00",
+            areaOfInstructionId: "area-4",
+          },
+        ],
+      },
+      // Course for Child Guidance
+      {
+        courseId: "3",
+        courseNumber: "ECE 303",
+        courseTitle: "Positive Guidance Strategies",
+        programType: "Basic",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-8",
+            newHours: "10.00",
+            areaOfInstructionId: "area-5",
+          },
+        ],
+      },
+      {
+        courseId: "4",
+        courseNumber: "ECE 304",
+        courseTitle: "Behavior Management",
+        programType: "Basic",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-9",
+            newHours: "8.00",
+            areaOfInstructionId: "area-5",
+          },
+        ],
+      },
+    ],
     areaSubtitles: {
       "area-5":
         "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
     },
     includeTotalHours: false,
+    id: "mock-program-profile-guid",
+    type: "ProgramProfile",
   },
   render: (args) => ({
     components: { AreaOfInstructionComponent },
@@ -367,70 +460,70 @@ export const WithChildGuidanceCombined: Story = {
 export const BasicWithChildGuidanceSubtitle: Story = {
   args: {
     programType: "Basic",
-    program: {
-      ...mockProgram,
-      courses: [
-        {
-          courseId: "1",
-          courseNumber: "ECE 101",
-          courseTitle: "Introduction to Child Development",
-          programType: "Basic",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-1",
-              newHours: "15.00",
-              areaOfInstructionId: "area-1",
-            },
-          ],
-        },
-        {
-          courseId: "2",
-          courseNumber: "ECE 301",
-          courseTitle: "Curriculum Development",
-          programType: "Basic",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-6",
-              newHours: "20.00",
-              areaOfInstructionId: "area-4",
-            },
-          ],
-        },
-        {
-          courseId: "3",
-          courseNumber: "ECE 303",
-          courseTitle: "Positive Guidance Strategies",
-          programType: "Basic",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-8",
-              newHours: "10.00",
-              areaOfInstructionId: "area-5",
-            },
-          ],
-        },
-        // Non-allocated courses
-        {
-          courseId: "4",
-          courseNumber: "ECE 200",
-          courseTitle: "Professional Development",
-          programType: "Basic",
-          courseAreaOfInstruction: null,
-        },
-        {
-          courseId: "5",
-          courseNumber: "ECE 250",
-          courseTitle: "Child Care Administration",
-          programType: "Basic",
-          courseAreaOfInstruction: [],
-        },
-      ],
-    },
+
+    courses: [
+      {
+        courseId: "1",
+        courseNumber: "ECE 101",
+        courseTitle: "Introduction to Child Development",
+        programType: "Basic",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-1",
+            newHours: "15.00",
+            areaOfInstructionId: "area-1",
+          },
+        ],
+      },
+      {
+        courseId: "2",
+        courseNumber: "ECE 301",
+        courseTitle: "Curriculum Development",
+        programType: "Basic",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-6",
+            newHours: "20.00",
+            areaOfInstructionId: "area-4",
+          },
+        ],
+      },
+      {
+        courseId: "3",
+        courseNumber: "ECE 303",
+        courseTitle: "Positive Guidance Strategies",
+        programType: "Basic",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-8",
+            newHours: "10.00",
+            areaOfInstructionId: "area-5",
+          },
+        ],
+      },
+      // Non-allocated courses
+      {
+        courseId: "4",
+        courseNumber: "ECE 200",
+        courseTitle: "Professional Development",
+        programType: "Basic",
+        courseAreaOfInstruction: null,
+      },
+      {
+        courseId: "5",
+        courseNumber: "ECE 250",
+        courseTitle: "Child Care Administration",
+        programType: "Basic",
+        courseAreaOfInstruction: [],
+      },
+    ],
     areaSubtitles: {
       "area-5":
         "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
     },
     includeTotalHours: false,
+    id: "mock-program-profile-guid",
+    type: "ProgramProfile",
   },
   render: (args) => ({
     components: { AreaOfInstructionComponent },
@@ -452,117 +545,114 @@ export const BasicWithChildGuidanceSubtitle: Story = {
 export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
   args: {
     programType: "SNE",
-    program: {
-      ...mockProgram,
-      courses: [
-        {
-          courseId: "1",
-          courseNumber: "ECE 101",
-          courseTitle: "Introduction to Child Development",
-          programType: "SNE",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-1",
-              newHours: "15.00",
-              areaOfInstructionId: "area-1",
-            },
-          ],
-        },
-        {
-          courseId: "2",
-          courseNumber: "ECE 102",
-          courseTitle: "Early Learning Theories",
-          programType: "SNE",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-3",
-              newHours: "20.00",
-              areaOfInstructionId: "area-1",
-            },
-          ],
-        },
-        {
-          courseId: "3",
-          courseNumber: "HSN 101",
-          courseTitle: "Nutrition Basics",
-          programType: "SNE",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-4",
-              newHours: "15.00",
-              areaOfInstructionId: "area-2",
-            },
-          ],
-        },
-        {
-          courseId: "4",
-          courseNumber: "OBS 101",
-          courseTitle: "Observation Techniques",
-          programType: "SNE",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-10",
-              newHours: "10.00",
-              areaOfInstructionId: "area-3",
-            },
-          ],
-        },
-        {
-          courseId: "5",
-          courseNumber: "PRAC 101",
-          courseTitle: "Practicum I",
-          programType: "SNE",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-11",
-              newHours: "60.00",
-              areaOfInstructionId: "area-6",
-            },
-          ],
-        },
-        {
-          courseId: "6",
-          courseNumber: "PRAC 102",
-          courseTitle: "Practicum II",
-          programType: "SNE",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-12",
-              newHours: "50.00",
-              areaOfInstructionId: "area-6",
-            },
-          ],
-        },
-        // Non-allocated courses
-        {
-          courseId: "7",
-          courseNumber: "SNE 200",
-          courseTitle: "Special Needs Administration",
-          programType: "SNE",
-          courseAreaOfInstruction: null,
-        },
-        {
-          courseId: "8",
-          courseNumber: "SNE 250",
-          courseTitle: "Advanced Special Education Topics",
-          programType: "SNE",
-          courseAreaOfInstruction: [],
-        },
-        {
-          courseId: "9",
-          courseNumber: "SNE 300",
-          courseTitle: "Independent Study",
-          programType: "SNE",
-          courseAreaOfInstruction: [
-            {
-              courseAreaOfInstructionId: "course-area-13",
-              newHours: "0",
-              areaOfInstructionId: null,
-            },
-          ],
-        },
-      ],
-    },
+    courses: [
+      {
+        courseId: "1",
+        courseNumber: "ECE 101",
+        courseTitle: "Introduction to Child Development",
+        programType: "SNE",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-1",
+            newHours: "15.00",
+            areaOfInstructionId: "area-1",
+          },
+        ],
+      },
+      {
+        courseId: "2",
+        courseNumber: "ECE 102",
+        courseTitle: "Early Learning Theories",
+        programType: "SNE",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-3",
+            newHours: "20.00",
+            areaOfInstructionId: "area-1",
+          },
+        ],
+      },
+      {
+        courseId: "3",
+        courseNumber: "HSN 101",
+        courseTitle: "Nutrition Basics",
+        programType: "SNE",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-4",
+            newHours: "15.00",
+            areaOfInstructionId: "area-2",
+          },
+        ],
+      },
+      {
+        courseId: "4",
+        courseNumber: "OBS 101",
+        courseTitle: "Observation Techniques",
+        programType: "SNE",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-10",
+            newHours: "10.00",
+            areaOfInstructionId: "area-3",
+          },
+        ],
+      },
+      {
+        courseId: "5",
+        courseNumber: "PRAC 101",
+        courseTitle: "Practicum I",
+        programType: "SNE",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-11",
+            newHours: "60.00",
+            areaOfInstructionId: "area-6",
+          },
+        ],
+      },
+      {
+        courseId: "6",
+        courseNumber: "PRAC 102",
+        courseTitle: "Practicum II",
+        programType: "SNE",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-12",
+            newHours: "50.00",
+            areaOfInstructionId: "area-6",
+          },
+        ],
+      },
+      // Non-allocated courses
+      {
+        courseId: "7",
+        courseNumber: "SNE 200",
+        courseTitle: "Special Needs Administration",
+        programType: "SNE",
+        courseAreaOfInstruction: null,
+      },
+      {
+        courseId: "8",
+        courseNumber: "SNE 250",
+        courseTitle: "Advanced Special Education Topics",
+        programType: "SNE",
+        courseAreaOfInstruction: [],
+      },
+      {
+        courseId: "9",
+        courseNumber: "SNE 300",
+        courseTitle: "Independent Study",
+        programType: "SNE",
+        courseAreaOfInstruction: [
+          {
+            courseAreaOfInstructionId: "course-area-13",
+            newHours: "0",
+            areaOfInstructionId: null,
+          },
+        ],
+      },
+    ],
     areaSubtitles: {
       "area-1": "",
       "area-2": "",
@@ -573,6 +663,8 @@ export const SNEWithTotalHoursAndPracticumSubtitle: Story = {
         "Practicum hours are required for SNE program completion. A minimum of 120 hours is required.",
     },
     includeTotalHours: true,
+    id: "mock-program-profile-guid",
+    type: "ProgramProfile",
   },
   render: (args) => ({
     components: { AreaOfInstructionComponent },

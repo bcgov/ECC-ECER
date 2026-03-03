@@ -40,7 +40,7 @@
       :show="showEditCourseDialog"
       :program-type="programType"
       :course="selectedCourse"
-      :courseList="program?.courses || []"
+      :courseList="courses"
       :saving="saving"
       @save="handleCourseSave"
       @cancel="
@@ -51,7 +51,8 @@
   </div>
   <!-- this is to block the user from progressing if hours are not met -->
   <v-input
-    v-model="program.courses"
+    v-if="type === 'ProgramProfile'"
+    v-model="courses"
     :rules="generateRulesByProgramType()"
     :max-errors="5"
   ></v-input>
@@ -63,7 +64,7 @@ import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
 import { useAlertStore } from "@/store/alert";
 import { getAreaOfInstructionList } from "@/api/configuration";
-import { updateCourse } from "@/api/program";
+import { updateCourse } from "@/api/course";
 import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
 import EditCourseDialog from "./EditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
@@ -92,8 +93,21 @@ export default defineComponent({
       type: String as PropType<Components.Schemas.ProgramTypes>,
       required: true,
     },
-    program: {
-      type: Object as PropType<Components.Schemas.Program>,
+    // program: {
+    //   type: Object as PropType<Components.Schemas.Program>,
+    //   required: true,
+    // },
+    courses: {
+      type: Object as PropType<Components.Schemas.Course[]>,
+      required: true,
+    },
+    // this can refer to a either programProfile or programApplication id depending on programType
+    id: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String as PropType<Components.Schemas.FunctionType>,
       required: true,
     },
     areaSubtitles: {
@@ -107,7 +121,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["courseEdit", "reloadProgram"],
+  emits: ["courseEdit", "reloadCourses"],
   setup() {
     const configStore = useConfigStore();
     const alertStore = useAlertStore();
@@ -165,17 +179,20 @@ export default defineComponent({
     },
     loading(): boolean {
       return (
-        this.loadingStore.isLoading("program_get") ||
-        this.loadingStore.isLoading("course_put")
+        this.loadingStore.isLoading("courses_get") ||
+        this.loadingStore.isLoading("course_put") ||
+        this.loadingStore.isLoading("course_post") ||
+        this.loadingStore.isLoading("course_delete") ||
+        this.loadingStore.isLoading("program_get")
       );
     },
     nonAllocatedCourses(): Components.Schemas.Course[] {
-      if (!this.program?.courses) {
+      if (!this.courses) {
         return [];
       }
 
       // Filter courses by programType first
-      const coursesForProgramType = this.program.courses.filter(
+      const coursesForProgramType = this.courses.filter(
         (course) => course.programType === this.programType,
       );
 
@@ -193,11 +210,11 @@ export default defineComponent({
       });
     },
     totalHours(): number {
-      if (!this.program?.courses) {
+      if (!this.courses) {
         return 0;
       }
       let total = 0;
-      this.program.courses
+      this.courses
         .filter((course) => course.programType === this.programType)
         .forEach((course) => {
           if (course.courseAreaOfInstruction) {
@@ -234,7 +251,7 @@ export default defineComponent({
     getCoursesForArea(
       areaId: string | null | undefined,
     ): CourseAreaOfInstructionWithCourse[] {
-      if (!areaId || !this.program?.courses) {
+      if (!areaId || !this.courses) {
         return [];
       }
 
@@ -246,7 +263,7 @@ export default defineComponent({
         area?.name === "Program Development, Curriculum and Foundations";
 
       // First, collect Program Development courses
-      this.program.courses
+      this.courses
         .filter((course) => course.programType === this.programType)
         .forEach((course) => {
           if (course.courseAreaOfInstruction) {
@@ -282,7 +299,7 @@ export default defineComponent({
         let hasChildGuidanceCourses = false;
 
         if (childGuidanceAreaId) {
-          this.program.courses
+          this.courses
             .filter((course) => course.programType === this.programType)
             .forEach((course) => {
               if (course.courseAreaOfInstruction) {
@@ -330,7 +347,7 @@ export default defineComponent({
       areaOfInstructionCourse: Components.Schemas.CourseAreaOfInstruction,
     ) {
       this.selectedCourse =
-        this.program?.courses?.find((course) =>
+        this.courses?.find((course) =>
           course?.courseAreaOfInstruction?.some(
             (areaCourse) =>
               areaCourse.courseAreaOfInstructionId ===
@@ -340,7 +357,7 @@ export default defineComponent({
       this.showEditCourseDialog = true;
     },
     async handleCourseSave(updatedCourse: Components.Schemas.Course) {
-      if (!this.program?.id || !updatedCourse) {
+      if (!this.id || !updatedCourse) {
         console.log("Invalid course save data. This should not happen.");
         this.alertStore.setFailureAlert(
           "Sorry, something went wrong and your changes could not be saved. Try again later.",
@@ -350,8 +367,9 @@ export default defineComponent({
       this.saving = true;
       try {
         const { error } = await updateCourse(
-          this.program.id,
+          this.id,
           updatedCourse as Components.Schemas.Course,
+          this.type,
         );
 
         if (error) {
@@ -363,7 +381,7 @@ export default defineComponent({
           this.alertStore.setSuccessAlert(
             "Course has been updated successfully.",
           );
-          this.$emit("reloadProgram");
+          this.$emit("reloadCourses");
           this.showEditCourseDialog = false;
           this.selectedCourse = null;
           this.saving = false;

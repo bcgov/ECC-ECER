@@ -1,7 +1,6 @@
 <template>
   <Loading v-if="loadingStore.isLoading('courses_get')" />
   <template v-else>
-    {{ courses }}
     <h2>Provincial requirements</h2>
     <br />
     <ul v-if="programType === 'Basic'" class="ml-10">
@@ -42,28 +41,30 @@
       </a>
     </p>
     <br />
-    <!-- <AreaOfInstructionComponent
-    :program="programStore.draftProgram"
-    :program-type="programType"
-    :include-total-hours="showTotalHours"
-    :area-subtitles="generateSubtitleMap"
-    @reload-program="reloadProgram"
-  >
-    <template #description>
-      <p>
-        The courses included in your program are shown here, grouped by areas of
-        instruction.
-      </p>
-      <br />
-      <p>
-        Edit any courses as required to ensure that this program profile
-        reflects the correct course information. The following information is
-        editable: course number, course name, course hours allocated to each
-        area of instruction. In some cases, a course may be applicable to more
-        than one area of instruction.
-      </p>
-    </template>
-  </AreaOfInstructionComponent> -->
+    <AreaOfInstructionComponent
+      :courses="courses ?? []"
+      :id="programApplicationId"
+      type="ProgramApplication"
+      :program-type="programType"
+      :include-total-hours="showTotalHours"
+      :area-subtitles="generateSubtitleMap"
+      @reload-courses="loadCourses"
+    >
+      <template #description>
+        <p>
+          The courses included in your program are shown here, grouped by areas
+          of instruction.
+        </p>
+        <br />
+        <p>
+          Edit any courses as required to ensure that this program profile
+          reflects the correct course information. The following information is
+          editable: course number, course name, course hours allocated to each
+          area of instruction. In some cases, a course may be applicable to more
+          than one area of instruction.
+        </p>
+      </template>
+    </AreaOfInstructionComponent>
   </template>
 </template>
 
@@ -80,14 +81,13 @@ import * as Rules from "@/utils/formRules";
 import { MIN_HOURS_ITE_SNE } from "@/utils/constant";
 
 import Loading from "@/components/Loading.vue";
-// import Callout from "../common/Callout.vue";
-// import AreaOfInstructionComponent from "../program-profile/AreaOfInstructionComponent.vue";
+import AreaOfInstructionComponent from "../../program-profile/AreaOfInstructionComponent.vue";
 
 export default defineComponent({
   name: "EceProgramAreaInput",
   components: {
     Loading,
-    /*Callout, AreaOfInstructionComponent*/
+    AreaOfInstructionComponent,
   },
   props: {
     programType: {
@@ -198,33 +198,6 @@ export default defineComponent({
         "ProgramApplication",
         [this.programType],
       );
-    },
-    async reloadProgram() {
-      console.warn("Not implemented yet");
-      //   const programId = this.programStore.draftProgram?.id;
-      //   if (!programId) {
-      //     return;
-      //   }
-      //   try {
-      //     const { data: programResult } = await getPrograms(programId, [
-      //       "Draft",
-      //       "Denied",
-      //       "Approved",
-      //       "UnderReview",
-      //       "ChangeRequestInProgress",
-      //       "Inactive",
-      //     ]);
-      //     const program =
-      //       programResult?.programs && programResult.programs.length > 0
-      //         ? programResult.programs[0]
-      //         : null;
-      //     if (program) {
-      //       // Update the store with the reloaded program
-      //       this.programStore.setDraftProgramFromProfile(program);
-      //     }
-      //   } catch (error) {
-      //     console.error("Error loading program:", error);
-      //   }
     },
   },
 });

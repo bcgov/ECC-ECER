@@ -50,7 +50,11 @@ internal sealed class CourseRepository : ICourseRepository
       courses = courses.WhereIn(p => p.ecer_ProgramType!.Value, mappedProgramTypes);
     }
 
-    var results = context.From(courses).Execute().ToList();
+    var results = context.From(courses)
+      .Join()
+      .Include(t => t.ecer_courseprovincialrequirement_CourseId)
+      .Execute()
+      .ToList();
 
     return mapper.Map<IEnumerable<Course>>(results);
   }

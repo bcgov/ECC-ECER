@@ -147,8 +147,8 @@ export default defineComponent({
   components: {},
   setup() {
     const configStore = useConfigStore();
-    const display = useDisplay();
-    const { mdAndUp, smAndDown } = toRefs(display);
+    const { mdAndUp, smAndDown } = useDisplay();
+
     return {
       configStore,
       mdAndUp,
