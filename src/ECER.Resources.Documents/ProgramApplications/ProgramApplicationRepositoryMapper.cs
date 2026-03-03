@@ -12,6 +12,8 @@ internal class ProgramApplicationRepositoryMapper : Profile
     CreateMap<ProgramApplication, ecer_PostSecondaryInstituteProgramApplicaiton>(MemberList.Source)
       .ForSourceMember(s => s.PostSecondaryInstituteId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ComponentsGenerationCompleted, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramRepresentativeId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramCampuses, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_PostSecondaryInstituteProgramApplicaitonId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_statusreasondetail, opts => opts.MapFrom(s => s.StatusReasonDetail))
@@ -19,6 +21,13 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_ApplicationType, opts => opts.MapFrom(s => s.ProgramApplicationType))
       .ForMember(d => d.ecer_ProgramType, opts => opts.MapFrom(s => s.ProgramTypes))
       .ForMember(d => d.ecer_DeliveryType, opts => opts.MapFrom(s => s.DeliveryType))
+      .ForMember(d => d.ecer_ProjectedLength, opts => opts.MapFrom(s => s.ProgramLength))
+      .ForMember(d => d.ecer_Onlinemethodsofinstruction, opts => opts.MapFrom(s => s.OnlineMethodOfInstruction))
+      .ForMember(d => d.ecer_Deliverymethodforpracticuminstructor, opts => opts.MapFrom(s => s.DeliveryMethod))
+      .ForMember(d => d.ecer_ProgramEnrollment, opts => opts.MapFrom(s => s.EnrollmentOptions))
+      .ForMember(d => d.ecer_AdmissionOptions, opts => opts.MapFrom(s => s.AdmissionOptions))
+      .ForMember(d => d.ecer_MinimumStudentEnrollmentperCourse, opts => opts.MapFrom(s => s.MinimumEnrollment))
+      .ForMember(d => d.ecer_MaximumStudentEnrollmentperCourse, opts => opts.MapFrom(s => s.MaximumEnrollment))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(ProgramApplication.Id), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstituteProgramApplicaitonId.HasValue ? s.ecer_PostSecondaryInstituteProgramApplicaitonId.Value.ToString() : null))
@@ -28,8 +37,22 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramType))
       .ForMember(d => d.DeliveryType, opts => opts.MapFrom(s => s.ecer_DeliveryType))
       .ForMember(d => d.ProgramApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationType))
-      .ForMember(d => d.ComponentsGenerationCompleted, opts => opts.MapFrom(s => s.ecer_ComponentsGenerationCompleted))
+      .ForMember(d => d.ComponentsGenerationCompleted, opts => opts.MapFrom(s => s.ecer_ComponentsGenerationCompleted)) //s.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id
+      .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_PSIProgramRepresentative.Id))
+      .ForMember(d => d.ProgramLength, opts => opts.MapFrom(s => s.ecer_ProjectedLength))
+      .ForMember(d => d.OnlineMethodOfInstruction, opts => opts.MapFrom(s => s.ecer_Onlinemethodsofinstruction))
+      .ForMember(d => d.DeliveryMethod, opts => opts.MapFrom(s => s.ecer_Deliverymethodforpracticuminstructor))
+      .ForMember(d => d.EnrollmentOptions, opts => opts.MapFrom(s => s.ecer_ProgramEnrollment))
+      .ForMember(d => d.AdmissionOptions, opts => opts.MapFrom(s => s.ecer_AdmissionOptions))
+      .ForMember(d => d.MinimumEnrollment, opts => opts.MapFrom(s => s.ecer_MinimumStudentEnrollmentperCourse))
+      .ForMember(d => d.MaximumEnrollment, opts => opts.MapFrom(s => s.ecer_MaximumStudentEnrollmentperCourse))
+      .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton))
       ;
+    
+    CreateMap<ecer_ProgramCampus, ProgramCampus>(MemberList.Destination)
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
+      .ForMember(d => d.CampusId, opts => opts.MapFrom(s => s.ecer_CampusId.Id))
+      .ReverseMap();
 
     CreateMap<ApplicationStatus, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
@@ -44,6 +67,19 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     CreateMap<ProgramCertificationType, ecer_PSIProgramType>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    
+    CreateMap<MethodofInstruction, ecer_PSPMethodofInstruction>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    CreateMap<DeliveryMethodforInstructor, ecer_PSPDeliveryMethodforInstructor>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    CreateMap<WorkHoursType, ecer_WorkHoursType>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    CreateMap<AdmissionOptions, ecer_PSPAdmissionOptions>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     

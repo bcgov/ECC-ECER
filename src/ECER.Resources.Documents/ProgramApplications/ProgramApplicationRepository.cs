@@ -1,6 +1,7 @@
 using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.ProgramApplications;
@@ -61,6 +62,49 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       existingApplication.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Inactive;
       context.UpdateObject(existingApplication);
     }
+    else
+    {
+      var entity = mapper.Map<ecer_PostSecondaryInstituteProgramApplicaiton>(application)!;
+      
+      var instituteId = Guid.Parse(application.PostSecondaryInstituteId);
+      var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
+      if (institute == null)
+      {
+        throw new InvalidOperationException($"Post secondary institute '{application.PostSecondaryInstituteId}' not found");
+      }
+      
+      if (application.ProgramCampuses != null && application.ProgramCampuses.Any())
+      {
+        var psiId = entity.ecer_PostSecondaryInstituteProgramApplicaitonId!.Value;
+        foreach (var campus in application.ProgramCampuses)
+        {
+          if (!Guid.TryParse(campus.CampusId, out Guid campusGuid))
+          {
+            throw new InvalidOperationException("Campus id cannot be null");
+          }
+          var psiCampus =
+            context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(c => c.Id == campusGuid);
+          if (psiCampus != null && campus.Id == null)
+          {
+            var programCampus = new ecer_ProgramCampus
+            {
+              Id = Guid.NewGuid(),
+              ecer_EducationalInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, psiId),
+              ecer_ProgramApplicationId =
+                new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
+              ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, psiCampus.Id)
+            };
+            context.AddObject(programCampus);
+          }
+        }
+        
+      }
+      context.Detach(existingApplication);
+      context.Attach(entity);
+      context.UpdateObject(entity);
+      context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_, institute);
+    }
+    
     context.SaveChanges();
     return application.Id!;
   }
@@ -99,6 +143,8 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     }
 
     var results = context.From(applications)
+      .Join()
+      .Include(p => p.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton)
       .Execute()
       .ToList();
     
