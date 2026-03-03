@@ -73,7 +73,6 @@ internal sealed class ProgramRepository : IProgramRepository
           }
         }
       );
-        
     }
     else
     {
