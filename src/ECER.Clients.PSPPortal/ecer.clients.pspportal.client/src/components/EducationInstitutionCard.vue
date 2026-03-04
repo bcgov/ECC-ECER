@@ -20,10 +20,30 @@
 
     <v-row>
       <v-col cols="12" sm="3">
-        <span>Institution type:</span>
+        <span>Institution type</span>
       </v-col>
       <v-col cols="12" sm="9">
-        <span class="font-weight-bold">{{ formattedAuspice }}</span>
+        <span class="font-weight-bold">{{ formattedInstitutionType }}</span>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="educationInstitution.institutionType === 'Private'">
+      <v-col cols="12" sm="3">
+        <span>Private institution type</span>
+      </v-col>
+      <v-col cols="12" sm="9">
+        <span class="font-weight-bold">{{ formattedPrivateAuspiceType }}</span>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="educationInstitution.ptiruInstitutionId">
+      <v-col cols="12" sm="3">
+        <span>PTIRU identification number</span>
+      </v-col>
+      <v-col cols="12" sm="9">
+        <span class="font-weight-bold">
+          {{ educationInstitution.ptiruInstitutionId }}
+        </span>
       </v-col>
     </v-row>
 
@@ -52,6 +72,23 @@
         <span v-else class="font-weight-bold">—</span>
       </v-col>
     </v-row>
+
+    <v-row v-if="!hideViewButton" class="mt-4">
+      <v-col>
+        <v-btn
+          variant="outlined"
+          size="large"
+          class="mt-4"
+          color="primary"
+          id="btnEducationInstitution"
+          @click="
+            router.push(`education-institution/${educationInstitution.id}`)
+          "
+        >
+          View Institution Details
+        </v-btn>
+      </v-col>
+    </v-row>
   </Card>
 </template>
 
@@ -69,23 +106,49 @@ export default defineComponent({
       type: Object as PropType<Components.Schemas.EducationInstitution>,
       required: true,
     },
+    hideViewButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     const router = useRouter();
     return { router };
   },
   computed: {
-    formattedAuspice(): string {
-      if (!this.educationInstitution.auspice) return "—";
-      const auspiceMap: Record<Components.Schemas.Auspice, string> = {
+    formattedInstitutionType(): string {
+      if (!this.educationInstitution.institutionType) return "—";
+      const institutionTypeMap: Record<
+        Components.Schemas.PsiInstitutionType,
+        string
+      > = {
         Public: "Public",
         Private: "Private",
         PublicOOP: "Public — OOP",
         ContinuingEducation: "Continuing Education",
       };
       return (
-        auspiceMap[this.educationInstitution.auspice] ||
-        this.educationInstitution.auspice
+        institutionTypeMap[this.educationInstitution.institutionType] ||
+        this.educationInstitution.institutionType
+      );
+    },
+    formattedPrivateAuspiceType(): string {
+      if (!this.educationInstitution.privateAuspiceType) return "—";
+      const privateAuspiceTypeMap: Record<
+        Components.Schemas.PrivateAuspiceType,
+        string
+      > = {
+        Theologicalinstitution: "Theological",
+        FirstNationsmandatedpostsecondaryinstitute:
+          "First Nations mandated post-secondary institute",
+        Other: "Other",
+        Privatetraininginstitution: "Private training institution",
+        Indigenouscontrolledpostsecondaryinstitute:
+          "Indigenous controlled post-secondary institute",
+      };
+      return (
+        privateAuspiceTypeMap[this.educationInstitution.privateAuspiceType] ||
+        this.educationInstitution.privateAuspiceType
       );
     },
     formattedAddress(): string {
