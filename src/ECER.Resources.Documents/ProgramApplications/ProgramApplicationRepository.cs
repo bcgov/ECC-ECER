@@ -75,7 +75,18 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       
       if (application.ProgramCampuses != null && application.ProgramCampuses.Any())
       {
-        var psiId = entity.ecer_PostSecondaryInstituteProgramApplicaitonId!.Value;
+        var listOfExistingProgramCampuses = context.ecer_ProgramCampusSet.Where(c => c.ecer_EducationalInstitutionId.Id == instituteId && c.ecer_ProgramApplicationId.Id == entity.Id).ToList();
+        var existingIncomingProgramCampus = application.ProgramCampuses.Where(c => c.Id != null).Select(c => Guid.Parse(c.Id!)).ToList();
+        
+        var campusesToDelete = listOfExistingProgramCampuses
+          .Where(c => !existingIncomingProgramCampus.Contains(c.Id))
+          .ToList();
+        
+        foreach (var campus in campusesToDelete)
+        {
+          context.DeleteObject(campus);
+        }
+        
         foreach (var campus in application.ProgramCampuses)
         {
           if (!Guid.TryParse(campus.CampusId, out Guid campusGuid))
@@ -89,7 +100,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
             var programCampus = new ecer_ProgramCampus
             {
               Id = Guid.NewGuid(),
-              ecer_EducationalInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, psiId),
+              ecer_EducationalInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, instituteId),
               ecer_ProgramApplicationId =
                 new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
               ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, psiCampus.Id)
