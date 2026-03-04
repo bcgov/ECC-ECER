@@ -21,7 +21,8 @@ public class ProgramApplicationHandler(
     IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>,
     IRequestHandler<UpdateProgramApplicationCommand, string>,
     IRequestHandler<ComponentGroupQuery, IEnumerable<ComponentGroupMetadata>>,
-    IRequestHandler<ComponentGroupWithComponentsQuery, ComponentGroupWithComponents?>
+    IRequestHandler<ComponentGroupWithComponentsQuery, ComponentGroupWithComponents?>,
+    IRequestHandler<UpdateComponentGroupCommand, ComponentGroupWithComponents>
 {
   public async Task<Contract.ProgramApplications.ProgramApplication?> Handle(CreateProgramApplicationCommand request, CancellationToken cancellationToken)
   {
@@ -93,6 +94,22 @@ public class ProgramApplicationHandler(
       return null;
     return new ComponentGroupWithComponents(
       result.Id, result.Name, result.Instruction, result.Status, result.CategoryName, result.DisplayOrder,
+      mapper.Map<IEnumerable<ProgramApplicationComponent>>(result.Components)!);
+  }
+  
+  public async Task<ComponentGroupWithComponents> Handle(UpdateComponentGroupCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    await programApplicationRepository.UpdateComponentGroup(mapper.Map<Resources.Documents.ProgramApplications.ComponentGroupWithComponents>(request.ComponentGroup)!, request.ProgramApplicationId, cancellationToken);
+
+    var query = new Resources.Documents.ProgramApplications.ComponentGroupWithComponentsQuery
+    {
+      ByProgramApplicationId = request.ProgramApplicationId,
+      ByComponentGroupId = request.ComponentGroup.Id,
+    };
+    var result = await programApplicationRepository.QueryComponentGroupById(query, cancellationToken);
+    return new ComponentGroupWithComponents(
+      result!.Id, result.Name, result.Instruction, result.Status, result.CategoryName, result.DisplayOrder,
       mapper.Map<IEnumerable<ProgramApplicationComponent>>(result.Components)!);
   }
 }

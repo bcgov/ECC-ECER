@@ -67,6 +67,8 @@ internal class ProgramApplicationMapper: Profile
       .ReverseMap();
     
     CreateMap<Contract.ProgramApplications.ComponentGroupMetadata, ComponentGroupMetadata>().ReverseMap();
+    CreateMap<Contract.ProgramApplications.FileInfo, Resources.Documents.ProgramApplications.FileInfo>().ReverseMap();
     CreateMap<Contract.ProgramApplications.ProgramApplicationComponent, Resources.Documents.ProgramApplications.ProgramApplicationComponent>().ReverseMap();
+    CreateMap<Contract.ProgramApplications.ComponentGroupWithComponents, Resources.Documents.ProgramApplications.ComponentGroupWithComponents>().ReverseMap();
   }
 }

@@ -149,4 +149,92 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     updatedApplication.EnrollmentOptions.ShouldNotBeEmpty();
     updatedApplication.EnrollmentOptions.ShouldContain(WorkHoursType.FullTime);
   }
+
+  [Fact]
+  public async Task UpdateComponentGroup_WhenComponentGroupIdDoesNotMatchRequestBody_ReturnsBadRequest()
+  {
+    var appId = Fixture.programApplicationId;
+    var routeComponentGroupId = Guid.NewGuid().ToString();
+    var differentBodyId = Guid.NewGuid().ToString();
+    var request = new ComponentGroupWithComponents(differentBodyId, "Group", null, "Draft", "Category", 1, Array.Empty<ProgramApplicationComponent>());
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(request).ToUrl($"/api/programApplications/{appId}/componentGroups/{routeComponentGroupId}");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
+  public async Task UpdateComponentGroup_WhenApplicationDoesNotExist_ReturnsNotFound()
+  {
+    var nonExistentAppId = Guid.NewGuid().ToString();
+    var componentGroupId = Guid.NewGuid().ToString();
+    var request = new ComponentGroupWithComponents(componentGroupId, "Group", null, "Draft", "Category", 1, Array.Empty<ProgramApplicationComponent>());
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(request).ToUrl($"/api/programApplications/{nonExistentAppId}/componentGroups/{componentGroupId}");
+      _.StatusCodeShouldBe(HttpStatusCode.NotFound);
+    });
+  }
+
+  [Fact]
+  public async Task UpdateComponentGroup_WithInvalidApplicationIdFormat_ReturnsBadRequest()
+  {
+    var componentGroupId = Guid.NewGuid().ToString();
+    var request = new ComponentGroupWithComponents(componentGroupId, "Group", null, "Draft", "Category", 1, Array.Empty<ProgramApplicationComponent>());
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(request).ToUrl($"/api/programApplications/not-a-valid-guid/componentGroups/{componentGroupId}");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
+  public async Task UpdateComponentGroup_WithInvalidComponentGroupIdFormat_ReturnsBadRequest()
+  {
+    var appId = Fixture.programApplicationId;
+    var request = new ComponentGroupWithComponents("not-a-valid-guid", "Group", null, "Draft", "Category", 1, Array.Empty<ProgramApplicationComponent>());
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(request).ToUrl($"/api/programApplications/{appId}/componentGroups/not-a-valid-guid");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
+  public async Task UpdateComponentGroup_WithValidAnswer_ReturnsOkAndPersistsAnswer()
+  {
+    var appId = Fixture.componentTestProgramApplicationId;
+    var groupId = Fixture.componentTestComponentGroupId;
+    var componentId = Fixture.componentTestComponentId;
+    var expectedAnswer = $"My answer {Guid.NewGuid():N}";
+
+    var updatedComponent = new ProgramApplicationComponent(componentId, string.Empty, null, 0, expectedAnswer, null);
+    var request = new ComponentGroupWithComponents(groupId, string.Empty, null, "Draft", string.Empty, 0, new[] { updatedComponent });
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(request).ToUrl($"/api/programApplications/{appId}/componentGroups/{groupId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var result = await response.ReadAsJsonAsync<ComponentGroupWithComponents>();
+    result.ShouldNotBeNull();
+    result.Id.ShouldBe(groupId);
+
+    var savedComponent = result.Components!.FirstOrDefault(c => c.Id == componentId);
+    savedComponent.ShouldNotBeNull();
+    savedComponent.Answer.ShouldBe(expectedAnswer);
+    savedComponent.Name.ShouldNotBeNullOrEmpty();
+    savedComponent.Question.ShouldNotBeNullOrEmpty();
+  }
 }

@@ -192,7 +192,60 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       .Join()
       .Include(e => e.ecer_programapplicationcomponentgroup_ComponentGroup)
       .Include(e => e.ecer_programapplicationcomponent_ComponentGroup)
+      .IncludeNested(e => e.ecer_documenturl_ProgramApplicationComponentId)
       .Execute().SingleOrDefault();
     return mapper.Map<ComponentGroupResults>(entity);
+  }
+  
+  public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+
+    var groupId = Guid.Parse(componentGroupToUpdate.Id);
+    var appId = Guid.Parse(applicationId);
+    
+    var componentGroup = context.ecer_ProgramApplicationComponentGroupSet
+      .SingleOrDefault(g => g.ecer_ProgramApplicationComponentGroupId == groupId && g.ecer_ProgramApplication.Id == appId);
+    if (componentGroup == null) throw new InvalidOperationException($"Component group '{componentGroupToUpdate.Id}' not found");
+
+    var existingComponentsQuery = context.ecer_ProgramApplicationComponentSet
+      .Where(c => c.ecer_ComponentGroup.Id == groupId);
+    var existingComponents = context.From(existingComponentsQuery)
+      .Execute()
+      .Where(c => c.ecer_ProgramApplicationComponentId.HasValue)
+      .ToDictionary(c => c.ecer_ProgramApplicationComponentId!.Value);
+
+    foreach (var component in componentGroupToUpdate.Components)
+    {
+      if (!Guid.TryParse(component.Id, out var componentId)) continue;
+      if (!existingComponents.TryGetValue(componentId, out var existingComponent)) continue;
+
+      var ecerComponent = mapper.Map<ecer_ProgramApplicationComponent>(component)!;
+      context.Detach(existingComponent);
+      context.Attach(ecerComponent);
+      context.UpdateObject(ecerComponent);
+      existingComponents[componentId] = ecerComponent;
+    }
+
+    var allAnswers = existingComponents.Values.Select(c => c.ecer_Componentanswer).ToList();
+    ecer_PSPComponentProgress progress;
+    if (allAnswers.All(string.IsNullOrWhiteSpace))
+    {
+      progress = ecer_PSPComponentProgress.ToDo;
+    }
+    else if (allAnswers.All(a => !string.IsNullOrWhiteSpace(a)))
+    {
+      progress = ecer_PSPComponentProgress.Completed;
+    }
+    else
+    {
+      progress = ecer_PSPComponentProgress.InProgress;
+    }
+
+    componentGroup.ecer_EntryProgress = progress;
+    context.UpdateObject(componentGroup);
+
+    context.SaveChanges();
+    return componentGroupToUpdate.Id;
   }
 }

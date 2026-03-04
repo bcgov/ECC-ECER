@@ -13,10 +13,11 @@
           size="56"
           class="mb-4"
         />
-        <h3 class="mb-3">Preparing profile for review</h3>
+        <h3 class="mb-3">Preparing program profile for review</h3>
         <p class="ma-0">
-          Please wait a few minutes while we prepare it for review. When ready,
-          it will appear here and will also be available in your dashboard.
+          We are preparing your program profile for review. This may take a few
+          minutes. When this program profile is ready it will appear here and
+          also be available from your dashboard.
         </p>
       </v-card>
     </v-col>

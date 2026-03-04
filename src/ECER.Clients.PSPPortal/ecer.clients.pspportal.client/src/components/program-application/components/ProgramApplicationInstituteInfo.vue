@@ -444,6 +444,7 @@ export default defineComponent({
       programApplicationStore,
     };
   },
+  emits: ["next"],
   computed: {
     validateHours() {
       return (v: string) => {

@@ -28,7 +28,17 @@ public record ComponentGroupWithComponentsQuery : IRequest<ComponentGroupWithCom
   public string? ByComponentGroupId { get; set; }
 }
 
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files);
+
+public record FileInfo(string Id)
+{
+  public string? Name { get; set; }
+  public string? Url { get; set; }
+  public string? Size { get; set; }
+  public string? Extension { get; set; }
+}
+
+public record UpdateComponentGroupCommand(ComponentGroupWithComponents ComponentGroup, string ProgramApplicationId) : IRequest<ComponentGroupWithComponents>;
 
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 

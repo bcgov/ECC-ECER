@@ -71,7 +71,19 @@ internal sealed class ProgramApplicationsMapper: Profile
       .ReverseMap();
     
     CreateMap<ComponentGroupMetadata, Managers.Registry.Contract.ProgramApplications.ComponentGroupMetadata>().ReverseMap();
-    CreateMap<ProgramApplicationComponent, Managers.Registry.Contract.ProgramApplications.ProgramApplicationComponent>().ReverseMap();
-    CreateMap<ComponentGroupWithComponents, Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>().ReverseMap();
+    CreateMap<FileInfo, Managers.Registry.Contract.ProgramApplications.FileInfo>().ReverseMap();
+    CreateMap<ProgramApplicationComponent, Managers.Registry.Contract.ProgramApplications.ProgramApplicationComponent>()
+      .ForMember(d => d.Name, opts => opts.Ignore())
+      .ForMember(d => d.Question, opts => opts.Ignore())
+      .ForMember(d => d.DisplayOrder, opts => opts.Ignore())
+      .ForMember(d => d.Files, opts => opts.Ignore())
+      .ReverseMap();
+    CreateMap<ComponentGroupWithComponents, Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>()
+      .ForMember(d => d.Name, opts => opts.Ignore())
+      .ForMember(d => d.Instruction, opts => opts.Ignore())
+      .ForMember(d => d.Status, opts => opts.Ignore())
+      .ForMember(d => d.CategoryName, opts => opts.Ignore())
+      .ForMember(d => d.DisplayOrder, opts => opts.Ignore())
+      .ReverseMap();
   }
 }
