@@ -83,8 +83,8 @@
                 programApplicationObject.programCampuses.length >= 1 &&
                 campus.id !== null &&
                 campus.id !== undefined &&
-                !programApplicationObject.programCampuses.find(
-                  (camp) => camp.campusId === campus.id,
+                programApplicationObject.programCampuses.some(
+                  (camp) => camp.campusId !== campus.id,
                 )
               "
             />
@@ -662,7 +662,7 @@ export default defineComponent({
           this.programApplicationObject.programCampuses
         ) {
           if (
-            this.programApplicationObject.programCampuses.find(
+            this.programApplicationObject.programCampuses.some(
               (campus) => campus.campusId !== campusId,
             )
           ) {
