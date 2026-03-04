@@ -57,6 +57,7 @@ declare namespace Components {
       id?: string | null;
       name?: string | null;
       status?: CampusStatus;
+      isSatelliteOrTemporaryLocation?: boolean | null;
       street1?: string | null;
       street2?: string | null;
       street3?: string | null;
