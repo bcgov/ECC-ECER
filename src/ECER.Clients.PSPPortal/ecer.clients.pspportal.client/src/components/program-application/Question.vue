@@ -6,7 +6,9 @@
     </v-card-title>
     <v-row no-gutters>
       <v-col cols="12" class="pt-2">
-        <p class="font-weight-bold">{{ question }}</p>
+        <p class="font-weight-bold" style="white-space: pre-wrap">
+          {{ question }}
+        </p>
       </v-col>
       <v-col cols="12" class="pt-5">
         <v-textarea
