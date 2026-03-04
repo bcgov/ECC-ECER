@@ -19,7 +19,7 @@
     <v-row class="mt-n3">
       <v-col cols="3">Delivery method</v-col>
       <v-col class="font-weight-bold" cols="3">
-        {{ programApplicationStore.programApplication?.deliveryType }}
+        {{ programApplicationObject?.deliveryType }}
       </v-col>
     </v-row>
     <v-row class="mt-n3">
@@ -417,7 +417,6 @@ import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
 import type { PspUserListItem, Components } from "@/types/openapi";
 import PageContainer from "@/components/PageContainer.vue";
-import { useProgramApplicationStore } from "@/store/programApplication";
 import { cloneDeep } from "lodash";
 import type { VForm } from "vuetify/components";
 import * as Rules from "@/utils/formRules";
@@ -425,6 +424,7 @@ import EceTextField from "@/components/inputs/EceTextField.vue";
 import {
   mapProgramType,
   updateProgramApplication,
+  getProgramApplicationById,
 } from "@/api/program-application";
 
 export default defineComponent({
@@ -438,10 +438,8 @@ export default defineComponent({
   },
   setup() {
     const userStore = useUserStore();
-    const programApplicationStore = useProgramApplicationStore();
     return {
       userStore,
-      programApplicationStore,
     };
   },
   emits: ["next"],
@@ -578,15 +576,22 @@ export default defineComponent({
   },
   async mounted() {
     await this.loadUsers();
-    this.programApplicationObject = cloneDeep(
-      this.programApplicationStore.programApplication,
-    );
+    await this.fetchApplication();
+
     this.programCampus =
       this.programApplicationObject?.programCampuses?.map(
         (campus) => campus.campusId,
       ) ?? [];
   },
   methods: {
+    async fetchApplication() {
+      const result = await getProgramApplicationById(this.programApplicationId);
+      if (result.error || result.data == null) {
+        console.error("Failed to retrieve program application:", result.error);
+      } else {
+        this.programApplicationObject = cloneDeep(result.data);
+      }
+    },
     async loadUsers() {
       this.users = (await getUsers()) ?? [];
       let currentRepId = this.programApplicationObject?.programRepresentativeId;
@@ -641,6 +646,7 @@ export default defineComponent({
         }
       } finally {
         this.isLoading = false;
+        this.$emit("next");
       }
     },
     showDeliverySection(): boolean {

@@ -70,7 +70,6 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     else
     {
       var entity = mapper.Map<ecer_PostSecondaryInstituteProgramApplicaiton>(application)!;
-      
       var instituteId = Guid.Parse(application.PostSecondaryInstituteId);
       var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
       if (institute == null)
@@ -119,6 +118,12 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       context.Attach(entity);
       context.UpdateObject(entity);
       context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_, institute);
+      if (application.ProgramRepresentativeId != null)
+      {
+        var user = context.ecer_ECEProgramRepresentativeSet
+          .SingleOrDefault(r => r.Id == Guid.Parse(application.ProgramRepresentativeId));
+        context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ, user!);
+      }
     }
     
     context.SaveChanges();

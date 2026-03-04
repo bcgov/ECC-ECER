@@ -56,13 +56,13 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
   public string? ProgramRepresentativeId { get; set; }
-  public string? ProgramLength { get; set; }
+  public float? ProgramLength { get; set; }
   public IEnumerable<MethodofInstruction>? OnlineMethodOfInstruction { get; set; }
   public IEnumerable<DeliveryMethodforInstructor>? DeliveryMethod { get; set; }
   public IEnumerable<WorkHoursType>? EnrollmentOptions { get; set; }
   public IEnumerable<AdmissionOptions>? AdmissionOptions { get; set; }
-  public string? MinimumEnrollment { get; set; }
-  public string? MaximumEnrollment { get; set; }
+  public float? MinimumEnrollment { get; set; }
+  public float? MaximumEnrollment { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
   public string? OtherAdmissionOptions  { get; set; }
 }
