@@ -18,13 +18,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ClosedECEcohort = 621870000,
+		Allcoursesrestrictedtoearlychildhoodeducationstudents = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Individualcourseenrollment = 621870002,
+		Cohortenrollmentstudentsstarttogetherandgraduatetogether = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Openenrollment = 621870001,
+		Continuousenrollmentstudentscanenrolatanytime = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Oneormorecoursesopentoanystudentsintheinstitution = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Other = 621870003,

@@ -51,6 +51,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_PostSecondaryInstituteProgramApplicaiton componentTestProgramApplication = null!;
   private ecer_ProgramApplicationComponentGroup componentTestComponentGroup = null!;
   private ecer_ProgramApplicationComponent componentTestComponent = null!;
+  private ecer_PostSecondaryInstituteProgramApplicaiton draftProgramApplication2 = null!;
   
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
@@ -78,6 +79,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   
   public string programApplicationId => programApplication.Id.ToString();
   public string draftProgramApplicationId => draftProgramApplication.Id.ToString();
+  public string draftProgramApplication2Id => draftProgramApplication2.Id.ToString();
   public string componentTestProgramApplicationId => componentTestProgramApplication.Id.ToString();
   public string componentTestComponentGroupId => componentTestComponentGroup.Id.ToString();
   public string componentTestComponentId => componentTestComponent.Id.ToString();
@@ -144,6 +146,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     componentTestProgramApplication =
       GetOrAddProgramApplication("Test_psp_program_application_components", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
     (componentTestComponentGroup, componentTestComponent) = GetOrAddComponentGroupWithComponent(context, componentTestProgramApplication);
+    
+    draftProgramApplication2 = 
+      GetOrAddProgramApplication("Test_psp_program_application_update", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
     
     testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
     testCourse3 = GetOrAddCourse(context, testProgram1, "109");

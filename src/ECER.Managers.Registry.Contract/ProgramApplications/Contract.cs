@@ -51,7 +51,49 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
+  public string? ProgramLength { get; set; }
+  public IEnumerable<MethodofInstruction>? OnlineMethodOfInstruction { get; set; }
+  public IEnumerable<DeliveryMethodforInstructor>? DeliveryMethod { get; set; }
+  public IEnumerable<WorkHoursType>? EnrollmentOptions { get; set; }
+  public IEnumerable<AdmissionOptions>? AdmissionOptions { get; set; }
+  public string? MinimumEnrollment { get; set; }
+  public string? MaximumEnrollment { get; set; }
+  public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
 }
+
+public record ProgramCampus
+{ 
+  public string? Id { get; set; }
+  public string? CampusId { get; set; }
+}
+public enum AdmissionOptions
+{
+  Allcoursesrestrictedtoearlychildhoodeducationstudents,
+  Cohortenrollmentstudentsstarttogetherandgraduatetogether,
+  Continuousenrollmentstudentscanenrolatanytime,
+  Oneormorecoursesopentoanystudentsintheinstitution,
+  Other,
+}
+
+public enum WorkHoursType
+{
+  FullTime,
+  PartTime,
+}
+
+public enum MethodofInstruction
+{
+  Asynchronous,
+  Synchronous,
+}
+
+public enum DeliveryMethodforInstructor
+{
+  Inpersonsitevisits,
+  Virtualsitevisits,
+}
+
 
 public record ProgramApplicationQueryResults(IEnumerable<ProgramApplication> Items, int Count);
 public enum ApplicationStatus
