@@ -53,11 +53,6 @@ declare namespace Components {
     export interface AreaOfInstructionListResponse {
       areaOfInstruction?: AreaOfInstruction[] | null;
     }
-    export type Auspice =
-      | "ContinuingEducation"
-      | "PublicOOP"
-      | "Private"
-      | "Public";
     export interface Campus {
       id?: string | null;
       name?: string | null;
@@ -188,7 +183,9 @@ declare namespace Components {
     export interface EducationInstitution {
       id?: string | null;
       name?: string | null;
-      auspice?: Auspice;
+      institutionType?: PsiInstitutionType;
+      privateAuspiceType?: PrivateAuspiceType;
+      ptiruInstitutionId?: string | null;
       websiteUrl?: string | null;
       street1?: string | null;
       street2?: string | null;
@@ -260,6 +257,12 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
+    export type PrivateAuspiceType =
+      | "Theologicalinstitution"
+      | "FirstNationsmandatedpostsecondaryinstitute"
+      | "Other"
+      | "Privatetraininginstitution"
+      | "Indigenouscontrolledpostsecondaryinstitute";
     export interface ProblemDetails {
       [name: string]: any;
       type?: string | null;
@@ -331,6 +334,11 @@ declare namespace Components {
       | "ITE"
       | "ITESNE"
       | "SNE";
+    export type PsiInstitutionType =
+      | "Private"
+      | "Public"
+      | "ContinuingEducation"
+      | "PublicOOP";
     /**
      * Error codes for PSP user registration failures
      */
@@ -1514,7 +1522,6 @@ export type ApplicationType = Components.Schemas.ApplicationType;
 export type AreaOfInstruction = Components.Schemas.AreaOfInstruction;
 export type AreaOfInstructionListResponse =
   Components.Schemas.AreaOfInstructionListResponse;
-export type Auspice = Components.Schemas.Auspice;
 export type Campus = Components.Schemas.Campus;
 export type CampusStatus = Components.Schemas.CampusStatus;
 export type Communication = Components.Schemas.Communication;
@@ -1558,6 +1565,7 @@ export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult =
   Components.Schemas.PortalInvitationQueryResult;
+export type PrivateAuspiceType = Components.Schemas.PrivateAuspiceType;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type Program = Components.Schemas.Program;
 export type ProgramApplication = Components.Schemas.ProgramApplication;
@@ -1571,6 +1579,7 @@ export type ProgramTypes = Components.Schemas.ProgramTypes;
 export type Province = Components.Schemas.Province;
 export type ProvincialCertificationTypeOffered =
   Components.Schemas.ProvincialCertificationTypeOffered;
+export type PsiInstitutionType = Components.Schemas.PsiInstitutionType;
 export type PspRegistrationError = Components.Schemas.PspRegistrationError;
 export type PspRegistrationErrorResponse =
   Components.Schemas.PspRegistrationErrorResponse;
