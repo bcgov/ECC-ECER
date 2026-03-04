@@ -37,7 +37,12 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     entity.ecer_PostSecondaryInstituteProgramApplicaitonId = Guid.NewGuid();
     entity.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft;
     entity.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Active;
-
+    entity.ecer_ProgramType = programApplication.ProgramTypes != null ? 
+      programApplication.ProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t.ToString())) 
+      : Array.Empty<ecer_PSIProgramType>();
+    entity.ecer_DeliveryType = programApplication.DeliveryType.HasValue
+      ? Enum.Parse<ecer_PSIDeliveryType>(programApplication.DeliveryType.Value.ToString())
+      : null;
     if (string.IsNullOrWhiteSpace(entity.ecer_Name))
     {
       entity.ecer_Name = "Draft Program Application";
