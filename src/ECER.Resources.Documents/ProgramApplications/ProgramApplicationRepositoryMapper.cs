@@ -39,7 +39,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForMember(d => d.DeliveryType, opts => opts.MapFrom(s => s.ecer_DeliveryType))
       .ForMember(d => d.ProgramApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationType))
       .ForMember(d => d.ComponentsGenerationCompleted, opts => opts.MapFrom(s => s.ecer_ComponentsGenerationCompleted)) //s.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id
-      .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_PSIProgramRepresentative.Id))
+      .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_PSIProgramRepresentative == null ? null : s.ecer_PSIProgramRepresentative.Id.ToString()))
       .ForMember(d => d.ProgramLength, opts => opts.MapFrom(s => s.ecer_ProjectedLength))
       .ForMember(d => d.OnlineMethodOfInstruction, opts => opts.MapFrom(s => s.ecer_Onlinemethodsofinstruction))
       .ForMember(d => d.DeliveryMethod, opts => opts.MapFrom(s => s.ecer_Deliverymethodforpracticuminstructor))
