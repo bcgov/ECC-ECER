@@ -415,11 +415,10 @@
 import { defineComponent } from "vue";
 import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
-import type { PspUserListItem } from "@/types/openapi";
+import type { PspUserListItem, Components } from "@/types/openapi";
 import PageContainer from "@/components/PageContainer.vue";
 import { useProgramApplicationStore } from "@/store/programApplication";
 import { cloneDeep } from "lodash";
-import type { Components } from "@/types/openapi";
 import type { VForm } from "vuetify/components";
 import * as Rules from "@/utils/formRules";
 import EceTextField from "@/components/inputs/EceTextField.vue";
@@ -663,8 +662,8 @@ export default defineComponent({
           this.programApplicationObject.programCampuses
         ) {
           if (
-            !this.programApplicationObject.programCampuses.find(
-              (campus) => campus.campusId === campusId,
+            this.programApplicationObject.programCampuses.find(
+              (campus) => campus.campusId !== campusId,
             )
           ) {
             this.programApplicationObject.programCampuses.push({
