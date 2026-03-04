@@ -42,6 +42,7 @@ public record Campus
   public string Id { get; set; } = null!;
   public string? Name { get; set; }
   public CampusStatus? Status { get; set; }
+  public bool? IsSatelliteOrTemporaryLocation { get; set; }
   public string? Street1 { get; set; }
   public string? Street2 { get; set; }
   public string? Street3 { get; set; }

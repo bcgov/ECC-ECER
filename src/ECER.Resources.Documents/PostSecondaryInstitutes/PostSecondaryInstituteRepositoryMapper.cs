@@ -41,6 +41,7 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+      .ForMember(d => d.IsSatelliteOrTemporaryLocation, opts => opts.MapFrom(s => s.ecer_SatelliteorTemporaryLocation.HasValue ? s.ecer_SatelliteorTemporaryLocation.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ForMember(d => d.Street1, opts => opts.MapFrom(s => s.ecer_street1))
       .ForMember(d => d.Street2, opts => opts.MapFrom(s => s.ecer_street2))
       .ForMember(d => d.Street3, opts => opts.MapFrom(s => s.ecer_street3))
