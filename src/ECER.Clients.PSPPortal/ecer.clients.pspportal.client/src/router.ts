@@ -89,7 +89,8 @@ const router = createRouter({
     },
     {
       path: "/program-application-info",
-      component: () => import("./components/pages/ProgramApplicationInfo.vue"),
+      component: () =>
+        import("./components/pages/ProgramApplicationInfoContainer.vue"),
       name: "programApplicationInfo",
       meta: { requiresAuth: true, requiresVerification: true },
     },
