@@ -56,7 +56,6 @@ public class CoursesHandler(
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);
     ArgumentNullException.ThrowIfNull(request.Course.CourseAreaOfInstruction);
-    Infrastructure.Common.Utility.ThrowIfNullOrEmpty(request.Course.CourseAreaOfInstruction, nameof(request.Course.CourseAreaOfInstruction));
 
     var courseId = await courseRepository.AddCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, request.PostSecondaryInstituteId, cancellationToken);
     return courseId;

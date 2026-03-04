@@ -46,4 +46,22 @@ const updateCourse = async (
   });
 };
 
-export { getCourses, updateCourse };
+const addCourse = async (
+  id: string,
+  course: Components.Schemas.Course,
+  type: Components.Schemas.FunctionType,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const body: Paths.CoursePost.RequestBody = {
+    course: course,
+    type: type,
+    applicationId: id,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.course_post(null, body),
+    key: "course_post",
+  });
+};
+
+export { getCourses, updateCourse, addCourse };

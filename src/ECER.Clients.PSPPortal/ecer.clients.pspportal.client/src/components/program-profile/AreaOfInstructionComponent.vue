@@ -2,7 +2,9 @@
   <div>
     <Loading v-if="loading"></Loading>
     <div v-else>
-      <h2 class="mb-4">Required areas of instruction</h2>
+      <h2 v-if="type === 'ProgramProfile'" class="mb-4">
+        Required areas of instruction
+      </h2>
       <v-row v-if="includeTotalHours" justify="center" class="mb-4">
         <v-col cols="12" :md="10">
           <TotalHoursOfInstructionCard
@@ -15,6 +17,17 @@
       <div v-if="$slots.description" class="mb-4">
         <slot name="description"></slot>
       </div>
+
+      <v-btn
+        v-if="type === 'ProgramApplication'"
+        id="btnAddCourse"
+        class="mb-5"
+        rounded="lg"
+        color="primary"
+        @click="handleAddCourse"
+      >
+        Add course
+      </v-btn>
 
       <AreaOfInstructionCard
         v-for="(area, index) in filteredAreas"
@@ -35,16 +48,17 @@
         @edit="handleCourseEdit"
       />
     </div>
-    <EditCourseDialog
+    <AddEditCourseDialog
       v-if="selectedCourse"
-      :show="showEditCourseDialog"
+      :show="showAddEditCourseDialog"
       :program-type="programType"
       :course="selectedCourse"
       :courseList="courses"
       :saving="saving"
+      :courseDialogMode="courseDialogMode"
       @save="handleCourseSave"
       @cancel="
-        showEditCourseDialog = false;
+        showAddEditCourseDialog = false;
         selectedCourse = null;
       "
     />
@@ -64,9 +78,9 @@ import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
 import { useAlertStore } from "@/store/alert";
 import { getAreaOfInstructionList } from "@/api/configuration";
-import { updateCourse } from "@/api/course";
+import { updateCourse, addCourse } from "@/api/course";
 import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
-import EditCourseDialog from "./EditCourseDialog.vue";
+import AddEditCourseDialog from "./AddEditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
 import Loading from "@/components/Loading.vue";
@@ -83,7 +97,7 @@ export default defineComponent({
   name: "AreaOfInstructionComponent",
   components: {
     AreaOfInstructionCard,
-    EditCourseDialog,
+    AddEditCourseDialog,
     NonAllocatedCoursesCard,
     TotalHoursOfInstructionCard,
     Loading,
@@ -93,10 +107,6 @@ export default defineComponent({
       type: String as PropType<Components.Schemas.ProgramTypes>,
       required: true,
     },
-    // program: {
-    //   type: Object as PropType<Components.Schemas.Program>,
-    //   required: true,
-    // },
     courses: {
       type: Object as PropType<Components.Schemas.Course[]>,
       required: true,
@@ -138,7 +148,8 @@ export default defineComponent({
       saving: false,
       requiredHours: MIN_HOURS_ITE_SNE,
       selectedCourse: null as Components.Schemas.Course | null,
-      showEditCourseDialog: false,
+      showAddEditCourseDialog: false,
+      courseDialogMode: "edit" as "edit" | "add",
     };
   },
   computed: {
@@ -341,7 +352,8 @@ export default defineComponent({
     },
     handleCourseEdit(course: Components.Schemas.Course) {
       this.selectedCourse = course;
-      this.showEditCourseDialog = true;
+      this.courseDialogMode = "edit";
+      this.showAddEditCourseDialog = true;
     },
     handleEdit(
       areaOfInstructionCourse: Components.Schemas.CourseAreaOfInstruction,
@@ -354,11 +366,24 @@ export default defineComponent({
               areaOfInstructionCourse.courseAreaOfInstructionId,
           ),
         ) || null;
-      this.showEditCourseDialog = true;
+      this.showAddEditCourseDialog = true;
+    },
+    handleAddCourse() {
+      this.selectedCourse = {
+        courseId: "",
+        courseTitle: "",
+        courseNumber: "",
+        programType: this.programType,
+        courseAreaOfInstruction: [],
+      } as Components.Schemas.Course;
+      this.showAddEditCourseDialog = true;
+      this.courseDialogMode = "add";
     },
     async handleCourseSave(updatedCourse: Components.Schemas.Course) {
-      if (!this.id || !updatedCourse) {
-        console.log("Invalid course save data. This should not happen.");
+      if ((!this.id && this.courseDialogMode === "edit") || !updatedCourse) {
+        console.log(
+          "Invalid course save data for edit mode. This should not happen.",
+        );
         this.alertStore.setFailureAlert(
           "Sorry, something went wrong and your changes could not be saved. Try again later.",
         );
@@ -366,11 +391,18 @@ export default defineComponent({
       }
       this.saving = true;
       try {
-        const { error } = await updateCourse(
-          this.id,
-          updatedCourse as Components.Schemas.Course,
-          this.type,
-        );
+        let error;
+        if (this.courseDialogMode === "edit") {
+          error = (
+            await updateCourse(
+              this.id,
+              updatedCourse as Components.Schemas.Course,
+              this.type,
+            )
+          )?.error;
+        } else if (this.courseDialogMode === "add") {
+          error = (await addCourse(this.id, updatedCourse, this.type))?.error;
+        }
 
         if (error) {
           this.alertStore.setFailureAlert(
@@ -382,7 +414,7 @@ export default defineComponent({
             "Course has been updated successfully.",
           );
           this.$emit("reloadCourses");
-          this.showEditCourseDialog = false;
+          this.showAddEditCourseDialog = false;
           this.selectedCourse = null;
           this.saving = false;
         }

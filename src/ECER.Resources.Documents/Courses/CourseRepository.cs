@@ -121,12 +121,20 @@ internal sealed class CourseRepository : ICourseRepository
       }
     }
 
+    incomingCourse.CourseId = Guid.NewGuid().ToString();
     var ecerCourse = mapper.Map<ecer_Course>(incomingCourse)!;
-    ecerCourse.Id = Guid.NewGuid();
 
     context.AddObject(ecerCourse);
     context.AddLink(ecerCourse, new Relationship(ecer_Course.Fields.ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution), institute);
     context.AddLink(ecerCourse, new Relationship(ecer_Course.Fields.ecer_course_ProgramApplication_ecer_postsecond), programApplication);
+
+    if (incomingCourse.CourseAreaOfInstruction != null)
+    {
+      foreach (var areaOfInstruction in incomingCourse.CourseAreaOfInstruction)
+      {
+        CreateNewAreaOfInstruction(areaOfInstruction, ecerCourse);
+      }
+    }
 
     context.SaveChanges();
     return ecerCourse.Id.ToString();

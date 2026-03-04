@@ -62,6 +62,10 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    programType: {
+      type: String as () => Components.Schemas.ProgramTypes,
+      required: false,
+    },
   },
   setup() {
     const { mobile } = useDisplay();

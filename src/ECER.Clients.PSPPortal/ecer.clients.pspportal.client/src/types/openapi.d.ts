@@ -146,7 +146,7 @@ declare namespace Components {
       isICRA?: boolean;
     }
     export interface Course {
-      courseId: string;
+      courseId?: string | null;
       courseNumber: string;
       courseTitle: string;
       newCourseNumber?: string | null;
@@ -1105,7 +1105,7 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CoursesGet.Responses.$200>;
   /**
-   * course_post - Add a course for a program profile
+   * course_post - Add a course for a program application
    */
   "course_post"(
     parameters?: Parameters<UnknownParamsObject> | null,
@@ -1466,7 +1466,7 @@ export interface PathsDictionary {
   };
   ["/api/courses"]: {
     /**
-     * course_post - Add a course for a program profile
+     * course_post - Add a course for a program application
      */
     "post"(
       parameters?: Parameters<UnknownParamsObject> | null,

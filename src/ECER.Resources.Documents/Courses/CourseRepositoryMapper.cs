@@ -14,7 +14,7 @@ internal class CourseRepositoryMapper : Profile
       .ForMember(d => d.CourseTitle, opts => opts.MapFrom(s => s.ecer_CourseName))
       .ForMember(d => d.NewCourseNumber, opts => opts.MapFrom(s => s.ecer_NewCode))
       .ForMember(d => d.NewCourseTitle, opts => opts.MapFrom(s => s.ecer_NewCourseName))
-      .ForMember(d => d.CourseAreaOfInstruction, opts => opts.MapFrom(s => s.ecer_courseprovincialrequirement_CourseId))
+      .ForMember(d => d.CourseAreaOfInstruction, opts => opts.MapFrom(s => s.ecer_courseprovincialrequirement_CourseId ?? Enumerable.Empty<ecer_CourseProvincialRequirement>()))
       .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType))
       .ReverseMap();
 

@@ -60,7 +60,7 @@ public class CoursesEndpoint : IRegisterEndpoints
         var result = await messageBus.Send(new SaveCourseCommand(mappedCourse, request.ApplicationId, programRep.PostSecondaryInstituteId), ct);
         return TypedResults.Ok(result);
       })
-      .WithOpenApi("Add a course for a program profile", string.Empty, "course_post")
+      .WithOpenApi("Add a course for a program application", string.Empty, "course_post")
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
 

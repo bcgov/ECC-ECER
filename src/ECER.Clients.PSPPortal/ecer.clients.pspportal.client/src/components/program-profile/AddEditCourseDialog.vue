@@ -6,7 +6,9 @@
   >
     <v-form ref="updateCourse">
       <v-card class="pa-4">
-        <v-card-title>Update Course</v-card-title>
+        <v-card-title>
+          {{ courseDialogMode === "edit" ? "Update" : "Add" }} Course
+        </v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
@@ -99,7 +101,7 @@ import { number } from "@/utils/formRules";
 import { useDisplay } from "vuetify";
 
 export default defineComponent({
-  name: "EditCourseDialog",
+  name: "AddEditCourseDialog",
   components: { EceTextField },
   props: {
     course: {
@@ -121,6 +123,10 @@ export default defineComponent({
     saving: {
       type: Boolean,
       default: false,
+    },
+    courseDialogMode: {
+      type: String as PropType<"edit" | "add">,
+      required: true,
     },
   },
   emits: ["save", "cancel"],
@@ -281,6 +287,15 @@ export default defineComponent({
           this.localCourse.newCourseTitle = null;
         } else {
           this.localCourse.newCourseTitle = this.courseTitle;
+        }
+
+        if (this.courseDialogMode === "add") {
+          // When we are adding a course, we have to set courseNumber + coursetitle instead of newCourseNumber/newCourseTitle
+          this.localCourse.courseNumber =
+            this.localCourse.newCourseNumber || "";
+          this.localCourse.courseTitle = this.localCourse.newCourseTitle || "";
+          this.localCourse.newCourseNumber = null;
+          this.localCourse.newCourseTitle = null;
         }
         this.$emit("save", this.localCourse);
       }

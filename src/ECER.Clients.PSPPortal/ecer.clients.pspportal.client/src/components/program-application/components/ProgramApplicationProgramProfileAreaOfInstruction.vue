@@ -1,44 +1,42 @@
 <template>
   <Loading v-if="loadingStore.isLoading('courses_get')" />
   <template v-else>
-    <h2>Provincial requirements</h2>
+    <h2>Program profile - ECE ({{ programType }})</h2>
     <br />
-    <ul v-if="programType === 'Basic'" class="ml-10">
+    <p>This page will build your program profile with the ECE Registry</p>
+    <br />
+    <h2>Areas of instruction</h2>
+    <br />
+    <p>
+      You will need to input all courses in this program and allocate course
+      hours to each area of instruction.
+    </p>
+    <br />
+    <h3>Adding a course</h3>
+    <br />
+    <p>To add a course to your program profile:</p>
+    <ul class="ml-10">
+      <li>Select "Add course"</li>
+      <li>Input the course number and course name</li>
       <li>
-        Basic ECE education must total a minimum of
-        {{ calculateMinimumHoursRequired }} hours, including practicum
-      </li>
-      <li>
-        Practicum must account for a minimum of
-        {{ calculatePracticumHours }} hours
-      </li>
-      <li>
-        Each area of instruction has a minimum number of required course hours
+        For each course, input the number of hours the course satisfies towards
+        each area of instruction (in some cases, one course may be applicable to
+        more than one area of instruction)
       </li>
     </ul>
-    <ul v-else-if="programType === 'ITE'" class="ml-10">
-      <li>
-        ITE education must total a minimum of {{ MIN_HOURS_ITE_SNE }} hours,
-        including practicum
-      </li>
-      <li>Practicum must account for a minimum of 200 hours</li>
-    </ul>
-    <ul v-else-if="programType === 'SNE'" class="ml-10">
-      <li>
-        SNE education must total a minimum of {{ MIN_HOURS_ITE_SNE }} hours,
-        including practicum
-      </li>
-      <li>Practicum must account for a minimum of 200 hours</li>
+    <br />
+    <h3>Updating a course</h3>
+    <br />
+    <p>To edit a course on your program profile:</p>
+    <ul class="ml-10">
+      <li>Select the pencil icon beside the course name</li>
+      <li>Make any changes and click "Save"</li>
+      <li>If you need to delete a course, select the trashcan icon</li>
     </ul>
     <br />
     <p>
-      For a detailed description of Provincial requirements, refer to
-      <a
-        href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
-        target="_blank"
-      >
-        Table 1, 2 or 3 of the Child Care Occupational Competencies.
-      </a>
+      Note: If you do not input any hours for a course, it will be shown in the
+      "Non-allocated courses" section on this page
     </p>
     <br />
     <AreaOfInstructionComponent
@@ -49,22 +47,7 @@
       :include-total-hours="showTotalHours"
       :area-subtitles="generateSubtitleMap"
       @reload-courses="loadCourses"
-    >
-      <template #description>
-        <p>
-          The courses included in your program are shown here, grouped by areas
-          of instruction.
-        </p>
-        <br />
-        <p>
-          Edit any courses as required to ensure that this program profile
-          reflects the correct course information. The following information is
-          editable: course number, course name, course hours allocated to each
-          area of instruction. In some cases, a course may be applicable to more
-          than one area of instruction.
-        </p>
-      </template>
-    </AreaOfInstructionComponent>
+    ></AreaOfInstructionComponent>
   </template>
 </template>
 
