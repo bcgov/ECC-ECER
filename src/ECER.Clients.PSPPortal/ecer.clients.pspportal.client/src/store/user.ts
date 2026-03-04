@@ -31,7 +31,7 @@ export const useUserStore = defineStore("user", {
     role: (state): Components.Schemas.PspUserRole =>
       state.pspUserProfile?.role ?? "Primary",
     preferredName: (state): string => state.pspUserProfile?.preferredName ?? "",
-    auspice: (state): string => state.educationInstitution?.auspice ?? "",
+    auspice: (state): string => state.educationInstitution?.institutionType ?? "",
     street1: (state): string => state.educationInstitution?.street1 ?? "",
     city: (state): string => state.educationInstitution?.city ?? "",
     province: (state): string => state.educationInstitution?.province ?? "",

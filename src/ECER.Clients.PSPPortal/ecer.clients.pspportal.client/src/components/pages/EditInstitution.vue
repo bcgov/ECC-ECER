@@ -83,7 +83,7 @@ export default defineComponent({
     const institutionName = institution?.name;
     if (institution !== null) {
       formStore.initializeForm({
-        [institutionForm?.components?.auspice?.id || ""]: institution.auspice,
+        [institutionForm?.components?.auspice?.id || ""]: institution.institutionType,
         [institutionForm?.components?.street1?.id || ""]: institution.street1,
         [institutionForm?.components?.street2?.id || ""]: institution.street2,
         [institutionForm?.components?.street3?.id || ""]: institution.street3,
