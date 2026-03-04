@@ -28,6 +28,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_AdmissionOptions, opts => opts.MapFrom(s => s.AdmissionOptions))
       .ForMember(d => d.ecer_MinimumStudentEnrollmentperCourse, opts => opts.MapFrom(s => s.MinimumEnrollment))
       .ForMember(d => d.ecer_MaximumStudentEnrollmentperCourse, opts => opts.MapFrom(s => s.MaximumEnrollment))
+      .ForMember(d => d.ecer_OtherAdmissionOptions, opts => opts.MapFrom(s => s.OtherAdmissionOptions))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(ProgramApplication.Id), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstituteProgramApplicaitonId.HasValue ? s.ecer_PostSecondaryInstituteProgramApplicaitonId.Value.ToString() : null))
@@ -47,6 +48,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForMember(d => d.MinimumEnrollment, opts => opts.MapFrom(s => s.ecer_MinimumStudentEnrollmentperCourse))
       .ForMember(d => d.MaximumEnrollment, opts => opts.MapFrom(s => s.ecer_MaximumStudentEnrollmentperCourse))
       .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton))
+      .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.ecer_OtherAdmissionOptions))
       ;
     
     CreateMap<ecer_ProgramCampus, ProgramCampus>(MemberList.Destination)

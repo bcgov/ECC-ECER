@@ -312,6 +312,7 @@ declare namespace Components {
       minimumEnrollment?: string | null;
       maximumEnrollment?: string | null;
       programCampuses?: ProgramCampus[] | null;
+      otherAdmissionOptions?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;
