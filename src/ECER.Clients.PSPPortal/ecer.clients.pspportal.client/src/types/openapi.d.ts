@@ -33,7 +33,6 @@ declare namespace Components {
       | "InterimRecognition"
       | "OnGoingRecognition"
       | "RefusetoApprove"
-      | "PendingReview"
       | "ReviewAnalysis"
       | "Submitted"
       | "Withdrawn";

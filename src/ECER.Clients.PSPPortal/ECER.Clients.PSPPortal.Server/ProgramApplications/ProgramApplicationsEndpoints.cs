@@ -279,7 +279,6 @@ public enum ApplicationStatus
   InterimRecognition,
   OnGoingRecognition,
   RefusetoApprove,
-  PendingReview,
   ReviewAnalysis,
   Submitted,
   Withdrawn
