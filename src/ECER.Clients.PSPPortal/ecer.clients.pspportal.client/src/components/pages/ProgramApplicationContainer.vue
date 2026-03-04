@@ -51,6 +51,7 @@ import Loading from "@/components/Loading.vue";
 import { getProgramApplicationById } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
 import ProgramApplication from "@/components/program-application/ProgramApplication.vue";
+import { useProgramApplicationStore } from "@/store/programApplication";
 
 const POLL_INTERVAL_MS = 10000;
 
@@ -71,9 +72,11 @@ export default defineComponent({
   },
   setup() {
     const { mobile } = useDisplay();
+    const programApplicationStore = useProgramApplicationStore();
 
     return {
       mobile,
+      programApplicationStore,
     };
   },
   data() {
@@ -114,6 +117,7 @@ export default defineComponent({
       }
       this.loadError = false;
       this.application = result.data;
+      this.programApplicationStore.setProgramApplication(result.data);
       if (this.application.componentsGenerationCompleted !== true) {
         this.pollTimeoutId = setTimeout(this.checkReady, POLL_INTERVAL_MS);
       }
@@ -124,6 +128,7 @@ export default defineComponent({
       if (result.error) return;
       if (result.data?.componentsGenerationCompleted === true) {
         this.application = result.data;
+        this.programApplicationStore.setProgramApplication(result.data);
         return;
       }
       this.pollTimeoutId = setTimeout(this.checkReady, POLL_INTERVAL_MS);
