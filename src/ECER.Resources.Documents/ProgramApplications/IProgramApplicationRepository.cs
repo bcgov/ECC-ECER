@@ -7,7 +7,7 @@ public interface IProgramApplicationRepository
   Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken);
   Task<IEnumerable<ComponentGroupMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
   Task<ComponentGroupResults?> QueryComponentGroupById(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
-  Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroup, string applicationId, CancellationToken cancellationToken);
+  Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken);
 }
 
 public record ComponentGroupResults(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);

@@ -223,11 +223,19 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     }
 
     var allAnswers = existingComponents.Values.Select(c => c.ecer_Componentanswer).ToList();
-    var progress = allAnswers.All(string.IsNullOrWhiteSpace)
-      ? ecer_PSPComponentProgress.ToDo
-      : allAnswers.All(a => !string.IsNullOrWhiteSpace(a))
-        ? ecer_PSPComponentProgress.Completed
-        : ecer_PSPComponentProgress.InProgress;
+    ecer_PSPComponentProgress progress;
+    if (allAnswers.All(string.IsNullOrWhiteSpace))
+    {
+      progress = ecer_PSPComponentProgress.ToDo;
+    }
+    else if (allAnswers.All(a => !string.IsNullOrWhiteSpace(a)))
+    {
+      progress = ecer_PSPComponentProgress.Completed;
+    }
+    else
+    {
+      progress = ecer_PSPComponentProgress.InProgress;
+    }
 
     componentGroup.ecer_EntryProgress = progress;
     context.UpdateObject(componentGroup);
