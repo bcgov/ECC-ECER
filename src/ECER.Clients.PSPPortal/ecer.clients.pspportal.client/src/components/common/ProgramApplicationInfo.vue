@@ -216,5 +216,3 @@ export default defineComponent({
   components: { Breadcrumb, ECEHeader, Callout, PageContainer },
 });
 </script>
-
-<style scoped></style>

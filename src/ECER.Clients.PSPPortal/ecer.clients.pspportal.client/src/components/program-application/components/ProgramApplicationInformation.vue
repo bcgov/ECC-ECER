@@ -35,5 +35,3 @@ export default defineComponent({
   emits: ["next"],
 });
 </script>
-
-<style scoped></style>
