@@ -16,6 +16,7 @@
           :program-types="programApplication.programTypes"
           :application-status="programApplication.status"
           :application-type="programApplication.programApplicationType"
+          :component-groups="componentGroups"
         ></ComponentGroupNavigation>
 
         <v-navigation-drawer temporary v-model="drawer" width="350">
@@ -24,11 +25,12 @@
             :program-types="programApplication.programTypes"
             :application-status="programApplication.status"
             :application-type="programApplication.programApplicationType"
+            :component-groups="componentGroups"
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
       <v-col>
-        <router-view />
+        <router-view @next="handleNext" />
       </v-col>
     </v-row>
   </v-container>
@@ -40,6 +42,13 @@ import { useDisplay } from "vuetify";
 import PageContainer from "@/components/PageContainer.vue";
 import ComponentGroupNavigation from "@/components/common/ComponentGroupNavigation.vue";
 import ProgramApplicationHeader from "./ProgramApplicationHeader.vue";
+import { getComponentGroupMetadata } from "@/api/program-application";
+import type { Components } from "@/types/openapi";
+
+interface ApplicationStep {
+  name: string;
+  componentGroupId?: string;
+}
 
 export default defineComponent({
   name: "ProgramApplication",
@@ -71,11 +80,67 @@ export default defineComponent({
   },
   data() {
     return {
+      componentGroups: [] as Components.Schemas.ComponentGroupMetadata[],
       drawer: false,
     };
   },
-  mounted() {},
+  async mounted() {
+    await this.getComponentGroups();
+    this.loadInitialStep();
+  },
   beforeUnmount() {},
-  methods: {},
+  computed: {
+    orderedSteps(): ApplicationStep[] {
+      return [
+        { name: "program-application-component-info" },
+        { name: "program-application-institute-info" },
+        ...this.componentGroups.map((g) => ({
+          name: "program-application-component",
+          componentGroupId: g.id ?? "",
+        })),
+        //TODO { name: "some-future-route" }
+      ];
+    },
+  },
+  methods: {
+    async getComponentGroups() {
+      const response = await getComponentGroupMetadata(
+        this.programApplicationId,
+      );
+      this.componentGroups = (response.data ?? []).sort(
+        (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+      );
+    },
+    async handleNext(currentComponentGroupId?: string) {
+      await this.getComponentGroups();
+      const currentIndex = this.orderedSteps.findIndex(
+        (s) =>
+          s.name === this.$route.name &&
+          s.componentGroupId === currentComponentGroupId,
+      );
+      const next = this.orderedSteps[currentIndex + 1];
+      if (!next) {
+        console.log(
+          "An error occurred while trying to navigate. Next step not found.",
+        );
+        return;
+      }
+      this.$router.push({
+        name: next.name,
+        params: {
+          programApplicationId: this.programApplicationId,
+          ...(next.componentGroupId && {
+            componentGroupId: next.componentGroupId,
+          }),
+        },
+      });
+    },
+    loadInitialStep() {
+      this.$router.push({
+        name: "program-application-component-info",
+        params: { programApplicationId: this.programApplicationId },
+      });
+    },
+  },
 });
 </script>

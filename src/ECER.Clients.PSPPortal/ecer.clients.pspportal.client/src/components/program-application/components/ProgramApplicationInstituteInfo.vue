@@ -12,6 +12,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["next"],
   setup() {},
 });
 </script>

@@ -67,11 +67,26 @@ internal class ProgramApplicationRepositoryMapper : Profile
     
     CreateMap<ecer_ProgramApplicationComponent, ProgramApplicationComponent>(MemberList.Source)
       .ForCtorParam(nameof(ProgramApplicationComponent.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentId.HasValue ? src.ecer_ProgramApplicationComponentId.Value.ToString() : string.Empty))
-      .ForCtorParam(nameof(ProgramApplicationComponent.Name), opt => opt.MapFrom(src => src.ecer_Name ?? string.Empty))
+      .ForCtorParam(nameof(ProgramApplicationComponent.Name), opt => opt.MapFrom(src => src.ecer_Component))
       .ForCtorParam(nameof(ProgramApplicationComponent.Question), opt => opt.MapFrom(src => src.ecer_Question))
       .ForCtorParam(nameof(ProgramApplicationComponent.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(ProgramApplicationComponent.Answer), opt => opt.MapFrom(src => src.ecer_Componentanswer))
-      .ForCtorParam(nameof(ProgramApplicationComponent.FileIds), opt => opt.MapFrom(_ => (IEnumerable<string>?)null))
+      .ForCtorParam(nameof(ProgramApplicationComponent.Files), opt => opt.MapFrom(src => src.ecer_documenturl_ProgramApplicationComponentId))
       .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<bcgov_DocumentUrl, FileInfo>(MemberList.Destination)
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
+      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
+      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
+      .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
+      .ForMember(d => d.Extension, opts => opts.MapFrom(s => s.bcgov_FileExtension));
+
+    CreateMap<ProgramApplicationComponent, ecer_ProgramApplicationComponent>(MemberList.Source)
+      .ForSourceMember(s => s.Name, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Question, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.DisplayOrder, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
+      .ForMember(d => d.ecer_ProgramApplicationComponentId, opts => opts.MapFrom(s => Guid.Parse(s.Id)))
+      .ForMember(d => d.ecer_Componentanswer, opts => opts.MapFrom(s => s.Answer ?? string.Empty));
   }
 }

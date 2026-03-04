@@ -127,7 +127,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { getComponentGroupMetadata } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
 import { groupByCategoryName, mapStatusColor } from "@/utils/functions";
 
@@ -150,6 +149,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    componentGroups: {
+      type: Array as () => Components.Schemas.ComponentGroupMetadata[],
+      required: true,
+    },
   },
   computed: {
     groupByCategoryName(): ComponentGroupNavigationMap | undefined {
@@ -157,24 +160,10 @@ export default defineComponent({
     },
   },
   data() {
-    return {
-      componentGroups: [] as Components.Schemas.ComponentGroupMetadata[],
-    };
+    return {};
   },
-  created() {},
-  mounted() {
-    this.getComponentGroups();
-  },
-  unmounted() {},
   methods: {
     mapStatusColor,
-    async getComponentGroups() {
-      const response = await getComponentGroupMetadata(
-        this.programApplicationId,
-      );
-      this.componentGroups = response.data || [];
-      this.loadStep();
-    },
     categoryStatus(key: string) {
       let statuses = groupByCategoryName(this.componentGroups)
         ?.get(key)
@@ -189,12 +178,6 @@ export default defineComponent({
         return "mdi-circle-half-full";
       }
       return "mdi-circle-outline";
-    },
-    loadStep() {
-      this.$router.push({
-        name: "program-application-component-info",
-        params: { programApplicationId: this.programApplicationId },
-      });
     },
   },
 });

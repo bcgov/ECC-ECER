@@ -27,6 +27,7 @@ declare namespace Components {
       | "InterimRecognition"
       | "OnGoingRecognition"
       | "RefusetoApprove"
+      | "PendingReview"
       | "ReviewAnalysis"
       | "Submitted"
       | "Withdrawn";
@@ -48,6 +49,7 @@ declare namespace Components {
       programTypes?: ProgramTypes[] | null;
       minimumHours?: number | null; // int32
       displayOrder?: string | null;
+      parentAreaOfInstructionId?: string | null;
     }
     export interface AreaOfInstructionListResponse {
       areaOfInstruction?: AreaOfInstruction[] | null;
@@ -57,6 +59,10 @@ declare namespace Components {
       | "PublicOOP"
       | "Private"
       | "Public";
+    export interface Campus {
+      id?: string | null;
+      name?: string | null;
+    }
     export interface Communication {
       id?: string | null;
       category?: CommunicationCategory;
@@ -184,6 +190,14 @@ declare namespace Components {
       province?: string | null;
       country?: string | null;
       postalCode?: string | null;
+      campuses?: Campus[] | null;
+    }
+    export interface FileInfo {
+      id?: string | null;
+      name?: string | null;
+      url?: string | null;
+      size?: string | null;
+      extension?: string | null;
     }
     /**
      * file Response
@@ -294,7 +308,7 @@ declare namespace Components {
       question?: string | null;
       displayOrder?: number; // int32
       answer?: string | null;
-      fileIds?: string[] | null;
+      files?: FileInfo[] | null;
     }
     export type ProgramCertificationType = "Basic" | "ITE" | "SNE";
     export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
@@ -592,6 +606,22 @@ declare namespace Paths {
       id: Parameters.Id;
       componentGroupId: Parameters.ComponentGroupId;
     }
+    namespace Responses {
+      export type $200 = Components.Schemas.ComponentGroupWithComponents;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationComponentGroupPut {
+    namespace Parameters {
+      export type ComponentGroupId = string;
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+      componentGroupId: Parameters.ComponentGroupId;
+    }
+    export type RequestBody = Components.Schemas.ComponentGroupWithComponents;
     namespace Responses {
       export type $200 = Components.Schemas.ComponentGroupWithComponents;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
@@ -1011,6 +1041,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProgramApplicationComponentGroupComponentsGet.Responses.$200>;
   /**
+   * program_application_component_group_put - Update program application component group
+   */
+  "program_application_component_group_put"(
+    parameters?: Parameters<Paths.ProgramApplicationComponentGroupPut.PathParameters> | null,
+    data?: Paths.ProgramApplicationComponentGroupPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationComponentGroupPut.Responses.$200>;
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   "portal_invitation_get"(
@@ -1360,6 +1398,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ProgramApplicationComponentGroupComponentsGet.Responses.$200>;
   };
+  ["/api/programApplications/{id}/componentGroups/{componentGroupId}"]: {
+    /**
+     * program_application_component_group_put - Update program application component group
+     */
+    "put"(
+      parameters?: Parameters<Paths.ProgramApplicationComponentGroupPut.PathParameters> | null,
+      data?: Paths.ProgramApplicationComponentGroupPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationComponentGroupPut.Responses.$200>;
+  };
   ["/api/PortalInvitations/{token}"]: {
     /**
      * portal_invitation_get - Handles portal invitation queries
@@ -1501,6 +1549,7 @@ export type AreaOfInstruction = Components.Schemas.AreaOfInstruction;
 export type AreaOfInstructionListResponse =
   Components.Schemas.AreaOfInstructionListResponse;
 export type Auspice = Components.Schemas.Auspice;
+export type Campus = Components.Schemas.Campus;
 export type Communication = Components.Schemas.Communication;
 export type CommunicationCategory = Components.Schemas.CommunicationCategory;
 export type CommunicationDocument = Components.Schemas.CommunicationDocument;
@@ -1525,6 +1574,7 @@ export type CreateProgramApplicationResponse =
 export type DeliveryType = Components.Schemas.DeliveryType;
 export type DraftProgramResponse = Components.Schemas.DraftProgramResponse;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
+export type FileInfo = Components.Schemas.FileInfo;
 export type FileResponse = Components.Schemas.FileResponse;
 export type FunctionType = Components.Schemas.FunctionType;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
