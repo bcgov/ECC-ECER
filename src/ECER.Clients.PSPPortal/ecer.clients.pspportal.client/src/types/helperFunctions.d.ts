@@ -28,3 +28,8 @@ type ComponentGroupNavigationMap = Map<
   string,
   CourseComponentGroupNavigationAreaDetail[]
 >;
+
+interface ProgramApplicationContact {
+  id: string | null | undefined;
+  name: string;
+}

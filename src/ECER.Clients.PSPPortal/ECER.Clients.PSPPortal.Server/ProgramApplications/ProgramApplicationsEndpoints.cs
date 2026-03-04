@@ -163,6 +163,28 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .RequireAuthorization(policyNames)
     .AddGuidValidation("id").AddGuidValidation("componentGroupId")
     .WithParameterValidation();
+  endpointRouteBuilder.MapPut("/api/programApplications/{id}/componentGroups/{componentGroupId}", async Task<Results<Ok<ComponentGroupWithComponents>, BadRequest<string>, NotFound>> (string id, string componentGroupId, ComponentGroupWithComponents request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      if (request.Id != componentGroupId) return TypedResults.BadRequest("resource id and payload id do not match");
+
+      var userContext = ctx.User.GetUserContext()!;
+      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+
+      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+      {
+        ById = id,
+        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
+      }, ct);
+      if (!existing.Items.Any()) return TypedResults.NotFound();
+
+      var result = await messageBus.Send(new UpdateComponentGroupCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>(request), id), ct);
+      return TypedResults.Ok(mapper.Map<ComponentGroupWithComponents>(result));
+    })
+    .WithOpenApi("Update program application component group", string.Empty, "program_application_component_group_put")
+    .RequireAuthorization(policyNames)
+    .AddGuidValidation("id").AddGuidValidation("componentGroupId")
+    .WithParameterValidation();
   }
 }
 
@@ -178,8 +200,48 @@ public record ProgramApplication
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
+  public string? ProgramLength { get; set; }
+  public IEnumerable<MethodofInstruction>? OnlineMethodOfInstruction { get; set; }
+  public IEnumerable<DeliveryMethodforInstructor>? DeliveryMethod { get; set; }
+  public IEnumerable<WorkHoursType>? EnrollmentOptions { get; set; }
+  public IEnumerable<AdmissionOptions>? AdmissionOptions { get; set; }
+  public string? MinimumEnrollment { get; set; }
+  public string? MaximumEnrollment { get; set; }
+  public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
+  public string? OtherAdmissionOptions  { get; set; }
 }
 
+public record ProgramCampus
+{ 
+  public string? Id { get; set; }
+  public string? CampusId { get; set; }
+}
+
+public enum MethodofInstruction
+{
+  Asynchronous,
+  Synchronous,
+}
+
+public enum DeliveryMethodforInstructor
+{
+  Inpersonsitevisits,
+  Virtualsitevisits,
+}
+public enum AdmissionOptions
+{
+  Allcoursesrestrictedtoearlychildhoodeducationstudents,
+  Cohortenrollmentstudentsstarttogetherandgraduatetogether,
+  Continuousenrollmentstudentscanenrolatanytime,
+  Oneormorecoursesopentoanystudentsintheinstitution,
+  Other,
+}
+public enum WorkHoursType
+{
+  FullTime,
+  PartTime,
+}
 public record GetProgramApplicationResponse
 {
   public IEnumerable<ProgramApplication>? Applications { get; set; }
@@ -198,7 +260,15 @@ public record CreateProgramApplicationRequest
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
 public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files);
+
+public record FileInfo(string Id)
+{
+  public string? Name { get; set; }
+  public string? Url { get; set; }
+  public string? Size { get; set; }
+  public string? Extension { get; set; }
+}
 
 public enum ApplicationStatus
 {

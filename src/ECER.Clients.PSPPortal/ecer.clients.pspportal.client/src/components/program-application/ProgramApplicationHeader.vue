@@ -11,7 +11,7 @@
         >
           <h1>Application: {{ programApplicationName }}</h1>
           <div :class="[{ ['text-right mb-2']: mobile }]">
-            <v-btn id="btnSaveAndExit" variant="outlined" @click="">
+            <v-btn id="btnSaveAndExit" variant="outlined" @click="exit">
               Save and exit
             </v-btn>
           </div>
@@ -40,6 +40,11 @@ export default defineComponent({
     return {
       mobile,
     };
+  },
+  methods: {
+    exit() {
+      this.$router.push("/");
+    },
   },
 });
 </script>

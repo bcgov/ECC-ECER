@@ -7,9 +7,11 @@ public interface IProgramApplicationRepository
   Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken);
   Task<IEnumerable<ComponentGroupMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
   Task<ComponentGroupResults?> QueryComponentGroupById(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
+  Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken);
 }
 
 public record ComponentGroupResults(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
+public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 
 public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
 public record ComponentGroupQuery
@@ -23,7 +25,15 @@ public record ComponentGroupWithComponentsQuery
   public string? ByComponentGroupId { get; set; }
 }
 
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<string>? FileIds);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files);
+
+public record FileInfo(string Id)
+{
+  public string? Name { get; set; }
+  public string? Url { get; set; }
+  public string? Size { get; set; }
+  public string? Extension { get; set; }
+}
 
 public record ProgramApplicationQuery
 {
@@ -45,6 +55,38 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
+  public float? ProgramLength { get; set; }
+  public IEnumerable<MethodofInstruction>? OnlineMethodOfInstruction { get; set; }
+  public IEnumerable<DeliveryMethodforInstructor>? DeliveryMethod { get; set; }
+  public IEnumerable<WorkHoursType>? EnrollmentOptions { get; set; }
+  public IEnumerable<AdmissionOptions>? AdmissionOptions { get; set; }
+  public float? MinimumEnrollment { get; set; }
+  public float? MaximumEnrollment { get; set; }
+  public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
+  public string? OtherAdmissionOptions  { get; set; }
+}
+
+public record ProgramCampus
+{ 
+  public string? Id { get; set; }
+  public string? CampusId { get; set; }
+}
+
+
+public enum AdmissionOptions
+{
+  Allcoursesrestrictedtoearlychildhoodeducationstudents,
+  Cohortenrollmentstudentsstarttogetherandgraduatetogether,
+  Continuousenrollmentstudentscanenrolatanytime,
+  Oneormorecoursesopentoanystudentsintheinstitution,
+  Other,
+}
+
+public enum WorkHoursType
+{
+  FullTime,
+  PartTime,
 }
 public enum ApplicationStatus
 {
@@ -99,4 +141,16 @@ public enum ProgramCertificationType
   Basic,
   ITE,
   SNE
+}
+
+public enum MethodofInstruction
+{
+Asynchronous,
+Synchronous,
+}
+
+public enum DeliveryMethodforInstructor
+{
+  Inpersonsitevisits,
+  Virtualsitevisits,
 }
