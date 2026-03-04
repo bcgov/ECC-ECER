@@ -209,6 +209,7 @@ public record ProgramApplication
   public string? MinimumEnrollment { get; set; }
   public string? MaximumEnrollment { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
+  public string? OtherAdmissionOptions  { get; set; }
 }
 
 public record ProgramCampus

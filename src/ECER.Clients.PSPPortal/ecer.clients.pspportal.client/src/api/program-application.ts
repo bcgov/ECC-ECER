@@ -56,6 +56,23 @@ const withdrawProgramApplication = async (
   });
 };
 
+const updateProgramApplication = async (
+  application: Components.Schemas.ProgramApplication,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramApplicationPut.PathParameters = {
+    id: application.id || "",
+  };
+  const body: Paths.ProgramApplicationPut.RequestBody = {
+    ...application,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.program_application_put(pathParameters, body),
+    key: "program_application_put",
+  });
+};
+
 const getProgramApplicationById = async (
   id: string,
 ): Promise<
@@ -247,4 +264,5 @@ export {
   mapDeliveryType,
   mapProgramType,
   withdrawProgramApplication,
+  updateProgramApplication,
 };
