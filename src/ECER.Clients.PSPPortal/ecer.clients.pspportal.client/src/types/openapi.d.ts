@@ -48,6 +48,7 @@ declare namespace Components {
       programTypes?: ProgramTypes[] | null;
       minimumHours?: number | null; // int32
       displayOrder?: string | null;
+      parentAreaOfInstructionId?: string | null;
     }
     export interface AreaOfInstructionListResponse {
       areaOfInstruction?: AreaOfInstruction[] | null;
@@ -57,6 +58,18 @@ declare namespace Components {
       | "PublicOOP"
       | "Private"
       | "Public";
+    export interface Campus {
+      id?: string | null;
+      name?: string | null;
+      status?: CampusStatus;
+      street1?: string | null;
+      street2?: string | null;
+      street3?: string | null;
+      city?: string | null;
+      province?: string | null;
+      postalCode?: string | null;
+    }
+    export type CampusStatus = "None" | "Active" | "Inactive";
     export interface Communication {
       id?: string | null;
       category?: CommunicationCategory;
@@ -184,6 +197,7 @@ declare namespace Components {
       province?: string | null;
       country?: string | null;
       postalCode?: string | null;
+      campuses?: Campus[] | null;
     }
     /**
      * file Response
@@ -1501,6 +1515,8 @@ export type AreaOfInstruction = Components.Schemas.AreaOfInstruction;
 export type AreaOfInstructionListResponse =
   Components.Schemas.AreaOfInstructionListResponse;
 export type Auspice = Components.Schemas.Auspice;
+export type Campus = Components.Schemas.Campus;
+export type CampusStatus = Components.Schemas.CampusStatus;
 export type Communication = Components.Schemas.Communication;
 export type CommunicationCategory = Components.Schemas.CommunicationCategory;
 export type CommunicationDocument = Components.Schemas.CommunicationDocument;
