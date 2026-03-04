@@ -189,6 +189,7 @@
           B.C. Child Care Sector Occupational Competencies Assessment Tool with
           Linking Competencies
         </a>
+        <!-- prettier-ignore -->
         <p class="mt-3">
           If you need additional documentation, please
           <router-link
@@ -196,8 +197,7 @@
             class="text-primary text-decoration-underline"
           >
             contact the ECE Registry
-          </router-link>
-          .
+          </router-link>.
         </p>
       </div>
     </v-col>
