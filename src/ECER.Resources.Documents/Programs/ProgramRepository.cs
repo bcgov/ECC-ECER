@@ -65,7 +65,14 @@ internal sealed class ProgramRepository : IProgramRepository
         .ToList();
 
       //only return courses that are active
-      results.ForEach(result => result.ecer_course_Programid = result.ecer_course_Programid.Where(course => course.StatusCode == ecer_Course_StatusCode.Active).ToList());
+      results.ForEach(result =>
+        {
+          if (result.ecer_course_Programid.Any())
+          {
+            result.ecer_course_Programid = result.ecer_course_Programid.Where(course => course.StatusCode == ecer_Course_StatusCode.Active).ToList();
+          }
+        }
+      );
     }
     else
     {
