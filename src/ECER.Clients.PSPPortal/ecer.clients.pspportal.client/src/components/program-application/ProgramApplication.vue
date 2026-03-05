@@ -27,7 +27,7 @@
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
-      <v-col>
+      <v-col lg="8" md="6" sm="auto">
         <router-view />
       </v-col>
     </v-row>

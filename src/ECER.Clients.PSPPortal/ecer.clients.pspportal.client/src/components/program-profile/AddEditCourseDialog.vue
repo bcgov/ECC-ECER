@@ -4,7 +4,7 @@
     @update:model-value="handleDialogClose($event)"
     :persistent="saving"
   >
-    <v-form ref="updateCourse">
+    <v-form ref="courseForm">
       <v-card class="pa-4">
         <v-card-title>
           {{ courseDialogMode === "edit" ? "Update" : "Add" }} Course
@@ -96,9 +96,11 @@ import { defineComponent, type PropType, toRaw, toRefs } from "vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
+import { useAlertStore } from "@/store/alert";
 import * as Rules from "@/utils/formRules";
 import { number } from "@/utils/formRules";
 import { useDisplay } from "vuetify";
+import type { VForm } from "vuetify/components";
 
 export default defineComponent({
   name: "AddEditCourseDialog",
@@ -132,9 +134,11 @@ export default defineComponent({
   emits: ["save", "cancel"],
   setup() {
     const configStore = useConfigStore();
+    const alertStore = useAlertStore();
     const { mdAndUp, smAndDown } = useDisplay();
     return {
       configStore,
+      alertStore,
       mdAndUp,
       smAndDown,
     };
@@ -276,28 +280,37 @@ export default defineComponent({
       }
       // else it doesn't exist and hours is 0, so don't create it
     },
-    handleSave() {
-      if (this.localCourse) {
-        if (this.localCourse.courseNumber === this.courseNumber) {
-          this.localCourse.newCourseNumber = null;
-        } else {
-          this.localCourse.newCourseNumber = this.courseNumber;
-        }
-        if (this.localCourse.courseTitle === this.courseTitle) {
-          this.localCourse.newCourseTitle = null;
-        } else {
-          this.localCourse.newCourseTitle = this.courseTitle;
-        }
+    async handleSave() {
+      const { valid } = await (this.$refs.courseForm as VForm).validate();
 
-        if (this.courseDialogMode === "add") {
-          // When we are adding a course, we have to set courseNumber + coursetitle instead of newCourseNumber/newCourseTitle
-          this.localCourse.courseNumber =
-            this.localCourse.newCourseNumber || "";
-          this.localCourse.courseTitle = this.localCourse.newCourseTitle || "";
-          this.localCourse.newCourseNumber = null;
-          this.localCourse.newCourseTitle = null;
+      if (valid) {
+        if (this.localCourse) {
+          if (this.localCourse.courseNumber === this.courseNumber) {
+            this.localCourse.newCourseNumber = null;
+          } else {
+            this.localCourse.newCourseNumber = this.courseNumber;
+          }
+          if (this.localCourse.courseTitle === this.courseTitle) {
+            this.localCourse.newCourseTitle = null;
+          } else {
+            this.localCourse.newCourseTitle = this.courseTitle;
+          }
+
+          if (this.courseDialogMode === "add") {
+            // When we are adding a course, we have to set courseNumber + courseTitle instead of newCourseNumber/newCourseTitle
+            this.localCourse.courseNumber =
+              this.localCourse.newCourseNumber || "";
+            this.localCourse.courseTitle =
+              this.localCourse.newCourseTitle || "";
+            this.localCourse.newCourseNumber = null;
+            this.localCourse.newCourseTitle = null;
+          }
+          this.$emit("save", this.localCourse);
         }
-        this.$emit("save", this.localCourse);
+      } else {
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     handleCancel() {

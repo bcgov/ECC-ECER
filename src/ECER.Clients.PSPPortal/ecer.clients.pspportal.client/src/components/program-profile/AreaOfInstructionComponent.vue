@@ -1,68 +1,100 @@
 <template>
-  <div>
-    <Loading v-if="loading"></Loading>
-    <div v-else>
-      <h2 v-if="type === 'ProgramProfile'" class="mb-4">
-        Required areas of instruction
-      </h2>
-      <v-row v-if="includeTotalHours" justify="center" class="mb-4">
-        <v-col cols="12" :md="10">
-          <TotalHoursOfInstructionCard
-            :total-hours="totalHours"
-            :required-hours="requiredHours"
-          />
-        </v-col>
-      </v-row>
+  <Loading v-if="loading"></Loading>
+  <template v-else>
+    <h2 v-if="type === 'ProgramProfile'" class="mb-4">
+      Required areas of instruction
+    </h2>
+    <v-row v-if="includeTotalHours" justify="center" class="mb-4">
+      <v-col cols="12" :md="10">
+        <TotalHoursOfInstructionCard
+          :total-hours="totalHours"
+          :required-hours="requiredHours"
+        />
+      </v-col>
+    </v-row>
 
-      <div v-if="$slots.description" class="mb-4">
-        <slot name="description"></slot>
-      </div>
-
-      <v-btn
-        v-if="type === 'ProgramApplication'"
-        id="btnAddCourse"
-        class="mb-5"
-        rounded="lg"
-        color="primary"
-        @click="handleAddCourse"
-      >
-        Add course
-      </v-btn>
-
-      <AreaOfInstructionCard
-        v-for="(area, index) in filteredAreas"
-        :key="area.id || index"
-        class="mb-4"
-        :course-area-of-instructions="getCoursesForArea(area.id)"
-        :area-subtitles="getAreaSubtitles(area.id)"
-        :area-id="area.id || undefined"
-        :show-progress-bar="
-          (area.minimumHours && area.minimumHours > 0) || false
-        "
-        @edit="handleEdit"
-      />
-
-      <NonAllocatedCoursesCard
-        v-if="nonAllocatedCourses.length > 0"
-        :courses="nonAllocatedCourses"
-        @edit="handleCourseEdit"
-      />
+    <div v-if="$slots.description" class="mb-4">
+      <slot name="description"></slot>
     </div>
-    <AddEditCourseDialog
-      v-if="selectedCourse"
-      :show="showAddEditCourseDialog"
-      :program-type="programType"
-      :course="selectedCourse"
-      :courseList="courses"
-      :saving="saving"
-      :courseDialogMode="courseDialogMode"
-      @save="handleCourseSave"
-      @cancel="
-        showAddEditCourseDialog = false;
-        selectedCourse = null;
-      "
+
+    <v-btn
+      v-if="type === 'ProgramApplication'"
+      id="btnAddCourse"
+      class="mb-5"
+      rounded="lg"
+      color="primary"
+      @click="handleAddCourse"
+    >
+      Add course
+    </v-btn>
+
+    <AreaOfInstructionCard
+      v-for="(area, index) in filteredAreas"
+      :key="area.id || index"
+      class="mb-4"
+      :course-area-of-instructions="getCoursesForArea(area.id)"
+      :area-subtitles="getAreaSubtitles(area.id)"
+      :area-id="area.id || undefined"
+      :show-progress-bar="(area.minimumHours && area.minimumHours > 0) || false"
+      :show-delete-button="type === 'ProgramApplication'"
+      @edit="handleEdit"
+      @delete="handleAreaOfInstructionCourseDelete"
+      :loading="loadingStore.isLoading('course_delete')"
     />
-  </div>
+
+    <NonAllocatedCoursesCard
+      v-if="nonAllocatedCourses.length > 0"
+      :courses="nonAllocatedCourses"
+      :show-delete-button="type === 'ProgramApplication'"
+      @edit="handleCourseEdit"
+      @delete="handleCourseDelete"
+      :loading="loadingStore.isLoading('course_delete')"
+    />
+  </template>
+  <AddEditCourseDialog
+    v-if="selectedCourse"
+    :show="showAddEditCourseDialog"
+    :program-type="programType"
+    :course="selectedCourse"
+    :courseList="courses"
+    :saving="saving"
+    :courseDialogMode="courseDialogMode"
+    @save="handleCourseSave"
+    @cancel="
+      showAddEditCourseDialog = false;
+      selectedCourse = null;
+    "
+  />
+  <ConfirmationDialog
+    v-if="selectedCourseToDelete"
+    :show="showConfirmationDialog"
+    cancel-button-text="Cancel"
+    accept-button-text="Remove course"
+    title="Remove course"
+    :loading="loadingStore.isLoading('course_delete')"
+    @accept="deleteCourse"
+    @cancel="
+      showConfirmationDialog = false;
+      selectedCourseToDelete = null;
+    "
+  >
+    <template #confirmation-text>
+      <p>
+        Are you sure you want to remove this course from the program
+        application?
+      </p>
+      <br />
+      <p>
+        <strong>{{ getCourseTitle(selectedCourseToDelete) }}</strong>
+      </p>
+      <br />
+      <p>
+        Removing this course will also remove its allocated hours from all areas
+        of instruction.
+      </p>
+    </template>
+  </ConfirmationDialog>
+
   <!-- this is to block the user from progressing if hours are not met -->
   <v-input
     v-if="type === 'ProgramProfile'"
@@ -78,14 +110,16 @@ import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
 import { useAlertStore } from "@/store/alert";
 import { getAreaOfInstructionList } from "@/api/configuration";
-import { updateCourse, addCourse } from "@/api/course";
+import { updateCourse, addCourse, deleteCourse } from "@/api/course";
 import AreaOfInstructionCard from "./AreaOfInstructionCard.vue";
 import AddEditCourseDialog from "./AddEditCourseDialog.vue";
 import NonAllocatedCoursesCard from "./NonAllocatedCoursesCard.vue";
 import TotalHoursOfInstructionCard from "./TotalHoursOfInstructionCard.vue";
+import ConfirmationDialog from "../ConfirmationDialog.vue";
 import Loading from "@/components/Loading.vue";
 import { useLoadingStore } from "@/store/loading";
 import { MIN_HOURS_ITE_SNE } from "@/utils/constant";
+import { getCourseTitle } from "@/utils/functions";
 
 interface CourseAreaOfInstructionWithCourse
   extends Components.Schemas.CourseAreaOfInstruction {
@@ -98,6 +132,7 @@ export default defineComponent({
   components: {
     AreaOfInstructionCard,
     AddEditCourseDialog,
+    ConfirmationDialog,
     NonAllocatedCoursesCard,
     TotalHoursOfInstructionCard,
     Loading,
@@ -150,6 +185,8 @@ export default defineComponent({
       selectedCourse: null as Components.Schemas.Course | null,
       showAddEditCourseDialog: false,
       courseDialogMode: "edit" as "edit" | "add",
+      showConfirmationDialog: false,
+      selectedCourseToDelete: null as Components.Schemas.Course | null,
     };
   },
   computed: {
@@ -193,7 +230,6 @@ export default defineComponent({
         this.loadingStore.isLoading("courses_get") ||
         this.loadingStore.isLoading("course_put") ||
         this.loadingStore.isLoading("course_post") ||
-        this.loadingStore.isLoading("course_delete") ||
         this.loadingStore.isLoading("program_get")
       );
     },
@@ -241,6 +277,7 @@ export default defineComponent({
     await this.loadAreaOfInstructionList();
   },
   methods: {
+    getCourseTitle,
     async loadAreaOfInstructionList() {
       try {
         if (
@@ -424,6 +461,51 @@ export default defineComponent({
         this.alertStore.setFailureAlert(
           "Sorry, something went wrong and your changes could not be saved. Try again later.",
         );
+      }
+    },
+    handleCourseDelete(course: Components.Schemas.Course) {
+      this.selectedCourseToDelete = course;
+      this.showConfirmationDialog = true;
+    },
+    handleAreaOfInstructionCourseDelete(
+      areaOfInstructionCourse: Components.Schemas.CourseAreaOfInstruction,
+    ) {
+      const courseToDelete =
+        this.courses?.find((course) =>
+          course?.courseAreaOfInstruction?.some(
+            (areaCourse) =>
+              areaCourse.courseAreaOfInstructionId ===
+              areaOfInstructionCourse.courseAreaOfInstructionId,
+          ),
+        ) || null;
+
+      if (!courseToDelete) {
+        console.warn("course not found, this should not happen");
+        this.alertStore.setFailureAlert(
+          "Sorry, something went wrong and the course could not be deleted. Try again later.",
+        );
+        return;
+      }
+
+      this.selectedCourseToDelete = courseToDelete;
+      this.showConfirmationDialog = true;
+    },
+    async deleteCourse() {
+      if (this.selectedCourseToDelete) {
+        const { error } = await deleteCourse(
+          this.selectedCourseToDelete.courseId || "",
+        );
+        if (error) {
+          this.alertStore.setFailureAlert(
+            "Sorry, something went wrong and the course could not be deleted. Try again later.",
+          );
+        } else {
+          this.alertStore.setSuccessAlert(
+            "Course has been deleted successfully.",
+          );
+          this.$emit("reloadCourses");
+          this.showConfirmationDialog = false;
+        }
       }
     },
     generateRulesByProgramType() {

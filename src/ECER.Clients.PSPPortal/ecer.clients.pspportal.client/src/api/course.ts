@@ -32,7 +32,7 @@ const updateCourse = async (
 ): Promise<ApiResponse<string | null | undefined>> => {
   const client = await getClient();
   const pathParameters: Paths.CoursePut.PathParameters = {
-    courseId: course.courseId,
+    courseId: course.courseId!,
   };
   const body: Paths.CoursePut.RequestBody = {
     course: course,
@@ -47,7 +47,7 @@ const updateCourse = async (
 };
 
 const addCourse = async (
-  id: string,
+  programApplicationId: string,
   course: Components.Schemas.Course,
   type: Components.Schemas.FunctionType,
 ): Promise<ApiResponse<string | null | undefined>> => {
@@ -55,7 +55,7 @@ const addCourse = async (
   const body: Paths.CoursePost.RequestBody = {
     course: course,
     type: type,
-    applicationId: id,
+    applicationId: programApplicationId,
   };
 
   return apiResultHandler.execute<string | null | undefined>({
@@ -64,4 +64,18 @@ const addCourse = async (
   });
 };
 
-export { getCourses, updateCourse, addCourse };
+const deleteCourse = async (
+  courseId: string,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const params: Paths.CourseDelete.PathParameters = {
+    courseId: courseId,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.course_delete(params),
+    key: "course_delete",
+  });
+};
+
+export { getCourses, updateCourse, addCourse, deleteCourse };

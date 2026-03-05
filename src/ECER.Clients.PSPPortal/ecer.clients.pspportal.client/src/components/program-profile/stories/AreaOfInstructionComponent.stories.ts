@@ -305,6 +305,32 @@ export const Default: Story = {
   }),
 };
 
+export const ProgramApplicationTypeShouldShowDeleteButtons: Story = {
+  args: {
+    programType: "Basic",
+    courses: mockCourses,
+    areaSubtitles: {},
+    includeTotalHours: false,
+    id: "mock-program-profile-guid",
+    type: "ProgramApplication",
+  },
+  render: (args) => ({
+    components: { AreaOfInstructionComponent },
+    setup() {
+      return { args };
+    },
+    template: `
+      <AreaOfInstructionComponent v-bind="args">
+        <template #description>
+          <p class="text-grey-darken-1">
+            This example should show the delete button when the type is ProgramApplication. 
+          </p>
+        </template>
+      </AreaOfInstructionComponent>
+    `,
+  }),
+};
+
 export const WithTotalHours: Story = {
   args: {
     programType: "Basic",

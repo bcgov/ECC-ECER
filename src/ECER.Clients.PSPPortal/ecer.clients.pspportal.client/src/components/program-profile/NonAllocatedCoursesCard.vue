@@ -29,6 +29,16 @@
               icon="mdi-pencil"
               variant="plain"
               @click="handleEdit(course)"
+              :loading="loading"
+            ></v-btn>
+          </v-col>
+          <v-col v-if="showDeleteButton" cols="auto" class="d-flex">
+            <v-divider vertical></v-divider>
+            <v-btn
+              icon="mdi-trash-can"
+              variant="plain"
+              @click="handleDelete(course)"
+              :loading="loading"
             ></v-btn>
           </v-col>
         </v-row>
@@ -52,8 +62,18 @@ export default defineComponent({
       required: true,
       default: () => [],
     },
+    showDeleteButton: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
-  emits: ["edit"],
+  emits: ["edit", "delete"],
   methods: {
     getCourseTitle(course: Components.Schemas.Course): string {
       const courseNumber = course.courseNumber || "";
@@ -71,6 +91,9 @@ export default defineComponent({
     },
     handleEdit(course: Components.Schemas.Course) {
       this.$emit("edit", course);
+    },
+    handleDelete(course: Components.Schemas.Course) {
+      this.$emit("delete", course);
     },
   },
 });
