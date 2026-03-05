@@ -82,7 +82,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: {},
+  emits: ["next"],
   setup: () => {
     const configStore = useConfigStore();
     const loadingStore = useLoadingStore();

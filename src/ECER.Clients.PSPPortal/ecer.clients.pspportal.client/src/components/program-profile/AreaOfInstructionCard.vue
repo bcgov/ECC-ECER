@@ -103,7 +103,7 @@
                       class="d-none d-md-block"
                     ></v-divider>
                     <v-btn
-                      icon="mdi-trash-can"
+                      icon="mdi-trash-can-outline"
                       variant="plain"
                       @click="handleDelete(courseArea)"
                       :loading="loading"

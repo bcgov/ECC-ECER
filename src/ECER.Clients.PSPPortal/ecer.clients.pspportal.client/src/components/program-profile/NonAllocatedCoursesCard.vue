@@ -35,7 +35,7 @@
           <v-col v-if="showDeleteButton" cols="auto" class="d-flex">
             <v-divider vertical></v-divider>
             <v-btn
-              icon="mdi-trash-can"
+              icon="mdi-trash-can-outline"
               variant="plain"
               @click="handleDelete(course)"
               :loading="loading"
