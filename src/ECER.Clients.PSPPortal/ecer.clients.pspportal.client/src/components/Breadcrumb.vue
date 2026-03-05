@@ -52,6 +52,12 @@ export default defineComponent({
           { title: "Invite user", disabled: true, href: this.route.path },
         ];
       }
+      if (this.route.name === "education-institution") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          { title: "Institution info", disabled: true, href: this.route.path },
+        ];
+      }
       if (this.route.name === "edit-education-institution") {
         return [
           { title: "Home", disabled: false, href: "/" },
@@ -94,6 +100,36 @@ export default defineComponent({
             title: "Update a program profile",
             disabled: true,
             href: "/program/:programId/initiate-update",
+          },
+        ];
+      }
+      if (this.route.name === "program-applications") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Program applications",
+            disabled: true,
+            href: "/program-applications",
+          },
+        ];
+      }
+      if (this.route.name === "programApplicationInfo") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Program application information",
+            disabled: true,
+            href: "/program-application-info",
+          },
+        ];
+      }
+      if (this.route.name === "program-application-begin") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Begin an application",
+            disabled: true,
+            href: "/program-application-begin",
           },
         ];
       }

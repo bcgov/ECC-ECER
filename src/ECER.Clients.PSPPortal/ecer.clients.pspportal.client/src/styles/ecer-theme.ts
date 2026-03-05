@@ -32,6 +32,7 @@ const ecerTheme: ThemeDefinition = {
     "support-surface-info": "#f7f9fc",
     "support-border-info": "#053662",
     "surface-border-default": "#d8d8d8",
+    "light-blue": "#F1F8FE",
   },
 };
 

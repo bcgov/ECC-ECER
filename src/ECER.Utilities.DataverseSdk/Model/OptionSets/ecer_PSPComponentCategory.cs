@@ -21,6 +21,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Administration = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		CurriculumDesign = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Practicum = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ProgramInstruction = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
