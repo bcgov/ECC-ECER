@@ -6,7 +6,7 @@
     </v-card-title>
     <v-row no-gutters>
       <v-col cols="12" class="pt-2">
-        <p class="font-weight-bold" style="white-space: pre-wrap">
+        <p class="font-weight-bold multiline">
           {{ question }}
         </p>
       </v-col>
