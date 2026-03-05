@@ -54,7 +54,7 @@
         :rules="[
           (v) =>
             !(
-              userStore.educationInstitution?.auspice === 'Private' &&
+              userStore.educationInstitution?.institutionType === 'Private' &&
               v &&
               v.length > 1
             ) || 'Private institutions can only select a single campus',
@@ -76,7 +76,7 @@
                 (checked) => onCampusChange(campus.id ?? null, checked)
               "
               :disabled="
-                userStore.educationInstitution?.auspice === 'Private' &&
+                userStore.educationInstitution?.institutionType === 'Private' &&
                 programApplicationObject !== null &&
                 programApplicationObject.programCampuses !== null &&
                 programApplicationObject.programCampuses !== undefined &&

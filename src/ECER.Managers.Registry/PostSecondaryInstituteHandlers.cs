@@ -46,7 +46,9 @@ public class PostSecondaryInstituteHandlers(
     var institute = mapper.Map<Resources.Documents.PostSecondaryInstitutes.PostSecondaryInstitute>(request.Institute)!;
     await postSecondaryInstituteRepository.Save(new Resources.Documents.PostSecondaryInstitutes.PostSecondaryInstitute {
       Id = request.Institute.Id,
-      Auspice = institute.Auspice,
+      InstitutionType = institute.InstitutionType,
+      PrivateAuspiceType = institute.PrivateAuspiceType,
+      PtiruInstitutionId = institute.PtiruInstitutionId,
       BceidBusinessId = institute.BceidBusinessId,
       BceidBusinessName = institute.BceidBusinessName,
       City = institute.City,
