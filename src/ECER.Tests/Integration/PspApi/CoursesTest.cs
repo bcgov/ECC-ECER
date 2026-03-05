@@ -31,7 +31,7 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   [Fact]
   public async Task AddCourse_WhenCourseNumberAlreadyExists_ReturnsStatusInvalidOperation()
   {
-    var course = CreateCourse(101, "201");
+    var course = CreateCourse(666, "201");
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);

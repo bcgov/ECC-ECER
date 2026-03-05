@@ -70,7 +70,6 @@ import Loading from "@/components/Loading.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ProgramApplicationCard from "@/components/program-application/ProgramApplicationCard.vue";
 import { getProgramApplications } from "@/api/program-application";
-import { useLoadingStore } from "@/store/loading";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 
@@ -97,6 +96,7 @@ export default defineComponent({
       initialLoad: true,
       filter: "active",
       activeStatus: [
+        "Approved",
         "Draft",
         "InterimRecognition",
         "OnGoingRecognition",
@@ -104,6 +104,9 @@ export default defineComponent({
         "Submitted",
       ] as Components.Schemas.ApplicationStatus[],
       inactiveStatus: [
+        "Archived",
+        "Denied",
+        "Inactive",
         "RefusetoApprove",
         "Withdrawn",
       ] as Components.Schemas.ApplicationStatus[],

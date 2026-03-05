@@ -52,6 +52,12 @@ export default defineComponent({
           { title: "Invite user", disabled: true, href: this.route.path },
         ];
       }
+      if (this.route.name === "education-institution") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          { title: "Institution info", disabled: true, href: this.route.path },
+        ];
+      }
       if (this.route.name === "edit-education-institution") {
         return [
           { title: "Home", disabled: false, href: "/" },
@@ -107,13 +113,13 @@ export default defineComponent({
           },
         ];
       }
-      if (this.route.name === "program-application-information") {
+      if (this.route.name === "programApplicationInfo") {
         return [
           { title: "Home", disabled: false, href: "/" },
           {
             title: "Program application information",
             disabled: true,
-            href: "/program-application-information",
+            href: "/program-application-info",
           },
         ];
       }

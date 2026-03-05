@@ -6,7 +6,9 @@
     </v-card-title>
     <v-row no-gutters>
       <v-col cols="12" class="pt-2">
-        <p class="font-weight-bold">{{ question }}</p>
+        <p class="font-weight-bold multiline">
+          {{ question }}
+        </p>
       </v-col>
       <v-col cols="12" class="pt-5">
         <v-textarea
@@ -36,11 +38,24 @@
 import { defineComponent, type PropType } from "vue";
 import FileUploader from "@/components/common/FileUploader.vue";
 import type { FileItem } from "@/components/common/UploadFileItem.vue";
+import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
 
 export interface QuestionModelValue {
   answer?: string;
-  fileIds?: string[];
+  files?: Components.Schemas.FileInfo[];
+}
+
+function toFileItem(info: Components.Schemas.FileInfo): FileItem {
+  return {
+    file: new File([], info.name ?? ""),
+    fileId: info.id ?? "",
+    progress: 101,
+    fileErrors: [],
+    fileSize: 0,
+    fileName: info.name ?? "",
+    storageFolder: "permanent",
+  };
 }
 
 export default defineComponent({
@@ -49,7 +64,7 @@ export default defineComponent({
   props: {
     modelValue: {
       type: Object as PropType<QuestionModelValue>,
-      default: () => ({ answer: "", fileIds: [] }),
+      default: () => ({ answer: "", files: [] }),
     },
     name: {
       type: String,
@@ -69,6 +84,11 @@ export default defineComponent({
       userFilesFromModel: [] as FileItem[],
     };
   },
+  created() {
+    if (this.modelValue?.files?.length) {
+      this.userFilesFromModel = this.modelValue.files.map(toFileItem);
+    }
+  },
   methods: {
     onAnswerInput(value: string) {
       this.$emit("update:modelValue", {
@@ -77,11 +97,12 @@ export default defineComponent({
       });
     },
     onFilesUpdate(files: FileItem[]) {
-      const fileIds = files.map((f) => f.fileId);
       this.userFilesFromModel = files;
       this.$emit("update:modelValue", {
         ...this.modelValue,
-        fileIds,
+        files: files
+          .filter((f) => f.storageFolder === "permanent")
+          .map((f) => ({ id: f.fileId, name: f.fileName })),
       });
     },
   },

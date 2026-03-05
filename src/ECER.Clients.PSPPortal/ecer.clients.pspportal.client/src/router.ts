@@ -74,6 +74,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/education-institution/:institutionId",
+      component: () => import("./components/pages/EducationInstitution.vue"),
+      name: "education-institution",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/program/:programId",
       component: () => import("./components/pages/Program.vue"),
       name: "programDetail",
@@ -89,7 +96,8 @@ const router = createRouter({
     },
     {
       path: "/program-application-info",
-      component: () => import("./components/pages/ProgramApplicationInfo.vue"),
+      component: () =>
+        import("./components/pages/ProgramApplicationInfoContainer.vue"),
       name: "programApplicationInfo",
       meta: { requiresAuth: true, requiresVerification: true },
     },

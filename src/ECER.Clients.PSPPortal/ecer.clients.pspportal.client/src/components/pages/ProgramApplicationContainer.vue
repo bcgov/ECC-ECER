@@ -6,19 +6,7 @@
     justify="center"
   >
     <v-col cols="12" md="8" lg="6">
-      <v-card flat rounded="lg" class="pa-8 text-center">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-          size="56"
-          class="mb-4"
-        />
-        <h3 class="mb-3">Preparing profile for review</h3>
-        <p class="ma-0">
-          Please wait a few minutes while we prepare it for review. When ready,
-          it will appear here and will also be available in your dashboard.
-        </p>
-      </v-card>
+      <PreparingRequestSpinner />
     </v-col>
   </v-row>
 
@@ -51,12 +39,14 @@ import Loading from "@/components/Loading.vue";
 import { getProgramApplicationById } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
 import ProgramApplication from "@/components/program-application/ProgramApplication.vue";
+import PreparingRequestSpinner from "@/components/common/PreparingRequestSpinner.vue";
 
 const POLL_INTERVAL_MS = 10000;
 
 export default defineComponent({
   name: "ProgramApplicationContainer",
   components: {
+    PreparingRequestSpinner,
     PageContainer,
     Breadcrumb,
     Callout,

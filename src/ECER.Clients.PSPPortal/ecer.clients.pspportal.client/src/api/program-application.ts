@@ -56,6 +56,23 @@ const withdrawProgramApplication = async (
   });
 };
 
+const updateProgramApplication = async (
+  application: Components.Schemas.ProgramApplication,
+): Promise<ApiResponse<string | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramApplicationPut.PathParameters = {
+    id: application.id || "",
+  };
+  const body: Paths.ProgramApplicationPut.RequestBody = {
+    ...application,
+  };
+
+  return apiResultHandler.execute<string | null | undefined>({
+    request: client.program_application_put(pathParameters, body),
+    key: "program_application_put",
+  });
+};
+
 const getProgramApplicationById = async (
   id: string,
 ): Promise<
@@ -130,6 +147,32 @@ const getComponentGroupComponents = async (
     request:
       client.program_application_component_group_components_get(pathParameters),
     key: "program_application_component_group_components_get",
+  });
+};
+
+const updateComponentGroup = async (
+  programApplicationId: string,
+  componentGroup: Components.Schemas.ComponentGroupWithComponents,
+): Promise<
+  ApiResponse<
+    Components.Schemas.ComponentGroupWithComponents | null | undefined
+  >
+> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramApplicationComponentGroupPut.PathParameters =
+    {
+      id: programApplicationId,
+      componentGroupId: componentGroup.id ?? "",
+    };
+
+  return apiResultHandler.execute<
+    Components.Schemas.ComponentGroupWithComponents | null | undefined
+  >({
+    request: client.program_application_component_group_put(
+      pathParameters,
+      componentGroup,
+    ),
+    key: "program_application_component_group_put",
   });
 };
 
@@ -215,9 +258,11 @@ export {
   getProgramApplications,
   getComponentGroupComponents,
   getComponentGroupMetadata,
+  updateComponentGroup,
   mapProgramStatus,
   mapApplicationType,
   mapDeliveryType,
   mapProgramType,
   withdrawProgramApplication,
+  updateProgramApplication,
 };

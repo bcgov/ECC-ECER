@@ -36,7 +36,7 @@ public class EducationInstituteTests : PspPortalWebAppScenarioBase
     EducationInstitution? institute = await response.ReadAsJsonAsync<EducationInstitution>();
     institute.ShouldNotBeNull();
 
-    institute.Auspice = Clients.PSPPortal.Server.EducationInstitutions.Auspice.Public;
+    institute.InstitutionType = Clients.PSPPortal.Server.EducationInstitutions.PsiInstitutionType.Public;
     institute.City = "Victoria";
     institute.Name = "Test Name";
     institute.Street1 = "123 Test Rd";
@@ -62,7 +62,7 @@ public class EducationInstituteTests : PspPortalWebAppScenarioBase
     institute = await response.ReadAsJsonAsync<EducationInstitution>();
     institute.ShouldNotBeNull();
 
-    institute.Auspice.ShouldBe(Clients.PSPPortal.Server.EducationInstitutions.Auspice.Public);
+    institute.InstitutionType.ShouldBe(Clients.PSPPortal.Server.EducationInstitutions.PsiInstitutionType.Public);
     institute.City.ShouldBe("Victoria");
     institute.Name.ShouldBe("Test Name");
     institute.Street1.ShouldBe("123 Test Rd");

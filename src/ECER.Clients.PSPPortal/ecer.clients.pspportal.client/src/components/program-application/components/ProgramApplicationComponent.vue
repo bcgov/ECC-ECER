@@ -27,6 +27,18 @@
         </v-col>
       </v-row>
       <p v-else class="ma-0">No components for this group.</p>
+      <v-row class="mt-4">
+        <v-col>
+          <v-btn
+            color="primary"
+            :loading="saving"
+            :disabled="saving"
+            @click="saveAndContinue"
+          >
+            Save and continue
+          </v-btn>
+        </v-col>
+      </v-row>
     </template>
   </v-container>
 </template>
@@ -34,12 +46,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Loading from "@/components/Loading.vue";
-import { getComponentGroupComponents } from "@/api/program-application";
+import {
+  getComponentGroupComponents,
+  updateComponentGroup,
+} from "@/api/program-application";
 import type { Components } from "@/types/openapi";
 import Question from "@/components/program-application/Question.vue";
 import type { QuestionModelValue } from "@/components/program-application/Question.vue";
 
-/** Component group with components (flat shape from API). */
 interface ComponentGroupWithComponentsFlat {
   id?: string | null;
   name?: string | null;
@@ -63,12 +77,13 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["next"],
   data() {
     return {
       componentGroup: null as ComponentGroupWithComponentsFlat | null,
       components: [] as Components.Schemas.ProgramApplicationComponent[],
       loading: true,
-      /** Form state per component id; used for v-model and save. */
+      saving: false,
       formByComponentId: {} as Record<string, QuestionModelValue>,
     };
   },
@@ -100,10 +115,33 @@ export default defineComponent({
           c.id ?? "",
           {
             answer: c.answer ?? "",
-            fileIds: c.fileIds ?? [],
+            files: c.files ?? [],
           },
         ]),
       );
+    },
+    async handleSave() {
+      if (!this.componentGroup) return;
+      this.saving = true;
+      const updatedComponents = this.components.map((c) => ({
+        ...c,
+        answer: this.formByComponentId[c.id ?? ""]?.answer ?? c.answer,
+        files: this.formByComponentId[c.id ?? ""]?.files ?? c.files,
+      }));
+      const payload: Components.Schemas.ComponentGroupWithComponents = {
+        ...this.componentGroup,
+        components: updatedComponents,
+      };
+      const result = await updateComponentGroup(
+        this.programApplicationId,
+        payload,
+      );
+      this.saving = false;
+      if (result.error) return;
+    },
+    async saveAndContinue() {
+      await this.handleSave();
+      this.$emit("next", this.componentGroupId);
     },
   },
 });
