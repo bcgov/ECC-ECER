@@ -2,7 +2,7 @@
   <v-card flat rounded="lg" :border="true" color="#EDEBE9">
     <v-card-text>
       <v-card-title class="pl-0">Non-allocated courses</v-card-title>
-      <v-card-subtitle class="pl-0 pb-4">
+      <v-card-subtitle class="pl-0 pb-4 multiline">
         Courses listed here have no hours allocated toward any of the required
         areas of instruction. If changes are required, edit the course to
         allocate hours.
