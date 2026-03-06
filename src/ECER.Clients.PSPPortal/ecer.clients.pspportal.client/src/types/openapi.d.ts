@@ -662,10 +662,10 @@ declare namespace Paths {
     }
     export interface PathParameters {
       id: Parameters.Id;
-      componentGroupId: Parameters.ComponentGroupId;
+      componentGroupId?: Parameters.ComponentGroupId;
     }
     namespace Responses {
-      export type $200 = Components.Schemas.ComponentGroupWithComponents;
+      export type $200 = Components.Schemas.ComponentGroupWithComponents[];
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -681,7 +681,7 @@ declare namespace Paths {
     }
     export type RequestBody = Components.Schemas.ComponentGroupWithComponents;
     namespace Responses {
-      export type $200 = Components.Schemas.ComponentGroupWithComponents;
+      export type $200 = string;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
