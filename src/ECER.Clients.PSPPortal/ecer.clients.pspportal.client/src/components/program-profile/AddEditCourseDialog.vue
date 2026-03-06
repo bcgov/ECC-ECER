@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, toRaw, toRefs } from "vue";
+import { defineComponent, type PropType, toRaw } from "vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";

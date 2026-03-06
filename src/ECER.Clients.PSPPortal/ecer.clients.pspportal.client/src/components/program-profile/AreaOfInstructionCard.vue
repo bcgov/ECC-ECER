@@ -136,7 +136,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, toRefs } from "vue";
+import { defineComponent, type PropType } from "vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
 import { useDisplay } from "vuetify";
