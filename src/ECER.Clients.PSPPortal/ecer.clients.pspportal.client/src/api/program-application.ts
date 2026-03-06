@@ -131,7 +131,7 @@ const getComponentGroupComponents = async (
   componentGroupId: string,
 ): Promise<
   ApiResponse<
-    Components.Schemas.ComponentGroupWithComponents | null | undefined
+    Components.Schemas.ComponentGroupWithComponents[] | null | undefined
   >
 > => {
   const client = await getClient();
@@ -142,7 +142,7 @@ const getComponentGroupComponents = async (
     };
 
   return apiResultHandler.execute<
-    Components.Schemas.ComponentGroupWithComponents | null | undefined
+    Components.Schemas.ComponentGroupWithComponents[] | null | undefined
   >({
     request:
       client.program_application_component_group_components_get(pathParameters),
