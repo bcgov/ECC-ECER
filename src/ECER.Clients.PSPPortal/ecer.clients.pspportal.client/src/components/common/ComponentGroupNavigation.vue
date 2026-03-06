@@ -79,8 +79,19 @@
           </v-list-item>
         </template>
 
-        <v-list-item v-for="(type, index) in programTypes" :key="index">
-          <v-list-item>
+        <v-list-item
+          v-for="(type, index) in programTypes"
+          :key="`program-type-${type}-${index}`"
+        >
+          <v-list-item
+            :to="{
+              name: 'program-application-program-profile-area-of-instruction',
+              params: {
+                programApplicationId: programApplicationId,
+                programType: type,
+              },
+            }"
+          >
             <v-list-item-title>
               <v-icon>mdi-table</v-icon>
               {{ type }}
@@ -138,15 +149,21 @@ export default defineComponent({
       required: true,
     },
     programTypes: {
-      type: Array,
+      type: Array as () => Components.Schemas.ProgramTypes[] | null | undefined,
       required: true,
     },
     applicationStatus: {
-      type: String,
+      type: String as () =>
+        | Components.Schemas.ApplicationStatus
+        | null
+        | undefined,
       required: true,
     },
     applicationType: {
-      type: String,
+      type: String as () =>
+        | Components.Schemas.ApplicationType
+        | null
+        | undefined,
       required: true,
     },
     componentGroups: {

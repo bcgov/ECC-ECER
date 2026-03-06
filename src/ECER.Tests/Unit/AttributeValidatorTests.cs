@@ -1,4 +1,4 @@
-﻿using ECER.Clients.PSPPortal.Server.Programs;
+﻿using ECER.Infrastructure.Common.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Tests.Unit
