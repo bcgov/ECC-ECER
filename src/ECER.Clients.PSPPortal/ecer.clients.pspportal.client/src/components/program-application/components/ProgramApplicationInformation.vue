@@ -2,7 +2,7 @@
   <ProgramApplicationInfo />
   <v-row>
     <v-col>
-      <v-btn rounded="lg" color="primary" @click="$emit('next')">
+      <v-btn rounded="lg" color="primary" @click="$emit('next', {})">
         Continue
       </v-btn>
     </v-col>
@@ -16,6 +16,7 @@ import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ProgramApplicationInfo from "@/components/common/ProgramApplicationInfo.vue";
+import type { NextStepPayload } from "../ProgramApplication.vue";
 
 export default defineComponent({
   name: "ProgramApplicationInformation",
@@ -32,6 +33,6 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: ["next"],
+  emits: { next: (_payload: NextStepPayload) => true },
 });
 </script>

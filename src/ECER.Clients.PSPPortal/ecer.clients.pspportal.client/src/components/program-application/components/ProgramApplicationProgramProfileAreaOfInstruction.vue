@@ -1,5 +1,6 @@
 <template>
   <Loading v-if="loadingStore.isLoading('courses_get')" />
+
   <template v-else>
     <h2>Program profile - ECE ({{ programType }})</h2>
     <br />
@@ -48,6 +49,13 @@
       :area-subtitles="generateSubtitleMap"
       @reload-courses="loadCourses"
     ></AreaOfInstructionComponent>
+    <v-row class="mt-4">
+      <v-col>
+        <v-btn color="primary" @click="saveAndContinue">
+          Save and continue
+        </v-btn>
+      </v-col>
+    </v-row>
   </template>
 </template>
 
@@ -65,6 +73,7 @@ import { MIN_HOURS_ITE_SNE } from "@/utils/constant";
 
 import Loading from "@/components/Loading.vue";
 import AreaOfInstructionComponent from "../../program-profile/AreaOfInstructionComponent.vue";
+import type { NextStepPayload } from "../ProgramApplication.vue";
 
 export default defineComponent({
   name: "EceProgramAreaInput",
@@ -82,7 +91,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["next"],
+  emits: { next: (_payload: NextStepPayload) => true },
   setup: () => {
     const configStore = useConfigStore();
     const loadingStore = useLoadingStore();
@@ -181,6 +190,9 @@ export default defineComponent({
         "ProgramApplication",
         [this.programType],
       );
+    },
+    saveAndContinue() {
+      this.$emit("next", { programType: this.programType });
     },
   },
 });

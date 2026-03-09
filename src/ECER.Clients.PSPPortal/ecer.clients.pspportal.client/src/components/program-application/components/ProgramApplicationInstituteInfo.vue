@@ -426,6 +426,7 @@ import {
   updateProgramApplication,
   getProgramApplicationById,
 } from "@/api/program-application";
+import type { NextStepPayload } from "../ProgramApplication.vue";
 
 export default defineComponent({
   name: "ProgramApplicationInstituteInfo",
@@ -442,7 +443,7 @@ export default defineComponent({
       userStore,
     };
   },
-  emits: ["next"],
+  emits: { next: (_payload: NextStepPayload) => true },
   computed: {
     validateHours() {
       return (v: string) => {
@@ -646,7 +647,7 @@ export default defineComponent({
         }
       } finally {
         this.isLoading = false;
-        this.$emit("next");
+        this.$emit("next", {});
       }
     },
     showDeliverySection(): boolean {
