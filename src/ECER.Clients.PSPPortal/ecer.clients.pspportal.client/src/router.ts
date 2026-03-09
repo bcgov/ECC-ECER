@@ -230,6 +230,14 @@ const router = createRouter({
           meta: { requiresAuth: true, requiresVerification: true },
           props: true,
         },
+        {
+          path: "component/review-responses",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationReviewResponses.vue"),
+          name: "program-application-review-response",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
       ],
     },
   ],

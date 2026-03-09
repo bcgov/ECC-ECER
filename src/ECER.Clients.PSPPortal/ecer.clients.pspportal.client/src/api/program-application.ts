@@ -128,7 +128,7 @@ const getComponentGroupMetadata = async (
 
 const getComponentGroupComponents = async (
   programApplicationId: string,
-  componentGroupId: string,
+  componentGroupId?: string,
 ): Promise<
   ApiResponse<
     Components.Schemas.ComponentGroupWithComponents[] | null | undefined

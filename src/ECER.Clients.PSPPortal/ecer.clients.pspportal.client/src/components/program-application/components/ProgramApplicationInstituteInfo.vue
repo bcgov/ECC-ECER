@@ -614,7 +614,7 @@ export default defineComponent({
       if (currentUser) {
         this.contacts.push({
           id: currentUser.id,
-          name: `${currentUser.profile?.firstName} ${currentUser.profile?.lastName} (You)`,
+          name: `${currentUser.profile?.firstName} ${currentUser.profile?.lastName}`,
         });
       }
 

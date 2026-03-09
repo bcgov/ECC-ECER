@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pl-0">
+  <v-container fluid class="pl-0 d-print-none">
     <v-list color="primary">
       <v-list-item
         :to="{
@@ -111,7 +111,12 @@
           </v-list-item>
         </template>
 
-        <v-list-item>
+        <v-list-item
+          :to="{
+            name: 'program-application-review-response',
+            params: { programApplicationId: programApplicationId },
+          }"
+        >
           <v-list-item-title>
             <v-icon>mdi-text-box-outline</v-icon>
             Review Responses
