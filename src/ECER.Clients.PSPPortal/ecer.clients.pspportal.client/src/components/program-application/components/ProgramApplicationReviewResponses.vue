@@ -119,7 +119,7 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ programApplicationObject?.enrollmentOptions?.join(", ") }}
+              {{ mapEnrollmentOptions }}
             </p>
           </v-col>
         </v-row>
@@ -129,7 +129,7 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ programApplicationObject?.admissionOptions?.join(", ") }}
+              {{ mapAdmissionOptions }}
             </p>
           </v-col>
         </v-row>
@@ -173,7 +173,7 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ programApplicationObject?.deliveryMethod?.join(", ") }}
+              {{ mapDeliveryMethods }}
             </p>
           </v-col>
         </v-row>
@@ -247,7 +247,7 @@
 
     <v-row class="d-print-none">
       <v-col>
-        <v-btn rounded="lg" color="primary" @click="$emit('next')">
+        <v-btn rounded="lg" color="primary" @click="$emit('next', {})">
           Continue
         </v-btn>
       </v-col>
@@ -267,6 +267,9 @@ import {
   mapProgramType,
   getProgramApplicationById,
   getComponentGroupComponents,
+  mapEnrollmentOptions,
+  mapAdmissionOptions,
+  mapDeliveryMethods,
 } from "@/api/program-application";
 import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
@@ -300,6 +303,21 @@ export default defineComponent({
       if (!types?.length) return "—";
       return types.map(mapProgramType).join(", ");
     },
+    mapEnrollmentOptions() {
+      const types = this.programApplicationObject?.enrollmentOptions;
+      if (!types?.length) return "—";
+      return types.map(mapEnrollmentOptions).join(", ");
+    },
+    mapAdmissionOptions() {
+      const types = this.programApplicationObject?.admissionOptions;
+      if (!types?.length) return "—";
+      return types.map(mapAdmissionOptions).join(", ");
+    },
+    mapDeliveryMethods() {
+      const types = this.programApplicationObject?.deliveryMethod;
+      if (!types?.length) return "—";
+      return types.map(mapDeliveryMethods).join(", ");
+    },
     campus(): string {
       if (this.programApplicationObject?.programCampuses) {
         var programCampusIds =
@@ -331,8 +349,8 @@ export default defineComponent({
     };
   },
   async mounted() {
-    await this.fetchApplication();
     await this.loadComponents();
+    await this.fetchApplication();
   },
   methods: {
     printPage() {
