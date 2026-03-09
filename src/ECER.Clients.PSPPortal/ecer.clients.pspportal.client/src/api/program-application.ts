@@ -131,7 +131,7 @@ const getComponentGroupComponents = async (
   componentGroupId: string,
 ): Promise<
   ApiResponse<
-    Components.Schemas.ComponentGroupWithComponents | null | undefined
+    Components.Schemas.ComponentGroupWithComponents[] | null | undefined
   >
 > => {
   const client = await getClient();
@@ -142,7 +142,7 @@ const getComponentGroupComponents = async (
     };
 
   return apiResultHandler.execute<
-    Components.Schemas.ComponentGroupWithComponents | null | undefined
+    Components.Schemas.ComponentGroupWithComponents[] | null | undefined
   >({
     request:
       client.program_application_component_group_components_get(pathParameters),
@@ -153,11 +153,7 @@ const getComponentGroupComponents = async (
 const updateComponentGroup = async (
   programApplicationId: string,
   componentGroup: Components.Schemas.ComponentGroupWithComponents,
-): Promise<
-  ApiResponse<
-    Components.Schemas.ComponentGroupWithComponents | null | undefined
-  >
-> => {
+): Promise<ApiResponse<string | null | undefined>> => {
   const client = await getClient();
   const pathParameters: Paths.ProgramApplicationComponentGroupPut.PathParameters =
     {
@@ -165,9 +161,7 @@ const updateComponentGroup = async (
       componentGroupId: componentGroup.id ?? "",
     };
 
-  return apiResultHandler.execute<
-    Components.Schemas.ComponentGroupWithComponents | null | undefined
-  >({
+  return apiResultHandler.execute<string | null | undefined>({
     request: client.program_application_component_group_put(
       pathParameters,
       componentGroup,

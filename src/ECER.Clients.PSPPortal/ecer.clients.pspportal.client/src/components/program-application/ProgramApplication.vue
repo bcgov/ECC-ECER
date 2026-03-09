@@ -1,6 +1,6 @@
 <template>
   <ProgramApplicationHeader
-    :programApplicationName="programApplication.programApplicationName"
+    :programApplicationName="programApplication.programApplicationName || ''"
   ></ProgramApplicationHeader>
   <v-container>
     <v-row>
@@ -29,7 +29,7 @@
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
-      <v-col>
+      <v-col lg="8" md="6" sm="auto">
         <router-view @next="handleNext" />
       </v-col>
     </v-row>
@@ -42,8 +42,8 @@ import { useDisplay } from "vuetify";
 import PageContainer from "@/components/PageContainer.vue";
 import ComponentGroupNavigation from "@/components/common/ComponentGroupNavigation.vue";
 import ProgramApplicationHeader from "./ProgramApplicationHeader.vue";
-import { getComponentGroupMetadata } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
+import { getComponentGroupMetadata } from "@/api/program-application";
 
 interface ApplicationStep {
   name: string;
@@ -63,11 +63,15 @@ export default defineComponent({
       required: true,
     },
     programApplication: {
-      type: Object,
+      type: Object as () => Components.Schemas.ProgramApplication,
       required: true,
     },
     componentGroupId: {
       type: String,
+      required: false,
+    },
+    programType: {
+      type: String as () => Components.Schemas.ProgramTypes,
       required: false,
     },
   },

@@ -89,11 +89,13 @@
       </p>
       <br />
       <AreaOfInstructionComponent
-        :program="programStore.draftProgram"
         :program-type="programType"
+        :id="programStore.draftProgram.id || ''"
+        type="ProgramProfile"
+        :courses="programStore.draftProgram.courses || []"
         :include-total-hours="showTotalHours"
         :area-subtitles="generateSubtitleMap"
-        @reload-program="reloadProgram"
+        @reload-courses="reloadProgram"
       >
         <template #description>
           <p>
