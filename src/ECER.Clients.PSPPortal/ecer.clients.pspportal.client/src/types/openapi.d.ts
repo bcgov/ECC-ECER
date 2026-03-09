@@ -70,6 +70,7 @@ declare namespace Components {
       city?: string | null;
       province?: string | null;
       postalCode?: string | null;
+      keyCampusContactName?: string | null;
     }
     export type CampusStatus = "None" | "Active" | "Inactive";
     export interface Communication {
