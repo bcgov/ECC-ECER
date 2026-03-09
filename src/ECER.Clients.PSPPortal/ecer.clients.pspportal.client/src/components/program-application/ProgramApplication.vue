@@ -48,6 +48,12 @@ import { getComponentGroupMetadata } from "@/api/program-application";
 interface ApplicationStep {
   name: string;
   componentGroupId?: string;
+  programType?: string;
+}
+
+export interface NextStepPayload {
+  currentComponentGroupId?: string;
+  programType?: string;
 }
 
 export default defineComponent({
@@ -95,6 +101,11 @@ export default defineComponent({
   beforeUnmount() {},
   computed: {
     orderedSteps(): ApplicationStep[] {
+      const programTypeSteps =
+        this.programApplication.programTypes?.map((programType) => ({
+          name: "program-application-program-profile-area-of-instruction",
+          programType: programType,
+        })) ?? [];
       return [
         { name: "program-application-component-info" },
         { name: "program-application-institute-info" },
@@ -102,6 +113,7 @@ export default defineComponent({
           name: "program-application-component",
           componentGroupId: g.id ?? "",
         })),
+        ...programTypeSteps,
         //TODO { name: "some-future-route" }
       ];
     },
@@ -115,12 +127,16 @@ export default defineComponent({
         (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
       );
     },
-    async handleNext(currentComponentGroupId?: string) {
+    async handleNext({
+      currentComponentGroupId,
+      programType,
+    }: NextStepPayload) {
       await this.getComponentGroups();
       const currentIndex = this.orderedSteps.findIndex(
         (s) =>
           s.name === this.$route.name &&
-          s.componentGroupId === currentComponentGroupId,
+          s.componentGroupId === currentComponentGroupId &&
+          s.programType === programType,
       );
       const next = this.orderedSteps[currentIndex + 1];
       if (!next) {
@@ -135,6 +151,9 @@ export default defineComponent({
           programApplicationId: this.programApplicationId,
           ...(next.componentGroupId && {
             componentGroupId: next.componentGroupId,
+          }),
+          ...(next.programType && {
+            programType: next.programType,
           }),
         },
       });
