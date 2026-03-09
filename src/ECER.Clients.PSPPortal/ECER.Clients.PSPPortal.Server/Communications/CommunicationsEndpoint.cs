@@ -1,6 +1,5 @@
 using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
-using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
@@ -17,7 +16,7 @@ public class CommunicationsEndpoint : IRegisterEndpoints
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     endpointRouteBuilder.MapGet("/api/messages/{parentId?}",
-        async Task<Results<Ok<GetMessagesResponse>, BadRequest<ProblemDetails>, NotFound>> (string? parentId, HttpContext httpContext,
+        async Task<Results<Ok<GetMessagesResponse>, BadRequest<ProblemDetails>, NotFound>> (string? parentId, string? byId, HttpContext httpContext,
           IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
       {
         var userContext = httpContext.User.GetUserContext()!;
@@ -29,6 +28,8 @@ public class CommunicationsEndpoint : IRegisterEndpoints
         }
 
         bool IdIsNotGuid = !Guid.TryParse(parentId, out _); if (IdIsNotGuid && parentId != null) { parentId = null; }
+        bool ByIdIsNotGuid = !Guid.TryParse(byId, out _); if (ByIdIsNotGuid && byId != null) { byId = null; }
+
         // Get pagination parameters from the query string with default values
         var pageNumber = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageProperty], out var page) && page > 0 ? page : paginationOptions.Value.DefaultPageNumber;
         var pageSize = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageSizeProperty], out var size) ? size : paginationOptions.Value.DefaultPageSize;
@@ -37,7 +38,7 @@ public class CommunicationsEndpoint : IRegisterEndpoints
         {
           //Pagination by users institute
           ByPostSecondaryInstituteId = currentRep.PostSecondaryInstituteId,
-          ById = httpContext.Request.Query["byId"],
+          ById = byId,
           ByParentId = parentId,
           ByStatus = [ECER.Managers.Registry.Contract.Communications.CommunicationStatus.NotifiedRecipient,
             ECER.Managers.Registry.Contract.Communications.CommunicationStatus.Acknowledged],
@@ -49,7 +50,6 @@ public class CommunicationsEndpoint : IRegisterEndpoints
         return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), TotalMessagesCount = results.TotalMessagesCount });
       })
       .WithOpenApi("Paginated endpoint to get all user messages", string.Empty, "message_get")
-      .AddGuidValidationQueryParams(["byId"], false)
       .RequireAuthorization("psp_user");
 
     endpointRouteBuilder.MapPost("/api/messages",
