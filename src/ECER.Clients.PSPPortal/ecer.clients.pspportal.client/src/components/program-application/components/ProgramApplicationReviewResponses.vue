@@ -320,13 +320,13 @@ export default defineComponent({
     },
     campus(): string {
       if (this.programApplicationObject?.programCampuses) {
-        var programCampusIds =
+        let programCampusIds =
           this.programApplicationObject?.programCampuses.map((c) => {
             if (c.campusId !== null && c.campusId !== undefined) {
               return c.campusId;
             }
           });
-        var campusObj = this.userStore.educationInstitution?.campuses?.filter(
+        let campusObj = this.userStore.educationInstitution?.campuses?.filter(
           (c) => {
             if (c.id !== null && c.id !== undefined) {
               programCampusIds.includes(c.id);
