@@ -48,6 +48,13 @@
       :area-subtitles="generateSubtitleMap"
       @reload-courses="loadCourses"
     ></AreaOfInstructionComponent>
+    <v-row class="mt-4">
+      <v-col>
+        <v-btn color="primary" @click="saveAndContinue">
+          Save and continue
+        </v-btn>
+      </v-col>
+    </v-row>
   </template>
 </template>
 
@@ -57,6 +64,7 @@ import { useConfigStore } from "@/store/config";
 import { useLoadingStore } from "@/store/loading";
 
 import type { Components } from "@/types/openapi";
+import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import { formatDate } from "@/utils/format";
 import { getCourses } from "@/api/course";
 
@@ -82,7 +90,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["next"],
+  emits: { next: (_payload: NextStepPayload) => true },
   setup: () => {
     const configStore = useConfigStore();
     const loadingStore = useLoadingStore();
@@ -181,6 +189,9 @@ export default defineComponent({
         "ProgramApplication",
         [this.programType],
       );
+    },
+    saveAndContinue() {
+      this.$emit("next", { programType: this.programType });
     },
   },
 });

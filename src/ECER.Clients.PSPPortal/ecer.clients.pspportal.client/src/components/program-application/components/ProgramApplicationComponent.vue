@@ -53,6 +53,7 @@ import {
 import type { Components, ComponentGroupWithComponents } from "@/types/openapi";
 import Question from "@/components/program-application/Question.vue";
 import type { QuestionModelValue } from "@/components/program-application/Question.vue";
+import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 
 interface ComponentGroupWithComponentsFlat {
   id?: string | null;
@@ -77,7 +78,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["next"],
+  emits: { next: (_payload: NextStepPayload) => true },
   data() {
     return {
       componentGroup: null as ComponentGroupWithComponents | null,
@@ -145,7 +146,7 @@ export default defineComponent({
     },
     async saveAndContinue() {
       await this.handleSave();
-      this.$emit("next", this.componentGroupId);
+      this.$emit("next", { currentComponentGroupId: this.componentGroupId });
     },
   },
 });
