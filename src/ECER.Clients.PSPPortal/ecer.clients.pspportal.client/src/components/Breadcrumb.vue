@@ -58,6 +58,22 @@ export default defineComponent({
           { title: "Institution info", disabled: true, href: this.route.path },
         ];
       }
+      if (this.route.name === "campus") {
+        const institutionId = this.route.params.institutionId as string;
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Institution information",
+            disabled: false,
+            href: `/education-institution/${institutionId}`,
+          },
+          {
+            title: "Campus information",
+            disabled: true,
+            href: this.route.path,
+          },
+        ];
+      }
       if (this.route.name === "edit-education-institution") {
         return [
           { title: "Home", disabled: false, href: "/" },
