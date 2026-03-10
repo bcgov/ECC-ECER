@@ -114,15 +114,15 @@ const createProgramApplication = async (
   );
 };
 
-const getComponentGroupMetadata = async (
+const getNavigationMetadata = async (
   id: string,
-): Promise<ApiResponse<Components.Schemas.ComponentGroupMetadata[]>> => {
+): Promise<ApiResponse<Components.Schemas.NavigationMetadata[]>> => {
   const client = await getClient();
   const pathParameters: Paths.ProgramApplicationComponentsGet.PathParameters = {
     id: id,
   };
 
-  return apiResultHandler.execute<Components.Schemas.ComponentGroupMetadata[]>({
+  return apiResultHandler.execute<Components.Schemas.NavigationMetadata[]>({
     request: client.program_application_components_get(pathParameters),
     key: "program_application_components_get",
   });
@@ -290,7 +290,7 @@ export {
   getProgramApplicationById,
   getProgramApplications,
   getComponentGroupComponents,
-  getComponentGroupMetadata,
+  getNavigationMetadata,
   updateComponentGroup,
   mapProgramStatus,
   mapApplicationType,

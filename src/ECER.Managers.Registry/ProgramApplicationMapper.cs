@@ -2,7 +2,7 @@ using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
 using ECER.Managers.Registry.Contract.ProgramApplications;
 using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
-using ComponentGroupMetadata = ECER.Resources.Documents.ProgramApplications.ComponentGroupMetadata;
+using NavigationMetadata = ECER.Resources.Documents.ProgramApplications.NavigationMetadata;
 using ProgramCampus = ECER.Resources.Documents.ProgramApplications.ProgramCampus;
 using ResourcesProgramCertificationType = ECER.Resources.Documents.ProgramApplications.ProgramCertificationType;
 
@@ -31,6 +31,7 @@ internal class ProgramApplicationMapper: Profile
       .ForMember(d => d.MaximumEnrollment, opts => opts.MapFrom(s => s.MaximumEnrollment))
       .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ProgramCampuses))
       .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.OtherAdmissionOptions))
+      .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.InstituteInfoEntryProgress))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
     
@@ -41,32 +42,36 @@ internal class ProgramApplicationMapper: Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<Contract.ProgramApplications.ApplicationType, ApplicationType>()
+    CreateMap<ApplicationType, Resources.Documents.ProgramApplications.ApplicationType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<Contract.ProgramApplications.DeliveryType, DeliveryType>()
+    CreateMap<DeliveryType, Resources.Documents.ProgramApplications.DeliveryType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<Contract.ProgramApplications.ProgramCertificationType, ResourcesProgramCertificationType>()
+    CreateMap<ProgramCertificationType, ResourcesProgramCertificationType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<MethodofInstruction, MethodofInstruction>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<DeliveryMethodforInstructor, DeliveryMethodforInstructor>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<WorkHoursType, WorkHoursType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<AdmissionOptions, AdmissionOptions>()
+    CreateMap<NavigationType, NavigationType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<Contract.ProgramApplications.ComponentGroupMetadata, ComponentGroupMetadata>().ReverseMap();
+    CreateMap<MethodofInstruction, Resources.Documents.ProgramApplications.MethodofInstruction>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    CreateMap<DeliveryMethodforInstructor, Resources.Documents.ProgramApplications.DeliveryMethodforInstructor>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    CreateMap<WorkHoursType, Resources.Documents.ProgramApplications.WorkHoursType>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    CreateMap<AdmissionOptions, Resources.Documents.ProgramApplications.AdmissionOptions>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    
+    CreateMap<Contract.ProgramApplications.NavigationMetadata, NavigationMetadata>().ReverseMap();
     CreateMap<Contract.ProgramApplications.FileInfo, Resources.Documents.ProgramApplications.FileInfo>().ReverseMap();
     CreateMap<ProgramApplicationComponent, Resources.Documents.ProgramApplications.ProgramApplicationComponent>().ReverseMap();
     CreateMap<ComponentGroupWithComponents, Resources.Documents.ProgramApplications.ComponentGroupWithComponents>().ReverseMap();

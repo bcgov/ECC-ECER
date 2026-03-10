@@ -5,14 +5,14 @@ public interface IProgramApplicationRepository
   Task<string> Create(ProgramApplication programApplication, CancellationToken cancellationToken);
   Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken);
   Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken);
-  Task<IEnumerable<ComponentGroupMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
+  Task<IEnumerable<NavigationMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
   Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
   Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken);
 }
 
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 
-public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
+public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType);
 public record ComponentGroupQuery
 {
   public string? ByProgramApplicationId { get; set; }
@@ -65,6 +65,7 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public float? MaximumEnrollment { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
   public string? OtherAdmissionOptions  { get; set; }
+  public string? InstituteInfoEntryProgress { get; set; }
 }
 
 public record ProgramCampus
@@ -142,15 +143,18 @@ public enum ProgramCertificationType
   ITE,
   SNE
 }
-
 public enum MethodofInstruction
 {
 Asynchronous,
 Synchronous,
 }
-
 public enum DeliveryMethodforInstructor
 {
   Inpersonsitevisits,
   Virtualsitevisits,
+}
+public enum NavigationType
+{
+  Component,
+  Other,
 }

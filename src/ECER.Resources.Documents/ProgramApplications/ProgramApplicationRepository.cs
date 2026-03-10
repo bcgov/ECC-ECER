@@ -118,8 +118,8 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
             context.AddObject(programCampus);
           }
         }
-
       }
+
       context.Detach(existingApplication);
       context.Attach(entity);
       context.UpdateObject(entity);
@@ -130,10 +130,36 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
           .SingleOrDefault(r => r.Id == Guid.Parse(application.ProgramRepresentativeId));
         context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ, user!);
       }
+
+      if (ValidateInstituteInfo(entity, institute, application))
+      {
+        entity.ecer_InstitutionProgramInformationEntryProgress = ecer_PSPComponentProgress.Completed;
+      }
+      else
+      {
+        entity.ecer_InstitutionProgramInformationEntryProgress = ecer_PSPComponentProgress.InProgress;
+      }
+      context.UpdateObject(entity);
     }
 
     context.SaveChanges();
     return application.Id!;
+  }
+
+  private static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
+  {
+    return application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty
+            && (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online
+              && application.ecer_Onlinemethodsofinstruction.Any() && application.ecer_Deliverymethodforpracticuminstructor.Any())
+            && ValidateCampus(application, institute);
+  }
+
+  private static bool ValidateCampus(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute)
+  {
+    return application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton != null
+           && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Any()
+           && institute.ecer_PSIInstitutionType == ecer_psiinstitutiontype.Private
+           && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Count() != 1;
   }
 
   public async Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken)
@@ -190,7 +216,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
 
     return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<ProgramApplication>>(results)!, query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count);
   }
-  public async Task<IEnumerable<ComponentGroupMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken)
+  public async Task<IEnumerable<NavigationMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var categoryGroups = context.ecer_ProgramApplicationComponentGroupSet.AsQueryable();
@@ -200,7 +226,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     var results = context.From(categoryGroups)
       .Execute();
 
-    return mapper.Map<IEnumerable<ComponentGroupMetadata>>(results)!.ToList();
+    return mapper.Map<IEnumerable<NavigationMetadata>>(results)!.ToList();
   }
 
   public async Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken)

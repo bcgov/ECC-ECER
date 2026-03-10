@@ -138,13 +138,6 @@ declare namespace Components {
     export interface CommunicationsStatusResults {
       status?: CommunicationsStatus;
     }
-    export interface ComponentGroupMetadata {
-      id?: string | null;
-      name?: string | null;
-      status?: string | null;
-      categoryName?: string | null;
-      displayOrder?: number; // int32
-    }
     export interface ComponentGroupWithComponents {
       id?: string | null;
       name?: string | null;
@@ -255,6 +248,15 @@ declare namespace Components {
       | "ProgramRepresentative";
     export type InviteType = "PSIProgramRepresentative";
     export type MethodofInstruction = "Asynchronous" | "Synchronous";
+    export interface NavigationMetadata {
+      id?: string | null;
+      name?: string | null;
+      status?: string | null;
+      categoryName?: string | null;
+      displayOrder?: number; // int32
+      navigationType?: NavigationType;
+    }
+    export type NavigationType = "Component" | "Other";
     export interface NewPspUserResponse {
       id?: string | null;
     }
@@ -333,6 +335,7 @@ declare namespace Components {
       maximumEnrollment?: string | null;
       programCampuses?: ProgramCampus[] | null;
       otherAdmissionOptions?: string | null;
+      instituteInfoEntryProgress?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;
@@ -695,7 +698,7 @@ declare namespace Paths {
       id: Parameters.Id;
     }
     namespace Responses {
-      export type $200 = Components.Schemas.ComponentGroupMetadata[];
+      export type $200 = Components.Schemas.NavigationMetadata[];
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -1642,7 +1645,6 @@ export type CommunicationStatus = Components.Schemas.CommunicationStatus;
 export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults =
   Components.Schemas.CommunicationsStatusResults;
-export type ComponentGroupMetadata = Components.Schemas.ComponentGroupMetadata;
 export type ComponentGroupWithComponents =
   Components.Schemas.ComponentGroupWithComponents;
 export type Country = Components.Schemas.Country;
@@ -1670,6 +1672,8 @@ export type HttpValidationProblemDetails =
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
 export type InviteType = Components.Schemas.InviteType;
 export type MethodofInstruction = Components.Schemas.MethodofInstruction;
+export type NavigationMetadata = Components.Schemas.NavigationMetadata;
+export type NavigationType = Components.Schemas.NavigationType;
 export type NewPspUserResponse = Components.Schemas.NewPspUserResponse;
 export type OidcAuthenticationSettings =
   Components.Schemas.OidcAuthenticationSettings;
