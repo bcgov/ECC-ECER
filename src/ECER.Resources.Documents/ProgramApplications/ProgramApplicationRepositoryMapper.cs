@@ -93,14 +93,14 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(ComponentGroupMetadata.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ValidateMemberList(MemberList.Destination);
 
-    CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupResults>(MemberList.Source)
-      .ForCtorParam(nameof(ComponentGroupResults.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentGroupId))
-      .ForCtorParam(nameof(ComponentGroupResults.Name), opt => opt.MapFrom(src => src.ecer_GroupName))
-      .ForCtorParam(nameof(ComponentGroupResults.Instruction), opt => opt.MapFrom(src => src.ecer_programapplicationcomponentgroup_ComponentGroup.ecer_Instructions))
-      .ForCtorParam(nameof(ComponentGroupResults.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
-      .ForCtorParam(nameof(ComponentGroupResults.Status), opt => opt.MapFrom(src => src.ecer_EntryProgress))
-      .ForCtorParam(nameof(ComponentGroupResults.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
-      .ForCtorParam(nameof(ComponentGroupResults.Components), opt => opt.MapFrom(src => src.ecer_programapplicationcomponent_ComponentGroup))
+    CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupWithComponents>(MemberList.Source)
+      .ForCtorParam(nameof(ComponentGroupWithComponents.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentGroupId))
+      .ForCtorParam(nameof(ComponentGroupWithComponents.Name), opt => opt.MapFrom(src => src.ecer_GroupName))
+      .ForCtorParam(nameof(ComponentGroupWithComponents.Instruction), opt => opt.MapFrom(src => src.ecer_programapplicationcomponentgroup_ComponentGroup.ecer_Instructions))
+      .ForCtorParam(nameof(ComponentGroupWithComponents.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
+      .ForCtorParam(nameof(ComponentGroupWithComponents.Status), opt => opt.MapFrom(src => src.ecer_EntryProgress))
+      .ForCtorParam(nameof(ComponentGroupWithComponents.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
+      .ForCtorParam(nameof(ComponentGroupWithComponents.Components), opt => opt.MapFrom(src => src.ecer_programapplicationcomponent_ComponentGroup))
       .ValidateMemberList(MemberList.Destination);
     
     CreateMap<ecer_ProgramApplicationComponent, ProgramApplicationComponent>(MemberList.Source)

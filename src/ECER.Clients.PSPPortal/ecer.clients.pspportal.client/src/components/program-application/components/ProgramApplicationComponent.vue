@@ -50,9 +50,10 @@ import {
   getComponentGroupComponents,
   updateComponentGroup,
 } from "@/api/program-application";
-import type { Components } from "@/types/openapi";
+import type { Components, ComponentGroupWithComponents } from "@/types/openapi";
 import Question from "@/components/program-application/Question.vue";
 import type { QuestionModelValue } from "@/components/program-application/Question.vue";
+import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 
 interface ComponentGroupWithComponentsFlat {
   id?: string | null;
@@ -77,10 +78,10 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["next"],
+  emits: { next: (_payload: NextStepPayload) => true },
   data() {
     return {
-      componentGroup: null as ComponentGroupWithComponentsFlat | null,
+      componentGroup: null as ComponentGroupWithComponents | null,
       components: [] as Components.Schemas.ProgramApplicationComponent[],
       loading: true,
       saving: false,
@@ -104,11 +105,15 @@ export default defineComponent({
       this.loading = false;
       if (result.error) return;
       const payload = result.data as
-        | ComponentGroupWithComponentsFlat
+        | ComponentGroupWithComponents[]
         | null
         | undefined;
-      this.componentGroup = payload ?? null;
-      const list = payload?.components ?? [];
+      this.componentGroup =
+        payload !== null && payload !== undefined ? (payload[0] ?? null) : null;
+      const list =
+        payload !== null && payload !== undefined
+          ? (payload[0]?.components ?? [])
+          : [];
       this.components = list;
       this.formByComponentId = Object.fromEntries(
         list.map((c) => [
@@ -141,7 +146,7 @@ export default defineComponent({
     },
     async saveAndContinue() {
       await this.handleSave();
-      this.$emit("next", this.componentGroupId);
+      this.$emit("next", { currentComponentGroupId: this.componentGroupId });
     },
   },
 });
