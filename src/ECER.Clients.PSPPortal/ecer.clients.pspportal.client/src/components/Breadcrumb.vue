@@ -55,7 +55,11 @@ export default defineComponent({
       if (this.route.name === "education-institution") {
         return [
           { title: "Home", disabled: false, href: "/" },
-          { title: "Institution info", disabled: true, href: this.route.path },
+          {
+            title: "Institution information",
+            disabled: true,
+            href: this.route.path,
+          },
         ];
       }
       if (this.route.name === "campus") {
