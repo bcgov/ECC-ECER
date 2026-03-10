@@ -650,11 +650,13 @@ export default defineComponent({
               "Failed to update program application:",
               response.error,
             );
+          } else {
+            this.isSaving = false;
+            this.$emit("next", {});
           }
         }
       } finally {
         this.isSaving = false;
-        this.$emit("next", {});
       }
     },
     showDeliverySection(): boolean {

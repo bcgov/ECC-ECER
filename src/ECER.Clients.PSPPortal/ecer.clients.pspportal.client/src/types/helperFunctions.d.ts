@@ -22,12 +22,10 @@ interface ComponentGroupNavigation {
   displayOrder: number;
   statusIcon: string;
   navigationRoute: string;
+  navigationType: string;
 }
 
-type ComponentGroupNavigationMap = Map<
-  string,
-  CourseComponentGroupNavigationAreaDetail[]
->;
+type ComponentGroupNavigationMap = Map<string, ComponentGroupNavigation[]>;
 
 interface ProgramApplicationContact {
   id: string | null | undefined;

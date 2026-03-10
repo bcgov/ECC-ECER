@@ -3,13 +3,14 @@ using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Resources.Documents.ProgramApplications;
 using MediatR;
 using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
-using ComponentGroupMetadata = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupMetadata;
+using NavigationMetadata = ECER.Managers.Registry.Contract.ProgramApplications.NavigationMetadata;
 using ComponentGroupQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupQuery;
 using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 using ProgramApplicationComponent = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationComponent;
 using ProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
 using ComponentGroupWithComponentsQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponentsQuery;
 using ComponentGroupWithComponents = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents;
+using NavigationType = ECER.Managers.Registry.Contract.ProgramApplications.NavigationType;
 using ProgramApplicationQueryResults = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQueryResults;
 
 namespace ECER.Managers.Registry;
@@ -20,7 +21,7 @@ public class ProgramApplicationHandler(
   : IRequestHandler<CreateProgramApplicationCommand, Contract.ProgramApplications.ProgramApplication?>,
     IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>,
     IRequestHandler<UpdateProgramApplicationCommand, string>,
-    IRequestHandler<ComponentGroupQuery, IEnumerable<ComponentGroupMetadata>>,
+    IRequestHandler<ComponentGroupQuery, IEnumerable<NavigationMetadata>>,
     IRequestHandler<ComponentGroupWithComponentsQuery, IEnumerable<ComponentGroupWithComponents>>,
     IRequestHandler<UpdateComponentGroupCommand, string>
 {
@@ -69,14 +70,28 @@ public class ProgramApplicationHandler(
     return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<Contract.ProgramApplications.ProgramApplication>>(result.Items), result.Count);
   }
   
-  public async Task<IEnumerable<ComponentGroupMetadata>> Handle(ComponentGroupQuery request, CancellationToken cancellationToken)
+  public async Task<IEnumerable<NavigationMetadata>> Handle(ComponentGroupQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var result = await programApplicationRepository.QueryComponentGroups(new Resources.Documents.ProgramApplications.ComponentGroupQuery()
     {
       ByProgramApplicationId = request.ByProgramApplicationId,
     }, cancellationToken);
-    return mapper.Map<IEnumerable<ComponentGroupMetadata>>(result);
+    
+    var programApplicationResults = await programApplicationRepository.Query(new Resources.Documents.ProgramApplications.ProgramApplicationQuery()
+    {
+      ById = request.ByProgramApplicationId,
+    }, cancellationToken);
+    
+    var programApplication = programApplicationResults.Items.FirstOrDefault();
+    var mappedComponentResults = mapper.Map<IEnumerable<NavigationMetadata>>(result).ToList();
+
+    if (programApplication != null)
+    {
+      var status = programApplication.InstituteInfoEntryProgress ?? "ToDo";
+      mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(),  "Institution and program info", status, "Institute Info", 0, NavigationType.Other));
+    }
+    return mappedComponentResults;
   }
 
   public async Task<IEnumerable<ComponentGroupWithComponents>> Handle(ComponentGroupWithComponentsQuery request, CancellationToken cancellationToken)

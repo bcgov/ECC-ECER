@@ -373,10 +373,10 @@ export function getCourseTitle(course: Components.Schemas.Course): string {
 }
 
 export function groupByCategoryName(
-  categoryGroups: Components.Schemas.ComponentGroupMetadata[],
+  categoryGroups: Components.Schemas.NavigationMetadata[],
 ): ComponentGroupNavigationMap | undefined {
   const map = new Map();
-  categoryGroups.forEach((group: Components.Schemas.ComponentGroupMetadata) => {
+  categoryGroups.forEach((group: Components.Schemas.NavigationMetadata) => {
     const category = group.categoryName;
 
     if (map.has(category)) {
@@ -388,6 +388,7 @@ export function groupByCategoryName(
         displayOrder: group.displayOrder,
         statusIcon: mapStatusIcons(group.status),
         navigationRoute: "/component/" + group.id,
+        navigationType: group.navigationType,
       } as ComponentGroupNavigation);
     } else {
       map.set(category, [
@@ -399,6 +400,7 @@ export function groupByCategoryName(
           displayOrder: group.displayOrder,
           statusIcon: mapStatusIcons(group.status),
           navigationRoute: "/component/" + group.id,
+          navigationType: group.navigationType,
         } as ComponentGroupNavigation,
       ]);
     }

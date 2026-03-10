@@ -13,13 +13,17 @@ public record ProgramApplicationQuery : IRequest<ProgramApplicationQueryResults>
   public int PageSize { get; set; }
 }
 
-public record ComponentGroupQuery : IRequest<IEnumerable<ComponentGroupMetadata>>
+public record ComponentGroupQuery : IRequest<IEnumerable<NavigationMetadata>>
 {
   public string? ByProgramApplicationId { get; set; }
 }
 
-public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
-
+public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType);
+public enum NavigationType
+{
+  Component,
+  Other,
+}
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 
 public record ComponentGroupWithComponentsQuery : IRequest<IEnumerable<ComponentGroupWithComponents>>
@@ -61,6 +65,7 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public string? MaximumEnrollment { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
   public string? OtherAdmissionOptions  { get; set; }
+  public string? InstituteInfoEntryProgress { get; set; }
 }
 
 public record ProgramCampus

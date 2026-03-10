@@ -43,7 +43,7 @@ import PageContainer from "@/components/PageContainer.vue";
 import ComponentGroupNavigation from "@/components/common/ComponentGroupNavigation.vue";
 import ProgramApplicationHeader from "./ProgramApplicationHeader.vue";
 import type { Components } from "@/types/openapi";
-import { getComponentGroupMetadata } from "@/api/program-application";
+import { getNavigationMetadata } from "@/api/program-application";
 
 interface ApplicationStep {
   name: string;
@@ -90,7 +90,7 @@ export default defineComponent({
   },
   data() {
     return {
-      componentGroups: [] as Components.Schemas.ComponentGroupMetadata[],
+      componentGroups: [] as Components.Schemas.NavigationMetadata[],
       drawer: false,
     };
   },
@@ -109,10 +109,12 @@ export default defineComponent({
       return [
         { name: "program-application-component-info" },
         { name: "program-application-institute-info" },
-        ...this.componentGroups.map((g) => ({
-          name: "program-application-component",
-          componentGroupId: g.id ?? "",
-        })),
+        ...this.componentGroups
+          .filter((d) => d.navigationType === "Component")
+          .map((g) => ({
+            name: "program-application-component",
+            componentGroupId: g.id ?? "",
+          })),
         ...programTypeSteps,
         { name: "program-application-review-response" },
         //TODO { name: "some-future-route" }
@@ -121,9 +123,7 @@ export default defineComponent({
   },
   methods: {
     async getComponentGroups() {
-      const response = await getComponentGroupMetadata(
-        this.programApplicationId,
-      );
+      const response = await getNavigationMetadata(this.programApplicationId);
       this.componentGroups = (response.data ?? []).sort(
         (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
       );

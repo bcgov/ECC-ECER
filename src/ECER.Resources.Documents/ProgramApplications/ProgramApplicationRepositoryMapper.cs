@@ -16,6 +16,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForSourceMember(s => s.ProgramCampuses, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeliveryType, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.InstituteInfoEntryProgress, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_PostSecondaryInstituteProgramApplicaitonId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_statusreasondetail, opts => opts.MapFrom(s => s.StatusReasonDetail))
@@ -49,6 +50,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForMember(d => d.MaximumEnrollment, opts => opts.MapFrom(s => s.ecer_MaximumStudentEnrollmentperCourse))
       .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton))
       .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.ecer_OtherAdmissionOptions))
+      .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.ecer_InstitutionProgramInformationEntryProgress))
       ;
     
     CreateMap<ecer_ProgramCampus, ProgramCampus>(MemberList.Destination)
@@ -85,12 +87,13 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupMetadata>(MemberList.Source)
-      .ForCtorParam(nameof(ComponentGroupMetadata.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentGroupId))
-      .ForCtorParam(nameof(ComponentGroupMetadata.Name), opt => opt.MapFrom(src => src.ecer_GroupName))
-      .ForCtorParam(nameof(ComponentGroupMetadata.Status), opt => opt.MapFrom(src => src.ecer_EntryProgress))
-      .ForCtorParam(nameof(ComponentGroupMetadata.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
-      .ForCtorParam(nameof(ComponentGroupMetadata.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
+    CreateMap<ecer_ProgramApplicationComponentGroup, NavigationMetadata>(MemberList.Source)
+      .ForCtorParam(nameof(NavigationMetadata.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentGroupId))
+      .ForCtorParam(nameof(NavigationMetadata.Name), opt => opt.MapFrom(src => src.ecer_GroupName))
+      .ForCtorParam(nameof(NavigationMetadata.Status), opt => opt.MapFrom(src => src.ecer_EntryProgress))
+      .ForCtorParam(nameof(NavigationMetadata.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
+      .ForCtorParam(nameof(NavigationMetadata.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
+      .ForCtorParam(nameof(NavigationMetadata.NavigationType), opt => opt.MapFrom(_ => NavigationType.Component))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupWithComponents>(MemberList.Source)

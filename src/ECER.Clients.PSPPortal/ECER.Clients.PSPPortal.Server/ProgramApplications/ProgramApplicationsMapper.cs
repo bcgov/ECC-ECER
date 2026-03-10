@@ -27,6 +27,7 @@ internal sealed class ProgramApplicationsMapper: Profile
       .ForMember(d => d.MaximumEnrollment, opts => opts.MapFrom(s => s.MaximumEnrollment))
       .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ProgramCampuses))
       .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.OtherAdmissionOptions))
+      .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.InstituteInfoEntryProgress))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
     
@@ -70,7 +71,11 @@ internal sealed class ProgramApplicationsMapper: Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
     
-    CreateMap<ComponentGroupMetadata, Managers.Registry.Contract.ProgramApplications.ComponentGroupMetadata>().ReverseMap();
+    CreateMap<NavigationType, Managers.Registry.Contract.ProgramApplications.NavigationType>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    
+    CreateMap<NavigationMetadata, Managers.Registry.Contract.ProgramApplications.NavigationMetadata>().ReverseMap();
     CreateMap<FileInfo, Managers.Registry.Contract.ProgramApplications.FileInfo>().ReverseMap();
     CreateMap<ProgramApplicationComponent, Managers.Registry.Contract.ProgramApplications.ProgramApplicationComponent>()
       .ForMember(d => d.Name, opts => opts.Ignore())
