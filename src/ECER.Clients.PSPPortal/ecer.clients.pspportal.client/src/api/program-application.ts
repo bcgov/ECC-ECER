@@ -12,6 +12,7 @@ const getProgramApplications = async (
   },
   id: string = "",
   statuses: Components.Schemas.ApplicationStatus[] = [],
+  campusId?: string,
 ): Promise<
   ApiResponse<
     Components.Schemas.GetProgramApplicationResponse | null | undefined
@@ -29,6 +30,7 @@ const getProgramApplications = async (
         {
           id: id,
           byStatus: statuses,
+          campusId: campusId,
         },
         null,
         config,
