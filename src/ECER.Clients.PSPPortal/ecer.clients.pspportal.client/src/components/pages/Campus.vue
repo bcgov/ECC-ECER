@@ -48,6 +48,74 @@
         :length="programsTotalPages"
       ></v-pagination>
 
+      <!-- Application information (satellite/temporary campuses only) -->
+      <template v-if="campus.isSatelliteOrTemporaryLocation">
+        <v-row class="mt-6">
+          <v-col cols="12">
+            <h2>Application information</h2>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="12">
+            <p>
+              This application is for institutions with existing early childhood
+              education programs that are recognized by the ECE Registry to
+              offer their program
+              <strong>temporarily</strong>
+              at a location in partnership with another organization, or at a
+              location outside of the institution. The satellite program
+              offering runs in addition to existing programming and has a fixed
+              end date. Institutions must hold ongoing recognition prior to
+              submitting a request to offer a satellite program.
+            </p>
+            <p class="mt-4">
+              The application is based on curriculum previously approved by the
+              ECE Registry. Any changes to the approved curriculum must be
+              submitted to the ECE Registry for review and approval.
+            </p>
+          </v-col>
+        </v-row>
+
+        <v-row class="mt-4">
+          <v-col cols="12">
+            <v-btn color="primary" variant="flat">Start your application</v-btn>
+          </v-col>
+        </v-row>
+      </template>
+
+      <!-- Application information (private, non-satellite campuses only) -->
+      <template
+        v-if="!campus.isSatelliteOrTemporaryLocation && isPrivateInstitution"
+      >
+        <v-row class="mt-6">
+          <v-col cols="12">
+            <h2>Application information</h2>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="12">
+            <p>
+              This application is for private institutions with existing early
+              childhood education programs that are recognized by the ECE
+              Registry to offer their program at a new campus location.
+            </p>
+            <p class="mt-4">
+              The application is based on curriculum previously approved by the
+              ECE Registry. Any changes to the approved curriculum must be
+              submitted to the ECE Registry for review and approval.
+            </p>
+          </v-col>
+        </v-row>
+
+        <v-row class="mt-4">
+          <v-col cols="12">
+            <v-btn color="primary" variant="flat">Start your application</v-btn>
+          </v-col>
+        </v-row>
+      </template>
+
       <!-- Active applications for this location -->
       <v-row class="mt-6">
         <v-col cols="12">
@@ -124,6 +192,7 @@ export default defineComponent({
   data() {
     return {
       campus: null as Campus | null,
+      isPrivateInstitution: false,
       programs: [] as Components.Schemas.Program[],
       programsCount: 0,
       programsPage: 1,
@@ -177,6 +246,7 @@ export default defineComponent({
       const institution = await getEducationInstitution();
       this.campus =
         institution?.campuses?.find((c) => c.id === this.campusId) ?? null;
+      this.isPrivateInstitution = institution?.institutionType === "Private";
     },
     async fetchPrograms(page: number) {
       const response = await getPrograms(
