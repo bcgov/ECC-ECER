@@ -146,7 +146,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     return application.Id!;
   }
 
-  private bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
+  private static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
   {
     return  application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty 
             && (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online 
@@ -154,15 +154,12 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
             && ValidateCampus(application, institute);
   }
 
-  private bool ValidateCampus(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute)
+  private static bool ValidateCampus(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute)
   {
-    if (application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton != null 
-        && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Any() 
-        && institute.ecer_PSIInstitutionType == ecer_psiinstitutiontype.Private)
-    {
-      if (application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Count() != 1) return false;
-    }
-    return true;
+    return application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton != null
+           && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Any()
+           && institute.ecer_PSIInstitutionType == ecer_psiinstitutiontype.Private
+           && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Count() != 1;
   }
 
   public async Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken)
