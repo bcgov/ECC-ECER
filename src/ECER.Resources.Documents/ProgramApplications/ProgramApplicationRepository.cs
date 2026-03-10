@@ -33,16 +33,22 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       throw new InvalidOperationException($"Post secondary institute '{programApplication.PostSecondaryInstituteId}' not found");
     }
 
+    if (programApplication.ProgramTypes == null)
+    {
+      throw new InvalidOperationException("Program types are required");
+    }
+
+    if (!programApplication.DeliveryType.HasValue)
+    {
+      throw new InvalidOperationException("Delivery type is required");
+    }
+
     var entity = mapper.Map<ecer_PostSecondaryInstituteProgramApplicaiton>(programApplication)!;
     entity.ecer_PostSecondaryInstituteProgramApplicaitonId = Guid.NewGuid();
     entity.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft;
     entity.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Active;
-    entity.ecer_ProgramType = programApplication.ProgramTypes != null ?
-      programApplication.ProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t.ToString()))
-      : Array.Empty<ecer_PSIProgramType>();
-    entity.ecer_DeliveryType = programApplication.DeliveryType.HasValue
-      ? Enum.Parse<ecer_PSIDeliveryType>(programApplication.DeliveryType.Value.ToString())
-      : null;
+    entity.ecer_ProgramType = programApplication.ProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t.ToString()));
+    entity.ecer_DeliveryType = Enum.Parse<ecer_PSIDeliveryType>(programApplication.DeliveryType.Value.ToString());
     if (string.IsNullOrWhiteSpace(entity.ecer_Name))
     {
       entity.ecer_Name = "Draft Program Application";
@@ -197,22 +203,22 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     return mapper.Map<IEnumerable<ComponentGroupMetadata>>(results)!.ToList();
   }
 
-  public async Task<ComponentGroupResults?> QueryComponentGroupById(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken)
+  public async Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    if (string.IsNullOrWhiteSpace(query.ByComponentGroupId) || string.IsNullOrWhiteSpace(query.ByProgramApplicationId))
-      return null;
-    var groupId = Guid.Parse(query.ByComponentGroupId);
-    var appId = Guid.Parse(query.ByProgramApplicationId);
-    var componentGroups = context.ecer_ProgramApplicationComponentGroupSet
-      .Where(g => g.ecer_ProgramApplicationComponentGroupId == groupId && g.ecer_ProgramApplication.Id == appId);
-    var entity = context.From(componentGroups)
+    var categoryGroups = context.ecer_ProgramApplicationComponentGroupSet.AsQueryable();
+
+    if (query.ByComponentGroupId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplicationComponentGroupId == Guid.Parse(query.ByComponentGroupId));
+
+    if (query.ByProgramApplicationId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplication.Id == Guid.Parse(query.ByProgramApplicationId));
+
+    var results = context.From(categoryGroups)
       .Join()
       .Include(e => e.ecer_programapplicationcomponentgroup_ComponentGroup)
       .Include(e => e.ecer_programapplicationcomponent_ComponentGroup)
       .IncludeNested(e => e.ecer_documenturl_ProgramApplicationComponentId)
-      .Execute().SingleOrDefault();
-    return mapper.Map<ComponentGroupResults>(entity);
+      .Execute();
+    return mapper.Map<IEnumerable<ComponentGroupWithComponents>>(results)!.ToList();
   }
 
   public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken)

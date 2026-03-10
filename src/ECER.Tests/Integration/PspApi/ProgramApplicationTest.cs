@@ -244,14 +244,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var result = await response.ReadAsJsonAsync<ComponentGroupWithComponents>();
+    var result = await response.ReadAsJsonAsync<string>();
     result.ShouldNotBeNull();
-    result.Id.ShouldBe(groupId);
-
-    var savedComponent = result.Components!.FirstOrDefault(c => c.Id == componentId);
-    savedComponent.ShouldNotBeNull();
-    savedComponent.Answer.ShouldBe(expectedAnswer);
-    savedComponent.Name.ShouldNotBeNullOrEmpty();
-    savedComponent.Question.ShouldNotBeNullOrEmpty();
   }
 }

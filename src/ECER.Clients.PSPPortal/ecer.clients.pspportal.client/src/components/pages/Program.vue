@@ -7,20 +7,7 @@
     ></v-progress-linear>
     <v-row v-else-if="program && updateInProgress" justify="center">
       <v-col cols="12" md="8" lg="6">
-        <v-card flat rounded="lg" class="pa-8 text-center">
-          <v-progress-circular
-            indeterminate
-            color="primary"
-            size="56"
-            class="mb-4"
-          />
-          <h3 class="mb-3">Preparing program profile for review</h3>
-          <p class="ma-0">
-            We are preparing your program profile for review. This may take a
-            few minutes. When this program profile is ready it will appear here
-            and also be available from your dashboard.
-          </p>
-        </v-card>
+        <PreparingRequestSpinner />
       </v-col>
     </v-row>
     <ProgramWizard
@@ -55,12 +42,14 @@ import ProgramWizard from "../program-profile/ProgramWizard.vue";
 import ProgramDetail from "../ProgramDetail.vue";
 import Alert from "@/components/Alert.vue";
 import type { Components } from "@/types/openapi";
+import PreparingRequestSpinner from "@/components/common/PreparingRequestSpinner.vue";
 
 const POLL_INTERVAL_MS = 10000;
 
 export default defineComponent({
   name: "Program",
   components: {
+    PreparingRequestSpinner,
     ProgramWizard,
     ProgramDetail,
     Alert,

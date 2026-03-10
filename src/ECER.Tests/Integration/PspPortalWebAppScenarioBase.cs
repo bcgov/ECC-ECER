@@ -45,9 +45,11 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_Course testCourse = null!;
   private ecer_Course testCourse2 = null!;
   private ecer_Course testCourse3 = null!;
+  private ecer_Course testCourseForProgramApplication = null!;
 
   private ecer_PostSecondaryInstituteProgramApplicaiton programApplication = null!;
   private ecer_PostSecondaryInstituteProgramApplicaiton draftProgramApplication = null!;
+
   private ecer_PostSecondaryInstituteProgramApplicaiton componentTestProgramApplication = null!;
   private ecer_ProgramApplicationComponentGroup componentTestComponentGroup = null!;
   private ecer_ProgramApplicationComponent componentTestComponent = null!;
@@ -90,6 +92,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string CampusId => testCampus.Id.ToString();
   public string campusProgramApplicationId => campusProgramApplication.Id.ToString();
   public string campusProgramId => campusProgram.Id.ToString();
+  public string testCourseForProgramApplicationId => testCourseForProgramApplication.Id.ToString();
 
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
@@ -141,28 +144,26 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     changeRequestFromProfile = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "CRFromProfile", "ChangeRequestInProgress", statusCode: ecer_Program_StatusCode.ChangeRequestInProgress);
     changeRequestProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, true, "CR", "Draft", fromProfile: changeRequestFromProfile);
     submitDraftProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual3", "Draft");
-    testCourse = GetOrAddCourse(context, testProgram1, "101");
-    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
-    testCourse3 = GetOrAddCourse(context, testProgram1, "109");
+    testCourse = GetOrAddCourse(context, testProgram1, "101", testPostSecondaryInstitute);
+    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201", testPostSecondaryInstitute);
+    testCourse3 = GetOrAddCourse(context, testProgram1, "109", testPostSecondaryInstitute);
 
     programApplication =
       GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.ReviewAnalysis, ecer_Statusreasondetail.RFAIrequested);
     draftProgramApplication =
       GetOrAddProgramApplication("Test_psp_program_application_withdraw", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
+
+    testCourseForProgramApplication = GetOrAddCourse(context, programApplication, "666", testPostSecondaryInstitute);
+
+    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201", testPostSecondaryInstitute);
+    testCourse3 = GetOrAddCourse(context, testProgram1, "109", testPostSecondaryInstitute);
+
     componentTestProgramApplication =
       GetOrAddProgramApplication("Test_psp_program_application_components", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
     (componentTestComponentGroup, componentTestComponent) = GetOrAddComponentGroupWithComponent(context, componentTestProgramApplication);
 
     draftProgramApplication2 =
       GetOrAddProgramApplication("Test_psp_program_application_update", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
-
-    testCampus = GetOrAddCampus(context, testPostSecondaryInstitute);
-    campusProgramApplication =
-      GetOrAddProgramApplication("Test_psp_program_application_campus", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
-    campusProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Campus", "Draft");
-
-    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
-    testCourse3 = GetOrAddCourse(context, testProgram1, "109");
 
     context.SaveChanges();
 
@@ -225,7 +226,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return requirement;
   }
 
-  private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program, string courseCode)
+  private ecer_Course GetOrAddCourse(EcerContext context, ecer_Program program, string courseCode, ecer_PostSecondaryInstitute institute)
   {
     var existingCourse = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == courseCode);
     if (existingCourse != null)
@@ -249,7 +250,39 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       ecer_CourseName = "Course 101",
       ecer_NewCourseHourDecimal = 20.00m,
       ecer_ProgramType = ecer_PSIProgramType.SNE,
-      ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id)
+      ecer_Programid = new EntityReference(ecer_Program.EntityLogicalName, program.Id),
+      ecer_postsecondaryinstitutionid = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
+    };
+    context.AddObject(course);
+    return course;
+  }
+
+  private ecer_Course GetOrAddCourse(EcerContext context, ecer_PostSecondaryInstituteProgramApplicaiton program, string courseCode, ecer_PostSecondaryInstitute institute)
+  {
+    var existingCourse = context.ecer_CourseSet.FirstOrDefault(r => r.ecer_Code == courseCode);
+    if (existingCourse != null)
+    {
+      context.LoadProperty(existingCourse, nameof(existingCourse.ecer_courseprovincialrequirement_CourseId));
+      if (existingCourse.ecer_courseprovincialrequirement_CourseId != null && existingCourse.ecer_courseprovincialrequirement_CourseId.Any())
+      {
+        foreach (var childEntity in existingCourse.ecer_courseprovincialrequirement_CourseId.ToList())
+        {
+          context.DeleteObject(childEntity);
+        }
+      }
+      context.DeleteObject(existingCourse);
+      context.SaveChanges();
+    }
+
+    var course = new ecer_Course
+    {
+      ecer_CourseId = Guid.NewGuid(),
+      ecer_Code = courseCode,
+      ecer_CourseName = "Course 101",
+      ecer_NewCourseHourDecimal = 20.00m,
+      ecer_ProgramType = ecer_PSIProgramType.SNE,
+      ecer_ProgramApplication = new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, program.Id),
+      ecer_postsecondaryinstitutionid = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
     };
     context.AddObject(course);
     return course;

@@ -142,7 +142,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .RequireAuthorization(policyNames)
     .WithParameterValidation();
 
-  endpointRouteBuilder.MapGet("/api/programApplications/{id}/componentGroups/{componentGroupId}/components", async Task<Results<Ok<ComponentGroupWithComponents>, BadRequest<string>, NotFound>> (string id, string componentGroupId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+  endpointRouteBuilder.MapGet("/api/programApplications/{id}/componentGroups/{componentGroupId?}", async Task<Results<Ok<IEnumerable<ComponentGroupWithComponents>>, BadRequest<string>, NotFound>> (string id, string? componentGroupId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userContext = ctx.User.GetUserContext()!;
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
@@ -155,16 +155,15 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       }, ct);
       if (!existing.Items.Any()) return TypedResults.NotFound();
 
-      var result = await messageBus.Send(new ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponentsQuery { ByProgramApplicationId = id, ByComponentGroupId = componentGroupId }, ct);
-      if (result == null) return TypedResults.NotFound();
-
-      return TypedResults.Ok(mapper.Map<ComponentGroupWithComponents>(result));
+      var result = await messageBus.Send(new ComponentGroupWithComponentsQuery { ByProgramApplicationId = id, ByComponentGroupId = componentGroupId }, ct);
+      return TypedResults.Ok(mapper.Map<IEnumerable<ComponentGroupWithComponents>>(result));
     })
     .WithOpenApi("Gets program application components by component group id", string.Empty, "program_application_component_group_components_get")
     .RequireAuthorization(policyNames)
-    .AddGuidValidation("id").AddGuidValidation("componentGroupId")
+    .AddGuidValidation("id").AddGuidValidation("componentGroupId", false)
     .WithParameterValidation();
-  endpointRouteBuilder.MapPut("/api/programApplications/{id}/componentGroups/{componentGroupId}", async Task<Results<Ok<ComponentGroupWithComponents>, BadRequest<string>, NotFound>> (string id, string componentGroupId, ComponentGroupWithComponents request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+  
+  endpointRouteBuilder.MapPut("/api/programApplications/{id}/componentGroups/{componentGroupId}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, string componentGroupId, ComponentGroupWithComponents request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
     {
       if (request.Id != componentGroupId) return TypedResults.BadRequest("resource id and payload id do not match");
 
@@ -180,7 +179,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       if (!existing.Items.Any()) return TypedResults.NotFound();
 
       var result = await messageBus.Send(new UpdateComponentGroupCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>(request), id), ct);
-      return TypedResults.Ok(mapper.Map<ComponentGroupWithComponents>(result));
+      return TypedResults.Ok(result);
     })
     .WithOpenApi("Update program application component group", string.Empty, "program_application_component_group_put")
     .RequireAuthorization(policyNames)

@@ -23,7 +23,7 @@ public record ComponentGroupMetadata(string Id, string Name, string Status, stri
 
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 
-public record ComponentGroupWithComponentsQuery : IRequest<ComponentGroupWithComponents?>
+public record ComponentGroupWithComponentsQuery : IRequest<IEnumerable<ComponentGroupWithComponents>>
 {
   public string? ByProgramApplicationId { get; set; }
   public string? ByComponentGroupId { get; set; }
@@ -39,7 +39,7 @@ public record FileInfo(string Id)
   public string? Extension { get; set; }
 }
 
-public record UpdateComponentGroupCommand(ComponentGroupWithComponents ComponentGroup, string ProgramApplicationId) : IRequest<ComponentGroupWithComponents>;
+public record UpdateComponentGroupCommand(ComponentGroupWithComponents ComponentGroup, string ProgramApplicationId) : IRequest<string>;
 
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 

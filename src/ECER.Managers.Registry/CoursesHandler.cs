@@ -1,4 +1,5 @@
 using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Courses;
 using ECER.Resources.Documents.Courses;
 using ECER.Resources.Documents.ProgramApplications;
@@ -10,55 +11,67 @@ namespace ECER.Managers.Registry;
 public class CoursesHandler(
   IProgramRepository programRepository,
   ICourseRepository courseRepository,
-  IProgramApplicationRepository  programApplicationRepository,
+  IProgramApplicationRepository programApplicationRepository,
   IMapper mapper)
-: IRequestHandler<UpdateCourseCommand, string>, 
+: IRequestHandler<UpdateCourseCommand, string>,
   IRequestHandler<SaveCourseCommand, string>,
-  IRequestHandler<DeleteCourseCommand, string>
+  IRequestHandler<DeleteCourseCommand, string>,
+  IRequestHandler<GetCoursesCommand, IEnumerable<Contract.Shared.Course>>
 {
   public async Task<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);
 
-    if (request.Type == nameof(FunctionType.ProgramProfile))
+    if (request.Type == nameof(Contract.Courses.FunctionType.ProgramProfile))
     {
       var programProfile = await programRepository.Query(new ProgramQuery
       {
         ById = request.Id,
         ByPostSecondaryInstituteId = request.PostSecondaryInstituteId
       }, cancellationToken);
-      
+
       if (!programProfile.Programs!.Any()) throw new InvalidOperationException($"Program profile with '{request.Id}' not found");
-      
+
       var programId = await courseRepository.UpdateCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, false, cancellationToken);
       return programId;
-    } else if (request.Type == nameof(FunctionType.ProgramApplication))
+    }
+    else if (request.Type == nameof(Contract.Courses.FunctionType.ProgramApplication))
     {
       var programApplication = await programApplicationRepository.Query(new ProgramApplicationQuery
-        {
-          ById = request.Id,
-          ByPostSecondaryInstituteId = request.PostSecondaryInstituteId
-        }, cancellationToken);
+      {
+        ById = request.Id,
+        ByPostSecondaryInstituteId = request.PostSecondaryInstituteId
+      }, cancellationToken);
       if (!programApplication.Items!.Any()) throw new InvalidOperationException($"Program application with '{request.Id}' not found");
-      
+
       var programId = await courseRepository.UpdateCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, true, cancellationToken);
       return programId;
     }
     throw new InvalidOperationException("Operation not allowed");
   }
-  
+
   public async Task<string> Handle(SaveCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);
     ArgumentNullException.ThrowIfNull(request.Course.CourseAreaOfInstruction);
-    Infrastructure.Common.Utility.ThrowIfNullOrEmpty(request.Course.CourseAreaOfInstruction, nameof(request.Course.CourseAreaOfInstruction));
-    
+
     var courseId = await courseRepository.AddCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, request.PostSecondaryInstituteId, cancellationToken);
     return courseId;
   }
-  
+
+  public async Task<IEnumerable<ECER.Managers.Registry.Contract.Shared.Course>> Handle(GetCoursesCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var courses = await courseRepository.GetCourses(new GetCoursesRequest(request.Id, request.PostSecondaryInstituteId, request.Type.Convert<Contract.Courses.FunctionType, Resources.Documents.Courses.FunctionType>())
+    {
+      ProgramTypes = mapper.Map<IEnumerable<ProgramType>>(request.ProgramTypes)
+    }, cancellationToken);
+    return mapper.Map<IEnumerable<Contract.Shared.Course>>(courses);
+  }
+
   public async Task<string> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
