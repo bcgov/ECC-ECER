@@ -74,7 +74,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import Card from "@/components/Card.vue";
-import type { Campus, Components } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
