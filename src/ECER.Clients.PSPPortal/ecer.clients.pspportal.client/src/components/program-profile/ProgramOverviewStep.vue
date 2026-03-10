@@ -45,6 +45,16 @@
     </v-col>
   </v-row>
   <v-row>
+    <v-col>
+      <p>
+        Add a descriptive program name to help distinguish between your
+        institution's programs (for example, “Certificate- Special Needs
+        Educator”, or “Bachelor of Early Childhood Education - Basic”). This
+        will not be publicly shared or used for any other purpose.
+      </p>
+    </v-col>
+  </v-row>
+  <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
       <EceTextField
         :model-value="modelValue.programName"
