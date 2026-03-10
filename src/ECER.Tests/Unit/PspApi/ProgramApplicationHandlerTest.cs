@@ -17,7 +17,6 @@ using ResourcesProgramApplicationQuery = ECER.Resources.Documents.ProgramApplica
 using ResourcesProgramApplicationQueryResults = ECER.Resources.Documents.ProgramApplications.ProgramApplicationQueryResults;
 using ResourcesApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
 using ResourcesComponentGroupWithComponents = ECER.Resources.Documents.ProgramApplications.ComponentGroupWithComponents;
-using ResourcesComponentGroupResults = ECER.Resources.Documents.ProgramApplications.ComponentGroupResults;
 using ResourcesComponentGroupWithComponentsQuery = ECER.Resources.Documents.ProgramApplications.ComponentGroupWithComponentsQuery;
 using ResourcesProgramApplicationComponent = ECER.Resources.Documents.ProgramApplications.ProgramApplicationComponent;
 
@@ -134,7 +133,7 @@ public class ProgramApplicationHandlerTest
     var command = new UpdateComponentGroupCommand(contractComponentGroup, appId);
 
     var resourcesComponentGroup = new ResourcesComponentGroupWithComponents(groupId, "Group 1", "Instruction text", "InProgress", "Category A", 1, Array.Empty<ResourcesProgramApplicationComponent>());
-    var resourcesResult = new ResourcesComponentGroupResults(groupId, "Group 1", "Instruction text", "InProgress", "Category A", 1, Array.Empty<ResourcesProgramApplicationComponent>());
+    var resourcesResult = new [] {new ResourcesComponentGroupWithComponents(groupId, "Group 1", "Instruction text", "InProgress", "Category A", 1, Array.Empty<ResourcesProgramApplicationComponent>())};
 
     _mapperMock
       .Setup(m => m.Map<ResourcesComponentGroupWithComponents>(contractComponentGroup))
@@ -143,12 +142,12 @@ public class ProgramApplicationHandlerTest
       .Setup(r => r.UpdateComponentGroup(resourcesComponentGroup, appId, It.IsAny<CancellationToken>()))
       .ReturnsAsync(groupId);
     _repositoryMock
-      .Setup(r => r.QueryComponentGroupById(
+      .Setup(r => r.QueryComponentGroupWithComponents(
         It.Is<ResourcesComponentGroupWithComponentsQuery>(q => q.ByComponentGroupId == groupId && q.ByProgramApplicationId == appId),
         It.IsAny<CancellationToken>()))
       .ReturnsAsync(resourcesResult);
     _mapperMock
-      .Setup(m => m.Map<IEnumerable<ContractProgramApplicationComponent>>(resourcesResult.Components))
+      .Setup(m => m.Map<IEnumerable<ContractProgramApplicationComponent>>(resourcesResult.SingleOrDefault()!.Components))
       .Returns(contractComponents);
 
     var handler = new ProgramApplicationHandler(_repositoryMock.Object, _mapperMock.Object);
@@ -156,10 +155,7 @@ public class ProgramApplicationHandlerTest
     var result = await handler.Handle(command, CancellationToken.None);
 
     result.ShouldNotBeNull();
-    result.Id.ShouldBe(groupId);
-    result.Name.ShouldBe("Group 1");
     _repositoryMock.Verify(r => r.UpdateComponentGroup(It.IsAny<ResourcesComponentGroupWithComponents>(), appId, It.IsAny<CancellationToken>()), Times.Once);
-    _repositoryMock.Verify(r => r.QueryComponentGroupById(It.IsAny<ResourcesComponentGroupWithComponentsQuery>(), It.IsAny<CancellationToken>()), Times.Once);
   }
 
   [Fact]
@@ -172,18 +168,12 @@ public class ProgramApplicationHandlerTest
     var command = new UpdateComponentGroupCommand(contractComponentGroup, appId);
 
     var resourcesComponentGroup = new ResourcesComponentGroupWithComponents(groupId, "Group", null, "Draft", "Cat", 1, Array.Empty<ResourcesProgramApplicationComponent>());
-    var resourcesResult = new ResourcesComponentGroupResults(groupId, "Group", null, "Draft", "Cat", 1, Array.Empty<ResourcesProgramApplicationComponent>());
-
+    
     _mapperMock.Setup(m => m.Map<ResourcesComponentGroupWithComponents>(contractComponentGroup)).Returns(resourcesComponentGroup);
     _repositoryMock.Setup(r => r.UpdateComponentGroup(It.IsAny<ResourcesComponentGroupWithComponents>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(groupId);
-    _repositoryMock.Setup(r => r.QueryComponentGroupById(It.IsAny<ResourcesComponentGroupWithComponentsQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(resourcesResult);
-    _mapperMock.Setup(m => m.Map<IEnumerable<ContractProgramApplicationComponent>>(It.IsAny<IEnumerable<ResourcesProgramApplicationComponent>>())).Returns(Array.Empty<ContractProgramApplicationComponent>());
+   _mapperMock.Setup(m => m.Map<IEnumerable<ContractProgramApplicationComponent>>(It.IsAny<IEnumerable<ResourcesProgramApplicationComponent>>())).Returns(Array.Empty<ContractProgramApplicationComponent>());
 
     var handler = new ProgramApplicationHandler(_repositoryMock.Object, _mapperMock.Object);
     await handler.Handle(command, CancellationToken.None);
-
-    _repositoryMock.Verify(r => r.QueryComponentGroupById(
-      It.Is<ResourcesComponentGroupWithComponentsQuery>(q => q.ByProgramApplicationId == appId && q.ByComponentGroupId == groupId),
-      It.IsAny<CancellationToken>()), Times.Once);
   }
 }

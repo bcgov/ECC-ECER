@@ -15,7 +15,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace ECER.Clients.PSPPortal.Server.Programs
+namespace ECER.Infrastructure.Common.Validators
 {
   [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
   public sealed class ValidGuidAttribute : ValidationAttribute

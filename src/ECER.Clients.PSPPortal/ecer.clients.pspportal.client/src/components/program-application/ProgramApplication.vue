@@ -1,6 +1,6 @@
 <template>
   <ProgramApplicationHeader
-    :programApplicationName="programApplication.programApplicationName"
+    :programApplicationName="programApplication.programApplicationName || ''"
   ></ProgramApplicationHeader>
   <v-container>
     <v-row>
@@ -29,7 +29,7 @@
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
-      <v-col>
+      <v-col lg="8" md="6" sm="auto">
         <router-view @next="handleNext" />
       </v-col>
     </v-row>
@@ -42,12 +42,18 @@ import { useDisplay } from "vuetify";
 import PageContainer from "@/components/PageContainer.vue";
 import ComponentGroupNavigation from "@/components/common/ComponentGroupNavigation.vue";
 import ProgramApplicationHeader from "./ProgramApplicationHeader.vue";
-import { getComponentGroupMetadata } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
+import { getComponentGroupMetadata } from "@/api/program-application";
 
 interface ApplicationStep {
   name: string;
   componentGroupId?: string;
+  programType?: string;
+}
+
+export interface NextStepPayload {
+  currentComponentGroupId?: string;
+  programType?: string;
 }
 
 export default defineComponent({
@@ -63,11 +69,15 @@ export default defineComponent({
       required: true,
     },
     programApplication: {
-      type: Object,
+      type: Object as () => Components.Schemas.ProgramApplication,
       required: true,
     },
     componentGroupId: {
       type: String,
+      required: false,
+    },
+    programType: {
+      type: String as () => Components.Schemas.ProgramTypes,
       required: false,
     },
   },
@@ -91,6 +101,11 @@ export default defineComponent({
   beforeUnmount() {},
   computed: {
     orderedSteps(): ApplicationStep[] {
+      const programTypeSteps =
+        this.programApplication.programTypes?.map((programType) => ({
+          name: "program-application-program-profile-area-of-instruction",
+          programType: programType,
+        })) ?? [];
       return [
         { name: "program-application-component-info" },
         { name: "program-application-institute-info" },
@@ -98,6 +113,8 @@ export default defineComponent({
           name: "program-application-component",
           componentGroupId: g.id ?? "",
         })),
+        ...programTypeSteps,
+        { name: "program-application-review-response" },
         //TODO { name: "some-future-route" }
       ];
     },
@@ -111,12 +128,16 @@ export default defineComponent({
         (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
       );
     },
-    async handleNext(currentComponentGroupId?: string) {
+    async handleNext({
+      currentComponentGroupId,
+      programType,
+    }: NextStepPayload) {
       await this.getComponentGroups();
       const currentIndex = this.orderedSteps.findIndex(
         (s) =>
           s.name === this.$route.name &&
-          s.componentGroupId === currentComponentGroupId,
+          s.componentGroupId === currentComponentGroupId &&
+          s.programType === programType,
       );
       const next = this.orderedSteps[currentIndex + 1];
       if (!next) {
@@ -131,6 +152,9 @@ export default defineComponent({
           programApplicationId: this.programApplicationId,
           ...(next.componentGroupId && {
             componentGroupId: next.componentGroupId,
+          }),
+          ...(next.programType && {
+            programType: next.programType,
           }),
         },
       });

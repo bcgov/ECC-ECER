@@ -9,17 +9,17 @@
           <p class="mb-3">The hours must:</p>
           <ul class="ml-10">
             <li>Be related to the field of early childhood education</li>
-            <li v-if="latestCertificateStatus === 'Expired'">
+            <li v-if="fromCertificateStatus === 'Expired'">
               Have been completed within the last 5 years
             </li>
             <li
               v-else-if="
-                latestCertificateStatus === 'Active' &&
-                latestCertificateExpiryDate > today
+                fromCertificateStatus === 'Active' &&
+                fromCertificateExpiryDate > today
               "
             >
               Have been completed between the
-              {{ formatDate(latestCertificateEffectiveDate, "LLL d, yyyy") }}
+              {{ formatDate(fromCertificateEffectiveDate, "LLL d, yyyy") }}
               and the {{ formatDate(today, "LLL d, yyyy") }}
             </li>
           </ul>
@@ -116,6 +116,22 @@
               Rules.futureDateNotAllowedRule(
                 'Start date of hours cannot be in the future',
               ),
+              Rules.conditionalWrapper(
+                fromCertificateStatus === 'Active',
+                Rules.dateBetweenRule(
+                  fromCertificateEffectiveDate || '',
+                  fromCertificateExpiryDate || '',
+                  `The start date must be within the term of your current certificate`,
+                ),
+              ),
+              Rules.conditionalWrapper(
+                fromCertificateStatus === 'Expired',
+                Rules.dateBetweenRule(
+                  fiveYearsAgoFromApplicationSubmittedOn || '',
+                  today,
+                  `The start date must be between ${formatDate(fiveYearsAgoFromApplicationSubmittedOn || '', 'LLL d, yyyy')} and today`,
+                ),
+              ),
             ]"
             @update:model-value="updateField('startDate', $event)"
           ></EceDateInput>
@@ -132,6 +148,22 @@
               Rules.dateBeforeRule(modelValue.startDate || ''),
               Rules.futureDateNotAllowedRule(
                 'End date of hours cannot be in the future',
+              ),
+              Rules.conditionalWrapper(
+                fromCertificateStatus === 'Active',
+                Rules.dateBetweenRule(
+                  fromCertificateEffectiveDate || '',
+                  fromCertificateExpiryDate || '',
+                  `The end date must be within the term of your current certificate`,
+                ),
+              ),
+              Rules.conditionalWrapper(
+                fromCertificateStatus === 'Expired',
+                Rules.dateBetweenRule(
+                  fiveYearsAgoFromApplicationSubmittedOn || '',
+                  today,
+                  `The end date must be between ${formatDate(fiveYearsAgoFromApplicationSubmittedOn || '', 'LLL d, yyyy')} and today`,
+                ),
               ),
             ]"
             @update:model-value="updateField('endDate', $event)"
@@ -234,21 +266,21 @@ export default defineComponent({
     today() {
       return formatDate(DateTime.now().toString());
     },
-    fiveYearsAgo() {
-      const fiveYearsBack = DateTime.now().minus({ years: 5 });
+    fiveYearsAgoFromApplicationSubmittedOn() {
+      const fiveYearsBack = DateTime.fromISO(
+        this.wizardStore.wizardData.applicationSubmittedOn,
+      ).minus({ years: 5 });
       return formatDate(fiveYearsBack.toString());
     },
-    latestCertificateStatus(): Components.Schemas.CertificateStatusCode {
-      return this.wizardStore.wizardData.latestCertification.statusCode;
+    fromCertificateStatus(): Components.Schemas.CertificateStatusCode {
+      return this.wizardStore.wizardData.fromCertificate.statusCode;
     },
-    latestCertificateExpiryDate() {
-      return formatDate(
-        this.wizardStore.wizardData.latestCertification.expiryDate,
-      );
+    fromCertificateExpiryDate() {
+      return formatDate(this.wizardStore.wizardData.fromCertificate.expiryDate);
     },
-    latestCertificateEffectiveDate() {
+    fromCertificateEffectiveDate() {
       return formatDate(
-        this.wizardStore.wizardData.latestCertification.effectiveDate,
+        this.wizardStore.wizardData.fromCertificate.effectiveDate,
       );
     },
   },

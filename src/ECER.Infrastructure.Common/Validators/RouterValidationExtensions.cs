@@ -24,4 +24,34 @@ public static class RouterValidationExtensions
       return await next(context);
     });
   }
+
+  public static RouteHandlerBuilder AddGuidValidationQueryParams(this RouteHandlerBuilder builder, string[] parameterNames, bool isRequired = true)
+  {
+    return builder.AddEndpointFilter(async (context, next) =>
+    {
+      var errors = new List<string>();
+
+      foreach (var queryParameter in parameterNames)
+      {
+        var value = context.HttpContext.Request.Query[queryParameter].ToString();
+
+        if (string.IsNullOrWhiteSpace(value) && isRequired)
+        {
+          errors.Add($"{queryParameter} is required cannot be null or whitespace");
+        }
+
+        if (!string.IsNullOrEmpty(value) && !Guid.TryParse(value, out _))
+        {
+          errors.Add($"{queryParameter} must be a valid GUID");
+        }
+      }
+
+      if (errors.Count > 0)
+      {
+        return Results.BadRequest(errors);
+      }
+
+      return await next(context);
+    });
+  }
 }
