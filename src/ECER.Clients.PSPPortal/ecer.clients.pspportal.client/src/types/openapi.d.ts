@@ -1456,7 +1456,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ProgramApplicationComponentsGet.Responses.$200>;
   };
-  ["/api/programApplications/{id}/componentGroups/{componentGroupId}/components"]: {
+  ["/api/programApplications/{id}/componentGroups/{componentGroupId}"]: {
     /**
      * program_application_component_group_components_get - Gets program application components by component group id
      */
@@ -1465,8 +1465,6 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ProgramApplicationComponentGroupComponentsGet.Responses.$200>;
-  };
-  ["/api/programApplications/{id}/componentGroups/{componentGroupId}"]: {
     /**
      * program_application_component_group_put - Update program application component group
      */

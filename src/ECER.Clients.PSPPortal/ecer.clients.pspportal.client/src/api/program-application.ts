@@ -128,7 +128,7 @@ const getComponentGroupMetadata = async (
 
 const getComponentGroupComponents = async (
   programApplicationId: string,
-  componentGroupId: string,
+  componentGroupId?: string,
 ): Promise<
   ApiResponse<
     Components.Schemas.ComponentGroupWithComponents[] | null | undefined
@@ -138,7 +138,7 @@ const getComponentGroupComponents = async (
   const pathParameters: Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters =
     {
       id: programApplicationId,
-      componentGroupId,
+      componentGroupId: componentGroupId || "",
     };
 
   return apiResultHandler.execute<
@@ -246,6 +246,43 @@ const mapProgramType = (type: string = ""): string => {
   }
 };
 
+const mapEnrollmentOptions = (type: string = ""): string => {
+  switch (type) {
+    case "PartTime":
+      return "Part-time";
+    case "FullTime":
+      return "Full-time";
+    default:
+      return "-";
+  }
+};
+
+const mapAdmissionOptions = (type: string = ""): string => {
+  switch (type) {
+    case "Allcoursesrestrictedtoearlychildhoodeducationstudents":
+      return "All courses restricted to early childhood education students";
+    case "Cohortenrollmentstudentsstarttogetherandgraduatetogether":
+      return "Cohort enrollment - students start together and graduate together";
+    case "Continuousenrollmentstudentscanenrolatanytime":
+      return "Continuous enrollment - students can enrol at any time";
+    case "Oneormorecoursesopentoanystudentsintheinstitution":
+      return "One or more courses open to any students in the institution";
+    default:
+      return "-";
+  }
+};
+
+const mapDeliveryMethods = (type: string = ""): string => {
+  switch (type) {
+    case "Inpersonsitevisits":
+      return "In-person site visits";
+    case "Virtualsitevisits":
+      return "Virtual site visits";
+    default:
+      return "-";
+  }
+};
+
 export {
   createProgramApplication,
   getProgramApplicationById,
@@ -259,4 +296,7 @@ export {
   mapProgramType,
   withdrawProgramApplication,
   updateProgramApplication,
+  mapEnrollmentOptions,
+  mapAdmissionOptions,
+  mapDeliveryMethods,
 };
