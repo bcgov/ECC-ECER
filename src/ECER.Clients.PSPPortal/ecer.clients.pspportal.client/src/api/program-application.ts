@@ -138,7 +138,7 @@ const getComponentGroupComponents = async (
   const pathParameters: Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters =
     {
       id: programApplicationId,
-      componentGroupId,
+      componentGroupId: componentGroupId || "",
     };
 
   return apiResultHandler.execute<

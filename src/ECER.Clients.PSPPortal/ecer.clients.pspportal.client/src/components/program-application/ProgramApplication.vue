@@ -114,6 +114,7 @@ export default defineComponent({
           componentGroupId: g.id ?? "",
         })),
         ...programTypeSteps,
+        { name: "program-application-review-response" },
         //TODO { name: "some-future-route" }
       ];
     },

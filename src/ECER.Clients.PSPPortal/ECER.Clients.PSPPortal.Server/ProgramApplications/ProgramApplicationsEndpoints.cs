@@ -141,13 +141,11 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .RequireAuthorization(policyNames)
     .WithParameterValidation();
 
-  endpointRouteBuilder.MapGet("/api/programApplications/{id}/componentGroups/{componentGroupId?}/components", async Task<Results<Ok<IEnumerable<ComponentGroupWithComponents>>, BadRequest<string>, NotFound>> (string id, string? componentGroupId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+  endpointRouteBuilder.MapGet("/api/programApplications/{id}/componentGroups/{componentGroupId?}", async Task<Results<Ok<IEnumerable<ComponentGroupWithComponents>>, BadRequest<string>, NotFound>> (string id, string? componentGroupId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userContext = ctx.User.GetUserContext()!;
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
-      
-      bool IdIsNotGuid = !Guid.TryParse(componentGroupId, out _); if (IdIsNotGuid && componentGroupId != null) { componentGroupId = null; }
 
       var existing = await messageBus.Send(new ContractProgramApplicationQuery
       {
@@ -161,7 +159,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     })
     .WithOpenApi("Gets program application components by component group id", string.Empty, "program_application_component_group_components_get")
     .RequireAuthorization(policyNames)
-    .AddGuidValidation("id")
+    .AddGuidValidation("id").AddGuidValidation("componentGroupId", false)
     .WithParameterValidation();
   
   endpointRouteBuilder.MapPut("/api/programApplications/{id}/componentGroups/{componentGroupId}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, string componentGroupId, ComponentGroupWithComponents request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
