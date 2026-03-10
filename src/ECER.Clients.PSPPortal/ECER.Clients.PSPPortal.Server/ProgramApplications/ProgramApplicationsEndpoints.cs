@@ -83,6 +83,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     })
     .WithOpenApi("Handles program application queries", string.Empty, "program_application_get")
     .RequireAuthorization(policyNames)
+    .AddGuidValidationQueryParams(["campusId"])
     .WithParameterValidation();
     
   endpointRouteBuilder.MapPut("/api/programApplications/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, ProgramApplication request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
