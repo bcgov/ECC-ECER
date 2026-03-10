@@ -68,7 +68,7 @@
       @cancel="showWithdrawConfirmation = false"
     >
       <template #confirmation-text>
-        <p class="font-weight-bold">
+        <p class="font-weight-bold pb-3">
           Are you sure you want to withdraw the application {{ programName }}?
         </p>
         <p>
