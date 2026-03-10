@@ -12,23 +12,28 @@
           Program application info
         </v-list-item-title>
       </v-list-item>
-      <v-list-item
-        :to="{
-          name: 'program-application-institute-info',
-          params: { programApplicationId: programApplicationId },
-        }"
-      >
-        <v-list-item-title>
-          <v-icon color="success">mdi-circle-half-full</v-icon>
-          Institution and program info
-        </v-list-item-title>
-      </v-list-item>
       <div
         v-for="[category, componentGroups] in groupByCategoryName"
         :key="category"
         v-if="applicationStatus === 'Draft'"
       >
-        <v-list-group>
+        <v-list-item
+          v-if="category === 'Institute Info'"
+          :to="{
+            name: 'program-application-institute-info',
+            params: { programApplicationId: programApplicationId },
+          }"
+        >
+          <v-list-item-title>
+            <v-icon
+              :color="mapStatusColor(getNonCategoryStatus(componentGroups))"
+            >
+              {{ getNonCategoryStatus(componentGroups) }}
+            </v-icon>
+            Institution and program info
+          </v-list-item-title>
+        </v-list-item>
+        <v-list-group v-else>
           <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title
@@ -144,7 +149,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import type { Components } from "@/types/openapi";
-import { groupByCategoryName, mapStatusColor } from "@/utils/functions";
+import {
+  groupByCategoryName,
+  mapStatusColor,
+  mapStatusIcons,
+} from "@/utils/functions";
 
 export default defineComponent({
   name: "ComponentGroupNavigation",
@@ -172,7 +181,7 @@ export default defineComponent({
       required: true,
     },
     componentGroups: {
-      type: Array as () => Components.Schemas.ComponentGroupMetadata[],
+      type: Array as () => Components.Schemas.NavigationMetadata[],
       required: true,
     },
   },
@@ -186,6 +195,7 @@ export default defineComponent({
   },
   methods: {
     mapStatusColor,
+    mapStatusIcons,
     categoryStatus(key: string) {
       let statuses = groupByCategoryName(this.componentGroups)
         ?.get(key)
@@ -200,6 +210,12 @@ export default defineComponent({
         return "mdi-circle-half-full";
       }
       return "mdi-circle-outline";
+    },
+    getNonCategoryStatus(data: ComponentGroupNavigation[]): string {
+      if (data[0] !== undefined && data.length !== 0 && data.length === 1) {
+        return mapStatusIcons(data[0].status);
+      }
+      return mapStatusIcons("ToDo");
     },
   },
 });

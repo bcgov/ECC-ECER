@@ -107,8 +107,8 @@
         <v-row>
           <v-col cols="12">
             <p>
-              Select the individual responsible for this program application.
-              This user must have access to the PSP Portal.
+              Select the individual contact for this campus or location. This
+              user must have access to the ECE Post-Secondary Programs portal.
             </p>
             <p>
               Note: If the correct user is not listed here, please invite them
@@ -650,11 +650,13 @@ export default defineComponent({
               "Failed to update program application:",
               response.error,
             );
+          } else {
+            this.isSaving = false;
+            this.$emit("next", {});
           }
         }
       } finally {
         this.isSaving = false;
-        this.$emit("next", {});
       }
     },
     showDeliverySection(): boolean {

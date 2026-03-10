@@ -112,7 +112,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .RequireAuthorization(policyNames)
     .WithParameterValidation();
   
-  endpointRouteBuilder.MapGet("/api/programApplications/{id}/components", async Task<Results<Ok<IEnumerable<ComponentGroupMetadata>>, BadRequest<string>, NotFound>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+  endpointRouteBuilder.MapGet("/api/programApplications/{id}/components", async Task<Results<Ok<IEnumerable<NavigationMetadata>>, BadRequest<string>, NotFound>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
       bool IdIsNotGuid = !Guid.TryParse(id, out _);
@@ -135,7 +135,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         ByProgramApplicationId = id,
       }, ct);
 
-      return TypedResults.Ok(mapper.Map<IEnumerable<ComponentGroupMetadata>>(componentGroups));
+      return TypedResults.Ok(mapper.Map<IEnumerable<NavigationMetadata>>(componentGroups));
     })
     .WithOpenApi("Gets component groups", string.Empty, "program_application_components_get")
     .RequireAuthorization(policyNames)
@@ -209,6 +209,7 @@ public record ProgramApplication
   public string? MaximumEnrollment { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
   public string? OtherAdmissionOptions  { get; set; }
+  public string? InstituteInfoEntryProgress { get; set; }
 }
 
 public record ProgramCampus
@@ -257,9 +258,15 @@ public record CreateProgramApplicationRequest
 }
 
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
-public record ComponentGroupMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder);
+public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType);
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files);
+
+public enum NavigationType
+{
+  Component,
+  Other,
+}
 
 public record FileInfo(string Id)
 {
