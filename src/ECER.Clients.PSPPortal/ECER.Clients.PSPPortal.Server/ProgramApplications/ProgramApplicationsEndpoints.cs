@@ -51,7 +51,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/programApplications/{id?}", async Task<Results<Ok<GetProgramApplicationResponse>, NotFound>> (
-      string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
+      string? id, ApplicationStatus[]? byStatus, string? campusId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
 
@@ -72,6 +72,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         ById = id,
         ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
         ByStatus = statusFilter,
+        ByCampusId = campusId,
         PageNumber = pageNumber,
         PageSize = pageSize
       };

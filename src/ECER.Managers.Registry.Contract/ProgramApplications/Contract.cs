@@ -9,6 +9,7 @@ public record ProgramApplicationQuery : IRequest<ProgramApplicationQueryResults>
   public string? ById { get; set; }
   public string? ByPostSecondaryInstituteId { get; set; }
   public IEnumerable<ApplicationStatus>? ByStatus { get; set; }
+  public string? ByCampusId { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
 }

@@ -50,6 +50,7 @@ public class ProgramHandlers(
       ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
       ByStatus = statusFilter,
       ByFromProgramProfileId = request.ByFromProgramProfileId,
+      ByCampusId = request.ByCampusId,
       PageNumber = request.PageNumber,
       PageSize = request.PageSize,
     }, cancellationToken);
