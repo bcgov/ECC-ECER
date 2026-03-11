@@ -132,6 +132,7 @@ export default defineComponent({
           break;
         case "NewCampusatRecognizedPrivateInstitution":
           programApplicationTypeDisplay = "Application for new campus";
+          break;
         case "SatelliteProgram":
           programApplicationTypeDisplay = "Application for satellite program";
           break;
