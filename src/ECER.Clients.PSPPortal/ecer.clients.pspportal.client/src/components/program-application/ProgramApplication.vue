@@ -3,6 +3,9 @@
     :programApplicationName="programApplication.programApplicationName || ''"
   ></ProgramApplicationHeader>
   <v-container>
+    <v-breadcrumbs class="pl-0" :items="breadcrumbItems" color="primary">
+      <template #divider>/</template>
+    </v-breadcrumbs>
     <v-row>
       <v-col cols="auto">
         <div v-if="$vuetify.display.smAndDown">
@@ -118,6 +121,39 @@ export default defineComponent({
         ...programTypeSteps,
         { name: "program-application-review-response" },
         //TODO { name: "some-future-route" }
+      ];
+    },
+    breadcrumbItems() {
+      let programApplicationTypeDisplay = "";
+      switch (this.programApplication.programApplicationType) {
+        case "NewBasicECEPostBasicProgram":
+          programApplicationTypeDisplay =
+            "Application for a basic or post-basic program";
+          break;
+        case "NewCampusatRecognizedPrivateInstitution":
+          programApplicationTypeDisplay = "Application for new campus";
+        case "SatelliteProgram":
+          programApplicationTypeDisplay = "Application for satellite program";
+          break;
+        case "AddOnlineorHybridDeliveryMethod":
+          programApplicationTypeDisplay =
+            "Application for adding an online or hybrid delivery method";
+          break;
+        case "CurriculumRevisionsatRecognizedInstitution":
+        case "WorkIntegratedLearningProgram":
+        default:
+          programApplicationTypeDisplay =
+            "unmapped application type " +
+            this.programApplication.programApplicationType;
+      }
+      return [
+        { title: "Home", disabled: false, href: "/" },
+        {
+          title: "All applications",
+          disabled: false,
+          href: "/program-applications",
+        },
+        { title: `${programApplicationTypeDisplay}`, disabled: true },
       ];
     },
   },
