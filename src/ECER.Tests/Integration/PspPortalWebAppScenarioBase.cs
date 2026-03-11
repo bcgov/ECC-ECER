@@ -165,6 +165,11 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     draftProgramApplication2 =
       GetOrAddProgramApplication("Test_psp_program_application_update", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
 
+    testCampus = GetOrAddCampus(context, testPostSecondaryInstitute);
+    campusProgramApplication =
+      GetOrAddProgramApplication("Test_psp_campus_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
+    campusProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Campus", "Draft");
+
     context.SaveChanges();
 
     CreateProgramCampusLink(context, testCampus, campusProgramApplication);
