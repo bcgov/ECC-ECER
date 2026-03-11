@@ -47,7 +47,6 @@ internal sealed class ProgramRepository : IProgramRepository
       var campusId = Guid.Parse(query.ByCampusId);
       var programIdsForCampus = context.ecer_ProgramCampusSet
         .Where(c => c.ecer_CampusId.Id == campusId && c.ecer_ProgramProfileId != null)
-        .ToList()
         .Select(c => c.ecer_ProgramProfileId.Id)
         .ToList();
       if (programIdsForCampus.Count == 0) return new ProgramResult { Programs = [], TotalProgramsCount = 0 };

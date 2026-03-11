@@ -191,7 +191,6 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       var campusId = Guid.Parse(query.ByCampusId);
       var programApplicationIdsForCampus = context.ecer_ProgramCampusSet
         .Where(c => c.ecer_CampusId.Id == campusId && c.ecer_ProgramApplicationId != null)
-        .ToList()
         .Select(c => c.ecer_ProgramApplicationId.Id)
         .ToList();
       if (programApplicationIdsForCampus.Count == 0) return new ProgramApplicationQueryResults([], 0);
