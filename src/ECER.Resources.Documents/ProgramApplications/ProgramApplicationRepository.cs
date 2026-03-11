@@ -148,7 +148,8 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
 
   private static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
   {
-    return  application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty 
+    return  application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ != null
+            && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty 
             && (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online 
               && application.ecer_Onlinemethodsofinstruction.Any() &&  application.ecer_Deliverymethodforpracticuminstructor.Any())
             && ValidateCampus(application, institute);
