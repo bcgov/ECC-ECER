@@ -18,7 +18,85 @@
         </v-col>
       </v-row>
 
-      <v-card class="mb-4 pb-2" variant="outlined" rounded="lg">
+      <v-row v-if="isRFAI" class="mb-4">
+        <v-col cols="12">
+          <Callout title="Additional information requested" type="warning">
+            <p>
+              Refer to your messages for details on resolving this request. You
+              may edit the questions in your application requiring additional
+              information.
+            </p>
+          </Callout>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="isRFAI" class="mb-4">
+        <v-col class="d-flex" cols="12">
+          <p class="align-self-center mr-4"><strong>SHOW:</strong></p>
+          <v-btn-toggle
+            v-model="filter"
+            color="primary"
+            mandatory
+            @update:model-value="setView()"
+          >
+            <v-btn value="rfai">
+              Responses requiring additional information
+            </v-btn>
+            <v-btn value="all">All Responses</v-btn>
+          </v-btn-toggle>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="isRFAI && filter === 'rfai'" class="mb-4">
+        <v-col class="d-flex" cols="12">
+          <p>
+            Show only responses where the registry is requestimg more
+            information.
+          </p>
+        </v-col>
+      </v-row>
+
+      <v-card v-if="isRFAI" class="mb-4 pb-2" variant="outlined" rounded="lg">
+        <v-card-title>
+          <div class="d-flex align-center">
+            <div>
+              <h2 class="text-wrap">Application submitted</h2>
+            </div>
+          </div>
+        </v-card-title>
+        <v-card-text class="text-grey-dark">
+          <v-row class="mb-n5">
+            <v-col cols="4">
+              <p class="small">Submitted by</p>
+            </v-col>
+            <v-col>
+              <p class="small font-weight-bold">-</p>
+            </v-col>
+          </v-row>
+
+          <v-row class="mb-n5">
+            <v-col cols="4">
+              <p class="small">Submission date</p>
+            </v-col>
+            <v-col>
+              <p class="small font-weight-bold">-</p>
+            </v-col>
+          </v-row>
+
+          <v-row class="mb-n5">
+            <v-col cols="4">
+              <p class="small">Application status</p>
+            </v-col>
+            <v-col>
+              <p class="small font-weight-bold">
+                {{ programApplicationObject?.status }}
+              </p>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+
+      <v-card v-if="!isRFAI" class="mb-4 pb-2" variant="outlined" rounded="lg">
         <v-card-title>
           <div class="d-flex justify-space-between align-center">
             <div>
@@ -226,6 +304,14 @@
               <p class="small">{{ component.name }}</p>
             </v-col>
             <v-col>
+              <v-chip
+                v-if="isRFAI && component.rfaiRequired"
+                color="warning"
+                variant="flat"
+                size="small"
+              >
+                <div>Additional information requested</div>
+              </v-chip>
               <p class="small font-weight-bold">
                 {{ component.answer }}
               </p>
@@ -279,6 +365,7 @@ import {
 } from "@/api/program-application";
 import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
+import Callout from "@/components/common/Callout.vue";
 
 interface ComponentGroupMetaData {
   componentGroupId?: string | null;
@@ -290,6 +377,7 @@ export default defineComponent({
   components: {
     PageContainer,
     Loading,
+    Callout,
   },
   props: {
     programApplicationId: {
@@ -345,6 +433,15 @@ export default defineComponent({
       }
       return "-";
     },
+    isRFAI(): boolean {
+      return (
+        this.programApplicationObject?.status !== undefined &&
+        this.activeStatus.includes(this.programApplicationObject?.status) &&
+        (this.programApplicationObject?.status === "InterimRecognition" ||
+          this.programApplicationObject?.status === "ReviewAnalysis") &&
+        this.programApplicationObject?.statusReasonDetail === "RFAIrequested"
+      );
+    },
   },
   data() {
     return {
@@ -354,12 +451,21 @@ export default defineComponent({
       componentGroup: [] as ComponentGroupWithComponents[] | null | undefined,
       componentAnswer: {} as Map<string, ComponentGroupMetaData> | null,
       isLoading: true,
+      activeStatus: [
+        "Approved",
+        "Draft",
+        "InterimRecognition",
+        "OnGoingRecognition",
+        "ReviewAnalysis",
+        "Submitted",
+      ] as Components.Schemas.ApplicationStatus[],
+      filter: "rfai",
     };
   },
   async mounted() {
     this.isLoading = true;
-    await this.loadComponents();
     await this.fetchApplication();
+    await this.loadComponents();
     this.isLoading = false;
   },
   methods: {
@@ -386,6 +492,8 @@ export default defineComponent({
       return this.programApplicationObject?.deliveryType !== "Inperson";
     },
     async loadComponents() {
+      this.componentGroup = null;
+      this.componentAnswer = null;
       const result = await getComponentGroupComponents(
         this.programApplicationId,
         undefined,
@@ -395,7 +503,42 @@ export default defineComponent({
         | ComponentGroupWithComponents[]
         | null
         | undefined;
+      this.setView();
+    },
+    setView() {
+      if (this.isRFAI) {
+        if (this.filter === "rfai") {
+          this.filterByRFAI();
+        } else {
+          this.allResponses();
+        }
+      } else {
+        this.allResponses();
+      }
+    },
+    mapFileNames(metaData: ComponentGroupMetaData) {
+      return metaData.components?.flatMap((f) => f.files).join(", ");
+    },
+    filterByRFAI() {
+      const map = new Map();
 
+      this.componentGroup?.forEach((c) => {
+        const groupName = c.name;
+        const rfaiComponents = c.components?.filter((c) => c.rfaiRequired);
+        if (rfaiComponents && rfaiComponents.length > 0) {
+          if (map.has(groupName)) {
+            map.get(groupName).components.push(rfaiComponents);
+          } else {
+            map.set(groupName, {
+              componentGroupId: c.id,
+              components: rfaiComponents,
+            });
+          }
+        }
+      });
+      this.componentAnswer = map;
+    },
+    allResponses() {
       const map = new Map();
 
       this.componentGroup?.forEach((c) => {
@@ -410,9 +553,6 @@ export default defineComponent({
         }
       });
       this.componentAnswer = map;
-    },
-    mapFileNames(metaData: ComponentGroupMetaData) {
-      return metaData.components?.flatMap((f) => f.files).join(", ");
     },
   },
 });

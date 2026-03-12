@@ -113,6 +113,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(ProgramApplicationComponent.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(ProgramApplicationComponent.Answer), opt => opt.MapFrom(src => src.ecer_Componentanswer))
       .ForCtorParam(nameof(ProgramApplicationComponent.Files), opt => opt.MapFrom(src => src.ecer_documenturl_ProgramApplicationComponentId))
+      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue  ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<bcgov_DocumentUrl, FileInfo>(MemberList.Destination)
