@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.PostSecondaryInstitutes;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -34,6 +35,32 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
         return TypedResults.Ok();
       })
     .WithOpenApi("Updates the education institution", string.Empty, "education_institution_put")
+    .RequireAuthorization("psp_user");
+
+    endpointRouteBuilder.MapPost("/api/education-institution/campus",
+      async Task<Results<Ok<string>, BadRequest<ProblemDetails>>> (CreateCampusRequest request, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      {
+        var user = ctx.User.GetUserContext()!;
+        var campus = mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.Campus>(request);
+        var newCampusId = await bus.Send(new CreateCampusCommand(user.UserId, campus), ct);
+        return TypedResults.Ok(newCampusId);
+      })
+    .WithOpenApi("Creates a new campus for the user's institution", string.Empty, "campus_post")
+    .WithParameterValidation()
+    .RequireAuthorization("psp_user");
+
+    endpointRouteBuilder.MapPut("/api/education-institution/campus/{campusId}",
+      async Task<Results<Ok, NotFound, BadRequest<ProblemDetails>>> (string campusId, UpdateCampusRequest request, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      {
+        var user = ctx.User.GetUserContext()!;
+        var campus = mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.Campus>(request);
+        campus = campus with { Id = campusId };
+        await bus.Send(new UpdateCampusCommand(user.UserId, campus), ct);
+        return TypedResults.Ok();
+      })
+    .WithOpenApi("Updates an existing campus", string.Empty, "campus_put")
+    .AddGuidValidation("campusId")
+    .WithParameterValidation()
     .RequireAuthorization("psp_user");
   }
 }
@@ -97,5 +124,30 @@ public record EducationInstitution
     Privatetraininginstitution,
     Indigenouscontrolledpostsecondaryinstitute,
   }
-  
-  
+
+  public record CreateCampusRequest
+  {
+    public string? Name { get; set; }
+    public bool? IsSatelliteOrTemporaryLocation { get; set; }
+    public string? Street1 { get; set; }
+    public string? Street2 { get; set; }
+    public string? Street3 { get; set; }
+    public string? City { get; set; }
+    public string? Province { get; set; }
+    public string? PostalCode { get; set; }
+    public string? KeyCampusContactName { get; set; }
+  }
+
+  public record UpdateCampusRequest
+  {
+    public string? Name { get; set; }
+    public string? Street1 { get; set; }
+    public string? Street2 { get; set; }
+    public string? Street3 { get; set; }
+    public string? City { get; set; }
+    public string? Province { get; set; }
+    public string? PostalCode { get; set; }
+    public string? KeyCampusContactName { get; set; }
+  }
+
+

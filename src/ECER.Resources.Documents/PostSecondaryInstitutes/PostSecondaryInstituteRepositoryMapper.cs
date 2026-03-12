@@ -50,5 +50,19 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
       .ForMember(d => d.PostalCode, opts => opts.MapFrom(s => s.ecer_postalcode))
       .ForMember(d => d.KeyCampusContactName, opts => opts.MapFrom(s => s.ecer_KeyCampusContactName))
       .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<Campus, ecer_PostSecondaryInstituteCampus>()
+      .ForMember(d => d.ecer_PostSecondaryInstituteCampusId,
+        opts => opts.MapFrom(s => s.Id != null ? Guid.Parse(s.Id) : (Guid?)null))
+      .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
+      .ForMember(d => d.ecer_street1, opts => opts.MapFrom(s => s.Street1))
+      .ForMember(d => d.ecer_street2, opts => opts.MapFrom(s => s.Street2))
+      .ForMember(d => d.ecer_street3, opts => opts.MapFrom(s => s.Street3))
+      .ForMember(d => d.ecer_city, opts => opts.MapFrom(s => s.City))
+      .ForMember(d => d.ecer_postalcode, opts => opts.MapFrom(s => s.PostalCode))
+      .ForMember(d => d.ecer_SatelliteorTemporaryLocation, opts => opts.MapFrom(s =>
+        s.IsSatelliteOrTemporaryLocation.HasValue
+          ? (s.IsSatelliteOrTemporaryLocation.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No)
+          : default(ecer_YesNoNull?)));
   }
 }

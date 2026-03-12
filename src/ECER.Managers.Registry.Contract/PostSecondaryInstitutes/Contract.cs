@@ -19,6 +19,16 @@ public record PostSecondaryInstitutionsQueryResults(IEnumerable<PostSecondaryIns
 
 public record UpdatePostSecondaryInstitutionCommand(PostSecondaryInstitute Institute) : IRequest<string>;
 
+/// <summary>
+/// Creates a new campus under the institution of the given program representative
+/// </summary>
+public record CreateCampusCommand(string ProgramRepresentativeId, Campus Campus) : IRequest<string>;
+
+/// <summary>
+/// Updates an existing campus - IsSatelliteOrTemporaryLocation cannot be changed
+/// </summary>
+public record UpdateCampusCommand(string ProgramRepresentativeId, Campus Campus) : IRequest<string>;
+
 public record PostSecondaryInstitute
 {
   public string Id { get; set; } = null!;

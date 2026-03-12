@@ -12,6 +12,11 @@ internal sealed class EducationInstitutionMapper : AutoMapper.Profile
     
     CreateMap<Campus, Managers.Registry.Contract.PostSecondaryInstitutes.Campus>()
       .ReverseMap();
+
+    CreateMap<CreateCampusRequest, Managers.Registry.Contract.PostSecondaryInstitutes.Campus>();
+
+    CreateMap<UpdateCampusRequest, Managers.Registry.Contract.PostSecondaryInstitutes.Campus>()
+      .ForMember(d => d.IsSatelliteOrTemporaryLocation, opts => opts.Ignore());
   }
 }
 

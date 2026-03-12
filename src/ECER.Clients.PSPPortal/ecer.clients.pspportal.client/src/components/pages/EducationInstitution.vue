@@ -60,7 +60,18 @@
 
       <v-row class="mt-2">
         <v-col cols="auto">
-          <v-btn color="primary" size="large">Add a campus</v-btn>
+          <v-btn
+            color="primary"
+            size="large"
+            @click="
+              router.push({
+                name: 'add-campus',
+                params: { institutionId },
+              })
+            "
+          >
+            Add a campus
+          </v-btn>
         </v-col>
       </v-row>
 
@@ -113,7 +124,18 @@
 
       <v-row class="mt-2">
         <v-col cols="auto">
-          <v-btn color="primary" size="large">Add a satellite location</v-btn>
+          <v-btn
+            color="primary"
+            size="large"
+            @click="
+              router.push({
+                name: 'add-satellite-location',
+                params: { institutionId },
+              })
+            "
+          >
+            Add a satellite location
+          </v-btn>
         </v-col>
       </v-row>
 
