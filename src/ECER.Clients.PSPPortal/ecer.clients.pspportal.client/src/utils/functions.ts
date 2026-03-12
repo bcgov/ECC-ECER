@@ -295,10 +295,13 @@ export function parseCertificationType(input: string): CertificationType {
 
 // this method will return a Map that looks like this {Key = AreaOfInstructionId, Values = Array of courses with name and hours}
 export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
-  program: Components.Schemas.Program,
+  courses: Components.Schemas.Course[] | undefined | null,
   programType: Components.Schemas.ProgramTypes,
 ): AreaOfInstructionWithCourseHoursMap | undefined {
-  let filteredCourses = program?.courses?.filter(
+  if (!courses || courses.length === 0) {
+    return new Map();
+  }
+  let filteredCourses = courses.filter(
     (course: Components.Schemas.Course) => course.programType === programType,
   ); //filter out relevant courses here
   let courseAreaOfInstructionMap = new Map();
@@ -333,14 +336,14 @@ export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
 }
 
 export function getNonAllocatedCoursesByType(
-  program: Components.Schemas.Program,
+  courses: Components.Schemas.Course[] | undefined | null,
   programType: Components.Schemas.ProgramTypes,
 ) {
-  if (!program?.courses) {
+  if (!courses || courses.length === 0) {
     return [];
   }
 
-  let filteredCourses = program?.courses?.filter(
+  let filteredCourses = courses.filter(
     (course: Components.Schemas.Course) => course.programType === programType,
   );
 

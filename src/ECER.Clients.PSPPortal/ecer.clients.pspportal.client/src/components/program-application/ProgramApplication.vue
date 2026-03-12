@@ -120,6 +120,9 @@ export default defineComponent({
           })),
         ...programTypeSteps,
         { name: "program-application-review-response" },
+        {
+          name: "program-application-program-profile-area-of-instruction-review",
+        },
         //TODO { name: "some-future-route" }
       ];
     },
