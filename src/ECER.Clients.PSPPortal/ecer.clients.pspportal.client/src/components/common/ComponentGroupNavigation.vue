@@ -128,7 +128,12 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item
+          :to="{
+            name: 'program-application-program-profile-area-of-instruction-review',
+            params: { programApplicationId: programApplicationId },
+          }"
+        >
           <v-list-item-title>
             <v-icon>mdi-text-box-outline</v-icon>
             Review program profiles

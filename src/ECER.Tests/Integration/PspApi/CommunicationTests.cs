@@ -13,7 +13,7 @@ public class CommunicationsTests : PspPortalWebAppScenarioBase
   public CommunicationsTests(ITestOutputHelper output, PspPortalWebAppFixture fixture) : base(output, fixture)
   {
   }
-  
+
   [Fact]
   public async Task GetCommunications_ReturnsParentCommunications_byPage()
   {
@@ -60,7 +60,7 @@ public class CommunicationsTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task SendMessage_ReturnsCommunicationId()
+  public async Task SendMessage_ReturnsCommunicationId_AndInitiatedFromIsSetToProgramRepresentative()
   {
     var communication = CreateNewCommunication();
     communication.Id = this.Fixture.communicationOneId;
@@ -72,10 +72,23 @@ public class CommunicationsTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var sendMessageResponseId = await sendMessageResponse.ReadAsJsonAsync<SendMessageResponse>();
-    sendMessageResponseId!.CommunicationId.ShouldNotBeEmpty();
+    var sendMessageResponseId = (await sendMessageResponse.ReadAsJsonAsync<SendMessageResponse>())?.CommunicationId;
+    sendMessageResponseId.ShouldNotBeEmpty();
+
+    var communicationsResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/messages?page=1&pageSize=10&byId={sendMessageResponseId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var communications = await communicationsResponse.ReadAsJsonAsync<GetMessagesResponse>();
+    communications!.Communications.ShouldNotBeNull();
+    communications.Communications.ShouldContain(c =>
+      c.Id == sendMessageResponseId &&
+      c.From == Clients.PSPPortal.Server.Communications.InitiatedFrom.ProgramRepresentative);
   }
-  
+
   [Fact]
   public async Task InitiateMessage_ReturnsCommunicationId()
   {
@@ -100,7 +113,7 @@ public class CommunicationsTests : PspPortalWebAppScenarioBase
       Text = faker.Lorem.Paragraph(),
       Category = PspCommunicationCategory.ProgramChangeRequest
     };
-    
+
     return communication;
   }
 }
