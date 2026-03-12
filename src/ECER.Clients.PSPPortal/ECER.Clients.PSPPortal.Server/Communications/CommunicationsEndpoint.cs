@@ -1,22 +1,22 @@
 using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
+using ECER.Managers.Registry.Contract.Communications;
+using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using ECER.Managers.Registry.Contract.Communications;
-using ECER.Managers.Registry.Contract.PspUsers;
 
 namespace ECER.Clients.PSPPortal.Server.Communications;
 
 public class CommunicationsEndpoint : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
-  { 
-    endpointRouteBuilder.MapGet("/api/messages/{parentId?}", 
-        async Task<Results<Ok<GetMessagesResponse>, BadRequest<ProblemDetails>, NotFound>> (string? parentId, HttpContext httpContext, 
+  {
+    endpointRouteBuilder.MapGet("/api/messages/{parentId?}",
+        async Task<Results<Ok<GetMessagesResponse>, BadRequest<ProblemDetails>, NotFound>> (string? parentId, string? byId, HttpContext httpContext,
           IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
       {
         var userContext = httpContext.User.GetUserContext()!;
@@ -26,18 +26,21 @@ public class CommunicationsEndpoint : IRegisterEndpoints
         {
           return TypedResults.NotFound();
         }
-        
+
         bool IdIsNotGuid = !Guid.TryParse(parentId, out _); if (IdIsNotGuid && parentId != null) { parentId = null; }
+        bool ByIdIsNotGuid = !Guid.TryParse(byId, out _); if (ByIdIsNotGuid && byId != null) { byId = null; }
+
         // Get pagination parameters from the query string with default values
         var pageNumber = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageProperty], out var page) && page > 0 ? page : paginationOptions.Value.DefaultPageNumber;
         var pageSize = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageSizeProperty], out var size) ? size : paginationOptions.Value.DefaultPageSize;
-        
+
         var query = new UserCommunicationQuery
         {
           //Pagination by users institute
           ByPostSecondaryInstituteId = currentRep.PostSecondaryInstituteId,
+          ById = byId,
           ByParentId = parentId,
-          ByStatus = [ECER.Managers.Registry.Contract.Communications.CommunicationStatus.NotifiedRecipient, 
+          ByStatus = [ECER.Managers.Registry.Contract.Communications.CommunicationStatus.NotifiedRecipient,
             ECER.Managers.Registry.Contract.Communications.CommunicationStatus.Acknowledged],
           PageNumber = pageNumber,
           PageSize = pageSize
@@ -48,8 +51,8 @@ public class CommunicationsEndpoint : IRegisterEndpoints
       })
       .WithOpenApi("Paginated endpoint to get all user messages", string.Empty, "message_get")
       .RequireAuthorization("psp_user");
-    
-    endpointRouteBuilder.MapPost("/api/messages", 
+
+    endpointRouteBuilder.MapPost("/api/messages",
         async Task<Results<Ok<SendMessageResponse>, BadRequest<ProblemDetails>, NotFound>> (SendMessageRequest request, HttpContext httpContext,
           CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
@@ -83,13 +86,13 @@ public class CommunicationsEndpoint : IRegisterEndpoints
       })
       .WithOpenApi("Endpoint to reply to an existing message", string.Empty, "message_post")
       .RequireAuthorization("psp_user");
-    
+
     endpointRouteBuilder.MapPut("/api/messages/{id}/seen",
       async Task<Results<Ok<CommunicationResponse>, BadRequest<string>, NotFound>> (string? id,
         CommunicationSeenRequest request, HttpContext ctx, IMediator messageBus, CancellationToken ct) =>
       {
         var userContext = ctx.User.GetUserContext()!;
-        
+
         // Get users institute
         var currentRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
         if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
@@ -105,23 +108,23 @@ public class CommunicationsEndpoint : IRegisterEndpoints
 
         var markCommunicationCmd = new MarkCommunicationAsSeenCommand
         {
-          CommunicationId = request.CommunicationId, 
+          CommunicationId = request.CommunicationId,
           PostSecondaryInstituteId = currentRep.PostSecondaryInstituteId,
           UserId = userContext.UserId!,
           IsPspUser = true
         };
-        
+
         var communicationId =
           await messageBus.Send(markCommunicationCmd, ct);
         return TypedResults.Ok(new CommunicationResponse(communicationId));
       }).WithOpenApi("Marks a communication as seen", string.Empty, "communication_put")
         .RequireAuthorization("psp_user");
-    
-    endpointRouteBuilder.MapGet("/api/messages/status", 
-        async Task<Results<Ok<CommunicationsStatusResults>,  NotFound>>(HttpContext httpContext, IMediator messageBus, CancellationToken ct) =>
+
+    endpointRouteBuilder.MapGet("/api/messages/status",
+        async Task<Results<Ok<CommunicationsStatusResults>, NotFound>> (HttpContext httpContext, IMediator messageBus, CancellationToken ct) =>
       {
         var userContext = httpContext.User.GetUserContext()!;
-        
+
         // Get users institute
         var currentRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
         if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
@@ -133,7 +136,7 @@ public class CommunicationsEndpoint : IRegisterEndpoints
         {
           ByPostSecondaryInstituteId = currentRep.PostSecondaryInstituteId
         };
-        
+
         var result = await messageBus.Send(query, ct);
         return TypedResults.Ok(new CommunicationsStatusResults(result.Status));
       })
@@ -178,7 +181,7 @@ public record Communication
   public CommunicationCategory? Category { get; set; }
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
-  public InitiatedFrom From { get; set; } 
+  public InitiatedFrom From { get; set; }
   public bool Acknowledged { get; set; }
   public DateTime NotifiedOn { get; set; }
   public CommunicationStatus Status { get; set; }

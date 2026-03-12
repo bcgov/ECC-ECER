@@ -266,12 +266,20 @@ const router = createRouter({
           meta: { requiresAuth: true, requiresVerification: true },
           props: true,
         },
+        {
+          path: "component/program-profile/review-courses",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationProgramProfileAreaOfInstructionReview.vue"),
+          name: "program-application-program-profile-area-of-instruction-review",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
       ],
     },
   ],
 });
 
-// Gaurd for authenticated routes
+// Guard for authenticated routes
 router.beforeEach(async (to, _, next) => {
   const oidcStore = useOidcStore();
   const userStore = useUserStore();
