@@ -74,6 +74,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/education-institution/:institutionId",
+      component: () => import("./components/pages/EducationInstitution.vue"),
+      name: "education-institution",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/program/:programId",
       component: () => import("./components/pages/Program.vue"),
       name: "programDetail",
@@ -86,6 +93,13 @@ const router = createRouter({
       name: "programSubmitted",
       meta: { requiresAuth: true, requiresVerification: true },
       props: true,
+    },
+    {
+      path: "/program-application-info",
+      component: () =>
+        import("./components/pages/ProgramApplicationInfoContainer.vue"),
+      name: "programApplicationInfo",
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/program-profiles",
@@ -105,6 +119,12 @@ const router = createRouter({
       name: "initiate-program-update",
       meta: { requiresAuth: true },
       props: true,
+    },
+    {
+      path: "/program-application-begin",
+      component: () => import("./components/pages/BeginProgramApplication.vue"),
+      name: "program-application-begin",
+      meta: { requiresAuth: true },
     },
     {
       path: "/silent-callback",
@@ -162,6 +182,63 @@ const router = createRouter({
       path: "/:pathMatch(.*)*",
       name: "not-found",
       component: () => import("./components/pages/PageNotFound.vue"),
+    },
+    {
+      path: "/program-applications",
+      component: () =>
+        import("./components/program-application/ProgramApplications.vue"),
+      name: "program-applications",
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/program-application/:programApplicationId",
+      component: () =>
+        import("./components/pages/ProgramApplicationContainer.vue"),
+      name: "programApplication",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+      children: [
+        {
+          path: "component/:componentGroupId",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationComponent.vue"),
+          name: "program-application-component",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/info",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationInformation.vue"),
+          name: "program-application-component-info",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/institute-info",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationInstituteInfo.vue"),
+          name: "program-application-institute-info",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/program-profile/:programType",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationProgramProfileAreaOfInstruction.vue"),
+          name: "program-application-program-profile-area-of-instruction",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/review-responses",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationReviewResponses.vue"),
+          name: "program-application-review-response",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+      ],
     },
   ],
 });

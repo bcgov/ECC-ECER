@@ -8,26 +8,70 @@ import type {
 
 declare namespace Components {
   namespace Schemas {
+    export interface AddCourseRequest {
+      course?: Course;
+      type?: FunctionType;
+      applicationId?: string | null;
+    }
+    export type AdmissionOptions =
+      | "Allcoursesrestrictedtoearlychildhoodeducationstudents"
+      | "Cohortenrollmentstudentsstarttogetherandgraduatetogether"
+      | "Continuousenrollmentstudentscanenrolatanytime"
+      | "Oneormorecoursesopentoanystudentsintheinstitution"
+      | "Other";
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
         [name: string]: OidcAuthenticationSettings;
       } | null;
     }
+    export type ApplicationStatus =
+      | "Approved"
+      | "Archived"
+      | "Denied"
+      | "Draft"
+      | "Inactive"
+      | "InterimRecognition"
+      | "OnGoingRecognition"
+      | "RefusetoApprove"
+      | "ReviewAnalysis"
+      | "Submitted"
+      | "Withdrawn";
+    export type ApplicationStatusReasonDetail =
+      | "Pendingdecision"
+      | "Recognitionevaluationmeeting"
+      | "RFAIreceived"
+      | "RFAIrequested";
+    export type ApplicationType =
+      | "AddOnlineorHybridDeliveryMethod"
+      | "CurriculumRevisionsatRecognizedInstitution"
+      | "NewBasicECEPostBasicProgram"
+      | "NewCampusatRecognizedPrivateInstitution"
+      | "SatelliteProgram"
+      | "WorkIntegratedLearningProgram";
     export interface AreaOfInstruction {
       id?: string | null;
       name?: string | null;
       programTypes?: ProgramTypes[] | null;
       minimumHours?: number | null; // int32
       displayOrder?: string | null;
+      parentAreaOfInstructionId?: string | null;
     }
     export interface AreaOfInstructionListResponse {
       areaOfInstruction?: AreaOfInstruction[] | null;
     }
-    export type Auspice =
-      | "ContinuingEducation"
-      | "PublicOOP"
-      | "Private"
-      | "Public";
+    export interface Campus {
+      id?: string | null;
+      name?: string | null;
+      status?: CampusStatus;
+      isSatelliteOrTemporaryLocation?: boolean | null;
+      street1?: string | null;
+      street2?: string | null;
+      street3?: string | null;
+      city?: string | null;
+      province?: string | null;
+      postalCode?: string | null;
+    }
+    export type CampusStatus = "None" | "Active" | "Inactive";
     export interface Communication {
       id?: string | null;
       category?: CommunicationCategory;
@@ -93,6 +137,15 @@ declare namespace Components {
     export interface CommunicationsStatusResults {
       status?: CommunicationsStatus;
     }
+    export interface ComponentGroupWithComponents {
+      id?: string | null;
+      name?: string | null;
+      instruction?: string | null;
+      status?: string | null;
+      categoryName?: string | null;
+      displayOrder?: number; // int32
+      components?: ProgramApplicationComponent[] | null;
+    }
     export interface Country {
       countryId?: string | null;
       countryName?: string | null;
@@ -100,7 +153,7 @@ declare namespace Components {
       isICRA?: boolean;
     }
     export interface Course {
-      courseId: string;
+      courseId?: string | null;
       courseNumber: string;
       courseTitle: string;
       newCourseNumber?: string | null;
@@ -113,13 +166,29 @@ declare namespace Components {
       newHours?: string | null;
       areaOfInstructionId?: string | null;
     }
+    export interface CreateProgramApplicationRequest {
+      programApplicationName?: string | null;
+      programApplicationType?: ApplicationType;
+      programType?: ProvincialCertificationTypeOffered;
+      programTypes?: ProgramCertificationType[] | null;
+      deliveryType?: DeliveryType;
+    }
+    export interface CreateProgramApplicationResponse {
+      programApplication?: ProgramApplication;
+    }
+    export type DeliveryMethodforInstructor =
+      | "Inpersonsitevisits"
+      | "Virtualsitevisits";
+    export type DeliveryType = "Hybrid" | "Inperson" | "Online";
     export interface DraftProgramResponse {
       program?: Program;
     }
     export interface EducationInstitution {
       id?: string | null;
       name?: string | null;
-      auspice?: Auspice;
+      institutionType?: PsiInstitutionType;
+      privateAuspiceType?: PrivateAuspiceType;
+      ptiruInstitutionId?: string | null;
       websiteUrl?: string | null;
       street1?: string | null;
       street2?: string | null;
@@ -128,6 +197,14 @@ declare namespace Components {
       province?: string | null;
       country?: string | null;
       postalCode?: string | null;
+      campuses?: Campus[] | null;
+    }
+    export interface FileInfo {
+      id?: string | null;
+      name?: string | null;
+      url?: string | null;
+      size?: string | null;
+      extension?: string | null;
     }
     /**
      * file Response
@@ -143,6 +220,10 @@ declare namespace Components {
     export interface GetMessagesResponse {
       communications?: Communication[] | null;
       totalMessagesCount?: number; // int32
+    }
+    export interface GetProgramApplicationResponse {
+      applications?: ProgramApplication[] | null;
+      count?: number; // int32
     }
     export interface GetProgramsResponse {
       programs?: Program[] | null;
@@ -165,6 +246,16 @@ declare namespace Components {
       | "Registry"
       | "ProgramRepresentative";
     export type InviteType = "PSIProgramRepresentative";
+    export type MethodofInstruction = "Asynchronous" | "Synchronous";
+    export interface NavigationMetadata {
+      id?: string | null;
+      name?: string | null;
+      status?: string | null;
+      categoryName?: string | null;
+      displayOrder?: number; // int32
+      navigationType?: NavigationType;
+    }
+    export type NavigationType = "Component" | "Other";
     export interface NewPspUserResponse {
       id?: string | null;
     }
@@ -186,6 +277,12 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
+    export type PrivateAuspiceType =
+      | "Theologicalinstitution"
+      | "FirstNationsmandatedpostsecondaryinstitute"
+      | "Other"
+      | "Privatetraininginstitution"
+      | "Indigenouscontrolledpostsecondaryinstitute";
     export interface ProblemDetails {
       [name: string]: any;
       type?: string | null;
@@ -217,6 +314,41 @@ declare namespace Components {
       fromProgramProfileId?: string | null;
       readyForReview?: boolean | null;
     }
+    export interface ProgramApplication {
+      id?: string | null;
+      postSecondaryInstituteId: string;
+      programApplicationName?: string | null;
+      programApplicationType?: ApplicationType;
+      status?: ApplicationStatus;
+      statusReasonDetail?: ApplicationStatusReasonDetail;
+      programTypes?: ProgramCertificationType[] | null;
+      deliveryType?: DeliveryType;
+      componentsGenerationCompleted?: boolean | null;
+      programRepresentativeId?: string | null;
+      programLength?: string | null;
+      onlineMethodOfInstruction?: MethodofInstruction[] | null;
+      deliveryMethod?: DeliveryMethodforInstructor[] | null;
+      enrollmentOptions?: WorkHoursType[] | null;
+      admissionOptions?: AdmissionOptions[] | null;
+      minimumEnrollment?: string | null;
+      maximumEnrollment?: string | null;
+      programCampuses?: ProgramCampus[] | null;
+      otherAdmissionOptions?: string | null;
+      instituteInfoEntryProgress?: string | null;
+    }
+    export interface ProgramApplicationComponent {
+      id?: string | null;
+      name?: string | null;
+      question?: string | null;
+      displayOrder?: number; // int32
+      answer?: string | null;
+      files?: FileInfo[] | null;
+    }
+    export interface ProgramCampus {
+      id?: string | null;
+      campusId?: string | null;
+    }
+    export type ProgramCertificationType = "Basic" | "ITE" | "SNE";
     export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
     export type ProgramStatus =
       | "Draft"
@@ -232,6 +364,16 @@ declare namespace Components {
       provinceName?: string | null;
       provinceCode?: string | null;
     }
+    export type ProvincialCertificationTypeOffered =
+      | "ECEBasic"
+      | "ITE"
+      | "ITESNE"
+      | "SNE";
+    export type PsiInstitutionType =
+      | "Private"
+      | "Public"
+      | "ContinuingEducation"
+      | "PublicOOP";
     /**
      * Error codes for PSP user registration failures
      */
@@ -314,6 +456,7 @@ declare namespace Components {
       timestamp?: string | null;
       commit?: string | null;
     }
+    export type WorkHoursType = "FullTime" | "PartTime";
   }
 }
 declare namespace Paths {
@@ -362,6 +505,27 @@ declare namespace Paths {
       export type $200 = Components.Schemas.Country[];
     }
   }
+  namespace CourseDelete {
+    namespace Parameters {
+      export type CourseId = string;
+    }
+    export interface PathParameters {
+      courseId: Parameters.CourseId;
+    }
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace CoursePost {
+    export type RequestBody = Components.Schemas.AddCourseRequest;
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace CoursePut {
     namespace Parameters {
       export type CourseId = string;
@@ -372,6 +536,23 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.UpdateCourseRequest;
     namespace Responses {
       export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace CoursesGet {
+    namespace Parameters {
+      export type Id = string;
+      export type ProgramTypes = Components.Schemas.ProgramTypes[];
+      export type Type = Components.Schemas.FunctionType;
+    }
+    export interface QueryParameters {
+      type: Parameters.Type;
+      id: Parameters.Id;
+      programTypes?: Parameters.ProgramTypes;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Course[];
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -477,6 +658,90 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace ProgramApplicationComponentGroupComponentsGet {
+    namespace Parameters {
+      export type ComponentGroupId = string;
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+      componentGroupId?: Parameters.ComponentGroupId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ComponentGroupWithComponents[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationComponentGroupPut {
+    namespace Parameters {
+      export type ComponentGroupId = string;
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+      componentGroupId: Parameters.ComponentGroupId;
+    }
+    export type RequestBody = Components.Schemas.ComponentGroupWithComponents;
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationComponentsGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.NavigationMetadata[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationGet {
+    namespace Parameters {
+      export type ByStatus = Components.Schemas.ApplicationStatus[];
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
+    export interface QueryParameters {
+      byStatus?: Parameters.ByStatus;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.GetProgramApplicationResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationPost {
+    export type RequestBody =
+      Components.Schemas.CreateProgramApplicationRequest;
+    namespace Responses {
+      export type $200 = Components.Schemas.CreateProgramApplicationResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationPut {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody = Components.Schemas.ProgramApplication;
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace ProgramGet {
     namespace Parameters {
       export type ByStatus = Components.Schemas.ProgramStatus[];
@@ -500,9 +765,7 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.SubmitProgramRequest;
     namespace Responses {
       export type $200 = string;
-      export type $400 =
-        | Components.Schemas.ProblemDetails
-        | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -796,6 +1059,57 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>;
   /**
+   * program_application_post - Create a draft program application
+   */
+  "program_application_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.ProgramApplicationPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationPost.Responses.$200>;
+  /**
+   * program_application_get - Handles program application queries
+   */
+  "program_application_get"(
+    parameters?: Parameters<
+      Paths.ProgramApplicationGet.QueryParameters &
+        Paths.ProgramApplicationGet.PathParameters
+    > | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationGet.Responses.$200>;
+  /**
+   * program_application_put - Update program application
+   */
+  "program_application_put"(
+    parameters?: Parameters<Paths.ProgramApplicationPut.PathParameters> | null,
+    data?: Paths.ProgramApplicationPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationPut.Responses.$200>;
+  /**
+   * program_application_components_get - Gets component groups
+   */
+  "program_application_components_get"(
+    parameters?: Parameters<Paths.ProgramApplicationComponentsGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationComponentsGet.Responses.$200>;
+  /**
+   * program_application_component_group_components_get - Gets program application components by component group id
+   */
+  "program_application_component_group_components_get"(
+    parameters?: Parameters<Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationComponentGroupComponentsGet.Responses.$200>;
+  /**
+   * program_application_component_group_put - Update program application component group
+   */
+  "program_application_component_group_put"(
+    parameters?: Parameters<Paths.ProgramApplicationComponentGroupPut.PathParameters> | null,
+    data?: Paths.ProgramApplicationComponentGroupPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationComponentGroupPut.Responses.$200>;
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   "portal_invitation_get"(
@@ -851,6 +1165,34 @@ export interface OperationMethods {
     data?: Paths.CoursePut.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CoursePut.Responses.$200>;
+  /**
+   * course_delete - Deletes a course
+   *
+   * string.Empty
+   */
+  "course_delete"(
+    parameters?: Parameters<Paths.CourseDelete.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CourseDelete.Responses.$200>;
+  /**
+   * courses_get - Gets courses by program profile id or program application id depending on type
+   *
+   * string.Empty
+   */
+  "courses_get"(
+    parameters?: Parameters<Paths.CoursesGet.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CoursesGet.Responses.$200>;
+  /**
+   * course_post - Add a course for a program application
+   */
+  "course_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CoursePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CoursePost.Responses.$200>;
   /**
    * message_get - Paginated endpoint to get all user messages
    */
@@ -1076,6 +1418,65 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>;
   };
+  ["/api/programApplications"]: {
+    /**
+     * program_application_post - Create a draft program application
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ProgramApplicationPost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationPost.Responses.$200>;
+  };
+  ["/api/programApplications/{id}"]: {
+    /**
+     * program_application_get - Handles program application queries
+     */
+    "get"(
+      parameters?: Parameters<
+        Paths.ProgramApplicationGet.QueryParameters &
+          Paths.ProgramApplicationGet.PathParameters
+      > | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationGet.Responses.$200>;
+    /**
+     * program_application_put - Update program application
+     */
+    "put"(
+      parameters?: Parameters<Paths.ProgramApplicationPut.PathParameters> | null,
+      data?: Paths.ProgramApplicationPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationPut.Responses.$200>;
+  };
+  ["/api/programApplications/{id}/components"]: {
+    /**
+     * program_application_components_get - Gets component groups
+     */
+    "get"(
+      parameters?: Parameters<Paths.ProgramApplicationComponentsGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationComponentsGet.Responses.$200>;
+  };
+  ["/api/programApplications/{id}/componentGroups/{componentGroupId}"]: {
+    /**
+     * program_application_component_group_components_get - Gets program application components by component group id
+     */
+    "get"(
+      parameters?: Parameters<Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationComponentGroupComponentsGet.Responses.$200>;
+    /**
+     * program_application_component_group_put - Update program application component group
+     */
+    "put"(
+      parameters?: Parameters<Paths.ProgramApplicationComponentGroupPut.PathParameters> | null,
+      data?: Paths.ProgramApplicationComponentGroupPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationComponentGroupPut.Responses.$200>;
+  };
   ["/api/PortalInvitations/{token}"]: {
     /**
      * portal_invitation_get - Handles portal invitation queries
@@ -1141,6 +1542,36 @@ export interface PathsDictionary {
       data?: Paths.CoursePut.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CoursePut.Responses.$200>;
+    /**
+     * course_delete - Deletes a course
+     *
+     * string.Empty
+     */
+    "delete"(
+      parameters?: Parameters<Paths.CourseDelete.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CourseDelete.Responses.$200>;
+  };
+  ["/api/courses"]: {
+    /**
+     * course_post - Add a course for a program application
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CoursePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CoursePost.Responses.$200>;
+    /**
+     * courses_get - Gets courses by program profile id or program application id depending on type
+     *
+     * string.Empty
+     */
+    "get"(
+      parameters?: Parameters<Paths.CoursesGet.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CoursesGet.Responses.$200>;
   };
   ["/api/messages/{parentId}"]: {
     /**
@@ -1186,12 +1617,19 @@ export interface PathsDictionary {
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
 
+export type AddCourseRequest = Components.Schemas.AddCourseRequest;
+export type AdmissionOptions = Components.Schemas.AdmissionOptions;
 export type ApplicationConfiguration =
   Components.Schemas.ApplicationConfiguration;
+export type ApplicationStatus = Components.Schemas.ApplicationStatus;
+export type ApplicationStatusReasonDetail =
+  Components.Schemas.ApplicationStatusReasonDetail;
+export type ApplicationType = Components.Schemas.ApplicationType;
 export type AreaOfInstruction = Components.Schemas.AreaOfInstruction;
 export type AreaOfInstructionListResponse =
   Components.Schemas.AreaOfInstructionListResponse;
-export type Auspice = Components.Schemas.Auspice;
+export type Campus = Components.Schemas.Campus;
+export type CampusStatus = Components.Schemas.CampusStatus;
 export type Communication = Components.Schemas.Communication;
 export type CommunicationCategory = Components.Schemas.CommunicationCategory;
 export type CommunicationDocument = Components.Schemas.CommunicationDocument;
@@ -1202,20 +1640,35 @@ export type CommunicationStatus = Components.Schemas.CommunicationStatus;
 export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults =
   Components.Schemas.CommunicationsStatusResults;
+export type ComponentGroupWithComponents =
+  Components.Schemas.ComponentGroupWithComponents;
 export type Country = Components.Schemas.Country;
 export type Course = Components.Schemas.Course;
 export type CourseAreaOfInstruction =
   Components.Schemas.CourseAreaOfInstruction;
+export type CreateProgramApplicationRequest =
+  Components.Schemas.CreateProgramApplicationRequest;
+export type CreateProgramApplicationResponse =
+  Components.Schemas.CreateProgramApplicationResponse;
+export type DeliveryMethodforInstructor =
+  Components.Schemas.DeliveryMethodforInstructor;
+export type DeliveryType = Components.Schemas.DeliveryType;
 export type DraftProgramResponse = Components.Schemas.DraftProgramResponse;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
+export type FileInfo = Components.Schemas.FileInfo;
 export type FileResponse = Components.Schemas.FileResponse;
 export type FunctionType = Components.Schemas.FunctionType;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
+export type GetProgramApplicationResponse =
+  Components.Schemas.GetProgramApplicationResponse;
 export type GetProgramsResponse = Components.Schemas.GetProgramsResponse;
 export type HttpValidationProblemDetails =
   Components.Schemas.HttpValidationProblemDetails;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
 export type InviteType = Components.Schemas.InviteType;
+export type MethodofInstruction = Components.Schemas.MethodofInstruction;
+export type NavigationMetadata = Components.Schemas.NavigationMetadata;
+export type NavigationType = Components.Schemas.NavigationType;
 export type NewPspUserResponse = Components.Schemas.NewPspUserResponse;
 export type OidcAuthenticationSettings =
   Components.Schemas.OidcAuthenticationSettings;
@@ -1223,12 +1676,22 @@ export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult =
   Components.Schemas.PortalInvitationQueryResult;
+export type PrivateAuspiceType = Components.Schemas.PrivateAuspiceType;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type Program = Components.Schemas.Program;
+export type ProgramApplication = Components.Schemas.ProgramApplication;
+export type ProgramApplicationComponent =
+  Components.Schemas.ProgramApplicationComponent;
+export type ProgramCampus = Components.Schemas.ProgramCampus;
+export type ProgramCertificationType =
+  Components.Schemas.ProgramCertificationType;
 export type ProgramProfileType = Components.Schemas.ProgramProfileType;
 export type ProgramStatus = Components.Schemas.ProgramStatus;
 export type ProgramTypes = Components.Schemas.ProgramTypes;
 export type Province = Components.Schemas.Province;
+export type ProvincialCertificationTypeOffered =
+  Components.Schemas.ProvincialCertificationTypeOffered;
+export type PsiInstitutionType = Components.Schemas.PsiInstitutionType;
 export type PspRegistrationError = Components.Schemas.PspRegistrationError;
 export type PspRegistrationErrorResponse =
   Components.Schemas.PspRegistrationErrorResponse;
@@ -1243,3 +1706,4 @@ export type SendMessageResponse = Components.Schemas.SendMessageResponse;
 export type SubmitProgramRequest = Components.Schemas.SubmitProgramRequest;
 export type UpdateCourseRequest = Components.Schemas.UpdateCourseRequest;
 export type VersionMetadata = Components.Schemas.VersionMetadata;
+export type WorkHoursType = Components.Schemas.WorkHoursType;

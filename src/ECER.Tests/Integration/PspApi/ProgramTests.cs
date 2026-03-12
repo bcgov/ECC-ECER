@@ -2,6 +2,7 @@ using Alba;
 using ECER.Clients.PSPPortal.Server;
 using ECER.Clients.PSPPortal.Server.Courses;
 using ECER.Clients.PSPPortal.Server.Programs;
+using Microsoft.AspNetCore.Mvc;
 using Shouldly;
 using System.Net;
 using Xunit.Abstractions;
@@ -172,7 +173,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
-      _.Get.Url($"/api/programs/null");
+      _.Get.Url($"/api/programs");
       _.StatusCodeShouldBeOk();
     });
 
@@ -206,6 +207,28 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetProgramProfiles_WithInvalidGuid_ReturnsBadRequest()
+  {
+    //Parameter test invalid guid
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/not-a-guid");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+
+    Assert.Contains("must be a valid GUID", await response.ReadAsTextAsync());
+
+    //Parameter test all whitespaces
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/   ");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
   public async Task UpdateProgram_Type_Draft_ReturnsBadRequest()
   {
     var programResponse = await Host.Scenario(_ =>
@@ -223,6 +246,54 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Put.Json(program).ToUrl($"/api/program/{Fixture.programId}");
       _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
     });
+  }
+
+  [Fact]
+  public async Task UpdateProgram_InvalidGuidObject_EmptySpaceIdParameter_ReturnsBadRequest()
+  {
+    var programResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs/{this.Fixture.programId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var status = await programResponse.ReadAsJsonAsync<GetProgramsResponse>();
+    var program = status.Programs!.First();
+
+    //Parameter test whitespace
+    var responseEmptySpaceIdParameter = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(program).ToUrl($"/api/program/ ");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+
+    Assert.Contains("required cannot be null or whitespace", await responseEmptySpaceIdParameter.ReadAsTextAsync());
+
+    //Parameter test invalid guid
+    var responseInvalidGuidParameter = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(program).ToUrl($"/api/program/not-a-guid");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+
+    Assert.Contains("must be a valid GUID", await responseInvalidGuidParameter.ReadAsTextAsync());
+
+    //Object test invalid guid
+    program.Id = "This is not a guid";
+
+    var responseInvalidGuidProgramObject = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(program).ToUrl($"/api/program/{Guid.NewGuid()}");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+
+    var errorResponse = await responseInvalidGuidProgramObject.ReadAsJsonAsync<ValidationProblemDetails>();
+
+    errorResponse.Errors.ShouldContainKey("Id");
+    errorResponse.Errors["Id"].ShouldContain(error => error.Contains("The field Id must be a valid GUID"));
   }
 
   [Fact]
@@ -279,6 +350,11 @@ public class ProgramTests : PspPortalWebAppScenarioBase
       _.Post.Json(request).ToUrl($"/api/programs");
       _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
     });
+
+    var errorResponse = await postResponse.ReadAsJsonAsync<ValidationProblemDetails>();
+
+    errorResponse.Errors.ShouldContainKey("ProgramId");
+    errorResponse.Errors["ProgramId"].ShouldContain(error => error.Contains("The field ProgramId must be a valid GUID"));
   }
 
   [Fact]

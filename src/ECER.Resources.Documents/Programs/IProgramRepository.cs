@@ -7,8 +7,11 @@ public interface IProgramRepository
   Task<ProgramResult> Query(ProgramQuery query, CancellationToken cancellationToken);
 
   Task<string> Save(Program program, CancellationToken cancellationToken);
+
   Task<string> UpdateProgram(Program program, CancellationToken cancellationToken);
+
   Task<string> SubmitProgramProfile(string id, string userId, CancellationToken cancellationToken);
+
   Task<string> ChangeProgram(Program program, CancellationToken cancellationToken);
 }
 
@@ -61,6 +64,13 @@ public enum ProgramProfileType
 {
   ChangeRequest,
   AnnualReview
+}
+
+public enum ProgramType
+{
+  Basic,
+  SNE,
+  ITE
 }
 
 public record ProgramResult
