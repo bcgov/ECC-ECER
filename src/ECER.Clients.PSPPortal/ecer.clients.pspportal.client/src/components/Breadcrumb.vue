@@ -127,7 +127,7 @@ export default defineComponent({
         return [
           { title: "Home", disabled: false, href: "/" },
           {
-            title: "Program applications",
+            title: "All applications",
             disabled: true,
             href: "/program-applications",
           },
