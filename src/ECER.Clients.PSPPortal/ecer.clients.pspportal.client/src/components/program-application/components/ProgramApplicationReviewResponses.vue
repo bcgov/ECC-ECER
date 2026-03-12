@@ -269,6 +269,7 @@ import type {
   PspUserListItem,
   ComponentGroupWithComponents,
 } from "@/types/openapi";
+import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import {
   mapProgramType,
   getProgramApplicationById,
@@ -303,7 +304,7 @@ export default defineComponent({
       userStore,
     };
   },
-  emits: ["next"],
+  emits: { next: (_payload: NextStepPayload) => true },
   computed: {
     programType(): string {
       const types = this.programApplicationObject?.programTypes;

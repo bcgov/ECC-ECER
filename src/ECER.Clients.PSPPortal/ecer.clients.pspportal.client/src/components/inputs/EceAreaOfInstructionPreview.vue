@@ -33,6 +33,7 @@
         </v-row>
         <v-row
           class="mb-4"
+          no-gutters
           v-for="[
             courseAreaOfInstructionId,
             courses,
@@ -158,7 +159,7 @@ export default defineComponent({
       | undefined {
       const unsortedMap =
         getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
-          this.programStore.draftProgram,
+          this.programStore.draftProgram?.courses,
           this.programType,
         );
 
@@ -187,7 +188,7 @@ export default defineComponent({
     },
     nonAllocatedCourses(): Components.Schemas.Course[] {
       return getNonAllocatedCoursesByType(
-        this.programStore.draftProgram,
+        this.programStore.draftProgram?.courses,
         this.programType,
       ).sort((a, b) => {
         if (a.courseNumber > b.courseNumber) {
