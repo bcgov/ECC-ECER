@@ -987,6 +987,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog> ecer_ProgramApplicationLogSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ProgramAreaAssessment"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramAreaAssessment> ecer_ProgramAreaAssessmentSet

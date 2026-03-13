@@ -138,7 +138,7 @@ import type { Components } from "@/types/openapi";
 import ECEHeader from "@/components/ECEHeader.vue";
 import { IntervalTime } from "@/utils/constant";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 
 export default defineComponent({
   name: "ProgramProfiles",

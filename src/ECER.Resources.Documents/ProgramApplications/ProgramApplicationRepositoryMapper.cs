@@ -94,6 +94,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(NavigationMetadata.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
       .ForCtorParam(nameof(NavigationMetadata.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(NavigationMetadata.NavigationType), opt => opt.MapFrom(_ => NavigationType.Component))
+      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue  ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupWithComponents>(MemberList.Source)
@@ -113,6 +114,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(ProgramApplicationComponent.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(ProgramApplicationComponent.Answer), opt => opt.MapFrom(src => src.ecer_Componentanswer))
       .ForCtorParam(nameof(ProgramApplicationComponent.Files), opt => opt.MapFrom(src => src.ecer_documenturl_ProgramApplicationComponentId))
+      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue  ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<bcgov_DocumentUrl, FileInfo>(MemberList.Destination)
@@ -127,6 +129,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForSourceMember(s => s.Question, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DisplayOrder, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.RfaiRequired, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramApplicationComponentId, opts => opts.MapFrom(s => Guid.Parse(s.Id)))
       .ForMember(d => d.ecer_Componentanswer, opts => opts.MapFrom(s => s.Answer));
   }

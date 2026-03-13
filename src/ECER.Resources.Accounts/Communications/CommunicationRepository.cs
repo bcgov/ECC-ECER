@@ -132,7 +132,7 @@ internal class CommunicationRepository : ICommunicationRepository
 
     if (communication == null) throw new InvalidOperationException($"Communication '{communicationId}' not found");
 
-    if (communication.ecer_InitiatedFrom != ecer_InitiatedFrom.PortalUser)
+    if (communication.ecer_InitiatedFrom != ecer_InitiatedFrom.PortalUser && communication.ecer_InitiatedFrom != ecer_InitiatedFrom.ProgramRepresentative)
     {
       communication.ecer_DateAcknowledged = DateTime.UtcNow;
       communication.ecer_Acknowledged = true;
@@ -239,7 +239,7 @@ internal class CommunicationRepository : ICommunicationRepository
   private ecer_Communication CreateCommunication(ecer_Communication ecerCommunication, ecer_ECEProgramRepresentative? pspUser, Contact? registrant)
   {
     ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
-    ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
+    ecerCommunication.ecer_InitiatedFrom = pspUser == null ? ecer_InitiatedFrom.PortalUser : ecer_InitiatedFrom.ProgramRepresentative;
     ecerCommunication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
     ecerCommunication.ecer_NotifyRecipient = true;
     ecerCommunication.ecer_DateNotified = DateTime.UtcNow;

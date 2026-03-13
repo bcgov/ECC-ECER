@@ -48,6 +48,7 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
       .ForMember(d => d.City, opts => opts.MapFrom(s => s.ecer_city))
       .ForMember(d => d.Province, opts => opts.MapFrom(s => s.ecer_provinceName))
       .ForMember(d => d.PostalCode, opts => opts.MapFrom(s => s.ecer_postalcode))
+      .ForMember(d => d.KeyCampusContactName, opts => opts.MapFrom(s => s.ecer_KeyCampusContactName))
       .ValidateMemberList(MemberList.Destination);
   }
 }

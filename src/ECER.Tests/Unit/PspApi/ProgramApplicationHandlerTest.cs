@@ -128,7 +128,7 @@ public class ProgramApplicationHandlerTest
     var groupId = Guid.NewGuid().ToString();
     var componentId = Guid.NewGuid().ToString();
 
-    var contractComponents = new[] { new ContractProgramApplicationComponent(componentId, "Q1", "What is X?", 1, "Answer A", null) };
+    var contractComponents = new[] { new ContractProgramApplicationComponent(componentId, "Q1", "What is X?", 1, "Answer A", null, null) };
     var contractComponentGroup = new ContractComponentGroupWithComponents(groupId, "Group 1", "Instruction text", "InProgress", "Category A", 1, contractComponents);
     var command = new UpdateComponentGroupCommand(contractComponentGroup, appId);
 

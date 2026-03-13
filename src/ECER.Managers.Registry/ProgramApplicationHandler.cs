@@ -63,8 +63,9 @@ public class ProgramApplicationHandler(
       ById = request.ById,
       ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
       ByStatus = statusFilter,
+      ByCampusId = request.ByCampusId,
       PageNumber = request.PageNumber,
-      PageSize = request.PageSize,   
+      PageSize = request.PageSize,
     }, cancellationToken);
 
     return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<Contract.ProgramApplications.ProgramApplication>>(result.Items), result.Count);
@@ -89,7 +90,7 @@ public class ProgramApplicationHandler(
     if (programApplication != null)
     {
       var status = programApplication.InstituteInfoEntryProgress ?? "ToDo";
-      mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(),  "Institution and program info", status, "Institute Info", 0, NavigationType.Other));
+      mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(),  "Institution and program info", status, "Institute Info", 0, NavigationType.Other, false));
     }
     return mappedComponentResults;
   }

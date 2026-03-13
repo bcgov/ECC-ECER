@@ -51,7 +51,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/programApplications/{id?}", async Task<Results<Ok<GetProgramApplicationResponse>, NotFound>> (
-      string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
+      string? id, ApplicationStatus[]? byStatus, string? campusId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
 
@@ -72,6 +72,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         ById = id,
         ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
         ByStatus = statusFilter,
+        ByCampusId = campusId,
         PageNumber = pageNumber,
         PageSize = pageSize
       };
@@ -82,6 +83,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     })
     .WithOpenApi("Handles program application queries", string.Empty, "program_application_get")
     .RequireAuthorization(policyNames)
+    .AddGuidValidationQueryParams(["campusId"], isRequired: false)
     .WithParameterValidation();
     
   endpointRouteBuilder.MapPut("/api/programApplications/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, ProgramApplication request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
@@ -258,9 +260,9 @@ public record CreateProgramApplicationRequest
 }
 
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
-public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType);
+public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType, bool? RfaiRequired);
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired);
 
 public enum NavigationType
 {
