@@ -29,20 +29,11 @@
           </v-btn-toggle>
         </v-col>
       </v-row>
-      <v-row v-if="programApplications.length > 0">
-        <v-col
-          v-for="(programApplication, index) in programApplications"
-          :key="getProgramKey(programApplication, index)"
-          cols="12"
-          md="6"
-          lg="4"
-        >
-          <ProgramApplicationCard
-            :program-application="programApplication"
-            @refresh-application-list="loadPrograms(page)"
-          />
-        </v-col>
-      </v-row>
+      <ProgramApplicationsList
+        v-if="programApplications.length > 0"
+        :applications="programApplications"
+        @refresh-application-list="loadPrograms(page)"
+      />
 
       <!-- Empty state -->
       <v-row v-else>
@@ -68,12 +59,12 @@ import { defineComponent } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import ProgramApplicationCard from "@/components/program-application/ProgramApplicationCard.vue";
+import ProgramApplicationsList from "@/components/program-application/ProgramApplicationsList.vue";
 import { getProgramApplications } from "@/api/program-application";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 const POLL_INTERVAL_MS = 10000;
 
 export default defineComponent({
@@ -82,7 +73,7 @@ export default defineComponent({
     PageContainer,
     Loading,
     Breadcrumb,
-    ProgramApplicationCard,
+    ProgramApplicationsList,
   },
   setup() {
     const router = useRouter();
@@ -146,12 +137,6 @@ export default defineComponent({
         clearTimeout(this.pollTimeoutId);
         this.pollTimeoutId = null;
       }
-    },
-    getProgramKey(
-      program: Components.Schemas.ProgramApplication,
-      index: number,
-    ): string {
-      return program.id ?? `${program.status}-${index}`;
     },
     getStatues(): Components.Schemas.ApplicationStatus[] {
       if (this.filter === "active") {

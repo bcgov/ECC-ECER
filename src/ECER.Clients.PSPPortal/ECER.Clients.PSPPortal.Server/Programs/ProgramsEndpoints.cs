@@ -61,7 +61,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .AddGuidValidation("id", false)
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, string? fromProgramId,
+    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, string? fromProgramId, string? campusId,
       HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
     {
       // Get pagination parameters from the query string with default values
@@ -82,6 +82,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
         ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
         ByStatus = statusFilter,
         ByFromProgramProfileId = fromProgramId,
+        ByCampusId = campusId,
         PageNumber = pageNumber,
         PageSize = pageSize
       }, ct);
@@ -91,6 +92,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .WithOpenApi("Handles program queries", string.Empty, "program_get")
     .RequireAuthorization(PolicyNames)
     .AddGuidValidation("id", false)
+    .AddGuidValidationQueryParams(["campusId"], isRequired: false)
     .WithParameterValidation();
 
     endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>

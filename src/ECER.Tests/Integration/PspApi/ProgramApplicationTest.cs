@@ -112,7 +112,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
   }
-  
+
   [Fact]
   public async Task UpdateProgramApplication_Type_Draft_ReturnsOk()
   {
@@ -126,7 +126,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     var status = await program.ReadAsJsonAsync<GetProgramApplicationResponse>();
     status.ShouldNotBeNull();
     var application = status.Applications!.First();
-    application.EnrollmentOptions = new [] { WorkHoursType.FullTime };
+    application.EnrollmentOptions = new[] { WorkHoursType.FullTime };
 
     var response = await Host.Scenario(_ =>
     {
@@ -134,14 +134,14 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
       _.Put.Json(application).ToUrl($"/api/programApplications/{Fixture.draftProgramApplication2Id}");
       _.StatusCodeShouldBeOk();
     });
-    
+
     var updatedProgram = await Host.Scenario(_ =>
     {
       _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
       _.Get.Url($"/api/programApplications/{this.Fixture.draftProgramApplication2Id}");
       _.StatusCodeShouldBeOk();
     });
-    
+
     var updatedProgramStatus = await updatedProgram.ReadAsJsonAsync<GetProgramApplicationResponse>();
     updatedProgramStatus.ShouldNotBeNull();
     var updatedApplication = status.Applications!.First();
@@ -207,6 +207,23 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
       _.Put.Json(request).ToUrl($"/api/programApplications/{appId}/componentGroups/not-a-valid-guid");
       _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
     });
+  }
+
+  [Fact]
+  public async Task GetProgramApplications_ByCampusId_ReturnsOnlyApplicationsForThatCampus()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programApplications?campusId={Fixture.CampusId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var result = await response.ReadAsJsonAsync<GetProgramApplicationResponse>();
+    result.ShouldNotBeNull();
+    result.Applications.ShouldNotBeNull();
+    result.Applications.ShouldContain(a => a.Id == Fixture.campusProgramApplicationId);
+    result.Applications.ShouldNotContain(a => a.Id == Fixture.programApplicationId);
   }
 
   [Fact]

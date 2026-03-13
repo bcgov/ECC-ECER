@@ -54,6 +54,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_ProgramApplicationComponentGroup componentTestComponentGroup = null!;
   private ecer_ProgramApplicationComponent componentTestComponent = null!;
   private ecer_PostSecondaryInstituteProgramApplicaiton draftProgramApplication2 = null!;
+  private ecer_PostSecondaryInstituteCampus testCampus = null!;
+  private ecer_PostSecondaryInstituteProgramApplicaiton campusProgramApplication = null!;
+  private ecer_Program campusProgram = null!;
 
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
@@ -86,6 +89,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string componentTestComponentGroupId => componentTestComponentGroup.Id.ToString();
   public string componentTestComponentId => componentTestComponent.Id.ToString();
   public string courseId3 => testCourse3.Id.ToString();
+  public string CampusId => testCampus.Id.ToString();
+  public string campusProgramApplicationId => campusProgramApplication.Id.ToString();
+  public string campusProgramId => campusProgram.Id.ToString();
   public string testCourseForProgramApplicationId => testCourseForProgramApplication.Id.ToString();
 
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
@@ -159,7 +165,15 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     draftProgramApplication2 =
       GetOrAddProgramApplication("Test_psp_program_application_update", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
 
+    testCampus = GetOrAddCampus(context, testPostSecondaryInstitute);
+    campusProgramApplication =
+      GetOrAddProgramApplication("Test_psp_campus_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
+    campusProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Campus", "Draft");
+
     context.SaveChanges();
+
+    CreateProgramCampusLink(context, testCampus, campusProgramApplication);
+    CreateProgramProfileCampusLink(context, testCampus, campusProgram);
 
     //load dependent properties
     context.Attach(testProgramRepresentative);
@@ -432,9 +446,17 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private (ecer_ProgramApplicationComponentGroup group, ecer_ProgramApplicationComponent component) GetOrAddComponentGroupWithComponent(EcerContext context, ecer_PostSecondaryInstituteProgramApplicaiton application)
   {
     var groupName = $"Test_component_group_{application.ecer_Name}";
+    var componentName = $"Test_component_{application.ecer_Name}";
     var group = context.ecer_ProgramApplicationComponentGroupSet.FirstOrDefault(g => g.ecer_GroupName == groupName);
     if (group != null)
     {
+      // Delete components first to avoid FK constraint violation on group deletion
+      var existingComponent = context.ecer_ProgramApplicationComponentSet.FirstOrDefault(c => c.ecer_Component == componentName);
+      if (existingComponent != null)
+      {
+        context.DeleteObject(existingComponent);
+        context.SaveChanges();
+      }
       context.DeleteObject(group);
       context.SaveChanges();
     }
@@ -450,16 +472,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     context.AddObject(group);
     context.SaveChanges();
 
-    var componentName = $"Test_component_{application.ecer_Name}";
-    var component = context.ecer_ProgramApplicationComponentSet.FirstOrDefault(c => c.ecer_Component == componentName);
-    if (component != null)
-    {
-      context.DeleteObject(component);
-      context.SaveChanges();
-    }
-
     var componentId = Guid.NewGuid();
-    component = new ecer_ProgramApplicationComponent
+    var component = new ecer_ProgramApplicationComponent
     {
       Id = componentId,
       ecer_ProgramApplicationComponentId = componentId,
@@ -491,6 +505,68 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     }
 
     return identity;
+  }
+
+  private ecer_PostSecondaryInstituteCampus GetOrAddCampus(EcerContext context, ecer_PostSecondaryInstitute institute)
+  {
+    var campusName = "Test_psp_campus";
+    var campus = context.ecer_PostSecondaryInstituteCampusSet.FirstOrDefault(c => c.ecer_Name == campusName);
+    if (campus == null)
+    {
+      var campusId = Guid.NewGuid();
+      campus = new ecer_PostSecondaryInstituteCampus
+      {
+        Id = campusId,
+        ecer_PostSecondaryInstituteCampusId = campusId,
+        ecer_Name = campusName,
+        ecer_postsecondaryinstitute = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id),
+      };
+      context.AddObject(campus);
+      context.SaveChanges();
+    }
+    return campus;
+  }
+
+  private void CreateProgramCampusLink(EcerContext context, ecer_PostSecondaryInstituteCampus campus, ecer_PostSecondaryInstituteProgramApplicaiton application)
+  {
+    var existing = context.ecer_ProgramCampusSet.Where(pc => pc.ecer_CampusId.Id == campus.Id).ToList();
+    foreach (var link in existing)
+    {
+      context.DeleteObject(link);
+    }
+    context.SaveChanges();
+
+    var id = Guid.NewGuid();
+    var programCampus = new ecer_ProgramCampus
+    {
+      Id = id,
+      ecer_ProgramCampusId = id,
+      ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, campus.Id),
+      ecer_ProgramApplicationId = new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, application.Id),
+    };
+    context.AddObject(programCampus);
+    context.SaveChanges();
+  }
+
+  private void CreateProgramProfileCampusLink(EcerContext context, ecer_PostSecondaryInstituteCampus campus, ecer_Program program)
+  {
+    var existing = context.ecer_ProgramCampusSet.Where(pc => pc.ecer_CampusId.Id == campus.Id && pc.ecer_ProgramProfileId != null).ToList();
+    foreach (var link in existing)
+    {
+      context.DeleteObject(link);
+    }
+    context.SaveChanges();
+
+    var id = Guid.NewGuid();
+    var programCampus = new ecer_ProgramCampus
+    {
+      Id = id,
+      ecer_ProgramCampusId = id,
+      ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, campus.Id),
+      ecer_ProgramProfileId = new EntityReference(ecer_Program.EntityLogicalName, program.Id),
+    };
+    context.AddObject(programCampus);
+    context.SaveChanges();
   }
 
   private ecer_PortalInvitation GetOrAddPortalInvitation_PspProgramRepresentative(EcerContext context, ecer_ECEProgramRepresentative representative, string name)

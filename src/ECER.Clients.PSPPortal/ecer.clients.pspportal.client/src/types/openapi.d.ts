@@ -70,6 +70,7 @@ declare namespace Components {
       city?: string | null;
       province?: string | null;
       postalCode?: string | null;
+      keyCampusContactName?: string | null;
     }
     export type CampusStatus = "None" | "Active" | "Inactive";
     export interface Communication {
@@ -711,6 +712,7 @@ declare namespace Paths {
   namespace ProgramApplicationGet {
     namespace Parameters {
       export type ByStatus = Components.Schemas.ApplicationStatus[];
+      export type CampusId = string;
       export type Id = string;
     }
     export interface PathParameters {
@@ -718,6 +720,7 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       byStatus?: Parameters.ByStatus;
+      campusId?: Parameters.CampusId;
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetProgramApplicationResponse;
@@ -751,6 +754,7 @@ declare namespace Paths {
   namespace ProgramGet {
     namespace Parameters {
       export type ByStatus = Components.Schemas.ProgramStatus[];
+      export type CampusId = string;
       export type FromProgramId = string;
       export type Id = string;
     }
@@ -760,6 +764,7 @@ declare namespace Paths {
     export interface QueryParameters {
       byStatus?: Parameters.ByStatus;
       fromProgramId?: Parameters.FromProgramId;
+      campusId?: Parameters.CampusId;
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetProgramsResponse;
