@@ -695,6 +695,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// No longer used.  Duplicated purpose with Requirements Met
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rfaiaccepted")]
 		public virtual ecer_YesNoNull? ecer_RFAIAccepted
 		{

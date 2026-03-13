@@ -27,7 +27,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Public = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PublicOOP = 621870003,
+		Publicoutofprovince = 621870003,
 	}
 }
 #pragma warning restore CS1591
