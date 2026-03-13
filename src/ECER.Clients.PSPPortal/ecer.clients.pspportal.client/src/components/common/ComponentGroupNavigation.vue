@@ -206,10 +206,13 @@ export default defineComponent({
     mapStatusColor,
     mapStatusIcons,
     categoryStatus(key: string) {
-      let statuses = groupByCategoryName(this.componentGroups)
-        ?.get(key)
-        ?.map((group) => group.status);
+      let groupByKey = groupByCategoryName(this.componentGroups)?.get(key);
+      let statuses = groupByKey?.map((group) => group.status);
+      let rfaiRequired = groupByKey?.map((group) => group.rfaiRequired);
       if (statuses !== undefined && statuses.length > 0) {
+        if (rfaiRequired?.includes(true)) {
+          return "mdi-alert-circle-outline";
+        }
         if (statuses.every((status) => status === "Completed")) {
           return "mdi-check-circle";
         }
@@ -222,9 +225,9 @@ export default defineComponent({
     },
     getNonCategoryStatus(data: ComponentGroupNavigation[]): string {
       if (data[0] !== undefined && data.length !== 0 && data.length === 1) {
-        return mapStatusIcons(data[0].status);
+        return mapStatusIcons(data[0].status, false);
       }
-      return mapStatusIcons("ToDo");
+      return mapStatusIcons("ToDo", false);
     },
   },
 });
