@@ -15,7 +15,7 @@
       <div
         v-for="[category, componentGroups] in groupByCategoryName"
         :key="category"
-        v-if="applicationStatus === 'Draft'"
+        v-if="applicationStatus === 'Draft' || isRfai"
       >
         <v-list-item
           v-if="category === 'Institute Info'"
@@ -70,7 +70,7 @@
       <v-list-group
         v-if="
           applicationType === 'NewBasicECEPostBasicProgram' &&
-          applicationStatus === 'Draft'
+          (applicationStatus === 'Draft' || isRfai)
         "
         value="Program profile"
       >
@@ -188,6 +188,10 @@ export default defineComponent({
     componentGroups: {
       type: Array as () => Components.Schemas.NavigationMetadata[],
       required: true,
+    },
+    isRfai: {
+      type: Boolean,
+      required: false,
     },
   },
   computed: {

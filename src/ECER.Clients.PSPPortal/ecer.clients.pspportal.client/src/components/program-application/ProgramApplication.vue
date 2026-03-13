@@ -20,6 +20,7 @@
           :application-status="programApplication.status"
           :application-type="programApplication.programApplicationType"
           :component-groups="componentGroups"
+          :is-rfai="isRFAI"
         ></ComponentGroupNavigation>
 
         <v-navigation-drawer temporary v-model="drawer" width="350">
@@ -29,6 +30,7 @@
             :application-status="programApplication.status"
             :application-type="programApplication.programApplicationType"
             :component-groups="componentGroups"
+            :is-rfai="isRFAI"
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
@@ -160,6 +162,14 @@ export default defineComponent({
         { title: `${programApplicationTypeDisplay}`, disabled: true },
       ];
     },
+    isRFAI() {
+      return (
+        this.programApplication?.status !== undefined &&
+        (this.programApplication?.status === "InterimRecognition" ||
+          this.programApplication?.status === "ReviewAnalysis") &&
+        this.programApplication?.statusReasonDetail === "RFAIrequested"
+      );
+    },
   },
   methods: {
     async getComponentGroups() {
@@ -200,10 +210,17 @@ export default defineComponent({
       });
     },
     loadInitialStep() {
-      this.$router.push({
-        name: "program-application-component-info",
-        params: { programApplicationId: this.programApplicationId },
-      });
+      if (this.isRFAI) {
+        this.$router.push({
+          name: "program-application-review-response",
+          params: { programApplicationId: this.programApplication.id },
+        });
+      } else {
+        this.$router.push({
+          name: "program-application-component-info",
+          params: { programApplicationId: this.programApplicationId },
+        });
+      }
     },
   },
 });

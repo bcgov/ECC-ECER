@@ -343,6 +343,7 @@ declare namespace Components {
       displayOrder?: number; // int32
       answer?: string | null;
       files?: FileInfo[] | null;
+      rfaiRequired?: boolean | null;
     }
     export interface ProgramCampus {
       id?: string | null;
