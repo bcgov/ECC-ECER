@@ -94,6 +94,7 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(NavigationMetadata.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
       .ForCtorParam(nameof(NavigationMetadata.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(NavigationMetadata.NavigationType), opt => opt.MapFrom(_ => NavigationType.Component))
+      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue  ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupWithComponents>(MemberList.Source)

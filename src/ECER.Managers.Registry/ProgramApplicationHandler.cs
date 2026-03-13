@@ -89,7 +89,7 @@ public class ProgramApplicationHandler(
     if (programApplication != null)
     {
       var status = programApplication.InstituteInfoEntryProgress ?? "ToDo";
-      mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(),  "Institution and program info", status, "Institute Info", 0, NavigationType.Other));
+      mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(),  "Institution and program info", status, "Institute Info", 0, NavigationType.Other, false));
     }
     return mappedComponentResults;
   }
