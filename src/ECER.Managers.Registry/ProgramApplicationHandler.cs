@@ -63,8 +63,9 @@ public class ProgramApplicationHandler(
       ById = request.ById,
       ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
       ByStatus = statusFilter,
+      ByCampusId = request.ByCampusId,
       PageNumber = request.PageNumber,
-      PageSize = request.PageSize,   
+      PageSize = request.PageSize,
     }, cancellationToken);
 
     return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<Contract.ProgramApplications.ProgramApplication>>(result.Items), result.Count);

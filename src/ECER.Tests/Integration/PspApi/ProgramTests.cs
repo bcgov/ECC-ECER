@@ -168,6 +168,23 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetPrograms_ByCampusId_ReturnsOk()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs?campusId={Fixture.CampusId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var result = await response.ReadAsJsonAsync<GetProgramsResponse>();
+    result.ShouldNotBeNull();
+    result.Programs.ShouldNotBeNull();
+    result.Programs.ShouldContain(p => p.Id == Fixture.campusProgramId);
+    result.Programs.ShouldNotContain(p => p.Id == Fixture.programId);
+  }
+
+  [Fact]
   public async Task GetAllProgramProfiles_ReturnsStatusOk()
   {
     var response = await Host.Scenario(_ =>

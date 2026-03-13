@@ -73,6 +73,7 @@ public record EducationInstitution
     public string? City { get; set; }
     public string? Province { get; set; }
     public string? PostalCode { get; set; }
+    public string? KeyCampusContactName { get; set; }
   }
   public enum CampusStatus
   {
