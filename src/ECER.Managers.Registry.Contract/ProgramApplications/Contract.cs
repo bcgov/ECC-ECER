@@ -19,7 +19,7 @@ public record ComponentGroupQuery : IRequest<IEnumerable<NavigationMetadata>>
   public string? ByProgramApplicationId { get; set; }
 }
 
-public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType);
+public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType, bool? RfaiRequired);
 public enum NavigationType
 {
   Component,
