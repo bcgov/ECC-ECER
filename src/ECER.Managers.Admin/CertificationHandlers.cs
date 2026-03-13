@@ -2,16 +2,15 @@
 using ECER.Managers.Admin.Contract.Certifications;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Resources.Documents.Certifications;
-using ECER.Utilities.ObjectStorage.Providers.S3;
 using ECER.Utilities.ObjectStorage.Providers;
+using ECER.Utilities.ObjectStorage.Providers.S3;
 using MediatR;
-using System.Collections.Concurrent;
-using System.Configuration;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
 
-public class CertificationHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration, ICertificationRepository certificationRepository,
+public class CertificationHandlers(IObjectStorageProviderResolver objectStorageProviderResolver, IConfiguration configuration, ICertificationRepository certificationRepository,
     IMapper mapper)
   : IRequestHandler<GetCertificationsCommand, GetCertificationsCommandResponse>,
     IRequestHandler<GetCertificationFileCommand, FileQueryResults>
@@ -37,8 +36,10 @@ public class CertificationHandlers(IObjecStorageProvider objectStorageProvider, 
     {
       fileLocations.Add(new FileLocation(certification!.FileId!, certification.FilePath ?? string.Empty));
     }
+    //TODO change this away from always PSP we should pass in the application type
+    var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
 
-    var bucket = GetBucketName(configuration);
+    var bucket = GetBucketName(configuration, "psp");
     var files = new ConcurrentBag<FileData>();
     await Parallel.ForEachAsync(fileLocations, cancellationToken, async (fileLocation, ct) =>
     {
@@ -56,6 +57,6 @@ public class CertificationHandlers(IObjecStorageProvider objectStorageProvider, 
     return new FileQueryResults(files.ToList());
   }
 
-  private static string GetBucketName(IConfiguration configuration) =>
-  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
+  private static string GetBucketName(IConfiguration configuration, string key) =>
+  configuration.GetValue<string>($"objectStorage:{key}:bucketName") ?? throw new InvalidOperationException($"objectStorage:{key}:bucketName is not set");
 }

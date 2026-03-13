@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
@@ -86,7 +87,8 @@ internal sealed partial class ApplicationRepository
       throw new InvalidOperationException($"File with ID '{fileId}' not found");
     }
     var folder = "ecer_professionaldevelopment/" + professionalDevelopmentId;
-    await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+    var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+    await objectStorageProvider.DeleteAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, folder), ct);
     context.DeleteObject(file);
   }
 
@@ -120,7 +122,8 @@ internal sealed partial class ApplicationRepository
       }
       var fileId = items[1];
       var folder = items[0];
-      await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+      await objectStorageProvider.DeleteAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, folder), ct);
       context.DeleteObject(files[i]);
     }
   }
@@ -138,8 +141,9 @@ internal sealed partial class ApplicationRepository
 
       var sourceFolder = "tempfolder";
       var destinationFolder = "ecer_professionaldevelopment/" + professionalDevelopment.Id;
-      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
-      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), ct);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
       var documenturl = new bcgov_DocumentUrl()
       {

@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
@@ -33,7 +34,7 @@ internal sealed partial class ICRARepository
         context.Detach(oldInternationalCertification);
         ecerInternationalCertification.StatusCode = oldInternationalCertification.StatusCode;
       }
-  
+
       context.Attach(ecerInternationalCertification);
       context.UpdateObject(ecerInternationalCertification);
       if (InternationalCertification.CountryId != null)
@@ -100,7 +101,8 @@ internal sealed partial class ICRARepository
       throw new InvalidOperationException($"File with ID '{fileId}' not found");
     }
     var folder = "ecer_InternationalCertification/" + InternationalCertificationId;
-    await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+    var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+    await objectStorageProvider.DeleteAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, folder), ct);
     context.DeleteObject(file);
   }
 
@@ -134,7 +136,8 @@ internal sealed partial class ICRARepository
       }
       var fileId = items[1];
       var folder = items[0];
-      await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+      await objectStorageProvider.DeleteAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, folder), ct);
       context.DeleteObject(files[i]);
     }
   }
@@ -152,8 +155,9 @@ internal sealed partial class ICRARepository
 
       var sourceFolder = "tempfolder";
       var destinationFolder = "ecer_InternationalCertification/" + InternationalCertification.Id;
-      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
-      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), ct);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
       var documenturl = new bcgov_DocumentUrl()
       {

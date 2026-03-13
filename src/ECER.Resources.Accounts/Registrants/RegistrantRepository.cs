@@ -3,12 +3,11 @@ using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.Registrants;
 
-internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, IObjecStorageProvider objectStorageProvider, IConfiguration configuration) : IRegistrantRepository
+internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver) : IRegistrantRepository
 {
   public async Task<string> Create(Registrant registrant, CancellationToken ct)
   {
@@ -146,7 +145,8 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
           }
 
           var fileId = document.Id.ToString();
-          await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+          var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
+          await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
           document.bcgov_Url = destinationFolder;
           document.StatusCode = bcgov_DocumentUrl_StatusCode.Active;
@@ -164,11 +164,10 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     context.SaveChanges();
     await Task.CompletedTask;
-    
   }
 
-  private static string GetBucketName(IConfiguration configuration) =>
-    configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
+  //private static string GetBucketName(IConfiguration configuration) =>
+  //  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 
   public async Task SaveIdentityIds(Registrant registrant, ProfileIdentification profileIdentification, CancellationToken ct)
   {
@@ -210,7 +209,8 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
       }
 
       var fileId = document.Id.ToString();
-      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
       document.bcgov_Url = destinationFolder;
       document.StatusCode = bcgov_DocumentUrl_StatusCode.Active;

@@ -12,18 +12,18 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
-  private readonly IObjecStorageProvider objectStorageProvider;
+  private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
   private readonly IConfiguration configuration;
 
   public ApplicationRepository(
        EcerContext context,
-       IObjecStorageProvider objectStorageProvider,
+       IObjectStorageProviderResolver objectStorageProviderResolver,
        IMapper mapper,
        IConfiguration configuration)
   {
     this.context = context;
     this.mapper = mapper;
-    this.objectStorageProvider = objectStorageProvider;
+    this.objectStorageProviderResolver = objectStorageProviderResolver;
     this.configuration = configuration;
   }
 

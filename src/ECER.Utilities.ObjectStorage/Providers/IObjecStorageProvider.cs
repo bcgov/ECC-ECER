@@ -2,6 +2,8 @@
 
 public interface IObjecStorageProvider
 {
+  string BucketName { get; }
+
   Task StoreAsync(Descriptor destination, FileObject obj, CancellationToken ct);
 
   Task DeleteAsync(Descriptor source, CancellationToken ct);
@@ -16,3 +18,9 @@ public interface IObjecStorageProvider
 public record Descriptor();
 
 public record FileObject(string FileName, string ContentType, Stream Content, IEnumerable<KeyValuePair<string, string>>? Tags);
+
+public enum EcerWebApplicationType
+{
+  Psp,
+  Registry
+}
