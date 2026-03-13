@@ -78,6 +78,52 @@ export default defineComponent({
           },
         ];
       }
+      if (this.route.name === "add-campus") {
+        const institutionId = this.route.params.institutionId as string;
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Institution info",
+            disabled: false,
+            href: `/education-institution/${institutionId}`,
+          },
+          { title: "Add campus", disabled: true, href: this.route.path },
+        ];
+      }
+      if (this.route.name === "add-satellite-location") {
+        const institutionId = this.route.params.institutionId as string;
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Institution info",
+            disabled: false,
+            href: `/education-institution/${institutionId}`,
+          },
+          {
+            title: "Add satellite location",
+            disabled: true,
+            href: this.route.path,
+          },
+        ];
+      }
+      if (this.route.name === "edit-campus") {
+        const institutionId = this.route.params.institutionId as string;
+        const campusId = this.route.params.campusId as string;
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          {
+            title: "Institution info",
+            disabled: false,
+            href: `/education-institution/${institutionId}`,
+          },
+          {
+            title: "Campus information",
+            disabled: false,
+            href: `/education-institution/${institutionId}/campus/${campusId}`,
+          },
+          { title: "Edit location", disabled: true, href: this.route.path },
+        ];
+      }
       if (this.route.name === "edit-education-institution") {
         return [
           { title: "Home", disabled: false, href: "/" },

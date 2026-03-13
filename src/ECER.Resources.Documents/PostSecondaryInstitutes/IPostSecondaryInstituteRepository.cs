@@ -15,6 +15,16 @@ public interface IPostSecondaryInstituteRepository
   /// Saves a post secondary institute - post secondary institute must exist
   /// </summary>
   Task Save(PostSecondaryInstitute institute, CancellationToken ct);
+
+  /// <summary>
+  /// Creates a new campus linked to the given institution
+  /// </summary>
+  Task<string> CreateCampus(string institutionId, Campus campus, CancellationToken ct);
+
+  /// <summary>
+  /// Updates an existing campus - IsSatelliteOrTemporaryLocation cannot be changed
+  /// </summary>
+  Task UpdateCampus(Campus campus, CancellationToken ct);
 }
 
 public record PostSecondaryInstituteQuery
