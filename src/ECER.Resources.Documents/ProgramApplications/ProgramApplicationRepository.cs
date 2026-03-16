@@ -11,7 +11,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
-  
+
   public ProgramApplicationRepository(EcerContext context, IMapper mapper)
   {
     this.context = context;
@@ -38,7 +38,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     {
       throw new InvalidOperationException("Program types are required");
     }
-    
+
     if (!programApplication.DeliveryType.HasValue)
     {
       throw new InvalidOperationException("Delivery type is required");
@@ -83,21 +83,21 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       {
         throw new InvalidOperationException($"Post secondary institute '{application.PostSecondaryInstituteId}' not found");
       }
-      
+
       if (application.ProgramCampuses != null && application.ProgramCampuses.Any())
       {
         var listOfExistingProgramCampuses = context.ecer_ProgramCampusSet.Where(c => c.ecer_EducationalInstitutionId.Id == instituteId && c.ecer_ProgramApplicationId.Id == entity.Id).ToList();
         var existingIncomingProgramCampus = application.ProgramCampuses.Where(c => c.Id != null).Select(c => Guid.Parse(c.Id!)).ToList();
-        
+
         var campusesToDelete = listOfExistingProgramCampuses
           .Where(c => !existingIncomingProgramCampus.Contains(c.Id))
           .ToList();
-        
+
         foreach (var campus in campusesToDelete)
         {
           context.DeleteObject(campus);
         }
-        
+
         foreach (var campus in application.ProgramCampuses)
         {
           if (!Guid.TryParse(campus.CampusId, out Guid campusGuid))
@@ -120,7 +120,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
           }
         }
       }
-      
+
       context.Detach(existingApplication);
       context.Attach(entity);
       context.UpdateObject(entity);
@@ -131,7 +131,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
           .SingleOrDefault(r => r.Id == Guid.Parse(application.ProgramRepresentativeId));
         context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ, user!);
       }
-      
+
       if (ValidateInstituteInfo(entity, institute, application))
       {
         entity.ecer_InstitutionProgramInformationEntryProgress = ecer_PSPComponentProgress.Completed;
@@ -142,17 +142,17 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       }
       context.UpdateObject(entity);
     }
-    
+
     context.SaveChanges();
     return application.Id!;
   }
 
   private static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
   {
-    return  application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ != null
-            && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty 
-            && (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online 
-              && application.ecer_Onlinemethodsofinstruction.Any() &&  application.ecer_Deliverymethodforpracticuminstructor.Any())
+    return application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ != null
+            && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty
+            && (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online
+              && application.ecer_Onlinemethodsofinstruction.Any() && application.ecer_Deliverymethodforpracticuminstructor.Any())
             && ValidateCampus(application, institute);
   }
 
@@ -168,24 +168,36 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
   {
     await Task.CompletedTask;
     var applications = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.AsQueryable();
-    
+
     //Filter by Id
     if (query.ById != null) applications = applications.Where(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == Guid.Parse(query.ById));
-    
+
     //By status
     if (query.ByStatus != null && query.ByStatus.Any())
     {
       var statuses = mapper.Map<IEnumerable<ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode>>(query.ByStatus)!.ToList();
       applications = applications.WhereIn(p => p.StatusCode!.Value, statuses);
     }
-    
+
     //By post secondary
     if (query.ByPostSecondaryInstituteId != null)
     {
       var instituteId = Guid.Parse(query.ByPostSecondaryInstituteId);
       applications = applications.Where(p => p.ecer_PostSecondaryInstitute.Id == instituteId);
     }
-    
+
+    //By campus
+    if (query.ByCampusId != null)
+    {
+      var campusId = Guid.Parse(query.ByCampusId);
+      var programApplicationIdsForCampus = context.ecer_ProgramCampusSet
+        .Where(c => c.ecer_CampusId.Id == campusId && c.ecer_ProgramApplicationId != null)
+        .Select(c => c.ecer_ProgramApplicationId.Id)
+        .ToList();
+      if (programApplicationIdsForCampus.Count == 0) return new ProgramApplicationQueryResults([], 0);
+      applications = applications.WhereIn(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId!.Value, programApplicationIdsForCampus);
+    }
+
     int paginatedTotalProgramCount = 0;
     if (query.PageNumber > 0)
     {
@@ -202,14 +214,14 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       .Include(p => p.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton)
       .Execute()
       .ToList();
-    
+
     return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<ProgramApplication>>(results)!, query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count);
   }
   public async Task<IEnumerable<NavigationMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var categoryGroups = context.ecer_ProgramApplicationComponentGroupSet.AsQueryable();
-    
+
     //Filter by Id
     if (query.ByProgramApplicationId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplication.Id == Guid.Parse(query.ByProgramApplicationId));
     var results = context.From(categoryGroups)
@@ -222,11 +234,11 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
   {
     await Task.CompletedTask;
     var categoryGroups = context.ecer_ProgramApplicationComponentGroupSet.AsQueryable();
-    
-    if(query.ByComponentGroupId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplicationComponentGroupId == Guid.Parse(query.ByComponentGroupId));
+
+    if (query.ByComponentGroupId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplicationComponentGroupId == Guid.Parse(query.ByComponentGroupId));
 
     if (query.ByProgramApplicationId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplication.Id == Guid.Parse(query.ByProgramApplicationId));
-    
+
     var results = context.From(categoryGroups)
       .Join()
       .Include(e => e.ecer_programapplicationcomponentgroup_ComponentGroup)
@@ -235,14 +247,14 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       .Execute();
     return mapper.Map<IEnumerable<ComponentGroupWithComponents>>(results)!.ToList();
   }
-  
+
   public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
     var groupId = Guid.Parse(componentGroupToUpdate.Id);
     var appId = Guid.Parse(applicationId);
-    
+
     var componentGroup = context.ecer_ProgramApplicationComponentGroupSet
       .SingleOrDefault(g => g.ecer_ProgramApplicationComponentGroupId == groupId && g.ecer_ProgramApplication.Id == appId);
     if (componentGroup == null) throw new InvalidOperationException($"Component group '{componentGroupToUpdate.Id}' not found");

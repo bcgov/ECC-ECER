@@ -142,6 +142,7 @@ import EducationInstitutionCard from "@/components/EducationInstitutionCard.vue"
 import CampusCard from "@/components/CampusCard.vue";
 import { getEducationInstitution } from "@/api/education-institution";
 import { useLoadingStore } from "@/store/loading";
+import { useRouter } from "vue-router";
 import type { EducationInstitution, Campus } from "@/types/openapi";
 
 export default defineComponent({
@@ -166,7 +167,8 @@ export default defineComponent({
   },
   async setup() {
     const loadingStore = useLoadingStore();
-    return { loadingStore };
+    const router = useRouter();
+    return { loadingStore, router };
   },
   async mounted() {
     this.educationInstitution = await getEducationInstitution();
@@ -187,8 +189,11 @@ export default defineComponent({
     },
   },
   methods: {
-    onViewCampus(_campus: Campus) {
-      // TODO: navigate to campus detail when route is available
+    onViewCampus(campus: Campus) {
+      this.router.push({
+        name: "campus",
+        params: { institutionId: this.institutionId, campusId: campus.id },
+      });
     },
   },
 });

@@ -23,6 +23,7 @@ interface ComponentGroupNavigation {
   statusIcon: string;
   navigationRoute: string;
   navigationType: string;
+  rfaiRequired: boolean;
 }
 
 type ComponentGroupNavigationMap = Map<string, ComponentGroupNavigation[]>;

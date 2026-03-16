@@ -42,6 +42,17 @@ internal sealed class ProgramRepository : IProgramRepository
       programs = programs.Where(p => p.ecer_FromProgramProfileId.Id == fromProgramProfileId);
     }
 
+    if (query.ByCampusId != null)
+    {
+      var campusId = Guid.Parse(query.ByCampusId);
+      var programIdsForCampus = context.ecer_ProgramCampusSet
+        .Where(c => c.ecer_CampusId.Id == campusId && c.ecer_ProgramProfileId != null)
+        .Select(c => c.ecer_ProgramProfileId.Id)
+        .ToList();
+      if (programIdsForCampus.Count == 0) return new ProgramResult { Programs = [], TotalProgramsCount = 0 };
+      programs = programs.WhereIn(p => p.ecer_ProgramId!.Value, programIdsForCampus);
+    }
+
     int paginatedTotalProgramCount = 0;
     if (query.PageNumber > 0)
     {

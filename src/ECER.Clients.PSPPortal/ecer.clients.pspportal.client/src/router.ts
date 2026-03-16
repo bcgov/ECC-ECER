@@ -81,6 +81,13 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/education-institution/:institutionId/campus/:campusId",
+      component: () => import("./components/pages/Campus.vue"),
+      name: "campus",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/program/:programId",
       component: () => import("./components/pages/Program.vue"),
       name: "programDetail",
