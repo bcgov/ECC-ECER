@@ -60,11 +60,17 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
   public async Task Check([NotNull] CheckContext context, CancellationToken ct)
   {
     var settings = GetSettings(context.Configuration);
-    var client = context.Services.GetRequiredService<IAmazonS3>();
-
-    if (settings != null && settings.Url != null)
+    
+    if (settings?.Psp != null)
     {
-      await client.ListBucketsAsync(ct);
+      var pspClient = context.Services.GetRequiredKeyedService<IAmazonS3>(EcerWebApplicationType.PSP);
+      await pspClient.ListBucketsAsync(ct);
+    }
+
+    if (settings?.Registry != null)
+    {
+      var registryClient = context.Services.GetRequiredKeyedService<IAmazonS3>(EcerWebApplicationType.Registry);
+      await registryClient.ListBucketsAsync(ct);
     }
   }
 
