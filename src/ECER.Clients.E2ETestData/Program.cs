@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using AutoMapper;
+using AutoMapper.Internal;
 using ECER.Clients.E2ETestData.Authentication;
 using ECER.Infrastructure.Common;
 
@@ -24,10 +26,22 @@ internal class Program
     try
     {
       builder.Services.AddMediatR(opts => opts.RegisterServicesFromAssemblies(assemblies));
-      builder.Services.AddAutoMapper(cfg =>
+      var mapperConfig = new MapperConfiguration(cfg =>
       {
         cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
-      }, assemblies);
+        cfg.AddMaps(assemblies);
+      });
+      
+      var globalConfig = (IGlobalConfiguration)mapperConfig;
+      
+      foreach (var typeMap in globalConfig.GetAllTypeMaps())
+      {
+        if (typeMap.MaxDepth == 0)
+          typeMap.MaxDepth = 32;
+      }
+      
+      builder.Services.AddSingleton(mapperConfig);
+      builder.Services.AddSingleton<IMapper>(sp => mapperConfig.CreateMapper());
 
       // Configure Swagger/OpenAPI with API Key authentication definition
       builder.Services.AddEndpointsApiExplorer();
