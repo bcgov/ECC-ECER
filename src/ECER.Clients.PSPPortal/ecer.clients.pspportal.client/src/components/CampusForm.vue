@@ -73,7 +73,7 @@
           :model-value="keyContact"
           :users="pspUsers"
           :institution-name="institutionName"
-          @update:model-value="keyContact = $event"
+          @update:model-value="keyContact = $event ?? ''"
         />
       </v-col>
     </v-row>
