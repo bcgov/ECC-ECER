@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -217,6 +218,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       bcgov_Url = url,
       StateCode = bcgov_documenturl_statecode.Active,
       StatusCode = bcgov_DocumentUrl_StatusCode.Active,
+      ecer_ApplicationName = EcerWebApplicationType.Registry.ToString()
     };
     context.AddObject(document);
     context.AddLink(registrant, Contact.Fields.bcgov_contact_bcgov_documenturl, document);

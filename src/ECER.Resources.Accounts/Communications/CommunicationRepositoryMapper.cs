@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using Ganss.Xss;
 
 namespace ECER.Resources.Accounts.Communications;
@@ -69,7 +70,8 @@ internal class CommunicationRepositoryMapper : Profile
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
       .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
       .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
-      .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension));
+      .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension))
+      .ForMember(d => d.EcerWebApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationName));
   }
 
   private static Guid? GetIcraEligibilityId(ecer_Communication src)

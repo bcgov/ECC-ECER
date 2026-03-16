@@ -145,7 +145,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
           }
 
           var fileId = document.Id.ToString();
-          var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
+          var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.PSP);
           await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
           document.bcgov_Url = destinationFolder;
@@ -165,9 +165,6 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     context.SaveChanges();
     await Task.CompletedTask;
   }
-
-  //private static string GetBucketName(IConfiguration configuration) =>
-  //  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 
   public async Task SaveIdentityIds(Registrant registrant, ProfileIdentification profileIdentification, CancellationToken ct)
   {
@@ -209,7 +206,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
       }
 
       var fileId = document.Id.ToString();
-      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.PSP);
       await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
       document.bcgov_Url = destinationFolder;

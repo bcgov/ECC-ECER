@@ -5,12 +5,11 @@ using ECER.Resources.Documents.Certifications;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
 
-public class CertificationHandlers(IObjectStorageProviderResolver objectStorageProviderResolver, IConfiguration configuration, ICertificationRepository certificationRepository,
+public class CertificationHandlers(IObjectStorageProviderResolver objectStorageProviderResolver, ICertificationRepository certificationRepository,
     IMapper mapper)
   : IRequestHandler<GetCertificationsCommand, GetCertificationsCommandResponse>,
     IRequestHandler<GetCertificationFileCommand, FileQueryResults>
@@ -34,15 +33,15 @@ public class CertificationHandlers(IObjectStorageProviderResolver objectStorageP
     var fileLocations = new List<FileLocation>();
     foreach (var certification in mappedCertifications)
     {
-      fileLocations.Add(new FileLocation(certification!.FileId!, certification.FilePath ?? string.Empty));
+      fileLocations.Add(new FileLocation(certification!.FileId!, certification.FilePath ?? string.Empty, EcerWebApplicationType.Registry));
     }
-    //TODO change this away from always PSP we should pass in the application type
-    var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
 
-    var bucket = GetBucketName(configuration, "psp");
     var files = new ConcurrentBag<FileData>();
     await Parallel.ForEachAsync(fileLocations, cancellationToken, async (fileLocation, ct) =>
     {
+      var objectStorageProvider = objectStorageProviderResolver.resolve(fileLocation.ecerWebApplicationType);
+      var bucket = objectStorageProvider.BucketName;
+
       var file = await objectStorageProvider.GetAsync(new S3Descriptor(bucket, fileLocation.Id, fileLocation.Folder), ct);
       var classification = file?.Tags?.SingleOrDefault(t => t.Key == "classification");
       var fileProperties = new FileProperties
@@ -56,7 +55,4 @@ public class CertificationHandlers(IObjectStorageProviderResolver objectStorageP
 
     return new FileQueryResults(files.ToList());
   }
-
-  private static string GetBucketName(IConfiguration configuration, string key) =>
-  configuration.GetValue<string>($"objectStorage:{key}:bucketName") ?? throw new InvalidOperationException($"objectStorage:{key}:bucketName is not set");
 }

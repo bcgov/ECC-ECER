@@ -16,12 +16,11 @@ public class FileHandlers(IObjectStorageProviderResolver objectStorageProviderRe
   public async Task<SaveFileCommandResponse> Handle(SaveFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
-
-    var bucket = objectStorageProvider.BucketName;
     var saveFileResults = new ConcurrentBag<SaveFileResult>();
     await Parallel.ForEachAsync(request.Items, cancellationToken, async (file, ct) =>
     {
+      var objectStorageProvider = objectStorageProviderResolver.resolve(file.FileLocation.ecerWebApplicationType);
+      var bucket = objectStorageProvider.BucketName;
       var tags = new Dictionary<string, string>(file.FileProperties.TagsList ?? Array.Empty<KeyValuePair<string, string>>());
 
       // Check if the classification property is not null or empty and the key doesn't already exist
@@ -47,7 +46,7 @@ public class FileHandlers(IObjectStorageProviderResolver objectStorageProviderRe
   public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
+    var objectStorageProvider = objectStorageProviderResolver.resolve(request.Item.FileLocation.ecerWebApplicationType);
     var bucket = objectStorageProvider.BucketName;
     await objectStorageProvider.DeleteAsync(new S3Descriptor(bucket!, request.Item.FileLocation.Id, request.Item.FileLocation.Folder), cancellationToken);
   }
@@ -56,12 +55,13 @@ public class FileHandlers(IObjectStorageProviderResolver objectStorageProviderRe
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(configuration);
-    var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Psp);
 
-    var bucket = objectStorageProvider.BucketName;
     var files = new ConcurrentBag<FileData>();
     await Parallel.ForEachAsync(request.FileLocations, cancellationToken, async (fileLocation, ct) =>
     {
+      var objectStorageProvider = objectStorageProviderResolver.resolve(fileLocation.ecerWebApplicationType);
+      var bucket = objectStorageProvider.BucketName;
+
       var file = await objectStorageProvider.GetAsync(new S3Descriptor(bucket!, fileLocation.Id, fileLocation.Folder), ct);
       var classification = file?.Tags?.SingleOrDefault(t => t.Key == "classification");
       var fileProperties = new FileProperties
@@ -80,7 +80,4 @@ public class FileHandlers(IObjectStorageProviderResolver objectStorageProviderRe
 
     return new FileQueryResults(files.ToList());
   }
-
-  private static string GetBucketName(IConfiguration configuration) =>
-    configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

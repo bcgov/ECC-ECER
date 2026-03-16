@@ -1,6 +1,9 @@
 ﻿using Alba;
 using Bogus;
+using ECER.Utilities.ObjectStorage.Providers;
+using ECER.Utilities.Security;
 using Shouldly;
+using System.IdentityModel.Claims;
 using System.Net;
 using System.Net.Http.Headers;
 using Xunit.Abstractions;
@@ -26,6 +29,7 @@ public class FileTests : ApiWebAppScenarioBase
     var testFolder = "integrationtests";
     var testTags = "tag1=1,tag2=2";
     var testClassification = "test-classification";
+    var ecerWebApplicationType = EcerWebApplicationType.PSP.ToString();
     using var content = new StreamContent(testFile.Content);
     content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
@@ -36,9 +40,11 @@ public class FileTests : ApiWebAppScenarioBase
 
     var uploadResponse = await Host.Scenario(_ =>
     {
+      _.WithClaim(ClaimTypes.Name, ApiClaims.EcerApiUser);
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", ecerWebApplicationType);
       _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
@@ -48,6 +54,7 @@ public class FileTests : ApiWebAppScenarioBase
     var response = await Host.Scenario(_ =>
     {
       _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", ecerWebApplicationType);
       _.Get.Url($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });

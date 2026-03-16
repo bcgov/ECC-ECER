@@ -152,7 +152,8 @@ internal sealed partial class ApplicationRepository
         bcgov_DocumentUrlId = Guid.Parse(fileId),
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
-        StateCode = bcgov_documenturl_statecode.Active
+        StateCode = bcgov_documenturl_statecode.Active,
+        ecer_ApplicationName = EcerWebApplicationType.Registry.ToString()
       };
 
       context.AddObject(documenturl);
@@ -160,7 +161,4 @@ internal sealed partial class ApplicationRepository
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_ProfessionalDevelopmentId, professionalDevelopment);
     }
   }
-
-  private static string GetBucketName(IConfiguration configuration) =>
-  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

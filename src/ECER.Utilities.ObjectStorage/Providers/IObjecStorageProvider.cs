@@ -21,6 +21,6 @@ public record FileObject(string FileName, string ContentType, Stream Content, IE
 
 public enum EcerWebApplicationType
 {
-  Psp,
+  PSP,
   Registry
 }

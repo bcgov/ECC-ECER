@@ -20,7 +20,7 @@ public class ObjectStorageProviderResolver : IObjectStorageProviderResolver
   {
     return ecerWebApplicationType switch
     {
-      EcerWebApplicationType.Psp => _serviceProvider.GetRequiredKeyedService<IObjecStorageProvider>(EcerWebApplicationType.Psp),
+      EcerWebApplicationType.PSP => _serviceProvider.GetRequiredKeyedService<IObjecStorageProvider>(EcerWebApplicationType.PSP),
       EcerWebApplicationType.Registry => _serviceProvider.GetRequiredKeyedService<IObjecStorageProvider>(EcerWebApplicationType.Registry),
       _ => throw new ArgumentOutOfRangeException(nameof(ecerWebApplicationType), ecerWebApplicationType, null)
     };

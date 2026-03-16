@@ -1,7 +1,6 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.ICRA;
@@ -166,7 +165,8 @@ internal sealed partial class ICRARepository
         bcgov_DocumentUrlId = Guid.Parse(fileId),
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
-        StateCode = bcgov_documenturl_statecode.Active
+        StateCode = bcgov_documenturl_statecode.Active,
+        ecer_ApplicationName = EcerWebApplicationType.Registry.ToString()
       };
 
       context.AddObject(documenturl);
@@ -174,7 +174,4 @@ internal sealed partial class ICRARepository
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_internationalcertificationid, InternationalCertification);
     }
   }
-
-  private static string GetBucketName(IConfiguration configuration) =>
-  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

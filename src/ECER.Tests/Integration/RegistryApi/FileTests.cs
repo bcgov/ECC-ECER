@@ -1,5 +1,6 @@
 ﻿using Alba;
 using Bogus;
+using ECER.Utilities.ObjectStorage.Providers;
 using System.Net.Http.Headers;
 using Xunit.Abstractions;
 using Xunit.Categories;
@@ -54,6 +55,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
     var testFolder = "integrationtests";
     var testTags = "tag1=1,tag2=2";
     var testClassification = "test-classification";
+    var testApplicationType = EcerWebApplicationType.Registry.ToString();
     using var content = new StreamContent(testFile.Content);
     content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
@@ -68,6 +70,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", testApplicationType);
       _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });

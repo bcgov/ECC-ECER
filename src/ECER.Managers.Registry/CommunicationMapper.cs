@@ -26,6 +26,7 @@ internal class CommunicationMapper : Profile
     .ForMember(dest => dest.Extention, opt => opt.MapFrom(src => src.Extention ?? string.Empty))
     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name ?? string.Empty))
     .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size ?? string.Empty))
+    .ForMember(dest => dest.EcerWebApplicationType, opt => opt.MapFrom(src => src.EcerWebApplicationType))
     .ReverseMap();
   }
 }

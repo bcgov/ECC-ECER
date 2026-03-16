@@ -28,6 +28,8 @@ public class ApiWebAppFixture : WebAppFixtureBase
   {
     ArgumentNullException.ThrowIfNull(opts);
     opts.AddPolicy("api_user", new AuthorizationPolicyBuilder(opts.GetPolicy("api_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.AddPolicy("ew_user", new AuthorizationPolicyBuilder(opts.GetPolicy("ew_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+
     opts.DefaultPolicy = opts.GetPolicy("api_user")!;
   }
 

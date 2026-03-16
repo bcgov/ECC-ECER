@@ -150,7 +150,8 @@ internal sealed partial class ApplicationRepository
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
         StateCode = bcgov_documenturl_statecode.Active,
-        ecer_Tag1 = tagName
+        ecer_Tag1 = tagName,
+        ecer_ApplicationName = EcerWebApplicationType.Registry.ToString()
       };
 
       context.AddObject(documenturl);
