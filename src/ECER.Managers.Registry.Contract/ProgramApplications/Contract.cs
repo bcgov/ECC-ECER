@@ -46,6 +46,21 @@ public record UpdateComponentGroupCommand(ComponentGroupWithComponents Component
 
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 
+public record SubmitProgramApplicationCommand(string ProgramApplicationId, string ProgramRepresentativeId, bool Declaration) : IRequest<ProgramApplicationSubmissionResult>;
+
+public record ProgramApplicationSubmissionResult
+{
+  public string? ProgramApplicationId { get; set; }
+  public ProgramApplicationSubmissionError? Error { get; set; }
+  public IEnumerable<string> ValidationErrors { get; set; } = new List<string>();
+}
+
+public enum ProgramApplicationSubmissionError
+{
+  ApplicationNotFound,
+  ValidationFailed,
+}
+
 public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
 {
   public string? ProgramApplicationName { get; set; }
@@ -66,6 +81,9 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
   public string? OtherAdmissionOptions  { get; set; }
   public string? InstituteInfoEntryProgress { get; set; }
+  public DateTime? DeclarationDate { get; set; }
+  public bool? DeclarationAccepted { get; set; }
+  public string? DeclarantName { get; set; }
 }
 
 public record ProgramCampus

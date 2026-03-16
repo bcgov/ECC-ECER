@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using ContractApplicationStatus = ECER.Managers.Registry.Contract.ProgramApplications.ApplicationStatus;
 using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 using ContractProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
+using ContractSubmitProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.SubmitProgramApplicationCommand;
 
 namespace ECER.Clients.PSPPortal.Server.ProgramApplications;
 
@@ -184,6 +185,43 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .RequireAuthorization(policyNames)
     .AddGuidValidation("id").AddGuidValidation("componentGroupId")
     .WithParameterValidation();
+
+  endpointRouteBuilder.MapPost("/api/programApplications/{id}/submit", async Task<Results<Ok<SubmitProgramApplicationResponse>, BadRequest<string>, BadRequest<SubmitProgramApplicationValidationError>, NotFound>> (
+    string id, SubmitProgramApplicationRequest request, HttpContext ctx, IMediator messageBus, CancellationToken ct) =>
+    {
+      if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
+      if (!Guid.TryParse(id, out _)) return TypedResults.BadRequest("invalid program application id");
+
+      var userContext = ctx.User.GetUserContext()!;
+      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+
+      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+      {
+        ById = id,
+        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
+        ByStatus = new[] { ContractApplicationStatus.Draft }
+      }, ct);
+      if (!existing.Items.Any()) return TypedResults.NotFound();
+
+      var command = new ContractSubmitProgramApplicationCommand(
+        ProgramApplicationId: id,
+        ProgramRepresentativeId: programRep.Id,
+        Declaration: request.Declaration);
+
+      var result = await messageBus.Send(command, ct);
+
+      if (result.Error != null)
+      {
+        return TypedResults.BadRequest(new SubmitProgramApplicationValidationError(result.Error.ToString()!, result.ValidationErrors));
+      }
+
+      return TypedResults.Ok(new SubmitProgramApplicationResponse(result.ProgramApplicationId!));
+    })
+    .WithOpenApi("Submit a program application", string.Empty, "program_application_submit_post")
+    .RequireAuthorization(policyNames)
+    .AddGuidValidation("id")
+    .WithParameterValidation();
   }
 }
 
@@ -210,6 +248,9 @@ public record ProgramApplication
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
   public string? OtherAdmissionOptions  { get; set; }
   public string? InstituteInfoEntryProgress { get; set; }
+  public DateTime? DeclarationDate { get; set; }
+  public bool? DeclarationAccepted { get; set; }
+  public string? DeclarantName { get; set; }
 }
 
 public record ProgramCampus
@@ -258,6 +299,13 @@ public record CreateProgramApplicationRequest
 }
 
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
+public record SubmitProgramApplicationRequest
+{
+  public bool Declaration { get; set; }
+}
+
+public record SubmitProgramApplicationResponse(string ProgramApplicationId);
+public record SubmitProgramApplicationValidationError(string Error, IEnumerable<string> ValidationErrors);
 public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType);
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired);

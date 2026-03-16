@@ -1,4 +1,5 @@
 using AutoMapper;
+using ECER.Resources.Documents.Shared;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk;
@@ -285,5 +286,40 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
 
     context.SaveChanges();
     return componentGroupToUpdate.Id;
+  }
+
+  public async Task<string> Submit(string applicationId, string programRepresentativeId, bool declaration, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var appGuid = Guid.Parse(applicationId);
+    var existing = context.ecer_PostSecondaryInstituteProgramApplicaitonSet
+      .SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == appGuid);
+    if (existing == null) throw new InvalidOperationException($"Program application '{applicationId}' not found");
+
+    existing.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Submitted;
+    existing.ecer_DateofApplicationShort = DateTime.UtcNow;
+    existing.ecer_AgreeNotifyofChanges = declaration ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+
+    if (!string.IsNullOrWhiteSpace(programRepresentativeId))
+    {
+      existing.ecer_SubmittedByProgramRepresentativeId = new EntityReference(ecer_ECEProgramRepresentative.EntityLogicalName, Guid.Parse(programRepresentativeId));
+    }
+
+    context.UpdateObject(existing);
+    context.SaveChanges();
+    return applicationId;
+  }
+
+  public async Task<IEnumerable<Course>> QueryCoursesByApplicationId(string applicationId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var appId = Guid.Parse(applicationId);
+    var coursesQuery = context.ecer_CourseSet.AsQueryable()
+      .Where(c => c.ecer_ProgramApplication.Id == appId);
+    var courses = context.From(coursesQuery)
+      .Join()
+      .Include(c => c.ecer_courseprovincialrequirement_CourseId)
+      .Execute();
+    return mapper.Map<IEnumerable<Course>>(courses)!;
   }
 }

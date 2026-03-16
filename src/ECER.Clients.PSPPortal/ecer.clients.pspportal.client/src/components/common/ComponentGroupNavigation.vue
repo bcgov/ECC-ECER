@@ -140,7 +140,12 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item
+          :to="{
+            name: 'submit-application',
+            params: { programApplicationId: programApplicationId },
+          }"
+        >
           <v-list-item-title>
             <v-icon color="grey">mdi-circle-outline</v-icon>
             Submit application

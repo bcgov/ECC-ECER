@@ -246,6 +246,14 @@ const router = createRouter({
           meta: { requiresAuth: true, requiresVerification: true },
           props: true,
         },
+        {
+          path: "component/submit",
+          component: () =>
+            import("./components/program-application/components/SubmitApplication.vue"),
+          name: "submit-application",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
       ],
     },
   ],

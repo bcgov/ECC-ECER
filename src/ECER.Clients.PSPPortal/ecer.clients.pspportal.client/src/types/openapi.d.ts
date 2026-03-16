@@ -335,6 +335,9 @@ declare namespace Components {
       programCampuses?: ProgramCampus[] | null;
       otherAdmissionOptions?: string | null;
       instituteInfoEntryProgress?: string | null;
+      declarationDate?: string | null; // date-time
+      declarationAccepted?: boolean | null;
+      declarantName?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;
@@ -443,6 +446,12 @@ declare namespace Components {
        *
        */
       communicationId?: string | null;
+    }
+    export interface SubmitProgramApplicationRequest {
+      declaration?: boolean;
+    }
+    export interface SubmitProgramApplicationResponse {
+      programApplicationId?: string | null;
     }
     export interface SubmitProgramRequest {
       programId?: string | null;
@@ -616,10 +625,14 @@ declare namespace Paths {
   }
   namespace MessageGet {
     namespace Parameters {
+      export type ById = string;
       export type ParentId = string;
     }
     export interface PathParameters {
       parentId?: Parameters.ParentId;
+    }
+    export interface QueryParameters {
+      byId?: Parameters.ById;
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetMessagesResponse;
@@ -739,6 +752,21 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.ProgramApplication;
     namespace Responses {
       export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationSubmitPost {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody =
+      Components.Schemas.SubmitProgramApplicationRequest;
+    namespace Responses {
+      export type $200 = Components.Schemas.SubmitProgramApplicationResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -1111,6 +1139,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProgramApplicationComponentGroupPut.Responses.$200>;
   /**
+   * program_application_submit_post - Submit a program application
+   */
+  "program_application_submit_post"(
+    parameters?: Parameters<Paths.ProgramApplicationSubmitPost.PathParameters> | null,
+    data?: Paths.ProgramApplicationSubmitPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationSubmitPost.Responses.$200>;
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   "portal_invitation_get"(
@@ -1198,7 +1234,9 @@ export interface OperationMethods {
    * message_get - Paginated endpoint to get all user messages
    */
   "message_get"(
-    parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.MessageGet.QueryParameters & Paths.MessageGet.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageGet.Responses.$200>;
@@ -1478,6 +1516,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ProgramApplicationComponentGroupPut.Responses.$200>;
   };
+  ["/api/programApplications/{id}/submit"]: {
+    /**
+     * program_application_submit_post - Submit a program application
+     */
+    "post"(
+      parameters?: Parameters<Paths.ProgramApplicationSubmitPost.PathParameters> | null,
+      data?: Paths.ProgramApplicationSubmitPost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationSubmitPost.Responses.$200>;
+  };
   ["/api/PortalInvitations/{token}"]: {
     /**
      * portal_invitation_get - Handles portal invitation queries
@@ -1579,7 +1627,9 @@ export interface PathsDictionary {
      * message_get - Paginated endpoint to get all user messages
      */
     "get"(
-      parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.MessageGet.QueryParameters & Paths.MessageGet.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.MessageGet.Responses.$200>;
@@ -1704,6 +1754,10 @@ export type SaveDraftProgramRequest =
   Components.Schemas.SaveDraftProgramRequest;
 export type SendMessageRequest = Components.Schemas.SendMessageRequest;
 export type SendMessageResponse = Components.Schemas.SendMessageResponse;
+export type SubmitProgramApplicationRequest =
+  Components.Schemas.SubmitProgramApplicationRequest;
+export type SubmitProgramApplicationResponse =
+  Components.Schemas.SubmitProgramApplicationResponse;
 export type SubmitProgramRequest = Components.Schemas.SubmitProgramRequest;
 export type UpdateCourseRequest = Components.Schemas.UpdateCourseRequest;
 export type VersionMetadata = Components.Schemas.VersionMetadata;

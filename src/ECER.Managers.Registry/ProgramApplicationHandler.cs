@@ -1,29 +1,34 @@
 using AutoMapper;
+using ECER.Engines.Validation.ProgramApplications;
 using ECER.Managers.Registry.Contract.ProgramApplications;
+using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.ProgramApplications;
 using MediatR;
 using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
 using NavigationMetadata = ECER.Managers.Registry.Contract.ProgramApplications.NavigationMetadata;
 using ComponentGroupQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupQuery;
 using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
-using ProgramApplicationComponent = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationComponent;
 using ProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
 using ComponentGroupWithComponentsQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponentsQuery;
 using ComponentGroupWithComponents = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents;
 using NavigationType = ECER.Managers.Registry.Contract.ProgramApplications.NavigationType;
 using ProgramApplicationQueryResults = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQueryResults;
+using ContractCourse = ECER.Managers.Registry.Contract.Shared.Course;
 
 namespace ECER.Managers.Registry;
 
 public class ProgramApplicationHandler(
     IProgramApplicationRepository programApplicationRepository,
+    IMetadataResourceRepository metadataResourceRepository,
+    IProgramApplicationValidationEngine validationEngine,
     IMapper mapper)
   : IRequestHandler<CreateProgramApplicationCommand, Contract.ProgramApplications.ProgramApplication?>,
     IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>,
     IRequestHandler<UpdateProgramApplicationCommand, string>,
     IRequestHandler<ComponentGroupQuery, IEnumerable<NavigationMetadata>>,
     IRequestHandler<ComponentGroupWithComponentsQuery, IEnumerable<ComponentGroupWithComponents>>,
-    IRequestHandler<UpdateComponentGroupCommand, string>
+    IRequestHandler<UpdateComponentGroupCommand, string>,
+    IRequestHandler<SubmitProgramApplicationCommand, ProgramApplicationSubmissionResult>
 {
   public async Task<Contract.ProgramApplications.ProgramApplication?> Handle(CreateProgramApplicationCommand request, CancellationToken cancellationToken)
   {
@@ -111,5 +116,61 @@ public class ProgramApplicationHandler(
     ArgumentNullException.ThrowIfNull(request);
     var result = await programApplicationRepository.UpdateComponentGroup(mapper.Map<Resources.Documents.ProgramApplications.ComponentGroupWithComponents>(request.ComponentGroup)!, request.ProgramApplicationId, cancellationToken);
     return result;
+  }
+
+  public async Task<ProgramApplicationSubmissionResult> Handle(SubmitProgramApplicationCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var applicationResult = await programApplicationRepository.Query(new Resources.Documents.ProgramApplications.ProgramApplicationQuery
+    {
+      ById = request.ProgramApplicationId,
+      ByStatus = new[] { ApplicationStatus.Draft }
+    }, cancellationToken);
+
+    if (!applicationResult.Items.Any())
+    {
+      return new ProgramApplicationSubmissionResult
+      {
+        Error = ProgramApplicationSubmissionError.ApplicationNotFound,
+        ValidationErrors = new[] { "Draft program application does not exist" }
+      };
+    }
+
+    var application = mapper.Map<Contract.ProgramApplications.ProgramApplication>(applicationResult.Items.First());
+
+    var componentGroups = await programApplicationRepository.QueryComponentGroups(
+      new Resources.Documents.ProgramApplications.ComponentGroupQuery { ByProgramApplicationId = request.ProgramApplicationId },
+      cancellationToken);
+
+    var resourcesCourses = await programApplicationRepository.QueryCoursesByApplicationId(request.ProgramApplicationId, cancellationToken);
+    var contractCourses = mapper.Map<IEnumerable<ContractCourse>>(resourcesCourses);
+
+    var areasOfInstruction = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery { ById = null }, cancellationToken);
+
+    var validationContext = new ProgramApplicationValidationContext(
+      ComponentGroupStatuses: componentGroups.Select(g => new ComponentGroupValidationStatus(g.Id, g.Name, g.Status)),
+      Courses: contractCourses,
+      ProgramTypes: application.ProgramTypes ?? Enumerable.Empty<Contract.ProgramApplications.ProgramCertificationType>(),
+      AreasOfInstruction: areasOfInstruction.ToList().AsReadOnly(),
+      DeclarationAccepted: request.Declaration);
+
+    var validationResults = await validationEngine.Validate(validationContext);
+    if (!validationResults.IsValid)
+    {
+      return new ProgramApplicationSubmissionResult
+      {
+        Error = ProgramApplicationSubmissionError.ValidationFailed,
+        ValidationErrors = validationResults.ValidationErrors
+      };
+    }
+
+    var applicationId = await programApplicationRepository.Submit(
+      request.ProgramApplicationId,
+      request.ProgramRepresentativeId,
+      request.Declaration,
+      cancellationToken);
+
+    return new ProgramApplicationSubmissionResult { ProgramApplicationId = applicationId };
   }
 }

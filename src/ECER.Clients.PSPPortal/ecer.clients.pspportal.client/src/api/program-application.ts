@@ -170,6 +170,28 @@ const updateComponentGroup = async (
   });
 };
 
+const submitProgramApplication = async (
+  id: string,
+  request: Components.Schemas.SubmitProgramApplicationRequest,
+): Promise<
+  ApiResponse<
+    Components.Schemas.SubmitProgramApplicationResponse | null | undefined
+  >
+> => {
+  const client = await getClient();
+  const pathParameters: Paths.ProgramApplicationSubmitPost.PathParameters = {
+    id,
+  };
+
+  return apiResultHandler.execute<Components.Schemas.SubmitProgramApplicationResponse | null>(
+    {
+      request: client.program_application_submit_post(pathParameters, request),
+      key: "program_application_submit_post",
+      suppressErrorToast: true,
+    },
+  );
+};
+
 const mapProgramStatus = (status: string = ""): string => {
   switch (status) {
     case "Draft":
@@ -290,6 +312,7 @@ export {
   getComponentGroupComponents,
   getNavigationMetadata,
   updateComponentGroup,
+  submitProgramApplication,
   mapProgramStatus,
   mapApplicationType,
   mapDeliveryType,
