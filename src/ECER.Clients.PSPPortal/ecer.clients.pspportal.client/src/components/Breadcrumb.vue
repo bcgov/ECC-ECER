@@ -23,191 +23,44 @@ export default defineComponent({
   },
   computed: {
     breadcrumbItems(): ItemsType[] {
-      if (this.route.name === "edit-profile") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "My contact details",
-            disabled: true,
-            href: "/profile/edit",
-          },
-        ];
+      const home: ItemsType = { title: "Home", disabled: false, href: "/" };
+      const staticRoutes: Record<string, ItemsType[]> = {
+        "edit-profile": [home, { title: "My contact details", disabled: true, href: "/profile/edit" }],
+        "manage-users": [home, { title: "Manage users", disabled: true, href: "/manage-users" }],
+        "education-institution": [home, { title: "Institution information", disabled: true, href: this.route.path }],
+        "edit-education-institution": [home, { title: "Edit Institution", disabled: true, href: "/education-institution/edit" }],
+        "program-profiles": [home, { title: "Program profiles", disabled: true, href: "/program-profiles" }],
+        "all-program-profiles": [home, { title: "Program profiles", disabled: false, href: "/program-profiles" }, { title: "All program profiles", disabled: true, href: "/all-program-profiles" }],
+        "initiate-program-update": [home, { title: "Update a program profile", disabled: true, href: "/program/:programId/initiate-update" }],
+        "program-applications": [home, { title: "All applications", disabled: true, href: "/program-applications" }],
+        "programApplicationInfo": [home, { title: "Program application information", disabled: true, href: "/program-application-info" }],
+        "program-application-begin": [home, { title: "Begin an application", disabled: true, href: "/program-application-begin" }],
+        "messages": [home, { title: "Messages", disabled: true, href: "/communication/new-message" }],
+      };
+
+      const routeName = this.route.name as string;
+      if (staticRoutes[routeName]) return staticRoutes[routeName];
+
+      if (routeName === "add-user") {
+        const educationInstitutionName = this.route.params.educationInstitutionName as string;
+        return [home, { title: "Manage users", disabled: false, href: `/manage-users/${educationInstitutionName}` }, { title: "Invite user", disabled: true, href: this.route.path }];
       }
-      if (this.route.name === "manage-users") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          { title: "Manage users", disabled: true, href: "/manage-users" },
-        ];
-      }
-      if (this.route.name === "add-user") {
-        const educationInstitutionName = this.route.params
-          .educationInstitutionName as string;
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Manage users",
-            disabled: false,
-            href: `/manage-users/${educationInstitutionName}`,
-          },
-          { title: "Invite user", disabled: true, href: this.route.path },
-        ];
-      }
-      if (this.route.name === "education-institution") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Institution information",
-            disabled: true,
-            href: this.route.path,
-          },
-        ];
-      }
-      if (this.route.name === "campus") {
+      if (routeName === "campus") {
         const institutionId = this.route.params.institutionId as string;
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Institution information",
-            disabled: false,
-            href: `/education-institution/${institutionId}`,
-          },
-          {
-            title: "Campus information",
-            disabled: true,
-            href: this.route.path,
-          },
-        ];
+        return [home, { title: "Institution information", disabled: false, href: `/education-institution/${institutionId}` }, { title: "Campus information", disabled: true, href: this.route.path }];
       }
-      if (this.route.name === "add-campus") {
+      if (routeName === "add-campus") {
         const institutionId = this.route.params.institutionId as string;
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Institution info",
-            disabled: false,
-            href: `/education-institution/${institutionId}`,
-          },
-          { title: "Add campus", disabled: true, href: this.route.path },
-        ];
+        return [home, { title: "Institution info", disabled: false, href: `/education-institution/${institutionId}` }, { title: "Add campus", disabled: true, href: this.route.path }];
       }
-      if (this.route.name === "add-satellite-location") {
+      if (routeName === "add-satellite-location") {
         const institutionId = this.route.params.institutionId as string;
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Institution info",
-            disabled: false,
-            href: `/education-institution/${institutionId}`,
-          },
-          {
-            title: "Add satellite location",
-            disabled: true,
-            href: this.route.path,
-          },
-        ];
+        return [home, { title: "Institution info", disabled: false, href: `/education-institution/${institutionId}` }, { title: "Add satellite location", disabled: true, href: this.route.path }];
       }
-      if (this.route.name === "edit-campus") {
+      if (routeName === "edit-campus") {
         const institutionId = this.route.params.institutionId as string;
         const campusId = this.route.params.campusId as string;
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Institution info",
-            disabled: false,
-            href: `/education-institution/${institutionId}`,
-          },
-          {
-            title: "Campus information",
-            disabled: false,
-            href: `/education-institution/${institutionId}/campus/${campusId}`,
-          },
-          { title: "Edit location", disabled: true, href: this.route.path },
-        ];
-      }
-      if (this.route.name === "edit-education-institution") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Edit Institution",
-            disabled: true,
-            href: "/education-institution/edit",
-          },
-        ];
-      }
-      if (this.route.name === "program-profiles") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Program profiles",
-            disabled: true,
-            href: "/program-profiles",
-          },
-        ];
-      }
-      if (this.route.name === "all-program-profiles") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Program profiles",
-            disabled: false,
-            href: "/program-profiles",
-          },
-          {
-            title: "All program profiles",
-            disabled: true,
-            href: "/all-program-profiles",
-          },
-        ];
-      }
-      if (this.route.name === "initiate-program-update") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Update a program profile",
-            disabled: true,
-            href: "/program/:programId/initiate-update",
-          },
-        ];
-      }
-      if (this.route.name === "program-applications") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "All applications",
-            disabled: true,
-            href: "/program-applications",
-          },
-        ];
-      }
-      if (this.route.name === "programApplicationInfo") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Program application information",
-            disabled: true,
-            href: "/program-application-info",
-          },
-        ];
-      }
-      if (this.route.name === "program-application-begin") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Begin an application",
-            disabled: true,
-            href: "/program-application-begin",
-          },
-        ];
-      }
-      if (this.route.name === "messages") {
-        return [
-          { title: "Home", disabled: false, href: "/" },
-          {
-            title: "Messages",
-            disabled: true,
-            href: "/communication/new-message",
-          },
-        ];
+        return [home, { title: "Institution info", disabled: false, href: `/education-institution/${institutionId}` }, { title: "Campus information", disabled: false, href: `/education-institution/${institutionId}/campus/${campusId}` }, { title: "Edit location", disabled: true, href: this.route.path }];
       }
       return [];
     },
