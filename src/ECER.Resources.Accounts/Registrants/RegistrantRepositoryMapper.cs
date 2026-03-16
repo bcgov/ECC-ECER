@@ -41,7 +41,8 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.bcgov_FileName, opts => opts.MapFrom(s => s.Name))
       .ForMember(d => d.bcgov_FileSize, opts => opts.MapFrom(s => s.Size))
       .ForMember(d => d.bcgov_Url, opts => opts.MapFrom(s => s.Url))
-      .ForMember(d => d.bcgov_FileExtension, opts => opts.MapFrom(s => s.Extention));
+      .ForMember(d => d.bcgov_FileExtension, opts => opts.MapFrom(s => s.Extention))
+      .ForMember(d => d.ecer_ApplicationName, opts => opts.MapFrom(s => s.EcerWebApplicationType));
 
     CreateMap<ecer_Authentication, UserIdentity>()
         .ForCtorParam(nameof(UserIdentity.UserId), opts => opts.MapFrom(s => s.ecer_ExternalID))

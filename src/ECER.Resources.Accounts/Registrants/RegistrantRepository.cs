@@ -145,7 +145,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
           }
 
           var fileId = document.Id.ToString();
-          var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.PSP);
+          var objectStorageProvider = objectStorageProviderResolver.resolve((EcerWebApplicationType)Enum.Parse(typeof(EcerWebApplicationType), document.ecer_ApplicationName));
           await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
           document.bcgov_Url = destinationFolder;
