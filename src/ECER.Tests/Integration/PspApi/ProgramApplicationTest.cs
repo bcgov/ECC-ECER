@@ -234,7 +234,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     var componentId = Fixture.componentTestComponentId;
     var expectedAnswer = $"My answer {Guid.NewGuid():N}";
 
-    var updatedComponent = new ProgramApplicationComponent(componentId, string.Empty, null, 0, expectedAnswer, null);
+    var updatedComponent = new ProgramApplicationComponent(componentId, string.Empty, null, 0, expectedAnswer, null, null);
     var request = new ComponentGroupWithComponents(groupId, string.Empty, null, "Draft", string.Empty, 0, new[] { updatedComponent });
 
     var response = await Host.Scenario(_ =>

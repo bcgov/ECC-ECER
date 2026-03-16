@@ -266,6 +266,7 @@ declare namespace Components {
       categoryName?: string | null;
       displayOrder?: number; // int32
       navigationType?: NavigationType;
+      rfaiRequired?: boolean | null;
     }
     export type NavigationType = "Component" | "Other";
     export interface NewPspUserResponse {
@@ -355,6 +356,7 @@ declare namespace Components {
       displayOrder?: number; // int32
       answer?: string | null;
       files?: FileInfo[] | null;
+      rfaiRequired?: boolean | null;
     }
     export interface ProgramCampus {
       id?: string | null;
@@ -660,10 +662,14 @@ declare namespace Paths {
   }
   namespace MessageGet {
     namespace Parameters {
+      export type ById = string;
       export type ParentId = string;
     }
     export interface PathParameters {
       parentId?: Parameters.ParentId;
+    }
+    export interface QueryParameters {
+      byId?: Parameters.ById;
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetMessagesResponse;
@@ -1262,7 +1268,9 @@ export interface OperationMethods {
    * message_get - Paginated endpoint to get all user messages
    */
   "message_get"(
-    parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.MessageGet.QueryParameters & Paths.MessageGet.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageGet.Responses.$200>;
@@ -1663,7 +1671,9 @@ export interface PathsDictionary {
      * message_get - Paginated endpoint to get all user messages
      */
     "get"(
-      parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.MessageGet.QueryParameters & Paths.MessageGet.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.MessageGet.Responses.$200>;

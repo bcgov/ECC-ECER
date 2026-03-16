@@ -389,9 +389,10 @@ export function groupByCategoryName(
         status: group.status,
         categoryName: group.categoryName,
         displayOrder: group.displayOrder,
-        statusIcon: mapStatusIcons(group.status),
+        statusIcon: mapStatusIcons(group.status, group.rfaiRequired),
         navigationRoute: "/component/" + group.id,
         navigationType: group.navigationType,
+        rfaiRequired: group.rfaiRequired,
       } as ComponentGroupNavigation);
     } else {
       map.set(category, [
@@ -401,9 +402,10 @@ export function groupByCategoryName(
           status: group.status,
           categoryName: group.categoryName,
           displayOrder: group.displayOrder,
-          statusIcon: mapStatusIcons(group.status),
+          statusIcon: mapStatusIcons(group.status, group.rfaiRequired),
           navigationRoute: "/component/" + group.id,
           navigationType: group.navigationType,
+          rfaiRequired: group.rfaiRequired,
         } as ComponentGroupNavigation,
       ]);
     }
@@ -412,7 +414,11 @@ export function groupByCategoryName(
   return map;
 }
 
-export function mapStatusIcons(status: string | null | undefined): string {
+export function mapStatusIcons(
+  status: string | null | undefined,
+  rfaiRequired: boolean | null | undefined,
+): string {
+  if (rfaiRequired) return "mdi-alert-circle-outline";
   switch (status) {
     case "ToDo":
       return "mdi-circle-outline";
@@ -433,6 +439,8 @@ export function mapStatusColor(icon: string): string {
       return "success";
     case "mdi-check-circle":
       return "success";
+    case "mdi-alert-circle-outline":
+      return "warning";
     default:
       return "grey";
   }
