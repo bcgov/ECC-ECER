@@ -13,5 +13,8 @@ internal sealed class PostSecondaryInstituteMapper : SecureProfile
       .ForMember(d => d.BceidBusinessName, opts => opts.Ignore())
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
+    
+    CreateMap<Contract.PostSecondaryInstitutes.Campus, Campus>()
+      .ReverseMap();
   }
 }

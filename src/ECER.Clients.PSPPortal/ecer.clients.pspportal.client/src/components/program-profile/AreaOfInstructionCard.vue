@@ -84,16 +84,32 @@
                 <span v-if="smAndDown" class="mr-2">
                   {{ courseArea.newHours }} hours
                 </span>
-                <v-divider
-                  v-if="mdAndUp"
-                  vertical
-                  class="d-none d-md-block"
-                ></v-divider>
-                <v-btn
-                  icon="mdi-pencil"
-                  variant="plain"
-                  @click="handleEdit(courseArea)"
-                ></v-btn>
+                <div class="d-flex">
+                  <v-divider
+                    v-if="mdAndUp"
+                    vertical
+                    class="d-none d-md-block"
+                  ></v-divider>
+                  <v-btn
+                    icon="mdi-pencil"
+                    variant="plain"
+                    @click="handleEdit(courseArea)"
+                    :loading="loading"
+                  ></v-btn>
+                  <template v-if="showDeleteButton">
+                    <v-divider
+                      v-if="mdAndUp"
+                      vertical
+                      class="d-none d-md-block"
+                    ></v-divider>
+                    <v-btn
+                      icon="mdi-trash-can-outline"
+                      variant="plain"
+                      @click="handleDelete(courseArea)"
+                      :loading="loading"
+                    ></v-btn>
+                  </template>
+                </div>
               </v-col>
             </v-row>
           </template>
@@ -120,7 +136,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, toRefs } from "vue";
+import { defineComponent, type PropType } from "vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
 import { useDisplay } from "vuetify";
@@ -147,12 +163,17 @@ export default defineComponent({
   components: {},
   setup() {
     const configStore = useConfigStore();
-    const display = useDisplay();
-    const { mdAndUp, smAndDown } = toRefs(display);
+    const { mdAndUp, smAndDown } = useDisplay();
+
     return {
       configStore,
       mdAndUp,
       smAndDown,
+    };
+  },
+  data() {
+    return {
+      showConfirmationDialog: false,
     };
   },
   props: {
@@ -171,13 +192,21 @@ export default defineComponent({
       required: false,
       default: true,
     },
+    showDeleteButton: {
+      type: Boolean,
+      required: true,
+    },
     areaId: {
       type: String,
       required: false,
       default: null,
     },
+    loading: {
+      type: Boolean,
+      required: true,
+    },
   },
-  emits: ["edit"],
+  emits: ["edit", "delete"],
   computed: {
     groupedAreas(): AreaGroup[] {
       // Group courses by areaOfInstructionId (filter out courses without areaOfInstructionId)
@@ -286,6 +315,9 @@ export default defineComponent({
     },
     handleEdit(courseArea: Components.Schemas.CourseAreaOfInstruction) {
       this.$emit("edit", courseArea);
+    },
+    handleDelete(courseArea: Components.Schemas.CourseAreaOfInstruction) {
+      this.$emit("delete", courseArea);
     },
   },
 });

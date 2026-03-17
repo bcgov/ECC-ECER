@@ -10,6 +10,9 @@ internal sealed class EducationInstitutionMapper : SecureProfile
     CreateMap<EducationInstitution, Managers.Registry.Contract.PostSecondaryInstitutes.PostSecondaryInstitute>()
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
+    
+    CreateMap<Campus, Managers.Registry.Contract.PostSecondaryInstitutes.Campus>()
+      .ReverseMap();
   }
 }
 

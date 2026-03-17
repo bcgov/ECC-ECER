@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
-    <PackageReference Include="AutoMapper">
+		<PackageReference Include="AutoMapper">
       <NoWarn>NU1903;GHSA-rvv3-g6hj-g44x</NoWarn>
     </PackageReference>
 		<PackageReference Include="AutoMapper.Extensions.EnumMapping" />
@@ -10,5 +10,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
 		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
 		<PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
 	</ItemGroup>
 </Project>
