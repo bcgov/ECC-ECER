@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.RegistryPortal.Server.Communications
 {
-  public class CommunicationMapper : Profile
+  public class CommunicationMapper : SecureProfile
   {
     public CommunicationMapper()
     {

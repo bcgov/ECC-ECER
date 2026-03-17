@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.MetadataResources;
 
-internal class MetadataResourceRepositoryMapper : Profile
+internal class MetadataResourceRepositoryMapper : SecureProfile
 {
   public MetadataResourceRepositoryMapper()
   {
