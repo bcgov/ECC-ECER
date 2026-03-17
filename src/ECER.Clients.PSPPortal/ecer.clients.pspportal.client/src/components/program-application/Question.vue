@@ -1,7 +1,22 @@
 <template>
   <v-card class="px-5">
     <v-card-title class="pl-0 pr-0">
-      {{ name }}
+      <v-row>
+        <v-col cols="4">
+          {{ name }}
+        </v-col>
+        <v-col class="d-flex justify-end">
+          <v-chip
+            v-if="rfaiRequired"
+            color="warning"
+            variant="flat"
+            size="small"
+          >
+            <div>Additional information requested</div>
+          </v-chip>
+        </v-col>
+      </v-row>
+
       <v-divider />
     </v-card-title>
     <v-row no-gutters>
@@ -18,6 +33,7 @@
           hide-details="auto"
           :rules="[Rules.maxLength(5000)]"
           @update:model-value="onAnswerInput"
+          :readonly="rfaiRequired ? !rfaiRequired : readOnly"
         />
       </v-col>
     </v-row>
@@ -25,7 +41,7 @@
       <suspense>
         <FileUploader
           :user-files="userFilesFromModel"
-          :show-add-file-button="true"
+          :show-add-file-button="rfaiRequired ? rfaiRequired : !readOnly"
           :max-number-of-files="5"
           :can-delete-permanent-files="false"
           @update:files="onFilesUpdate"
@@ -73,6 +89,10 @@ export default defineComponent({
       type: String,
     },
     rfaiRequired: {
+      type: Boolean,
+      default: false,
+    },
+    readOnly: {
       type: Boolean,
       default: false,
     },
