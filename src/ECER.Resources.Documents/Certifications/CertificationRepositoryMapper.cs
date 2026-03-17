@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.Certifications;
 
-internal class CertificationRepositoryMapper : Profile
+internal class CertificationRepositoryMapper : SecureProfile
 {
   public CertificationRepositoryMapper()
   {

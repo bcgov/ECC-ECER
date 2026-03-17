@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.ICRA;
 
 namespace ECER.Managers.Registry;
 
-internal class ICRAEligibilityMapper : Profile
+internal class ICRAEligibilityMapper : SecureProfile
 {
   public ICRAEligibilityMapper()
   {

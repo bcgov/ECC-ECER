@@ -1,9 +1,10 @@
 using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.PostSecondaryInstitutes;
 
-internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
+internal sealed class PostSecondaryInstituteRepositoryMapper : SecureProfile
 {
   public PostSecondaryInstituteRepositoryMapper()
   {

@@ -1,10 +1,11 @@
 using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.Shared;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.Programs;
 
-internal class ProgramRepositoryMapper : Profile
+internal class ProgramRepositoryMapper : SecureProfile
 {
   public ProgramRepositoryMapper()
   {

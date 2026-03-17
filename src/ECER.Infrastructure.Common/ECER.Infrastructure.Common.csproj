@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
 		<PackageReference Include="AutoMapper">
-      <NoWarn>NU1903;GHSA-rvv3-g6hj-g44x</NoWarn> <!-- To be fixed in ECER-6277-->
+      <NoWarn>NU1903;GHSA-rvv3-g6hj-g44x</NoWarn>
     </PackageReference>
 		<PackageReference Include="AutoMapper.Extensions.EnumMapping" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />

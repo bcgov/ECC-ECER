@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 
 namespace ECER.Resources.Accounts.Registrants;
 
-internal sealed class RegistrantRepositoryMapper : Profile
+internal sealed class RegistrantRepositoryMapper : SecureProfile
 {
   public RegistrantRepositoryMapper()
   {
