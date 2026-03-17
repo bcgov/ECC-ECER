@@ -11,7 +11,6 @@ public class PostSecondaryInstituteHandlers(
   : IRequestHandler<SearchPostSecondaryInstitutionQuery, PostSecondaryInstitutionsQueryResults>,
     IRequestHandler<UpdatePostSecondaryInstitutionCommand, string>,
     IRequestHandler<CreateCampusCommand, string>,
-    IRequestHandler<CreateSatelliteLocationCommand, string>,
     IRequestHandler<UpdateCampusCommand, string>
 {
   /// <summary>
@@ -68,7 +67,7 @@ public class PostSecondaryInstituteHandlers(
   }
 
   /// <summary>
-  /// Handles creating a new campus for the institution of the given program representative
+  /// Handles creating a new campus or satellite location for the institution of the given program representative
   /// </summary>
   public async Task<string> Handle(CreateCampusCommand request, CancellationToken cancellationToken)
   {
@@ -81,26 +80,8 @@ public class PostSecondaryInstituteHandlers(
 
     if (institution == null) throw new InvalidOperationException($"No institution found for program representative {request.ProgramRepresentativeId}");
 
-    var campus = mapper.Map<Resources.Documents.PostSecondaryInstitutes.Campus>(request.Campus)! with { IsSatelliteOrTemporaryLocation = false };
+    var campus = mapper.Map<Resources.Documents.PostSecondaryInstitutes.Campus>(request.Campus)! with { IsSatelliteOrTemporaryLocation = request.IsSatelliteOrTemporaryLocation };
     return await postSecondaryInstituteRepository.CreateCampus(institution.Id, campus, cancellationToken, request.ProgramIds);
-  }
-
-  /// <summary>
-  /// Handles creating a new satellite location for the institution of the given program representative
-  /// </summary>
-  public async Task<string> Handle(CreateSatelliteLocationCommand request, CancellationToken cancellationToken)
-  {
-    ArgumentNullException.ThrowIfNull(request);
-
-    var institution = (await postSecondaryInstituteRepository.Query(new PostSecondaryInstituteQuery
-    {
-      ByProgramRepresentativeId = request.ProgramRepresentativeId
-    }, cancellationToken)).SingleOrDefault();
-
-    if (institution == null) throw new InvalidOperationException($"No institution found for program representative {request.ProgramRepresentativeId}");
-
-    var campus = mapper.Map<Resources.Documents.PostSecondaryInstitutes.Campus>(request.Campus)! with { IsSatelliteOrTemporaryLocation = true };
-    return await postSecondaryInstituteRepository.CreateCampus(institution.Id, campus, cancellationToken);
   }
 
   /// <summary>

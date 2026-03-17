@@ -42,11 +42,10 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
       {
         var user = ctx.User.GetUserContext()!;
         var campus = mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.Campus>(request);
+        var isSatellite = request.IsSatelliteOrTemporaryLocation == true;
         try
         {
-          var newCampusId = request.IsSatelliteOrTemporaryLocation == true
-            ? await bus.Send(new CreateSatelliteLocationCommand(user.UserId, campus), ct)
-            : await bus.Send(new CreateCampusCommand(user.UserId, campus, request.ProgramIds), ct);
+          var newCampusId = await bus.Send(new CreateCampusCommand(user.UserId, campus, isSatellite, isSatellite ? null : request.ProgramIds), ct);
           return TypedResults.Ok(newCampusId);
         }
         catch (InvalidOperationException e)
