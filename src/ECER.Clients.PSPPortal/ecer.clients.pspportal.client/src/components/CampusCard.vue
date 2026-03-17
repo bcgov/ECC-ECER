@@ -2,16 +2,17 @@
   <Card>
     <div class="d-flex flex-column h-100">
       <div class="flex-grow-1">
-        <v-row align="center" justify="space-between">
-          <v-col cols="auto">
-            <h3>{{ campus.generatedName }}</h3>
-          </v-col>
-          <v-col cols="auto">
-            <v-chip :color="chipColour" variant="flat" size="small">
-              {{ campus.status }}
-            </v-chip>
-          </v-col>
-        </v-row>
+        <div class="d-flex align-start">
+          <h3 class="flex-grow-1 mr-2">{{ campus.generatedName }}</h3>
+          <v-chip
+            :color="chipColour"
+            variant="flat"
+            size="small"
+            class="flex-shrink-0"
+          >
+            {{ campus.status }}
+          </v-chip>
+        </div>
 
         <div class="mt-2">
           <div v-if="campus.street1">{{ campus.street1 }}</div>
