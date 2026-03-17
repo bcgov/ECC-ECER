@@ -97,7 +97,6 @@
           v-model="otherCampusContact"
           label="Other campus contact"
           :maxLength="100"
-          :rules="[Rules.required()]"
         />
       </v-col>
     </v-row>
