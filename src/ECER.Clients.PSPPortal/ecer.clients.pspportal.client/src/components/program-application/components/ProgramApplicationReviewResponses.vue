@@ -430,7 +430,7 @@ export default defineComponent({
           },
         );
         if (!campusObj?.length) return "-";
-        return campusObj.map((c) => c.name).join(", ");
+        return campusObj.map((c) => c.generatedName).join(", ");
       }
       return "-";
     },

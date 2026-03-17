@@ -71,7 +71,7 @@
               <v-checkbox
                 v-model="programCampus"
                 :value="campus.id || null"
-                :label="campus.name || '-'"
+                :label="campus.generatedName || '-'"
                 density="compact"
                 hide-details
                 @update:model-value="
