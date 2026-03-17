@@ -9,7 +9,12 @@
 
     <v-row>
       <v-col cols="12" md="8" lg="6" xl="4">
-        <EceTextField v-model="name" label="Location name" :maxLength="100" />
+        <EceTextField
+          v-model="name"
+          label="Location name"
+          :maxLength="100"
+          :rules="[Rules.required()]"
+        />
       </v-col>
     </v-row>
 
@@ -19,6 +24,7 @@
           v-model="street1"
           label="Street address"
           :maxLength="100"
+          :rules="[Rules.required()]"
         />
       </v-col>
     </v-row>
@@ -37,7 +43,12 @@
 
     <v-row>
       <v-col cols="12" md="8" lg="6" xl="4">
-        <EceTextField v-model="city" label="City" :maxLength="100" />
+        <EceTextField
+          v-model="city"
+          label="City"
+          :maxLength="100"
+          :rules="[Rules.required()]"
+        />
       </v-col>
     </v-row>
 
@@ -56,6 +67,7 @@
           v-model="postalCode"
           label="Postal code"
           :maxLength="10"
+          :rules="[Rules.required(), Rules.postalCode()]"
         />
       </v-col>
     </v-row>
@@ -73,6 +85,7 @@
           :model-value="keyContact"
           :users="pspUsers"
           :institution-name="institutionName"
+          :rules="[Rules.required('Select a key contact')]"
           @update:model-value="keyContact = $event ?? ''"
         />
       </v-col>
@@ -84,6 +97,7 @@
           v-model="otherCampusContact"
           label="Other campus contact"
           :maxLength="100"
+          :rules="[Rules.required()]"
         />
       </v-col>
     </v-row>
@@ -128,6 +142,7 @@ import EcePspUser, {
   type PspUserItem,
 } from "@/components/inputs/EcePspUser.vue";
 import type { Components } from "@/types/openapi";
+import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
   name: "CampusForm",
@@ -167,6 +182,7 @@ export default defineComponent({
       otherCampusContact: (this.initialData?.otherCampusContactName ??
         "") as string,
       selectedProgramIds: [] as string[],
+      Rules,
     };
   },
   methods: {
