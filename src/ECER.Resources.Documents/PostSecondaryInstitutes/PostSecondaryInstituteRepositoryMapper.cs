@@ -64,14 +64,8 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
       .ForMember(d => d.ecer_street3, opts => opts.MapFrom(s => s.Street3))
       .ForMember(d => d.ecer_city, opts => opts.MapFrom(s => s.City))
       .ForMember(d => d.ecer_postalcode, opts => opts.MapFrom(s => s.PostalCode))
-      .ForMember(d => d.ecer_SatelliteorTemporaryLocation, opts => opts.MapFrom(s =>
-        s.IsSatelliteOrTemporaryLocation.HasValue
-          ? (s.IsSatelliteOrTemporaryLocation.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No)
-          : default(ecer_YesNoNull?)))
-      .ForMember(d => d.ecer_KeyCampusContact, opts => opts.MapFrom(s =>
-        s.KeyCampusContactId != null
-          ? new Microsoft.Xrm.Sdk.EntityReference(ecer_ECEProgramRepresentative.EntityLogicalName, Guid.Parse(s.KeyCampusContactId))
-          : null))
+      .ForMember(d => d.ecer_SatelliteorTemporaryLocation, opts => opts.MapFrom(s => MapSatelliteOrTemporaryLocationEnum(s.IsSatelliteOrTemporaryLocation)))
+      .ForMember(d => d.ecer_KeyCampusContact, opts => opts.MapFrom(s => MapKeyCampusContact(s.KeyCampusContactId)))
       .ForMember(d => d.ecer_OtherContactName, opts => opts.MapFrom(s => s.OtherCampusContactName))
       .ForSourceMember(s => s.GeneratedName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
@@ -86,5 +80,17 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
   {
     if (!value.HasValue) return null;
     return value.Equals(ecer_YesNoNull.Yes);
+  }
+
+  private static ecer_YesNoNull? MapSatelliteOrTemporaryLocationEnum(bool? value)
+  {
+    if (!value.HasValue) return null;
+    return value.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+  }
+
+  private static Microsoft.Xrm.Sdk.EntityReference? MapKeyCampusContact(string? contactId)
+  {
+    if (contactId == null) return null;
+    return new Microsoft.Xrm.Sdk.EntityReference(ecer_ECEProgramRepresentative.EntityLogicalName, Guid.Parse(contactId));
   }
 }
