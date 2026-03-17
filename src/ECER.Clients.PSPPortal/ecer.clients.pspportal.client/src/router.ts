@@ -263,6 +263,13 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/program-application/:programApplicationId/submitted",
+      component: () => import("./components/pages/ApplicationSubmitted.vue"),
+      name: "application-submitted",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
   ],
 });
 

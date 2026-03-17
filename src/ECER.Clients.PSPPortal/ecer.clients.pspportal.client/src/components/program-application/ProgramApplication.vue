@@ -125,7 +125,9 @@ export default defineComponent({
         {
           name: "program-application-program-profile-area-of-instruction-review",
         },
-        //TODO { name: "some-future-route" }
+        {
+          name: "submit-application",
+        },
       ];
     },
     breadcrumbItems() {

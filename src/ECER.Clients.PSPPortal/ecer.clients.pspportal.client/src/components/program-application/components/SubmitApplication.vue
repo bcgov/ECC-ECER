@@ -146,7 +146,6 @@ export default defineComponent({
       : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
   },
   methods: {
-    App,
     async fetchApplication() {
       if (!this.programApplicationId) {
         this.loadError = true;
@@ -180,7 +179,7 @@ export default defineComponent({
         return;
       }
 
-      //this.$router.push({ name: "application-submitted" });
+      this.$router.push({ name: "application-submitted" });
     },
   },
 });
