@@ -72,7 +72,11 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
         s.KeyCampusContactId != null
           ? new Microsoft.Xrm.Sdk.EntityReference(ecer_ECEProgramRepresentative.EntityLogicalName, Guid.Parse(s.KeyCampusContactId))
           : null))
-      .ForMember(d => d.ecer_OtherContactName, opts => opts.MapFrom(s => s.OtherCampusContactName));
+      .ForMember(d => d.ecer_OtherContactName, opts => opts.MapFrom(s => s.OtherCampusContactName))
+      .ForSourceMember(s => s.GeneratedName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.KeyCampusContactName, opts => opts.DoNotValidate())
+      .ValidateMemberList(MemberList.Source);
   }
 
   private static bool? MapSatelliteOrTemporaryLocation(ecer_YesNoNull? value)
