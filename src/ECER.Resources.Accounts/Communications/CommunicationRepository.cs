@@ -3,7 +3,6 @@ using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -14,14 +13,12 @@ internal class CommunicationRepository : ICommunicationRepository
   private readonly EcerContext context;
   private readonly IMapper mapper;
   private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
-  private readonly IConfiguration configuration;
 
-  public CommunicationRepository(EcerContext context, IMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver, IConfiguration configuration)
+  public CommunicationRepository(EcerContext context, IMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver)
   {
     this.context = context;
     this.mapper = mapper;
     this.objectStorageProviderResolver = objectStorageProviderResolver;
-    this.configuration = configuration;
   }
 
   public async Task<int> QueryStatus(UserCommunicationsStatusQuery query)

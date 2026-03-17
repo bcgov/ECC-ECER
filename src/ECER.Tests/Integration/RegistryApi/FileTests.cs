@@ -1,6 +1,7 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Utilities.ObjectStorage.Providers;
+using System.Net;
 using System.Net.Http.Headers;
 using Xunit.Abstractions;
 using Xunit.Categories;
@@ -86,13 +87,13 @@ public class FileTests : RegistryPortalWebAppScenarioBase
 
   [Fact]
   [Category("Internal")]
-  public async Task CanDownloadCertificateFile()
+  public async Task CertificateFile_NotExist_ShouldReturnNotFound()
   {
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Get.Url($"/api/files/certificate/6657563c-5080-ef11-ac21-7c1e5240b0bf"); // Static certificate with generated pdf file in dynamics
-      _.StatusCodeShouldBeOk();
+      _.Get.Url($"/api/files/certificate/6657563c-5080-ef11-ac21-7c1e5240b0bf");
+      _.StatusCodeShouldBe(HttpStatusCode.NotFound);
     });
   }
 }

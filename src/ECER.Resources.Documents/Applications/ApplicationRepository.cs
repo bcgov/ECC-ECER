@@ -3,7 +3,6 @@ using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -13,18 +12,15 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
   private readonly EcerContext context;
   private readonly IMapper mapper;
   private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
-  private readonly IConfiguration configuration;
 
   public ApplicationRepository(
        EcerContext context,
        IObjectStorageProviderResolver objectStorageProviderResolver,
-       IMapper mapper,
-       IConfiguration configuration)
+       IMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
     this.objectStorageProviderResolver = objectStorageProviderResolver;
-    this.configuration = configuration;
   }
 
   public async Task<IEnumerable<Application>> Query(ApplicationQuery query, CancellationToken cancellationToken)
