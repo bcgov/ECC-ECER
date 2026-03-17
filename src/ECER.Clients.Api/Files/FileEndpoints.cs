@@ -52,7 +52,7 @@ public class FileEndpoints : IRegisterEndpoints
         if (feature != null) feature.MaxRequestBodySize = FILE_MAX_SIZE;
 
         var fileProperties = new FileProperties() { Classification = classification, Tags = tags };
-        var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, folder ?? string.Empty, EcerWebApplicationType.PSP), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
+        var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, folder ?? string.Empty, application), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
         if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Detail = "No files were uploaded" });
         var response = await messageBus.Send(new SaveFileCommand(files), ct);
         var saveResult = response.Items.FirstOrDefault();

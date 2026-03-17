@@ -1,5 +1,6 @@
 ﻿using Alba;
 using Bogus;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
 using Shouldly;
 using System.IdentityModel.Claims;
@@ -28,6 +29,7 @@ public class FileTests : ApiWebAppScenarioBase
     var testFolder = "integrationtests";
     var testTags = "tag1=1,tag2=2";
     var testClassification = "test-classification";
+    var testEcerWebApplicationType = EcerWebApplicationType.Registry.ToString();
     using var content = new StreamContent(testFile.Content);
     content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
@@ -42,6 +44,7 @@ public class FileTests : ApiWebAppScenarioBase
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", testEcerWebApplicationType);
       _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
@@ -51,6 +54,7 @@ public class FileTests : ApiWebAppScenarioBase
     var response = await Host.Scenario(_ =>
     {
       _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", testEcerWebApplicationType);
       _.Get.Url($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
@@ -60,6 +64,7 @@ public class FileTests : ApiWebAppScenarioBase
     response.Context.Response.Headers["file-folder"].ToString().ShouldBe(testFolder);
     response.Context.Response.Headers["file-tag"].ToString().ShouldBe(testTags);
     response.Context.Response.Headers["file-classification"].ToString().ShouldBe(testClassification);
+    response.Context.Response.Headers["application"].ToString().ShouldBe(testEcerWebApplicationType);
 
     var returnedFile = await response.ReadAsTextAsync();
     returnedFile.Length.ShouldBe(fileLength);
