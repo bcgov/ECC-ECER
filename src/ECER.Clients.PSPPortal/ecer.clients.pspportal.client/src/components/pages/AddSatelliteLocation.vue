@@ -21,11 +21,11 @@
           of an early childhood education cohort at a location in partnership
           with another organization, or outside of the institution.
         </p>
+        <!-- prettier-ignore -->
         <p class="mt-3">
           The satellite program offering runs in addition to existing
-          programming and has a
-          <strong>fixed end date</strong>
-          . Institutions must hold ongoing recognition prior to submitting a
+          programming and has a <strong>fixed end date</strong>.
+          Institutions must hold ongoing recognition prior to submitting a
           request to offer a satellite program.
         </p>
       </v-col>
