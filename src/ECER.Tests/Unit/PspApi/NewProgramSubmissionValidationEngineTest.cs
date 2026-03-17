@@ -94,7 +94,7 @@ public class NewProgramSubmissionValidationEngineTest
     var result = await validator.Validate(program, areaOfInstructionList);
     Assert.NotEmpty(result.ValidationErrors);
     var errorMessage = result.ValidationErrors.First();
-    Assert.Contains("Must have courses for BASIC program type", errorMessage);
+    Assert.Contains("Must have courses for Basic program type", errorMessage);
   }
 
   [Fact]
