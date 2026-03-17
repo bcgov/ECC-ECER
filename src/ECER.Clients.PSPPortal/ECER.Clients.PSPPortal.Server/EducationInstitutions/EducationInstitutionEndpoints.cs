@@ -42,10 +42,17 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
       {
         var user = ctx.User.GetUserContext()!;
         var campus = mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.Campus>(request);
-        var newCampusId = request.IsSatelliteOrTemporaryLocation == true
-          ? await bus.Send(new CreateSatelliteLocationCommand(user.UserId, campus), ct)
-          : await bus.Send(new CreateCampusCommand(user.UserId, campus, request.ProgramIds), ct);
-        return TypedResults.Ok(newCampusId);
+        try
+        {
+          var newCampusId = request.IsSatelliteOrTemporaryLocation == true
+            ? await bus.Send(new CreateSatelliteLocationCommand(user.UserId, campus), ct)
+            : await bus.Send(new CreateCampusCommand(user.UserId, campus, request.ProgramIds), ct);
+          return TypedResults.Ok(newCampusId);
+        }
+        catch (InvalidOperationException e)
+        {
+          return TypedResults.BadRequest(new ProblemDetails { Detail = e.Message });
+        }
       })
     .WithOpenApi("Creates a new campus or satellite location for the user's institution", string.Empty, "campus_post")
     .WithParameterValidation()
