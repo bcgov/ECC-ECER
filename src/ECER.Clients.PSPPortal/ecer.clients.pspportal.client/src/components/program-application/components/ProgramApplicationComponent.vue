@@ -23,6 +23,8 @@
             v-model="formByComponentId[comp.id ?? '']"
             :name="comp.name ?? ''"
             :question="comp.question ?? ''"
+            :rfai-required="comp.rfaiRequired ?? false"
+            :read-only="isRFAI"
           />
         </v-col>
       </v-row>
@@ -49,6 +51,7 @@ import Loading from "@/components/Loading.vue";
 import {
   getComponentGroupComponents,
   updateComponentGroup,
+  getProgramApplicationById,
 } from "@/api/program-application";
 import type { Components, ComponentGroupWithComponents } from "@/types/openapi";
 import Question from "@/components/program-application/Question.vue";
@@ -79,6 +82,16 @@ export default defineComponent({
     },
   },
   emits: { next: (_payload: NextStepPayload) => true },
+  computed: {
+    isRFAI(): boolean {
+      return (
+        this.programApplicationObject?.status !== undefined &&
+        (this.programApplicationObject?.status === "InterimRecognition" ||
+          this.programApplicationObject?.status === "ReviewAnalysis") &&
+        this.programApplicationObject?.statusReasonDetail === "RFAIrequested"
+      );
+    },
+  },
   data() {
     return {
       componentGroup: null as ComponentGroupWithComponents | null,
@@ -86,6 +99,8 @@ export default defineComponent({
       loading: true,
       saving: false,
       formByComponentId: {} as Record<string, QuestionModelValue>,
+      programApplicationObject:
+        null as Components.Schemas.ProgramApplication | null,
     };
   },
   watch: {
@@ -93,9 +108,18 @@ export default defineComponent({
     componentGroupId: "loadComponents",
   },
   async mounted() {
+    await this.fetchApplication();
     await this.loadComponents();
   },
   methods: {
+    async fetchApplication() {
+      const result = await getProgramApplicationById(this.programApplicationId);
+      if (result.error || result.data == null) {
+        console.error("Failed to retrieve program application:", result.error);
+      } else {
+        this.programApplicationObject = result.data;
+      }
+    },
     async loadComponents() {
       this.loading = true;
       const result = await getComponentGroupComponents(
