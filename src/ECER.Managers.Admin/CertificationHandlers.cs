@@ -33,7 +33,7 @@ public class CertificationHandlers(IObjectStorageProviderResolver objectStorageP
     var fileLocations = new List<FileLocation>();
     foreach (var certification in mappedCertifications)
     {
-      fileLocations.Add(new FileLocation(certification!.FileId!, certification.FilePath ?? string.Empty, EcerWebApplicationType.Registry));
+      fileLocations.Add(new FileLocation(certification!.FileId!, certification.FilePath ?? string.Empty, request.EcerWebApplicationType));
     }
 
     var files = new ConcurrentBag<FileData>();
