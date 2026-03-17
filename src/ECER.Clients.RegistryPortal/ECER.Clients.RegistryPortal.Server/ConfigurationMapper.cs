@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
-public class ConfigurationMapper : Profile
+public class ConfigurationMapper : SecureProfile
 {
   public ConfigurationMapper()
   {

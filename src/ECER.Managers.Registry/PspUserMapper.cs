@@ -1,10 +1,11 @@
 using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Accounts.PspReps;
 using ECER.Resources.Accounts.PSPReps;
 
 namespace ECER.Managers.Registry;
 
-internal sealed class PspUserMapper : AutoMapper.Profile
+internal sealed class PspUserMapper : SecureProfile
 {
   public PspUserMapper()
   {

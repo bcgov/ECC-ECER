@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
 using Ganss.Xss;
 
 namespace ECER.Resources.Accounts.Communications;
 
-internal class CommunicationRepositoryMapper : Profile
+internal class CommunicationRepositoryMapper : SecureProfile
 {
   private static readonly HtmlSanitizer htmlSanitizer = new();
 

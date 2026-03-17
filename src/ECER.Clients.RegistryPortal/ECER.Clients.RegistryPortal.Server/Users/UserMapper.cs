@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
 
-internal sealed class UserMapper : AutoMapper.Profile
+internal sealed class UserMapper : SecureProfile
 {
   public UserMapper()
   {

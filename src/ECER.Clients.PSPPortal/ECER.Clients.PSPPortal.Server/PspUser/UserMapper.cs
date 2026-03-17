@@ -1,8 +1,9 @@
 using AutoMapper;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.PSPPortal.Server.Users;
 
-internal sealed class PspUserMapper : AutoMapper.Profile
+internal sealed class PspUserMapper : SecureProfile
 {
   public PspUserMapper()
   {

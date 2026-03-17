@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.Certifications;
 
 namespace ECER.Managers.Admin;
 
-internal class CertificationMapper : Profile
+internal class CertificationMapper : SecureProfile
 {
   public CertificationMapper()
   {
