@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.PSPPortal.Server.EducationInstitutions;
 
-internal sealed class EducationInstitutionMapper : AutoMapper.Profile
+internal sealed class EducationInstitutionMapper : SecureProfile
 {
   public EducationInstitutionMapper()
   {

@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using System.Diagnostics.Contracts;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
-public class ApplicationMapper : Profile
+public class ApplicationMapper : SecureProfile
 {
   public ApplicationMapper()
   {

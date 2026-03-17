@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 
 #pragma warning disable 8631
 
 namespace ECER.Clients.RegistryPortal.Server.Certifications
 {
-  public class CertificationMapper : Profile
+  public class CertificationMapper : SecureProfile
   {
     public CertificationMapper()
     {

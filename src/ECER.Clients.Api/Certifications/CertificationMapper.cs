@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.Api.Certifications;
 
-public class CertificationMapper : Profile
+public class CertificationMapper : SecureProfile
 {
   public CertificationMapper()
   {

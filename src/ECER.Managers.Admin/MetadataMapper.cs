@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.MetadataResources;
 
 namespace ECER.Managers.Admin;
 
-internal class MetadataMapper : Profile
+internal class MetadataMapper : SecureProfile
 {
   public MetadataMapper()
   {

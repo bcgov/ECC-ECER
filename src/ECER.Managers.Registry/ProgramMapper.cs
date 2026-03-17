@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using Course = ECER.Resources.Documents.Shared.Course;
 using CourseAreaOfInstruction = ECER.Resources.Documents.Shared.CourseAreaOfInstruction;
 using Program = ECER.Resources.Documents.Programs.Program;
@@ -8,7 +9,7 @@ using ProgramStatus = ECER.Resources.Documents.Programs.ProgramStatus;
 
 namespace ECER.Managers.Registry;
 
-internal class ProgramMapper : Profile
+internal class ProgramMapper : SecureProfile
 {
   public ProgramMapper()
   {

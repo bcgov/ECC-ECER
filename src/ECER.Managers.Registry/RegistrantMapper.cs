@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Accounts.Registrants;
 
 namespace ECER.Managers.Registry;
 
-internal sealed class RegistrantMapper : AutoMapper.Profile
+internal sealed class RegistrantMapper : SecureProfile
 {
   public RegistrantMapper()
   {

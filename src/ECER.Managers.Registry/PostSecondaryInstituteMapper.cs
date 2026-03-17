@@ -1,9 +1,10 @@
 using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
 
 namespace ECER.Managers.Registry;
 
-internal sealed class PostSecondaryInstituteMapper : AutoMapper.Profile
+internal sealed class PostSecondaryInstituteMapper : SecureProfile
 {
   public PostSecondaryInstituteMapper()
   {
