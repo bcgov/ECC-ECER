@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
 
 namespace ECER.Managers.Registry.PortalInvitations;
 
-public class PortalInvitationMapper : Profile
+public class PortalInvitationMapper : SecureProfile
 {
   public PortalInvitationMapper()
   {

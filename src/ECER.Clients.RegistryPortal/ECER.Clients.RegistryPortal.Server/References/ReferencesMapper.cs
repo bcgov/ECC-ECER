@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.RegistryPortal.Server.References;
 
-public class ReferencesMapper : Profile
+public class ReferencesMapper : SecureProfile
 {
   public ReferencesMapper()
   {

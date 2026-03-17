@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.PortalInvitations;
 
-internal sealed class PortalInvitationMapper : Profile
+internal sealed class PortalInvitationMapper : SecureProfile
 {
   public PortalInvitationMapper()
   {
