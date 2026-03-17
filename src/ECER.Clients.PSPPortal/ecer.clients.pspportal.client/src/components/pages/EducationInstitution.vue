@@ -78,7 +78,7 @@
       <v-row v-if="campuses.length > 0" class="mt-4" align="stretch">
         <v-col
           v-for="(campus, index) in campuses"
-          :key="campus.id ?? campus.name ?? index"
+          :key="campus.id ?? campus.generatedName ?? index"
           cols="12"
           sm="6"
           md="4"
@@ -142,7 +142,7 @@
       <v-row v-if="satelliteLocations.length > 0" class="mt-4" align="stretch">
         <v-col
           v-for="(location, index) in satelliteLocations"
-          :key="location.id ?? location.name ?? index"
+          :key="location.id ?? location.generatedName ?? index"
           cols="12"
           sm="6"
           md="4"

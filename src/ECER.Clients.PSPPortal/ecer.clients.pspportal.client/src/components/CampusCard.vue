@@ -4,7 +4,7 @@
       <div class="flex-grow-1">
         <v-row align="center" justify="space-between">
           <v-col cols="auto">
-            <h3>{{ campus.name }}</h3>
+            <h3>{{ campus.generatedName }}</h3>
           </v-col>
           <v-col cols="auto">
             <v-chip :color="chipColour" variant="flat" size="small">

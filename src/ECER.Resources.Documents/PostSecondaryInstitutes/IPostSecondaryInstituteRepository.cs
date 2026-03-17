@@ -19,7 +19,7 @@ public interface IPostSecondaryInstituteRepository
   /// <summary>
   /// Creates a new campus linked to the given institution
   /// </summary>
-  Task<string> CreateCampus(string institutionId, Campus campus, CancellationToken ct);
+  Task<string> CreateCampus(string institutionId, Campus campus, CancellationToken ct, IEnumerable<string>? programIds = null);
 
   /// <summary>
   /// Updates an existing campus - IsSatelliteOrTemporaryLocation cannot be changed
@@ -57,6 +57,7 @@ public record Campus
 {
   public string Id { get; set; } = null!;
   public string? Name { get; set; }
+  public string? GeneratedName { get; set; }
   public CampusStatus? Status { get; set; }
   public bool? IsSatelliteOrTemporaryLocation { get; set; }
   public string? Street1 { get; set; }
@@ -65,7 +66,9 @@ public record Campus
   public string? City { get; set; }
   public string? Province { get; set; }
   public string? PostalCode { get; set; }
+  public string? KeyCampusContactId { get; set; }
   public string? KeyCampusContactName { get; set; }
+  public string? OtherCampusContactName { get; set; }
 }
 public enum CampusStatus
 {

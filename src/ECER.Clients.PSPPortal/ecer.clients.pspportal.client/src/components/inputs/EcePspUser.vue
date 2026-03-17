@@ -29,7 +29,7 @@
         class="mt-2"
         :items="users"
         item-title="name"
-        item-value="name"
+        item-value="id"
         hide-details="auto"
         v-bind="$attrs"
         @update:model-value="

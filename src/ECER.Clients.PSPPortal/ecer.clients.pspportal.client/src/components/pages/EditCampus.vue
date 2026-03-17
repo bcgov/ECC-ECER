@@ -20,7 +20,6 @@
         :psp-users="pspUsers"
         :institution-name="institutionName"
         :is-private="isPrivate"
-        :programs="programs"
         :initial-data="campus ?? undefined"
       />
 
@@ -59,10 +58,9 @@ import Loading from "@/components/Loading.vue";
 import CampusForm from "@/components/CampusForm.vue";
 import {
   getEducationInstitution,
-  updateEducationInstitution,
+  updateCampus,
 } from "@/api/education-institution";
 import { getUsers } from "@/api/manage-users";
-import { getPrograms } from "@/api/program";
 import { useAlertStore } from "@/store/alert";
 import { useRouter } from "vue-router";
 import type { Components, PspUserListItem } from "@/types/openapi";
@@ -91,7 +89,6 @@ export default defineComponent({
       institution: null as Components.Schemas.EducationInstitution | null,
       campus: null as Components.Schemas.Campus | null,
       pspUsers: [] as PspUserItem[],
-      programs: [] as Components.Schemas.Program[],
       isLoading: true,
       isSaving: false,
     };
@@ -139,11 +136,6 @@ export default defineComponent({
       name: `${user.profile?.firstName ?? ""} ${user.profile?.lastName ?? ""}`.trim(),
     }));
 
-    if (!this.isPrivate) {
-      const response = await getPrograms("", ["Approved"]);
-      this.programs = response.data?.programs ?? [];
-    }
-
     this.isLoading = false;
   },
   methods: {
@@ -163,19 +155,7 @@ export default defineComponent({
       this.isSaving = true;
       try {
         const { campus } = campusFormRef.getData();
-        const updatedCampus: Components.Schemas.Campus = {
-          ...this.campus!,
-          ...campus,
-        };
-
-        const updatedInstitution: Components.Schemas.EducationInstitution = {
-          ...this.institution!,
-          campuses: (this.institution!.campuses ?? []).map((c) =>
-            c.id === this.campusId ? updatedCampus : c,
-          ),
-        };
-
-        const success = await updateEducationInstitution(updatedInstitution);
+        const success = await updateCampus(this.campusId, campus);
 
         if (success) {
           this.alertStore.setSuccessAlert(

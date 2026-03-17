@@ -88,7 +88,7 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
     await Task.CompletedTask;
   }
 
-  public async Task<string> CreateCampus(string institutionId, Campus campus, CancellationToken ct)
+  public async Task<string> CreateCampus(string institutionId, Campus campus, CancellationToken ct, IEnumerable<string>? programIds = null)
   {
     ArgumentNullException.ThrowIfNull(campus);
     if (!Guid.TryParse(institutionId, out var institutionGuid))
@@ -110,6 +110,23 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
       var existingProvince = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_Name == campus.Province);
       if (existingProvince != null)
         context.AddLink(newCampus, ecer_PostSecondaryInstituteCampus.Fields.ecer_postsecondaryinstitutecampus_province_ecer_province, existingProvince);
+    }
+
+    context.SaveChanges();
+
+    foreach (var programId in programIds ?? [])
+    {
+      if (!Guid.TryParse(programId, out var programGuid)) continue;
+      var programCampus = new ecer_ProgramCampus
+      {
+        ecer_ProgramCampusId = Guid.NewGuid(),
+        ecer_CampusId = new Microsoft.Xrm.Sdk.EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, newCampus.ecer_PostSecondaryInstituteCampusId!.Value),
+        ecer_ProgramProfileId = new Microsoft.Xrm.Sdk.EntityReference(ecer_Program.EntityLogicalName, programGuid),
+        ecer_EducationalInstitutionId = new Microsoft.Xrm.Sdk.EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institutionGuid),
+        StatusCode = ecer_ProgramCampus_StatusCode.Active,
+        StateCode = ecer_programcampus_statecode.Active,
+      };
+      context.AddObject(programCampus);
     }
 
     context.SaveChanges();

@@ -62,6 +62,7 @@ declare namespace Components {
     export interface Campus {
       id?: string | null;
       name?: string | null;
+      generatedName?: string | null;
       status?: CampusStatus;
       isSatelliteOrTemporaryLocation?: boolean | null;
       street1?: string | null;
@@ -70,7 +71,9 @@ declare namespace Components {
       city?: string | null;
       province?: string | null;
       postalCode?: string | null;
+      keyCampusContactId?: string | null;
       keyCampusContactName?: string | null;
+      otherCampusContactName?: string | null;
     }
     export type CampusStatus = "None" | "Active" | "Inactive";
     export interface Communication {
@@ -176,7 +179,9 @@ declare namespace Components {
       city?: string | null;
       province?: string | null;
       postalCode?: string | null;
-      keyCampusContactName?: string | null;
+      keyCampusContactId?: string | null;
+      otherCampusContactName?: string | null;
+      programIds?: string[] | null;
     }
     export interface CreateProgramApplicationRequest {
       programApplicationName?: string | null;
@@ -468,7 +473,8 @@ declare namespace Components {
       city?: string | null;
       province?: string | null;
       postalCode?: string | null;
-      keyCampusContactName?: string | null;
+      keyCampusContactId?: string | null;
+      otherCampusContactName?: string | null;
     }
     export interface UpdateCourseRequest {
       course?: Course;
@@ -493,9 +499,7 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.CreateCampusRequest;
     namespace Responses {
       export type $200 = string;
-      export type $400 =
-        | Components.Schemas.ProblemDetails
-        | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace CampusPut {
@@ -1213,7 +1217,7 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
   /**
-   * campus_post - Creates a new campus for the user's institution
+   * campus_post - Creates a new campus or satellite location for the user's institution
    */
   "campus_post"(
     parameters?: Parameters<UnknownParamsObject> | null,
@@ -1608,7 +1612,7 @@ export interface PathsDictionary {
   };
   ["/api/education-institution/campus"]: {
     /**
-     * campus_post - Creates a new campus for the user's institution
+     * campus_post - Creates a new campus or satellite location for the user's institution
      */
     "post"(
       parameters?: Parameters<UnknownParamsObject> | null,

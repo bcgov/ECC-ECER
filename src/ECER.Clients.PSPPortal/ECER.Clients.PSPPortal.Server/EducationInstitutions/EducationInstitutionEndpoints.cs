@@ -42,10 +42,12 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
       {
         var user = ctx.User.GetUserContext()!;
         var campus = mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.Campus>(request);
-        var newCampusId = await bus.Send(new CreateCampusCommand(user.UserId, campus), ct);
+        var newCampusId = request.IsSatelliteOrTemporaryLocation == true
+          ? await bus.Send(new CreateSatelliteLocationCommand(user.UserId, campus), ct)
+          : await bus.Send(new CreateCampusCommand(user.UserId, campus, request.ProgramIds), ct);
         return TypedResults.Ok(newCampusId);
       })
-    .WithOpenApi("Creates a new campus for the user's institution", string.Empty, "campus_post")
+    .WithOpenApi("Creates a new campus or satellite location for the user's institution", string.Empty, "campus_post")
     .WithParameterValidation()
     .RequireAuthorization("psp_user");
 
@@ -92,6 +94,7 @@ public record EducationInstitution
   {
     public string Id { get; set; } = null!;
     public string? Name { get; set; }
+    public string? GeneratedName { get; set; }
     public CampusStatus? Status { get; set; }
     public bool? IsSatelliteOrTemporaryLocation { get; set; }
     public string? Street1 { get; set; }
@@ -100,7 +103,9 @@ public record EducationInstitution
     public string? City { get; set; }
     public string? Province { get; set; }
     public string? PostalCode { get; set; }
+    public string? KeyCampusContactId { get; set; }
     public string? KeyCampusContactName { get; set; }
+    public string? OtherCampusContactName { get; set; }
   }
   public enum CampusStatus
   {
@@ -135,7 +140,9 @@ public record EducationInstitution
     public string? City { get; set; }
     public string? Province { get; set; }
     public string? PostalCode { get; set; }
-    public string? KeyCampusContactName { get; set; }
+    public string? KeyCampusContactId { get; set; }
+    public string? OtherCampusContactName { get; set; }
+    public IEnumerable<string>? ProgramIds { get; set; }
   }
 
   public record UpdateCampusRequest
@@ -147,7 +154,8 @@ public record EducationInstitution
     public string? City { get; set; }
     public string? Province { get; set; }
     public string? PostalCode { get; set; }
-    public string? KeyCampusContactName { get; set; }
+    public string? KeyCampusContactId { get; set; }
+    public string? OtherCampusContactName { get; set; }
   }
 
 

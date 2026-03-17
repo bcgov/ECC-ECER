@@ -75,8 +75,8 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import Loading from "@/components/Loading.vue";
 import CampusForm from "@/components/CampusForm.vue";
 import {
+  createCampus,
   getEducationInstitution,
-  updateEducationInstitution,
 } from "@/api/education-institution";
 import { getUsers } from "@/api/manage-users";
 import { useAlertStore } from "@/store/alert";
@@ -153,19 +153,12 @@ export default defineComponent({
       this.isSaving = true;
       try {
         const { campus } = campusFormRef.getData();
-        const newLocation: Components.Schemas.Campus = {
+        const newCampusId = await createCampus({
           ...campus,
           isSatelliteOrTemporaryLocation: true,
-        };
+        });
 
-        const updatedInstitution: Components.Schemas.EducationInstitution = {
-          ...this.institution!,
-          campuses: [...(this.institution!.campuses ?? []), newLocation],
-        };
-
-        const success = await updateEducationInstitution(updatedInstitution);
-
-        if (success) {
+        if (newCampusId) {
           this.alertStore.setSuccessAlert(
             "Satellite location has been successfully added.",
           );

@@ -78,8 +78,8 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import Loading from "@/components/Loading.vue";
 import CampusForm from "@/components/CampusForm.vue";
 import {
+  createCampus,
   getEducationInstitution,
-  updateEducationInstitution,
 } from "@/api/education-institution";
 import { getUsers } from "@/api/manage-users";
 import { getPrograms } from "@/api/program";
@@ -165,43 +165,23 @@ export default defineComponent({
 
       this.isSaving = true;
       try {
-        const { campus } = campusFormRef.getData();
-        const newCampus: Components.Schemas.Campus = {
+        const { campus, selectedProgramIds } = campusFormRef.getData();
+        const newCampusId = await createCampus({
           ...campus,
           isSatelliteOrTemporaryLocation: false,
-        };
+          programIds:
+            selectedProgramIds.length > 0 ? selectedProgramIds : undefined,
+        });
 
-        const updatedInstitution: Components.Schemas.EducationInstitution = {
-          ...this.institution!,
-          campuses: [...(this.institution!.campuses ?? []), newCampus],
-        };
-
-        const success = await updateEducationInstitution(updatedInstitution);
-
-        if (success) {
+        if (newCampusId) {
           if (this.isPrivate) {
-            const refreshed = await getEducationInstitution();
-            const newCampusEntry = refreshed?.campuses?.find(
-              (c) =>
-                c.name === newCampus.name &&
-                !this.institution?.campuses?.some(
-                  (existing) => existing.id === c.id,
-                ),
-            );
-            if (newCampusEntry?.id) {
-              await this.router.push({
-                name: "campus",
-                params: {
-                  institutionId: this.institutionId,
-                  campusId: newCampusEntry.id!,
-                },
-              });
-            } else {
-              await this.router.push({
-                name: "education-institution",
-                params: { institutionId: this.institutionId },
-              });
-            }
+            await this.router.push({
+              name: "campus",
+              params: {
+                institutionId: this.institutionId,
+                campusId: newCampusId,
+              },
+            });
           } else {
             this.alertStore.setSuccessAlert(
               "Campus has been successfully added.",

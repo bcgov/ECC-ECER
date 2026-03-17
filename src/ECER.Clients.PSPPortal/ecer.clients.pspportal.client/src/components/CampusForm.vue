@@ -163,8 +163,9 @@ export default defineComponent({
       city: (this.initialData?.city ?? "") as string,
       province: (this.initialData?.province ?? "") as string,
       postalCode: (this.initialData?.postalCode ?? "") as string,
-      keyContact: (this.initialData?.keyCampusContactName ?? "") as string,
-      otherCampusContact: "" as string,
+      keyContact: (this.initialData?.keyCampusContactId ?? "") as string,
+      otherCampusContact: (this.initialData?.otherCampusContactName ??
+        "") as string,
       selectedProgramIds: [] as string[],
     };
   },
@@ -191,8 +192,8 @@ export default defineComponent({
           city: this.city || null,
           province: this.province || null,
           postalCode: this.postalCode || null,
-          keyCampusContactName:
-            this.keyContact || this.otherCampusContact || null,
+          keyCampusContactId: this.keyContact || null,
+          otherCampusContactName: this.otherCampusContact || null,
         },
         selectedProgramIds: this.selectedProgramIds,
       };
