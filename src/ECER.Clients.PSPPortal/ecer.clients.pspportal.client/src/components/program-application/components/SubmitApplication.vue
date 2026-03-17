@@ -98,7 +98,6 @@ import { getPspUserProfile } from "@/api/psp-rep";
 import Loading from "@/components/Loading.vue";
 import { formatDate } from "@/utils/format";
 import { DateTime } from "luxon";
-import App from "@/App.vue";
 
 export default defineComponent({
   name: "SubmitApplication",
