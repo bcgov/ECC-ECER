@@ -274,7 +274,7 @@
             <div>
               <h2 class="text-wrap">{{ name }}</h2>
             </div>
-            <div>
+            <div v-if="allowEdit(metaData.components)">
               <v-tooltip location="top">
                 <template #activator="{ props }">
                   <v-btn
@@ -554,6 +554,17 @@ export default defineComponent({
         }
       });
       this.componentAnswer = map;
+    },
+    allowEdit(
+      components:
+        | Components.Schemas.ProgramApplicationComponent[]
+        | null
+        | undefined,
+    ) {
+      const hasRfaiComponents = components?.filter((c) => c.rfaiRequired);
+      return hasRfaiComponents && hasRfaiComponents.length > 0
+        ? hasRfaiComponents && hasRfaiComponents.length > 0
+        : !this.isRFAI;
     },
   },
 });
