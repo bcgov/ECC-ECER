@@ -76,6 +76,9 @@ internal sealed class PostSecondaryInstituteRepositoryMapper : Profile
       .ForSourceMember(s => s.GeneratedName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.KeyCampusContactName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Province, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.IsSatelliteOrTemporaryLocation, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.KeyCampusContactId, opts => opts.DoNotValidate())
       .ValidateMemberList(MemberList.Source);
   }
 
