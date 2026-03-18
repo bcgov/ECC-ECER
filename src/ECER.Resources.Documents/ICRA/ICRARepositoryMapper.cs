@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk;
 
 namespace ECER.Resources.Documents.ICRA;
 
-internal class ICRARepositoryMapper : Profile
+internal class ICRARepositoryMapper : SecureProfile
 {
   public ICRARepositoryMapper()
   {
