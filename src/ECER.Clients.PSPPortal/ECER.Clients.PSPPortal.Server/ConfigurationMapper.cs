@@ -4,10 +4,11 @@ using ECER.Clients.PSPPortal.Server.EducationInstitutions;
 using ECER.Clients.PSPPortal.Server.Programs;
 using System;
 using System.Linq;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.PSPPortal.Server;
 
-public class ConfigurationMapper : Profile
+public class ConfigurationMapper : SecureProfile
 {
   public ConfigurationMapper()
   {
