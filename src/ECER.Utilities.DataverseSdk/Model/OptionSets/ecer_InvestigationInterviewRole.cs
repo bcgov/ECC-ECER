@@ -48,9 +48,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Manager = 621870009,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Other = 621870021,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ParentofAllegedVictim = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

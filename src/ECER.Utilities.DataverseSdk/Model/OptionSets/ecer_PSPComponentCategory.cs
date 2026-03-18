@@ -21,10 +21,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Administration = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ProgramInstruction = 621870002,
+		Curriculumdesign = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ProgramIntent = 621870000,
+		Practicum = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Programinstruction = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Programintent = 621870000,
 	}
 }
 #pragma warning restore CS1591

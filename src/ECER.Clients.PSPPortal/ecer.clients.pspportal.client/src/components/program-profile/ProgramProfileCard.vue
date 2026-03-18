@@ -8,17 +8,15 @@
     <div class="d-flex justify-end">
       <v-row>
         <v-col></v-col>
-        <v-col v-if="updateInProgress" class="d-flex justify-end">
-          <p>Loading...</p>
-          <v-progress-circular
-            indeterminate
-            color="primary"
-            size="24"
-          ></v-progress-circular>
-        </v-col>
         <v-col class="d-flex justify-end">
           <v-chip :color="chipColour" variant="flat" size="small">
-            {{ statusText }}
+            <div :class="updateInProgress ? 'pr-2' : ''">{{ statusText }}</div>
+            <v-progress-circular
+              v-if="updateInProgress"
+              indeterminate
+              color="primary"
+              size="18"
+            />
           </v-chip>
         </v-col>
       </v-row>
