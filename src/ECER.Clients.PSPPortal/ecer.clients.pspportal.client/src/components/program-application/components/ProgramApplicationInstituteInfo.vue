@@ -683,8 +683,8 @@ export default defineComponent({
           this.programApplicationObject.programCampuses
         ) {
           if (
-            this.programApplicationObject.programCampuses.some(
-              (campus) => campus.campusId !== campusId,
+            !this.programApplicationObject.programCampuses.some(
+              (campus) => campus.campusId === campusId,
             )
           ) {
             this.programApplicationObject.programCampuses.push({
