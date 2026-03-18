@@ -469,7 +469,8 @@ export default defineComponent({
       },
       set(value: string | null) {
         if (this.programApplicationObject) {
-          this.programApplicationObject.programRepresentativeId = value;
+          this.programApplicationObject.programRepresentativeId =
+            value === "" ? null : value;
         }
       },
     },
@@ -499,7 +500,8 @@ export default defineComponent({
       },
       set(value: string | null) {
         if (this.programApplicationObject) {
-          this.programApplicationObject.programLength = value;
+          this.programApplicationObject.programLength =
+            value === "" ? null : value;
         }
       },
     },
@@ -539,7 +541,8 @@ export default defineComponent({
       },
       set(value: string | null) {
         if (this.programApplicationObject) {
-          this.programApplicationObject.minimumEnrollment = value;
+          this.programApplicationObject.minimumEnrollment =
+            value === "" ? null : value;
         }
       },
     },
@@ -549,7 +552,8 @@ export default defineComponent({
       },
       set(value: string | null) {
         if (this.programApplicationObject) {
-          this.programApplicationObject.maximumEnrollment = value;
+          this.programApplicationObject.maximumEnrollment =
+            value === "" ? null : value;
         }
       },
     },
