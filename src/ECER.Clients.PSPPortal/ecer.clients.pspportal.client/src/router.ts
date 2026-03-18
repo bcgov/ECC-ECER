@@ -123,11 +123,12 @@ const router = createRouter({
       props: true,
     },
     {
-      path: "/program-application-info",
+      path: "/program-application-info/:applicationType",
       component: () =>
         import("./components/pages/ProgramApplicationInfoContainer.vue"),
       name: "programApplicationInfo",
       meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
     },
     {
       path: "/program-profiles",

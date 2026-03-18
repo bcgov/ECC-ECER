@@ -111,7 +111,18 @@
 
         <v-row class="mt-4">
           <v-col cols="12">
-            <v-btn color="primary" variant="flat">Start your application</v-btn>
+            <v-btn
+              color="primary"
+              variant="flat"
+              @click="
+                router.push({
+                  name: 'programApplicationInfo',
+                  params: { applicationType: programApplicationType },
+                })
+              "
+            >
+              Start your application
+            </v-btn>
           </v-col>
         </v-row>
       </template>
@@ -161,6 +172,8 @@ import { getPrograms } from "@/api/program";
 import { getProgramApplications } from "@/api/program-application";
 import { useLoadingStore } from "@/store/loading";
 import type { Campus, Components } from "@/types/openapi";
+import { useRouter } from "vue-router";
+import { ProgramApplicationType } from "@/utils/constant";
 
 const PAGE_SIZE = 9;
 
@@ -187,7 +200,8 @@ export default defineComponent({
   },
   setup() {
     const loadingStore = useLoadingStore();
-    return { loadingStore };
+    const router = useRouter();
+    return { loadingStore, router };
   },
   data() {
     return {
@@ -208,6 +222,9 @@ export default defineComponent({
         this.loadingStore.isLoading("program_get") ||
         this.loadingStore.isLoading("program_application_get")
       );
+    },
+    programApplicationType(): string {
+      return ProgramApplicationType.NewCampusatRecognizedPrivateInstitution.toString();
     },
     currentProgramsPage: {
       get() {

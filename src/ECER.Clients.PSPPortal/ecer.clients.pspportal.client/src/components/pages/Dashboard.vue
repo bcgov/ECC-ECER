@@ -174,7 +174,12 @@
                 class="mt-4"
                 color="primary"
                 id="createProgramApplications"
-                @click="router.push('/program-application-info')"
+                @click="
+                  router.push({
+                    name: 'programApplicationInfo',
+                    params: { applicationType: programApplicationType },
+                  })
+                "
               >
                 Apply
               </v-btn>
@@ -232,6 +237,7 @@ import EducationInstitutionCard from "@/components/EducationInstitutionCard.vue"
 import { useMessageStore } from "@/store/message";
 import { getEducationInstitution } from "@/api/education-institution";
 import { getPrograms } from "@/api/program";
+import { ProgramApplicationType } from "@/utils/constant";
 
 export default defineComponent({
   name: "Dashboard",
@@ -365,6 +371,9 @@ export default defineComponent({
         this.loadingStore.isLoading("program_get") ||
         this.loading
       );
+    },
+    programApplicationType(): string {
+      return ProgramApplicationType.NewBasicECEPostBasicProgram.toString();
     },
   },
   methods: {
