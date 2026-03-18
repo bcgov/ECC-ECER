@@ -403,6 +403,7 @@ export default defineComponent({
               areaOfInstructionCourse.courseAreaOfInstructionId,
           ),
         ) || null;
+      this.courseDialogMode = "edit";
       this.showAddEditCourseDialog = true;
     },
     handleAddCourse() {
