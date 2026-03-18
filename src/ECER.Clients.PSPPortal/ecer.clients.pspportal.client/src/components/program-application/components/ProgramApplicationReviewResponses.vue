@@ -70,7 +70,9 @@
               <p class="small">Submitted by</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">-</p>
+              <p class="small font-weight-bold">
+                {{ programApplicationObject?.declarantName }}
+              </p>
             </v-col>
           </v-row>
 
@@ -79,7 +81,9 @@
               <p class="small">Submission date</p>
             </v-col>
             <v-col>
-              <p class="small font-weight-bold">-</p>
+              <p class="small font-weight-bold">
+                {{ programApplicationObject?.declarationDate }}
+              </p>
             </v-col>
           </v-row>
 
@@ -89,7 +93,7 @@
             </v-col>
             <v-col>
               <p class="small font-weight-bold">
-                {{ programApplicationObject?.status }}
+                {{ statusText }}
               </p>
             </v-col>
           </v-row>
@@ -363,6 +367,7 @@ import {
   mapEnrollmentOptions,
   mapAdmissionOptions,
   mapDeliveryMethods,
+  mapProgramStatus,
 } from "@/api/program-application";
 import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
@@ -394,6 +399,9 @@ export default defineComponent({
   },
   emits: { next: (_payload: NextStepPayload) => true },
   computed: {
+    statusText(): string {
+      return mapProgramStatus(this.programApplicationObject?.status);
+    },
     programType(): string {
       const types = this.programApplicationObject?.programTypes;
       if (!types?.length) return "—";

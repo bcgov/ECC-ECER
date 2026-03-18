@@ -70,7 +70,8 @@ internal class CommunicationRepositoryMapper : SecureProfile
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
       .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
       .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
-      .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension));
+      .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension))
+      .ForMember(d => d.EcerWebApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationName));
   }
 
   private static Guid? GetIcraEligibilityId(ecer_Communication src)

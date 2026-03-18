@@ -9,19 +9,18 @@ using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
 
-public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration, IFileScannerProvider fileScannerProvider, IMetadataResourceRepository metadataResourceRepository)
+public class FileHandlers(IObjectStorageProviderResolver objectStorageProviderResolver, IConfiguration configuration, IFileScannerProvider fileScannerProvider, IMetadataResourceRepository metadataResourceRepository)
   : IRequestHandler<SaveFileCommand, SaveFileCommandResponse>, IRequestHandler<DeleteFileCommand>, IRequestHandler<FileQuery, FileQueryResults>
 
 {
   public async Task<SaveFileCommandResponse> Handle(SaveFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-
-    var bucket = GetBucketName(configuration);
     var saveFileResults = new ConcurrentBag<SaveFileResult>();
     await Parallel.ForEachAsync(request.Items, cancellationToken, async (file, ct) =>
     {
-
+      var objectStorageProvider = objectStorageProviderResolver.resolve(file.FileLocation.ecerWebApplicationType);
+      var bucket = objectStorageProvider.BucketName;
       var tags = new Dictionary<string, string>(file.FileProperties.TagsList ?? Array.Empty<KeyValuePair<string, string>>());
 
       // Check if the classification property is not null or empty and the key doesn't already exist
@@ -33,7 +32,7 @@ public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfigur
       var scanResult = await fileScannerProvider.ScanAsync(file.Content, ct);
       if (scanResult.IsClean)
       {
-        await objectStorageProvider.StoreAsync(new S3Descriptor(bucket, file.FileLocation.Id, file.FileLocation.Folder), new FileObject(file.FileName, file.ContentType, file.Content, tags), ct);
+        await objectStorageProvider.StoreAsync(new S3Descriptor(bucket!, file.FileLocation.Id, file.FileLocation.Folder), new FileObject(file.FileName, file.ContentType, file.Content, tags), ct);
         saveFileResults.Add(new SaveFileResult(file, true, "File Saved Successfully"));
       }
       else
@@ -47,21 +46,23 @@ public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfigur
   public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var bucket = GetBucketName(configuration);
-    await objectStorageProvider.DeleteAsync(new S3Descriptor(bucket, request.Item.FileLocation.Id, request.Item.FileLocation.Folder), cancellationToken);
+    var objectStorageProvider = objectStorageProviderResolver.resolve(request.Item.FileLocation.ecerWebApplicationType);
+    var bucket = objectStorageProvider.BucketName;
+    await objectStorageProvider.DeleteAsync(new S3Descriptor(bucket!, request.Item.FileLocation.Id, request.Item.FileLocation.Folder), cancellationToken);
   }
 
   public async Task<FileQueryResults> Handle(FileQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    ArgumentNullException.ThrowIfNull(objectStorageProvider);
     ArgumentNullException.ThrowIfNull(configuration);
 
-    var bucket = GetBucketName(configuration);
     var files = new ConcurrentBag<FileData>();
     await Parallel.ForEachAsync(request.FileLocations, cancellationToken, async (fileLocation, ct) =>
     {
-      var file = await objectStorageProvider.GetAsync(new S3Descriptor(bucket, fileLocation.Id, fileLocation.Folder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(fileLocation.ecerWebApplicationType);
+      var bucket = objectStorageProvider.BucketName;
+
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(bucket!, fileLocation.Id, fileLocation.Folder), ct);
       var classification = file?.Tags?.SingleOrDefault(t => t.Key == "classification");
       var fileProperties = new FileProperties
       {
@@ -79,7 +80,4 @@ public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfigur
 
     return new FileQueryResults(files.ToList());
   }
-
-  private static string GetBucketName(IConfiguration configuration) =>
-    configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

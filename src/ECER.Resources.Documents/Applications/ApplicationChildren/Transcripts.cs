@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -66,7 +67,6 @@ internal sealed partial class ApplicationRepository
       d => d.ecer_TranscriptId == Guid.Parse(transcriptDocuments.TranscriptId) && d.ecer_Applicationid.Id == Guid.Parse(transcriptDocuments.ApplicationId));
     if (transcript == null) throw new InvalidOperationException($"Application '{transcriptDocuments.ApplicationId}' not found or Transcript '{transcriptDocuments.TranscriptId}' not found");
 
-
     if (transcriptDocuments.CourseOutlineOptions != null)
     {
       if (transcriptDocuments.CourseOutlineOptions.Value == CourseOutlineOptions.UploadNow)
@@ -116,7 +116,6 @@ internal sealed partial class ApplicationRepository
         transcript.ecer_ihavesubmittedanapplicationtobcits = false;
         transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = true;
       }
-
     }
 
     await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, "Course Outline", cancellationToken);
@@ -136,8 +135,9 @@ internal sealed partial class ApplicationRepository
     {
       var sourceFolder = "tempfolder";
       var destinationFolder = "ecer_transcript/" + transcript.Id;
-      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
-      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), ct);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
       var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == transcript.ecer_Applicantid.Id);
       if (applicant == null) throw new InvalidOperationException($"Applicant '{transcript.ecer_Applicantid.Id}' not found");
@@ -150,7 +150,8 @@ internal sealed partial class ApplicationRepository
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
         StateCode = bcgov_documenturl_statecode.Active,
-        ecer_Tag1 = tagName
+        ecer_Tag1 = tagName,
+        ecer_ApplicationName = EcerWebApplicationType.Registry.ToString()
       };
 
       context.AddObject(documenturl);

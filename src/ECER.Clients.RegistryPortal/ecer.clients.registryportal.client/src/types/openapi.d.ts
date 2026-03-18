@@ -267,6 +267,7 @@ declare namespace Components {
       extention?: string | null;
       name?: string | null;
       size?: string | null;
+      ecerWebapplicationType?: EcerWebApplicationType;
     }
     /**
      * Save communication response
@@ -347,6 +348,7 @@ declare namespace Components {
     export interface DraftICRAEligibilityResponse {
       eligibility?: ICRAEligibility;
     }
+    export type EcerWebApplicationType = "Psp" | "Registry";
     export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
     export type EducationRecognition = "Recognized" | "NotRecognized";
     export interface EmploymentReference {
@@ -2488,6 +2490,7 @@ export type DraftApplicationResponse =
   Components.Schemas.DraftApplicationResponse;
 export type DraftICRAEligibilityResponse =
   Components.Schemas.DraftICRAEligibilityResponse;
+export type EcerWebApplicationType = Components.Schemas.EcerWebApplicationType;
 export type EducationOrigin = Components.Schemas.EducationOrigin;
 export type EducationRecognition = Components.Schemas.EducationRecognition;
 export type EmploymentReference = Components.Schemas.EmploymentReference;

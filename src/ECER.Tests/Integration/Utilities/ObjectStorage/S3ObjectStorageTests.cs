@@ -15,8 +15,8 @@ namespace ECER.Tests.Integration.Utilities.ObjectStorage;
 public class S3ObjectStorageTests(ITestOutputHelper testOutput) : IAsyncLifetime
 {
   private readonly Faker faker = new Faker();
-
-  private IObjecStorageProvider storageProvider => scope.ServiceProvider.GetRequiredService<IObjecStorageProvider>();
+  private IObjectStorageProviderResolver objectStorageProviderResolver => scope.ServiceProvider.GetRequiredService<IObjectStorageProviderResolver>();
+  private IObjecStorageProvider storageProvider => objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
   private string bucket = null!;
   private IServiceScope scope = null!;
 
@@ -108,7 +108,7 @@ public class S3ObjectStorageTests(ITestOutputHelper testOutput) : IAsyncLifetime
 
     configurer.Configure(new ConfigurationContext(services, configuration, logger));
     scope = services.BuildServiceProvider().CreateScope();
-    bucket = configuration.GetValue<string>("objectStorage:bucketName")!;
+    bucket = configuration.GetValue<string>("objectStorage:registry:bucketName")!;
   }
 
   public async Task DisposeAsync()

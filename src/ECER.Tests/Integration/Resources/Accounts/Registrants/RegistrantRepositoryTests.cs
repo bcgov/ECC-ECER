@@ -88,6 +88,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
     user.Profile.PreviousNames = user.Profile.PreviousNames.ToArray();
     //dynamics automatically assigns a registration number. So we mock it when doing our comparison.
     updatedUserProfile.RegistrationNumber = user.Profile.RegistrationNumber;
+    updatedUserProfile.MiddleName = userProfile.MiddleName; //middle name should not be mapped these are read only fields for updates.
     user.Profile.ShouldBe(updatedUserProfile);
   }
 

@@ -40,7 +40,7 @@ public class FilesEndpoints : IRegisterEndpoints
       var certificateFile = certificate?.Files.Where(f => f.Tag1Name == "Certificate").OrderByDescending(f => f.CreatedOn).FirstOrDefault();
       if (certificateFile == null) return TypedResults.NotFound();
 
-      var results = await messageBus.Send(new FileQuery([new FileLocation(certificateFile.Id, certificateFile.Url ?? string.Empty)]), ct);
+      var results = await messageBus.Send(new FileQuery([new FileLocation(certificateFile.Id, certificateFile.Url ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry)]), ct);
       var file = results.Items.SingleOrDefault();
       if (file == null) return TypedResults.NotFound();
 
@@ -74,7 +74,7 @@ public class FilesEndpoints : IRegisterEndpoints
       var communicationFile = communication?.Documents.FirstOrDefault(d => d.Id == fileId);
       if (communicationFile == null) return TypedResults.NotFound();
 
-      var results = await messageBus.Send(new FileQuery([new FileLocation(communicationFile.Id, communicationFile.Url ?? string.Empty)]), ct);
+      var results = await messageBus.Send(new FileQuery([new FileLocation(communicationFile.Id, communicationFile.Url ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry)]), ct);
       var file = results.Items.SingleOrDefault();
       if (file == null) return TypedResults.NotFound();
 
@@ -92,7 +92,7 @@ public class FilesEndpoints : IRegisterEndpoints
       IOptions<UploaderSettings> uploaderOptions,
       CancellationToken ct) =>
   {
-    var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty)], TrackDownload: false), ct);
+    var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry)], TrackDownload: false), ct);
     var file = results.Items.SingleOrDefault();
     if (file == null) return TypedResults.NotFound();
     await messageBus.Send(new DeleteFileCommand(file), ct);
@@ -126,7 +126,7 @@ public class FilesEndpoints : IRegisterEndpoints
       var fileProperties = new FileProperties();
       var sanitizedFilename = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(file.FileName));
 
-      var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty), fileProperties, sanitizedFilename, file.ContentType, file.OpenReadStream())).ToList();
+      var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry), fileProperties, sanitizedFilename, file.ContentType, file.OpenReadStream())).ToList();
       if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Title = "No files were uploaded" });
       var response = await messageBus.Send(new SaveFileCommand(files), ct);
       var saveResult = response.Items.FirstOrDefault();
