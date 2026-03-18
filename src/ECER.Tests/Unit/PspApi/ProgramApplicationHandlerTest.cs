@@ -1,5 +1,8 @@
 using AutoMapper;
+using ECER.Engines.Validation.ProgramApplications;
 using ECER.Managers.Registry;
+using ECER.Resources.Documents.Courses;
+using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.ProgramApplications;
 using Moq;
 using Shouldly;
@@ -25,11 +28,17 @@ namespace ECER.Tests.Unit.PspApi;
 public class ProgramApplicationHandlerTest
 {
   private readonly Mock<IProgramApplicationRepository> _repositoryMock;
+  private readonly Mock<IMetadataResourceRepository> _metadataRepositoryMock;
+  private readonly Mock<ICourseRepository> _courseRepositoryMock;
+  private readonly Mock<IProgramApplicationValidationEngine> _validationEngineMock;
   private readonly Mock<IMapper> _mapperMock;
 
   public ProgramApplicationHandlerTest()
   {
     _repositoryMock = new Mock<IProgramApplicationRepository>();
+    _metadataRepositoryMock = new Mock<IMetadataResourceRepository>();
+    _courseRepositoryMock = new Mock<ICourseRepository>();
+    _validationEngineMock = new Mock<IProgramApplicationValidationEngine>();
     _mapperMock = new Mock<IMapper>();
   }
 
@@ -77,7 +86,7 @@ public class ProgramApplicationHandlerTest
       .Setup(m => m.Map<ContractProgramApplication>(queriedApplication))
       .Returns(expectedContract);
 
-    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _mapperMock.Object);
+    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _metadataRepositoryMock.Object, _courseRepositoryMock.Object, _validationEngineMock.Object, _mapperMock.Object);
 
     var result = await handler.Handle(command, CancellationToken.None);
 
@@ -106,7 +115,7 @@ public class ProgramApplicationHandlerTest
     _repositoryMock.Setup(r => r.Query(It.IsAny<ResourcesProgramApplicationQuery>(), It.IsAny<CancellationToken>()))
       .ReturnsAsync(new ResourcesProgramApplicationQueryResults(Array.Empty<ResourcesProgramApplication>(), 0));
 
-    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _mapperMock.Object);
+    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _metadataRepositoryMock.Object, _courseRepositoryMock.Object, _validationEngineMock.Object, _mapperMock.Object);
 
     var result = await handler.Handle(command, CancellationToken.None);
 
@@ -116,7 +125,7 @@ public class ProgramApplicationHandlerTest
   [Fact]
   public async Task Handle_UpdateComponentGroupCommand_NullRequest_ThrowsArgumentNullException()
   {
-    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _mapperMock.Object);
+    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _metadataRepositoryMock.Object, _courseRepositoryMock.Object, _validationEngineMock.Object, _mapperMock.Object);
 
     await Should.ThrowAsync<ArgumentNullException>(() => handler.Handle((UpdateComponentGroupCommand)null!, CancellationToken.None));
   }
@@ -150,7 +159,7 @@ public class ProgramApplicationHandlerTest
       .Setup(m => m.Map<IEnumerable<ContractProgramApplicationComponent>>(resourcesResult.SingleOrDefault()!.Components))
       .Returns(contractComponents);
 
-    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _mapperMock.Object);
+    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _metadataRepositoryMock.Object, _courseRepositoryMock.Object, _validationEngineMock.Object, _mapperMock.Object);
 
     var result = await handler.Handle(command, CancellationToken.None);
 
@@ -173,7 +182,7 @@ public class ProgramApplicationHandlerTest
     _repositoryMock.Setup(r => r.UpdateComponentGroup(It.IsAny<ResourcesComponentGroupWithComponents>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(groupId);
    _mapperMock.Setup(m => m.Map<IEnumerable<ContractProgramApplicationComponent>>(It.IsAny<IEnumerable<ResourcesProgramApplicationComponent>>())).Returns(Array.Empty<ContractProgramApplicationComponent>());
 
-    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _mapperMock.Object);
+    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _metadataRepositoryMock.Object, _courseRepositoryMock.Object, _validationEngineMock.Object, _mapperMock.Object);
     await handler.Handle(command, CancellationToken.None);
   }
 }

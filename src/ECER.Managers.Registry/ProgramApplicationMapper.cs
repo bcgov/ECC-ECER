@@ -32,6 +32,9 @@ internal class ProgramApplicationMapper: Profile
       .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ProgramCampuses))
       .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.OtherAdmissionOptions))
       .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.InstituteInfoEntryProgress))
+      .ForMember(d => d.DeclarantName, opts => opts.MapFrom(s => s.DeclarantName))
+      .ForMember(d => d.DeclarationAccepted, opts => opts.MapFrom(s => s.DeclarationAccepted))
+      .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.DeclarationDate))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
     

@@ -81,9 +81,30 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/education-institution/:institutionId/campus/add",
+      component: () => import("./components/pages/AddCampus.vue"),
+      name: "add-campus",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/education-institution/:institutionId/campus/:campusId",
       component: () => import("./components/pages/Campus.vue"),
       name: "campus",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/education-institution/:institutionId/campus/:campusId/edit",
+      component: () => import("./components/pages/EditCampus.vue"),
+      name: "edit-campus",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/education-institution/:institutionId/satellite-location/add",
+      component: () => import("./components/pages/AddSatelliteLocation.vue"),
+      name: "add-satellite-location",
       meta: { requiresAuth: true },
       props: true,
     },
@@ -253,7 +274,22 @@ const router = createRouter({
           meta: { requiresAuth: true, requiresVerification: true },
           props: true,
         },
+        {
+          path: "component/submit",
+          component: () =>
+            import("./components/program-application/components/SubmitApplication.vue"),
+          name: "submit-application",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
       ],
+    },
+    {
+      path: "/program-application/:programApplicationId/submitted",
+      component: () => import("./components/pages/ApplicationSubmitted.vue"),
+      name: "application-submitted",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
     },
   ],
 });

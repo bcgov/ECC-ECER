@@ -1,10 +1,11 @@
 using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
 using ECER.Utilities.ObjectStorage.Providers;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.PSPPortal.Server.Communications
 {
-  public class CommunicationMapper : Profile
+  public class CommunicationMapper : SecureProfile
   {
     public CommunicationMapper()
     {

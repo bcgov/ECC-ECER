@@ -62,6 +62,7 @@ declare namespace Components {
     export interface Campus {
       id?: string | null;
       name?: string | null;
+      generatedName?: string | null;
       status?: CampusStatus;
       isSatelliteOrTemporaryLocation?: boolean | null;
       street1?: string | null;
@@ -70,7 +71,9 @@ declare namespace Components {
       city?: string | null;
       province?: string | null;
       postalCode?: string | null;
+      keyCampusContactId?: string | null;
       keyCampusContactName?: string | null;
+      otherCampusContactName?: string | null;
     }
     export type CampusStatus = "None" | "Active" | "Inactive";
     export interface Communication {
@@ -166,6 +169,19 @@ declare namespace Components {
       courseAreaOfInstructionId?: string | null;
       newHours?: string | null;
       areaOfInstructionId?: string | null;
+    }
+    export interface CreateCampusRequest {
+      name?: string | null;
+      isSatelliteOrTemporaryLocation?: boolean | null;
+      street1?: string | null;
+      street2?: string | null;
+      street3?: string | null;
+      city?: string | null;
+      province?: string | null;
+      postalCode?: string | null;
+      keyCampusContactId?: string | null;
+      otherCampusContactName?: string | null;
+      programIds?: string[] | null;
     }
     export interface CreateProgramApplicationRequest {
       programApplicationName?: string | null;
@@ -337,6 +353,9 @@ declare namespace Components {
       programCampuses?: ProgramCampus[] | null;
       otherAdmissionOptions?: string | null;
       instituteInfoEntryProgress?: string | null;
+      declarationDate?: string | null; // date-time
+      declarationAccepted?: boolean | null;
+      declarantName?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;
@@ -446,8 +465,25 @@ declare namespace Components {
        */
       communicationId?: string | null;
     }
+    export interface SubmitProgramApplicationRequest {
+      declaration?: boolean;
+    }
+    export interface SubmitProgramApplicationResponse {
+      programApplicationId?: string | null;
+    }
     export interface SubmitProgramRequest {
       programId?: string | null;
+    }
+    export interface UpdateCampusRequest {
+      name?: string | null;
+      street1?: string | null;
+      street2?: string | null;
+      street3?: string | null;
+      city?: string | null;
+      province?: string | null;
+      postalCode?: string | null;
+      keyCampusContactId?: string | null;
+      otherCampusContactName?: string | null;
     }
     export interface UpdateCourseRequest {
       course?: Course;
@@ -466,6 +502,27 @@ declare namespace Paths {
   namespace AreaOfInstructionGet {
     namespace Responses {
       export type $200 = Components.Schemas.AreaOfInstructionListResponse;
+    }
+  }
+  namespace CampusPost {
+    export type RequestBody = Components.Schemas.CreateCampusRequest;
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace CampusPut {
+    namespace Parameters {
+      export type CampusId = string;
+    }
+    export interface PathParameters {
+      campusId: Parameters.CampusId;
+    }
+    export type RequestBody = Components.Schemas.UpdateCampusRequest;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace ChangeprogramPut {
@@ -747,6 +804,21 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.ProgramApplication;
     namespace Responses {
       export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationSubmitPost {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody =
+      Components.Schemas.SubmitProgramApplicationRequest;
+    namespace Responses {
+      export type $200 = Components.Schemas.SubmitProgramApplicationResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -1121,6 +1193,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProgramApplicationComponentGroupPut.Responses.$200>;
   /**
+   * program_application_submit_post - Submit a program application
+   */
+  "program_application_submit_post"(
+    parameters?: Parameters<Paths.ProgramApplicationSubmitPost.PathParameters> | null,
+    data?: Paths.ProgramApplicationSubmitPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationSubmitPost.Responses.$200>;
+  /**
    * portal_invitation_get - Handles portal invitation queries
    */
   "portal_invitation_get"(
@@ -1168,6 +1248,22 @@ export interface OperationMethods {
     data?: Paths.EducationInstitutionPut.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
+  /**
+   * campus_post - Creates a new campus or satellite location for the user's institution
+   */
+  "campus_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CampusPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CampusPost.Responses.$200>;
+  /**
+   * campus_put - Updates an existing campus
+   */
+  "campus_put"(
+    parameters?: Parameters<Paths.CampusPut.PathParameters> | null,
+    data?: Paths.CampusPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CampusPut.Responses.$200>;
   /**
    * course_put - Update a course for a program profile
    */
@@ -1490,6 +1586,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ProgramApplicationComponentGroupPut.Responses.$200>;
   };
+  ["/api/programApplications/{id}/submit"]: {
+    /**
+     * program_application_submit_post - Submit a program application
+     */
+    "post"(
+      parameters?: Parameters<Paths.ProgramApplicationSubmitPost.PathParameters> | null,
+      data?: Paths.ProgramApplicationSubmitPost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationSubmitPost.Responses.$200>;
+  };
   ["/api/PortalInvitations/{token}"]: {
     /**
      * portal_invitation_get - Handles portal invitation queries
@@ -1545,6 +1651,26 @@ export interface PathsDictionary {
       data?: Paths.EducationInstitutionPut.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.EducationInstitutionPut.Responses.$200>;
+  };
+  ["/api/education-institution/campus"]: {
+    /**
+     * campus_post - Creates a new campus or satellite location for the user's institution
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CampusPost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CampusPost.Responses.$200>;
+  };
+  ["/api/education-institution/campus/{campusId}"]: {
+    /**
+     * campus_put - Updates an existing campus
+     */
+    "put"(
+      parameters?: Parameters<Paths.CampusPut.PathParameters> | null,
+      data?: Paths.CampusPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CampusPut.Responses.$200>;
   };
   ["/api/courses/{courseId}"]: {
     /**
@@ -1661,6 +1787,7 @@ export type Country = Components.Schemas.Country;
 export type Course = Components.Schemas.Course;
 export type CourseAreaOfInstruction =
   Components.Schemas.CourseAreaOfInstruction;
+export type CreateCampusRequest = Components.Schemas.CreateCampusRequest;
 export type CreateProgramApplicationRequest =
   Components.Schemas.CreateProgramApplicationRequest;
 export type CreateProgramApplicationResponse =
@@ -1718,7 +1845,12 @@ export type SaveDraftProgramRequest =
   Components.Schemas.SaveDraftProgramRequest;
 export type SendMessageRequest = Components.Schemas.SendMessageRequest;
 export type SendMessageResponse = Components.Schemas.SendMessageResponse;
+export type SubmitProgramApplicationRequest =
+  Components.Schemas.SubmitProgramApplicationRequest;
+export type SubmitProgramApplicationResponse =
+  Components.Schemas.SubmitProgramApplicationResponse;
 export type SubmitProgramRequest = Components.Schemas.SubmitProgramRequest;
+export type UpdateCampusRequest = Components.Schemas.UpdateCampusRequest;
 export type UpdateCourseRequest = Components.Schemas.UpdateCourseRequest;
 export type VersionMetadata = Components.Schemas.VersionMetadata;
 export type WorkHoursType = Components.Schemas.WorkHoursType;

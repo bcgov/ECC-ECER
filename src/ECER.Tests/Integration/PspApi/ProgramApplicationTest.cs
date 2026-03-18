@@ -247,4 +247,80 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     var result = await response.ReadAsJsonAsync<string>();
     result.ShouldNotBeNull();
   }
+
+  [Fact]
+  public async Task SubmitProgramApplication_WithInvalidGuidFormat_ReturnsBadRequest()
+  {
+    var request = new SubmitProgramApplicationRequest { Declaration = true };
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(request).ToUrl("/api/programApplications/not-a-valid-guid/submit");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+
+  [Fact]
+  public async Task SubmitProgramApplication_WhenApplicationDoesNotExist_ReturnsNotFound()
+  {
+    var nonExistentId = Guid.NewGuid().ToString();
+    var request = new SubmitProgramApplicationRequest { Declaration = true };
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(request).ToUrl($"/api/programApplications/{nonExistentId}/submit");
+      _.StatusCodeShouldBe(HttpStatusCode.NotFound);
+    });
+  }
+
+  [Fact]
+  public async Task SubmitProgramApplication_WhenApplicationNotInDraftStatus_ReturnsNotFound()
+  {
+    var request = new SubmitProgramApplicationRequest { Declaration = true };
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(request).ToUrl($"/api/programApplications/{Fixture.programApplicationId}/submit");
+      _.StatusCodeShouldBe(HttpStatusCode.NotFound);
+    });
+  }
+
+  [Fact]
+  public async Task SubmitProgramApplication_WithIncompleteComponentGroup_ReturnsBadRequestWithValidationErrors()
+  {
+    var request = new SubmitProgramApplicationRequest { Declaration = true };
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(request).ToUrl($"/api/programApplications/{Fixture.componentTestProgramApplicationId}/submit");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+
+    var error = await response.ReadAsJsonAsync<SubmitProgramApplicationValidationError>();
+    error.ShouldNotBeNull();
+    error.ValidationErrors.ShouldNotBeEmpty();
+    error.Error.ShouldBe("ValidationFailed");
+  }
+
+  [Fact]
+  public async Task SubmitProgramApplication_WithDeclarationNotAccepted_ReturnsBadRequestWithDeclarationValidationError()
+  {
+    var request = new SubmitProgramApplicationRequest { Declaration = false };
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(request).ToUrl($"/api/programApplications/{Fixture.componentTestProgramApplicationId}/submit");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+
+    var error = await response.ReadAsJsonAsync<SubmitProgramApplicationValidationError>();
+    error.ShouldNotBeNull();
+    error.ValidationErrors.ShouldNotBeEmpty();
+    error.ValidationErrors.ShouldContain(e => e.Contains("Declaration must be accepted to submit the program application"));
+  }
 }

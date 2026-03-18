@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk;
 
 namespace ECER.Resources.Documents.Applications;
 
-internal class ApplicationRepositoryMapper : Profile
+internal class ApplicationRepositoryMapper : SecureProfile
 {
   public ApplicationRepositoryMapper()
   {

@@ -11,7 +11,7 @@
               v-bind="props"
               icon="mdi-pencil"
               variant="plain"
-              @click="router.push('education-institution/edit')"
+              @click="router.push({ name: 'edit-education-institution' })"
             />
           </template>
         </v-tooltip>
@@ -82,7 +82,10 @@
           color="primary"
           id="btnEducationInstitution"
           @click="
-            router.push(`education-institution/${educationInstitution.id}`)
+            router.push({
+              name: 'education-institution',
+              params: { institutionId: educationInstitution.id },
+            })
           "
         >
           View Institution Details

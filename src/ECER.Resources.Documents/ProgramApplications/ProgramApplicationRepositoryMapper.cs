@@ -17,6 +17,9 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForSourceMember(s => s.DeliveryType, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.InstituteInfoEntryProgress, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.DeclarationAccepted, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.DeclarantName, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_PostSecondaryInstituteProgramApplicaitonId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_statusreasondetail, opts => opts.MapFrom(s => s.StatusReasonDetail))
@@ -51,6 +54,9 @@ internal class ProgramApplicationRepositoryMapper : Profile
       .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton))
       .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.ecer_OtherAdmissionOptions))
       .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.ecer_InstitutionProgramInformationEntryProgress))
+      .ForMember(d => d.DeclarantName, opts => opts.MapFrom(s => s.ecer_SubmittedByProgramRepresentativeIdName))
+      .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DateofApplicationShort))
+      .ForMember(d => d.DeclarationAccepted, opts => opts.MapFrom(s => s.ecer_AgreeNotifyofChanges == ecer_YesNoNull.Yes))
       ;
     
     CreateMap<ecer_ProgramCampus, ProgramCampus>(MemberList.Destination)

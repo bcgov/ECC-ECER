@@ -1,3 +1,5 @@
+using ECER.Resources.Documents.Shared;
+
 namespace ECER.Resources.Documents.ProgramApplications;
 
 public interface IProgramApplicationRepository
@@ -8,6 +10,7 @@ public interface IProgramApplicationRepository
   Task<IEnumerable<NavigationMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
   Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
   Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken);
+  Task<string> Submit(string applicationId, string programRepresentativeId, bool declaration, CancellationToken cancellationToken);
 }
 
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
@@ -66,6 +69,9 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
   public string? OtherAdmissionOptions  { get; set; }
   public string? InstituteInfoEntryProgress { get; set; }
+  public DateTime? DeclarationDate { get; set; }
+  public bool? DeclarationAccepted { get; set; }
+  public string? DeclarantName { get; set; }
 }
 
 public record ProgramCampus

@@ -19,6 +19,16 @@ public record PostSecondaryInstitutionsQueryResults(IEnumerable<PostSecondaryIns
 
 public record UpdatePostSecondaryInstitutionCommand(PostSecondaryInstitute Institute) : IRequest<string>;
 
+/// <summary>
+/// Creates a new campus or satellite location under the institution of the given program representative
+/// </summary>
+public record CreateCampusCommand(string ProgramRepresentativeId, Campus Campus, bool IsSatelliteOrTemporaryLocation, IEnumerable<string>? ProgramIds = null) : IRequest<string>;
+
+/// <summary>
+/// Updates an existing campus - IsSatelliteOrTemporaryLocation cannot be changed
+/// </summary>
+public record UpdateCampusCommand(string ProgramRepresentativeId, Campus Campus) : IRequest<string>;
+
 public record PostSecondaryInstitute
 {
   public string Id { get; set; } = null!;
@@ -41,6 +51,7 @@ public record Campus
 {
   public string Id { get; set; } = null!;
   public string? Name { get; set; }
+  public string? GeneratedName { get; set; }
   public CampusStatus? Status { get; set; }
   public bool? IsSatelliteOrTemporaryLocation { get; set; }
   public string? Street1 { get; set; }
@@ -49,7 +60,9 @@ public record Campus
   public string? City { get; set; }
   public string? Province { get; set; }
   public string? PostalCode { get; set; }
+  public string? KeyCampusContactId { get; set; }
   public string? KeyCampusContactName { get; set; }
+  public string? OtherCampusContactName { get; set; }
 }
 public enum CampusStatus
 {

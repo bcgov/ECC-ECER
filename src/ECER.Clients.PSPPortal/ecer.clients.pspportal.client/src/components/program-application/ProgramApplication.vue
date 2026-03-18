@@ -34,7 +34,7 @@
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
-      <v-col lg="8" md="6" sm="auto">
+      <v-col>
         <router-view @next="handleNext" />
       </v-col>
     </v-row>
@@ -125,7 +125,9 @@ export default defineComponent({
         {
           name: "program-application-program-profile-area-of-instruction-review",
         },
-        //TODO { name: "some-future-route" }
+        {
+          name: "submit-application",
+        },
       ];
     },
     breadcrumbItems() {

@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Resources.Accounts.Communications;
 
 namespace ECER.Managers.Registry;
 
-internal class CommunicationMapper : Profile
+internal class CommunicationMapper : SecureProfile
 {
   public CommunicationMapper()
   {
