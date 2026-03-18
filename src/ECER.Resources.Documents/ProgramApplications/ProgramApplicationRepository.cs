@@ -120,6 +120,14 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
           }
         }
       }
+      else
+      {
+        var listOfExistingProgramCampuses = context.ecer_ProgramCampusSet.Where(c => c.ecer_EducationalInstitutionId.Id == instituteId && c.ecer_ProgramApplicationId.Id == entity.Id).ToList();
+        foreach (var campus in listOfExistingProgramCampuses)
+        {
+          context.DeleteObject(campus);
+        }
+      }
 
       context.Detach(existingApplication);
       context.Attach(entity);
