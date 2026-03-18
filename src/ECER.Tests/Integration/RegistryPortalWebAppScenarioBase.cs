@@ -552,6 +552,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_LastName = "autotest_charref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
+        ecer_Type = ecer_PortalInvitationTypes.CharacterReference,
       };
 
       context.AddObject(characterReference);
@@ -614,10 +615,12 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_FirstName = "autotest_workref_first",
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
+        ecer_Type = ecer_PortalInvitationTypes.WorkExperienceReferenceforApplication,
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
       context.AddObject(workexperienceReference);
+      //context.AddLink(workexperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, registrant);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
@@ -664,9 +667,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
+        ecer_Type = ecer_PortalInvitationTypes.WorkExperienceReferenceforApplication,
       };
 
       context.AddObject(workexperienceReference);
+      context.AddLink(workexperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, registrant);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication2);
