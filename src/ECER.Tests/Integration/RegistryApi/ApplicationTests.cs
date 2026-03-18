@@ -499,6 +499,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   {
     // Create Renewal Draft Application
     var application = Create400HoursTypeRenewalDraftApplication();
+    application.FromCertificate = this.Fixture.activeCertificationOneId;
 
     // Save Renewal Draft Application
     var newDraftApplicationResponse = await Host.Scenario(_ =>
@@ -543,6 +544,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var testFolder = "tempfolder";
     var testTags = "tag1=1,tag2=2";
     var testClassification = "test-classification";
+    var testApplication = "Registry";
     using var content = new StreamContent(testFile.Content);
     content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
@@ -557,6 +559,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", testApplication);
       _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });

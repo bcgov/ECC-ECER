@@ -6,6 +6,8 @@ namespace ECER.Utilities.ObjectStorage.Providers.Dataverse;
 
 internal class DataverseProvider(IOrganizationServiceAsync organizationService) : IObjecStorageProvider
 {
+  public string BucketName => throw new NotImplementedException();
+
   public Task CopyAsync(Descriptor source, Descriptor destination, CancellationToken ct) => throw new NotImplementedException();
 
   public Task DeleteAsync(Descriptor source, CancellationToken ct) => throw new NotImplementedException();

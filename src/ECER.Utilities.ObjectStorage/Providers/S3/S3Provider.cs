@@ -1,13 +1,15 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
 namespace ECER.Utilities.ObjectStorage.Providers.S3;
 
-internal class S3Provider(IAmazonS3 s3Client) : IObjecStorageProvider
+internal class S3Provider(IAmazonS3 s3Client, string bucketName) : IObjecStorageProvider
 {
   internal static readonly string TraceSourceName = typeof(S3Provider).FullName!;
   private static ActivitySource activitySource = new(TraceSourceName);
+  public string BucketName => bucketName;
 
   public async Task StoreAsync(Descriptor destination, FileObject obj, CancellationToken ct)
   {

@@ -20,7 +20,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitationWorkExperienceReferenceIdSubmit;
-    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation,  7), CancellationToken.None);
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
@@ -50,7 +50,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
     var verifyResponse = await bus.Send(new PortalInvitationVerificationQuery(token), CancellationToken.None);
 
     verifyResponse.Invitation.ShouldBeNull();
-    verifyResponse.ErrorMessage.ShouldBe("Reference has already been submitted.");
+    verifyResponse.ErrorMessage.ShouldBe("Portal Invitation Wrong Status");
     verifyResponse.IsSuccess.ShouldBeFalse();
 
     await Host.Scenario(_ =>

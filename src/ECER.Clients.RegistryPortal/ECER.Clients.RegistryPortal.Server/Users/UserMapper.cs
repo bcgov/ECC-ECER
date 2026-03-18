@@ -1,3 +1,4 @@
+﻿using ECER.Utilities.ObjectStorage.Providers;
 ﻿using AutoMapper;
 using ECER.Infrastructure.Common;
 
@@ -45,7 +46,9 @@ internal sealed class UserMapper : SecureProfile
         opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
       .ReverseMap();
 
-    CreateMap<Managers.Registry.Contract.Registrants.IdentityDocument, IdentityDocument>().ReverseMap();
+    CreateMap<Managers.Registry.Contract.Registrants.IdentityDocument, IdentityDocument>()
+      .ReverseMap()
+      .ForMember(s => s.EcerWebApplicationType, opts => opts.MapFrom(_ => EcerWebApplicationType.Registry)); //force any file requests from registry to send to registry;
 
     CreateMap<UserProfile, Managers.Registry.Contract.Registrants.UserProfile>()
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.PreviousNames))

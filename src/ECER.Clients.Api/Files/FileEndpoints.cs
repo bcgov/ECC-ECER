@@ -1,5 +1,6 @@
 ﻿using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.ObjectStorage.Providers;
 using MediatR;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -18,17 +19,19 @@ public class FileEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapGet("/api/files/{fileId}", async Task<Results<FileStreamHttpResult, NotFound>> (
         string fileId,
         [FromHeader(Name = "file-folder")] string? folder,
+        [FromHeader(Name = "application")][Required] EcerWebApplicationType application,
         IMediator messageBus,
         HttpContext ctx,
         CancellationToken ct) =>
       {
-        var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, folder ?? string.Empty)]), ct);
+        var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, folder ?? string.Empty, application)], false), ct);
         var file = results.Items.SingleOrDefault();
         if (file == null) return TypedResults.NotFound();
 
         ctx.Response.Headers.Append("file-folder", file.FileLocation.Folder);
         ctx.Response.Headers.Append("file-tag", file.FileProperties.Tags);
         ctx.Response.Headers.Append("file-classification", file.FileProperties.Classification);
+        ctx.Response.Headers.Append("application", file.FileLocation.ecerWebApplicationType.ToString());
         return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
       })
       .RequireAuthorization()
@@ -39,6 +42,7 @@ public class FileEndpoints : IRegisterEndpoints
         [FromHeader(Name = "file-classification")][Required] string classification,
         [FromHeader(Name = "file-tag")] string? tags,
         [FromHeader(Name = "file-folder")] string? folder,
+        [FromHeader(Name = "application")][Required] EcerWebApplicationType application,
         HttpContext httpContext,
         IMediator messageBus,
         CancellationToken ct) =>
@@ -48,7 +52,7 @@ public class FileEndpoints : IRegisterEndpoints
         if (feature != null) feature.MaxRequestBodySize = FILE_MAX_SIZE;
 
         var fileProperties = new FileProperties() { Classification = classification, Tags = tags };
-        var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, folder ?? string.Empty), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
+        var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, folder ?? string.Empty, application), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
         if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Detail = "No files were uploaded" });
         var response = await messageBus.Send(new SaveFileCommand(files), ct);
         var saveResult = response.Items.FirstOrDefault();

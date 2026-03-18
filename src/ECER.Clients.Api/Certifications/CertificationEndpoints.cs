@@ -32,7 +32,7 @@ public class CertificationEndpoints : IRegisterEndpoints
       HttpContext ctx,
       CancellationToken ct) =>
      {
-       var certificationFiles = await messageBus.Send(new GetCertificationFileCommand(id), ct);
+       var certificationFiles = await messageBus.Send(new GetCertificationFileCommand(id, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry), ct);
 
        var file = certificationFiles.Items.SingleOrDefault();
        if (file == null) return TypedResults.NotFound();

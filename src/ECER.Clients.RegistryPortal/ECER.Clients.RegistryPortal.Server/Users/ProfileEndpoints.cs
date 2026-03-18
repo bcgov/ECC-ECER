@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -97,6 +98,7 @@ public record IdentityDocument(string Id)
   public string Extention { get; set; } = null!;
   public string Name { get; set; } = null!;
   public string Size { get; set; } = null!;
+  public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
 /// <summary>
