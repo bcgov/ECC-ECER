@@ -327,7 +327,11 @@ public class ProgramApplicationSubmissionValidationEngineTests
     new(
       ComponentGroupStatuses: groups ?? Enumerable.Empty<ComponentGroupValidationStatus>(),
       Courses: courses ?? Enumerable.Empty<Course>(),
-      ProgramTypes: programTypes ?? Enumerable.Empty<ProgramCertificationType>(),
+      ProgramApplication: new ProgramApplication(null, "test-psi")
+      {
+        ProgramTypes = programTypes?.ToList(),
+        InstituteInfoEntryProgress = "Completed",
+      },
       AreasOfInstruction: areasOfInstruction ?? new List<AreaOfInstruction>().AsReadOnly(),
       DeclarationAccepted: declarationAccepted);
 

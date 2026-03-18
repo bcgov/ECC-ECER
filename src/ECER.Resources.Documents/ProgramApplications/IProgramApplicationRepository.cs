@@ -11,7 +11,6 @@ public interface IProgramApplicationRepository
   Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
   Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken);
   Task<string> Submit(string applicationId, string programRepresentativeId, bool declaration, CancellationToken cancellationToken);
-  Task<IEnumerable<Course>> QueryCoursesByApplicationId(string applicationId, CancellationToken cancellationToken);
 }
 
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);

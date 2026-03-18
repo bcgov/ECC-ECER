@@ -1,6 +1,7 @@
 using AutoMapper;
 using ECER.Engines.Validation.ProgramApplications;
 using ECER.Managers.Registry.Contract.ProgramApplications;
+using ECER.Resources.Documents.Courses;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.ProgramApplications;
 using MediatR;
@@ -20,6 +21,7 @@ namespace ECER.Managers.Registry;
 public class ProgramApplicationHandler(
     IProgramApplicationRepository programApplicationRepository,
     IMetadataResourceRepository metadataResourceRepository,
+    ICourseRepository courseRepository,
     IProgramApplicationValidationEngine validationEngine,
     IMapper mapper)
   : IRequestHandler<CreateProgramApplicationCommand, Contract.ProgramApplications.ProgramApplication?>,
@@ -144,7 +146,7 @@ public class ProgramApplicationHandler(
       new Resources.Documents.ProgramApplications.ComponentGroupQuery { ByProgramApplicationId = request.ProgramApplicationId },
       cancellationToken);
 
-    var resourcesCourses = await programApplicationRepository.QueryCoursesByApplicationId(request.ProgramApplicationId, cancellationToken);
+    var resourcesCourses = await courseRepository.GetCourses(new GetCoursesRequest(request.ProgramApplicationId, application.PostSecondaryInstituteId, FunctionType.ProgramApplication), cancellationToken);
     var contractCourses = mapper.Map<IEnumerable<ContractCourse>>(resourcesCourses);
 
     var areasOfInstruction = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery { ById = null }, cancellationToken);
@@ -152,7 +154,7 @@ public class ProgramApplicationHandler(
     var validationContext = new ProgramApplicationValidationContext(
       ComponentGroupStatuses: componentGroups.Select(g => new ComponentGroupValidationStatus(g.Id, g.Name, g.Status)),
       Courses: contractCourses,
-      ProgramTypes: application.ProgramTypes ?? Enumerable.Empty<Contract.ProgramApplications.ProgramCertificationType>(),
+      ProgramApplication: application,
       AreasOfInstruction: areasOfInstruction.ToList().AsReadOnly(),
       DeclarationAccepted: request.Declaration);
 

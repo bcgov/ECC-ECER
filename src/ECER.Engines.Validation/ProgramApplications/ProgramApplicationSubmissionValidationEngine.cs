@@ -1,3 +1,4 @@
+
 using ECER.Managers.Registry.Contract.ProgramApplications;
 
 namespace ECER.Engines.Validation.ProgramApplications;
@@ -13,6 +14,10 @@ internal sealed class ProgramApplicationSubmissionValidationEngine : IProgramApp
     var incompleteGroups = context.ComponentGroupStatuses
       .Where(g => !string.Equals(g.Status, "Completed", StringComparison.OrdinalIgnoreCase))
       .ToList();
+    if (context.ProgramApplication.InstituteInfoEntryProgress != "Completed")
+    {
+      errors.Add($"Institution and program info has not been completed");
+    }
 
     foreach (var group in incompleteGroups)
     {
@@ -20,13 +25,15 @@ internal sealed class ProgramApplicationSubmissionValidationEngine : IProgramApp
     }
 
     // b) Course validation
-    if (context.ProgramTypes.Contains(ProgramCertificationType.Basic))
+
+    var programTypes = (context.ProgramApplication.ProgramTypes ?? Enumerable.Empty<ProgramCertificationType>()).ToList();
+    if (programTypes.Contains(ProgramCertificationType.Basic))
       errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses, nameof(ProgramCertificationType.Basic), context.AreasOfInstruction));
 
-    if (context.ProgramTypes.Contains(ProgramCertificationType.ITE))
+    if (programTypes.Contains(ProgramCertificationType.ITE))
       errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses, nameof(ProgramCertificationType.ITE), context.AreasOfInstruction, checkTotalHours: true));
 
-    if (context.ProgramTypes.Contains(ProgramCertificationType.SNE))
+    if (programTypes.Contains(ProgramCertificationType.SNE))
       errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses, nameof(ProgramCertificationType.SNE), context.AreasOfInstruction, checkTotalHours: true));
 
     // c) Declaration must be accepted

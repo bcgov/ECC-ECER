@@ -17,7 +17,7 @@ public record ProgramApplicationValidationResults(IEnumerable<string> Validation
 public record ProgramApplicationValidationContext(
   IEnumerable<ComponentGroupValidationStatus> ComponentGroupStatuses,
   IEnumerable<Course> Courses,
-  IEnumerable<ProgramCertificationType> ProgramTypes,
+  ProgramApplication ProgramApplication,
   IReadOnlyCollection<AreaOfInstruction> AreasOfInstruction,
   bool DeclarationAccepted);
 

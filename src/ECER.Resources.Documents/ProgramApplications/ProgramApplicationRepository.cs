@@ -321,17 +321,4 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     context.SaveChanges();
     return applicationId;
   }
-
-  public async Task<IEnumerable<Course>> QueryCoursesByApplicationId(string applicationId, CancellationToken cancellationToken)
-  {
-    await Task.CompletedTask;
-    var appId = Guid.Parse(applicationId);
-    var coursesQuery = context.ecer_CourseSet.AsQueryable()
-      .Where(c => c.ecer_ProgramApplication.Id == appId);
-    var courses = context.From(coursesQuery)
-      .Join()
-      .Include(c => c.ecer_courseprovincialrequirement_CourseId)
-      .Execute();
-    return mapper.Map<IEnumerable<Course>>(courses)!;
-  }
 }
