@@ -159,17 +159,20 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
   {
     return application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ != null
             && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty
-            && (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online
-              && application.ecer_Onlinemethodsofinstruction.Any() && application.ecer_Deliverymethodforpracticuminstructor.Any())
+            && (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online)
+              && application.ecer_Onlinemethodsofinstruction.Any() && application.ecer_Deliverymethodforpracticuminstructor.Any()
             && ValidateCampus(application, institute);
   }
 
   private static bool ValidateCampus(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute)
   {
-    return application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton != null
-           && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Any()
-           && institute.ecer_PSIInstitutionType == ecer_psiinstitutiontype.Private
-           && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Count() != 1;
+    if (institute.ecer_PSIInstitutionType == ecer_psiinstitutiontype.Private)
+    {
+      return application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton != null
+             && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Any()
+             && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Count() != 1;
+    }
+    return true;
   }
 
   public async Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken)
