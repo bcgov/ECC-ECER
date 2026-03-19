@@ -28,6 +28,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import ProgramApplicationInfo from "@/components/common/ProgramApplicationInfo.vue";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import { ProgramApplicationType } from "@/utils/constant";
+import NewCampusProgramApplicationInfo from "@/components/common/NewCampusProgramApplicationInfo.vue";
 
 export default defineComponent({
   name: "ProgramApplicationInformation",
@@ -37,6 +38,7 @@ export default defineComponent({
     ECEHeader,
     Callout,
     PageContainer,
+    NewCampusProgramApplicationInfo,
   },
   props: {
     programApplicationId: {
