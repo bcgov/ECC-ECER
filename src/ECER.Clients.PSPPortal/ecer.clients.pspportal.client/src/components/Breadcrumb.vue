@@ -90,14 +90,6 @@ export default defineComponent({
             href: "/program-applications",
           },
         ],
-        programApplicationInfo: [
-          home,
-          {
-            title: "Program application information",
-            disabled: true,
-            href: "/program-application-info",
-          },
-        ],
         "program-application-begin": [
           home,
           {
@@ -193,6 +185,30 @@ export default defineComponent({
           },
           { title: "Edit location", disabled: true, href: this.route.path },
         ];
+      }
+      if (routeName === "programApplicationInfo") {
+        const applicationType = this.route.params.applicationType as string;
+        if (applicationType === "NewBasicECEPostBasicProgram") {
+          return [
+            home,
+            {
+              title: "Program application information",
+              disabled: true,
+              href: "/program-application-info",
+            },
+          ];
+        } else if (
+          applicationType === "NewCampusatRecognizedPrivateInstitution"
+        ) {
+          return [
+            home,
+            {
+              title: "Application for new campus",
+              disabled: true,
+              href: "/program-application-info",
+            },
+          ];
+        }
       }
       return [];
     },
