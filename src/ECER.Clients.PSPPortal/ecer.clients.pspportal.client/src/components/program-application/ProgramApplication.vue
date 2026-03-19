@@ -35,7 +35,10 @@
         </v-navigation-drawer>
       </v-col>
       <v-col>
-        <router-view @next="handleNext" />
+        <router-view
+          :application-type="programApplication.programApplicationType"
+          @next="handleNext"
+        />
       </v-col>
     </v-row>
   </v-container>
