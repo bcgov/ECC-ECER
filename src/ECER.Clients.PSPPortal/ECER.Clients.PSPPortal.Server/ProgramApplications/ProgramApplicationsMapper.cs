@@ -1,9 +1,10 @@
 using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.PSPPortal.Server.ProgramApplications;
 
-internal sealed class ProgramApplicationsMapper: Profile
+internal sealed class ProgramApplicationsMapper: SecureProfile
 {
   public ProgramApplicationsMapper()
   {

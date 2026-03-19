@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
+using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.ProgramApplications;
 using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
 using NavigationMetadata = ECER.Resources.Documents.ProgramApplications.NavigationMetadata;
@@ -8,7 +9,7 @@ using ResourcesProgramCertificationType = ECER.Resources.Documents.ProgramApplic
 
 namespace ECER.Managers.Registry;
 
-internal class ProgramApplicationMapper: Profile
+internal class ProgramApplicationMapper: SecureProfile
 {
   public ProgramApplicationMapper()
   {
