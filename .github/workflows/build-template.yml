@@ -80,9 +80,10 @@ jobs:
       # https://github.com/aquasecurity/trivy-action
       - name: Run Trivy vulnerability scanner in repo mode
         if: github.event_name == 'pull_request'
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         with:
           scan-type: "fs"
+          scan-ref: '.'
           ignore-unfixed: true
           format: "sarif"
           output: "repo-trivy-results.sarif"
@@ -90,7 +91,7 @@ jobs:
 
       - name: Upload Trivy scan results
         if: github.event_name == 'pull_request'
-        uses: github/codeql-action/upload-sarif@main
+        uses: github/codeql-action/upload-sarif@c6f931105cb2c34c8f901cc885ba1e2e259cf745 # v4.34.0
         with:
           sarif_file: "repo-trivy-results.sarif"
 
