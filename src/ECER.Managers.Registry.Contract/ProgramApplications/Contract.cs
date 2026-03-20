@@ -47,7 +47,7 @@ public record UpdateComponentGroupCommand(ComponentGroupWithComponents Component
 
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 
-public record SubmitProgramApplicationCommand(string ProgramApplicationId, string ProgramRepresentativeId, bool Declaration) : IRequest<ProgramApplicationSubmissionResult>;
+public record SubmitProgramApplicationCommand(ProgramApplication ProgramApplication, string ProgramRepresentativeId, bool Declaration) : IRequest<ProgramApplicationSubmissionResult>;
 
 public record ProgramApplicationSubmissionResult
 {

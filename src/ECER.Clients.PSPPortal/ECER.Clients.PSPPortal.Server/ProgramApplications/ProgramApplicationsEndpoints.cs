@@ -202,12 +202,14 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       {
         ById = id,
         ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
-        ByStatus = new[] { ContractApplicationStatus.Draft }
+        ByStatus = new[] { ContractApplicationStatus.Draft, ContractApplicationStatus.ReviewAnalysis }
       }, ct);
-      if (!existing.Items.Any()) return TypedResults.NotFound();
-
+      var application = existing.Items.SingleOrDefault();
+      if (application == null) return TypedResults.NotFound();
+      
+      
       var command = new ContractSubmitProgramApplicationCommand(
-        ProgramApplicationId: id,
+        ProgramApplication: application,
         ProgramRepresentativeId: programRep.Id,
         Declaration: request.Declaration);
 
