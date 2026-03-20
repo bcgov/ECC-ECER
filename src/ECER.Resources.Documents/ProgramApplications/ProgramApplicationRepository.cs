@@ -308,14 +308,20 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       .SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == appGuid);
     if (existing == null) throw new InvalidOperationException($"Program application '{applicationId}' not found");
 
-    existing.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Submitted;
-    existing.ecer_DateofApplicationShort = DateTime.UtcNow;
-    existing.ecer_AgreeNotifyofChanges = declaration ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
-
-    if (!string.IsNullOrWhiteSpace(programRepresentativeId))
+    if (existing.StatusCode == ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft)
     {
+      existing.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Submitted;
+      existing.ecer_DateofApplicationShort = DateTime.UtcNow;
+      existing.ecer_AgreeNotifyofChanges = declaration ? ecer_YesNoNull.Yes : ecer_YesNoNull.No; 
       existing.ecer_SubmittedByProgramRepresentativeId = new EntityReference(ecer_ECEProgramRepresentative.EntityLogicalName, Guid.Parse(programRepresentativeId));
     }
+    else
+    {
+      existing.ecer_statusreasondetail = ecer_Statusreasondetail.RFAIreceived;
+      existing.ecer_ModifiedbyProgramRepresentative = new EntityReference(ecer_ECEProgramRepresentative.EntityLogicalName, Guid.Parse(programRepresentativeId));
+      existing.ecer_ProgramRepModifiedDate = DateTime.UtcNow;
+    }
+
 
     context.UpdateObject(existing);
     context.SaveChanges();
