@@ -6,6 +6,10 @@
         An error occurred while registering your account. Please try again
         later.
       </h2>
+      <p v-if="reason === 'BceidBusinessIdMissing'">
+        Your BCeID Business ID is required to complete registration. Please
+        ensure you are logged in with a BCeID Business account and try again.
+      </p>
       <v-btn
         class="mt-8 align-self-start"
         @click="oidcStore.logout"
@@ -23,6 +27,12 @@ import { useOidcStore } from "@/store/oidc";
 import { useDisplay } from "vuetify";
 export default {
   name: "GenericRegistrationError",
+  props: {
+    reason: {
+      type: String,
+      default: null,
+    },
+  },
   setup() {
     const oidcStore = useOidcStore();
     const { smAndDown } = useDisplay();

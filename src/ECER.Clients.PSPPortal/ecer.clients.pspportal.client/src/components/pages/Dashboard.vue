@@ -274,17 +274,23 @@ export default defineComponent({
         switch (errorCode) {
           case "PortalInvitationTokenInvalid":
           case "PortalInvitationWrongStatus":
-            this.router.replace("/invalid-invitation");
+            this.router.replace({ name: "invalid-invitation" });
             break;
           case "BceidBusinessIdDoesNotMatch":
-            this.router.replace("/access-denied-mismatch");
+            this.router.replace({ name: "access-denied-mismatch" });
             break;
           case "PostSecondaryInstitutionNotFound":
-            this.router.replace("/access-denied");
+            this.router.replace({ name: "access-denied" });
+            break;
+          case "BceidBusinessIdMissing":
+            this.router.replace({
+              name: "generic-registration-error",
+              query: { reason: "BceidBusinessIdMissing" },
+            });
             break;
           case "GenericError":
           default:
-            this.router.replace("/generic-registration-error");
+            this.router.replace({ name: "generic-registration-error" });
             break;
         }
         return;

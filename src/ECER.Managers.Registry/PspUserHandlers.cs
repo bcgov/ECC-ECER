@@ -180,6 +180,9 @@ public class PspUserHandlers(
   {
     ArgumentNullException.ThrowIfNull(request);
 
+    if (string.IsNullOrWhiteSpace(request.BceidBusinessId))
+      return RegisterPspUserResult.Failure(RegisterPspUserError.BceidBusinessIdMissing);
+
     var postSecondaryInstitution = (await postSecondaryInstituteRepository.Query(new PostSecondaryInstituteQuery
     {
       ByProgramRepresentativeId = request.ProgramRepresentativeId

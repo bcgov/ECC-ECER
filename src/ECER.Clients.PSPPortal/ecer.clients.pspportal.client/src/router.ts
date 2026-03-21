@@ -134,6 +134,7 @@ const router = createRouter({
         import("./components/pages/GenericRegistrationError.vue"),
       meta: { requiresAuth: true },
       name: "generic-registration-error",
+      props: (route) => ({ reason: route.query.reason }),
     },
     {
       path: "/access-denied",

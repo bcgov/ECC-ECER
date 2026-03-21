@@ -46,9 +46,17 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_Course testCourse = null!;
   private ecer_Course testCourse2 = null!;
   private ecer_Course testCourse3 = null!;
+  private ecer_PostSecondaryInstitute registrationTestInstitute = null!;
+  private ecer_ECEProgramRepresentative registrationTestProgramRep = null!;
+  private ecer_PortalInvitation registrationTestPortalInvitation = null!;
+  private UserIdentity registrationTestUserIdentity = null!;
+  private ecer_PortalInvitation registrationCompletedPortalInvitation = null!;
+  private ecer_ECEProgramRepresentative registrationSuccessRep = null!;
+  private ecer_PortalInvitation registrationSuccessPortalInvitation = null!;
 
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
+  public const string RegistrationTestBceidBusinessId = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedPspUserIdentity => testPspIdentity;
@@ -75,6 +83,12 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
   public int? AreaOfInstructionMinimumHours => testAreaOfInstruction?.ecer_MinimumHours;
+  public string RegistrationTestProgramRepId => registrationTestProgramRep.Id.ToString();
+  public Guid RegistrationTestPortalInvitationId => registrationTestPortalInvitation.ecer_PortalInvitationId ?? Guid.Empty;
+  public UserIdentity RegistrationTestUserIdentity => registrationTestUserIdentity;
+  public Guid RegistrationCompletedPortalInvitationId => registrationCompletedPortalInvitation.ecer_PortalInvitationId ?? Guid.Empty;
+  public string RegistrationSuccessProgramRepId => registrationSuccessRep.Id.ToString();
+  public Guid RegistrationSuccessPortalInvitationId => registrationSuccessPortalInvitation.ecer_PortalInvitationId ?? Guid.Empty;
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -127,7 +141,17 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201");
     testCourse3 = GetOrAddCourse(context, testProgram1, "109");
 
+    registrationTestInstitute = GetOrAddPostSecondaryInstituteWithoutBceid(context);
+    registrationTestProgramRep = GetOrAddProgramRepresentative(context, registrationTestInstitute, $"{TestRunId}psp_reg_test_rep", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
+    registrationTestPortalInvitation = GetOrAddPortalInvitation_PspProgramRepresentative(context, registrationTestProgramRep, $"{TestRunId}psp_reg_test_invite");
+    registrationTestUserIdentity = new UserIdentity($"{TestRunId}reg_test_user", "bceidbusiness");
+    registrationSuccessRep = GetOrAddProgramRepresentative(context, registrationTestInstitute, $"{TestRunId}psp_reg_success_rep", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
+    registrationSuccessPortalInvitation = GetOrAddPortalInvitation_PspProgramRepresentative(context, registrationSuccessRep, $"{TestRunId}psp_reg_success_invite");
+
     context.SaveChanges();
+
+    context.Attach(registrationTestProgramRep);
+    registrationCompletedPortalInvitation = GetOrAddCompletedPortalInvitation_PspProgramRepresentative(context, registrationTestProgramRep, $"{TestRunId}psp_reg_completed_invite");
 
     //load dependent properties
     context.Attach(testProgramRepresentative);
@@ -384,6 +408,60 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
 
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, new Relationship(ecer_PortalInvitation.Fields.ecer_portalinvitation_psiprogramrepresentativeid), representative);
+    }
+
+    return portalInvitation;
+  }
+
+  private static ecer_PostSecondaryInstitute GetOrAddPostSecondaryInstituteWithoutBceid(EcerContext context)
+  {
+    var instituteName = "Test_psp_registration_institute";
+    var institute = context.ecer_PostSecondaryInstituteSet.FirstOrDefault(i => i.ecer_Name == instituteName);
+
+    if (institute == null)
+    {
+      var instituteId = Guid.NewGuid();
+      institute = new ecer_PostSecondaryInstitute
+      {
+        Id = instituteId,
+        ecer_PostSecondaryInstituteId = instituteId,
+        ecer_Name = instituteName,
+        ecer_City = "Victoria",
+      };
+      context.AddObject(institute);
+    }
+
+    return institute;
+  }
+
+  private static ecer_PortalInvitation GetOrAddCompletedPortalInvitation_PspProgramRepresentative(EcerContext context, ecer_ECEProgramRepresentative representative, string name)
+  {
+    var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p =>
+      p.ecer_Name == name && p.ecer_Type == ecer_PortalInvitationTypes.PSIProgramRepresentative);
+
+    if (portalInvitation == null)
+    {
+      var guid = Guid.NewGuid();
+      portalInvitation = new ecer_PortalInvitation
+      {
+        Id = guid,
+        ecer_PortalInvitationId = guid,
+        ecer_Name = name,
+        ecer_FirstName = representative.ecer_FirstName,
+        ecer_LastName = representative.ecer_LastName,
+        ecer_EmailAddress = representative.ecer_EmailAddress,
+        StatusCode = ecer_PortalInvitation_StatusCode.Sent,
+        ecer_Type = ecer_PortalInvitationTypes.PSIProgramRepresentative,
+      };
+      context.AddObject(portalInvitation);
+      context.AddLink(portalInvitation, new Relationship(ecer_PortalInvitation.Fields.ecer_portalinvitation_psiprogramrepresentativeid), representative);
+      context.SaveChanges();
+
+      context.Attach(portalInvitation);
+      portalInvitation.StatusCode = ecer_PortalInvitation_StatusCode.Completed;
+      portalInvitation.StateCode = ecer_portalinvitation_statecode.Inactive;
+      context.UpdateObject(portalInvitation);
+      context.SaveChanges();
     }
 
     return portalInvitation;

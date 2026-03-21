@@ -87,6 +87,7 @@ public enum RegisterPspUserError
   PortalInvitationTokenInvalid,
   PortalInvitationWrongStatus,
   BceidBusinessIdDoesNotMatch,
+  BceidBusinessIdMissing,
 }
 
 public record AddPspRepCommand(PspUserProfile userProfile, string postSecondaryInstitutionId, string pspRepId) : IRequest<string>;
