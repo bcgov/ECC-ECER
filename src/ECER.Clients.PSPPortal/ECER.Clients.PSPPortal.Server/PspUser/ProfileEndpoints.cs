@@ -20,16 +20,16 @@ public class ProfileEndpoints : IRegisterEndpoints
 
         var pspUser = results.Items.SingleOrDefault();
         if (pspUser == null) return TypedResults.NotFound();
-        
+
         var query = new UserCommunicationsStatusQuery
         {
           ByPostSecondaryInstituteId = pspUser.PostSecondaryInstituteId
         };
-        var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query,ct);
+        var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query, ct);
 
         var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
         pspUserProfile!.UnreadMessagesCount = communicationsStatus.Status.Count;
-        
+
         return TypedResults.Ok(pspUserProfile);
       })
       .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "psp_user_profile_get")
@@ -71,17 +71,20 @@ public class ProfileEndpoints : IRegisterEndpoints
             {
               errorCode = result.Error.Value switch
               {
-                RegisterPspUserError.PostSecondaryInstitutionNotFound 
+                RegisterPspUserError.PostSecondaryInstitutionNotFound
                   => PspRegistrationError.PostSecondaryInstitutionNotFound,
 
-                RegisterPspUserError.PortalInvitationTokenInvalid 
+                RegisterPspUserError.PortalInvitationTokenInvalid
                   => PspRegistrationError.PortalInvitationTokenInvalid,
 
-                RegisterPspUserError.PortalInvitationWrongStatus 
+                RegisterPspUserError.PortalInvitationWrongStatus
                   => PspRegistrationError.PortalInvitationWrongStatus,
 
-                RegisterPspUserError.BceidBusinessIdDoesNotMatch 
+                RegisterPspUserError.BceidBusinessIdDoesNotMatch
                   => PspRegistrationError.BceidBusinessIdDoesNotMatch,
+
+                RegisterPspUserError.BceidBusinessIdMissing
+                  => PspRegistrationError.BceidBusinessIdMissing,
 
                 _ => PspRegistrationError.GenericError
               };
@@ -96,7 +99,6 @@ public class ProfileEndpoints : IRegisterEndpoints
           return TypedResults.Ok();
         })
       .WithOpenApi("Update a psp user profile", string.Empty, "psp_user_register_post")
-      .WithOpenApi()
       .RequireAuthorization("psp_user");
   }
 }
@@ -153,6 +155,8 @@ public enum PspRegistrationError
   PortalInvitationWrongStatus,
   /// <summary>The BCeID Business ID doesn't match expected value</summary>
   BceidBusinessIdDoesNotMatch,
+  /// <summary>BCeID Business ID is not included in register request</summary>
+  BceidBusinessIdMissing,
   /// <summary>A generic error occurred during registration</summary>
   GenericError
 }
