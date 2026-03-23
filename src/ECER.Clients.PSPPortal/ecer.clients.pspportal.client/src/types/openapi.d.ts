@@ -110,6 +110,7 @@ declare namespace Components {
       extention?: string | null;
       name?: string | null;
       size?: string | null;
+      ecerWebApplicationType?: EcerWebApplicationType;
     }
     /**
      * Save communication response
@@ -189,6 +190,8 @@ declare namespace Components {
       programType?: ProvincialCertificationTypeOffered;
       programTypes?: ProgramCertificationType[] | null;
       deliveryType?: DeliveryType;
+      programProfileId?: string | null;
+      campusId?: string | null;
     }
     export interface CreateProgramApplicationResponse {
       programApplication?: ProgramApplication;
@@ -200,6 +203,7 @@ declare namespace Components {
     export interface DraftProgramResponse {
       program?: Program;
     }
+    export type EcerWebApplicationType = "PSP" | "Registry";
     export interface EducationInstitution {
       id?: string | null;
       name?: string | null;
@@ -356,6 +360,7 @@ declare namespace Components {
       declarationDate?: string | null; // date-time
       declarationAccepted?: boolean | null;
       declarantName?: string | null;
+      programProfileId?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;
@@ -1796,6 +1801,7 @@ export type DeliveryMethodforInstructor =
   Components.Schemas.DeliveryMethodforInstructor;
 export type DeliveryType = Components.Schemas.DeliveryType;
 export type DraftProgramResponse = Components.Schemas.DraftProgramResponse;
+export type EcerWebApplicationType = Components.Schemas.EcerWebApplicationType;
 export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type FileInfo = Components.Schemas.FileInfo;
 export type FileResponse = Components.Schemas.FileResponse;

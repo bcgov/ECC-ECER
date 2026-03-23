@@ -72,6 +72,7 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
   public string? DeclarantName { get; set; }
+  public string? ProgramProfileId { get; set; }
 }
 
 public record ProgramCampus

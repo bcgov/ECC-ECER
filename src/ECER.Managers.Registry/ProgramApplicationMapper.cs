@@ -36,6 +36,7 @@ internal class ProgramApplicationMapper: SecureProfile
       .ForMember(d => d.DeclarantName, opts => opts.MapFrom(s => s.DeclarantName))
       .ForMember(d => d.DeclarationAccepted, opts => opts.MapFrom(s => s.DeclarationAccepted))
       .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.DeclarationDate))
+      .ForMember(d => d.ProgramProfileId, opts => opts.MapFrom(s => s.ProgramProfileId))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
     

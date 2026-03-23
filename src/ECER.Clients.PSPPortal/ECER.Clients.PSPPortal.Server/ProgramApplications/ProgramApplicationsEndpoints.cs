@@ -4,6 +4,7 @@ using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
 using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.ProgramApplications;
+using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -30,7 +31,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       var userContext = ctx.User.GetUserContext()!;
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
-
+      
       var programApplication = new ProgramApplication
       {
         PostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
@@ -38,7 +39,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         ProgramApplicationType = ApplicationType.NewBasicECEPostBasicProgram,
         ProgramTypes = request.ProgramTypes,
         DeliveryType = request.DeliveryType,
-        Status = ApplicationStatus.Draft
+        Status = ApplicationStatus.Draft,
       };
 
       var contractApplication = mapper.Map<Managers.Registry.Contract.ProgramApplications.ProgramApplication>(programApplication);
@@ -255,6 +256,7 @@ public record ProgramApplication
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
   public string? DeclarantName { get; set; }
+  public string? ProgramProfileId { get; set; }
 }
 
 public record ProgramCampus
@@ -300,6 +302,8 @@ public record CreateProgramApplicationRequest
   public ProvincialCertificationTypeOffered? ProgramType { get; set; }
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
+  public string? ProgramProfileId { get; set; }
+  public string? CampusId { get; set; }
 }
 
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);
