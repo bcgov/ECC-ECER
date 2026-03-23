@@ -125,28 +125,18 @@ public class ProgramApplicationHandler(
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var applicationResult = await programApplicationRepository.Query(new Resources.Documents.ProgramApplications.ProgramApplicationQuery
-    {
-      ById = request.ProgramApplicationId,
-      ByStatus = new[] { ApplicationStatus.Draft }
-    }, cancellationToken);
+    var applicationResult = request.ProgramApplication;
 
-    if (!applicationResult.Items.Any())
-    {
-      return new ProgramApplicationSubmissionResult
-      {
-        Error = ProgramApplicationSubmissionError.ApplicationNotFound,
-        ValidationErrors = new[] { "Draft program application does not exist" }
-      };
-    }
-
-    var application = mapper.Map<Contract.ProgramApplications.ProgramApplication>(applicationResult.Items.First());
+    var application = mapper.Map<Contract.ProgramApplications.ProgramApplication>(applicationResult);
+    
+    var applicationId = application.Id
+                        ?? throw new InvalidOperationException("Program application id is required for submission.");
 
     var componentGroups = await programApplicationRepository.QueryComponentGroups(
-      new Resources.Documents.ProgramApplications.ComponentGroupQuery { ByProgramApplicationId = request.ProgramApplicationId },
+      new Resources.Documents.ProgramApplications.ComponentGroupQuery { ByProgramApplicationId = applicationId },
       cancellationToken);
 
-    var resourcesCourses = await courseRepository.GetCourses(new GetCoursesRequest(request.ProgramApplicationId, application.PostSecondaryInstituteId, FunctionType.ProgramApplication), cancellationToken);
+    var resourcesCourses = await courseRepository.GetCourses(new GetCoursesRequest(applicationId, application.PostSecondaryInstituteId, FunctionType.ProgramApplication), cancellationToken);
     var contractCourses = mapper.Map<IEnumerable<ContractCourse>>(resourcesCourses);
 
     var areasOfInstruction = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery { ById = null }, cancellationToken);
@@ -168,12 +158,12 @@ public class ProgramApplicationHandler(
       };
     }
 
-    var applicationId = await programApplicationRepository.Submit(
-      request.ProgramApplicationId,
+    var resultApplicationId = await programApplicationRepository.Submit(
+      application.Id,
       request.ProgramRepresentativeId,
       request.Declaration,
       cancellationToken);
 
-    return new ProgramApplicationSubmissionResult { ProgramApplicationId = applicationId };
+    return new ProgramApplicationSubmissionResult { ProgramApplicationId = resultApplicationId };
   }
 }
