@@ -19,6 +19,7 @@ declare namespace Components {
       programTypes?: ProgramTypes[] | null;
       minimumHours?: number | null; // int32
       displayOrder?: string | null;
+      parentAreaOfInstructionId?: string | null;
     }
     export interface AreaOfInstructionListResponse {
       areaOfInstruction?: AreaOfInstruction[] | null;
@@ -240,6 +241,7 @@ declare namespace Components {
       | "PortalInvitationTokenInvalid"
       | "PortalInvitationWrongStatus"
       | "BceidBusinessIdDoesNotMatch"
+      | "BceidBusinessIdMissing"
       | "GenericError";
     /**
      * Error response for PSP user registration failures. Returns only the error code for frontend handling.
@@ -434,10 +436,14 @@ declare namespace Paths {
   }
   namespace MessageGet {
     namespace Parameters {
+      export type ById = string;
       export type ParentId = string;
     }
     export interface PathParameters {
       parentId?: Parameters.ParentId;
+    }
+    export interface QueryParameters {
+      byId?: Parameters.ById;
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetMessagesResponse;
@@ -855,7 +861,9 @@ export interface OperationMethods {
    * message_get - Paginated endpoint to get all user messages
    */
   "message_get"(
-    parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.MessageGet.QueryParameters & Paths.MessageGet.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageGet.Responses.$200>;
@@ -1147,7 +1155,9 @@ export interface PathsDictionary {
      * message_get - Paginated endpoint to get all user messages
      */
     "get"(
-      parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.MessageGet.QueryParameters & Paths.MessageGet.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.MessageGet.Responses.$200>;
