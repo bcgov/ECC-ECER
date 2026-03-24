@@ -225,23 +225,14 @@ export default defineComponent({
   },
   computed: {
     programTypes() {
-      var selectedProfile = this.programProfiles.filter(
+      let selectedProfile = this.programProfiles.filter(
         (profile) => profile.id === this.selectedProgramProfileId,
       );
       return selectedProfile[0]?.programTypes;
     },
   },
-  watch: {
-    campusId: {
-      handler(value) {
-        if (value) {
-          this.selectedCampusId = value;
-        }
-      },
-      deep: true,
-    },
-  },
   async mounted() {
+    this.selectedCampusId = this.campusId;
     this.programProfiles =
       (await getPrograms(undefined, ["Approved"]))?.data?.programs || [];
   },

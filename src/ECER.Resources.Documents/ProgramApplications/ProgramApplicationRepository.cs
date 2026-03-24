@@ -50,13 +50,15 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     entity.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Active;
     entity.ecer_ProgramType = programApplication.ProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t.ToString()));
     entity.ecer_DeliveryType = Enum.Parse<ecer_PSIDeliveryType>(programApplication.DeliveryType.Value.ToString());
+    context.AddObject(entity);
 
     var programProfileId = Guid.Empty;
     if (programApplication.ProgramProfileId != null)
     {
       programProfileId = Guid.Parse(programApplication.ProgramProfileId);
       var programProfile = context.ecer_ProgramSet.SingleOrDefault(program => program.Id == programProfileId);
-
+      
+      context.UpdateObject(entity);
       context.AddLink(entity, ecer_Program.Fields.ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program, programProfile!);
     }
 
@@ -94,7 +96,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       entity.ecer_Name = "Draft Program Application";
     }
 
-    context.AddObject(entity);
+    context.UpdateObject(entity);
     context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_, institute);
 
     context.SaveChanges();

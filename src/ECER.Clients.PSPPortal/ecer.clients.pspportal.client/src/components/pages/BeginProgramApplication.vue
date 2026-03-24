@@ -68,6 +68,8 @@ export default defineComponent({
           | Components.Schemas.DeliveryType
           | undefined,
         programApplicationType: createApplicationObject.applicationType,
+        programProfileId: createApplicationObject.programProfileId,
+        campusId: createApplicationObject.campusId,
       };
 
       const { data, error } = await createProgramApplication(request);
