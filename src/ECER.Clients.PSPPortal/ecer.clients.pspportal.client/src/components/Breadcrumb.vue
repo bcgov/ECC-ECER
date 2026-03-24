@@ -204,6 +204,7 @@ export default defineComponent({
       }
       if (routeName === "program-application-begin") {
         const applicationType = this.route.params.applicationType as string;
+        const campusId = this.route.params.campusId as string;
         if (applicationType === "NewBasicECEPostBasicProgram") {
           return [
             home,
@@ -226,7 +227,7 @@ export default defineComponent({
             {
               title: "New Campus application",
               disabled: false,
-              href: `/program-application-info/${applicationType}`,
+              href: `/program-application-info/${applicationType}/${campusId}`,
             },
             {
               title: "Begin an application",
