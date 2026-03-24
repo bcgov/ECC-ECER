@@ -90,14 +90,6 @@ export default defineComponent({
             href: "/program-applications",
           },
         ],
-        "program-application-begin": [
-          home,
-          {
-            title: "Begin an application",
-            disabled: true,
-            href: "/program-application-begin",
-          },
-        ],
         messages: [
           home,
           {
@@ -192,7 +184,7 @@ export default defineComponent({
           return [
             home,
             {
-              title: "Program application information",
+              title: "Basic or post-basic program application",
               disabled: true,
               href: "/program-application-info",
             },
@@ -203,9 +195,43 @@ export default defineComponent({
           return [
             home,
             {
-              title: "Application for new campus",
+              title: "New Campus application",
               disabled: true,
               href: "/program-application-info",
+            },
+          ];
+        }
+      }
+      if (routeName === "program-application-begin") {
+        const applicationType = this.route.params.applicationType as string;
+        if (applicationType === "NewBasicECEPostBasicProgram") {
+          return [
+            home,
+            {
+              title: "Basic or post-basic program application",
+              disabled: false,
+              href: `/program-application-info/${applicationType}`,
+            },
+            {
+              title: "Begin an application",
+              disabled: true,
+              href: "/program-application-begin",
+            },
+          ];
+        } else if (
+          applicationType === "NewCampusatRecognizedPrivateInstitution"
+        ) {
+          return [
+            home,
+            {
+              title: "New Campus application",
+              disabled: false,
+              href: `/program-application-info/${applicationType}`,
+            },
+            {
+              title: "Begin an application",
+              disabled: true,
+              href: "/program-application-begin",
             },
           ];
         }

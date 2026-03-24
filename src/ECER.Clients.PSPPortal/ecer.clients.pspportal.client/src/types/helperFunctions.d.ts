@@ -1,3 +1,5 @@
+import type { ApplicationType } from "./openapi";
+
 /*******
 Start these types are used when we want to take our courses and group them by areaOfInstruction with getPackageDetails
 *******/
@@ -31,4 +33,13 @@ type ComponentGroupNavigationMap = Map<string, ComponentGroupNavigation[]>;
 interface ProgramApplicationContact {
   id: string | null | undefined;
   name: string;
+}
+
+interface CreateApplication {
+  programName: string;
+  provincialCertificationTypeValues: string[];
+  deliveryType: string;
+  programProfileId?: string;
+  campusId?: string;
+  applicationType: ApplicationType;
 }
