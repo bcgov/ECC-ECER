@@ -6,6 +6,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Serilog;
 
 namespace ECER.Clients.PSPPortal.Server.Users;
 
@@ -26,7 +27,13 @@ public class ProfileEndpoints : IRegisterEndpoints
         // Heal missing BCeID Business GUID if the frontend provides bceid info
         if (!string.IsNullOrWhiteSpace(bceidBusinessId) && !string.IsNullOrWhiteSpace(bceidBusinessName) && !string.IsNullOrWhiteSpace(pspUser.PostSecondaryInstituteId))
         {
-          await bus.Send(new HealBceidBusinessIdCommand(pspUser.PostSecondaryInstituteId, bceidBusinessId, bceidBusinessName), ct);
+          Log.Information("BCeID healing attempt for institution {InstituteId} with BceidBusinessId={BceidBusinessId}, BceidBusinessName={BceidBusinessName}",
+            pspUser.PostSecondaryInstituteId, bceidBusinessId, bceidBusinessName);
+
+          var healResult = await bus.Send(new HealBceidBusinessIdCommand(pspUser.PostSecondaryInstituteId, bceidBusinessId, bceidBusinessName), ct);
+
+          Log.Information("BCeID healing result for institution {InstituteId}: {HealResult}",
+            pspUser.PostSecondaryInstituteId, healResult);
         }
 
         var query = new UserCommunicationsStatusQuery
