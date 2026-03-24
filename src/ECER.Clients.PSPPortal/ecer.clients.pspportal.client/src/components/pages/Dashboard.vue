@@ -240,7 +240,11 @@ export default defineComponent({
     }
 
     // Check if the user has a profile, if not, register them
-    this.pspUserProfile = await getPspUserProfile();
+    // Pass BCeID info to heal institutions missing a BCeID GUID (ECER-6203)
+    this.pspUserProfile = await getPspUserProfile(
+      user.profile.bceid_business_guid as string,
+      user.profile.bceid_business_name as string,
+    );
 
     if (!this.pspUserProfile) {
       if (

@@ -599,9 +599,18 @@ declare namespace Paths {
     }
   }
   namespace PspUserProfileGet {
+    namespace Parameters {
+      export type BceidBusinessId = string;
+      export type BceidBusinessName = string;
+    }
+    export interface QueryParameters {
+      bceidBusinessId?: Parameters.BceidBusinessId;
+      bceidBusinessName?: Parameters.BceidBusinessName;
+    }
     namespace Responses {
       export type $200 =
         /* User profile information */ Components.Schemas.PspUserProfile;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -739,7 +748,7 @@ export interface OperationMethods {
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
   "psp_user_profile_get"(
-    parameters?: Parameters<UnknownParamsObject> | null,
+    parameters?: Parameters<Paths.PspUserProfileGet.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
@@ -1009,7 +1018,7 @@ export interface PathsDictionary {
      * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
      */
     "get"(
-      parameters?: Parameters<UnknownParamsObject> | null,
+      parameters?: Parameters<Paths.PspUserProfileGet.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;

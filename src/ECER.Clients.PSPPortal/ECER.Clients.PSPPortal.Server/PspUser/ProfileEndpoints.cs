@@ -13,13 +13,21 @@ public class ProfileEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("api/users/profile", async Task<Results<Ok<PspUserProfile>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("api/users/profile", async Task<Results<Ok<PspUserProfile>, NotFound>> (
+        HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper,
+        string? bceidBusinessId, string? bceidBusinessName) =>
       {
         var user = ctx.User.GetUserContext()!;
         var results = await bus.Send<PspRepQueryResults>(new SearchPspRepQuery() { ByUserIdentity = user.Identity }, ct);
 
         var pspUser = results.Items.SingleOrDefault();
         if (pspUser == null) return TypedResults.NotFound();
+
+        // Heal missing BCeID Business GUID if the frontend provides bceid info
+        if (!string.IsNullOrWhiteSpace(bceidBusinessId) && !string.IsNullOrWhiteSpace(bceidBusinessName) && !string.IsNullOrWhiteSpace(pspUser.PostSecondaryInstituteId))
+        {
+          await bus.Send(new HealBceidBusinessIdCommand(pspUser.PostSecondaryInstituteId, bceidBusinessId, bceidBusinessName), ct);
+        }
 
         var query = new UserCommunicationsStatusQuery
         {

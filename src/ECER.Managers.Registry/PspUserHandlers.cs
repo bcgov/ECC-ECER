@@ -29,7 +29,8 @@ public class PspUserHandlers(
     IRequestHandler<ReactivatePspRepCommand, string>,
     IRequestHandler<SetPrimaryPspRepCommand, string>,
     IRequestHandler<AddPspRepCommand, string>,
-    IRequestHandler<ResendPspRepInviteCommand, string>
+    IRequestHandler<ResendPspRepInviteCommand, string>,
+    IRequestHandler<HealBceidBusinessIdCommand, HealBceidBusinessIdResult>
 {
   /// <summary>
   /// Handles search psp program rep use case
@@ -170,6 +171,41 @@ public class PspUserHandlers(
     await pspRepRepository.ResendInvitation(request.ProgramRepresentativeId, request.pspRepId, cancellationToken);
 
     return request.ProgramRepresentativeId;
+  }
+
+  /// <summary>
+  /// Handles healing a PSP institution's missing BCeID Business GUID.
+  /// If the institution has a matching business name but no GUID, saves the GUID.
+  /// </summary>
+  public async Task<HealBceidBusinessIdResult> Handle(HealBceidBusinessIdCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    if (string.IsNullOrWhiteSpace(request.BceidBusinessId) || string.IsNullOrWhiteSpace(request.BceidBusinessName))
+      return HealBceidBusinessIdResult.MissingRequestInformation;
+
+    var institution = (await postSecondaryInstituteRepository.Query(new PostSecondaryInstituteQuery
+    {
+      ById = request.PostSecondaryInstituteId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (institution == null) return HealBceidBusinessIdResult.InstitutionNotFound;
+
+    // If institution already has a GUID, no healing needed
+    if (!string.IsNullOrEmpty(institution.BceidBusinessId)) return HealBceidBusinessIdResult.NotNeeded;
+
+    // If institution has no business name to match against, no healing possible
+    if (string.IsNullOrEmpty(institution.BceidBusinessName)) return HealBceidBusinessIdResult.BusinessNameMismatch;
+
+    // Verify the business name matches (case-insensitive)
+    if (!string.Equals(institution.BceidBusinessName, request.BceidBusinessName, StringComparison.OrdinalIgnoreCase))
+      return HealBceidBusinessIdResult.BusinessNameMismatch;
+
+    // Name matches, save the GUID
+    institution.BceidBusinessId = request.BceidBusinessId;
+    await postSecondaryInstituteRepository.Save(institution, cancellationToken);
+
+    return HealBceidBusinessIdResult.Healed;
   }
 
   /// <summary>

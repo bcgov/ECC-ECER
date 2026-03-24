@@ -94,4 +94,5 @@ public class RegistrationTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
   }
+
 }

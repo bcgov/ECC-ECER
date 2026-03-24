@@ -113,3 +113,23 @@ public record SetPrimaryPspRepCommand(string ProgramRepresentativeId) : IRequest
 /// Request to set a PSP program representative as Primary for their institution
 /// </summary>
 public record ResendPspRepInviteCommand(string ProgramRepresentativeId, string pspRepId) : IRequest<string>;
+
+/// <summary>
+/// Heals a PSP institution's missing BCeID Business GUID by matching on business name.
+/// Used when users from broken institutions (have business name but missing GUID) log in.
+/// </summary>
+public record HealBceidBusinessIdCommand(string PostSecondaryInstituteId, string BceidBusinessId, string BceidBusinessName) : IRequest<HealBceidBusinessIdResult>;
+
+public enum HealBceidBusinessIdResult
+{
+  /// <summary>GUID was successfully saved to the institution</summary>
+  Healed,
+  /// <summary>Institution already has a GUID, no healing needed</summary>
+  NotNeeded,
+  /// <summary>Business name did not match, GUID was not saved</summary>
+  BusinessNameMismatch,
+  /// <summary>Institution not found</summary>
+  InstitutionNotFound,
+  /// <summary>Required request information (BceidBusinessId or BceidBusinessName) is missing</summary>
+  MissingRequestInformation
+}
