@@ -432,6 +432,7 @@ import {
 } from "@/api/program-application";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import Loading from "@/components/Loading.vue";
+import type { ProgramApplicationContact } from "@/types/helperFunctions";
 
 export default defineComponent({
   name: "ProgramApplicationInstituteInfo",
