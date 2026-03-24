@@ -3,6 +3,8 @@ import { DateTime } from "luxon";
 import { EARLIEST_PROFILE_YEAR } from "@/utils/constant";
 import type {
   AreaOfInstructionWithCourseHoursMap,
+  ComponentGroupNavigation,
+  ComponentGroupNavigationMap,
   CourseAreaDetail,
 } from "@/types/helperFunctions";
 

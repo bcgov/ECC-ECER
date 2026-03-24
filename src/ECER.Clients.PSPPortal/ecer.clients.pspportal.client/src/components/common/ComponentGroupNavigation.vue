@@ -164,6 +164,7 @@ import {
   mapStatusColor,
   mapStatusIcons,
 } from "@/utils/functions";
+import type { ComponentGroupNavigationMap } from "@/types/helperFunctions";
 
 export default defineComponent({
   name: "ComponentGroupNavigation",
