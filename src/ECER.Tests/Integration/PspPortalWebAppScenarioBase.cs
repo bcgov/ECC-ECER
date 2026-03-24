@@ -53,10 +53,15 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_PortalInvitation registrationCompletedPortalInvitation = null!;
   private ecer_ECEProgramRepresentative registrationSuccessRep = null!;
   private ecer_PortalInvitation registrationSuccessPortalInvitation = null!;
+  private ecer_PostSecondaryInstitute healingTestInstitute = null!;
+  private ecer_ECEProgramRepresentative healingTestProgramRep = null!;
+  private UserIdentity healingTestUserIdentity = null!;
 
   private static readonly ecer_CertificateLevel[] AreaOfInstructionCertificateLevels = { ecer_CertificateLevel.ITE, ecer_CertificateLevel.SNE };
   private const int DefaultAreaOfInstructionMinimumHours = 40;
   public const string RegistrationTestBceidBusinessId = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
+  public const string HealingTestBceidBusinessName = "Healing Test Business";
+  public const string HealingTestBceidBusinessId = "heal1234-e5f6-7890-abcd-ef1234567890";
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedPspUserIdentity => testPspIdentity;
@@ -89,6 +94,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public Guid RegistrationCompletedPortalInvitationId => registrationCompletedPortalInvitation.ecer_PortalInvitationId ?? Guid.Empty;
   public string RegistrationSuccessProgramRepId => registrationSuccessRep.Id.ToString();
   public Guid RegistrationSuccessPortalInvitationId => registrationSuccessPortalInvitation.ecer_PortalInvitationId ?? Guid.Empty;
+  public string HealingTestPostSecondaryInstituteId => healingTestInstitute.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty;
+  public UserIdentity HealingTestUserIdentity => healingTestUserIdentity;
+  public string HealingTestProgramRepId => healingTestProgramRep.Id.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -148,10 +156,18 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     registrationSuccessRep = GetOrAddProgramRepresentative(context, registrationTestInstitute, $"{TestRunId}psp_reg_success_rep", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
     registrationSuccessPortalInvitation = GetOrAddPortalInvitation_PspProgramRepresentative(context, registrationSuccessRep, $"{TestRunId}psp_reg_success_invite");
 
+    // Healing test data: institution with business name but no GUID, with a registered (active) user
+    healingTestInstitute = GetOrAddPostSecondaryInstituteWithoutBceid(context, "Test_psp_healing_institute", HealingTestBceidBusinessName);
+    healingTestProgramRep = GetOrAddProgramRepresentative(context, healingTestInstitute, $"{TestRunId}psp_healing_rep", ecer_RepresentativeRole.Primary, ecer_AccessToPortal.Active);
+
     context.SaveChanges();
 
     context.Attach(registrationTestProgramRep);
     registrationCompletedPortalInvitation = GetOrAddCompletedPortalInvitation_PspProgramRepresentative(context, registrationTestProgramRep, $"{TestRunId}psp_reg_completed_invite");
+
+    // Set up identity for healing test user (simulates a user who previously registered)
+    context.Attach(healingTestProgramRep);
+    healingTestUserIdentity = GetOrAddProgramRepresentativeIdentity(context, healingTestProgramRep, $"{TestRunId}psp_healing_user");
 
     //load dependent properties
     context.Attach(testProgramRepresentative);
@@ -365,9 +381,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return representative;
   }
 
-  private UserIdentity GetOrAddProgramRepresentativeIdentity(EcerContext context, ecer_ECEProgramRepresentative representative)
+  private UserIdentity GetOrAddProgramRepresentativeIdentity(EcerContext context, ecer_ECEProgramRepresentative representative, string? identityNameOverride = null)
   {
-    var identity = new UserIdentity($"{TestRunId}psp_user1", "bceidbusiness");
+    var identity = new UserIdentity(identityNameOverride ?? $"{TestRunId}psp_user1", "bceidbusiness");
     var authentication = context.ecer_AuthenticationSet.FirstOrDefault(a => a.ecer_IdentityProvider == identity.IdentityProvider && a.ecer_ExternalID == identity.UserId);
 
     if (authentication == null)
@@ -413,9 +429,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return portalInvitation;
   }
 
-  private static ecer_PostSecondaryInstitute GetOrAddPostSecondaryInstituteWithoutBceid(EcerContext context)
+  private static ecer_PostSecondaryInstitute GetOrAddPostSecondaryInstituteWithoutBceid(EcerContext context, string instituteName = "Test_psp_registration_institute", string? bceidBusinessName = null)
   {
-    var instituteName = "Test_psp_registration_institute";
     var institute = context.ecer_PostSecondaryInstituteSet.FirstOrDefault(i => i.ecer_Name == instituteName);
 
     if (institute == null)
@@ -427,6 +442,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         ecer_PostSecondaryInstituteId = instituteId,
         ecer_Name = instituteName,
         ecer_City = "Victoria",
+        ecer_BCeIDBusinessName = bceidBusinessName,
       };
       context.AddObject(institute);
     }
