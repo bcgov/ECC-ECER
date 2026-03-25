@@ -117,7 +117,10 @@
               @click="
                 router.push({
                   name: 'programApplicationInfo',
-                  params: { applicationType: programApplicationType },
+                  params: {
+                    applicationType: programApplicationType,
+                    campusId: campusId,
+                  },
                 })
               "
             >
