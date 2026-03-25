@@ -361,6 +361,7 @@ declare namespace Components {
       declarationAccepted?: boolean | null;
       declarantName?: string | null;
       programProfileId?: string | null;
+      programProfileName?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;
@@ -374,6 +375,7 @@ declare namespace Components {
     export interface ProgramCampus {
       id?: string | null;
       campusId?: string | null;
+      name?: string | null;
     }
     export type ProgramCertificationType = "Basic" | "ITE" | "SNE";
     export type ProgramProfileType = "ChangeRequest" | "AnnualReview";

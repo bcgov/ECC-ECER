@@ -12,92 +12,128 @@
           <h2>Application information</h2>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="3">Provincial Certification Type</v-col>
-        <v-col class="font-weight-bold" cols="3">
-          {{ programType }}
-        </v-col>
-      </v-row>
-      <v-row class="mt-n3">
-        <v-col cols="3">Delivery method</v-col>
-        <v-col class="font-weight-bold" cols="3">
-          {{ programApplicationObject?.deliveryType }}
-        </v-col>
-      </v-row>
-      <v-row class="mt-n3">
-        <v-col cols="3">Institution</v-col>
-        <v-col class="font-weight-bold" cols="3">
-          {{ userStore.educationInstitution?.name }}
-        </v-col>
-      </v-row>
+      <template v-if="isBasicPostBasic">
+        <v-row>
+          <v-col cols="3">Provincial Certification Type</v-col>
+          <v-col class="font-weight-bold" cols="3">
+            {{ programType }}
+          </v-col>
+        </v-row>
+        <v-row class="mt-n3">
+          <v-col cols="3">Delivery method</v-col>
+          <v-col class="font-weight-bold" cols="3">
+            {{ programApplicationObject?.deliveryType }}
+          </v-col>
+        </v-row>
+        <v-row class="mt-n3">
+          <v-col cols="3">Institution</v-col>
+          <v-col class="font-weight-bold" cols="3">
+            {{ userStore.educationInstitution?.name }}
+          </v-col>
+        </v-row>
+      </template>
+      <template v-else>
+        <v-row>
+          <v-col cols="3">Institution name</v-col>
+          <v-col class="font-weight-bold" cols="3">
+            {{ userStore.educationInstitution?.name }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="3">Campus</v-col>
+          <v-col class="font-weight-bold" cols="3">
+            {{ programApplicationObject?.programCampuses?.pop()?.name }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="3">Program profile</v-col>
+          <v-col class="font-weight-bold" cols="3">
+            {{ programApplicationObject?.programProfileName }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="3">Provincial certification types</v-col>
+          <v-col class="font-weight-bold" cols="3">
+            {{ programType }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="3">Delivery method</v-col>
+          <v-col class="font-weight-bold" cols="3">
+            {{ programApplicationObject?.deliveryType }}
+          </v-col>
+        </v-row>
+      </template>
 
       <v-form ref="instituteInfoForm">
-        <v-row>
-          <v-col cols="12">
-            <h2>Campus</h2>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <p>
-              Select where this program will be offered. A first-time
-              application for a basic early childhood education program is
-              restricted to one campus.
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-input
-          v-if="
-            userStore.educationInstitution?.campuses &&
-            userStore.educationInstitution?.campuses.length > 0
-          "
-          v-model="programCampus"
-          :rules="[
-            (v) =>
-              !(
-                userStore.educationInstitution?.institutionType === 'Private' &&
-                v &&
-                v.length > 1
-              ) || 'Private institutions can only select a single campus',
-          ]"
-          class="pb-3"
-        >
-          <v-row dense>
-            <v-col
-              v-for="campus in userStore.educationInstitution?.campuses"
-              cols="12"
-            >
-              <v-checkbox
-                v-model="programCampus"
-                :value="campus.id || null"
-                :label="campus.generatedName || '-'"
-                density="compact"
-                hide-details
-                @update:model-value="
-                  (checked) => onCampusChange(campus.id ?? null, checked)
-                "
-                :disabled="
-                  userStore.educationInstitution?.institutionType ===
-                    'Private' &&
-                  programApplicationObject !== null &&
-                  programApplicationObject.programCampuses !== null &&
-                  programApplicationObject.programCampuses !== undefined &&
-                  programApplicationObject.programCampuses.length >= 1 &&
-                  campus.id !== null &&
-                  campus.id !== undefined &&
-                  programApplicationObject.programCampuses.some(
-                    (camp) => camp.campusId !== campus.id,
-                  )
-                "
-              />
+        <template v-if="showCampus">
+          <v-row>
+            <v-col cols="12">
+              <h2>Campus</h2>
             </v-col>
           </v-row>
-        </v-input>
-        <div class="no-campus text-grey-dark pb-3" v-else>
-          No campus available
-        </div>
+          <v-row>
+            <v-col cols="12">
+              <p>
+                Select where this program will be offered. A first-time
+                application for a basic early childhood education program is
+                restricted to one campus.
+              </p>
+            </v-col>
+          </v-row>
 
+          <v-input
+            v-if="
+              userStore.educationInstitution?.campuses &&
+              userStore.educationInstitution?.campuses.length > 0
+            "
+            v-model="programCampus"
+            :rules="[
+              (v) =>
+                !(
+                  userStore.educationInstitution?.institutionType ===
+                    'Private' &&
+                  v &&
+                  v.length > 1
+                ) || 'Private institutions can only select a single campus',
+            ]"
+            class="pb-3"
+          >
+            <v-row dense>
+              <v-col
+                v-for="campus in userStore.educationInstitution?.campuses"
+                cols="12"
+              >
+                <v-checkbox
+                  v-model="programCampus"
+                  :value="campus.id || null"
+                  :label="campus.generatedName || '-'"
+                  density="compact"
+                  hide-details
+                  @update:model-value="
+                    (checked) => onCampusChange(campus.id ?? null, checked)
+                  "
+                  :disabled="
+                    userStore.educationInstitution?.institutionType ===
+                      'Private' &&
+                    programApplicationObject !== null &&
+                    programApplicationObject.programCampuses !== null &&
+                    programApplicationObject.programCampuses !== undefined &&
+                    programApplicationObject.programCampuses.length >= 1 &&
+                    campus.id !== null &&
+                    campus.id !== undefined &&
+                    programApplicationObject.programCampuses.some(
+                      (camp) => camp.campusId !== campus.id,
+                    )
+                  "
+                />
+              </v-col>
+            </v-row>
+          </v-input>
+          <div class="no-campus text-grey-dark pb-3" v-else>
+            No campus available
+          </div>
+        </template>
         <v-row>
           <v-col cols="12">
             <h2>Contact person</h2>
@@ -152,7 +188,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row v-if="isBasicPostBasic">
           <v-col cols="12">
             <p>
               To apply for a post-basic early childhood education program (ITE
@@ -176,7 +212,7 @@
             <div class="d-flex flex-column ga-3">
               <EceTextField
                 v-model="programName"
-                label="Program information"
+                label="Program name"
                 :rules="[Rules.required('Enter a program name')]"
               ></EceTextField>
             </div>
@@ -572,6 +608,18 @@ export default defineComponent({
       const types = this.programApplicationObject?.programTypes;
       if (!types?.length) return "—";
       return types.map(mapProgramType).join(", ");
+    },
+    showCampus(): boolean {
+      return (
+        this.programApplicationObject?.programApplicationType !==
+        "NewCampusatRecognizedPrivateInstitution"
+      );
+    },
+    isBasicPostBasic(): boolean {
+      return (
+        this.programApplicationObject?.programApplicationType ===
+        "NewBasicECEPostBasicProgram"
+      );
     },
   },
   data() {
