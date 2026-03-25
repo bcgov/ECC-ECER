@@ -133,7 +133,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import type { Components, ComponentGroupWithComponents } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import {
   mapProgramType,
