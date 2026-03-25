@@ -129,6 +129,7 @@
         <v-card-text class="text-grey-dark">
           <PostBasicProgramOverview
             :programApplicationObject="programApplicationObject"
+            :contactPerson="contactPerson"
             v-if="
               programApplicationObject?.programApplicationType ===
               programApplicationType.NewBasicECEPostBasicProgram
@@ -136,6 +137,7 @@
           />
           <NewCampusProgramOverview
             :programApplicationObject="programApplicationObject"
+            :contactPerson="contactPerson"
             v-if="
               programApplicationObject?.programApplicationType ===
               programApplicationType.NewCampusatRecognizedPrivateInstitution

@@ -162,6 +162,10 @@ export default defineComponent({
       type: Object as PropType<Components.Schemas.ProgramApplication | null>,
       required: true,
     },
+    contactPerson: {
+      type: String,
+      required: true,
+    },
   },
   setup() {
     const userStore = useUserStore();
@@ -216,9 +220,7 @@ export default defineComponent({
     },
   },
   data() {
-    return {
-      contactPerson: "",
-    };
+    return {};
   },
   async mounted() {},
   methods: {
