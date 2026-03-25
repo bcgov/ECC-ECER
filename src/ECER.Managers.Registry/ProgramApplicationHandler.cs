@@ -117,7 +117,7 @@ public class ProgramApplicationHandler(
   public async Task<string> Handle(UpdateComponentGroupCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var result = await programApplicationRepository.UpdateComponentGroup(mapper.Map<Resources.Documents.ProgramApplications.ComponentGroupWithComponents>(request.ComponentGroup)!, request.ProgramApplicationId, cancellationToken);
+    var result = await programApplicationRepository.UpdateComponentGroup(mapper.Map<Resources.Documents.ProgramApplications.ComponentGroupWithComponents>(request.ComponentGroup)!, request.ProgramApplicationId, request.PostSecondaryInstituteId, cancellationToken);
     return result;
   }
 

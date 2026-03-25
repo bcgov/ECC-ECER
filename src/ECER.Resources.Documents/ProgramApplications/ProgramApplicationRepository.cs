@@ -1,21 +1,23 @@
 using AutoMapper;
-using ECER.Resources.Documents.Shared;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
+using ECER.Utilities.ObjectStorage.Providers;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.ProgramApplications;
 
-internal sealed class ProgramApplicationRepository : IProgramApplicationRepository
+internal sealed partial class ProgramApplicationRepository : IProgramApplicationRepository
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
+  private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
 
-  public ProgramApplicationRepository(EcerContext context, IMapper mapper)
+  public ProgramApplicationRepository(EcerContext context, IMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver)
   {
     this.context = context;
     this.mapper = mapper;
+    this.objectStorageProviderResolver = objectStorageProviderResolver;
   }
 
   public async Task<string> Create(ProgramApplication programApplication, CancellationToken cancellationToken)
@@ -228,6 +230,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
 
     return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<ProgramApplication>>(results)!, query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count);
   }
+
   public async Task<IEnumerable<NavigationMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
@@ -259,7 +262,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     return mapper.Map<IEnumerable<ComponentGroupWithComponents>>(results)!.ToList();
   }
 
-  public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken)
+  public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, string postSecondaryInstituteId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -272,6 +275,7 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
 
     var existingComponentsQuery = context.ecer_ProgramApplicationComponentSet
       .Where(c => c.ecer_ComponentGroup.Id == groupId);
+
     var existingComponents = context.From(existingComponentsQuery)
       .Execute()
       .Where(c => c.ecer_ProgramApplicationComponentId.HasValue)
@@ -286,6 +290,8 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
       context.Detach(existingComponent);
       context.Attach(ecerComponent);
       context.UpdateObject(ecerComponent);
+      await HandleComponentFiles(ecerComponent, component.NewFiles, component.DeletedFiles, postSecondaryInstituteId, existingComponent.ecer_ProgramApplication.Id.ToString(), existingComponent.ecer_ComponentGroup.Id.ToString(), cancellationToken);
+
       existingComponents[componentId] = ecerComponent;
     }
 

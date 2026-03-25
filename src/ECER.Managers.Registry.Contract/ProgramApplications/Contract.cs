@@ -1,3 +1,4 @@
+using ECER.Utilities.ObjectStorage.Providers;
 using MediatR;
 
 namespace ECER.Managers.Registry.Contract.ProgramApplications;
@@ -33,7 +34,11 @@ public record ComponentGroupWithComponentsQuery : IRequest<IEnumerable<Component
   public string? ByComponentGroupId { get; set; }
 }
 
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired)
+{
+  public IEnumerable<FileInfo> NewFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> DeletedFiles { get; set; } = Array.Empty<FileInfo>();
+};
 
 public record FileInfo(string Id)
 {
@@ -41,9 +46,10 @@ public record FileInfo(string Id)
   public string? Url { get; set; }
   public string? Size { get; set; }
   public string? Extension { get; set; }
+  public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
-public record UpdateComponentGroupCommand(ComponentGroupWithComponents ComponentGroup, string ProgramApplicationId) : IRequest<string>;
+public record UpdateComponentGroupCommand(ComponentGroupWithComponents ComponentGroup, string ProgramApplicationId, string PostSecondaryInstituteId) : IRequest<string>;
 
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 

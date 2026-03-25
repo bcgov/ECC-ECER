@@ -15,6 +15,7 @@ using ContractApplicationStatus = ECER.Managers.Registry.Contract.ProgramApplica
 using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 using ContractProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
 using ContractSubmitProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.SubmitProgramApplicationCommand;
+using ECER.Utilities.ObjectStorage.Providers;
 
 namespace ECER.Clients.PSPPortal.Server.ProgramApplications;
 
@@ -180,7 +181,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       }, ct);
       if (!existing.Items.Any()) return TypedResults.NotFound();
 
-      var result = await messageBus.Send(new UpdateComponentGroupCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>(request), id), ct);
+      var result = await messageBus.Send(new UpdateComponentGroupCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>(request), id, programRep.PostSecondaryInstituteId), ct);
       return TypedResults.Ok(result);
     })
     .WithOpenApi("Update program application component group", string.Empty, "program_application_component_group_put")
@@ -311,7 +312,11 @@ public record SubmitProgramApplicationResponse(string ProgramApplicationId);
 public record SubmitProgramApplicationValidationError(string Error, IEnumerable<string> ValidationErrors);
 public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType, bool? RfaiRequired);
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired)
+{
+  public IEnumerable<FileInfo> NewFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> DeletedFiles { get; set; } = Array.Empty<FileInfo>();
+};
 
 public enum NavigationType
 {
@@ -325,6 +330,7 @@ public record FileInfo(string Id)
   public string? Url { get; set; }
   public string? Size { get; set; }
   public string? Extension { get; set; }
+  public EcerWebApplicationType? EcerWebApplicationType { get; set; }
 }
 
 public enum ApplicationStatus
