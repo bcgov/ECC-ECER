@@ -96,6 +96,10 @@ import {
 import { useLoadingStore } from "@/store/loading";
 import { useConfigStore } from "@/store/config";
 import { useRouter } from "vue-router";
+import type {
+  AreaOfInstructionWithCourseHoursMap,
+  CourseAreaDetail,
+} from "@/types/helperFunctions";
 
 export default defineComponent({
   name: "ProgramDetailAreaOfInstructionCard",

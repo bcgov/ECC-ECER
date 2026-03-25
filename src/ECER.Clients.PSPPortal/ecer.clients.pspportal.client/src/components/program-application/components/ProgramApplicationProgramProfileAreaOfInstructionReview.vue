@@ -139,6 +139,7 @@ import {
   getCourseTitle,
 } from "@/utils/functions";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
+import type { CourseAreaDetail } from "@/types/helperFunctions";
 
 export default defineComponent({
   name: "ProgramApplicationReviewResponses",
