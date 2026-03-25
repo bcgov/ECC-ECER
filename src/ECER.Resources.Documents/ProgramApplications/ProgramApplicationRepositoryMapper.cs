@@ -22,6 +22,7 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForSourceMember(s => s.DeclarationAccepted, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarantName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramProfileId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ProgramProfileName, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_PostSecondaryInstituteProgramApplicaitonId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
       .ForMember(d => d.ecer_statusreasondetail, opts => opts.MapFrom(s => s.StatusReasonDetail))
