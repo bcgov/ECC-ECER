@@ -84,48 +84,56 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
         throw new InvalidOperationException($"Post secondary institute '{application.PostSecondaryInstituteId}' not found");
       }
 
-      if (application.ProgramCampuses != null && application.ProgramCampuses.Any())
+      if (existingApplication.ecer_ApplicationType != ecer_PSIApplicationType.NewCampusatRecognizedPrivateInstitution)
       {
-        var listOfExistingProgramCampuses = context.ecer_ProgramCampusSet.Where(c => c.ecer_EducationalInstitutionId.Id == instituteId && c.ecer_ProgramApplicationId.Id == entity.Id).ToList();
-        var existingIncomingProgramCampus = application.ProgramCampuses.Where(c => c.Id != null).Select(c => Guid.Parse(c.Id!)).ToList();
-
-        var campusesToDelete = listOfExistingProgramCampuses
-          .Where(c => !existingIncomingProgramCampus.Contains(c.Id))
-          .ToList();
-
-        foreach (var campus in campusesToDelete)
+        if (application.ProgramCampuses != null && application.ProgramCampuses.Any())
         {
-          context.DeleteObject(campus);
-        }
+          var listOfExistingProgramCampuses = context.ecer_ProgramCampusSet.Where(c =>
+            c.ecer_EducationalInstitutionId.Id == instituteId && c.ecer_ProgramApplicationId.Id == entity.Id).ToList();
+          var existingIncomingProgramCampus = application.ProgramCampuses.Where(c => c.Id != null)
+            .Select(c => Guid.Parse(c.Id!)).ToList();
 
-        foreach (var campus in application.ProgramCampuses)
-        {
-          if (!Guid.TryParse(campus.CampusId, out Guid campusGuid))
+          var campusesToDelete = listOfExistingProgramCampuses
+            .Where(c => !existingIncomingProgramCampus.Contains(c.Id))
+            .ToList();
+
+          foreach (var campus in campusesToDelete)
           {
-            throw new InvalidOperationException("Campus id cannot be null");
+            context.DeleteObject(campus);
           }
-          var psiCampus =
-            context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(c => c.Id == campusGuid);
-          if (psiCampus != null && campus.Id == null)
+
+          foreach (var campus in application.ProgramCampuses)
           {
-            var programCampus = new ecer_ProgramCampus
+            if (!Guid.TryParse(campus.CampusId, out Guid campusGuid))
             {
-              Id = Guid.NewGuid(),
-              ecer_EducationalInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, instituteId),
-              ecer_ProgramApplicationId =
-                new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
-              ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, psiCampus.Id)
-            };
-            context.AddObject(programCampus);
+              throw new InvalidOperationException("Campus id cannot be null");
+            }
+
+            var psiCampus =
+              context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(c => c.Id == campusGuid);
+            if (psiCampus != null && campus.Id == null)
+            {
+              var programCampus = new ecer_ProgramCampus
+              {
+                Id = Guid.NewGuid(),
+                ecer_EducationalInstitutionId =
+                  new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, instituteId),
+                ecer_ProgramApplicationId =
+                  new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
+                ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, psiCampus.Id)
+              };
+              context.AddObject(programCampus);
+            }
           }
         }
-      }
-      else
-      {
-        var listOfExistingProgramCampuses = context.ecer_ProgramCampusSet.Where(c => c.ecer_EducationalInstitutionId.Id == instituteId && c.ecer_ProgramApplicationId.Id == entity.Id).ToList();
-        foreach (var campus in listOfExistingProgramCampuses)
+        else
         {
-          context.DeleteObject(campus);
+          var listOfExistingProgramCampuses = context.ecer_ProgramCampusSet.Where(c =>
+            c.ecer_EducationalInstitutionId.Id == instituteId && c.ecer_ProgramApplicationId.Id == entity.Id).ToList();
+          foreach (var campus in listOfExistingProgramCampuses)
+          {
+            context.DeleteObject(campus);
+          }
         }
       }
 
