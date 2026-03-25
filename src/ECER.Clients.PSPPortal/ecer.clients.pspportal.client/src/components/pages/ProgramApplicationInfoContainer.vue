@@ -21,7 +21,12 @@
         <v-btn
           rounded="lg"
           color="primary"
-          @click="router.push('/program-application-begin')"
+          @click="
+            router.push({
+              name: 'program-application-begin',
+              params: { applicationType: applicationType, campusId: campusId },
+            })
+          "
         >
           Continue
         </v-btn>
@@ -55,6 +60,10 @@ export default defineComponent({
     applicationType: {
       type: String,
       required: true,
+    },
+    campusId: {
+      type: String,
+      required: false,
     },
   },
   setup() {

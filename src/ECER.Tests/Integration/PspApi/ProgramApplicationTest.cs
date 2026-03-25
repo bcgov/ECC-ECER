@@ -52,6 +52,55 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     fetched.ProgramApplicationName.ShouldBe(request.ProgramApplicationName);
     fetched.DeliveryType.ShouldBe(DeliveryType.Hybrid);
   }
+  
+  [Fact]
+  public async Task CreateProgramApplication_ForNewCampus_ReturnsBadRequest()
+  {
+    var request = new CreateProgramApplicationRequest
+    {
+      ProgramApplicationName = $"Test program application {Guid.NewGuid():N}",
+      ProgramTypes = new[] { ProgramCertificationType.Basic, ProgramCertificationType.ITE },
+      DeliveryType = DeliveryType.Hybrid,
+      ProgramApplicationType = ApplicationType.NewCampusatRecognizedPrivateInstitution
+    };
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(request).ToUrl("/api/programApplications");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+  
+  [Fact]
+  public async Task CreateProgramApplication_ForNewCampus_ReturnsOkAndCreatedApplication()
+  {
+    var request = new CreateProgramApplicationRequest
+    {
+      ProgramApplicationName = $"Test program application {Guid.NewGuid():N}",
+      ProgramTypes = new[] { ProgramCertificationType.Basic, ProgramCertificationType.ITE },
+      DeliveryType = DeliveryType.Hybrid,
+      ProgramApplicationType = ApplicationType.NewCampusatRecognizedPrivateInstitution,
+      ProgramProfileId = Fixture.approvedProgramId,
+      CampusId = Guid.NewGuid().ToString()
+    };
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(request).ToUrl("/api/programApplications");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var createResult = await response.ReadAsJsonAsync<CreateProgramApplicationResponse>();
+    createResult.ShouldNotBeNull();
+    createResult.ProgramApplication.ShouldNotBeNull();
+    createResult.ProgramApplication.Id.ShouldNotBeNull();
+    createResult.ProgramApplication.Status.ShouldBe(ApplicationStatus.Draft);
+    createResult.ProgramApplication.ProgramApplicationName.ShouldBe(request.ProgramApplicationName);
+    createResult.ProgramApplication.DeliveryType.ShouldBe(request.DeliveryType);
+    createResult.ProgramApplication.PostSecondaryInstituteId.ShouldBe(Fixture.PostSecondaryInstituteId);
+  }
 
   [Fact]
   public async Task GetAllProgramApplications_ReturnsStatusOk()

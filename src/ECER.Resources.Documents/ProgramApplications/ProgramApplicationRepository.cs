@@ -50,16 +50,62 @@ internal sealed class ProgramApplicationRepository : IProgramApplicationReposito
     entity.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Active;
     entity.ecer_ProgramType = programApplication.ProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t.ToString()));
     entity.ecer_DeliveryType = Enum.Parse<ecer_PSIDeliveryType>(programApplication.DeliveryType.Value.ToString());
+    context.AddObject(entity);
+
+    var programProfileId = Guid.Empty;
+    if (programApplication.ProgramProfileId != null)
+    {
+      programProfileId = Guid.Parse(programApplication.ProgramProfileId);
+      var programProfile = context.ecer_ProgramSet.SingleOrDefault(program => program.Id == programProfileId);
+      
+      context.UpdateObject(entity);
+      context.AddLink(entity, ecer_Program.Fields.ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program, programProfile!);
+    }
+
+    if (programApplication.ProgramCampuses != null && programApplication.ProgramCampuses.Any())
+    {
+      CreateProgramCampus(programApplication.ProgramCampuses, programProfileId, instituteId, entity);
+    }
     if (string.IsNullOrWhiteSpace(entity.ecer_Name))
     {
       entity.ecer_Name = "Draft Program Application";
     }
 
-    context.AddObject(entity);
+    context.UpdateObject(entity);
     context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_, institute);
 
     context.SaveChanges();
     return entity.ecer_PostSecondaryInstituteProgramApplicaitonId!.Value.ToString();
+  }
+
+  public void CreateProgramCampus(IEnumerable<ProgramCampus> programCampuses, Guid programProfileId, Guid instituteId, ecer_PostSecondaryInstituteProgramApplicaiton entity)
+  {
+    foreach (var campus in programCampuses)
+    {
+      if (!Guid.TryParse(campus.CampusId, out Guid campusGuid))
+      {
+        throw new InvalidOperationException("Campus id cannot be null");
+      }
+      var psiCampus =
+        context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(c => c.Id == campusGuid);
+      if (psiCampus != null && campus.Id == null)
+      {
+        var programCampus = new ecer_ProgramCampus
+        {
+          Id = Guid.NewGuid(),
+          ecer_EducationalInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, instituteId),
+          ecer_ProgramApplicationId =
+            new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
+          ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, psiCampus.Id)
+        };
+        if (programProfileId != Guid.Empty)
+        {
+          programCampus.ecer_ProgramProfileId =
+            new EntityReference(ecer_Program.EntityLogicalName, programProfileId);
+        }
+        context.AddObject(programCampus);
+      }
+    }
   }
 
   public async Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken)

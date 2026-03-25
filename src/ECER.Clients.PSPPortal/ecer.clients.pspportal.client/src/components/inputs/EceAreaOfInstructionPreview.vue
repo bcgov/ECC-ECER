@@ -93,6 +93,10 @@ import { useConfigStore } from "@/store/config";
 import { useProgramStore } from "@/store/program";
 
 import PreviewCard from "../common/PreviewCard.vue";
+import type {
+  AreaOfInstructionWithCourseHoursMap,
+  CourseAreaDetail,
+} from "@/types/helperFunctions";
 
 export default defineComponent({
   name: "EceAreaOfInstructionPreview",
