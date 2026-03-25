@@ -442,7 +442,7 @@
               color="primary"
               @click="saveAndContinue"
             >
-              Save and Continue
+              Save and continue
             </v-btn>
           </v-col>
         </v-row>
