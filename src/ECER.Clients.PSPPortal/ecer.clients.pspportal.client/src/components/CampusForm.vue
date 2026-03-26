@@ -3,7 +3,7 @@
     <!-- Location info -->
     <v-row class="mt-4">
       <v-col cols="12">
-        <h2>Location info</h2>
+        <h2>Location information</h2>
       </v-col>
     </v-row>
 
