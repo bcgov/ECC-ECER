@@ -21,11 +21,13 @@ public record ComponentGroupQuery : IRequest<IEnumerable<NavigationMetadata>>
 }
 
 public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType, bool? RfaiRequired);
+
 public enum NavigationType
 {
   Component,
   Other,
 }
+
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 
 public record ComponentGroupWithComponentsQuery : IRequest<IEnumerable<ComponentGroupWithComponents>>
@@ -86,7 +88,7 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public string? MinimumEnrollment { get; set; }
   public string? MaximumEnrollment { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
-  public string? OtherAdmissionOptions  { get; set; }
+  public string? OtherAdmissionOptions { get; set; }
   public string? InstituteInfoEntryProgress { get; set; }
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
@@ -94,10 +96,11 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
 }
 
 public record ProgramCampus
-{ 
+{
   public string? Id { get; set; }
   public string? CampusId { get; set; }
 }
+
 public enum AdmissionOptions
 {
   Allcoursesrestrictedtoearlychildhoodeducationstudents,
@@ -125,8 +128,8 @@ public enum DeliveryMethodforInstructor
   Virtualsitevisits,
 }
 
-
 public record ProgramApplicationQueryResults(IEnumerable<ProgramApplication> Items, int Count);
+
 public enum ApplicationStatus
 {
   Approved,

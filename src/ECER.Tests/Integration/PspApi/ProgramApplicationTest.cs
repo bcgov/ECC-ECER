@@ -1,7 +1,11 @@
-using System.Net;
 using Alba;
+using Bogus;
+using ECER.Clients.PSPPortal.Server.Files;
 using ECER.Clients.PSPPortal.Server.ProgramApplications;
+using ECER.Utilities.ObjectStorage.Providers;
 using Shouldly;
+using System.Net;
+using System.Net.Http.Headers;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.PspApi;
@@ -11,6 +15,8 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
   public ProgramApplicationTest(ITestOutputHelper output, PspPortalWebAppFixture fixture) : base(output, fixture)
   {
   }
+
+  private readonly Faker faker = new Faker("en_CA");
 
   [Fact]
   public async Task CreateProgramApplication_ReturnsOkAndCreatedApplication()
@@ -226,15 +232,51 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     result.Applications.ShouldNotContain(a => a.Id == Fixture.programApplicationId);
   }
 
+  /// <remarks>
+  /// PRE-REQUISITES:
+  /// 1. Must be connected to the BC Government VPN.
+  /// 2. Local ClamAV (clamd) must be running for file scanning middleware.
+  /// </remarks>
   [Fact]
-  public async Task UpdateComponentGroup_WithValidAnswer_ReturnsOkAndPersistsAnswer()
+  public async Task UpdateComponentGroup_WithValidAnswerAndFiles_ReturnsOkAndPersistsAnswers_ThenDeleteFiles_ShouldRemoveFiles()
   {
     var appId = Fixture.componentTestProgramApplicationId;
     var groupId = Fixture.componentTestComponentGroupId;
     var componentId = Fixture.componentTestComponentId;
     var expectedAnswer = $"My answer {Guid.NewGuid():N}";
 
-    var updatedComponent = new ProgramApplicationComponent(componentId, string.Empty, null, 0, expectedAnswer, null, null);
+    //create file and add to the temp folder so that we may add it as part of the updateComponentGroup call
+    var fileLength = 1041;
+    var testFile = await faker.GenerateTestFile(fileLength);
+    var testFileId = Guid.NewGuid().ToString();
+    var testFolder = "tempfolder";
+    var testClassification = "test-classification";
+    using var content = new StreamContent(testFile.Content);
+    content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
+
+    using var formData = new MultipartFormDataContent
+{
+  { content, "file", testFile.FileName }
+};
+
+    var fileResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.WithRequestHeader("file-classification", testClassification);
+      _.WithRequestHeader("file-folder", testFolder);
+      _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
+
+    //add file to the updated component piece
+    var updatedComponent = new ProgramApplicationComponent(componentId, string.Empty, null, 0, expectedAnswer, null, null)
+    {
+      NewFiles = new List<Clients.PSPPortal.Server.ProgramApplications.FileInfo>
+      {
+        new Clients.PSPPortal.Server.ProgramApplications.FileInfo(uploadedFileResponse.fileId) { EcerWebApplicationType = EcerWebApplicationType.PSP }
+      }
+    };
     var request = new ComponentGroupWithComponents(groupId, string.Empty, null, "Draft", string.Empty, 0, new[] { updatedComponent });
 
     var response = await Host.Scenario(_ =>
@@ -246,6 +288,43 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
 
     var result = await response.ReadAsJsonAsync<string>();
     result.ShouldNotBeNull();
+
+    //get component group and see if file as been added
+    var getResponse = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programApplications/{appId}/componentGroups/{groupId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var componentGroupResponse = (await getResponse.ReadAsJsonAsync<IEnumerable<ComponentGroupWithComponents>>()).ShouldNotBeNull().FirstOrDefault().ShouldNotBeNull();
+
+    bool fileFound = componentGroupResponse.Components.Any(c => c.Files!.Any(f => f.Name == testFile.FileName));
+    fileFound.ShouldBeTrue();
+
+    //delete the file by adding it to the deleted files list
+    componentGroupResponse.Components.FirstOrDefault().ShouldNotBeNull().DeletedFiles = new List<Clients.PSPPortal.Server.ProgramApplications.FileInfo>
+      {
+        new Clients.PSPPortal.Server.ProgramApplications.FileInfo(uploadedFileResponse.fileId) { EcerWebApplicationType = EcerWebApplicationType.PSP }
+      };
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Put.Json(componentGroupResponse).ToUrl($"/api/programApplications/{appId}/componentGroups/{groupId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var getResponseNoFile = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programApplications/{appId}/componentGroups/{groupId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var componentGroupResponseNoFile = (await getResponseNoFile.ReadAsJsonAsync<IEnumerable<ComponentGroupWithComponents>>()).ShouldNotBeNull().FirstOrDefault().ShouldNotBeNull();
+
+    componentGroupResponseNoFile.Components.FirstOrDefault().ShouldNotBeNull().Files.ShouldBeEmpty();
   }
 
   [Fact]

@@ -139,6 +139,8 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForSourceMember(s => s.DisplayOrder, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.RfaiRequired, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramApplicationComponentId, opts => opts.MapFrom(s => Guid.Parse(s.Id)))
       .ForMember(d => d.ecer_Componentanswer, opts => opts.MapFrom(s => s.Answer));
   }
