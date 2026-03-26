@@ -37,6 +37,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private ecer_ProvincialRequirement testAreaOfInstruction = null!;
   private UserIdentity testPspIdentity = null!;
   private ecer_Communication testCommunication1 = null!;
+  private ecer_Program approvedProgram = null!;
   private ecer_Program testProgram1 = null!;
   private ecer_Program testProgram2 = null!;
   private ecer_Program submitDraftProgram = null!;
@@ -75,6 +76,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string communicationOneId => testCommunication1.Id.ToString();
 
   public string programId => testProgram1.Id.ToString();
+  public string approvedProgramId => approvedProgram.Id.ToString();
   public string submitProgramId => submitDraftProgram.Id.ToString();
   public string changeRequestProgramId => changeRequestProgram.Id.ToString();
   public string changeRequestFromProfileId => changeRequestFromProfile.Id.ToString();
@@ -139,6 +141,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
 
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
 
+    approvedProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual3", "Approved", statusCode: ecer_Program_StatusCode.RegistryReviewComplete);
     testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
     testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
     changeRequestFromProfile = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "CRFromProfile", "ChangeRequestInProgress", statusCode: ecer_Program_StatusCode.ChangeRequestInProgress);

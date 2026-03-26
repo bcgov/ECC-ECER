@@ -55,7 +55,7 @@ public record UpdateComponentGroupCommand(ComponentGroupWithComponents Component
 
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 
-public record SubmitProgramApplicationCommand(string ProgramApplicationId, string ProgramRepresentativeId, bool Declaration) : IRequest<ProgramApplicationSubmissionResult>;
+public record SubmitProgramApplicationCommand(ProgramApplication ProgramApplication, string ProgramRepresentativeId, bool Declaration) : IRequest<ProgramApplicationSubmissionResult>;
 
 public record ProgramApplicationSubmissionResult
 {
@@ -93,14 +93,16 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
   public string? DeclarantName { get; set; }
+  public string? ProgramProfileId { get; set; }
+  public string? ProgramProfileName { get; set; }
 }
 
 public record ProgramCampus
 {
   public string? Id { get; set; }
   public string? CampusId { get; set; }
+  public string? Name { get; set; }
 }
-
 public enum AdmissionOptions
 {
   Allcoursesrestrictedtoearlychildhoodeducationstudents,

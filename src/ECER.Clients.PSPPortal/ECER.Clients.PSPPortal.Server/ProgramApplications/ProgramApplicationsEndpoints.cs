@@ -4,6 +4,7 @@ using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
 using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.ProgramApplications;
+using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -32,16 +33,51 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
+      if (request.ProgramApplicationType == ApplicationType.NewCampusatRecognizedPrivateInstitution)
+      {
+        if (request.ProgramProfileId == null)
+        {
+          return TypedResults.BadRequest(new ProblemDetails { Title = "Program profile must not be null" });
+        }
+        
+        if (request.CampusId == null)
+        {
+          return TypedResults.BadRequest(new ProblemDetails { Title = "Campus must not be null" });
+        }
+      }
+      
+      if (request.ProgramProfileId != null)
+      {
+        var existingProgramProfile = await messageBus.Send(new ProgramsQuery
+        {
+          ById = request.ProgramProfileId,
+        }, ct);
+        if (!existingProgramProfile.Items.Any()) return TypedResults.NotFound();
+      }
+      
       var programApplication = new ProgramApplication
       {
         PostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
         ProgramApplicationName = request.ProgramApplicationName,
-        ProgramApplicationType = ApplicationType.NewBasicECEPostBasicProgram,
+        ProgramApplicationType = request.ProgramApplicationType,
         ProgramTypes = request.ProgramTypes,
         DeliveryType = request.DeliveryType,
-        Status = ApplicationStatus.Draft
+        Status = ApplicationStatus.Draft,
+        ProgramProfileId = request.ProgramProfileId
       };
-
+      
+      if (request.CampusId != null)
+      {
+        programApplication.ProgramCampuses = new[]
+        {
+          new ProgramCampus
+          {
+            CampusId = request.CampusId,
+            Id = null
+          }
+        };
+      }
+      
       var contractApplication = mapper.Map<Managers.Registry.Contract.ProgramApplications.ProgramApplication>(programApplication);
       var created = await messageBus.Send(new CreateProgramApplicationCommand(contractApplication), ct);
       if (created == null) return TypedResults.BadRequest(new ProblemDetails { Title = "Failed to create program application" });
@@ -203,12 +239,14 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       {
         ById = id,
         ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
-        ByStatus = new[] { ContractApplicationStatus.Draft }
+        ByStatus = new[] { ContractApplicationStatus.Draft, ContractApplicationStatus.ReviewAnalysis }
       }, ct);
-      if (!existing.Items.Any()) return TypedResults.NotFound();
-
+      var application = existing.Items.SingleOrDefault();
+      if (application == null) return TypedResults.NotFound();
+      
+      
       var command = new ContractSubmitProgramApplicationCommand(
-        ProgramApplicationId: id,
+        ProgramApplication: application,
         ProgramRepresentativeId: programRep.Id,
         Declaration: request.Declaration);
 
@@ -254,12 +292,15 @@ public record ProgramApplication
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
   public string? DeclarantName { get; set; }
+  public string? ProgramProfileId { get; set; }
+  public string? ProgramProfileName { get; set; }
 }
 
 public record ProgramCampus
 { 
   public string? Id { get; set; }
   public string? CampusId { get; set; }
+  public string? Name { get; set; }
 }
 
 public enum MethodofInstruction
@@ -299,6 +340,8 @@ public record CreateProgramApplicationRequest
   public ProvincialCertificationTypeOffered? ProgramType { get; set; }
   public IEnumerable<ProgramCertificationType>? ProgramTypes { get; set; }
   public DeliveryType? DeliveryType { get; set; }
+  public string? ProgramProfileId { get; set; }
+  public string? CampusId { get; set; }
 }
 
 public record CreateProgramApplicationResponse(ProgramApplication ProgramApplication);

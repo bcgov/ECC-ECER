@@ -127,142 +127,22 @@
         </v-card-title>
         <!-- CONTENT -->
         <v-card-text class="text-grey-dark">
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Institution name</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ userStore.educationInstitution?.name }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Campus</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ campus }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Contact person</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ contactPerson }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Program name</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ programApplicationObject?.programApplicationName }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Program type</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ programType }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Delivery method(s)</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ programApplicationObject?.deliveryType }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Program length</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ programApplicationObject?.programLength }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Program enrollment options</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ mapEnrollmentOptions }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Admission options</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ mapAdmissionOptions }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Minimum enrollment per course</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ programApplicationObject?.minimumEnrollment }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5">
-            <v-col cols="4">
-              <p class="small">Maximum enrollment per course</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ programApplicationObject?.maximumEnrollment }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5" v-if="showDeliverySection()">
-            <v-col cols="4">
-              <p class="small">Online method(s) of instruction</p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{
-                  programApplicationObject?.onlineMethodOfInstruction?.join(
-                    ", ",
-                  )
-                }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row class="mb-n5" v-if="showDeliverySection()">
-            <v-col cols="4">
-              <p class="small">
-                Delivery method for practicum instructor supervision
-              </p>
-            </v-col>
-            <v-col>
-              <p class="small font-weight-bold">
-                {{ mapDeliveryMethods }}
-              </p>
-            </v-col>
-          </v-row>
+          <PostBasicProgramOverview
+            :programApplicationObject="programApplicationObject"
+            :contactPerson="contactPerson"
+            v-if="
+              programApplicationObject?.programApplicationType ===
+              programApplicationType.NewBasicECEPostBasicProgram
+            "
+          />
+          <NewCampusProgramOverview
+            :programApplicationObject="programApplicationObject"
+            :contactPerson="contactPerson"
+            v-if="
+              programApplicationObject?.programApplicationType ===
+              programApplicationType.NewCampusatRecognizedPrivateInstitution
+            "
+          />
         </v-card-text>
       </v-card>
 
@@ -372,6 +252,9 @@ import {
 import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
 import Callout from "@/components/common/Callout.vue";
+import PostBasicProgramOverview from "@/components/common/PostBasicProgramOverview.vue";
+import NewCampusProgramOverview from "@/components/common/NewCampusProgramOverview.vue";
+import { ProgramApplicationType } from "@/utils/constant";
 
 interface ComponentGroupMetaData {
   componentGroupId?: string | null;
@@ -384,6 +267,8 @@ export default defineComponent({
     PageContainer,
     Loading,
     Callout,
+    PostBasicProgramOverview,
+    NewCampusProgramOverview,
   },
   props: {
     programApplicationId: {
@@ -399,6 +284,9 @@ export default defineComponent({
   },
   emits: { next: (_payload: NextStepPayload) => true },
   computed: {
+    programApplicationType() {
+      return ProgramApplicationType;
+    },
     statusText(): string {
       return mapProgramStatus(this.programApplicationObject?.status);
     },

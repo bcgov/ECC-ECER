@@ -70,7 +70,7 @@
     <v-row no no-gutters class="mt-6">
       <v-btn
         :loading="loadingStore.isLoading('program_application_submit_post')"
-        :disabled="!declarationChecked || application?.status !== 'Draft'"
+        :disabled="!declarationChecked || applicationSubmitted"
         @click="handleSubmit"
         size="large"
         color="primary"
@@ -136,6 +136,13 @@ export default defineComponent({
   },
   async mounted() {
     await this.fetchApplication();
+
+    if (!this.applicationSubmitted && this.application) {
+      this.application.declarationAccepted = false;
+      this.application.declarantName = null;
+      this.application.declarationDate = null;
+    }
+
     this.declarantName = this.application?.declarantName
       ? this.application?.declarantName
       : `${this.userStore.firstName ?? ""} ${this.userStore.lastName}`.trim();
@@ -143,6 +150,16 @@ export default defineComponent({
     this.declarationDate = this.application?.declarationDate
       ? formatDate(this.application.declarationDate, "yyyy-MM-dd")
       : formatDate(DateTime.now().toString(), "yyyy-MM-dd");
+  },
+  computed: {
+    applicationSubmitted() {
+      if (this.application?.status !== "Draft") {
+        if (this.application?.statusReasonDetail !== "RFAIrequested") {
+          return true;
+        }
+      }
+      return false;
+    },
   },
   methods: {
     async fetchApplication() {

@@ -83,13 +83,17 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
   public string? DeclarantName { get; set; }
+  public string? ProgramProfileId { get; set; }
+  public string? ProgramProfileName { get; set; }
 }
 
 public record ProgramCampus
 {
   public string? Id { get; set; }
   public string? CampusId { get; set; }
+  public string? Name { get; set; }
 }
+
 
 public enum AdmissionOptions
 {

@@ -1,6 +1,12 @@
 import type { Components } from "@/types/openapi";
 import { DateTime } from "luxon";
 import { EARLIEST_PROFILE_YEAR } from "@/utils/constant";
+import type {
+  AreaOfInstructionWithCourseHoursMap,
+  ComponentGroupNavigation,
+  ComponentGroupNavigationMap,
+  CourseAreaDetail,
+} from "@/types/helperFunctions";
 
 /**
  * Checks if a program's start date is on or after the earliest profile year

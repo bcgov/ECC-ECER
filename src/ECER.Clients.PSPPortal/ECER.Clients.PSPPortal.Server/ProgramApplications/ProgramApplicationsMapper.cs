@@ -33,6 +33,8 @@ internal sealed class ProgramApplicationsMapper: SecureProfile
       .ForMember(d => d.DeclarantName, opts => opts.MapFrom(s => s.DeclarantName))
       .ForMember(d => d.DeclarationAccepted, opts => opts.MapFrom(s => s.DeclarationAccepted))
       .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.DeclarationDate))
+      .ForMember(d => d.ProgramProfileId, opts => opts.MapFrom(s => s.ProgramProfileId))
+      .ForMember(d => d.ProgramProfileName, opts => opts.MapFrom(s => s.ProgramProfileName))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
     

@@ -123,7 +123,7 @@ const router = createRouter({
       props: true,
     },
     {
-      path: "/program-application-info/:applicationType",
+      path: "/program-application-info/:applicationType/:campusId?",
       component: () =>
         import("./components/pages/ProgramApplicationInfoContainer.vue"),
       name: "programApplicationInfo",
@@ -150,10 +150,11 @@ const router = createRouter({
       props: true,
     },
     {
-      path: "/program-application-begin",
+      path: "/program-application-begin/:applicationType/:campusId?",
       component: () => import("./components/pages/BeginProgramApplication.vue"),
       name: "program-application-begin",
       meta: { requiresAuth: true },
+      props: true,
     },
     {
       path: "/silent-callback",

@@ -97,6 +97,66 @@ public class ProgramApplicationHandlerTest
     _repositoryMock.Verify(r => r.Create(It.IsAny<ResourcesProgramApplication>(), It.IsAny<CancellationToken>()), Times.Once);
     _repositoryMock.Verify(r => r.Query(It.IsAny<ResourcesProgramApplicationQuery>(), It.IsAny<CancellationToken>()), Times.Once);
   }
+  
+  [Fact]
+  public async Task Handle_CreateProgramApplicationCommand_Type_NEWCAMPUS_CreatesAndReturnsApplication()
+  {
+    var instituteId = Guid.NewGuid().ToString();
+    var contractApplication = new ContractProgramApplication(null, instituteId)
+    {
+      ProgramApplicationName = "Test Application",
+      ProgramApplicationType = ContractApplicationType.NewCampusatRecognizedPrivateInstitution,
+      ProgramTypes = new[] { ContractProgramCertificationType.Basic },
+      DeliveryType = ContractDeliveryType.Hybrid,
+      Status = ContractApplicationStatus.Draft
+    };
+    var command = new CreateProgramApplicationCommand(contractApplication);
+
+    var resourcesApplication = new ResourcesProgramApplication(null!, instituteId)
+    {
+      ProgramApplicationName = contractApplication.ProgramApplicationName,
+      Status = ResourcesApplicationStatus.Draft,
+      ProgramApplicationType = ApplicationType.NewCampusatRecognizedPrivateInstitution
+    };
+    var createdId = Guid.NewGuid().ToString();
+    var queriedApplication = new ResourcesProgramApplication(createdId, instituteId)
+    {
+      ProgramApplicationName = contractApplication.ProgramApplicationName,
+      Status = ResourcesApplicationStatus.Draft,
+      ProgramApplicationType = ApplicationType.NewCampusatRecognizedPrivateInstitution
+    };
+    var expectedContract = new ContractProgramApplication(createdId, instituteId)
+    {
+      ProgramApplicationName = contractApplication.ProgramApplicationName,
+      Status = ContractApplicationStatus.Draft,
+      ProgramApplicationType = ContractApplicationType.NewCampusatRecognizedPrivateInstitution
+    };
+
+    _mapperMock
+      .Setup(m => m.Map<ResourcesProgramApplication>(contractApplication))
+      .Returns(resourcesApplication);
+    _repositoryMock
+      .Setup(r => r.Create(It.IsAny<ResourcesProgramApplication>(), It.IsAny<CancellationToken>()))
+      .ReturnsAsync(createdId);
+    _repositoryMock
+      .Setup(r => r.Query(It.Is<ResourcesProgramApplicationQuery>(q => q.ById == createdId && q.ByPostSecondaryInstituteId == instituteId), It.IsAny<CancellationToken>()))
+      .ReturnsAsync(new ResourcesProgramApplicationQueryResults(new[] { queriedApplication }, 1));
+    _mapperMock
+      .Setup(m => m.Map<ContractProgramApplication>(queriedApplication))
+      .Returns(expectedContract);
+
+    var handler = new ProgramApplicationHandler(_repositoryMock.Object, _metadataRepositoryMock.Object, _courseRepositoryMock.Object, _validationEngineMock.Object, _mapperMock.Object);
+
+    var result = await handler.Handle(command, CancellationToken.None);
+
+    result.ShouldNotBeNull();
+    result!.Id.ShouldBe(createdId);
+    result.ProgramApplicationName.ShouldBe(contractApplication.ProgramApplicationName);
+    result.Status.ShouldBe(ContractApplicationStatus.Draft);
+    result.ProgramApplicationType.ShouldBe(contractApplication.ProgramApplicationType);
+    _repositoryMock.Verify(r => r.Create(It.IsAny<ResourcesProgramApplication>(), It.IsAny<CancellationToken>()), Times.Once);
+    _repositoryMock.Verify(r => r.Query(It.IsAny<ResourcesProgramApplicationQuery>(), It.IsAny<CancellationToken>()), Times.Once);
+  }
 
   [Fact]
   public async Task Handle_CreateProgramApplicationCommand_WhenQueryReturnsEmpty_ReturnsNull()
