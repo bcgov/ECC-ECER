@@ -72,6 +72,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CountryId = "ecer_countryid";
 			public const string ecer_CountryIdName = "ecer_countryidname";
 			public const string ecer_documentfulladdress = "ecer_documentfulladdress";
+			public const string ecer_DocumentFullCityAddressComposed = "ecer_documentfullcityaddresscomposed";
+			public const string ecer_DocumentFullStreetAddressComposed = "ecer_documentfullstreetaddresscomposed";
 			public const string ecer_eceprogramrepresentative_PostSecondaryIns = "ecer_eceprogramrepresentative_PostSecondaryIns";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
 			public const string ecer_ECESchoolordepartment = "ecer_eceschoolordepartment";
@@ -431,6 +433,26 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<string>("ecer_documentfulladdress");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfullcityaddresscomposed")]
+		public string ecer_DocumentFullCityAddressComposed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_documentfullcityaddresscomposed");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfullstreetaddresscomposed")]
+		public string ecer_DocumentFullStreetAddressComposed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_documentfullstreetaddresscomposed");
 			}
 		}
 		

@@ -226,6 +226,7 @@ declare namespace Components {
       url?: string | null;
       size?: string | null;
       extension?: string | null;
+      ecerWebApplicationType?: EcerWebApplicationType;
     }
     /**
      * file Response
@@ -371,6 +372,8 @@ declare namespace Components {
       answer?: string | null;
       files?: FileInfo[] | null;
       rfaiRequired?: boolean | null;
+      newFiles?: FileInfo[] | null;
+      deletedFiles?: FileInfo[] | null;
     }
     export interface ProgramCampus {
       id?: string | null;

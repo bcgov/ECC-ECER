@@ -73,6 +73,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_course_Campus_ecer_postsecondaryinstitute = "ecer_course_Campus_ecer_postsecondaryinstitute";
 			public const string ecer_documentcampuscondition = "ecer_documentcampuscondition";
 			public const string ecer_documentfulladdress = "ecer_documentfulladdress";
+			public const string ecer_DocumentFullAddressComposed = "ecer_documentfulladdresscomposed";
 			public const string ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId = "ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId";
 			public const string ecer_IdNumber = "ecer_idnumber";
 			public const string ecer_KeyCampusContact = "ecer_keycampuscontact";
@@ -96,6 +97,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_provinceName = "ecer_provincename";
 			public const string ecer_SatelliteorTemporaryLocation = "ecer_satelliteortemporarylocation";
 			public const string ecer_satelliteortemporarylocationName = "ecer_satelliteortemporarylocationname";
+			public const string ecer_StateProvince = "ecer_stateprovince";
 			public const string ecer_street1 = "ecer_street1";
 			public const string ecer_street2 = "ecer_street2";
 			public const string ecer_street3 = "ecer_street3";
@@ -395,6 +397,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfulladdresscomposed")]
+		public string ecer_DocumentFullAddressComposed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_documentfulladdresscomposed");
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_idnumber")]
 		public string ecer_IdNumber
 		{
@@ -685,6 +697,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_stateprovince")]
+		public string ecer_StateProvince
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_stateprovince");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_stateprovince", value);
 			}
 		}
 		

@@ -1,6 +1,7 @@
 using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
 using ECER.Infrastructure.Common;
+using ECER.Utilities.ObjectStorage.Providers;
 
 namespace ECER.Clients.PSPPortal.Server.ProgramApplications;
 
@@ -82,7 +83,11 @@ internal sealed class ProgramApplicationsMapper: SecureProfile
       .ReverseMap();
     
     CreateMap<NavigationMetadata, Managers.Registry.Contract.ProgramApplications.NavigationMetadata>().ReverseMap();
-    CreateMap<FileInfo, Managers.Registry.Contract.ProgramApplications.FileInfo>().ReverseMap();
+
+    CreateMap<FileInfo, Managers.Registry.Contract.ProgramApplications.FileInfo>()
+      .ForMember(s => s.EcerWebApplicationType, opts => opts.MapFrom(d => EcerWebApplicationType.PSP)) //default to PSP when saving anything from the frontend.
+      .ReverseMap();
+      
     CreateMap<ProgramApplicationComponent, Managers.Registry.Contract.ProgramApplications.ProgramApplicationComponent>()
       .ForMember(d => d.Name, opts => opts.Ignore())
       .ForMember(d => d.Question, opts => opts.Ignore())

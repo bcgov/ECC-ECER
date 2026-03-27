@@ -7,7 +7,6 @@ namespace ECER.Resources.Documents.ProgramApplications;
 
 internal class ProgramApplicationRepositoryMapper : SecureProfile
 {
-
   public ProgramApplicationRepositoryMapper()
   {
     CreateMap<ProgramApplication, ecer_PostSecondaryInstituteProgramApplicaiton>(MemberList.Source)
@@ -63,7 +62,7 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForMember(d => d.ProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId.Id))
       .ForMember(d => d.ProgramProfileName, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId.Name))
       ;
-    
+
     CreateMap<ecer_ProgramCampus, ProgramCampus>(MemberList.Destination)
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.CampusId, opts => opts.MapFrom(s => s.ecer_CampusId.Id))
@@ -85,7 +84,7 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
     CreateMap<ProgramCertificationType, ecer_PSIProgramType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
-    
+
     CreateMap<MethodofInstruction, ecer_PSPMethodofInstruction>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
@@ -98,7 +97,7 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
     CreateMap<AdmissionOptions, ecer_PSPAdmissionOptions>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
-    
+
     CreateMap<ecer_ProgramApplicationComponentGroup, NavigationMetadata>(MemberList.Source)
       .ForCtorParam(nameof(NavigationMetadata.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentGroupId))
       .ForCtorParam(nameof(NavigationMetadata.Name), opt => opt.MapFrom(src => src.ecer_GroupName))
@@ -106,7 +105,7 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForCtorParam(nameof(NavigationMetadata.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
       .ForCtorParam(nameof(NavigationMetadata.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(NavigationMetadata.NavigationType), opt => opt.MapFrom(_ => NavigationType.Component))
-      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue  ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
+      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupWithComponents>(MemberList.Source)
@@ -118,7 +117,7 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForCtorParam(nameof(ComponentGroupWithComponents.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(ComponentGroupWithComponents.Components), opt => opt.MapFrom(src => src.ecer_programapplicationcomponent_ComponentGroup))
       .ValidateMemberList(MemberList.Destination);
-    
+
     CreateMap<ecer_ProgramApplicationComponent, ProgramApplicationComponent>(MemberList.Source)
       .ForCtorParam(nameof(ProgramApplicationComponent.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentId.HasValue ? src.ecer_ProgramApplicationComponentId.Value.ToString() : string.Empty))
       .ForCtorParam(nameof(ProgramApplicationComponent.Name), opt => opt.MapFrom(src => src.ecer_Component))
@@ -126,7 +125,9 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForCtorParam(nameof(ProgramApplicationComponent.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(ProgramApplicationComponent.Answer), opt => opt.MapFrom(src => src.ecer_Componentanswer))
       .ForCtorParam(nameof(ProgramApplicationComponent.Files), opt => opt.MapFrom(src => src.ecer_documenturl_ProgramApplicationComponentId))
-      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue  ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
+      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
+      .ForMember(s => s.NewFiles, opts => opts.Ignore())
+      .ForMember(s => s.DeletedFiles, opts => opts.Ignore())
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<bcgov_DocumentUrl, FileInfo>(MemberList.Destination)
@@ -134,7 +135,8 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
       .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
       .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
-      .ForMember(d => d.Extension, opts => opts.MapFrom(s => s.bcgov_FileExtension));
+      .ForMember(d => d.Extension, opts => opts.MapFrom(s => s.bcgov_FileExtension))
+      .ForMember(d => d.EcerWebApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationName));
 
     CreateMap<ProgramApplicationComponent, ecer_ProgramApplicationComponent>(MemberList.Source)
       .ForSourceMember(s => s.Name, opts => opts.DoNotValidate())
@@ -142,6 +144,8 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForSourceMember(s => s.DisplayOrder, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.RfaiRequired, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramApplicationComponentId, opts => opts.MapFrom(s => Guid.Parse(s.Id)))
       .ForMember(d => d.ecer_Componentanswer, opts => opts.MapFrom(s => s.Answer));
   }
