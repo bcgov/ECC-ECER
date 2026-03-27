@@ -120,14 +120,14 @@ export default defineComponent({
     };
   },
   async mounted() {
-    if (this.applicationType !== "NewBasicECEPostBasicProgram") {
-      this.canEditProgramProfile = false;
-    } else {
+    if (this.applicationType === "NewBasicECEPostBasicProgram") {
       await this.loadCourses();
       this.filteredAreasOfInstruction =
         this.configStore.areaOfInstructionList.filter((area) =>
           area.programTypes?.includes(this.programType),
         );
+    } else {
+      this.canEditProgramProfile = false;
     }
   },
   watch: {
