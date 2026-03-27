@@ -45,6 +45,7 @@
           :max-number-of-files="5"
           :can-delete-permanent-files="false"
           @update:files="onFilesUpdate"
+          @delete:file="handleFileDelete"
         />
       </suspense>
     </v-row>
@@ -56,10 +57,13 @@ import FileUploader from "@/components/common/FileUploader.vue";
 import type { FileItem } from "@/components/common/UploadFileItem.vue";
 import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
+import { removeElementByIndex } from "@/utils/functions";
 
 export interface QuestionModelValue {
   answer?: string;
   files?: Components.Schemas.FileInfo[];
+  newFiles?: Components.Schemas.FileInfo[] | null;
+  deletedFiles?: Components.Schemas.FileInfo[] | null;
 }
 
 function toFileItem(info: Components.Schemas.FileInfo): FileItem {
@@ -80,7 +84,12 @@ export default defineComponent({
   props: {
     modelValue: {
       type: Object as PropType<QuestionModelValue>,
-      default: () => ({ answer: "", files: [] }),
+      default: () => ({
+        answer: "",
+        files: [],
+        addedFiles: [],
+        deletdFiles: [],
+      }),
     },
     name: {
       type: String,
@@ -97,11 +106,12 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["update:modelValue"],
+  emits: { "update:modelValue": (_payload: QuestionModelValue) => true },
   data() {
     return {
       Rules,
       userFilesFromModel: [] as FileItem[],
+      deletedFiles: [] as Components.Schemas.FileInfo[],
     };
   },
   created() {
@@ -118,12 +128,47 @@ export default defineComponent({
     },
     onFilesUpdate(files: FileItem[]) {
       this.userFilesFromModel = files;
+      let newFilesWithData = [] as FileItem[]; // Reset attachments
+
+      newFilesWithData = files.filter(
+        (file) =>
+          file.fileErrors.length === 0 &&
+          file.progress === 101 &&
+          file.storageFolder === "temporary",
+      );
+
       this.$emit("update:modelValue", {
         ...this.modelValue,
         files: files
           .filter((f) => f.storageFolder === "permanent")
           .map((f) => ({ id: f.fileId, name: f.fileName })),
+        newFiles: newFilesWithData.map((file) => ({
+          id: file.fileId,
+          ecerWebApplicationType: "PSP",
+        })),
       });
+    },
+    handleFileDelete(fileItem: FileItem) {
+      if (fileItem.storageFolder === "permanent") {
+        //we need to add it to the list of deleted files for the backend to remove.
+        this.deletedFiles?.push({
+          id: fileItem.fileId,
+          ecerWebApplicationType: "PSP",
+        });
+        let index = this.userFilesFromModel?.findIndex(
+          (file) => file.fileId === fileItem.fileId,
+        );
+        if (index) {
+          this.userFilesFromModel = removeElementByIndex(
+            this.userFilesFromModel,
+            index,
+          );
+        }
+        this.$emit("update:modelValue", {
+          ...this.modelValue,
+          deletedFiles: this.deletedFiles,
+        });
+      }
     },
   },
 });

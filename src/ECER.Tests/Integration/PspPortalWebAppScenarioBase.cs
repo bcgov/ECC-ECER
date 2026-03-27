@@ -483,7 +483,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       ecer_Component = componentName,
       ecer_Question = "What is your answer?",
       ecer_DisplayOrder = "1",
-      ecer_ComponentGroup = new EntityReference(ecer_ProgramApplicationComponentGroup.EntityLogicalName, groupId)
+      ecer_ComponentGroup = new EntityReference(ecer_ProgramApplicationComponentGroup.EntityLogicalName, groupId),
+      ecer_ProgramApplication = new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, application.Id)
     };
     context.AddObject(component);
 

@@ -18,22 +18,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ApplicationDenied = 621870003,
+		ActionApplicationDenied = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Cancellation = 621870002,
+		ActionCancellation = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NoAction = 621870000,
+		ActionSuspension = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ActionTermsandConditions = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NoActionGapsAddressed = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NoActionNoGaps = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Other = 621870004,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Suspended = 621870005,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		TermsandConditions = 621870001,
 	}
 }
 #pragma warning restore CS1591

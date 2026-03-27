@@ -137,7 +137,7 @@ export default defineComponent({
         return [
           home,
           {
-            title: "Institution info",
+            title: "Institution information",
             disabled: false,
             href: `/education-institution/${institutionId}`,
           },
@@ -149,7 +149,7 @@ export default defineComponent({
         return [
           home,
           {
-            title: "Institution info",
+            title: "Institution information",
             disabled: false,
             href: `/education-institution/${institutionId}`,
           },

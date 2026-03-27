@@ -1,15 +1,21 @@
-using ECER.Resources.Documents.Shared;
+using ECER.Utilities.ObjectStorage.Providers;
 
 namespace ECER.Resources.Documents.ProgramApplications;
 
 public interface IProgramApplicationRepository
 {
   Task<string> Create(ProgramApplication programApplication, CancellationToken cancellationToken);
+
   Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken);
+
   Task<string> UpdateProgramApplication(ProgramApplication application, CancellationToken cancellationToken);
+
   Task<IEnumerable<NavigationMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken);
+
   Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
-  Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken);
+
+  Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, string postSecondaryInstituteId, CancellationToken cancellationToken);
+
   Task<string> Submit(string applicationId, string programRepresentativeId, bool declaration, CancellationToken cancellationToken);
 }
 
@@ -27,7 +33,11 @@ public record ComponentGroupWithComponentsQuery
   public string? ByComponentGroupId { get; set; }
 }
 
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired)
+{
+  public IEnumerable<FileInfo> NewFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> DeletedFiles { get; set; } = Array.Empty<FileInfo>();
+}
 
 public record FileInfo(string Id)
 {
@@ -35,6 +45,7 @@ public record FileInfo(string Id)
   public string? Url { get; set; }
   public string? Size { get; set; }
   public string? Extension { get; set; }
+  public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
 public record ProgramApplicationQuery
@@ -67,7 +78,7 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public float? MinimumEnrollment { get; set; }
   public float? MaximumEnrollment { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
-  public string? OtherAdmissionOptions  { get; set; }
+  public string? OtherAdmissionOptions { get; set; }
   public string? InstituteInfoEntryProgress { get; set; }
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
@@ -77,7 +88,7 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
 }
 
 public record ProgramCampus
-{ 
+{
   public string? Id { get; set; }
   public string? CampusId { get; set; }
   public string? Name { get; set; }
@@ -98,6 +109,7 @@ public enum WorkHoursType
   FullTime,
   PartTime,
 }
+
 public enum ApplicationStatus
 {
   Approved,
@@ -152,16 +164,19 @@ public enum ProgramCertificationType
   ITE,
   SNE
 }
+
 public enum MethodofInstruction
 {
-Asynchronous,
-Synchronous,
+  Asynchronous,
+  Synchronous,
 }
+
 public enum DeliveryMethodforInstructor
 {
   Inpersonsitevisits,
   Virtualsitevisits,
 }
+
 public enum NavigationType
 {
   Component,
