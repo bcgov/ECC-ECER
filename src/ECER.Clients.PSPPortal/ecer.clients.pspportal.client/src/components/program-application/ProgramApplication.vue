@@ -110,10 +110,13 @@ export default defineComponent({
   computed: {
     orderedSteps(): ApplicationStep[] {
       const programTypeSteps =
-        this.programApplication.programTypes?.map((programType) => ({
-          name: "program-application-program-profile-area-of-instruction",
-          programType: programType,
-        })) ?? [];
+        this.programApplication?.programApplicationType ===
+        "NewBasicECEPostBasicProgram"
+          ? (this.programApplication.programTypes?.map((programType) => ({
+              name: "program-application-program-profile-area-of-instruction",
+              programType: programType,
+            })) ?? [])
+          : [];
       return [
         { name: "program-application-component-info" },
         { name: "program-application-institute-info" },

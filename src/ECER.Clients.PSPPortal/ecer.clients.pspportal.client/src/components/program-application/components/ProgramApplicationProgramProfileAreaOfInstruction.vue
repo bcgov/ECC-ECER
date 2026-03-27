@@ -1,6 +1,6 @@
 <template>
   <Loading v-if="loadingStore.isLoading('courses_get')" />
-  <template v-else>
+  <template v-else-if="canEditProgramProfile">
     <h2>Program profile - ECE ({{ programType }})</h2>
     <br />
     <p>This page will build your program profile with the ECE Registry</p>
@@ -56,6 +56,9 @@
       </v-col>
     </v-row>
   </template>
+  <Alert v-else class="mt-10" type="error">
+    <p class="small">This application type does not have access to this page</p>
+  </Alert>
 </template>
 
 <script lang="ts">
@@ -73,10 +76,12 @@ import { MIN_HOURS_ITE_SNE } from "@/utils/constant";
 
 import Loading from "@/components/Loading.vue";
 import AreaOfInstructionComponent from "../../program-profile/AreaOfInstructionComponent.vue";
+import Alert from "@/components/Alert.vue";
 
 export default defineComponent({
   name: "EceProgramAreaInput",
   components: {
+    Alert,
     Loading,
     AreaOfInstructionComponent,
   },
@@ -86,6 +91,10 @@ export default defineComponent({
       required: true,
     },
     programApplicationId: {
+      type: String,
+      required: true,
+    },
+    applicationType: {
       type: String,
       required: true,
     },
@@ -107,14 +116,19 @@ export default defineComponent({
       MIN_HOURS_ITE_SNE,
       programApplication: null as Components.Schemas.ProgramApplication | null,
       courses: [] as Components.Schemas.Course[] | undefined,
+      canEditProgramProfile: true,
     };
   },
   async mounted() {
-    await this.loadCourses();
-    this.filteredAreasOfInstruction =
-      this.configStore.areaOfInstructionList.filter((area) =>
-        area.programTypes?.includes(this.programType),
-      );
+    if (this.applicationType !== "NewBasicECEPostBasicProgram") {
+      this.canEditProgramProfile = false;
+    } else {
+      await this.loadCourses();
+      this.filteredAreasOfInstruction =
+        this.configStore.areaOfInstructionList.filter((area) =>
+          area.programTypes?.includes(this.programType),
+        );
+    }
   },
   watch: {
     programType: "loadCourses",

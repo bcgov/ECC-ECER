@@ -203,14 +203,25 @@ export default defineComponent({
 
       this.programTypes = programApplication.data.programTypes || [];
 
+      const isNewBasic =
+        programApplication.data.programApplicationType ===
+        "NewBasicECEPostBasicProgram";
+      const requestType = isNewBasic ? "ProgramApplication" : "ProgramProfile";
+      const requestId = isNewBasic
+        ? this.programApplicationId
+        : programApplication.data.programProfileId
+          ? programApplication.data.programProfileId
+          : this.programApplicationId;
+
       this.editable =
-        programApplication.data.status === "Draft" ||
-        programApplication.data.statusReasonDetail === "RFAIrequested";
+        isNewBasic &&
+        (programApplication.data.status === "Draft" ||
+          programApplication.data.statusReasonDetail === "RFAIrequested");
 
       this.allCourses =
         (await getCourses(
-          this.programApplicationId,
-          "ProgramApplication",
+          requestId,
+          requestType,
           programApplication.data.programTypes || [],
         )) || [];
     },
