@@ -8,25 +8,17 @@
 
     <v-row>
       <v-col cols="12">
-        <h1>Add satellite location</h1>
+        <h1>Add a temporary campus or satellite location</h1>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12">
-        <p>
-          This process is for institutions with existing programs that are
-          recognized by the Registry to seek approval to add a
-          <strong>temporary offering</strong>
-          of an early childhood education cohort at a location in partnership
-          with another organization, or outside of the institution.
-        </p>
-        <!-- prettier-ignore -->
+        <ECEHeader title="Satellite details"></ECEHeader>
         <p class="mt-3">
-          The satellite program offering runs in addition to existing
-          programming and has a <strong>fixed end date</strong>.
-          Institutions must hold ongoing recognition prior to submitting a
-          request to offer a satellite program.
+          Satellite program offerings are time-limited and require ongoing
+          Registry recognition. To complete your submission, enter the satellite
+          location details and continue to the satellite program application.
         </p>
       </v-col>
     </v-row>
@@ -50,7 +42,7 @@
               :loading="isSaving"
               @click="save"
             >
-              Save
+              Save and continue
             </v-btn>
             <v-btn
               rounded="lg"
@@ -72,6 +64,7 @@
 import { defineComponent } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import ECEHeader from "@/components/ECEHeader.vue";
 import Loading from "@/components/Loading.vue";
 import CampusForm from "@/components/CampusForm.vue";
 import {
@@ -86,7 +79,7 @@ import type { PspUserItem } from "@/components/inputs/EcePspUser.vue";
 
 export default defineComponent({
   name: "AddSatelliteLocation",
-  components: { PageContainer, Breadcrumb, Loading, CampusForm },
+  components: { PageContainer, Breadcrumb, Loading, CampusForm, ECEHeader },
   props: {
     institutionId: {
       type: String,
