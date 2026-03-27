@@ -209,9 +209,8 @@ export default defineComponent({
       const requestType = isNewBasic ? "ProgramApplication" : "ProgramProfile";
       const requestId = isNewBasic
         ? this.programApplicationId
-        : programApplication.data.programProfileId
-          ? programApplication.data.programProfileId
-          : this.programApplicationId;
+        : (programApplication.data.programProfileId ??
+          this.programApplicationId);
 
       this.editable =
         isNewBasic &&
