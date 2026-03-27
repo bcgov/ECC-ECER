@@ -363,6 +363,7 @@ declare namespace Components {
       declarantName?: string | null;
       programProfileId?: string | null;
       programProfileName?: string | null;
+      declarationText?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;

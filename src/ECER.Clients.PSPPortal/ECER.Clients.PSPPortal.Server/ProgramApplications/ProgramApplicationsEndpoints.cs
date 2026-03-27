@@ -294,6 +294,7 @@ public record ProgramApplication
   public string? DeclarantName { get; set; }
   public string? ProgramProfileId { get; set; }
   public string? ProgramProfileName { get; set; }
+  public string? DeclarationText { get; set; }
 }
 
 public record ProgramCampus

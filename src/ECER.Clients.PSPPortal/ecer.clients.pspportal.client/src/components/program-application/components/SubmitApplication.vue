@@ -9,28 +9,9 @@
             Please read the following and complete the required fields below to
             submit this application to the ECE Registry to review.
           </p>
-          <ul class="ml-10">
-            <li>
-              I confirm that the information provided in this submission is
-              complete and accurate
-            </li>
-            <li>
-              I understand that the ECE Registry may require additional
-              information to complete their review
-            </li>
-            <li>
-              I understand that I am submitting this information on behalf of
-              [name of institution]
-            </li>
-            <li>
-              Should interim recognition be granted, I agree to notify the ECE
-              Registry of any changes to curriculum, program or location 
-            </li>
-            <li>
-              I agree to participate in the program profile review on an annual
-              basis
-            </li>
-          </ul>
+          <div class="declaration-text ml-10">
+            {{ application?.declarationText }}
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -200,3 +181,8 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.declaration-text {
+  white-space: pre-line;
+}
+</style>

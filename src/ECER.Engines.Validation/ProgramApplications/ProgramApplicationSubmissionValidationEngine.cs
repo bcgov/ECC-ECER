@@ -26,15 +26,22 @@ internal sealed class ProgramApplicationSubmissionValidationEngine : IProgramApp
 
     // b) Course validation
 
-    var programTypes = (context.ProgramApplication.ProgramTypes ?? Enumerable.Empty<ProgramCertificationType>()).ToList();
-    if (programTypes.Contains(ProgramCertificationType.Basic))
-      errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses, nameof(ProgramCertificationType.Basic), context.AreasOfInstruction));
+    if (context.ProgramApplication.ProgramApplicationType != ApplicationType.NewCampusatRecognizedPrivateInstitution)
+    {
+      var programTypes = (context.ProgramApplication.ProgramTypes ?? Enumerable.Empty<ProgramCertificationType>())
+        .ToList();
+      if (programTypes.Contains(ProgramCertificationType.Basic))
+        errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses,
+          nameof(ProgramCertificationType.Basic), context.AreasOfInstruction));
 
-    if (programTypes.Contains(ProgramCertificationType.ITE))
-      errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses, nameof(ProgramCertificationType.ITE), context.AreasOfInstruction, checkTotalHours: true));
+      if (programTypes.Contains(ProgramCertificationType.ITE))
+        errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses,
+          nameof(ProgramCertificationType.ITE), context.AreasOfInstruction, checkTotalHours: true));
 
-    if (programTypes.Contains(ProgramCertificationType.SNE))
-      errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses, nameof(ProgramCertificationType.SNE), context.AreasOfInstruction, checkTotalHours: true));
+      if (programTypes.Contains(ProgramCertificationType.SNE))
+        errors.AddRange(ProgramCourseValidator.ValidateProgramTypeCourses(context.Courses,
+          nameof(ProgramCertificationType.SNE), context.AreasOfInstruction, checkTotalHours: true));
+    }
 
     // c) Declaration must be accepted
     if (!context.DeclarationAccepted)
