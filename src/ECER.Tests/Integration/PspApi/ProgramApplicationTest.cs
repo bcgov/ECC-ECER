@@ -58,7 +58,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     fetched.ProgramApplicationName.ShouldBe(request.ProgramApplicationName);
     fetched.DeliveryType.ShouldBe(DeliveryType.Hybrid);
   }
-  
+
   [Fact]
   public async Task CreateProgramApplication_ForNewCampus_ReturnsBadRequest()
   {
@@ -77,7 +77,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
     });
   }
-  
+
   [Fact]
   public async Task CreateProgramApplication_ForNewCampus_ReturnsOkAndCreatedApplication()
   {
@@ -122,7 +122,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     status.ShouldNotBeNull();
 
     var firstApplication = status.Applications!.Where(app => app.Id == Fixture.programApplicationId).ShouldNotBeNull().First();
-    firstApplication.Status.ShouldBe(ApplicationStatus.ReviewAnalysis);
+    firstApplication.Status.ShouldBe(ApplicationStatus.Submitted);
     firstApplication.StatusReasonDetail.ShouldBe(ApplicationStatusReasonDetail.RFAIrequested);
   }
 
@@ -140,7 +140,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     status.ShouldNotBeNull();
 
     var firstApplication = status.Applications!.FirstOrDefault().ShouldNotBeNull();
-    firstApplication.Status.ShouldBe(ApplicationStatus.ReviewAnalysis);
+    firstApplication.Status.ShouldBe(ApplicationStatus.Submitted);
     firstApplication.StatusReasonDetail.ShouldBe(ApplicationStatusReasonDetail.RFAIrequested);
     firstApplication.DeliveryType.ShouldBe(DeliveryType.Hybrid);
   }
