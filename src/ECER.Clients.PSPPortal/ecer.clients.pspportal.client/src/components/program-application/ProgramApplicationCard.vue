@@ -200,12 +200,6 @@ export default defineComponent({
     },
 
     handleButtonAction(): void {
-      if (this.buttonText === "Edit") {
-        this.editApplication();
-      }
-    },
-
-    editApplication(): void {
       this.$router.push({
         name: "programApplication",
         params: { programApplicationId: this.programApplication.id },
