@@ -3,10 +3,11 @@
     <v-col cols="12">
       <p>
         Select the individual contact for this campus or location. This user
-        must have access to the PSP portal.
+        must have access to the ECE Post-Secondary Programs portal.
       </p>
     </v-col>
     <v-col cols="12">
+      <!-- prettier-ignore -->
       <p>
         Note: If the correct user is not listed here, please invite them to this
         portal under
@@ -17,8 +18,7 @@
           }"
         >
           "Manage Users"
-        </router-link>
-        .
+        </router-link>.
       </p>
     </v-col>
     <v-col cols="12" sm="6">
