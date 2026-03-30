@@ -141,18 +141,18 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
 
     testCommunication1 = GetOrAddCommunication(context, "comm1", null);
 
-    approvedProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual3", "Approved", statusCode: ecer_Program_StatusCode.RegistryReviewComplete);
-    testProgram1 = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
-    testProgram2 = GetOrAddProgram(context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
-    changeRequestFromProfile = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "CRFromProfile", "ChangeRequestInProgress", statusCode: ecer_Program_StatusCode.ChangeRequestInProgress);
-    changeRequestProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, true, "CR", "Draft", fromProfile: changeRequestFromProfile);
-    submitDraftProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Annual3", "Draft");
+    approvedProgram = GetOrAddProgram("autotest_psp_program_approved", context, testPostSecondaryInstitute, false, false, "Annual3", "Approved", statusCode: ecer_Program_StatusCode.RegistryReviewComplete);
+    testProgram1 = GetOrAddProgram("autotest_psp_program_test_program_1", context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
+    testProgram2 = GetOrAddProgram("autotest_psp_program_test_program_2", context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
+    changeRequestFromProfile = GetOrAddProgram("autotest_psp_program_change_request_from_profile", context, testPostSecondaryInstitute, false, false, "CRFromProfile", "ChangeRequestInProgress", statusCode: ecer_Program_StatusCode.ChangeRequestInProgress);
+    changeRequestProgram = GetOrAddProgram("autotest_psp_program_change_request_program", context, testPostSecondaryInstitute, false, true, "CR", "Draft", fromProfile: changeRequestFromProfile);
+    submitDraftProgram = GetOrAddProgram("autotest_psp_program_submit_draft", context, testPostSecondaryInstitute, false, false, "Annual3", "Draft");
     testCourse = GetOrAddCourse(context, testProgram1, "101", testPostSecondaryInstitute);
     testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201", testPostSecondaryInstitute);
     testCourse3 = GetOrAddCourse(context, testProgram1, "109", testPostSecondaryInstitute);
 
     programApplication =
-      GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.ReviewAnalysis, ecer_Statusreasondetail.RFAIrequested);
+      GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Submitted, ecer_Statusreasondetail.RFAIrequested);
     draftProgramApplication =
       GetOrAddProgramApplication("Test_psp_program_application_withdraw", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
 
@@ -171,7 +171,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testCampus = GetOrAddCampus(context, testPostSecondaryInstitute);
     campusProgramApplication =
       GetOrAddProgramApplication("Test_psp_campus_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
-    campusProgram = GetOrAddProgram(context, testPostSecondaryInstitute, false, false, "Campus", "Draft");
+    campusProgram = GetOrAddProgram("autotest_psp_program_with_campus", context, testPostSecondaryInstitute, false, false, "Campus", "Draft");
 
     context.SaveChanges();
 
@@ -191,6 +191,15 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     var programApplicationE = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.FirstOrDefault(r => r.ecer_Name == programName);
     if (programApplicationE != null)
     {
+      //we need to delete all dependent campus links before we can delete the program application
+      if (programApplicationE.ecer_CampusId != null)
+      {
+        var existing = context.ecer_ProgramCampusSet.Where(pc => pc.ecer_CampusId.Id == programApplicationE.ecer_CampusId.Id).ToList();
+        foreach (var link in existing)
+        {
+          context.DeleteObject(link);
+        }
+      }
       context.DeleteObject(programApplicationE);
     }
     programApplicationE = new ecer_PostSecondaryInstituteProgramApplicaiton
@@ -296,10 +305,11 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return course;
   }
 
-  private ecer_Program GetOrAddProgram(EcerContext context, ecer_PostSecondaryInstitute institute, bool addProgramTotals, bool isChangeRequest, string type, string status, ecer_Program? fromProfile = null, ecer_Program_StatusCode? statusCode = null)
+  private ecer_Program GetOrAddProgram(string name, EcerContext context, ecer_PostSecondaryInstitute institute, bool addProgramTotals, bool isChangeRequest, string type, string status, ecer_Program? fromProfile = null, ecer_Program_StatusCode? statusCode = null)
   {
-    var programName = $"{TestRunId}psp_program_{type}_{status}";
-    var existingProgram = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_Name == programName);
+    var descriptiveProgramName = $"{name}_{type}_{status}";
+    //we have to use descriptive program name since ecer_name will get autopopulated in dynamics
+    var existingProgram = context.ecer_ProgramSet.FirstOrDefault(r => r.ecer_DescriptiveProgramName == descriptiveProgramName);
     if (existingProgram != null)
     {
       context.DeleteObject(existingProgram);
@@ -308,6 +318,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     string[] sneProgramTypes = { "SNE" };
     var program = new ecer_Program
     {
+      ecer_DescriptiveProgramName = descriptiveProgramName,
       StatusCode = statusCode ?? ecer_Program_StatusCode.RequiresReview,
       ecer_ProgramId = Guid.NewGuid(),
       ecer_PortalStage = "stage1",
