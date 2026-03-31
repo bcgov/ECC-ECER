@@ -213,20 +213,37 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 
   private static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
   {
-    return application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ != null
-            && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty
-            && (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online)
-              && application.ecer_Onlinemethodsofinstruction.Any() && application.ecer_Deliverymethodforpracticuminstructor.Any()
-            && ValidateCampus(application, institute);
+    if (incomingApplication.ProgramApplicationType == ApplicationType.NewBasicECEPostBasicProgram)
+    {
+      if (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online)
+      {
+        return application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ != null
+          && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty
+          && application.ecer_Onlinemethodsofinstruction.Any() && application.ecer_Deliverymethodforpracticuminstructor.Any()
+          && ValidateCampus(incomingApplication, institute);
+      } 
+      
+      if (incomingApplication.DeliveryType == DeliveryType.Inperson)
+      {
+        return application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ != null
+               && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty
+               && ValidateCampus(incomingApplication, institute);
+      }
+    } else if (incomingApplication.ProgramApplicationType == ApplicationType.NewCampusatRecognizedPrivateInstitution)
+    {
+      return application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ != null
+             && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty;
+    }
+
+    return true;
   }
 
-  private static bool ValidateCampus(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute)
+  private static bool ValidateCampus(ProgramApplication incomingApplication, ecer_PostSecondaryInstitute institute)
   {
     if (institute.ecer_PSIInstitutionType == ecer_psiinstitutiontype.Private)
     {
-      return application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton != null
-             && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Any()
-             && application.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton.Count() != 1;
+      return incomingApplication.ProgramCampuses != null
+             && incomingApplication.ProgramCampuses.Any();
     }
     return true;
   }

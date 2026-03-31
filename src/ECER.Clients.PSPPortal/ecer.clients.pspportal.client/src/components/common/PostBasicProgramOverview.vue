@@ -199,7 +199,7 @@ export default defineComponent({
         let campusObj = this.userStore.educationInstitution?.campuses?.filter(
           (c) => {
             if (c.id !== null && c.id !== undefined) {
-              programCampusIds.includes(c.id);
+              return programCampusIds.includes(c.id);
             }
           },
         );

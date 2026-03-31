@@ -206,13 +206,15 @@ export default defineComponent({
               return c.campusId;
             }
           });
+
         let campusObj = this.userStore.educationInstitution?.campuses?.filter(
           (c) => {
             if (c.id !== null && c.id !== undefined) {
-              programCampusIds.includes(c.id);
+              return programCampusIds.includes(c.id);
             }
           },
         );
+        console.log(campusObj);
         if (!campusObj?.length) return "-";
         return campusObj.map((c) => c.generatedName).join(", ");
       }
