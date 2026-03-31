@@ -10,6 +10,8 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.PSPPortal.Server.Courses;
 
@@ -39,14 +41,9 @@ public class CoursesEndpoint : IRegisterEndpoints
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/courses", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (AddCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/courses", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (AddCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
-        if (string.IsNullOrWhiteSpace(request.ApplicationId)) return TypedResults.BadRequest("id cannot be null or whitespace");
-        bool IdIsNotGuid = !Guid.TryParse(request.ApplicationId, out _);
-
-        if (IdIsNotGuid) return TypedResults.BadRequest("invalid id");
-
-        if (request.Type == FunctionType.ProgramProfile) return TypedResults.BadRequest("User cannot add courses for a Program Profile");
+        if (request.Type == FunctionType.ProgramProfile) return TypedResults.BadRequest(new ProblemDetails() { Title = "User cannot add courses for a Program Profile" });
 
         var existing = await messageBus.Send(new ProgramApplicationQuery { ById = request.ApplicationId }, ct);
         if (!existing.Items.Any()) return TypedResults.NotFound();
@@ -58,7 +55,18 @@ public class CoursesEndpoint : IRegisterEndpoints
         var mappedCourse = mapper.Map<Managers.Registry.Contract.Shared.Course>(request.Course);
 
         var result = await messageBus.Send(new SaveCourseCommand(mappedCourse, request.ApplicationId, programRep.PostSecondaryInstituteId), ct);
-        return TypedResults.Ok(result);
+
+        if (result.Error == SaveCourseError.ProgramApplicationNotFound)
+        {
+          return TypedResults.BadRequest(new ProblemDetails() { Title = $"Program application id {request.ApplicationId} not found" });
+        }
+
+        if (result.Error == SaveCourseError.IncorrectProgramApplicationTypeToSaveCourse)
+        {
+          return TypedResults.BadRequest(new ProblemDetails() { Title = $"Unable to add course for application id {request.ApplicationId}" });
+        }
+
+        return TypedResults.Ok(result.CourseId);
       })
       .WithOpenApi("Add a course for a program application", string.Empty, "course_post")
       .RequireAuthorization(PolicyNames)
@@ -103,7 +111,7 @@ public class CoursesEndpoint : IRegisterEndpoints
 
 public record UpdateCourseRequest(Course Course, FunctionType Type, string Id);
 
-public record AddCourseRequest(Course? Course, FunctionType Type, string ApplicationId);
+public record AddCourseRequest(Course? Course, FunctionType Type, [ValidGuid][Required] string ApplicationId);
 
 public enum FunctionType
 {

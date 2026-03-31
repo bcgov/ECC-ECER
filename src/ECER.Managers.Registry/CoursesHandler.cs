@@ -14,7 +14,7 @@ public class CoursesHandler(
   IProgramApplicationRepository programApplicationRepository,
   IMapper mapper)
 : IRequestHandler<UpdateCourseCommand, string>,
-  IRequestHandler<SaveCourseCommand, string>,
+  IRequestHandler<SaveCourseCommand, SaveCourseCommandResult>,
   IRequestHandler<DeleteCourseCommand, string>,
   IRequestHandler<GetCoursesCommand, IEnumerable<Contract.Shared.Course>>
 {
@@ -51,14 +51,28 @@ public class CoursesHandler(
     throw new InvalidOperationException("Operation not allowed");
   }
 
-  public async Task<string> Handle(SaveCourseCommand request, CancellationToken cancellationToken)
+  public async Task<SaveCourseCommandResult> Handle(SaveCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);
     ArgumentNullException.ThrowIfNull(request.Course.CourseAreaOfInstruction);
 
+    var programApplications = await programApplicationRepository.Query(new ProgramApplicationQuery
+    {
+      ById = request.Id,
+      ByPostSecondaryInstituteId = request.PostSecondaryInstituteId
+    }, cancellationToken);
+    if (!programApplications.Items!.Any()) {
+      return new SaveCourseCommandResult() { Error = SaveCourseError.ProgramApplicationNotFound };
+    }
+
+    var programApplication = programApplications.Items.FirstOrDefault();
+    if (programApplication != null && programApplication.ProgramApplicationType != ApplicationType.NewBasicECEPostBasicProgram) {
+      return new SaveCourseCommandResult() { Error = SaveCourseError.IncorrectProgramApplicationTypeToSaveCourse };
+    }
+
     var courseId = await courseRepository.AddCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, request.PostSecondaryInstituteId, cancellationToken);
-    return courseId;
+    return new SaveCourseCommandResult() { CourseId = courseId};
   }
 
   public async Task<IEnumerable<ECER.Managers.Registry.Contract.Shared.Course>> Handle(GetCoursesCommand request, CancellationToken cancellationToken)
