@@ -196,10 +196,10 @@ export default defineComponent({
   },
   computed: {
     programTypes() {
-      let selectedProfile = this.programProfiles.filter(
+      let selectedProfile = this.programProfiles.find(
         (profile) => profile.id === this.selectedProgramProfileId,
       );
-      return selectedProfile[0]?.programTypes;
+      return selectedProfile?.programTypes;
     },
   },
   async mounted() {

@@ -227,7 +227,7 @@
                 size="large"
                 class="mt-4"
                 color="primary"
-                id="createProgramApplications"
+                id="createProgramApplicationAddOnlineOrHybridDelivery"
                 @click="
                   router.push({
                     name: 'programApplicationInfo',
