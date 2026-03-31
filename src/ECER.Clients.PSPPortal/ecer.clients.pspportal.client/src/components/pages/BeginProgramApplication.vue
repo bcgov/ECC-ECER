@@ -13,6 +13,12 @@
     :campusId="campusId || ''"
     @create-application="createApplication"
   />
+  <BeginNewOnlineOrHybridDeliveryApplication
+    v-if="
+      applicationType === programApplicationType.AddOnlineorHybridDeliveryMethod
+    "
+    @create-application="createApplication"
+  />
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -22,6 +28,7 @@ import * as Rules from "@/utils/formRules";
 import { useLoadingStore } from "@/store/loading";
 import BeginPostBasicApplication from "@/components/common/BeginPostBasicApplication.vue";
 import BeginNewCampusApplication from "@/components/common/BeginNewCampusApplication.vue";
+import BeginNewOnlineOrHybridDeliveryApplication from "@/components/common/BeginNewOnlineOrHybridDeliveryApplication.vue";
 import { ProgramApplicationType } from "@/utils/constant";
 import type { CreateApplication } from "@/types/helperFunctions";
 
@@ -30,6 +37,7 @@ export default defineComponent({
   components: {
     BeginPostBasicApplication,
     BeginNewCampusApplication,
+    BeginNewOnlineOrHybridDeliveryApplication,
   },
   props: {
     applicationType: {
