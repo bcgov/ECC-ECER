@@ -113,7 +113,7 @@
       </v-card-text>
     </v-card>
 
-    <v-row class="d-print-none mt-4">
+    <v-row v-if="editable" class="d-print-none mt-4">
       <v-col>
         <v-btn rounded="lg" color="primary" @click="$emit('next', {})">
           Continue

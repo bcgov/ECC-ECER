@@ -107,7 +107,10 @@
               <h2 class="text-wrap">Program overview</h2>
             </div>
             <div>
-              <v-tooltip location="top">
+              <v-tooltip
+                v-if="programApplicationObject?.status === 'Draft'"
+                location="top"
+              >
                 <template #activator="{ props }">
                   <v-btn
                     icon="mdi-pencil"
@@ -159,7 +162,10 @@
               <h2 class="text-wrap">{{ name }}</h2>
             </div>
             <div v-if="allowEdit(metaData.components)">
-              <v-tooltip location="top">
+              <v-tooltip
+                v-if="programApplicationObject?.status === 'Draft'"
+                location="top"
+              >
                 <template #activator="{ props }">
                   <v-btn
                     icon="mdi-pencil"

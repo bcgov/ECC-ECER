@@ -21,6 +21,7 @@
           :application-type="programApplication.programApplicationType"
           :component-groups="componentGroups"
           :is-rfai="isRFAI"
+          :isDraftApplication="isDraftApplication"
         ></ComponentGroupNavigation>
 
         <v-navigation-drawer temporary v-model="drawer" width="350">
@@ -31,6 +32,7 @@
             :application-type="programApplication.programApplicationType"
             :component-groups="componentGroups"
             :is-rfai="isRFAI"
+            :isDraftApplication="isDraftApplication"
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
@@ -108,6 +110,9 @@ export default defineComponent({
   },
   beforeUnmount() {},
   computed: {
+    isDraftApplication() {
+      return this.programApplication.status === "Draft";
+    },
     orderedSteps(): ApplicationStep[] {
       const programTypeSteps =
         this.programApplication?.programApplicationType ===
@@ -133,6 +138,15 @@ export default defineComponent({
         },
         {
           name: "submit-application",
+        },
+      ];
+    },
+    viewApplicationSteps(): ApplicationStep[] {
+      return [
+        { name: "program-application-component-info" },
+        { name: "program-application-review-response" },
+        {
+          name: "program-application-program-profile-area-of-instruction-review",
         },
       ];
     },
@@ -190,32 +204,60 @@ export default defineComponent({
       currentComponentGroupId,
       programType,
     }: NextStepPayload) {
-      await this.getComponentGroups();
-      const currentIndex = this.orderedSteps.findIndex(
-        (s) =>
-          s.name === this.$route.name &&
-          s.componentGroupId === currentComponentGroupId &&
-          s.programType === programType,
-      );
-      const next = this.orderedSteps[currentIndex + 1];
-      if (!next) {
-        console.log(
-          "An error occurred while trying to navigate. Next step not found.",
+      if (this.isDraftApplication || this.isRFAI) {
+        await this.getComponentGroups();
+        const currentIndex = this.orderedSteps.findIndex(
+          (s) =>
+            s.name === this.$route.name &&
+            s.componentGroupId === currentComponentGroupId &&
+            s.programType === programType,
         );
-        return;
+        const next = this.orderedSteps[currentIndex + 1];
+        if (!next) {
+          console.log(
+            "An error occurred while trying to navigate. Next step not found.",
+          );
+          return;
+        }
+        this.$router.push({
+          name: next.name,
+          params: {
+            programApplicationId: this.programApplicationId,
+            ...(next.componentGroupId && {
+              componentGroupId: next.componentGroupId,
+            }),
+            ...(next.programType && {
+              programType: next.programType,
+            }),
+          },
+        });
+      } else {
+        const currentIndex = this.viewApplicationSteps.findIndex(
+          (s) =>
+            s.name === this.$route.name &&
+            s.componentGroupId === currentComponentGroupId &&
+            s.programType === programType,
+        );
+        const next = this.viewApplicationSteps[currentIndex + 1];
+        if (!next) {
+          console.log(
+            "An error occurred while trying to navigate. Next step not found.",
+          );
+          return;
+        }
+        this.$router.push({
+          name: next.name,
+          params: {
+            programApplicationId: this.programApplicationId,
+            ...(next.componentGroupId && {
+              componentGroupId: next.componentGroupId,
+            }),
+            ...(next.programType && {
+              programType: next.programType,
+            }),
+          },
+        });
       }
-      this.$router.push({
-        name: next.name,
-        params: {
-          programApplicationId: this.programApplicationId,
-          ...(next.componentGroupId && {
-            componentGroupId: next.componentGroupId,
-          }),
-          ...(next.programType && {
-            programType: next.programType,
-          }),
-        },
-      });
     },
     loadInitialStep() {
       if (this.isRFAI) {

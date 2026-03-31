@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="pl-0 d-print-none">
-    <v-list color="primary">
+    <v-list v-if="isDraftApplication || isRfai" color="primary">
       <v-list-item
         :to="{
           name: 'program-application-component-info',
@@ -153,6 +153,44 @@
         </v-list-item>
       </v-list-group>
     </v-list>
+
+    <v-list v-else color="primary">
+      <v-list-item
+        :to="{
+          name: 'program-application-component-info',
+          params: { programApplicationId: programApplicationId },
+        }"
+      >
+        <v-list-item-title>
+          <v-icon>mdi-text-box-outline</v-icon>
+          Program application info
+        </v-list-item-title>
+      </v-list-item>
+
+      <v-list-item
+        :to="{
+          name: 'program-application-review-response',
+          params: { programApplicationId: programApplicationId },
+        }"
+      >
+        <v-list-item-title>
+          <v-icon>mdi-text-box-outline</v-icon>
+          View Responses
+        </v-list-item-title>
+      </v-list-item>
+
+      <v-list-item
+        :to="{
+          name: 'program-application-program-profile-area-of-instruction-review',
+          params: { programApplicationId: programApplicationId },
+        }"
+      >
+        <v-list-item-title>
+          <v-icon>mdi-text-box-outline</v-icon>
+          View program profiles
+        </v-list-item-title>
+      </v-list-item>
+    </v-list>
   </v-container>
 </template>
 
@@ -201,6 +239,10 @@ export default defineComponent({
     isRfai: {
       type: Boolean,
       required: false,
+    },
+    isDraftApplication: {
+      type: Boolean,
+      required: true,
     },
   },
   computed: {
