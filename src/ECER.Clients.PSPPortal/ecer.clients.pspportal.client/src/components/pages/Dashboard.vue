@@ -202,11 +202,43 @@
                 @click="
                   router.push({
                     name: 'programApplicationInfo',
-                    params: { applicationType: programApplicationType },
+                    params: {
+                      applicationType:
+                        ProgramApplicationType.NewBasicECEPostBasicProgram,
+                    },
                   })
                 "
               >
-                Apply
+                Begin application
+              </v-btn>
+            </div>
+          </Card>
+        </v-col>
+        <v-col class="d-flex" cols="12" sm="6" md="4">
+          <Card class="d-flex flex-column">
+            <h2>Online or hybrid delivery</h2>
+            <p class="mt-4">
+              Submit an application to expand an existing recognized program to
+              include online or hybrid delivery.
+            </p>
+            <div class="mt-auto">
+              <v-btn
+                variant="outlined"
+                size="large"
+                class="mt-4"
+                color="primary"
+                id="createProgramApplications"
+                @click="
+                  router.push({
+                    name: 'programApplicationInfo',
+                    params: {
+                      applicationType:
+                        ProgramApplicationType.AddOnlineorHybridDeliveryMethod,
+                    },
+                  })
+                "
+              >
+                Begin application
               </v-btn>
             </div>
           </Card>
@@ -281,6 +313,7 @@ export default defineComponent({
       educationInstitution: null as EducationInstitution | null,
       programsRequiringReview: null as Program[] | null,
       loading: true,
+      ProgramApplicationType: ProgramApplicationType,
     };
   },
   async setup() {
@@ -396,9 +429,6 @@ export default defineComponent({
         this.loadingStore.isLoading("program_get") ||
         this.loading
       );
-    },
-    programApplicationType(): string {
-      return ProgramApplicationType.NewBasicECEPostBasicProgram.toString();
     },
   },
   methods: {

@@ -200,6 +200,21 @@ export default defineComponent({
               href: "/program-application-info",
             },
           ];
+        } else if (applicationType === "AddOnlineorHybridDeliveryMethod") {
+          return [
+            home,
+            {
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
+              title:
+                "Application for adding an online or hybrid delivery method",
+              disabled: true,
+              href: "/program-application-info",
+            },
+          ];
         }
       }
       if (routeName === "program-application-begin") {
@@ -233,6 +248,21 @@ export default defineComponent({
               title: "Begin an application",
               disabled: true,
               href: "/program-application-begin",
+            },
+          ];
+        } else if (applicationType === "AddOnlineorHybridDeliveryMethod") {
+          return [
+            home,
+            {
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
+              title:
+                "Application for adding an online or hybrid delivery method",
+              disabled: true,
+              href: "/program-application-info",
             },
           ];
         }

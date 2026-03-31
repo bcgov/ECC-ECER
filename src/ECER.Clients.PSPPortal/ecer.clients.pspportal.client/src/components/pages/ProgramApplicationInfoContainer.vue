@@ -16,6 +16,12 @@
         programApplicationType.NewCampusatRecognizedPrivateInstitution
       "
     />
+    <NewProgramApplicationOnlineHybridDeliveryInfo
+      v-if="
+        applicationType ===
+        programApplicationType.AddOnlineorHybridDeliveryMethod
+      "
+    />
     <v-row>
       <v-col>
         <v-btn
@@ -45,6 +51,7 @@ import { useRouter } from "vue-router";
 import ProgramApplicationInfo from "@/components/common/ProgramApplicationInfo.vue";
 import { ProgramApplicationType } from "@/utils/constant";
 import NewCampusProgramApplicationInfo from "@/components/common/NewCampusProgramApplicationInfo.vue";
+import NewProgramApplicationOnlineHybridDeliveryInfo from "@/components/common/NewProgramApplicationOnlineOrHybridDeliveryInfo.vue";
 
 export default defineComponent({
   name: "ProgramApplicationInfoContainer",
@@ -55,6 +62,7 @@ export default defineComponent({
     Callout,
     PageContainer,
     NewCampusProgramApplicationInfo,
+    NewProgramApplicationOnlineHybridDeliveryInfo,
   },
   props: {
     applicationType: {
