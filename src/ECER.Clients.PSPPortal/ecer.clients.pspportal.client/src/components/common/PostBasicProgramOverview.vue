@@ -190,21 +190,11 @@ export default defineComponent({
     },
     campus(): string {
       if (this.programApplicationObject?.programCampuses) {
-        let programCampusIds =
-          this.programApplicationObject?.programCampuses.map((c) => {
-            if (c.campusId !== null && c.campusId !== undefined) {
-              return c.campusId;
-            }
-          });
-        let campusObj = this.userStore.educationInstitution?.campuses?.filter(
-          (c) => {
-            if (c.id !== null && c.id !== undefined) {
-              return programCampusIds.includes(c.id);
-            }
-          },
-        );
-        if (!campusObj?.length) return "-";
-        return campusObj.map((c) => c.generatedName).join(", ");
+        return this.programApplicationObject?.programCampuses
+          .map((c) => {
+            return c.name;
+          })
+          .join(",");
       }
       return "-";
     },
