@@ -29,10 +29,10 @@
     <v-row>
       <v-col cols="12">
         <Callout title="If you need assistance" type="warning">
+          <!-- prettier-ignore -->
           <p>
             You may reach out to the Registry for assistance at any time by
-            <router-link to="/messages/new">sending a message</router-link>
-            .
+            <router-link to="/messages/new">sending a message</router-link>.
           </p>
         </Callout>
       </v-col>
@@ -66,7 +66,7 @@
 
             <v-row>
               <v-col cols="6">
-                <p class="pb-3">Program Profile</p>
+                <p class="pt-3">Program Profile</p>
                 <v-select
                   v-model="selectedProgramProfileId"
                   class="mt-2"

@@ -240,7 +240,7 @@ export default defineComponent({
           return [
             home,
             {
-              title: "New Campus application",
+              title: "New campus application",
               disabled: false,
               href: `/program-application-info/${applicationType}/${campusId}`,
             },
