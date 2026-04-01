@@ -163,7 +163,7 @@
             </div>
             <div v-if="allowEdit(metaData.components)">
               <v-tooltip
-                v-if="programApplicationObject?.status === 'Draft'"
+                v-if="programApplicationObject?.status === 'Draft' || isRFAI"
                 location="top"
               >
                 <template #activator="{ props }">
