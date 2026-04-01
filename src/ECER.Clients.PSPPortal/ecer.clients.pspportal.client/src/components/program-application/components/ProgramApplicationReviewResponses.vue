@@ -400,7 +400,10 @@ export default defineComponent({
       }
     },
     mapFileNames(metaData: ComponentGroupMetaData) {
-      return metaData.components?.flatMap((f) => f.files).join(", ");
+      return metaData.components
+        ?.flatMap((c) => c.files ?? [])
+        .flatMap((f) => f?.name)
+        .join(", ");
     },
     filterByRFAI() {
       const map = new Map();
