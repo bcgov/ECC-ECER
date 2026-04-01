@@ -57,7 +57,7 @@ import FileUploader from "@/components/common/FileUploader.vue";
 import type { FileItem } from "@/components/common/UploadFileItem.vue";
 import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
-import { removeElementByIndex } from "@/utils/functions";
+import { removeElementByIndex, parseHumanFileSize } from "@/utils/functions";
 
 export interface QuestionModelValue {
   answer?: string;
@@ -72,7 +72,7 @@ function toFileItem(info: Components.Schemas.FileInfo): FileItem {
     fileId: info.id ?? "",
     progress: 101,
     fileErrors: [],
-    fileSize: 0,
+    fileSize: parseHumanFileSize(info.size ?? ""),
     fileName: info.name ?? "",
     storageFolder: "permanent",
   };
@@ -88,7 +88,7 @@ export default defineComponent({
         answer: "",
         files: [],
         addedFiles: [],
-        deletdFiles: [],
+        deletedFiles: [],
       }),
     },
     name: {
