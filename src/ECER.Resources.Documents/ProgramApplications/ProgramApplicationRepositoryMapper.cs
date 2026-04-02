@@ -69,6 +69,8 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.CampusId, opts => opts.MapFrom(s => s.ecer_CampusId.Id))
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_CampusIdName))
+      .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_Startdate))
+      .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_Enddate))
       .ReverseMap();
 
     CreateMap<ApplicationStatus, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode>()

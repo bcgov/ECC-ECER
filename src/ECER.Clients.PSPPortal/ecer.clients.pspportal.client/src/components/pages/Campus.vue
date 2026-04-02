@@ -79,7 +79,21 @@
 
         <v-row class="mt-4">
           <v-col cols="12">
-            <v-btn color="primary" variant="flat">Start your application</v-btn>
+            <v-btn
+              color="primary"
+              variant="flat"
+              @click="
+                router.push({
+                  name: 'programApplicationInfo',
+                  params: {
+                    applicationType: satelliteProgramApplicationType,
+                    campusId: campusId,
+                  },
+                })
+              "
+            >
+              Start your application
+            </v-btn>
           </v-col>
         </v-row>
       </template>
@@ -219,12 +233,18 @@ export default defineComponent({
     };
   },
   computed: {
+    ProgramApplicationType() {
+      return ProgramApplicationType;
+    },
     isLoading(): boolean {
       return (
         this.loadingStore.isLoading("education_institution_get") ||
         this.loadingStore.isLoading("program_get") ||
         this.loadingStore.isLoading("program_application_get")
       );
+    },
+    satelliteProgramApplicationType(): string {
+      return ProgramApplicationType.SatelliteProgram.toString();
     },
     programApplicationType(): string {
       return ProgramApplicationType.NewCampusatRecognizedPrivateInstitution.toString();
