@@ -56,16 +56,20 @@
           <slot name="campus-section">
             <v-row>
               <v-col cols="12">
-                <h2>Campus</h2>
+                <slot name="campus-section-title">
+                  <h2>Campus</h2>
+                </slot>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12">
-                <p>
-                  Select where this program will be offered. A first-time
-                  application for a basic early childhood education program is
-                  restricted to one campus.
-                </p>
+                <slot name="campus-section-subtitle">
+                  <p>
+                    Select where this program will be offered. A first-time
+                    application for a basic early childhood education program is
+                    restricted to one campus.
+                  </p>
+                </slot>
               </v-col>
             </v-row>
 
@@ -135,6 +139,7 @@
               Select the individual contact for this campus or location. This
               user must have access to the ECE Post-Secondary Programs portal.
             </p>
+            <br />
             <p>
               Note: If the correct user is not listed here, please invite them
               to this portal under
@@ -432,6 +437,20 @@
           </v-col>
         </v-row>
 
+        <!-- Delivery Hours Section for Online/Hybrid -->
+        <slot
+          name="delivery-hours-section-for-online-hybrid"
+          :program-application-object="programApplicationObject"
+          :in-person-hours-percentage="inPersonHoursPercentage"
+          :online-delivery-hours-percentage="onlineDeliveryHoursPercentage"
+          :on-update-in-person-hours-percentage="
+            (v: number | null) => (inPersonHoursPercentage = v)
+          "
+          :on-update-online-delivery-hours-percentage="
+            (v: number | null) => (onlineDeliveryHoursPercentage = v)
+          "
+        />
+
         <v-row>
           <v-col>
             <v-btn
@@ -590,6 +609,30 @@ export default defineComponent({
         if (this.programApplicationObject) {
           this.programApplicationObject.maximumEnrollment =
             value === "" ? null : value;
+        }
+      },
+    },
+    inPersonHoursPercentage: {
+      get() {
+        return this.programApplicationObject?.inPersonHoursPercentage ?? null;
+      },
+      set(value: string | null) {
+        if (this.programApplicationObject) {
+          this.programApplicationObject.inPersonHoursPercentage =
+            value === "" || value === null ? null : parseFloat(value);
+        }
+      },
+    },
+    onlineDeliveryHoursPercentage: {
+      get() {
+        return (
+          this.programApplicationObject?.onlineDeliveryHoursPercentage ?? null
+        );
+      },
+      set(value: string | null) {
+        if (this.programApplicationObject) {
+          this.programApplicationObject.onlineDeliveryHoursPercentage =
+            value === "" || value === null ? null : parseFloat(value);
         }
       },
     },

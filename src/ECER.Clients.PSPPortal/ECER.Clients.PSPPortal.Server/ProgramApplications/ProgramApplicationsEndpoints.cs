@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
@@ -7,16 +6,17 @@ using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations;
 using ContractApplicationStatus = ECER.Managers.Registry.Contract.ProgramApplications.ApplicationStatus;
-using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 using ContractProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
 using ContractSubmitProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.SubmitProgramApplicationCommand;
-using ECER.Utilities.ObjectStorage.Providers;
+using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 
 namespace ECER.Clients.PSPPortal.Server.ProgramApplications;
 
@@ -39,13 +39,13 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         {
           return TypedResults.BadRequest(new ProblemDetails { Title = "Program profile must not be null" });
         }
-        
+
         if (request.CampusId == null)
         {
           return TypedResults.BadRequest(new ProblemDetails { Title = "Campus must not be null" });
         }
       }
-      
+
       if (request.ProgramProfileId != null)
       {
         var existingProgramProfile = await messageBus.Send(new ProgramsQuery
@@ -54,7 +54,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         }, ct);
         if (!existingProgramProfile.Items.Any()) return TypedResults.NotFound();
       }
-      
+
       var programApplication = new ProgramApplication
       {
         PostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
@@ -65,7 +65,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         Status = ApplicationStatus.Draft,
         ProgramProfileId = request.ProgramProfileId
       };
-      
+
       if (request.CampusId != null)
       {
         programApplication.ProgramCampuses = new[]
@@ -77,7 +77,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
           }
         };
       }
-      
+
       var contractApplication = mapper.Map<Managers.Registry.Contract.ProgramApplications.ProgramApplication>(programApplication);
       var created = await messageBus.Send(new CreateProgramApplicationCommand(contractApplication), ct);
       if (created == null) return TypedResults.BadRequest(new ProblemDetails { Title = "Failed to create program application" });
@@ -123,146 +123,145 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
     .RequireAuthorization(policyNames)
     .AddGuidValidationQueryParams(["campusId"], isRequired: false)
     .WithParameterValidation();
-    
-  endpointRouteBuilder.MapPut("/api/programApplications/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, ProgramApplication request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
-    {
-      if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
-      bool IdIsNotGuid = !Guid.TryParse(id, out _);
-      if (IdIsNotGuid) return TypedResults.BadRequest("invalid program application id");
-  
-      if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
-  
-      var userContext = ctx.User.GetUserContext()!;
-      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
-      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
-  
-      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+
+    endpointRouteBuilder.MapPut("/api/programApplications/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, ProgramApplication request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
-        ById = id,
-        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
-        ByStatus = new[] { ContractApplicationStatus.Draft }
-      }, ct);
-  
-      if (!existing.Items.Any()) return TypedResults.NotFound();
-  
-      var programId = await messageBus.Send(new UpdateProgramApplicationCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ProgramApplication>(request)), ct);
-      return TypedResults.Ok(programId);
-    })
-    .WithOpenApi("Update program application", string.Empty, "program_application_put")
-    .RequireAuthorization(policyNames)
-    .WithParameterValidation();
-  
-  endpointRouteBuilder.MapGet("/api/programApplications/{id}/components", async Task<Results<Ok<IEnumerable<NavigationMetadata>>, BadRequest<string>, NotFound>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
-    {
-      if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
-      bool IdIsNotGuid = !Guid.TryParse(id, out _);
-      if (IdIsNotGuid) return TypedResults.BadRequest("invalid program application id");
-  
-      var userContext = ctx.User.GetUserContext()!;
-      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
-      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
-  
-      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+        if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
+        bool IdIsNotGuid = !Guid.TryParse(id, out _);
+        if (IdIsNotGuid) return TypedResults.BadRequest("invalid program application id");
+
+        if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
+
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+
+        var existing = await messageBus.Send(new ContractProgramApplicationQuery
+        {
+          ById = id,
+          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
+          ByStatus = new[] { ContractApplicationStatus.Draft }
+        }, ct);
+
+        if (!existing.Items.Any()) return TypedResults.NotFound();
+
+        var programId = await messageBus.Send(new UpdateProgramApplicationCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ProgramApplication>(request)), ct);
+        return TypedResults.Ok(programId);
+      })
+      .WithOpenApi("Update program application", string.Empty, "program_application_put")
+      .RequireAuthorization(policyNames)
+      .WithParameterValidation();
+
+    endpointRouteBuilder.MapGet("/api/programApplications/{id}/components", async Task<Results<Ok<IEnumerable<NavigationMetadata>>, BadRequest<string>, NotFound>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
       {
-        ById = id,
-        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
-      }, ct);
-  
-      if (!existing.Items.Any()) return TypedResults.NotFound();
-      
-      var componentGroups = await messageBus.Send(new ComponentGroupQuery
+        if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
+        bool IdIsNotGuid = !Guid.TryParse(id, out _);
+        if (IdIsNotGuid) return TypedResults.BadRequest("invalid program application id");
+
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+
+        var existing = await messageBus.Send(new ContractProgramApplicationQuery
+        {
+          ById = id,
+          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
+        }, ct);
+
+        if (!existing.Items.Any()) return TypedResults.NotFound();
+
+        var componentGroups = await messageBus.Send(new ComponentGroupQuery
+        {
+          ByProgramApplicationId = id,
+        }, ct);
+
+        return TypedResults.Ok(mapper.Map<IEnumerable<NavigationMetadata>>(componentGroups));
+      })
+      .WithOpenApi("Gets component groups", string.Empty, "program_application_components_get")
+      .RequireAuthorization(policyNames)
+      .WithParameterValidation();
+
+    endpointRouteBuilder.MapGet("/api/programApplications/{id}/componentGroups/{componentGroupId?}", async Task<Results<Ok<IEnumerable<ComponentGroupWithComponents>>, BadRequest<string>, NotFound>> (string id, string? componentGroupId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
       {
-        ByProgramApplicationId = id,
-      }, ct);
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-      return TypedResults.Ok(mapper.Map<IEnumerable<NavigationMetadata>>(componentGroups));
-    })
-    .WithOpenApi("Gets component groups", string.Empty, "program_application_components_get")
-    .RequireAuthorization(policyNames)
-    .WithParameterValidation();
+        var existing = await messageBus.Send(new ContractProgramApplicationQuery
+        {
+          ById = id,
+          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
+        }, ct);
+        if (!existing.Items.Any()) return TypedResults.NotFound();
 
-  endpointRouteBuilder.MapGet("/api/programApplications/{id}/componentGroups/{componentGroupId?}", async Task<Results<Ok<IEnumerable<ComponentGroupWithComponents>>, BadRequest<string>, NotFound>> (string id, string? componentGroupId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
-    {
-      var userContext = ctx.User.GetUserContext()!;
-      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
-      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+        var result = await messageBus.Send(new ComponentGroupWithComponentsQuery { ByProgramApplicationId = id, ByComponentGroupId = componentGroupId }, ct);
+        return TypedResults.Ok(mapper.Map<IEnumerable<ComponentGroupWithComponents>>(result));
+      })
+      .WithOpenApi("Gets program application components by component group id", string.Empty, "program_application_component_group_components_get")
+      .RequireAuthorization(policyNames)
+      .AddGuidValidation("id").AddGuidValidation("componentGroupId", false)
+      .WithParameterValidation();
 
-      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+    endpointRouteBuilder.MapPut("/api/programApplications/{id}/componentGroups/{componentGroupId}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, string componentGroupId, ComponentGroupWithComponents request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
       {
-        ById = id,
-        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
-      }, ct);
-      if (!existing.Items.Any()) return TypedResults.NotFound();
+        if (request.Id != componentGroupId) return TypedResults.BadRequest("resource id and payload id do not match");
 
-      var result = await messageBus.Send(new ComponentGroupWithComponentsQuery { ByProgramApplicationId = id, ByComponentGroupId = componentGroupId }, ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<ComponentGroupWithComponents>>(result));
-    })
-    .WithOpenApi("Gets program application components by component group id", string.Empty, "program_application_component_group_components_get")
-    .RequireAuthorization(policyNames)
-    .AddGuidValidation("id").AddGuidValidation("componentGroupId", false)
-    .WithParameterValidation();
-  
-  endpointRouteBuilder.MapPut("/api/programApplications/{id}/componentGroups/{componentGroupId}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, string componentGroupId, ComponentGroupWithComponents request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
-    {
-      if (request.Id != componentGroupId) return TypedResults.BadRequest("resource id and payload id do not match");
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-      var userContext = ctx.User.GetUserContext()!;
-      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
-      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+        var existing = await messageBus.Send(new ContractProgramApplicationQuery
+        {
+          ById = id,
+          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
+        }, ct);
+        if (!existing.Items.Any()) return TypedResults.NotFound();
 
-      var existing = await messageBus.Send(new ContractProgramApplicationQuery
+        var result = await messageBus.Send(new UpdateComponentGroupCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>(request), id, programRep.PostSecondaryInstituteId), ct);
+        return TypedResults.Ok(result);
+      })
+      .WithOpenApi("Update program application component group", string.Empty, "program_application_component_group_put")
+      .RequireAuthorization(policyNames)
+      .AddGuidValidation("id").AddGuidValidation("componentGroupId")
+      .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/programApplications/{id}/submit", async Task<Results<Ok<SubmitProgramApplicationResponse>, BadRequest<string>, BadRequest<SubmitProgramApplicationValidationError>, NotFound>> (
+      string id, SubmitProgramApplicationRequest request, HttpContext ctx, IMediator messageBus, CancellationToken ct) =>
       {
-        ById = id,
-        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId
-      }, ct);
-      if (!existing.Items.Any()) return TypedResults.NotFound();
+        if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
+        if (!Guid.TryParse(id, out _)) return TypedResults.BadRequest("invalid program application id");
 
-      var result = await messageBus.Send(new UpdateComponentGroupCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>(request), id, programRep.PostSecondaryInstituteId), ct);
-      return TypedResults.Ok(result);
-    })
-    .WithOpenApi("Update program application component group", string.Empty, "program_application_component_group_put")
-    .RequireAuthorization(policyNames)
-    .AddGuidValidation("id").AddGuidValidation("componentGroupId")
-    .WithParameterValidation();
+        var userContext = ctx.User.GetUserContext()!;
+        var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
+        if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-  endpointRouteBuilder.MapPost("/api/programApplications/{id}/submit", async Task<Results<Ok<SubmitProgramApplicationResponse>, BadRequest<string>, BadRequest<SubmitProgramApplicationValidationError>, NotFound>> (
-    string id, SubmitProgramApplicationRequest request, HttpContext ctx, IMediator messageBus, CancellationToken ct) =>
-    {
-      if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program application id cannot be null or whitespace");
-      if (!Guid.TryParse(id, out _)) return TypedResults.BadRequest("invalid program application id");
+        var existing = await messageBus.Send(new ContractProgramApplicationQuery
+        {
+          ById = id,
+          ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
+          ByStatus = new[] { ContractApplicationStatus.Draft, ContractApplicationStatus.ReviewAnalysis }
+        }, ct);
+        var application = existing.Items.SingleOrDefault();
+        if (application == null) return TypedResults.NotFound();
 
-      var userContext = ctx.User.GetUserContext()!;
-      var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
-      if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
+        var command = new ContractSubmitProgramApplicationCommand(
+          ProgramApplication: application,
+          ProgramRepresentativeId: programRep.Id,
+          Declaration: request.Declaration);
 
-      var existing = await messageBus.Send(new ContractProgramApplicationQuery
-      {
-        ById = id,
-        ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
-        ByStatus = new[] { ContractApplicationStatus.Draft, ContractApplicationStatus.ReviewAnalysis }
-      }, ct);
-      var application = existing.Items.SingleOrDefault();
-      if (application == null) return TypedResults.NotFound();
-      
-      
-      var command = new ContractSubmitProgramApplicationCommand(
-        ProgramApplication: application,
-        ProgramRepresentativeId: programRep.Id,
-        Declaration: request.Declaration);
+        var result = await messageBus.Send(command, ct);
 
-      var result = await messageBus.Send(command, ct);
+        if (result.Error != null)
+        {
+          return TypedResults.BadRequest(new SubmitProgramApplicationValidationError(result.Error.ToString()!, result.ValidationErrors));
+        }
 
-      if (result.Error != null)
-      {
-        return TypedResults.BadRequest(new SubmitProgramApplicationValidationError(result.Error.ToString()!, result.ValidationErrors));
-      }
-
-      return TypedResults.Ok(new SubmitProgramApplicationResponse(result.ProgramApplicationId!));
-    })
-    .WithOpenApi("Submit a program application", string.Empty, "program_application_submit_post")
-    .RequireAuthorization(policyNames)
-    .AddGuidValidation("id")
-    .WithParameterValidation();
+        return TypedResults.Ok(new SubmitProgramApplicationResponse(result.ProgramApplicationId!));
+      })
+      .WithOpenApi("Submit a program application", string.Empty, "program_application_submit_post")
+      .RequireAuthorization(policyNames)
+      .AddGuidValidation("id")
+      .WithParameterValidation();
   }
 }
 
@@ -286,8 +285,10 @@ public record ProgramApplication
   public IEnumerable<AdmissionOptions>? AdmissionOptions { get; set; }
   public string? MinimumEnrollment { get; set; }
   public string? MaximumEnrollment { get; set; }
+  public float? InPersonHoursPercentage { get; set; }
+  public float? OnlineDeliveryHoursPercentage { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
-  public string? OtherAdmissionOptions  { get; set; }
+  public string? OtherAdmissionOptions { get; set; }
   public string? InstituteInfoEntryProgress { get; set; }
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
@@ -298,7 +299,7 @@ public record ProgramApplication
 }
 
 public record ProgramCampus
-{ 
+{
   public string? Id { get; set; }
   public string? CampusId { get; set; }
   public string? Name { get; set; }
@@ -317,6 +318,7 @@ public enum DeliveryMethodforInstructor
   Inpersonsitevisits,
   Virtualsitevisits,
 }
+
 public enum AdmissionOptions
 {
   Allcoursesrestrictedtoearlychildhoodeducationstudents,
@@ -325,11 +327,13 @@ public enum AdmissionOptions
   Oneormorecoursesopentoanystudentsintheinstitution,
   Other,
 }
+
 public enum WorkHoursType
 {
   FullTime,
   PartTime,
 }
+
 public record GetProgramApplicationResponse
 {
   public IEnumerable<ProgramApplication>? Applications { get; set; }

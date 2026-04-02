@@ -355,6 +355,8 @@ declare namespace Components {
       admissionOptions?: AdmissionOptions[] | null;
       minimumEnrollment?: string | null;
       maximumEnrollment?: string | null;
+      inPersonHoursPercentage?: number | null; // float
+      onlineDeliveryHoursPercentage?: number | null; // float
       programCampuses?: ProgramCampus[] | null;
       otherAdmissionOptions?: string | null;
       instituteInfoEntryProgress?: string | null;
