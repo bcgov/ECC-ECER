@@ -292,6 +292,8 @@
           :on-update-satellite-end-date="
             (v: string | null) => (satelliteEndDate = v)
           "
+          :end-date-validation="dateBeforeRule"
+          :required-validation="Rules.required"
         />
 
         <v-row>
@@ -468,6 +470,7 @@ import type { NextStepPayload } from "@/components/program-application/ProgramAp
 import Loading from "@/components/Loading.vue";
 import type { ProgramApplicationContact } from "@/types/helperFunctions";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
+import { dateBeforeRule } from "@/utils/formRules";
 
 export default defineComponent({
   name: "ProgramApplicationInstituteInfoLayout",
@@ -658,6 +661,7 @@ export default defineComponent({
     this.isLoading = false;
   },
   methods: {
+    dateBeforeRule,
     async fetchApplication() {
       const result = await getProgramApplicationById(this.programApplicationId);
       if (result.error || result.data == null) {
