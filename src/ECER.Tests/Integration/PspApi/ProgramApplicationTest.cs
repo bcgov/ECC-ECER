@@ -404,7 +404,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task SubmitProgramApplication_WhenApplicationNotInDraftStatus_ReturnsNotFound()
+  public async Task SubmitProgramApplication_WhenApplicationNotInDraftStatus_ReturnsBadRequest()
   {
     var request = new SubmitProgramApplicationRequest { Declaration = true };
 
@@ -412,7 +412,7 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
       _.Post.Json(request).ToUrl($"/api/programApplications/{Fixture.programApplicationId}/submit");
-      _.StatusCodeShouldBe(HttpStatusCode.NotFound);
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
     });
   }
 
