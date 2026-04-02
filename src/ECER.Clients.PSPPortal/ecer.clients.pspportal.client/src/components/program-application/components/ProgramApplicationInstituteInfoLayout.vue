@@ -793,19 +793,19 @@ export default defineComponent({
           this.programApplicationObject.programCampuses
         ) {
           if (
-            !this.programApplicationObject.programCampuses.some(
+            this.programApplicationObject.programCampuses.some(
               (campus) => campus.campusId === campusId,
             )
           ) {
-            this.programApplicationObject.programCampuses.push({
-              id: null,
-              campusId: campusId,
-            });
-          } else {
             this.programApplicationObject.programCampuses =
               this.programApplicationObject.programCampuses?.filter(
                 (campus) => campus.campusId !== campusId,
               ) ?? [];
+          } else {
+            this.programApplicationObject.programCampuses.push({
+              id: null,
+              campusId: campusId,
+            });
           }
         }
       }

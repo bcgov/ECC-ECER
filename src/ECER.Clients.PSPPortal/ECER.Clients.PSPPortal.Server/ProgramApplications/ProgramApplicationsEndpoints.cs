@@ -239,10 +239,16 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         {
           ById = id,
           ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
-          ByStatus = new[] { ContractApplicationStatus.Draft, ContractApplicationStatus.ReviewAnalysis }
         }, ct);
         var application = existing.Items.SingleOrDefault();
         if (application == null) return TypedResults.NotFound();
+
+        if (!application.Status.HasValue ||
+            !new[] { ContractApplicationStatus.Draft, ContractApplicationStatus.ReviewAnalysis, ContractApplicationStatus.InterimRecognition }
+              .Contains(application.Status.Value))
+        {
+          return TypedResults.BadRequest($"Application status {application.Status} cannot be submitted");
+        }
 
         var command = new ContractSubmitProgramApplicationCommand(
           ProgramApplication: application,
@@ -255,7 +261,6 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         {
           return TypedResults.BadRequest(new SubmitProgramApplicationValidationError(result.Error.ToString()!, result.ValidationErrors));
         }
-
         return TypedResults.Ok(new SubmitProgramApplicationResponse(result.ProgramApplicationId!));
       })
       .WithOpenApi("Submit a program application", string.Empty, "program_application_submit_post")
