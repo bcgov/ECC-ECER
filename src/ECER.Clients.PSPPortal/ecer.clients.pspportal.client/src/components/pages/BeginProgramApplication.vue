@@ -19,6 +19,11 @@
     "
     @create-application="createApplication"
   />
+  <BeginSatelliteApplication
+    v-if="applicationType === programApplicationType.SatelliteProgram"
+    :campusId="campusId || ''"
+    @create-application="createApplication"
+  />
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -31,10 +36,12 @@ import BeginNewCampusApplication from "@/components/common/BeginNewCampusApplica
 import BeginNewOnlineOrHybridDeliveryApplication from "@/components/common/BeginNewOnlineOrHybridDeliveryApplication.vue";
 import { ProgramApplicationType } from "@/utils/constant";
 import type { CreateApplication } from "@/types/helperFunctions";
+import BeginSatelliteApplication from "@/components/common/BeginSatelliteApplication.vue";
 
 export default defineComponent({
   name: "BeginProgramApplication",
   components: {
+    BeginSatelliteApplication,
     BeginPostBasicApplication,
     BeginNewCampusApplication,
     BeginNewOnlineOrHybridDeliveryApplication,

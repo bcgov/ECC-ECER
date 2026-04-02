@@ -132,7 +132,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         throw new InvalidOperationException($"Post secondary institute '{application.PostSecondaryInstituteId}' not found");
       }
 
-      if (existingApplication.ecer_ApplicationType != ecer_PSIApplicationType.NewCampusatRecognizedPrivateInstitution)
+      if (existingApplication.ecer_ApplicationType == ecer_PSIApplicationType.NewBasicECEPostBasicProgram)
       {
         if (application.ProgramCampuses != null && application.ProgramCampuses.Any())
         {
@@ -185,6 +185,11 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         }
       }
 
+      if (existingApplication.ecer_ApplicationType == ecer_PSIApplicationType.SatelliteProgram)
+      {
+        UpdateSatelliteStartEndDates(application);
+      }
+
       context.Detach(existingApplication);
       context.Attach(entity);
       context.UpdateObject(entity);
@@ -209,6 +214,21 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 
     context.SaveChanges();
     return application.Id!;
+  }
+
+  private void UpdateSatelliteStartEndDates(ProgramApplication application)
+  {
+    var satelliteCampus = application.ProgramCampuses?.FirstOrDefault(c => c.Id != null);
+    if (satelliteCampus == null || !Guid.TryParse(satelliteCampus.Id, out var campusGuid)) return;
+
+    var existingCampus = context.ecer_ProgramCampusSet
+      .SingleOrDefault(c => c.ecer_ProgramCampusId == campusGuid);
+    if (existingCampus == null) return;
+
+    existingCampus.ecer_Startdate = satelliteCampus.StartDate;
+    existingCampus.ecer_Enddate = satelliteCampus.EndDate;
+
+    context.UpdateObject(existingCampus);
   }
 
   private static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
@@ -416,3 +436,4 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     return applicationId;
   }
 }
+//ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton

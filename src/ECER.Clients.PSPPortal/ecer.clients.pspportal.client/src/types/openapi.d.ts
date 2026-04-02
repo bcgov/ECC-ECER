@@ -380,6 +380,8 @@ declare namespace Components {
       id?: string | null;
       campusId?: string | null;
       name?: string | null;
+      startDate?: string | null; // date-time
+      endDate?: string | null; // date-time
     }
     export type ProgramCertificationType = "Basic" | "ITE" | "SNE";
     export type ProgramProfileType = "ChangeRequest" | "AnnualReview";

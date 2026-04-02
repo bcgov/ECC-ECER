@@ -33,7 +33,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-      if (request.ProgramApplicationType == ApplicationType.NewCampusatRecognizedPrivateInstitution)
+      if (request.ProgramApplicationType == ApplicationType.NewCampusatRecognizedPrivateInstitution || request.ProgramApplicationType == ApplicationType.SatelliteProgram)
       {
         if (request.ProgramProfileId == null)
         {
@@ -302,6 +302,8 @@ public record ProgramCampus
   public string? Id { get; set; }
   public string? CampusId { get; set; }
   public string? Name { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
 }
 
 public enum MethodofInstruction

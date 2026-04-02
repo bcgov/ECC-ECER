@@ -15,6 +15,9 @@
       applicationType === programApplicationType.AddOnlineorHybridDeliveryMethod
     "
   />
+  <SatelliteProgramApplicationInfo
+    v-if="applicationType === programApplicationType.SatelliteProgram"
+  />
   <v-row>
     <v-col>
       <v-btn rounded="lg" color="primary" @click="$emit('next', {})">
@@ -34,6 +37,7 @@ import ProgramApplicationInfo from "@/components/common/ProgramApplicationInfo.v
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import { ProgramApplicationType } from "@/utils/constant";
 import NewCampusProgramApplicationInfo from "@/components/common/NewCampusProgramApplicationInfo.vue";
+import SatelliteProgramApplicationInfo from "@/components/common/SatelliteProgramApplicationInfo.vue";
 import NewProgramApplicationOnlineOrHybridDeliveryInfo from "@/components/common/NewProgramApplicationOnlineOrHybridDeliveryInfo.vue";
 
 export default defineComponent({
@@ -46,6 +50,7 @@ export default defineComponent({
     PageContainer,
     NewCampusProgramApplicationInfo,
     NewProgramApplicationOnlineOrHybridDeliveryInfo,
+    SatelliteProgramApplicationInfo,
   },
   props: {
     programApplicationId: {

@@ -22,6 +22,9 @@
         programApplicationType.AddOnlineorHybridDeliveryMethod
       "
     />
+    <SatelliteProgramApplicationInfo
+      v-if="applicationType === programApplicationType.SatelliteProgram"
+    />
     <v-row>
       <v-col>
         <v-btn
@@ -51,6 +54,7 @@ import { useRouter } from "vue-router";
 import ProgramApplicationInfo from "@/components/common/ProgramApplicationInfo.vue";
 import { ProgramApplicationType } from "@/utils/constant";
 import NewCampusProgramApplicationInfo from "@/components/common/NewCampusProgramApplicationInfo.vue";
+import SatelliteProgramApplicationInfo from "@/components/common/SatelliteProgramApplicationInfo.vue";
 import NewProgramApplicationOnlineHybridDeliveryInfo from "@/components/common/NewProgramApplicationOnlineOrHybridDeliveryInfo.vue";
 
 export default defineComponent({
@@ -62,6 +66,7 @@ export default defineComponent({
     Callout,
     PageContainer,
     NewCampusProgramApplicationInfo,
+    SatelliteProgramApplicationInfo,
     NewProgramApplicationOnlineHybridDeliveryInfo,
   },
   props: {
