@@ -37,6 +37,8 @@ import BeginNewOnlineOrHybridDeliveryApplication from "@/components/common/Begin
 import { ProgramApplicationType } from "@/utils/constant";
 import type { CreateApplication } from "@/types/helperFunctions";
 import BeginSatelliteApplication from "@/components/common/BeginSatelliteApplication.vue";
+import { getEducationInstitution } from "@/api/education-institution";
+import { useUserStore } from "@/store/user.ts";
 
 export default defineComponent({
   name: "BeginProgramApplication",
@@ -58,7 +60,8 @@ export default defineComponent({
   },
   setup() {
     const loadingStore = useLoadingStore();
-    return { loadingStore };
+    const userStore = useUserStore();
+    return { loadingStore, userStore };
   },
   computed: {
     programApplicationType() {
@@ -72,6 +75,9 @@ export default defineComponent({
       programConfirmationValue: "" as string,
       Rules,
     };
+  },
+  async mounted() {
+    this.userStore.setEducationInstitution(await getEducationInstitution());
   },
   methods: {
     async createApplication(createApplicationObject: CreateApplication) {
