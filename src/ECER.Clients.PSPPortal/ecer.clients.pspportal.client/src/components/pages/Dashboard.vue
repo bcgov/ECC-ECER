@@ -353,7 +353,11 @@ export default defineComponent({
     }
 
     // Check if the user has a profile, if not, register them
-    this.pspUserProfile = await getPspUserProfile();
+    // Pass BCeID info to heal institutions missing a BCeID GUID (ECER-6203)
+    this.pspUserProfile = await getPspUserProfile(
+      user.profile.bceid_business_guid as string,
+      user.profile.bceid_business_name as string,
+    );
 
     if (!this.pspUserProfile) {
       if (
@@ -387,17 +391,23 @@ export default defineComponent({
         switch (errorCode) {
           case "PortalInvitationTokenInvalid":
           case "PortalInvitationWrongStatus":
-            this.router.replace("/invalid-invitation");
+            this.router.replace({ name: "invalid-invitation" });
             break;
           case "BceidBusinessIdDoesNotMatch":
-            this.router.replace("/access-denied-mismatch");
+            this.router.replace({ name: "access-denied-mismatch" });
             break;
           case "PostSecondaryInstitutionNotFound":
-            this.router.replace("/access-denied");
+            this.router.replace({ name: "access-denied" });
+            break;
+          case "BceidBusinessIdMissing":
+            this.router.replace({
+              name: "generic-registration-error",
+              query: { reason: "BceidBusinessIdMissing" },
+            });
             break;
           case "GenericError":
           default:
-            this.router.replace("/generic-registration-error");
+            this.router.replace({ name: "generic-registration-error" });
             break;
         }
         return;

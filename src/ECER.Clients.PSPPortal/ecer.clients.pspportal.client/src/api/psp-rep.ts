@@ -1,5 +1,6 @@
 import { getClient } from "@/api/client";
 import type {
+  Paths,
   RegisterPspUserRequest,
   PspRegistrationErrorResponse,
   PspUserProfile,
@@ -7,10 +8,17 @@ import type {
 import ApiResultHandler from "@/utils/apiResultHandler";
 const apiResultHandler = new ApiResultHandler();
 
-const getPspUserProfile = async (): Promise<PspUserProfile | null> => {
+const getPspUserProfile = async (
+  bceidBusinessId?: string,
+  bceidBusinessName?: string,
+): Promise<PspUserProfile | null> => {
   const client = await getClient();
+  const params: Paths.PspUserProfileGet.QueryParameters = {
+    bceidBusinessId,
+    bceidBusinessName,
+  };
   const response = await apiResultHandler.execute({
-    request: client.psp_user_profile_get(),
+    request: client.psp_user_profile_get(params),
     key: "psp_user_profile_get",
     suppressErrorToast: true,
   });
