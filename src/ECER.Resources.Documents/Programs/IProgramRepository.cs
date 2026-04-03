@@ -7,8 +7,11 @@ public interface IProgramRepository
   Task<ProgramResult> Query(ProgramQuery query, CancellationToken cancellationToken);
 
   Task<string> Save(Program program, CancellationToken cancellationToken);
+
   Task<string> UpdateProgram(Program program, CancellationToken cancellationToken);
+
   Task<string> SubmitProgramProfile(string id, string userId, CancellationToken cancellationToken);
+
   Task<string> ChangeProgram(Program program, CancellationToken cancellationToken);
 }
 
@@ -18,6 +21,7 @@ public record ProgramQuery
   public string? ByPostSecondaryInstituteId { get; set; }
   public IEnumerable<ProgramStatus>? ByStatus { get; set; }
   public string? ByFromProgramProfileId { get; set; }
+  public string? ByCampusId { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
 }
@@ -61,6 +65,13 @@ public enum ProgramProfileType
 {
   ChangeRequest,
   AnnualReview
+}
+
+public enum ProgramType
+{
+  Basic,
+  SNE,
+  ITE
 }
 
 public record ProgramResult

@@ -2,16 +2,14 @@
 using ECER.Managers.Admin.Contract.Certifications;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Resources.Documents.Certifications;
-using ECER.Utilities.ObjectStorage.Providers.S3;
 using ECER.Utilities.ObjectStorage.Providers;
+using ECER.Utilities.ObjectStorage.Providers.S3;
 using MediatR;
 using System.Collections.Concurrent;
-using System.Configuration;
-using Microsoft.Extensions.Configuration;
 
 namespace ECER.Managers.Admin;
 
-public class CertificationHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration, ICertificationRepository certificationRepository,
+public class CertificationHandlers(IObjectStorageProviderResolver objectStorageProviderResolver, ICertificationRepository certificationRepository,
     IMapper mapper)
   : IRequestHandler<GetCertificationsCommand, GetCertificationsCommandResponse>,
     IRequestHandler<GetCertificationFileCommand, FileQueryResults>
@@ -35,13 +33,15 @@ public class CertificationHandlers(IObjecStorageProvider objectStorageProvider, 
     var fileLocations = new List<FileLocation>();
     foreach (var certification in mappedCertifications)
     {
-      fileLocations.Add(new FileLocation(certification!.FileId!, certification.FilePath ?? string.Empty));
+      fileLocations.Add(new FileLocation(certification!.FileId!, certification.FilePath ?? string.Empty, request.EcerWebApplicationType));
     }
 
-    var bucket = GetBucketName(configuration);
     var files = new ConcurrentBag<FileData>();
     await Parallel.ForEachAsync(fileLocations, cancellationToken, async (fileLocation, ct) =>
     {
+      var objectStorageProvider = objectStorageProviderResolver.resolve(fileLocation.ecerWebApplicationType);
+      var bucket = objectStorageProvider.BucketName;
+
       var file = await objectStorageProvider.GetAsync(new S3Descriptor(bucket, fileLocation.Id, fileLocation.Folder), ct);
       var classification = file?.Tags?.SingleOrDefault(t => t.Key == "classification");
       var fileProperties = new FileProperties
@@ -55,7 +55,4 @@ public class CertificationHandlers(IObjecStorageProvider objectStorageProvider, 
 
     return new FileQueryResults(files.ToList());
   }
-
-  private static string GetBucketName(IConfiguration configuration) =>
-  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

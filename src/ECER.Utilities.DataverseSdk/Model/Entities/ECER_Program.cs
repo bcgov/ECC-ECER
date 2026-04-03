@@ -79,6 +79,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_AdditionalCourses = "ecer_additionalcourses";
+			public const string ecer_Additionalprogramofferingdetails = "ecer_additionalprogramofferingdetails";
 			public const string ecer_AssessmentConclusion = "ecer_assessmentconclusion";
 			public const string ecer_AssessmentNotes = "ecer_assessmentnotes";
 			public const string ecer_BasicEarlyChildhoodEducatorCoursesTotalHours = "ecer_basicearlychildhoodeducatorcoursestotalhours";
@@ -91,6 +92,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_course_Programid = "ecer_course_Programid";
 			public const string ecer_courseprovincialrequirement_ProgramProfileId = "ecer_courseprovincialrequirement_ProgramProfileId";
 			public const string ecer_DeclarationDate = "ecer_declarationdate";
+			public const string ecer_DeliveryMethod = "ecer_deliverymethod";
+			public const string ecer_deliverymethodName = "ecer_deliverymethodname";
 			public const string ecer_DescriptiveProgramName = "ecer_descriptiveprogramname";
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_FamilyChildCareTraining = "ecer_familychildcaretraining";
@@ -105,6 +108,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ITECoursesTotalHours = "ecer_itecoursestotalhours";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NewBasicTotalHours = "ecer_newbasictotalhours";
+			public const string ecer_NewDeliveryMethod = "ecer_newdeliverymethod";
+			public const string ecer_newdeliverymethodName = "ecer_newdeliverymethodname";
 			public const string ecer_NewDescriptiveProgramName = "ecer_newdescriptiveprogramname";
 			public const string ecer_NewITETotalHours = "ecer_newitetotalhours";
 			public const string ecer_NewOfferingType = "ecer_newofferingtype";
@@ -113,13 +118,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_NewSNETotalHours = "ecer_newsnetotalhours";
 			public const string ecer_OfferingType = "ecer_offeringtype";
 			public const string ecer_offeringtypeName = "ecer_offeringtypename";
+			public const string ecer_OriginalApplication = "ecer_originalapplication";
+			public const string ecer_OriginalApplicationName = "ecer_originalapplicationname";
 			public const string ecer_PortalStage = "ecer_portalstage";
 			public const string ecer_PostSecondaryInstituteProgramApplica = "ecer_PostSecondaryInstituteProgramApplica";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program = "ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program";
 			public const string ecer_postsecondaryinstitutesitevisit_ProgramPr = "ecer_postsecondaryinstitutesitevisit_ProgramPr";
 			public const string ecer_PostSecondaryInstitution = "ecer_postsecondaryinstitution";
 			public const string ecer_PostSecondaryInstitutionName = "ecer_postsecondaryinstitutionname";
 			public const string ecer_program_CertificateTypeid = "ecer_program_CertificateTypeid";
 			public const string Referencingecer_program_FromProgramProfileId = "ecer_program_FromProgramProfileId";
+			public const string ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_program_PostSecondaryInstitution_ecer_pos = "ecer_program_PostSecondaryInstitution_ecer_pos";
 			public const string ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative = "ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative";
 			public const string ecer_ProgramId = "ecer_programid";
@@ -332,6 +341,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalprogramofferingdetails")]
+		public string ecer_Additionalprogramofferingdetails
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalprogramofferingdetails");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalprogramofferingdetails", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmentconclusion")]
 		public string ecer_AssessmentConclusion
 		{
@@ -453,6 +477,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_declarationdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_deliverymethod")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSIDeliveryType> ecer_DeliveryMethod
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSIDeliveryType>(this, "ecer_deliverymethod");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_deliverymethod", EntityOptionSetEnum.GetMultiEnum(this, "ecer_deliverymethod", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_deliverymethodname")]
+		public string ecer_deliverymethodName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_deliverymethod"))
+				{
+					return this.FormattedValues["ecer_deliverymethod"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -680,6 +736,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newdeliverymethod")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSIDeliveryType> ecer_NewDeliveryMethod
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSIDeliveryType>(this, "ecer_newdeliverymethod");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_newdeliverymethod", EntityOptionSetEnum.GetMultiEnum(this, "ecer_newdeliverymethod", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newdeliverymethodname")]
+		public string ecer_newdeliverymethodName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_newdeliverymethod"))
+				{
+					return this.FormattedValues["ecer_newdeliverymethod"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newdescriptiveprogramname")]
 		public string ecer_NewDescriptiveProgramName
 		{
@@ -796,6 +884,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_offeringtype"))
 				{
 					return this.FormattedValues["ecer_offeringtype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_originalapplication")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_OriginalApplication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_originalapplication");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_originalapplication", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_originalapplicationname")]
+		public string ecer_OriginalApplicationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_originalapplication"))
+				{
+					return this.FormattedValues["ecer_originalapplication"];
 				}
 				else
 				{
@@ -1570,6 +1690,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_postsecondaryinstitutesitevisit_ProgramPr
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitutesitevisit_ProgramPr")]
@@ -1694,6 +1832,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_FromProgramProfileId", Microsoft.Xrm.Sdk.EntityRole.Referencing, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_originalapplication")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton", null, value);
 			}
 		}
 		

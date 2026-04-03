@@ -99,10 +99,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostSecondaryInstitute = "ecer_postsecondaryinstitute";
 			public const string ecer_postsecondaryinstitute_PrimaryProgramRepId = "ecer_postsecondaryinstitute_PrimaryProgramRepId";
 			public const string ecer_PostSecondaryInstituteName = "ecer_postsecondaryinstitutename";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ecer_eceprogramrepres = "ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ecer_eceprogramrepres";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ = "ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId = "ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId";
 			public const string ecer_postsecondaryinstitutesitevisit_PSIProgramRepresentative_ecer_eceprogramrepresentative = "ecer_postsecondaryinstitutesitevisit_PSIProgramRepresentative_ecer_eceprogramrepresentative";
 			public const string ecer_PreferredFirstName = "ecer_preferredfirstname";
 			public const string ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative = "ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative";
+			public const string ecer_programapplicationlog_ModifiedbyProgramRepresentative_ecer_eceprogramrepresentative = "ecer_programapplicationlog_ModifiedbyProgramRepresentative_ecer_eceprogramrepresentative";
 			public const string ecer_ProgramRepModifiedDate = "ecer_programrepmodifieddate";
 			public const string ecer_PSIProgramRepresentative = "ecer_psiprogramrepresentative";
 			public const string ecer_PSIProgramRepresentativeName = "ecer_psiprogramrepresentativename";
@@ -1421,6 +1424,27 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ecer_eceprogramrepres
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ece" +
+			"r_eceprogramrepres")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ecer_eceprogramrepres
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ece" +
+						"r_eceprogramrepres", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ece" +
+						"r_eceprogramrepres", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_ecepr" +
@@ -1438,6 +1462,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_ecepr" +
 						"ogramrepresentativ", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId", null, value);
 			}
 		}
 		
@@ -1477,6 +1519,27 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_ProgramRepresentative_ecer_eceprogramrepresentative", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_programapplicationlog_ModifiedbyProgramRepresentative_ecer_eceprogramrepresentative
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationlog_ModifiedbyProgramRepresentative_ecer_eceprogramreprese" +
+			"ntative")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog> ecer_programapplicationlog_ModifiedbyProgramRepresentative_ecer_eceprogramrepresentative
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog>("ecer_programapplicationlog_ModifiedbyProgramRepresentative_ecer_eceprogramreprese" +
+						"ntative", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog>("ecer_programapplicationlog_ModifiedbyProgramRepresentative_ecer_eceprogramreprese" +
+						"ntative", null, value);
 			}
 		}
 		

@@ -56,14 +56,17 @@
           </v-col>
         </v-row>
         <v-row
-          v-if="getNonAllocatedCoursesByType(program, programType).length > 0"
+          v-if="
+            getNonAllocatedCoursesByType(program?.courses, programType).length >
+            0
+          "
           no-gutters
         >
           <v-col cols="4">Non-allocated courses</v-col>
           <v-col cols="8">
             <div
               v-for="unallocatedCourse in getNonAllocatedCoursesByType(
-                program,
+                program?.courses,
                 programType,
               )"
             >
@@ -93,6 +96,10 @@ import {
 import { useLoadingStore } from "@/store/loading";
 import { useConfigStore } from "@/store/config";
 import { useRouter } from "vue-router";
+import type {
+  AreaOfInstructionWithCourseHoursMap,
+  CourseAreaDetail,
+} from "@/types/helperFunctions";
 
 export default defineComponent({
   name: "ProgramDetailAreaOfInstructionCard",
@@ -141,7 +148,7 @@ export default defineComponent({
       | AreaOfInstructionWithCourseHoursMap
       | undefined {
       return getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
-        this.program,
+        this.program?.courses,
         this.programType,
       );
     },

@@ -2,6 +2,7 @@
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -150,6 +151,7 @@ public record CommunicationDocument(string Id)
   public string Extention { get; set; } = null!;
   public string Name { get; set; } = null!;
   public string Size { get; set; } = null!;
+  public EcerWebApplicationType EcerWebapplicationType { get; set; }
 }
 
 public record GetMessagesResponse
