@@ -146,6 +146,14 @@
               programApplicationType.NewCampusatRecognizedPrivateInstitution
             "
           />
+          <SatelliteProgramOverview
+            :programApplicationObject="programApplicationObject"
+            :contactPerson="contactPerson"
+            v-if="
+              programApplicationObject?.programApplicationType ===
+              programApplicationType.SatelliteProgram
+            "
+          />
         </v-card-text>
       </v-card>
 
@@ -260,6 +268,7 @@ import { getUsers } from "@/api/manage-users";
 import Callout from "@/components/common/Callout.vue";
 import PostBasicProgramOverview from "@/components/common/PostBasicProgramOverview.vue";
 import NewCampusProgramOverview from "@/components/common/NewCampusProgramOverview.vue";
+import SatelliteProgramOverview from "@/components/common/SatelliteProgramOverview.vue";
 import { ProgramApplicationType } from "@/utils/constant";
 
 interface ComponentGroupMetaData {
@@ -275,6 +284,7 @@ export default defineComponent({
     Callout,
     PostBasicProgramOverview,
     NewCampusProgramOverview,
+    SatelliteProgramOverview,
   },
   props: {
     programApplicationId: {

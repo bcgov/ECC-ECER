@@ -1,10 +1,64 @@
 <template>
-  <!-- Online/Hybrid: full defaults, no overrides needed -->
+  <!-- Online/Hybrid: campus changed to location input conditional input for hybrid deliveryType -->
   <ProgramApplicationInstituteInfoLayout
     v-if="applicationType === 'AddOnlineorHybridDeliveryMethod'"
     :program-application-id="programApplicationId"
     @next="$emit('next', $event)"
-  />
+  >
+    <template #campus-section-title><h2>Location</h2></template>
+    <template #campus-section-subtitle>
+      <p>
+        Select where this program will be offered. A first-time application for
+        a basic early childhood education program is restricted to one location.
+      </p>
+      <br />
+    </template>
+    <template
+      #delivery-hours-section-for-online-hybrid="{
+        programApplicationObject,
+        inPersonHoursPercentage,
+        onlineDeliveryHoursPercentage,
+        onUpdateInPersonHoursPercentage,
+        onUpdateOnlineDeliveryHoursPercentage,
+      }"
+    >
+      <template v-if="programApplicationObject.deliveryType === 'Hybrid'">
+        <v-row>
+          <v-col cols="12">
+            <p>Approximate percentage of instructional hours (hybrid only)</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <div class="d-flex flex-column ga-3">
+              <EceTextField
+                :model-value="inPersonHoursPercentage"
+                label="In-person delivery"
+                :rules="[
+                  Rules.numberToDecimalPlaces(2),
+                  Rules.numberWithinRange(0, 100, false),
+                ]"
+                @update:model-value="onUpdateInPersonHoursPercentage"
+              ></EceTextField>
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <div class="d-flex flex-column ga-3">
+              <EceTextField
+                :model-value="onlineDeliveryHoursPercentage"
+                label="Online delivery"
+                :rules="[
+                  Rules.numberToDecimalPlaces(2),
+                  Rules.numberWithinRange(0, 100, false),
+                ]"
+                @update:model-value="onUpdateOnlineDeliveryHoursPercentage"
+              ></EceTextField>
+            </div>
+          </v-col>
+        </v-row>
+      </template>
+    </template>
+  </ProgramApplicationInstituteInfoLayout>
 
   <!-- New Campus: hide campus section -->
   <ProgramApplicationInstituteInfoLayout
@@ -123,10 +177,17 @@ import { defineComponent } from "vue";
 import ProgramApplicationInstituteInfoLayout from "./ProgramApplicationInstituteInfoLayout.vue";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
+import EceTextField from "@/components/inputs/EceTextField.vue";
+import * as Rules from "@/utils/formRules";
+import { readBuilderProgram } from "typescript";
 
 export default defineComponent({
   name: "ProgramApplicationInstituteInfo",
-  components: { ProgramApplicationInstituteInfoLayout, EceDateInput },
+  components: {
+    ProgramApplicationInstituteInfoLayout,
+    EceDateInput,
+    EceTextField,
+  },
   props: {
     programApplicationId: {
       type: String,
@@ -136,6 +197,11 @@ export default defineComponent({
       type: String,
       required: true,
     },
+  },
+  data() {
+    return {
+      Rules,
+    };
   },
   emits: { next: (_payload: NextStepPayload) => true },
 });

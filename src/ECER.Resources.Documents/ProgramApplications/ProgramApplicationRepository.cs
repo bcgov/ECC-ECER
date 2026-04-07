@@ -59,7 +59,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     {
       programProfileId = Guid.Parse(programApplication.ProgramProfileId);
       var programProfile = context.ecer_ProgramSet.SingleOrDefault(program => program.Id == programProfileId);
-      
+
       context.UpdateObject(entity);
       context.AddLink(entity, ecer_Program.Fields.ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program, programProfile!);
     }
@@ -242,12 +242,14 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
           && application.ecer_Deliverymethodforpracticuminstructor.Any()
           && ValidateCampus(incomingApplication, institute);
       }
+
       if (incomingApplication.DeliveryType == DeliveryType.Inperson)
       {
         return HasRepresentative(application)
           && ValidateCampus(incomingApplication, institute);
       }
     }
+
     if (incomingApplication.ProgramApplicationType == ApplicationType.NewCampusatRecognizedPrivateInstitution)
       return HasRepresentative(application);
     if (incomingApplication.ProgramApplicationType == ApplicationType.SatelliteProgram)
@@ -257,6 +259,35 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         && campus != null
         && campus.StartDate != null
         && campus.EndDate != null;
+    }
+
+    if (incomingApplication.ProgramApplicationType == ApplicationType.AddOnlineorHybridDeliveryMethod)
+    {
+      if (incomingApplication.DeliveryType == DeliveryType.Hybrid &&
+        (incomingApplication.InPersonHoursPercentage == null ||
+        incomingApplication.OnlineDeliveryHoursPercentage == null))
+      { return false; }
+
+      if (incomingApplication.ProgramCampuses == null || !incomingApplication.ProgramCampuses.Any())
+      {
+        return false;
+      }
+
+      if (application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ == null
+          || application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id == Guid.Empty)
+      {
+        return false;
+      }
+
+      if (string.IsNullOrEmpty(application.ecer_Name) || application.ecer_ProjectedLength == null)
+      {
+        return false;
+      }
+
+      if (!application.ecer_Onlinemethodsofinstruction.Any() || !application.ecer_Deliverymethodforpracticuminstructor.Any() || !application.ecer_ProgramEnrollment.Any() || !application.ecer_AdmissionOptions.Any())
+      {
+        return false;
+      }
     }
     return true;
   }
@@ -429,7 +460,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     {
       existing.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Submitted;
       existing.ecer_DateofApplicationShort = DateTime.UtcNow;
-      existing.ecer_AgreeNotifyofChanges = declaration ? ecer_YesNoNull.Yes : ecer_YesNoNull.No; 
+      existing.ecer_AgreeNotifyofChanges = declaration ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
       existing.ecer_SubmittedByProgramRepresentativeId = new EntityReference(ecer_ECEProgramRepresentative.EntityLogicalName, Guid.Parse(programRepresentativeId));
     }
     else
@@ -439,10 +470,10 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       existing.ecer_ProgramRepModifiedDate = DateTime.UtcNow;
     }
 
-
     context.UpdateObject(existing);
     context.SaveChanges();
     return applicationId;
   }
 }
+
 //ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton
