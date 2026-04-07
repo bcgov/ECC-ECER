@@ -37,6 +37,30 @@ const number = (message = "Must be a number") => {
   return (v: string) => !v || /^\d+$/.test(v) || message;
 };
 
+/**
+ * Validates that a number falls within a specified range.
+ * @param {number} min - The minimum allowed value.
+ * @param {number} max - The maximum allowed value.
+ * @param {boolean} [inclusive=true] - Whether the min and max values are considered valid.
+ * @param {string} [message=`Must be between ${min} and ${max}`] - The error message returned if validation fails.
+ * @returns {function(string): (boolean|string)} A validation function that takes a string and returns true if valid, or an error message if invalid.
+ */
+const numberWithinRange = (
+  min: number,
+  max: number,
+  inclusive = true,
+  message = `Must be between ${min} and ${max}`,
+) => {
+  return (v: string) => {
+    if (!v) return true;
+    const num = parseFloat(v);
+    if (isNaN(num)) return message;
+    return inclusive
+      ? num >= min && num <= max
+      : (num > min && num < max) || message;
+  };
+};
+
 const validContactName =
   (message = "Remove or replace any special characters in this field.") =>
   (v: string) =>
@@ -120,7 +144,7 @@ const required = (message = "This field is required", property?: string) => {
  * @param {string} [message=`Input a number up to ${decimal} decimal places. Ex. ${Number(1).toFixed(decimal)}`] - The error message to display if the validation fails.
  * @returns {function(string): boolean|string} A validation function that accepts a string and returns true if valid, or the error message if invalid.
  */
-const numberToDecimalPlace = (
+const numberToDecimalPlaces = (
   decimal = 2,
   message = `Input a number up to ${decimal} decimal places. Ex. ${Number(1).toFixed(decimal)}`,
 ) => {
@@ -305,7 +329,8 @@ export {
   maxLength,
   mustExistInList,
   number,
-  numberToDecimalPlace as numberToDecimalPlaces,
+  numberToDecimalPlaces,
+  numberWithinRange,
   phoneNumber,
   postalCode,
   required,

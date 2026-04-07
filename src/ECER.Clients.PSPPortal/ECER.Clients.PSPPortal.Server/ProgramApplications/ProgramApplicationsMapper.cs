@@ -27,6 +27,8 @@ internal sealed class ProgramApplicationsMapper: SecureProfile
       .ForMember(d => d.AdmissionOptions, opts => opts.MapFrom(s => s.AdmissionOptions))
       .ForMember(d => d.MinimumEnrollment, opts => opts.MapFrom(s => s.MinimumEnrollment))
       .ForMember(d => d.MaximumEnrollment, opts => opts.MapFrom(s => s.MaximumEnrollment))
+      .ForMember(d => d.InPersonHoursPercentage, opts => opts.MapFrom(s => s.InPersonHoursPercentage))
+      .ForMember(d => d.OnlineDeliveryHoursPercentage, opts => opts.MapFrom(s => s.OnlineDeliveryHoursPercentage))
       .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ProgramCampuses))
       .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.OtherAdmissionOptions))
       .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.InstituteInfoEntryProgress))
