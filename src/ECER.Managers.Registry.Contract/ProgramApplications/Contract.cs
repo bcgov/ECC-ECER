@@ -87,6 +87,8 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public IEnumerable<AdmissionOptions>? AdmissionOptions { get; set; }
   public string? MinimumEnrollment { get; set; }
   public string? MaximumEnrollment { get; set; }
+  public float? InPersonHoursPercentage { get; set; }
+  public float? OnlineDeliveryHoursPercentage { get; set; }
   public IEnumerable<ProgramCampus>? ProgramCampuses { get; set; }
   public string? OtherAdmissionOptions { get; set; }
   public string? InstituteInfoEntryProgress { get; set; }
