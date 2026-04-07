@@ -99,15 +99,13 @@
         <v-col cols="12">
           <div class="d-flex flex-column ga-3">
             <p>
-              This process is for institutions with existing programs that are
-              recognized by the Registry to seek approval to add a
+              This process is for institutions with existing early childhood
+              education programs that are recognized by the ECE Registry to seek
+              approval to add a
               <strong>temporary offering</strong>
-              of an early childhood education cohort at a location:
+              of a program at a location in partnership with another
+              organization, or at a location outside of the institution.
             </p>
-            <ol class="ml-8">
-              <li>in partnership with another organization, or</li>
-              <li>outside of the institution.</li>
-            </ol>
             <!-- prettier-ignore -->
             <p>
               The satellite program offering runs in addition to existing
