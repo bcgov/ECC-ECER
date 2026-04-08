@@ -392,10 +392,9 @@ export default defineComponent({
         undefined,
       );
       if (result.error) return;
-      this.componentGroup = result.data as
-        | ComponentGroupWithComponents[]
-        | null
-        | undefined;
+      this.componentGroup = (result.data ?? []).sort(
+        (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+      );
       this.setView();
     },
     setView() {
