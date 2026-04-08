@@ -179,7 +179,6 @@ import type { NextStepPayload } from "@/components/program-application/ProgramAp
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import * as Rules from "@/utils/formRules";
-import { readBuilderProgram } from "typescript";
 
 export default defineComponent({
   name: "ProgramApplicationInstituteInfo",

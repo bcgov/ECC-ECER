@@ -53,8 +53,8 @@ const numberWithinRange = (
 ) => {
   return (v: string) => {
     if (!v) return true;
-    const num = parseFloat(v);
-    if (isNaN(num)) return message;
+    const num = Number.parseFloat(v);
+    if (Number.isNaN(num)) return message;
     return inclusive
       ? num >= min && num <= max
       : (num > min && num < max) || message;
