@@ -141,6 +141,8 @@
         onUpdateSatelliteStartDate,
         satelliteEndDate,
         onUpdateSatelliteEndDate,
+        endDateValidation,
+        requiredValidation,
       }"
     >
       <v-row>
@@ -149,6 +151,7 @@
             :model-value="satelliteStartDate"
             @update:model-value="onUpdateSatelliteStartDate"
             label="Satellite location start date"
+            :rules="[requiredValidation()]"
           ></EceDateInput>
         </v-col>
       </v-row>
@@ -158,6 +161,10 @@
             :model-value="satelliteEndDate"
             @update:model-value="onUpdateSatelliteEndDate"
             label="Satellite location end date"
+            :rules="[
+              requiredValidation(),
+              endDateValidation(satelliteStartDate),
+            ]"
           ></EceDateInput>
         </v-col>
       </v-row>

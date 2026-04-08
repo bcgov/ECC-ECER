@@ -26,7 +26,7 @@ internal sealed class ProgramApplicationSubmissionValidationEngine : IProgramApp
 
     // b) Course validation
 
-    if (context.ProgramApplication.ProgramApplicationType != ApplicationType.NewCampusatRecognizedPrivateInstitution)
+    if (context.ProgramApplication.ProgramApplicationType == ApplicationType.NewBasicECEPostBasicProgram)
     {
       var programTypes = (context.ProgramApplication.ProgramTypes ?? Enumerable.Empty<ProgramCertificationType>())
         .ToList();

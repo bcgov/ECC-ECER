@@ -1,9 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <h1 class="mb-4">
-        Application for new campus at recognized private institution
-      </h1>
+      <h1 class="mb-4">Application for satellite program</h1>
     </v-col>
   </v-row>
 
@@ -66,9 +64,10 @@
       <Callout title="Private institutions" type="warning">
         <div class="d-flex flex-column ga-3">
           <p>
-            Private institutions require an approval from their regulator to
-            offer their early childhood education program at a new campus
-            location.
+            Private institutions require an approval from their regulator to add
+            a temporary offering of an early childhood education cohort at a
+            location in partnership with another organization, or at a location
+            outside of the institution.
           </p>
           <p>
             Contact the Private Training Institutions Regulatory Unit (PTIRU) at
@@ -127,7 +126,7 @@
             </li>
             <li class="ml-8 font-weight-bold">
               Note: Do not submit any documents containing personal details in
-              this application (for example, staff resumes).
+              this application (for example, staff resumes)
             </li>
           </ul>
         </div>
@@ -198,7 +197,7 @@ import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
-  name: "NewCampusProgramApplicationInfo",
+  name: "SatelliteProgramApplicationInfo",
   components: { Breadcrumb, ECEHeader, Callout, PageContainer },
 });
 </script>

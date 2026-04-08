@@ -318,19 +318,157 @@ public class ProgramApplicationSubmissionValidationEngineTests
     Assert.Contains(result.ValidationErrors, e => e.Contains("Declaration must be accepted to submit the program application"));
   }
 
+  [Fact]
+  public async Task Validate_WithInstituteInfoNotCompleted_ReturnsInstituteInfoError()
+  {
+    var context = BuildContext(declarationAccepted: true, instituteInfoEntryProgress: "InProgress");
+
+    var result = await engine.Validate(context);
+
+    Assert.False(result.IsValid);
+    Assert.Single(result.ValidationErrors);
+    Assert.Contains("Institution and program info has not been completed", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithInstituteInfoNull_ReturnsInstituteInfoError()
+  {
+    var context = BuildContext(declarationAccepted: true, instituteInfoEntryProgress: null);
+
+    var result = await engine.Validate(context);
+
+    Assert.False(result.IsValid);
+    Assert.Contains("Institution and program info has not been completed", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithNewCampusApplicationTypeAndNoCourses_ReturnsValid()
+  {
+    var context = BuildContext(
+      declarationAccepted: true,
+      applicationType: ApplicationType.NewCampusatRecognizedPrivateInstitution);
+
+    var result = await engine.Validate(context);
+
+    Assert.True(result.IsValid);
+    Assert.Empty(result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithNewCampusApplicationTypeAndDeclarationNotAccepted_ReturnsDeclarationError()
+  {
+    var context = BuildContext(
+      declarationAccepted: false,
+      applicationType: ApplicationType.NewCampusatRecognizedPrivateInstitution);
+
+    var result = await engine.Validate(context);
+
+    Assert.False(result.IsValid);
+    Assert.Single(result.ValidationErrors);
+    Assert.Contains("Declaration must be accepted to submit the program application", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithNewCampusApplicationTypeAndIncompleteGroup_ReturnsGroupError()
+  {
+    var context = BuildContext(
+      groups: new[] { new ComponentGroupValidationStatus(Guid.NewGuid().ToString(), "Campus Details", "InProgress") },
+      declarationAccepted: true,
+      applicationType: ApplicationType.NewCampusatRecognizedPrivateInstitution);
+
+    var result = await engine.Validate(context);
+
+    Assert.False(result.IsValid);
+    Assert.Contains("Campus Details has not been completed", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithNewCampusApplicationTypeAndInstituteInfoNotCompleted_ReturnsInstituteInfoError()
+  {
+    var context = BuildContext(
+      declarationAccepted: true,
+      instituteInfoEntryProgress: "InProgress",
+      applicationType: ApplicationType.NewCampusatRecognizedPrivateInstitution);
+
+    var result = await engine.Validate(context);
+
+    Assert.False(result.IsValid);
+    Assert.Single(result.ValidationErrors);
+    Assert.Contains("Institution and program info has not been completed", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithSatelliteApplicationTypeAndNoCourses_ReturnsValid()
+  {
+    var context = BuildContext(
+      declarationAccepted: true,
+      applicationType: ApplicationType.SatelliteProgram);
+
+    var result = await engine.Validate(context);
+
+    Assert.True(result.IsValid);
+    Assert.Empty(result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithSatelliteApplicationTypeAndDeclarationNotAccepted_ReturnsDeclarationError()
+  {
+    var context = BuildContext(
+      declarationAccepted: false,
+      applicationType: ApplicationType.SatelliteProgram);
+
+    var result = await engine.Validate(context);
+
+    Assert.False(result.IsValid);
+    Assert.Single(result.ValidationErrors);
+    Assert.Contains("Declaration must be accepted to submit the program application", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithSatelliteApplicationTypeAndIncompleteGroup_ReturnsGroupError()
+  {
+    var context = BuildContext(
+      groups: new[] { new ComponentGroupValidationStatus(Guid.NewGuid().ToString(), "Satellite Details", "Draft") },
+      declarationAccepted: true,
+      applicationType: ApplicationType.SatelliteProgram);
+
+    var result = await engine.Validate(context);
+
+    Assert.False(result.IsValid);
+    Assert.Contains("Satellite Details has not been completed", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_WithSatelliteApplicationTypeAndInstituteInfoNotCompleted_ReturnsInstituteInfoError()
+  {
+    var context = BuildContext(
+      declarationAccepted: true,
+      instituteInfoEntryProgress: "InProgress",
+      applicationType: ApplicationType.SatelliteProgram);
+
+    var result = await engine.Validate(context);
+
+    Assert.False(result.IsValid);
+    Assert.Single(result.ValidationErrors);
+    Assert.Contains("Institution and program info has not been completed", result.ValidationErrors);
+  }
+
   private static ProgramApplicationValidationContext BuildContext(
     IEnumerable<ComponentGroupValidationStatus>? groups = null,
     IEnumerable<Course>? courses = null,
     IEnumerable<ProgramCertificationType>? programTypes = null,
     IReadOnlyCollection<AreaOfInstruction>? areasOfInstruction = null,
-    bool declarationAccepted = true) =>
+    bool declarationAccepted = true,
+    string? instituteInfoEntryProgress = "Completed",
+    ApplicationType applicationType = ApplicationType.NewBasicECEPostBasicProgram) =>
     new(
       ComponentGroupStatuses: groups ?? Enumerable.Empty<ComponentGroupValidationStatus>(),
       Courses: courses ?? Enumerable.Empty<Course>(),
       ProgramApplication: new ProgramApplication(null, "test-psi")
       {
         ProgramTypes = programTypes?.ToList(),
-        InstituteInfoEntryProgress = "Completed",
+        ProgramApplicationType = applicationType,
+        InstituteInfoEntryProgress = instituteInfoEntryProgress,
       },
       AreasOfInstruction: areasOfInstruction ?? new List<AreaOfInstruction>().AsReadOnly(),
       DeclarationAccepted: declarationAccepted);
