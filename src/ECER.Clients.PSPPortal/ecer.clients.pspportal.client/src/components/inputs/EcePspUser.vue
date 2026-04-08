@@ -10,15 +10,15 @@
       <!-- prettier-ignore -->
       <p>
         Note: If the correct user is not listed here, please invite them to this
-        portal under
-        <router-link
+        portal under 
+        "<router-link
           :to="{
             name: 'manage-users',
             params: { educationInstitutionName: institutionName },
           }"
         >
-          "Manage Users"
-        </router-link>.
+          Manage Users
+        </router-link>".
       </p>
     </v-col>
     <v-col cols="12" sm="6">

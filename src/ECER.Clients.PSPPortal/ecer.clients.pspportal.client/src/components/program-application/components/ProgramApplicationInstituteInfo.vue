@@ -83,20 +83,20 @@
       }"
     >
       <v-row>
-        <v-col cols="3">Provincial Certification Type</v-col>
-        <v-col class="font-weight-bold" cols="3">
+        <v-col cols="12" sm="4" xl="3">Provincial Certification Type</v-col>
+        <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
           {{ programType }}
         </v-col>
       </v-row>
       <v-row class="mt-n3">
-        <v-col cols="3">Delivery method</v-col>
-        <v-col class="font-weight-bold" cols="3">
+        <v-col cols="12" sm="4" xl="3">Delivery method</v-col>
+        <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
           {{ programApplicationObject?.deliveryType }}
         </v-col>
       </v-row>
       <v-row class="mt-n3">
-        <v-col cols="3">Institution</v-col>
-        <v-col class="font-weight-bold" cols="3">
+        <v-col cols="12" sm="4" xl="3">Institution</v-col>
+        <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
           {{ institution?.name }}
         </v-col>
       </v-row>
@@ -179,7 +179,6 @@ import type { NextStepPayload } from "@/components/program-application/ProgramAp
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import * as Rules from "@/utils/formRules";
-import { readBuilderProgram } from "typescript";
 
 export default defineComponent({
   name: "ProgramApplicationInstituteInfo",

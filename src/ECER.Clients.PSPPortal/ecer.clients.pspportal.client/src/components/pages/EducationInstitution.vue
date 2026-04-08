@@ -42,12 +42,12 @@
             <p>Add a campus here if:</p>
             <ul class="ml-8">
               <li>
-                Your institution has another location where an Early Childhood
-                Educator program is offered, or
+                Your institution has another location where an early childhood
+                education program is offered, or
               </li>
               <li>
-                You are applying to offer an ECE program at another campus that
-                is not listed here
+                If you are applying to offer an early childhood education
+                program at another campus that is not listed here
               </li>
             </ul>
             <p>
