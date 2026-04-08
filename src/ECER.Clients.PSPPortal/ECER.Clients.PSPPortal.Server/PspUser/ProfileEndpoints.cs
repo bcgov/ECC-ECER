@@ -6,6 +6,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Serilog;
 
 namespace ECER.Clients.PSPPortal.Server.Users;
 
@@ -13,23 +14,37 @@ public class ProfileEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("api/users/profile", async Task<Results<Ok<PspUserProfile>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("api/users/profile", async Task<Results<Ok<PspUserProfile>, NotFound>> (
+        HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper,
+        string? bceidBusinessId, string? bceidBusinessName) =>
       {
         var user = ctx.User.GetUserContext()!;
         var results = await bus.Send<PspRepQueryResults>(new SearchPspRepQuery() { ByUserIdentity = user.Identity }, ct);
 
         var pspUser = results.Items.SingleOrDefault();
         if (pspUser == null) return TypedResults.NotFound();
-        
+
+        // Heal missing BCeID Business GUID if the frontend provides bceid info
+        if (!string.IsNullOrWhiteSpace(bceidBusinessId) && !string.IsNullOrWhiteSpace(bceidBusinessName) && !string.IsNullOrWhiteSpace(pspUser.PostSecondaryInstituteId))
+        {
+          Log.Information("BCeID healing attempt for institution {InstituteId} with BceidBusinessId={BceidBusinessId}, BceidBusinessName={BceidBusinessName}",
+            pspUser.PostSecondaryInstituteId, bceidBusinessId, bceidBusinessName);
+
+          var healResult = await bus.Send(new HealBceidBusinessIdCommand(pspUser.PostSecondaryInstituteId, bceidBusinessId, bceidBusinessName), ct);
+
+          Log.Information("BCeID healing result for institution {InstituteId}: {HealResult}",
+            pspUser.PostSecondaryInstituteId, healResult);
+        }
+
         var query = new UserCommunicationsStatusQuery
         {
           ByPostSecondaryInstituteId = pspUser.PostSecondaryInstituteId
         };
-        var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query,ct);
+        var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query, ct);
 
         var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
         pspUserProfile!.UnreadMessagesCount = communicationsStatus.Status.Count;
-        
+
         return TypedResults.Ok(pspUserProfile);
       })
       .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "psp_user_profile_get")
@@ -71,17 +86,20 @@ public class ProfileEndpoints : IRegisterEndpoints
             {
               errorCode = result.Error.Value switch
               {
-                RegisterPspUserError.PostSecondaryInstitutionNotFound 
+                RegisterPspUserError.PostSecondaryInstitutionNotFound
                   => PspRegistrationError.PostSecondaryInstitutionNotFound,
 
-                RegisterPspUserError.PortalInvitationTokenInvalid 
+                RegisterPspUserError.PortalInvitationTokenInvalid
                   => PspRegistrationError.PortalInvitationTokenInvalid,
 
-                RegisterPspUserError.PortalInvitationWrongStatus 
+                RegisterPspUserError.PortalInvitationWrongStatus
                   => PspRegistrationError.PortalInvitationWrongStatus,
 
-                RegisterPspUserError.BceidBusinessIdDoesNotMatch 
+                RegisterPspUserError.BceidBusinessIdDoesNotMatch
                   => PspRegistrationError.BceidBusinessIdDoesNotMatch,
+
+                RegisterPspUserError.BceidBusinessIdMissing
+                  => PspRegistrationError.BceidBusinessIdMissing,
 
                 _ => PspRegistrationError.GenericError
               };
@@ -96,7 +114,6 @@ public class ProfileEndpoints : IRegisterEndpoints
           return TypedResults.Ok();
         })
       .WithOpenApi("Update a psp user profile", string.Empty, "psp_user_register_post")
-      .WithOpenApi()
       .RequireAuthorization("psp_user");
   }
 }
@@ -153,6 +170,8 @@ public enum PspRegistrationError
   PortalInvitationWrongStatus,
   /// <summary>The BCeID Business ID doesn't match expected value</summary>
   BceidBusinessIdDoesNotMatch,
+  /// <summary>BCeID Business ID is not included in register request</summary>
+  BceidBusinessIdMissing,
   /// <summary>A generic error occurred during registration</summary>
   GenericError
 }
