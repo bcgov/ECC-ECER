@@ -20,32 +20,32 @@
         :program-application-object="programApplicationObject"
       >
         <v-row>
-          <v-col cols="3">Institution name</v-col>
-          <v-col class="font-weight-bold" cols="auto">
+          <v-col cols="12" sm="4" xl="3">Institution name</v-col>
+          <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
             {{ userStore.educationInstitution?.name }}
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="3">Campus</v-col>
-          <v-col class="font-weight-bold" cols="auto">
+          <v-col cols="12" sm="4" xl="3">Campus</v-col>
+          <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
             {{ programApplicationObject?.programCampuses?.[0]?.name }}
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="3">Program profile</v-col>
-          <v-col class="font-weight-bold" cols="auto">
+          <v-col cols="12" sm="4" xl="3">Program profile</v-col>
+          <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
             {{ programApplicationObject?.programProfileName }}
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="3">Provincial certification types</v-col>
-          <v-col class="font-weight-bold" cols="auto">
+          <v-col cols="12" sm="4" xl="3">Provincial certification types</v-col>
+          <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
             {{ programType }}
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="3">Delivery method</v-col>
-          <v-col class="font-weight-bold" cols="auto">
+          <v-col cols="12" sm="4" md="4" xl="3">Delivery method</v-col>
+          <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
             {{ programApplicationObject?.deliveryType }}
           </v-col>
         </v-row>
@@ -140,10 +140,11 @@
               user must have access to the ECE Post-Secondary Programs portal.
             </p>
             <br />
+            <!-- prettier-ignore -->
             <p>
               Note: If the correct user is not listed here, please invite them
               to this portal under
-              <router-link
+              "<router-link
                 class="user-link"
                 :to="{
                   name: 'manage-users',
@@ -153,9 +154,8 @@
                   },
                 }"
               >
-                "Manage users"
-              </router-link>
-              <span>.</span>
+                Manage users
+              </router-link>".
             </p>
           </v-col>
         </v-row>
@@ -461,7 +461,7 @@
               color="primary"
               @click="saveAndContinue"
             >
-              Save and continue
+              Continue
             </v-btn>
           </v-col>
         </v-row>
