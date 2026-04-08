@@ -16,16 +16,21 @@
       <v-row>
         <v-col cols="12">
           <p>
-            This process is for institutions with existing programs that are
-            recognized by the Registry to seek approval to add a program
-            offering of an early childhood education cohort at a new campus
-            location.
+            This process is for institutions with existing early childhood
+            education programs that are recognized by the ECE Registry to seek
+            approval to add a program offering at a new campus location.
           </p>
           <p class="mt-3">
-            Private institutions may require additional approval from their
-            regulator to add new campus location. Contact the Private Training
-            Institutions Regulatory Unit (PTIRU) indicating the requested
-            change.
+            Private institutions require additional approval from their
+            regulator before adding a new campus location. Contact the
+            <a
+              href="https://www.privatetraininginstitutions.gov.bc.ca"
+              target="_blank"
+              class="text-primary text-decoration-underline"
+            >
+              Private Training Institutions Regulatory Unit
+            </a>
+            for more information.
           </p>
         </v-col>
       </v-row>
@@ -51,9 +56,7 @@
               :loading="isSaving"
               @click="save"
             >
-              {{
-                isPrivate ? "Save and continue to program application" : "Save"
-              }}
+              {{ isPrivate ? "Save and continue" : "Save" }}
             </v-btn>
             <v-btn
               rounded="lg"
