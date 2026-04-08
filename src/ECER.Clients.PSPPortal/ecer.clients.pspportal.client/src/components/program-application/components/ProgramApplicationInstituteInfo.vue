@@ -35,8 +35,9 @@
                 :model-value="inPersonHoursPercentage"
                 label="In-person delivery"
                 :rules="[
-                  Rules.numberToDecimalPlaces(2),
+                  Rules.validNumber(),
                   Rules.numberWithinRange(0, 100, false),
+                  Rules.numberToDecimalPlaces(2),
                 ]"
                 @update:model-value="onUpdateInPersonHoursPercentage"
               ></EceTextField>
@@ -48,8 +49,9 @@
                 :model-value="onlineDeliveryHoursPercentage"
                 label="Online delivery"
                 :rules="[
-                  Rules.numberToDecimalPlaces(2),
+                  Rules.validNumber(),
                   Rules.numberWithinRange(0, 100, false),
+                  Rules.numberToDecimalPlaces(2),
                 ]"
                 @update:model-value="onUpdateOnlineDeliveryHoursPercentage"
               ></EceTextField>

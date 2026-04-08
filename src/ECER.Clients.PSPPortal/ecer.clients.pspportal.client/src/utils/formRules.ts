@@ -54,7 +54,7 @@ const numberWithinRange = (
   return (v: string) => {
     if (!v) return true;
     const num = Number.parseFloat(v);
-    if (Number.isNaN(num)) return message;
+    if (typeof num !== "number") return message;
     return inclusive
       ? num >= min && num <= max
       : (num > min && num < max) || message;
@@ -150,6 +150,22 @@ const numberToDecimalPlaces = (
 ) => {
   const regex = new RegExp(`^\\d+(\\.\\d{0,${decimal}})?$`);
   return (v: string) => !v || regex.test(v) || message;
+};
+
+/**
+ * Validates that a string input is a valid number with options to ensure it is positive
+ * @param {boolean} [positive=true] - If true, the validator will fail for numbers less than 0.
+ * @param {string} [message="Must be a valid number"] - The error message to return if the input is not a number.
+ * @returns {function(string): (boolean|string)} A validation function that takes a string input and returns
+ * `true` if valid, or a string error message if invalid.
+ */
+const validNumber = (positive = true, message = "Must be a valid number") => {
+  return (v: string) => {
+    const num = Number(v);
+    if (isNaN(num)) return message;
+    if (positive && num < 0) return "Must be a positive number";
+    return true;
+  };
 };
 
 /**
@@ -335,6 +351,7 @@ export {
   postalCode,
   required,
   requiredRadio,
+  validNumber,
   website,
   notSameAs,
 };
