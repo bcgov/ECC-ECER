@@ -29,10 +29,10 @@
     <v-row>
       <v-col cols="12">
         <Callout title="If you need assistance" type="warning">
+          <!-- prettier-ignore -->
           <p>
             You may reach out to the Registry for assistance at any time by
-            <router-link to="/messages/new">sending a message</router-link>
-            .
+            <router-link to="/messages/new">sending a message</router-link>.
           </p>
         </Callout>
       </v-col>
@@ -64,9 +64,14 @@
               recognized basic or post-basic early childhood education program.
             </p>
 
-            <v-row>
-              <v-col cols="6">
-                <p class="pb-3">Program Profile</p>
+            <v-row class="mt-4">
+              <v-col cols="12">
+                <p class="pb-3 font-weight-bold">Program Profile</p>
+                <p class="mb-3">
+                  Select the ECE Registry-recognized program for which you are requesting approval to expand delivery to online or hybrid formats.
+                </p>
+              </v-col>
+              <v-col cols="12" md="6">
                 <v-select
                   v-model="selectedProgramProfileId"
                   class="mt-2 mb-4"
@@ -77,11 +82,6 @@
                   :rules="[Rules.required('Required')]"
                   hide-details="auto"
                 ></v-select>
-                <p>
-                  Select the ECE Registry-recognized program for which you are
-                  requesting approval to expand delivery to online or hybrid
-                  formats.
-                </p>
               </v-col>
             </v-row>
           </div>
