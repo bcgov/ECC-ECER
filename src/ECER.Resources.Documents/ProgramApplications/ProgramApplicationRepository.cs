@@ -132,7 +132,8 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         throw new InvalidOperationException($"Post secondary institute '{application.PostSecondaryInstituteId}' not found");
       }
 
-      if (existingApplication.ecer_ApplicationType == ecer_PSIApplicationType.NewBasicECEPostBasicProgram)
+      if (existingApplication.ecer_ApplicationType == ecer_PSIApplicationType.NewBasicECEPostBasicProgram
+          || existingApplication.ecer_ApplicationType == ecer_PSIApplicationType.AddOnlineorHybridDeliveryMethod)
       {
         if (application.ProgramCampuses != null && application.ProgramCampuses.Any())
         {

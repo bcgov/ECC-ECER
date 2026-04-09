@@ -88,7 +88,7 @@
             })
           "
         >
-          View Institution Details
+          View institution details
         </v-btn>
       </v-col>
     </v-row>

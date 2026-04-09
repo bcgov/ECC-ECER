@@ -124,7 +124,7 @@
         >
           <v-list-item-title>
             <v-icon>mdi-text-box-outline</v-icon>
-            Review Responses
+            Review responses
           </v-list-item-title>
         </v-list-item>
 
@@ -175,7 +175,7 @@
       >
         <v-list-item-title>
           <v-icon>mdi-text-box-outline</v-icon>
-          View Responses
+          View responses
         </v-list-item-title>
       </v-list-item>
 
