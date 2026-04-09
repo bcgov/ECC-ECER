@@ -31,7 +31,7 @@
         <Callout title="If you need assistance" type="warning">
           <p>
             You may reach out to the Registry for assistance at any time by
-            <router-link to="/messages/new">sending a message</router-link>.
+            <router-link to="/messages/new">sending a message.</router-link>
           </p>
         </Callout>
       </v-col>
