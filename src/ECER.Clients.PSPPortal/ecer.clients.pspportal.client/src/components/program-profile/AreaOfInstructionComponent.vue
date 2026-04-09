@@ -202,19 +202,11 @@ export default defineComponent({
         return area?.programTypes?.includes(this.programType);
       });
 
-      // Exclude child guidance. They are grouped together later
-      const hasProgramDevelopment = filtered.some(
-        (area) =>
-          area.name === "Program Development, Curriculum and Foundations",
-      );
-      const hasChildGuidance = filtered.some(
-        (area) => area.name === "Child Guidance",
-      );
-
+      // Exclude areas with parents. They are included later
       let result = filtered;
-      if (hasProgramDevelopment && hasChildGuidance) {
-        result = filtered.filter((area) => area.name !== "Child Guidance");
-      }
+      result = filtered.filter(
+        (area) => area.parentAreaOfInstructionId === null,
+      );
 
       // Sort by displayOrder (null values go to the end)
       return result.sort((a, b) => {
@@ -302,78 +294,58 @@ export default defineComponent({
       if (!areaId || !this.courses) {
         return [];
       }
-
       const coursesForArea: CourseAreaOfInstructionWithCourse[] = [];
-
-      // Find the area to check its name
-      const area = this.areaOfInstructionList.find((a) => a.id === areaId);
-      const isProgramDevelopment =
-        area?.name === "Program Development, Curriculum and Foundations";
-
-      // First, collect Program Development courses
+      // Collect courses directly assigned to this area
       this.courses
         .filter((course) => course.programType === this.programType)
         .forEach((course) => {
           if (course.courseAreaOfInstruction) {
             course.courseAreaOfInstruction.forEach((courseArea) => {
-              const matchesCurrentArea =
-                courseArea.areaOfInstructionId === areaId;
-
               if (
-                matchesCurrentArea &&
+                courseArea.areaOfInstructionId === areaId &&
                 courseArea?.newHours &&
                 Number.parseFloat(courseArea.newHours) > 0
               ) {
                 coursesForArea.push({
                   ...courseArea,
-                  courseTitle: course.newCourseTitle
-                    ? course.newCourseTitle
-                    : course.courseTitle,
-                  courseNumber: course.newCourseNumber
-                    ? course.newCourseNumber
-                    : course.courseNumber,
+                  courseTitle: course.newCourseTitle ?? course.courseTitle,
+                  courseNumber: course.newCourseNumber ?? course.courseNumber,
                 });
               }
             });
           }
         });
-
-      // If this is Program Development, also collect Child Guidance courses separately
-      if (isProgramDevelopment) {
-        const childGuidanceArea = this.areaOfInstructionList.find(
-          (a) => a.name === "Child Guidance",
-        );
-        const childGuidanceAreaId = childGuidanceArea?.id;
-        let hasChildGuidanceCourses = false;
-
-        if (childGuidanceAreaId) {
-          this.courses
-            .filter((course) => course.programType === this.programType)
-            .forEach((course) => {
-              if (course.courseAreaOfInstruction) {
-                course.courseAreaOfInstruction.forEach((courseArea) => {
-                  if (courseArea.areaOfInstructionId === childGuidanceAreaId) {
-                    hasChildGuidanceCourses = true;
-                    coursesForArea.push({
-                      ...courseArea,
-                      courseTitle: course.courseTitle,
-                      courseNumber: course.courseNumber,
-                    });
-                  }
-                });
-              }
-            });
-
-          // If Child Guidance exists but has no courses, add a placeholder entry
-          if (!hasChildGuidanceCourses) {
-            coursesForArea.push({
-              areaOfInstructionId: childGuidanceAreaId,
-              newHours: "0",
-            } as CourseAreaOfInstructionWithCourse);
-          }
+      // Collect courses for any child areas (parentAreaOfInstructionId === areaId)
+      const childAreas = this.areaOfInstructionList.filter(
+        (a) => a.parentAreaOfInstructionId === areaId,
+      );
+      childAreas.forEach((childArea) => {
+        if (!childArea.id) return;
+        let hasCoursesForChildArea = false;
+        this.courses
+          .filter((course) => course.programType === this.programType)
+          .forEach((course) => {
+            if (course.courseAreaOfInstruction) {
+              course.courseAreaOfInstruction.forEach((courseArea) => {
+                if (courseArea.areaOfInstructionId === childArea.id) {
+                  hasCoursesForChildArea = true;
+                  coursesForArea.push({
+                    ...courseArea,
+                    courseTitle: course.newCourseTitle ?? course.courseTitle,
+                    courseNumber: course.newCourseNumber ?? course.courseNumber,
+                  });
+                }
+              });
+            }
+          });
+        // If the child area has no courses, add a placeholder so it still renders
+        if (!hasCoursesForChildArea) {
+          coursesForArea.push({
+            areaOfInstructionId: childArea.id,
+            newHours: "0",
+          } as CourseAreaOfInstructionWithCourse);
         }
-      }
-
+      });
       return coursesForArea;
     },
     getAreaSubtitles(areaId: string | null | undefined) {
