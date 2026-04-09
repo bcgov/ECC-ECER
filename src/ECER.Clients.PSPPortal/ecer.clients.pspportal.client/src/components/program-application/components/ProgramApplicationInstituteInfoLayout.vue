@@ -619,10 +619,10 @@ export default defineComponent({
       get() {
         return this.programApplicationObject?.inPersonHoursPercentage ?? null;
       },
-      set(value: string | null) {
+      set(value: any) {
         if (this.programApplicationObject) {
           this.programApplicationObject.inPersonHoursPercentage =
-            value === "" || value === null ? null : Number.parseFloat(value);
+            value === "" ? null : value;
         }
       },
     },
@@ -632,10 +632,10 @@ export default defineComponent({
           this.programApplicationObject?.onlineDeliveryHoursPercentage ?? null
         );
       },
-      set(value: string | null) {
+      set(value: any) {
         if (this.programApplicationObject) {
           this.programApplicationObject.onlineDeliveryHoursPercentage =
-            value === "" || value === null ? null : Number.parseFloat(value);
+            value === "" ? null : value;
         }
       },
     },
