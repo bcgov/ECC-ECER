@@ -203,8 +203,7 @@ export default defineComponent({
       });
 
       // Exclude areas with parents. They are included later
-      let result = filtered;
-      result = filtered.filter(
+      let result = filtered.filter(
         (area) => area.parentAreaOfInstructionId === null,
       );
 
