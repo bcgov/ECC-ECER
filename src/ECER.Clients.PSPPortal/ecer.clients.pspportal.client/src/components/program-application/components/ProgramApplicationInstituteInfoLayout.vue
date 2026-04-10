@@ -98,7 +98,7 @@
                   <v-checkbox
                     v-model="programCampus"
                     :value="campus.id || null"
-                    :label="campus.generatedName || '-'"
+                    :label="campus.name || '-'"
                     density="compact"
                     hide-details
                     @update:model-value="
