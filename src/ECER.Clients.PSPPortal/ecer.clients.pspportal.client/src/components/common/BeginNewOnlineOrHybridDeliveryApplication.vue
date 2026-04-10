@@ -68,7 +68,9 @@
               <v-col cols="12">
                 <p class="pb-3 font-weight-bold">Program Profile</p>
                 <p class="mb-3">
-                  Select the ECE Registry-recognized program for which you are requesting approval to expand delivery to online or hybrid formats.
+                  Select the ECE Registry-recognized program for which you are
+                  requesting approval to expand delivery to online or hybrid
+                  formats.
                 </p>
               </v-col>
               <v-col cols="12" md="6">
