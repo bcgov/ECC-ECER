@@ -140,11 +140,11 @@
               Some questions will ask you to upload documents to support your
               responses
             </li>
-            <li class="ml-8 font-weight-bold">
-              Note: Do not submit any documents containing personal details in
-              this application (for example, staff resumes).
-            </li>
           </ul>
+        </div>
+        <div class="font-weight-bold">
+          Note: Do not submit any documents containing personal details in
+          this application (for example, staff resumes).
         </div>
       </div>
     </v-col>
