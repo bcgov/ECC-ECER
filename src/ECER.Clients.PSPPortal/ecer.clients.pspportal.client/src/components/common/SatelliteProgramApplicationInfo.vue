@@ -72,9 +72,9 @@
           <p>
             Contact the
             <a
-            href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
-            class="text-primary text-decoration-underline"
-            target="_blank"
+              href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
+              class="text-primary text-decoration-underline"
+              target="_blank"
             >
               Private Training Institutions Regulatory Unit
             </a>
@@ -135,8 +135,8 @@
           </ul>
         </div>
         <div class="font-weight-bold">
-          Note: Do not submit any documents containing personal details in
-          this application (for example, staff resumes)
+          Note: Do not submit any documents containing personal details in this
+          application (for example, staff resumes)
         </div>
       </div>
     </v-col>
