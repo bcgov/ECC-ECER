@@ -128,10 +128,9 @@ export default defineComponent({
       );
       this.loading = false;
       if (result.error) return;
-      const payload = result.data as
-        | ComponentGroupWithComponents[]
-        | null
-        | undefined;
+      const payload = (result.data ?? []).sort(
+        (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+      );
       this.componentGroup =
         payload !== null && payload !== undefined ? (payload[0] ?? null) : null;
       const list =
