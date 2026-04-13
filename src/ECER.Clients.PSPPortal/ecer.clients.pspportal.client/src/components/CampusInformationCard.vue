@@ -2,7 +2,7 @@
   <Card>
     <v-row align="center" justify="space-between">
       <v-col cols="auto">
-        <h2>{{ campus.generatedName }}</h2>
+        <h2>{{ campus.name }}</h2>
       </v-col>
       <v-col cols="auto">
         <v-tooltip text="Edit Campus Information" location="top">
@@ -47,7 +47,7 @@
         <span>Campus name</span>
       </v-col>
       <v-col cols="12" sm="9">
-        <span class="font-weight-bold">{{ campus.generatedName ?? "—" }}</span>
+        <span class="font-weight-bold">{{ campus.name ?? "—" }}</span>
       </v-col>
     </v-row>
 
@@ -65,7 +65,7 @@
         <span>Key campus contact</span>
       </v-col>
       <v-col cols="12" sm="9">
-        <span class="font-weight-bold">{{ keyCampusContactName }}</span>
+        <span class="font-weight-bold">{{ campus.keyCampusContactName }}</span>
       </v-col>
     </v-row>
   </Card>

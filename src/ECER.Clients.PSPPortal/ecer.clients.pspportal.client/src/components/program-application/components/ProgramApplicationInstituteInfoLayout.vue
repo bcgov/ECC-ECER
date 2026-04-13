@@ -98,7 +98,7 @@
                   <v-checkbox
                     v-model="programCampus"
                     :value="campus.id || null"
-                    :label="campus.generatedName || '-'"
+                    :label="campus.name || '-'"
                     density="compact"
                     hide-details
                     @update:model-value="
@@ -619,10 +619,10 @@ export default defineComponent({
       get() {
         return this.programApplicationObject?.inPersonHoursPercentage ?? null;
       },
-      set(value: string | null) {
+      set(value: any) {
         if (this.programApplicationObject) {
           this.programApplicationObject.inPersonHoursPercentage =
-            value === "" || value === null ? null : Number.parseFloat(value);
+            value === "" ? null : value;
         }
       },
     },
@@ -632,10 +632,10 @@ export default defineComponent({
           this.programApplicationObject?.onlineDeliveryHoursPercentage ?? null
         );
       },
-      set(value: string | null) {
+      set(value: any) {
         if (this.programApplicationObject) {
           this.programApplicationObject.onlineDeliveryHoursPercentage =
-            value === "" || value === null ? null : Number.parseFloat(value);
+            value === "" ? null : value;
         }
       },
     },

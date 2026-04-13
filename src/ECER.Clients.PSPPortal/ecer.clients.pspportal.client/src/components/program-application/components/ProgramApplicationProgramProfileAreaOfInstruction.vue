@@ -169,30 +169,19 @@ export default defineComponent({
       }
     },
     generateSubtitleMap(): Record<string, string> {
-      //specific subtitle only for Area of Instruction Child Guidance for ProgramType Basic
-      const childGuidanceAreaOfInstruction =
-        this.configStore.areaOfInstructionList.filter(
-          (area) =>
-            area.name === "Child Guidance" &&
-            area.programTypes?.includes("Basic"),
-        );
-
-      if (
-        childGuidanceAreaOfInstruction &&
-        childGuidanceAreaOfInstruction.length > 0
-      ) {
-        const childGuidanceAreaOfInstructionId =
-          childGuidanceAreaOfInstruction[0]?.id;
-
-        return {
-          [childGuidanceAreaOfInstructionId!]:
-            "Child guidance is included in Program Development, Curriculum and Foundations.",
-        };
-      }
-      console.warn(
-        "Child Guidance area of instruction not found for Basic program type.",
-      );
-      return {};
+      const subtitleMap: Record<string, string> = {};
+      this.configStore.areaOfInstructionList
+        .filter((area) => area.parentAreaOfInstructionId != null)
+        .forEach((area) => {
+          const parentArea = this.configStore.areaOfInstructionList.find(
+            (a) => a.id === area.parentAreaOfInstructionId,
+          );
+          if (area.id && parentArea?.name) {
+            subtitleMap[area.id] =
+              `${area.name} is included in ${parentArea.name}.`;
+          }
+        });
+      return subtitleMap;
     },
   },
   methods: {
