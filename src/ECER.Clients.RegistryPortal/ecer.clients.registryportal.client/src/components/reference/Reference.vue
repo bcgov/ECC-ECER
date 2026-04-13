@@ -237,7 +237,7 @@ export default defineComponent({
       ) {
         this.captchaTurnstileStore.resetAllCaptchaTurnstileWidgets();
         this.wizardStore.wizardData[
-          this.wizardStore?.wizardConfig.steps.decline?.form.inputs.captchaToken
+          this.wizardStore?.wizardConfig.steps.review?.form.inputs.captchaToken
             ?.id || ""
         ] = "";
       }
@@ -331,7 +331,7 @@ export default defineComponent({
           ],
         captchaToken:
           this.wizardStore.wizardData[
-            this.wizardStore?.wizardConfig.steps.decline?.form.inputs
+            this.wizardStore?.wizardConfig.steps.review?.form.inputs
               .captchaToken?.id || ""
           ],
       });
@@ -374,7 +374,7 @@ export default defineComponent({
               ],
             captchaToken:
               this.wizardStore.wizardData[
-                this.wizardStore?.wizardConfig.steps.decline?.form.inputs
+                this.wizardStore?.wizardConfig.steps.review?.form.inputs
                   .captchaToken?.id || ""
               ],
           });
@@ -406,7 +406,7 @@ export default defineComponent({
               ],
             captchaToken:
               this.wizardStore.wizardData[
-                this.wizardStore?.wizardConfig.steps.decline?.form.inputs
+                this.wizardStore?.wizardConfig.steps.review?.form.inputs
                   .captchaToken?.id || ""
               ],
           });
@@ -438,7 +438,7 @@ export default defineComponent({
               ],
             captchaToken:
               this.wizardStore.wizardData[
-                this.wizardStore?.wizardConfig.steps.decline?.form.inputs
+                this.wizardStore?.wizardConfig.steps.review?.form.inputs
                   .captchaToken?.id || ""
               ],
           });
