@@ -77,13 +77,7 @@
     :program-application-id="programApplicationId"
     @next="$emit('next', $event)"
   >
-    <template
-      #application-summary="{
-        programType,
-        institution,
-        programApplicationObject,
-      }"
-    >
+    <template #application-summary="{ programType, institution, deliveryType }">
       <v-row>
         <v-col cols="12" sm="4" xl="3">Provincial Certification Type</v-col>
         <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
@@ -93,7 +87,7 @@
       <v-row class="mt-n3">
         <v-col cols="12" sm="4" xl="3">Delivery method</v-col>
         <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
-          {{ programApplicationObject?.deliveryType }}
+          {{ deliveryType }}
         </v-col>
       </v-row>
       <v-row class="mt-n3">
