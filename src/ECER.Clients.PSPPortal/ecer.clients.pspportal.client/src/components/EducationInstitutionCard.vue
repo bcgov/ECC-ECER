@@ -100,6 +100,11 @@ import { defineComponent, type PropType } from "vue";
 import Card from "@/components/Card.vue";
 import type { Components } from "@/types/openapi";
 import { useRouter } from "vue-router";
+import {
+  formatAddress,
+  formatInstitutionType,
+  formatPrivateAuspiceType,
+} from "@/utils/format";
 
 export default defineComponent({
   name: "EducationInstitutionCard",
@@ -120,62 +125,15 @@ export default defineComponent({
   },
   computed: {
     formattedInstitutionType(): string {
-      if (!this.educationInstitution.institutionType) return "—";
-      const institutionTypeMap: Record<
-        Components.Schemas.PsiInstitutionType,
-        string
-      > = {
-        Public: "Public",
-        Private: "Private",
-        PublicOOP: "Public — OOP",
-        ContinuingEducation: "Continuing Education",
-      };
-      return (
-        institutionTypeMap[this.educationInstitution.institutionType] ||
-        this.educationInstitution.institutionType
-      );
+      return formatInstitutionType(this.educationInstitution.institutionType);
     },
     formattedPrivateAuspiceType(): string {
-      if (!this.educationInstitution.privateAuspiceType) return "—";
-      const privateAuspiceTypeMap: Record<
-        Components.Schemas.PrivateAuspiceType,
-        string
-      > = {
-        Theologicalinstitution: "Theological",
-        FirstNationsmandatedpostsecondaryinstitute:
-          "First Nations mandated post-secondary institute",
-        Other: "Other",
-        Privatetraininginstitution: "Private training institution",
-        Indigenouscontrolledpostsecondaryinstitute:
-          "Indigenous controlled post-secondary institute",
-      };
-      return (
-        privateAuspiceTypeMap[this.educationInstitution.privateAuspiceType] ||
-        this.educationInstitution.privateAuspiceType
+      return formatPrivateAuspiceType(
+        this.educationInstitution.privateAuspiceType,
       );
     },
     formattedAddress(): string {
-      const parts: string[] = [];
-      if (this.educationInstitution.street1)
-        parts.push(this.educationInstitution.street1);
-      if (this.educationInstitution.street2)
-        parts.push(this.educationInstitution.street2);
-      if (this.educationInstitution.street3)
-        parts.push(this.educationInstitution.street3);
-
-      const cityParts: string[] = [];
-      if (this.educationInstitution.city)
-        cityParts.push(this.educationInstitution.city);
-      if (this.educationInstitution.province)
-        cityParts.push(this.educationInstitution.province);
-      if (this.educationInstitution.postalCode)
-        cityParts.push(this.educationInstitution.postalCode);
-
-      if (cityParts.length > 0) {
-        parts.push(cityParts.join(", "));
-      }
-
-      return parts.length > 0 ? parts.join(", ") : "—";
+      return formatAddress(this.educationInstitution);
     },
   },
 });
