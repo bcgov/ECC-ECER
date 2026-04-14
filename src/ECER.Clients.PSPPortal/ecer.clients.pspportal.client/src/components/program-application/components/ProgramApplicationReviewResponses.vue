@@ -146,6 +146,14 @@
               programApplicationType.NewCampusatRecognizedPrivateInstitution
             "
           />
+          <OnlineOrHybridProgramOverview
+            :programApplicationObject="programApplicationObject"
+            :contactPerson="contactPerson"
+            v-if="
+              programApplicationObject?.programApplicationType ===
+              programApplicationType.AddOnlineorHybridDeliveryMethod
+            "
+          />
           <SatelliteProgramOverview
             :programApplicationObject="programApplicationObject"
             :contactPerson="contactPerson"
@@ -266,8 +274,9 @@ import {
 import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
 import Callout from "@/components/common/Callout.vue";
-import PostBasicProgramOverview from "@/components/common/PostBasicProgramOverview.vue";
 import NewCampusProgramOverview from "@/components/common/NewCampusProgramOverview.vue";
+import OnlineOrHybridProgramOverview from "@/components/common/OnlineOrHybridProgramOverview.vue";
+import PostBasicProgramOverview from "@/components/common/PostBasicProgramOverview.vue";
 import SatelliteProgramOverview from "@/components/common/SatelliteProgramOverview.vue";
 import { ProgramApplicationType } from "@/utils/constant";
 
@@ -282,8 +291,9 @@ export default defineComponent({
     PageContainer,
     Loading,
     Callout,
-    PostBasicProgramOverview,
     NewCampusProgramOverview,
+    OnlineOrHybridProgramOverview,
+    PostBasicProgramOverview,
     SatelliteProgramOverview,
   },
   props: {
