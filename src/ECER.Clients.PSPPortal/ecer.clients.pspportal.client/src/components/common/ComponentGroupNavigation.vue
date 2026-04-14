@@ -99,7 +99,7 @@
           >
             <v-list-item-title>
               <v-icon>mdi-table</v-icon>
-              {{ type }}
+              {{ mapProgramType(type) }}
             </v-list-item-title>
           </v-list-item>
         </v-list-item>
@@ -279,6 +279,18 @@ export default defineComponent({
         return mapStatusIcons(data[0].status, false);
       }
       return mapStatusIcons("ToDo", false);
+    },
+    mapProgramType(type: string = ""): string {
+      switch (type) {
+        case "Basic":
+          return "ECE (Basic)";
+        case "ITE":
+          return "Infant & Toddler Education";
+        case "SNE":
+          return "Special Needs Educator";
+        default:
+          return "-";
+      }
     },
   },
 });
