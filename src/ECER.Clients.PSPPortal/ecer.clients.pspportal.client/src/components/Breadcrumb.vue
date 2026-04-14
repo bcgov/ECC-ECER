@@ -215,6 +215,15 @@ export default defineComponent({
               href: "/program-application-info",
             },
           ];
+        } else if (applicationType === "SatelliteProgram") {
+          return [
+            home,
+            {
+              title: "Satellite application",
+              disabled: true,
+              href: "/program-application-info",
+            },
+          ];
         }
       }
       if (routeName === "program-application-begin") {

@@ -63,7 +63,15 @@
         <p>
           Private institutions require an approval from their regulator to offer
           their early childhood education program at a new campus location.
-          Contact the Private Training Institutions Regulatory Unit (PTIRU) at
+          Contact the
+          <a
+            href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
+            class="text-primary text-decoration-underline"
+            target="_blank"
+          >
+            Private Training Institutions Regulatory Unit
+          </a>
+          (PTIRU) at
           <a href="mailto:PTI@gov.bc.ca">PTI@gov.bc.ca</a>
           indicating the requested change.
         </p>
