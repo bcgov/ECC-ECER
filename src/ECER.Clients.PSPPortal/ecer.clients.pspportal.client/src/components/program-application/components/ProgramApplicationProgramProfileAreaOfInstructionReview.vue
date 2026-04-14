@@ -27,7 +27,7 @@
           <div>
             <h2 class="text-wrap">{{ generateTitle(programType) }}</h2>
           </div>
-          <div v-if="editable">
+          <div v-if="isEditableStatus && isNewBasic">
             <v-tooltip location="top">
               <template #activator="{ props }">
                 <v-btn
@@ -113,7 +113,7 @@
       </v-card-text>
     </v-card>
 
-    <v-row v-if="editable" class="d-print-none mt-4">
+    <v-row v-if="isEditableStatus" class="d-print-none mt-4">
       <v-col>
         <v-btn rounded="lg" color="primary" @click="$emit('next', {})">
           Continue
@@ -168,13 +168,25 @@ export default defineComponent({
         this.loadingStore.isLoading("courses_get")
       );
     },
+    isNewBasic(): boolean {
+      return (
+        this.programApplication.programApplicationType ===
+        "NewBasicECEPostBasicProgram"
+      );
+    },
+    isEditableStatus(): boolean {
+      return (
+        this.programApplication.status === "Draft" ||
+        this.programApplication.statusReasonDetail === "RFAIrequested"
+      );
+    },
   },
   data() {
     return {
       isLoading: true,
       programTypes: [] as Components.Schemas.ProgramTypes[],
       allCourses: [] as Components.Schemas.Course[],
-      editable: false,
+      programApplication: {} as Components.Schemas.ProgramApplication,
     };
   },
   async mounted() {
@@ -192,36 +204,34 @@ export default defineComponent({
         console.warn("programApplicationId was not provided");
         return;
       }
-      const programApplication = await getProgramApplicationById(
+      const programApplicationResponse = await getProgramApplicationById(
         this.programApplicationId,
       );
-      if (programApplication.error || programApplication.data == null) {
+      if (
+        programApplicationResponse.error ||
+        programApplicationResponse.data == null
+      ) {
         this.alertStore.setFailureAlert("Failed to load program application");
-        console.error(programApplication.error);
+        console.error(programApplicationResponse.error);
         return;
       }
 
-      this.programTypes = programApplication.data.programTypes || [];
+      this.programTypes = programApplicationResponse.data.programTypes || [];
+      this.programApplication = programApplicationResponse.data;
 
-      const isNewBasic =
-        programApplication.data.programApplicationType ===
-        "NewBasicECEPostBasicProgram";
-      const requestType = isNewBasic ? "ProgramApplication" : "ProgramProfile";
-      const requestId = isNewBasic
+      const requestType = this.isNewBasic
+        ? "ProgramApplication"
+        : "ProgramProfile";
+      const requestId = this.isNewBasic
         ? this.programApplicationId
-        : (programApplication.data.programProfileId ??
+        : (programApplicationResponse.data.programProfileId ??
           this.programApplicationId);
-
-      this.editable =
-        isNewBasic &&
-        (programApplication.data.status === "Draft" ||
-          programApplication.data.statusReasonDetail === "RFAIrequested");
 
       this.allCourses =
         (await getCourses(
           requestId,
           requestType,
-          programApplication.data.programTypes || [],
+          programApplicationResponse.data.programTypes || [],
         )) || [];
     },
     getCourseName(course: CourseAreaDetail): string {
