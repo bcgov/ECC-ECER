@@ -5,6 +5,9 @@ declare global {
       reset(string): void;
     };
   }
+
+  // This ensures globalThis also recognizes the type
+  var turnstile: Window["turnstile"];
 }
 
 interface TurnstileOptions {

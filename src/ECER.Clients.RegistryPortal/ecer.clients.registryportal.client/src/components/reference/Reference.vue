@@ -233,7 +233,7 @@ export default defineComponent({
       if (
         step !== this.userDeclinedStep &&
         step !== this.userReviewStep &&
-        window.turnstile
+        globalThis.turnstile
       ) {
         this.captchaTurnstileStore.resetAllCaptchaTurnstileWidgets();
         this.wizardStore.wizardData[

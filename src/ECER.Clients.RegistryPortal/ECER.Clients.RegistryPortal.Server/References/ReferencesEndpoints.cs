@@ -10,6 +10,8 @@ namespace ECER.Clients.RegistryPortal.Server.References;
 
 public class ReferencesEndpoints : IRegisterEndpoints
 {
+  private const string InvalidCaptchaTokenDetail = "Invalid captcha token";
+
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     endpointRouteBuilder.MapPost("/api/References/Character", async Task<Results<Ok, BadRequest<ProblemDetails>>> (CharacterReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
@@ -23,7 +25,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid captcha token",
+          Detail = InvalidCaptchaTokenDetail,
           Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);
@@ -52,7 +54,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid captcha token",
+          Detail = InvalidCaptchaTokenDetail,
           Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);
@@ -80,7 +82,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid captcha token",
+          Detail = InvalidCaptchaTokenDetail,
           Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);
@@ -103,7 +105,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid captcha token",
+          Detail = InvalidCaptchaTokenDetail,
           Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);

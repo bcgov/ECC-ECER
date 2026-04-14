@@ -35,8 +35,8 @@ export default defineComponent({
     "update:model-value": (_captchaToken: string) => true,
   },
   mounted() {
-    if (window.turnstile) {
-      this.widgetId = window.turnstile.render(`#${this.captchaElementId}`, {
+    if (globalThis.turnstile) {
+      this.widgetId = globalThis.turnstile.render(`#${this.captchaElementId}`, {
         sitekey: this.siteKey,
         theme: "light",
         size: "flexible",
@@ -58,18 +58,21 @@ export default defineComponent({
     useScriptTag(
       "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
       () => {
-        widgetId.value = window.turnstile.render(`#${props.captchaElementId}`, {
-          sitekey: siteKey,
-          theme: "light",
-          size: "flexible",
-          callback: (data: string) => {
-            emit("update:model-value", data);
+        widgetId.value = globalThis.turnstile.render(
+          `#${props.captchaElementId}`,
+          {
+            sitekey: siteKey,
+            theme: "light",
+            size: "flexible",
+            callback: (data: string) => {
+              emit("update:model-value", data);
+            },
+            "expired-callback": () => {
+              emit("update:model-value", "");
+            },
+            "response-field": false,
           },
-          "expired-callback": () => {
-            emit("update:model-value", "");
-          },
-          "response-field": false,
-        });
+        );
         captchaTurnstileStore.addWidgetId(widgetId.value);
       },
       { async: true, defer: true },
@@ -79,7 +82,7 @@ export default defineComponent({
   },
   methods: {
     reset() {
-      window.turnstile.reset(this.widgetId);
+      globalThis.turnstile.reset(this.widgetId);
     },
   },
 });

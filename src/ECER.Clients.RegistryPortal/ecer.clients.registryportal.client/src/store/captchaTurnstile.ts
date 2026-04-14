@@ -18,9 +18,9 @@ export const useCaptchaTurnstileStore = defineStore("captchaTurnstileStore", {
       this.widgetIds.push(widgetId);
     },
     async resetAllCaptchaTurnstileWidgets() {
-      if (window.turnstile) {
+      if (globalThis.turnstile) {
         this.widgetIds.forEach((widgetId) => {
-          window.turnstile.reset(widgetId);
+          globalThis.turnstile.reset(widgetId);
         });
       }
     },
