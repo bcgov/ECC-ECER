@@ -604,6 +604,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_FirstName = "autotest_workref_first",
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
+        ecer_Type = ecer_WorkExperienceTypes._500Hours,
       };
 
       var guid = Guid.NewGuid();
@@ -620,7 +621,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       };
 
       context.AddObject(workexperienceReference);
-      //context.AddLink(workexperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, registrant);
+      context.AddLink(workexperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, registrant);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
