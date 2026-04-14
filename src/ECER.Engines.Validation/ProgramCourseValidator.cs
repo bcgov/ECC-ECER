@@ -60,10 +60,6 @@ internal static class ProgramCourseValidator
       {
         minHourErrors.Add("Minimum hours are required for instruction: " + instruction.Name);
       }
-      else if (instruction.MinimumHours == decimal.Zero && totalHours <= decimal.Zero && instruction.ParentAreaOfInstructionId == null)
-      {
-        minHourErrors.Add("Total hours must be greater than zero: " + instruction.Name);
-      }
     }
     return minHourErrors;
   }
