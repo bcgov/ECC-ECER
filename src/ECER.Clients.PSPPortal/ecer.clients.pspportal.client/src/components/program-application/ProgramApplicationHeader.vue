@@ -9,7 +9,9 @@
             'align-center',
           ]"
         >
-          <h1>Application: {{ programApplicationName }}</h1>
+          <span class="application-heading">
+            Application: {{ programApplicationName }}
+          </span>
           <div :class="[{ ['text-right mb-2']: mobile }]">
             <v-btn id="btnSaveAndExit" variant="outlined" @click="exit">
               Save and exit
@@ -48,3 +50,9 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.application-heading {
+  font-size: 24px;
+  font-weight: 700;
+}
+</style>
