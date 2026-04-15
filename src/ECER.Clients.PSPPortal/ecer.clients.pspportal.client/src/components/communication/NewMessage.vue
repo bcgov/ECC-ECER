@@ -26,6 +26,7 @@
             <v-col cols="6">
               <div>Subject</div>
               <v-text-field
+                ref="subjectField"
                 v-model="subject"
                 class="mt-2"
                 variant="outlined"
@@ -37,10 +38,11 @@
             <v-col cols="6">
               <div>Category</div>
               <v-select
+                ref="categorySelect"
                 v-model="category"
                 class="mt-2"
                 variant="outlined"
-                :items="communicationCategoryOptions"
+                :items="initiableCommunicationCategoryOptions"
                 item-title="label"
                 item-value="value"
                 :rules="[Rules.required('Required')]"
@@ -48,104 +50,7 @@
               ></v-select>
             </v-col>
           </v-row>
-          <template v-if="category === 'ProgramChangeRequest'">
-            <v-row class="mt-5">
-              <v-col cols="12">
-                <p class="mb-3">
-                  Notify the ECE Registry about changes to your program that
-                  affect program requirements or competencies. Include:
-                </p>
-                <br />
-                <ul class="ml-6 mb-3">
-                  <li>A description of the change</li>
-                  <li>Its effective date</li>
-                  <li>
-                    Relevant supporting documentation (for example, course
-                    outlines)
-                  </li>
-                </ul>
-                <br />
-                <p class="mb-3">
-                  The ECE Registry will review your request and follow up with
-                  you for additional information if needed.
-                </p>
-                <br />
-                <v-expansion-panels>
-                  <v-expansion-panel>
-                    <v-expansion-panel-title>
-                      <h3>Learn more about program changes</h3>
-                    </v-expansion-panel-title>
-                    <v-expansion-panel-text>
-                      Program changes are divided into two categories:
-                      <br />
-                      <br />
-                      <ol class="ml-10">
-                        <li>
-                          Changes that do not require ECE Registry approval,
-                          which include: 
-                          <ul style="list-style-type: disc">
-                            <li>
-                              Renaming course codes and course names without
-                              changes to content 
-                            </li>
-                            <li>
-                              Reducing or increasing course hours
-                              while remaining within the minimum hours for each
-                              area of instruction and not altering the already
-                              approved competencies or learning objectives for
-                              each area of instruction  
-                            </li>
-                          </ul>
-                        </li>
-                        <br />
-                        <li>
-                          Changes that require ECE Registry approval,
-                          which include: 
-                          <ul style="list-style-type: disc">
-                            <li>
-                              Any changes that might alter the ECE Registry
-                              approved program coursework that meets
-                              the minimum provincial requirements for
-                              certification 
-                            </li>
-                            <li>
-                              Updating the course description or
-                              learning objectives that might directly impact the
-                              student’s ability to demonstrate any of the
-                              required occupational standards set out in the BC
-                              Child Care Sector Occupational Competencies   
-                            </li>
-                            <li>
-                              Removing a course if the required competencies are
-                              not already covered in that area of instruction in
-                              the approved program profile 
-                            </li>
-                            <li>
-                              Adding a course to the approved program profile
-                            </li>
-                          </ul>
-                        </li>
-                      </ol>
-                    </v-expansion-panel-text>
-                  </v-expansion-panel>
-                </v-expansion-panels>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <Callout class="mt-3" type="warning">
-                  <h3>Need to make a change to a program profile?</h3>
-                  <p>
-                    For updates that do not affect requirements or competencies,
-                    <router-link :to="{ name: 'program-profiles' }">
-                      update your program profile
-                    </router-link>
-                    instead.
-                  </p>
-                </Callout>
-              </v-col>
-            </v-row>
-          </template>
+          <CommunicationCategoryTemplate :category="selectedCategory" />
           <v-row class="mt-5">
             <v-col>
               <div>Message</div>
@@ -205,22 +110,24 @@
 <script lang="ts">
 import type { ComponentPublicInstance, PropType } from "vue";
 import { defineComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import type { VForm } from "vuetify/components";
 import FileUploader from "@/components/common/FileUploader.vue";
 import { sendMessage } from "@/api/message";
+import CommunicationCategoryTemplate from "@/components/communication/CommunicationCategoryTemplate.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
-import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
-import { communicationCategoryOptions } from "@/utils/communicationCategory";
+import {
+  initiableCommunicationCategoryOptions,
+  isInitiableCommunicationCategory,
+  type InitiableCommunicationCategory,
+} from "@/utils/communicationCategory";
 import * as Rules from "@/utils/formRules";
 import * as Functions from "@/utils/functions";
-import ECEHeader from "@/components/ECEHeader.vue";
-import Callout from "@/components/common/Callout.vue";
-import type router from "@/router";
+
 interface NewMessage {
   text: string;
   subject: string;
@@ -236,8 +143,7 @@ interface NewMessage {
 export default defineComponent({
   name: "NewMessage",
   components: {
-    Callout,
-    ECEHeader,
+    CommunicationCategoryTemplate,
     PageContainer,
     ConfirmationDialog,
     FileUploader,
@@ -248,19 +154,16 @@ export default defineComponent({
       default: null,
     },
   },
-  async setup() {
-    const messageStore = useMessageStore();
+  setup() {
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     const router = useRouter();
-    const route = useRoute();
     const maxNumberOfFiles = 5;
 
     return {
-      messageStore,
       loadingStore,
       alertStore,
-      communicationCategoryOptions,
+      initiableCommunicationCategoryOptions,
       maxNumberOfFiles,
       router,
     };
@@ -275,12 +178,20 @@ export default defineComponent({
       formValid: false,
       attachments: [],
       subject: "",
-      category: this
-        .initialCategory as Components.Schemas.CommunicationCategory | null,
+      category: isInitiableCommunicationCategory(this.initialCategory)
+        ? this.initialCategory
+        : null,
     };
   },
+  computed: {
+    selectedCategory(): InitiableCommunicationCategory | null {
+      return isInitiableCommunicationCategory(this.category)
+        ? this.category
+        : null;
+    },
+  },
   methods: {
-    scrollToComponent(component: ComponentPublicInstance) {
+    scrollToComponent(component: ComponentPublicInstance | undefined) {
       if (component?.$el) {
         component.$el.scrollIntoView({ behavior: "smooth" });
       }
@@ -291,12 +202,12 @@ export default defineComponent({
         this.alertStore.setFailureAlert(
           "Uploading files in progress. Please wait until files are uploaded and try again.",
         );
-      } else if (valid) {
+      } else if (valid && this.selectedCategory) {
         const { error } = await sendMessage({
           communication: {
             subject: this.subject,
             text: this.text,
-            category: this.category ?? undefined,
+            category: this.selectedCategory,
             documents: this.attachments,
           },
         });
@@ -309,41 +220,47 @@ export default defineComponent({
           this.router.push("/messages");
         }
       } else {
-        let component;
-        if (!this.text.trim()) {
-          this.alertStore.setFailureAlert(
-            "You must enter all required fields in the valid format to continue.",
-          );
-          component = this.$refs.textarea as ComponentPublicInstance<{
-            $el: HTMLElement;
-          }>;
-        } else {
-          component = this.$refs.FileUploader as ComponentPublicInstance<{
-            $el: HTMLElement;
-          }>;
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format to continue.",
+        );
+
+        let component = this.$refs.subjectField as
+          | ComponentPublicInstance<{ $el: HTMLElement }>
+          | undefined;
+
+        if (this.subject.trim()) {
+          if (!this.selectedCategory) {
+            component = this.$refs.categorySelect as
+              | ComponentPublicInstance<{ $el: HTMLElement }>
+              | undefined;
+          } else if (!this.text.trim()) {
+            component = this.$refs.textarea as
+              | ComponentPublicInstance<{ $el: HTMLElement }>
+              | undefined;
+          } else {
+            component = this.$refs.FileUploader as
+              | ComponentPublicInstance<{ $el: HTMLElement }>
+              | undefined;
+          }
         }
+
         this.scrollToComponent(component);
       }
     },
     handleFileUpdate(filesArray: any[]) {
       this.areAttachedFilesValid = true;
       this.isFileUploadInProgress = false;
-      this.attachments = []; // Reset attachments
+      this.attachments = [];
       if (filesArray && filesArray.length > 0) {
         for (let i = 0; i < filesArray.length; i++) {
           const file = filesArray[i];
 
-          // Check for file errors
           if (file.fileErrors && file.fileErrors.length > 0) {
             this.areAttachedFilesValid = false;
-          }
-
-          // Check if file is still uploading
-          else if (file.progress < 101) {
+          } else if (file.progress < 101) {
             this.isFileUploadInProgress = true;
           }
 
-          // If file is valid and fully uploaded, add to attachments
           if (this.areAttachedFilesValid && !this.isFileUploadInProgress) {
             this.attachments.push({
               id: file.fileId,
