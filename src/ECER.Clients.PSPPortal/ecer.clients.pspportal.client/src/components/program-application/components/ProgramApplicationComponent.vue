@@ -128,16 +128,16 @@ export default defineComponent({
       );
       this.loading = false;
       if (result.error) return;
-      const payload = (result.data ?? []).sort(
-        (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
-      );
+      const payload = result.data;
       this.componentGroup =
         payload !== null && payload !== undefined ? (payload[0] ?? null) : null;
       const list =
         payload !== null && payload !== undefined
           ? (payload[0]?.components ?? [])
           : [];
-      this.components = list;
+      this.components = list.sort(
+        (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+      );
       this.formByComponentId = Object.fromEntries(
         list.map((c) => [
           c.id ?? "",
