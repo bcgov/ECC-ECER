@@ -156,7 +156,7 @@ export default defineComponent({
     },
     campusEndDate(): string | null | undefined {
       if (this.programApplicationObject?.programCampuses) {
-        return this.programApplicationObject?.programCampuses[0]?.startDate;
+        return this.programApplicationObject?.programCampuses[0]?.endDate;
       }
       return "-";
     },
