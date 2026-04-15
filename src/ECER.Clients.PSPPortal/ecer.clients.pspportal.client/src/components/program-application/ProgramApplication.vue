@@ -36,7 +36,7 @@
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
-      <v-col>
+      <v-col style="min-width: 0">
         <router-view
           :application-type="programApplication.programApplicationType"
           @next="handleNext"
