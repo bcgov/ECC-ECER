@@ -76,6 +76,7 @@ import { defineComponent, type PropType } from "vue";
 import Card from "@/components/Card.vue";
 import type { Components } from "@/types/openapi";
 import { useRouter } from "vue-router";
+import { formatAddress } from "@/utils/format";
 
 export default defineComponent({
   name: "CampusInformationCard",
@@ -99,21 +100,7 @@ export default defineComponent({
       return this.campus.keyCampusContactName ?? "—";
     },
     formattedAddress(): string {
-      const parts: string[] = [];
-      if (this.campus.street1) parts.push(this.campus.street1);
-      if (this.campus.street2) parts.push(this.campus.street2);
-      if (this.campus.street3) parts.push(this.campus.street3);
-
-      const cityParts: string[] = [];
-      if (this.campus.city) cityParts.push(this.campus.city);
-      if (this.campus.province) cityParts.push(this.campus.province);
-      if (this.campus.postalCode) cityParts.push(this.campus.postalCode);
-
-      if (cityParts.length > 0) {
-        parts.push(cityParts.join(", "));
-      }
-
-      return parts.length > 0 ? parts.join(", ") : "—";
+      return formatAddress(this.campus);
     },
   },
 });
