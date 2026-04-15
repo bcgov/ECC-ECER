@@ -436,7 +436,9 @@ export default defineComponent({
           } else {
             map.set(groupName, {
               componentGroupId: c.id,
-              components: rfaiComponents,
+              components: rfaiComponents.sort(
+                (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+              ),
             });
           }
         }
@@ -445,7 +447,6 @@ export default defineComponent({
     },
     allResponses() {
       const map = new Map();
-
       this.componentGroup?.forEach((c) => {
         const groupName = c.name;
         if (map.has(groupName)) {
@@ -453,7 +454,9 @@ export default defineComponent({
         } else {
           map.set(groupName, {
             componentGroupId: c.id,
-            components: c.components,
+            components: (c.components ?? []).sort(
+              (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+            ),
           });
         }
       });
