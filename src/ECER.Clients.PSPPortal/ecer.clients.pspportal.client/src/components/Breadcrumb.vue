@@ -184,6 +184,11 @@ export default defineComponent({
           return [
             home,
             {
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
               title: "Basic or post-basic program application",
               disabled: true,
               href: "/program-application-info",
@@ -195,7 +200,12 @@ export default defineComponent({
           return [
             home,
             {
-              title: "New Campus application",
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
+              title: "Application for new campus",
               disabled: true,
               href: "/program-application-info",
             },

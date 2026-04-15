@@ -27,7 +27,7 @@
           the
           
           <a
-            href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+            href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
             class="text-primary text-decoration-underline"
             target="_blank"
           >
@@ -172,7 +172,7 @@
       <ECEHeader title="Related documents" />
       <div class="d-flex flex-column mt-4">
         <a
-          href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+          href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
           target="_blank"
           class="text-primary text-decoration-underline"
         >
