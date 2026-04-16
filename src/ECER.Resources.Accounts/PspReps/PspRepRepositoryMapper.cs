@@ -1,53 +1,88 @@
-using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
 using ECER.Resources.Accounts.PspReps;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Accounts.PSPReps;
 
-internal sealed class PspRepRepositoryMapper : SecureProfile
+internal interface IPspRepRepositoryMapper
 {
-  public PspRepRepositoryMapper()
+  List<PspUser> MapPspUsers(IEnumerable<ecer_ECEProgramRepresentative> source);
+  ecer_ECEProgramRepresentative MapPspUserProfile(PspUserProfile source);
+}
+
+[Mapper]
+internal partial class PspRepRepositoryMapper : IPspRepRepositoryMapper
+{
+  public List<PspUser> MapPspUsers(IEnumerable<ecer_ECEProgramRepresentative> source) => source.Select(MapPspUser).ToList();
+
+  public ecer_ECEProgramRepresentative MapPspUserProfile(PspUserProfile source)
   {
-    CreateMap<ecer_ECEProgramRepresentative, PspUser>()
-      .ForMember(d => d.Profile, opts => opts.MapFrom(s => s))
-      .ForMember(d => d.Identities, opts => opts.MapFrom(s => s.ecer_authentication_eceprogramrepresentative))
-      .ForMember(d => d.AccessToPortal, opts => opts.MapFrom(s => s.ecer_AccessToPortal))
-      .ForMember(
-        d => d.PostSecondaryInstituteId,
-        opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitute != null ? s.ecer_PostSecondaryInstitute.Id.ToString() : null))
-      .ReverseMap()
-      .ForMember(d => d.ecer_AccessToPortal, opts => opts.Ignore())
-      .ForMember(d => d.ecer_PostSecondaryInstitute, opts => opts.Ignore());
+    var representative = new ecer_ECEProgramRepresentative
+    {
+      ecer_FirstName = source.FirstName,
+      ecer_LastName = source.LastName,
+      ecer_PreferredFirstName = source.PreferredName,
+      ecer_PhoneNumber = source.Phone,
+      ecer_PhoneExtension = source.PhoneExtension,
+      ecer_Role = source.JobTitle,
+      ecer_RepresentativeRole = MapPspUserRole(source.Role),
+      ecer_EmailAddress = source.Email,
+      ecer_HasAcceptedTermsofUse = source.HasAcceptedTermsOfUse,
+    };
 
-    CreateMap<PspUserProfile, ecer_ECEProgramRepresentative>(MemberList.Source)
-      .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
-      .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.ecer_PreferredFirstName, opts => opts.MapFrom(s => s.PreferredName))
-      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.Phone))
-      .ForMember(d => d.ecer_PhoneExtension, opts => opts.MapFrom(s => s.PhoneExtension))
-      .ForMember(d => d.ecer_Role, opts => opts.MapFrom(s => s.JobTitle))
-      .ForMember(d => d.ecer_RepresentativeRole, opts => opts.MapFrom(s => s.Role))
-      .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.Email))
-      .ForMember(d => d.ecer_HasAcceptedTermsofUse, opts => opts.MapFrom(s => s.HasAcceptedTermsOfUse));
+    if (Guid.TryParse(source.Id, out var representativeId))
+    {
+      representative.Id = representativeId;
+    }
 
-    
-    CreateMap<ecer_ECEProgramRepresentative, PspUserProfile>(MemberList.Destination)
-      .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.ecer_FirstName))
-      .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
-      .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.ecer_PreferredFirstName))
-      .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
-      .ForMember(d => d.PhoneExtension, opts => opts.MapFrom(s => s.ecer_PhoneExtension))
-      .ForMember(d => d.JobTitle, opts => opts.MapFrom(s => s.ecer_Role))
-      .ForMember(d => d.Role, opts => opts.MapFrom(s => s.ecer_RepresentativeRole))
-      .ForMember(d => d.Email, opts => opts.MapFrom(s => s.ecer_EmailAddress))
-      .ForMember(d => d.HasAcceptedTermsOfUse, opts => opts.MapFrom(s => s.ecer_HasAcceptedTermsofUse))
-      .ValidateMemberList(MemberList.Destination);
-
-    CreateMap<PortalAccessStatus, ecer_AccessToPortal>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
+    return representative;
   }
+
+  private PspUser MapPspUser(ecer_ECEProgramRepresentative source) => new()
+  {
+    Id = source.Id.ToString(),
+    Profile = MapPspUserProfile(source),
+    Identities = MapUserIdentities(source.ecer_authentication_eceprogramrepresentative),
+    AccessToPortal = MapPortalAccessStatus(source.ecer_AccessToPortal),
+    PostSecondaryInstituteId = source.ecer_PostSecondaryInstitute != null ? source.ecer_PostSecondaryInstitute.Id.ToString() : null,
+  };
+
+  private PspUserProfile MapPspUserProfile(ecer_ECEProgramRepresentative source) => new()
+  {
+    Id = source.Id.ToString(),
+    FirstName = source.ecer_FirstName,
+    LastName = source.ecer_LastName,
+    PreferredName = source.ecer_PreferredFirstName,
+    Phone = source.ecer_PhoneNumber,
+    PhoneExtension = source.ecer_PhoneExtension,
+    JobTitle = source.ecer_Role,
+    Role = MapPspUserRole(source.ecer_RepresentativeRole),
+    Email = source.ecer_EmailAddress,
+    HasAcceptedTermsOfUse = source.ecer_HasAcceptedTermsofUse,
+  };
+
+  private List<UserIdentity> MapUserIdentities(IEnumerable<ecer_Authentication>? source) =>
+    source?.Select(MapUserIdentity).ToList() ?? new List<UserIdentity>();
+
+  private UserIdentity MapUserIdentity(ecer_Authentication source) =>
+    new(source.ecer_ExternalID ?? string.Empty, source.ecer_IdentityProvider ?? string.Empty);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_AccessToPortal MapPortalAccessStatus(PortalAccessStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PortalAccessStatus MapPortalAccessStatus(ecer_AccessToPortal source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_RepresentativeRole MapPspUserRole(PspUserRole source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PspUserRole MapPspUserRole(ecer_RepresentativeRole source);
+
+  private ecer_RepresentativeRole? MapPspUserRole(PspUserRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
+
+  private PspUserRole? MapPspUserRole(ecer_RepresentativeRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
+
+  private PortalAccessStatus? MapPortalAccessStatus(ecer_AccessToPortal? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
 }

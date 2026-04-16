@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Resources.Accounts.PspReps;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
@@ -7,7 +6,7 @@ using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.PSPReps;
 
-internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IPspRepRepository
+internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMapper mapper) : IPspRepRepository
 {
   public async Task<string> AttachIdentity(PspUser user, CancellationToken ct)
   {
@@ -68,7 +67,7 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
 
     var results = context.From(pspUsers).Execute();
 
-    return mapper.Map<IEnumerable<PspUser>>(results).ToList();
+    return mapper.MapPspUsers(results);
   }
 
   public async Task Save(PspUser user, CancellationToken ct)
@@ -86,7 +85,7 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
 
     context.Detach(pspUser);
 
-    pspUser = mapper.Map<ecer_ECEProgramRepresentative>(user.Profile);
+    pspUser = mapper.MapPspUserProfile(user.Profile);
     pspUser.Id = userId;
     pspUser.ecer_FirstName = firstName;
     pspUser.ecer_LastName = lastName;
@@ -202,7 +201,7 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     var institution = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.Id == institutionId);
     if (institution == null) throw new InvalidOperationException($"Post Secondary Institution with ID {postSecondaryInstitutionId} not found");
 
-    var pspUser = mapper.Map<ecer_ECEProgramRepresentative>(profile);
+    var pspUser = mapper.MapPspUserProfile(profile);
     pspUser.ecer_InvitetoPortal = true;
     pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Invited;
     pspUser.ecer_RepresentativeRole = ecer_RepresentativeRole.Secondary;
