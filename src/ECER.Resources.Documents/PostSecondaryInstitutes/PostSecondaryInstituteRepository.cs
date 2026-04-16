@@ -1,12 +1,10 @@
-using Amazon.Runtime.Internal;
-using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.PostSecondaryInstitutes;
 
-public class PostSecondaryInstituteRepository(EcerContext context, IMapper mapper) : IPostSecondaryInstituteRepository
+internal sealed class PostSecondaryInstituteRepository(EcerContext context, IPostSecondaryInstituteRepositoryMapper mapper) : IPostSecondaryInstituteRepository
 {
   public async Task<IEnumerable<PostSecondaryInstitute>> Query(PostSecondaryInstituteQuery query, CancellationToken ct)
   {
@@ -14,7 +12,7 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
     var institutes = context.ecer_PostSecondaryInstituteSet;
 
     if (query == null) return Array.Empty<PostSecondaryInstitute>();
-    
+
     if (query.ById != null)
     {
       institutes = institutes.Where(r => r.Id.Equals(Guid.Parse(query.ById)));
@@ -25,21 +23,17 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
       institutes = institutes.Where(r => r.ecer_BusinessBCeID == query.ByBceidBusinessId);
     }
 
-    if (query.ByProgramRepresentativeId != null)
+    if (query.ByProgramRepresentativeId != null && Guid.TryParse(query.ByProgramRepresentativeId, out var repId))
     {
-      if (Guid.TryParse(query.ByProgramRepresentativeId, out var repId))
+      var programReps = context.ecer_ECEProgramRepresentativeSet.Where(r => r.ecer_ECEProgramRepresentativeId == repId);
+      var rep = programReps.SingleOrDefault();
+      if (rep != null)
       {
-        var programReps = context.ecer_ECEProgramRepresentativeSet;
-        programReps = programReps.Where(r => r.ecer_ECEProgramRepresentativeId == repId);
-        var rep = programReps.SingleOrDefault();
-        if (rep != null)
-        {
-          institutes = institutes.Where(r => r.ecer_PostSecondaryInstituteId == rep.ecer_PostSecondaryInstitute.Id);
-        }
-        else
-        {
-          return Array.Empty<PostSecondaryInstitute>();
-        }
+        institutes = institutes.Where(r => r.ecer_PostSecondaryInstituteId == rep.ecer_PostSecondaryInstitute.Id);
+      }
+      else
+      {
+        return Array.Empty<PostSecondaryInstitute>();
       }
     }
 
@@ -47,31 +41,31 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
       .Join()
       .Include(c => c.ecer_postsecondaryinstitutecampus_postsecondaryinstitute_ecer_postsecondaryinstitute)
       .Execute();
-    
-    return mapper.Map<IEnumerable<PostSecondaryInstitute>>(results)!.ToList();
+
+    return mapper.MapPostSecondaryInstitutes(results);
   }
 
   public async Task Save(PostSecondaryInstitute institute, CancellationToken ct)
   {
     ArgumentNullException.ThrowIfNull(institute);
-    if(!Guid.TryParse(institute.Id, out var instituteId)) throw new InvalidOperationException($"Post Secondary Institute id {institute.Id} is not a valid GUID");
+    if (!Guid.TryParse(institute.Id, out var instituteId)) throw new InvalidOperationException($"Post Secondary Institute id {institute.Id} is not a valid GUID");
 
     var existingInstitute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(r => r.Id == instituteId);
-    
+
     if (existingInstitute == null) throw new InvalidOperationException($"Post Secondary Institute with id {institute.Id} not found");
 
     var bceidBusinessId = existingInstitute.ecer_BusinessBCeID;
-    
+
     context.Detach(existingInstitute);
 
-    var updatedInstitute = mapper.Map<ecer_PostSecondaryInstitute>(institute);
+    var updatedInstitute = mapper.MapPostSecondaryInstitute(institute);
     updatedInstitute.Id = instituteId;
 
-    if (!String.IsNullOrEmpty(bceidBusinessId))
+    if (!string.IsNullOrEmpty(bceidBusinessId))
     {
       updatedInstitute.ecer_BusinessBCeID = bceidBusinessId;
     }
-    
+
     context.Attach(updatedInstitute);
 
     if (!string.IsNullOrWhiteSpace(institute.Province))
@@ -97,7 +91,7 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
     var institution = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(r => r.Id == institutionGuid);
     if (institution == null) throw new InvalidOperationException($"Institution with id {institutionId} not found");
 
-    var newCampus = mapper.Map<ecer_PostSecondaryInstituteCampus>(campus);
+    var newCampus = mapper.MapCampus(campus);
     newCampus.ecer_PostSecondaryInstituteCampusId = Guid.NewGuid();
     newCampus.StatusCode = ecer_PostSecondaryInstituteCampus_StatusCode.Active;
     newCampus.StateCode = ecer_postsecondaryinstitutecampus_statecode.Active;
@@ -145,7 +139,7 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
 
     context.Detach(existingCampus);
 
-    var updatedCampus = mapper.Map<ecer_PostSecondaryInstituteCampus>(campus);
+    var updatedCampus = mapper.MapCampus(campus);
     updatedCampus.ecer_PostSecondaryInstituteCampusId = campusGuid;
 
     context.Attach(updatedCampus);

@@ -1,4 +1,4 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -17,6 +17,7 @@ internal sealed partial class ApplicationRepository
         context.DeleteObject(reference);
       }
     }
+
     // Update Existing WorkExperienceReferences
     foreach (var reference in updatedEntities.Where(d => d.ecer_WorkExperienceRefId != null))
     {
@@ -30,6 +31,7 @@ internal sealed partial class ApplicationRepository
       context.Attach(reference);
       context.UpdateObject(reference);
     }
+
     // Add New WorkExperienceReferences that they exist in the application but not in the dataverse
     foreach (var reference in updatedEntities.Where(d => d.ecer_WorkExperienceRefId == null))
     {
@@ -46,7 +48,7 @@ internal sealed partial class ApplicationRepository
     await Task.CompletedTask;
     var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(referenceId));
 
-    mapper.Map(request, workExperienceReference);
+    mapper.ApplyWorkExperienceReferenceSubmission(request, workExperienceReference);
     bool certificateProvinceIdIsGuid = Guid.TryParse(request.ReferenceContactInformation.CertificateProvinceId, out Guid certificateProvinceId);
     if (certificateProvinceIdIsGuid)
     {
@@ -67,7 +69,7 @@ internal sealed partial class ApplicationRepository
     await Task.CompletedTask;
     var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(referenceId));
 
-    mapper.Map(request, workExperienceReference);
+    mapper.ApplyIcraWorkExperienceReferenceSubmission(request, workExperienceReference);
 
     workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Submitted;
     context.UpdateObject(workExperienceReference);
@@ -80,7 +82,7 @@ internal sealed partial class ApplicationRepository
     await Task.CompletedTask;
     var workexperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.PortalInvitation!.WorkexperienceReferenceId!));
 
-    mapper.Map(request, workexperienceReference);
+    mapper.ApplyOptOutReference(request, workexperienceReference);
     workexperienceReference.ecer_WillProvideReference = ecer_YesNoNull.No;
     workexperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Rejected;
     workexperienceReference.StateCode = ecer_workexperienceref_statecode.Inactive;
@@ -121,7 +123,7 @@ internal sealed partial class ApplicationRepository
       throw new InvalidOperationException($"Application '{applicationId}' not found");
     }
 
-    var ecerWorkExperienceReference = mapper.Map<ecer_WorkExperienceRef>(updatedReference);
+    var ecerWorkExperienceReference = mapper.MapWorkExperienceReference(updatedReference);
 
     var existingWorkExperiences = context.ecer_WorkExperienceRefSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId)).ToList();
 
@@ -129,8 +131,8 @@ internal sealed partial class ApplicationRepository
     if (RefIdIsGuid)
     {
       var oldReference = existingWorkExperiences.SingleOrDefault(t => t.Id == referenceIdGuid);
-      // 1. Remove existing WorkExperienceReference
 
+      // 1. Remove existing WorkExperienceReference
       if (oldReference != null)
       {
         context.DeleteObject(oldReference);
@@ -142,7 +144,6 @@ internal sealed partial class ApplicationRepository
     }
 
     // 2. Add New WorkExperienceReferences
-
     ecerWorkExperienceReference.ecer_WorkExperienceRefId = Guid.NewGuid();
     ecerWorkExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.ApplicationSubmitted;
     ecerWorkExperienceReference.ecer_IsAdditional = true;
@@ -171,6 +172,6 @@ internal sealed partial class ApplicationRepository
       t.ecer_WorkExperienceRefId == Guid.Parse(referenceId))
     .FirstOrDefault();
 
-    return mapper.Map<WorkExperienceReference>(reference);
+    return mapper.MapWorkExperienceReference(reference)!;
   }
 }

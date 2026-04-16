@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 
@@ -7,9 +6,9 @@ namespace ECER.Resources.Documents.Certifications;
 internal class CertificationRepository : ICertificationRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly ICertificationRepositoryMapper mapper;
 
-  public CertificationRepository(EcerContext context, IMapper mapper)
+  public CertificationRepository(EcerContext context, ICertificationRepositoryMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
@@ -46,13 +45,15 @@ internal class CertificationRepository : ICertificationRepository
 
     // Filtering by certificate number
     if (!string.IsNullOrEmpty(query.ByCertificateNumber))
+    {
       queryWithJoin = queryWithJoin.Where(r => r.cert.ecer_CertificateNumber.Equals(query.ByCertificateNumber));
+    }
 
     //Order by latest first (based on expiry date),
     queryWithJoin = queryWithJoin
-        .OrderBy(r => r.cert.StatusCode)
-        .ThenByDescending(r => r.cert.ecer_ExpiryDate)
-        .ThenBy(r => r.cert.ecer_BaseCertificateTypeID);
+      .OrderBy(r => r.cert.StatusCode)
+      .ThenByDescending(r => r.cert.ecer_ExpiryDate)
+      .ThenBy(r => r.cert.ecer_BaseCertificateTypeID);
 
     //Apply Pagination
     if (query.PageSize > 0)
@@ -68,18 +69,16 @@ internal class CertificationRepository : ICertificationRepository
       .IncludeNested(a => a.ecer_certificateconditions_Registrantid)
       .Execute();
 
-    var mappedCerts =  mapper.Map<IEnumerable<Certification>>(results)!.ToList();
+    var mappedCerts = mapper.MapCertifications(results);
 
-    // Assumes CertificateConditions are already filtered to Active in AutoMapper
+    // Assumes CertificateConditions are already filtered to Active before this point.
     foreach (var cert in mappedCerts)
     {
-      if (cert.CertificateConditions != null)
-      {
-        cert.CertificateConditions = cert.CertificateConditions
-          .Where(c => c.CertificateId == null || c.CertificateId == cert.Id)
-          .ToList();
-      }
+      cert.CertificateConditions = cert.CertificateConditions
+        .Where(c => c.CertificateId == null || c.CertificateId == cert.Id)
+        .ToList();
     }
+
     return mappedCerts;
   }
 
@@ -104,10 +103,10 @@ internal class CertificationRepository : ICertificationRepository
     if (query.ById != null) certificationSummaries = certificationSummaries.Where(r => r.ecer_CertificateSummaryId == Guid.Parse(query.ById));
 
     var results = context.From(certificationSummaries)
-    .Join()
-    .Include(a => a.ecer_bcgov_documenturl_CertificateSummaryId)
-    .Execute();
+      .Join()
+      .Include(a => a.ecer_bcgov_documenturl_CertificateSummaryId)
+      .Execute();
 
-    return mapper.Map<IEnumerable<CertificationSummary>>(results)!.ToList();
+    return mapper.MapCertificationSummaries(results);
   }
 }

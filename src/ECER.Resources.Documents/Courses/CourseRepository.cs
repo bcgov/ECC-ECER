@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Resources.Documents.Shared;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
@@ -10,9 +9,9 @@ namespace ECER.Resources.Documents.Courses;
 internal sealed class CourseRepository : ICourseRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly ICourseRepositoryMapper mapper;
 
-  public CourseRepository(EcerContext context, IMapper mapper)
+  public CourseRepository(EcerContext context, ICourseRepositoryMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
@@ -46,7 +45,7 @@ internal sealed class CourseRepository : ICourseRepository
 
     if (getCoursesRequest.ProgramTypes != null && getCoursesRequest.ProgramTypes.Any())
     {
-      var mappedProgramTypes = mapper.Map<IEnumerable<ecer_PSIProgramType>>(getCoursesRequest.ProgramTypes);
+      var mappedProgramTypes = mapper.MapProgramTypes(getCoursesRequest.ProgramTypes);
       courses = courses.WhereIn(p => p.ecer_ProgramType!.Value, mappedProgramTypes);
     }
 
@@ -56,7 +55,7 @@ internal sealed class CourseRepository : ICourseRepository
       .Execute()
       .ToList();
 
-    return mapper.Map<IEnumerable<Course>>(results);
+    return mapper.MapCourses(results);
   }
 
   public async Task<string> DeleteCourse(string courseId, string postSecondaryInstituteId, CancellationToken cancellationToken)
@@ -82,6 +81,7 @@ internal sealed class CourseRepository : ICourseRepository
     {
       context.Attach(courseExists);
     }
+
     context.DeleteObject(courseExists);
     context.SaveChanges();
     return courseId;
@@ -110,8 +110,7 @@ internal sealed class CourseRepository : ICourseRepository
         context.ecer_CourseSet.AsQueryable().Where(p =>
             p.ecer_Code == incomingCourse.CourseNumber
             && p.ecer_ProgramApplication.Id == applicationId
-            && p.ecer_programtypeName == incomingCourse.ProgramType
-            )
+            && p.ecer_programtypeName == incomingCourse.ProgramType)
           .Take(1)
           .ToList();
 
@@ -122,7 +121,7 @@ internal sealed class CourseRepository : ICourseRepository
     }
 
     incomingCourse.CourseId = Guid.NewGuid().ToString();
-    var ecerCourse = mapper.Map<ecer_Course>(incomingCourse)!;
+    var ecerCourse = mapper.MapCourse(incomingCourse);
 
     context.AddObject(ecerCourse);
     context.AddLink(ecerCourse, new Relationship(ecer_Course.Fields.ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution), institute);
@@ -169,8 +168,9 @@ internal sealed class CourseRepository : ICourseRepository
     }
     else
     {
-      throw new InvalidOperationException($"Course not found");
+      throw new InvalidOperationException("Course not found");
     }
+
     context.SaveChanges();
     return id;
   }
@@ -216,8 +216,7 @@ internal sealed class CourseRepository : ICourseRepository
               p.ecer_Code == course.NewCourseNumber
               && p.ecer_CourseId != Guid.Parse(course.CourseId)
               && p.ecer_ProgramApplication.Id == Guid.Parse(id)
-              && p.ecer_programtypeName == course.ProgramType
-            )
+              && p.ecer_programtypeName == course.ProgramType)
             .Take(1)
             .ToList()
       :
@@ -225,8 +224,7 @@ internal sealed class CourseRepository : ICourseRepository
             p.ecer_Code == course.NewCourseNumber
             && p.ecer_CourseId != Guid.Parse(course.CourseId)
             && p.ecer_course_Programid.Id == Guid.Parse(id)
-            && p.ecer_programtypeName == course.ProgramType
-            )
+            && p.ecer_programtypeName == course.ProgramType)
           .Take(1)
           .ToList();
 
@@ -259,7 +257,7 @@ internal sealed class CourseRepository : ICourseRepository
         ecer_Hours = 0,
         ecer_NewHours = Convert.ToDecimal(areaOfInstruction.NewHours),
         ecer_CourseId = new EntityReference(ecer_Course.EntityLogicalName, courseExists.Id),
-        ecer_ProgramAreaId = new EntityReference(ecer_ProvincialRequirement.EntityLogicalName, instructionArea.Id)
+        ecer_ProgramAreaId = new EntityReference(ecer_ProvincialRequirement.EntityLogicalName, instructionArea.Id),
       };
       context.AddObject(newAreaOfInstruction);
     }

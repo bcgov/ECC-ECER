@@ -1,93 +1,127 @@
-using AutoMapper;
-using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.Shared;
 using ECER.Utilities.DataverseSdk.Model;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Documents.Programs;
 
-internal class ProgramRepositoryMapper : SecureProfile
+internal interface IProgramRepositoryMapper
 {
-  public ProgramRepositoryMapper()
+  List<Program> MapPrograms(IEnumerable<ecer_Program> source);
+  List<ecer_Program_StatusCode> MapProgramStatuses(IEnumerable<ProgramStatus> source);
+  ecer_Program MapProgram(Program source);
+}
+
+[Mapper]
+internal partial class ProgramRepositoryMapper : IProgramRepositoryMapper
+{
+  public List<Program> MapPrograms(IEnumerable<ecer_Program> source) => source.Select(MapProgram).ToList();
+
+  public List<ecer_Program_StatusCode> MapProgramStatuses(IEnumerable<ProgramStatus> source) => source.Select(MapProgramStatus).ToList();
+
+  public ecer_Program MapProgram(Program source) => new()
   {
-    CreateMap<Program, ecer_Program>(MemberList.Source)
-      .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.PostSecondaryInstituteId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.PostSecondaryInstituteName, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Courses, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.NewBasicTotalHours, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.NewSneTotalHours, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.NewIteTotalHours, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramProfileType, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeclarationUserName, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.OfferedProgramTypes, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ChangesMade, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.FromProgramProfileId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ReadyForReview, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
-      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-      .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
-      .ForMember(d => d.ecer_NewDescriptiveProgramName, opts => opts.MapFrom(s => s.ProgramName))
-      .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.PortalStage))
-      .ForMember(d => d.ecer_PostSecondaryInstitution, opts => opts.Ignore())
-      .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
-      .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
-      .ForMember(d => d.ecer_NewOfferingType, opts => opts.MapFrom(s => s.OfferedProgramTypes != null ? s.OfferedProgramTypes.Select(t => Enum.Parse<ecer_PSIProgramType>(t)) : null))
-      .ReverseMap()
-      .ValidateMemberList(MemberList.Destination)
-      .ForCtorParam(nameof(Program.Id), opts => opts.MapFrom(s => s.ecer_ProgramId.HasValue ? s.ecer_ProgramId.Value.ToString() : null))
-      .ForCtorParam(nameof(Program.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitution == null ? string.Empty : s.ecer_PostSecondaryInstitution.Id.ToString()))
-      .ForMember(d => d.PortalStage, opts => opts.MapFrom(s => s.ecer_PortalStage))
-      .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn))
-      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
-      .ForMember(d => d.ProgramName, opts => opts.MapFrom(s => s.ecer_NewDescriptiveProgramName == null ? s.ecer_DescriptiveProgramName : s.ecer_NewDescriptiveProgramName))
-      .ForMember(d => d.PostSecondaryInstituteName, opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitutionName))
-      .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_StartDate))
-      .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
-      .ForMember(d => d.Courses, opts => opts.MapFrom(s => s.ecer_course_Programid))
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null))
-      .ForMember(d => d.OfferedProgramTypes, opts => opts.MapFrom(s => GetOfferedProgramTypes(s)))
-      .ForMember(d => d.NewBasicTotalHours, opts => opts.MapFrom(s => s.ecer_NewBasicTotalHours))
-      .ForMember(d => d.NewSneTotalHours, opts => opts.MapFrom(s => s.ecer_NewSNETotalHours))
-      .ForMember(d => d.NewIteTotalHours, opts => opts.MapFrom(s => s.ecer_NewITETotalHours))
-      .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ecer_Type))
-      .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DeclarationDate))
-      .ForMember(d => d.DeclarationUserName, opts => opts.MapFrom(s => s.ecer_UserName))
-      .ForMember(d => d.ChangesMade, opts => opts.MapFrom(s => s.ecer_ChangesMade == ecer_YesNoNull.Yes))
-      .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId != null ? s.ecer_FromProgramProfileId.Id.ToString() : null))
-      .ForMember(d => d.ReadyForReview, opts => opts.MapFrom(s => s.ecer_ReadyforReview.HasValue ? s.ecer_ReadyforReview.Equals(ecer_YesNoNull.Yes) : default(bool?)))
-      ;
+    ecer_ProgramId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    StatusCode = MapProgramStatus(source.Status),
+    ecer_Name = source.Name,
+    ecer_NewDescriptiveProgramName = source.ProgramName,
+    ecer_PortalStage = source.PortalStage,
+    ecer_StartDate = source.StartDate,
+    ecer_EndDate = source.EndDate,
+    ecer_NewOfferingType = source.OfferedProgramTypes?.Select(MapOfferedProgramType).ToList(),
+  };
 
-    CreateMap<ProgramStatus, ecer_Program_StatusCode>()
-      .ConvertUsing(status =>
-          status == ProgramStatus.Draft ? ecer_Program_StatusCode.RequiresReview :
-          status == ProgramStatus.UnderReview ? ecer_Program_StatusCode.UnderRegistryReview :
-          status == ProgramStatus.Approved ? ecer_Program_StatusCode.RegistryReviewComplete :
-          status == ProgramStatus.Denied ? ecer_Program_StatusCode.Denied :
-          status == ProgramStatus.Inactive ? ecer_Program_StatusCode.Archived :
-          status == ProgramStatus.Withdrawn ? ecer_Program_StatusCode.Withdrawn :
-          status == ProgramStatus.ChangeRequestInProgress ? ecer_Program_StatusCode.ChangeRequestInProgress :
-                                                ecer_Program_StatusCode.RequiresReview);
+  private Program MapProgram(ecer_Program source) => new(
+    source.ecer_ProgramId?.ToString(),
+    source.ecer_PostSecondaryInstitution?.Id.ToString() ?? string.Empty)
+  {
+    Status = MapProgramStatus(source.StatusCode),
+    PortalStage = source.ecer_PortalStage,
+    CreatedOn = source.CreatedOn,
+    Name = source.ecer_Name,
+    ProgramName = source.ecer_NewDescriptiveProgramName ?? source.ecer_DescriptiveProgramName,
+    PostSecondaryInstituteName = source.ecer_PostSecondaryInstitutionName,
+    StartDate = source.ecer_StartDate,
+    EndDate = source.ecer_EndDate,
+    Courses = (source.ecer_course_Programid ?? Array.Empty<ecer_Course>()).Select(MapCourse).ToList(),
+    ProgramTypes = source.ecer_ProgramTypes?.Select(static type => type.ToString()).ToList(),
+    OfferedProgramTypes = GetOfferedProgramTypes(source)?.ToList(),
+    NewBasicTotalHours = MapHours(source.ecer_NewBasicTotalHours),
+    NewSneTotalHours = MapHours(source.ecer_NewSNETotalHours),
+    NewIteTotalHours = MapHours(source.ecer_NewITETotalHours),
+    ProgramProfileType = MapProgramProfileType(source.ecer_Type),
+    DeclarationDate = source.ecer_DeclarationDate?.ToString(),
+    DeclarationUserName = source.ecer_UserName,
+    ChangesMade = source.ecer_ChangesMade == ecer_YesNoNull.Yes,
+    FromProgramProfileId = source.ecer_FromProgramProfileId?.Id.ToString(),
+    ReadyForReview = source.ecer_ReadyforReview.HasValue ? source.ecer_ReadyforReview == ecer_YesNoNull.Yes : null,
+  };
 
-    CreateMap<ecer_Program_StatusCode, ProgramStatus>()
-      .ConvertUsing(status =>
-          status == ecer_Program_StatusCode.RequiresReview ? ProgramStatus.Draft :
-          status == ecer_Program_StatusCode.UnderRegistryReview ? ProgramStatus.UnderReview :
-          status == ecer_Program_StatusCode.RegistryReviewComplete ? ProgramStatus.Approved :
-          status == ecer_Program_StatusCode.Denied ? ProgramStatus.Denied :
-          status == ecer_Program_StatusCode.Archived ? ProgramStatus.Inactive :
-          status == ecer_Program_StatusCode.Withdrawn ? ProgramStatus.Withdrawn :
-          status == ecer_Program_StatusCode.ChangeRequestInProgress ? ProgramStatus.ChangeRequestInProgress :
-                                                                     ProgramStatus.Draft);
+  private static IEnumerable<string>? GetOfferedProgramTypes(ecer_Program source)
+  {
+    if (source.ecer_NewOfferingType != null && source.ecer_NewOfferingType.Any())
+    {
+      return source.ecer_NewOfferingType.Select(static type => type.ToString());
+    }
+
+    if (source.ecer_OfferingType != null && source.ecer_OfferingType.Any())
+    {
+      return source.ecer_OfferingType.Select(static type => type.ToString());
+    }
+
+    return source.ecer_ProgramTypes?.Select(static type => type.ToString());
   }
 
-  private static IEnumerable<string>? GetOfferedProgramTypes(ecer_Program s)
+  private static float? MapHours(decimal? source) => source.HasValue ? Convert.ToSingle(source.Value) : null;
+
+  private static Course MapCourse(ecer_Course source) => new()
   {
-    if (s.ecer_NewOfferingType != null && s.ecer_NewOfferingType.Any())
-      return s.ecer_NewOfferingType.Select(t => t.ToString());
-    if (s.ecer_OfferingType != null && s.ecer_OfferingType.Any())
-      return s.ecer_OfferingType.Select(t => t.ToString());
-    return s.ecer_ProgramTypes != null ? s.ecer_ProgramTypes.Select(t => t.ToString()) : null;
-  }
+    CourseId = source.ecer_CourseId?.ToString() ?? string.Empty,
+    CourseNumber = source.ecer_Code ?? string.Empty,
+    CourseTitle = source.ecer_CourseName ?? string.Empty,
+    NewCourseNumber = source.ecer_NewCode,
+    NewCourseTitle = source.ecer_NewCourseName,
+    CourseAreaOfInstruction = (source.ecer_courseprovincialrequirement_CourseId ?? Array.Empty<ecer_CourseProvincialRequirement>())
+      .Select(MapCourseAreaOfInstruction)
+      .ToList(),
+    ProgramType = source.ecer_ProgramType?.ToString() ?? string.Empty,
+  };
+
+  private static CourseAreaOfInstruction MapCourseAreaOfInstruction(ecer_CourseProvincialRequirement source) => new()
+  {
+    NewHours = source.ecer_NewHours.HasValue ? Convert.ToSingle(source.ecer_NewHours.Value) : 0,
+    CourseAreaOfInstructionId = source.Id.ToString(),
+    AreaOfInstructionId = source.ecer_ProgramAreaId?.Id.ToString() ?? string.Empty,
+  };
+
+  [MapEnumValue(ProgramStatus.Draft, ecer_Program_StatusCode.RequiresReview)]
+  [MapEnumValue(ProgramStatus.UnderReview, ecer_Program_StatusCode.UnderRegistryReview)]
+  [MapEnumValue(ProgramStatus.Approved, ecer_Program_StatusCode.RegistryReviewComplete)]
+  [MapEnumValue(ProgramStatus.Denied, ecer_Program_StatusCode.Denied)]
+  [MapEnumValue(ProgramStatus.Inactive, ecer_Program_StatusCode.Archived)]
+  [MapEnumValue(ProgramStatus.ChangeRequestInProgress, ecer_Program_StatusCode.ChangeRequestInProgress)]
+  [MapEnumValue(ProgramStatus.Withdrawn, ecer_Program_StatusCode.Withdrawn)]
+  private partial ecer_Program_StatusCode MapProgramStatus(ProgramStatus source);
+
+  private ProgramStatus MapProgramStatus(ecer_Program_StatusCode? source) => source switch
+  {
+    ecer_Program_StatusCode.RequiresReview => ProgramStatus.Draft,
+    ecer_Program_StatusCode.UnderRegistryReview => ProgramStatus.UnderReview,
+    ecer_Program_StatusCode.RegistryReviewComplete => ProgramStatus.Approved,
+    ecer_Program_StatusCode.Denied => ProgramStatus.Denied,
+    ecer_Program_StatusCode.Archived => ProgramStatus.Inactive,
+    ecer_Program_StatusCode.ChangeRequestInProgress => ProgramStatus.ChangeRequestInProgress,
+    ecer_Program_StatusCode.Withdrawn => ProgramStatus.Withdrawn,
+    _ => ProgramStatus.Draft,
+  };
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ProgramProfileType MapProgramProfileType(ProgramProfileType source);
+
+  private ProgramProfileType MapProgramProfileType(ecer_ProgramProfileType? source) => source switch
+  {
+    ecer_ProgramProfileType.ChangeRequest => ProgramProfileType.ChangeRequest,
+    _ => ProgramProfileType.AnnualReview,
+  };
+
+  private static ecer_PSIProgramType MapOfferedProgramType(string source) => Enum.Parse<ecer_PSIProgramType>(source);
 }

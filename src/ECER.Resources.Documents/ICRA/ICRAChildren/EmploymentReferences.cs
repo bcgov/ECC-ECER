@@ -82,7 +82,7 @@ internal sealed partial class ICRARepository
       throw new InvalidOperationException($"Icra eligibility application '{request.icraEligibilityId}' not found");
     }
 
-    var ecerIcraWorkExperienceReference = mapper.Map<ecer_WorkExperienceRef>(request.employmentReference);
+    var ecerIcraWorkExperienceReference = mapper.MapEmploymentReference(request.employmentReference);
     ecerIcraWorkExperienceReference.ecer_WorkExperienceRefId = Guid.NewGuid();
     ecerIcraWorkExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.ICRAEligibilitySubmitted;
     ecerIcraWorkExperienceReference.ecer_IsAdditional = true;
@@ -93,7 +93,7 @@ internal sealed partial class ICRARepository
     context.AddLink(icraEligibilityApplication, ecer_ICRAEligibilityAssessment.Fields.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment, ecerIcraWorkExperienceReference);
     context.AddLink(applicant, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, ecerIcraWorkExperienceReference);
 
-    return mapper.Map<EmploymentReference>(ecerIcraWorkExperienceReference);
+    return mapper.MapEmploymentReference(ecerIcraWorkExperienceReference);
   }
 
   private async Task DeleteIcraWorkExperienceReferenceWithoutSave(DeleteIcraWorkExperienceReferenceRequest request)
@@ -152,6 +152,11 @@ internal sealed partial class ICRARepository
       t.ecer_WorkExperienceRefId == Guid.Parse(referenceId))
     .FirstOrDefault();
 
-    return mapper.Map<EmploymentReference>(reference);
+    if (reference == null)
+    {
+      throw new InvalidOperationException($"Reference '{referenceId}' not found for applicant '{applicantId}'");
+    }
+
+    return mapper.MapEmploymentReference(reference);
   }
 }

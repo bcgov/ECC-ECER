@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 
@@ -7,9 +6,9 @@ namespace ECER.Resources.Documents.MetadataResources;
 internal sealed class MetadataResourceRepository : IMetadataResourceRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly IMetadataResourceRepositoryMapper mapper;
 
-  public MetadataResourceRepository(EcerContext context, IMapper mapper)
+  public MetadataResourceRepository(EcerContext context, IMetadataResourceRepositoryMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
@@ -24,7 +23,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     if (query.ByName != null) countries = countries.Where(r => r.ecer_Name == query.ByName);
     if (query.ByICRA != null) countries = countries.Where(r => r.ecer_EligibleforICRA == query.ByICRA);
 
-    return mapper.Map<IEnumerable<Country>>(countries)!.ToList();
+    return mapper.MapCountries(countries);
   }
 
   public async Task<IEnumerable<AreaOfInstruction>> QueryAreaOfInstructions(AreaOfInstructionsQuery query, CancellationToken cancellationToken)
@@ -33,7 +32,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     var requirements = context.ecer_ProvincialRequirementSet.Where(r => r.StateCode == ecer_provincialrequirement_statecode.Active);
     if (query.ById != null) requirements = requirements.Where(r => r.ecer_ProvincialRequirementId == Guid.Parse(query.ById));
 
-    return mapper.Map<IEnumerable<AreaOfInstruction>>(requirements)!.ToList();
+    return mapper.MapAreasOfInstruction(requirements);
   }
 
   public async Task<IEnumerable<PostSecondaryInstitution>> QueryPostSecondaryInstitutions(PostSecondaryInstitutionsQuery query, CancellationToken cancellationToken)
@@ -48,7 +47,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     var results = context.From(postSecondaryInstitutions)
       .Execute();
 
-    return mapper.Map<IEnumerable<PostSecondaryInstitution>>(results)!.ToList();
+    return mapper.MapPostSecondaryInstitutions(results);
   }
 
   public async Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken)
@@ -59,7 +58,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     if (query.ForPrimary != null) identifications = identifications.Where(r => r.ecer_ForPrimary == query.ForPrimary);
     if (query.ForSecondary != null) identifications = identifications.Where(r => r.ecer_ForSecondary == query.ForSecondary);
 
-    return mapper.Map<IEnumerable<IdentificationType>>(identifications)!.ToList();
+    return mapper.MapIdentificationTypes(identifications);
   }
 
   public async Task<IEnumerable<Province>> QueryProvinces(ProvincesQuery query, CancellationToken cancellationToken)
@@ -68,22 +67,22 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     var provinces = context.ecer_ProvinceSet;
     if (query.ById != null) provinces = provinces.Where(r => r.ecer_ProvinceId == Guid.Parse(query.ById));
 
-    return mapper.Map<IEnumerable<Province>>(provinces)!.ToList();
+    return mapper.MapProvinces(provinces);
   }
 
   public async Task<IEnumerable<CertificationComparison>> QueryCertificationComparisons(CertificationComparisonQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var certificationComparisons = context.ecer_certificationcomparisonSet.Where(r=>r.StateCode==ecer_certificationcomparison_statecode.Active);
+    var certificationComparisons = context.ecer_certificationcomparisonSet.Where(r => r.StateCode == ecer_certificationcomparison_statecode.Active);
     var results = context.From(certificationComparisons)
-     .Join()
-     .Include(a => a.ecer_certificationcomparisontransferringcertificate)
-     .IncludeNested(a => a.ecer_outofprovincecertificationtype_Province_ecer_province).Execute();
+      .Join()
+      .Include(a => a.ecer_certificationcomparisontransferringcertificate)
+      .IncludeNested(a => a.ecer_outofprovincecertificationtype_Province_ecer_province).Execute();
 
     if (query.ById != null) results = results.Where(r => r.Id == Guid.Parse(query.ById));
     if (query.ByProvinceId != null) results = results.Where(r => r.ecer_certificationcomparisontransferringcertificate.ecer_Province.Id == Guid.Parse(query.ByProvinceId));
 
-    return mapper.Map<IEnumerable<CertificationComparison>>(results)!.ToList();
+    return mapper.MapCertificationComparisons(results);
   }
 
   public async Task<IEnumerable<SystemMessage>> QuerySystemMessages(SystemMessagesQuery query, CancellationToken cancellationToken)
@@ -92,7 +91,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     var systemMessages = context.ecer_SystemMessageSet.Where(m => m.StatusCode == ecer_SystemMessage_StatusCode.Active);
     if (query.ById != null) systemMessages = systemMessages.Where(r => r.ecer_SystemMessageId == Guid.Parse(query.ById));
 
-    return mapper.Map<IEnumerable<SystemMessage>>(systemMessages)!.ToList();
+    return mapper.MapSystemMessages(systemMessages);
   }
 
   public async Task<string> SetDownloadDate(string fileId, CancellationToken cancellationToken)
@@ -120,7 +119,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     var results = context.From(defaultContents)
       .Execute();
 
-    return mapper.Map<IEnumerable<DefaultContent>>(results)!.ToList();
+    return mapper.MapDefaultContents(results);
   }
 
   public async Task<IEnumerable<DynamicsConfig>> QueryDynamicsConfiguration(DynamicsConfigQuery query, CancellationToken cancellationToken)
@@ -128,6 +127,6 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     await Task.CompletedTask;
     var dynamicsConfig = context.bcgov_configSet.Where(config => config.bcgov_Group == "Portal" && config.StateCode == bcgov_config_statecode.Active);
 
-    return mapper.Map<IEnumerable<DynamicsConfig>>(dynamicsConfig)!.ToList();
+    return mapper.MapDynamicsConfigurations(dynamicsConfig);
   }
 }

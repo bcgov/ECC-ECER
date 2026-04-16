@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
@@ -10,13 +9,13 @@ namespace ECER.Resources.Documents.Applications;
 internal sealed partial class ApplicationRepository : IApplicationRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly IApplicationRepositoryMapper mapper;
   private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
 
   public ApplicationRepository(
        EcerContext context,
        IObjectStorageProviderResolver objectStorageProviderResolver,
-       IMapper mapper)
+       IApplicationRepositoryMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
@@ -34,7 +33,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 
     if (query.ByStatus != null && query.ByStatus.Any())
     {
-      var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus)!.ToList();
+      var statuses = mapper.MapApplicationStatuses(query.ByStatus);
       applications = applications.WhereIn(a => a.StatusCode!.Value, statuses);
     }
 
@@ -59,7 +58,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       .IncludeNested(a => a.ecer_bcgov_documenturl_TranscriptId)
       .Execute();
 
-    return mapper.Map<IEnumerable<Application>>(results)!.ToList();
+    return mapper.MapApplications(results);
   }
 
   public async Task<string> SaveApplication(Application application, CancellationToken cancellationToken)
@@ -69,15 +68,15 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(application.ApplicantId));
     if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
 
-    var ecerApplication = mapper.Map<ecer_Application>(application)!;
+    var ecerApplication = mapper.MapApplication(application);
     if (application.Origin != null)
     {
-      ecerApplication.ecer_Origin = mapper.Map<ecer_Origin>(application.Origin);
+      ecerApplication.ecer_Origin = mapper.MapOrigin(application.Origin);
     }
 
-    var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
-    var ecerWorkExperienceReferences = mapper.Map<IEnumerable<ecer_WorkExperienceRef>>(application.WorkExperienceReferences)!.ToList();
-    var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();
+    var ecerTranscripts = mapper.MapTranscripts(application.Transcripts);
+    var ecerWorkExperienceReferences = mapper.MapWorkExperienceReferences(application.WorkExperienceReferences);
+    var ecerCharacterReferences = mapper.MapCharacterReferences(application.CharacterReferences);
 
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
@@ -104,17 +103,17 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 
     if (application.ApplicationType == ApplicationTypes.LabourMobility)
     {
-      if (application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation!.CertificateComparisonId != null)
+      if (application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation.CertificateComparisonId != null)
       {
-        var comparisonRecord = context.ecer_certificationcomparisonSet.SingleOrDefault(c => c.ecer_certificationcomparisonId == Guid.Parse(application.LabourMobilityCertificateInformation!.CertificateComparisonId!));
-        if (comparisonRecord == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification comparison '{application.LabourMobilityCertificateInformation!.CertificateComparisonId}' not found");
+        var comparisonRecord = context.ecer_certificationcomparisonSet.SingleOrDefault(c => c.ecer_certificationcomparisonId == Guid.Parse(application.LabourMobilityCertificateInformation.CertificateComparisonId));
+        if (comparisonRecord == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification comparison '{application.LabourMobilityCertificateInformation.CertificateComparisonId}' not found");
         context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_certificationcomparisonid, comparisonRecord);
       }
 
-      if (application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation!.LabourMobilityProvince != null)
+      if (application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation.LabourMobilityProvince != null)
       {
-        var province = context.ecer_ProvinceSet.SingleOrDefault(c => c.ecer_ProvinceId == Guid.Parse(application.LabourMobilityCertificateInformation!.LabourMobilityProvince!.ProvinceId));
-        if (province == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Province '{application.LabourMobilityCertificateInformation!.LabourMobilityProvince!.ProvinceId}' not found");
+        var province = context.ecer_ProvinceSet.SingleOrDefault(c => c.ecer_ProvinceId == Guid.Parse(application.LabourMobilityCertificateInformation.LabourMobilityProvince.ProvinceId));
+        if (province == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Province '{application.LabourMobilityCertificateInformation.LabourMobilityProvince.ProvinceId}' not found");
         context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_lmprovinceid, province);
       }
     }

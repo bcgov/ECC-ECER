@@ -1,28 +1,53 @@
-using AutoMapper;
-using ECER.Infrastructure.Common;
+using ECER.Resources.Documents.Programs;
 using ECER.Resources.Documents.Shared;
 using ECER.Utilities.DataverseSdk.Model;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Documents.Courses;
 
-internal class CourseRepositoryMapper : SecureProfile
+internal interface ICourseRepositoryMapper
 {
-  public CourseRepositoryMapper()
-  {
-    CreateMap<ecer_Course, Course>(MemberList.Destination)
-      .ForMember(d => d.CourseId, opts => opts.MapFrom(s => s.ecer_CourseId))
-      .ForMember(d => d.CourseNumber, opts => opts.MapFrom(s => s.ecer_Code))
-      .ForMember(d => d.CourseTitle, opts => opts.MapFrom(s => s.ecer_CourseName))
-      .ForMember(d => d.NewCourseNumber, opts => opts.MapFrom(s => s.ecer_NewCode))
-      .ForMember(d => d.NewCourseTitle, opts => opts.MapFrom(s => s.ecer_NewCourseName))
-      .ForMember(d => d.CourseAreaOfInstruction, opts => opts.MapFrom(s => s.ecer_courseprovincialrequirement_CourseId ?? Enumerable.Empty<ecer_CourseProvincialRequirement>()))
-      .ForMember(d => d.ProgramType, opts => opts.MapFrom(s => s.ecer_ProgramType))
-      .ReverseMap();
+  List<Course> MapCourses(IEnumerable<ecer_Course> source);
+  ecer_Course MapCourse(Course source);
+  List<ecer_PSIProgramType> MapProgramTypes(IEnumerable<ProgramType> source);
+}
 
-    CreateMap<ecer_CourseProvincialRequirement, CourseAreaOfInstruction>(MemberList.Destination)
-      .ForMember(d => d.NewHours, opts => opts.MapFrom(s => s.ecer_NewHours ?? Decimal.Zero))
-      .ForMember(d => d.CourseAreaOfInstructionId, opts => opts.MapFrom(s => s.Id))
-      .ForMember(d => d.AreaOfInstructionId, opts => opts.MapFrom(s => s.ecer_ProgramAreaId.Id))
-      .ReverseMap();
-  }
+[Mapper]
+internal partial class CourseRepositoryMapper : ICourseRepositoryMapper
+{
+  public List<Course> MapCourses(IEnumerable<ecer_Course> source) => source.Select(MapCourse).ToList();
+
+  public ecer_Course MapCourse(Course source) => new()
+  {
+    ecer_CourseId = Guid.Parse(source.CourseId),
+    ecer_Code = source.CourseNumber,
+    ecer_CourseName = source.CourseTitle,
+    ecer_NewCode = source.NewCourseNumber,
+    ecer_NewCourseName = source.NewCourseTitle,
+  };
+
+  public List<ecer_PSIProgramType> MapProgramTypes(IEnumerable<ProgramType> source) => source.Select(MapProgramType).ToList();
+
+  private Course MapCourse(ecer_Course source) => new()
+  {
+    CourseId = source.ecer_CourseId?.ToString() ?? string.Empty,
+    CourseNumber = source.ecer_Code ?? string.Empty,
+    CourseTitle = source.ecer_CourseName ?? string.Empty,
+    NewCourseNumber = source.ecer_NewCode,
+    NewCourseTitle = source.ecer_NewCourseName,
+    CourseAreaOfInstruction = (source.ecer_courseprovincialrequirement_CourseId ?? Array.Empty<ecer_CourseProvincialRequirement>())
+      .Select(MapCourseAreaOfInstruction)
+      .ToList(),
+    ProgramType = source.ecer_ProgramType?.ToString() ?? string.Empty,
+  };
+
+  private CourseAreaOfInstruction MapCourseAreaOfInstruction(ecer_CourseProvincialRequirement source) => new()
+  {
+    NewHours = source.ecer_NewHours.HasValue ? Convert.ToSingle(source.ecer_NewHours.Value) : 0,
+    CourseAreaOfInstructionId = source.Id.ToString(),
+    AreaOfInstructionId = source.ecer_ProgramAreaId?.Id.ToString() ?? string.Empty,
+  };
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PSIProgramType MapProgramType(ProgramType source);
 }

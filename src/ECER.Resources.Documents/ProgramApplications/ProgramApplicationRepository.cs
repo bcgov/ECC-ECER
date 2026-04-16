@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
@@ -10,10 +9,10 @@ namespace ECER.Resources.Documents.ProgramApplications;
 internal sealed partial class ProgramApplicationRepository : IProgramApplicationRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly IProgramApplicationRepositoryMapper mapper;
   private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
 
-  public ProgramApplicationRepository(EcerContext context, IMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver)
+  public ProgramApplicationRepository(EcerContext context, IProgramApplicationRepositoryMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver)
   {
     this.context = context;
     this.mapper = mapper;
@@ -46,7 +45,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       throw new InvalidOperationException("Delivery type is required");
     }
 
-    var entity = mapper.Map<ecer_PostSecondaryInstituteProgramApplicaiton>(programApplication)!;
+    var entity = mapper.MapProgramApplication(programApplication);
     entity.ecer_PostSecondaryInstituteProgramApplicaitonId = Guid.NewGuid();
     entity.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft;
     entity.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Active;
@@ -124,7 +123,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     }
     else
     {
-      var entity = mapper.Map<ecer_PostSecondaryInstituteProgramApplicaiton>(application)!;
+      var entity = mapper.MapProgramApplication(application);
       var instituteId = Guid.Parse(application.PostSecondaryInstituteId);
       var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
       if (institute == null)
@@ -320,7 +319,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     //By status
     if (query.ByStatus != null && query.ByStatus.Any())
     {
-      var statuses = mapper.Map<IEnumerable<ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode>>(query.ByStatus)!.ToList();
+      var statuses = mapper.MapApplicationStatuses(query.ByStatus);
       applications = applications.WhereIn(p => p.StatusCode!.Value, statuses);
     }
 
@@ -360,7 +359,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       .Execute()
       .ToList();
 
-    return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<ProgramApplication>>(results)!, query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count);
+    return new ProgramApplicationQueryResults(mapper.MapProgramApplications(results), query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count);
   }
 
   public async Task<IEnumerable<NavigationMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken)
@@ -373,7 +372,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     var results = context.From(categoryGroups)
       .Execute();
 
-    return mapper.Map<IEnumerable<NavigationMetadata>>(results)!.ToList();
+    return mapper.MapNavigationMetadata(results).ToList();
   }
 
   public async Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken)
@@ -391,7 +390,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       .Include(e => e.ecer_programapplicationcomponent_ComponentGroup)
       .IncludeNested(e => e.ecer_documenturl_ProgramApplicationComponentId)
       .Execute();
-    return mapper.Map<IEnumerable<ComponentGroupWithComponents>>(results)!.ToList();
+    return mapper.MapComponentGroupsWithComponents(results).ToList();
   }
 
   public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, string postSecondaryInstituteId, CancellationToken cancellationToken)
@@ -418,7 +417,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       if (!Guid.TryParse(component.Id, out var componentId)) continue;
       if (!existingComponents.TryGetValue(componentId, out var existingComponent)) continue;
 
-      var ecerComponent = mapper.Map<ecer_ProgramApplicationComponent>(component)!;
+      var ecerComponent = mapper.MapProgramApplicationComponent(component);
       context.Detach(existingComponent);
       context.Attach(ecerComponent);
       context.UpdateObject(ecerComponent);

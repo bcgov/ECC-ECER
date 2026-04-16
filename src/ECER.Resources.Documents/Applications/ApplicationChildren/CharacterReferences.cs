@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -48,7 +47,7 @@ internal partial class ApplicationRepository
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(referenceId));
 
-    mapper.Map(request, characterReference);
+    mapper.ApplyCharacterReferenceSubmission(request, characterReference);
     bool certificateProvinceIdIsGuid = Guid.TryParse(request.ReferenceContactInformation.CertificateProvinceId, out Guid certificateProvinceId);
 
     if (certificateProvinceIdIsGuid)
@@ -70,7 +69,7 @@ internal partial class ApplicationRepository
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
 
-    mapper.Map(request, characterReference);
+    mapper.ApplyOptOutReference(request, characterReference);
     characterReference.ecer_WillProvideReference = ecer_YesNoNull.No;
     characterReference.StatusCode = ecer_CharacterReference_StatusCode.Rejected;
     characterReference.StateCode = ecer_characterreference_statecode.Inactive;
@@ -90,7 +89,7 @@ internal partial class ApplicationRepository
       throw new InvalidOperationException($"Application '{applicationId}' not found");
     }
 
-    var ecerCharacterReference = mapper.Map<ecer_CharacterReference>(updatedReference);
+    var ecerCharacterReference = mapper.MapCharacterReference(updatedReference);
 
     var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId)).ToList();
 
@@ -111,7 +110,6 @@ internal partial class ApplicationRepository
     }
 
     // 2. Add New Character Reference
-
     ecerCharacterReference.ecer_CharacterReferenceId = Guid.NewGuid();
     ecerCharacterReference.StatusCode = ecer_CharacterReference_StatusCode.ApplicationSubmitted;
     ecerCharacterReference.ecer_IsAdditional = true;
@@ -138,7 +136,7 @@ internal partial class ApplicationRepository
       throw new InvalidOperationException($"Character reference '{request.ReferenceId}' already responded");
     }
 
-    mapper.Map(request, characterReference);
+    mapper.ApplyResendCharacterReferenceInvite(request, characterReference);
     characterReference.ecer_InviteAgain = true;
     context.UpdateObject(characterReference);
     context.SaveChanges();

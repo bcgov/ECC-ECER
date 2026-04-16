@@ -6,6 +6,7 @@ using ECER.Resources.Documents.PortalInvitations;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using ECER.Resources.Documents.Courses;
+using ECER.Resources.Documents.ICRA;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
 using ECER.Resources.Documents.ProgramApplications;
 using ECER.Resources.Documents.Programs;
@@ -16,6 +17,15 @@ public class Configurer : IConfigureComponents
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
+    configurationContext.Services.AddTransient<ICertificationRepositoryMapper, CertificationRepositoryMapper>();
+    configurationContext.Services.AddTransient<IApplicationRepositoryMapper, ApplicationRepositoryMapper>();
+    configurationContext.Services.AddTransient<ICourseRepositoryMapper, CourseRepositoryMapper>();
+    configurationContext.Services.AddTransient<IMetadataResourceRepositoryMapper, MetadataResourceRepositoryMapper>();
+    configurationContext.Services.AddTransient<IPortalInvitationRepositoryMapper, PortalInvitationMapper>();
+    configurationContext.Services.AddTransient<IICRARepositoryMapper, ICRARepositoryMapper>();
+    configurationContext.Services.AddTransient<IPostSecondaryInstituteRepositoryMapper, PostSecondaryInstituteRepositoryMapper>();
+    configurationContext.Services.AddTransient<IProgramApplicationRepositoryMapper, ProgramApplicationRepositoryMapper>();
+    configurationContext.Services.AddTransient<IProgramRepositoryMapper, ProgramRepositoryMapper>();
     configurationContext.Services.AddTransient<ICertificationRepository, CertificationRepository>();
     configurationContext.Services.AddTransient<IApplicationRepository, ApplicationRepository>();
     configurationContext.Services.AddTransient<IPortalInvitationRepository, PortalInvitationRepository>();
