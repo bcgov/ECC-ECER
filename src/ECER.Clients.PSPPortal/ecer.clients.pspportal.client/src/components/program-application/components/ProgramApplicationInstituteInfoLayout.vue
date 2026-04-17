@@ -25,7 +25,12 @@
             {{ userStore.educationInstitution?.name }}
           </v-col>
         </v-row>
-        <v-row>
+        <v-row
+          v-if="
+            programApplicationObject?.programApplicationType !==
+            'AddOnlineorHybridDeliveryMethod'
+          "
+        >
           <v-col cols="12" sm="4" xl="3">Campus</v-col>
           <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
             {{ programApplicationObject?.programCampuses?.[0]?.name }}

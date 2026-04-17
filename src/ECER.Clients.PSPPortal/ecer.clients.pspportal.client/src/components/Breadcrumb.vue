@@ -48,7 +48,7 @@ export default defineComponent({
         "edit-education-institution": [
           home,
           {
-            title: "Edit Institution",
+            title: "Edit institution contact info",
             disabled: true,
             href: "/education-institution/edit",
           },
