@@ -341,6 +341,59 @@ export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
   return courseAreaOfInstructionMap;
 }
 
+export function getCoursesForProgramApplicationReview(
+  courses: Components.Schemas.Course[] | undefined | null,
+  programType: Components.Schemas.ProgramTypes,
+  areaOfInstructionList: Components.Schemas.AreaOfInstruction[],
+): AreaOfInstructionWithCourseHoursMap | undefined {
+  if (!courses || courses.length === 0) {
+    return new Map();
+  }
+
+  let filteredAreaOfInsruction = areaOfInstructionList.filter((a) =>
+    a.programTypes?.includes(programType),
+  );
+
+  let filteredCourses = courses.filter(
+    (course: Components.Schemas.Course) => course.programType === programType,
+  ); //filter out relevant courses here
+  let courseAreaOfInstructionMap = new Map();
+  filteredAreaOfInsruction.forEach((areaOfInstr) => {
+    filteredCourses?.forEach((course: Components.Schemas.Course) => {
+      let courses = course.courseAreaOfInstruction;
+      let courseExist = courses?.filter(
+        (c) => c.areaOfInstructionId === areaOfInstr.id,
+      );
+      if (courseExist !== undefined && courseExist[0] !== undefined) {
+        if (
+          courseAreaOfInstructionMap.has(courseExist[0]?.areaOfInstructionId)
+        ) {
+          //areaOfInstructionExists -> append to array
+          courseAreaOfInstructionMap
+            .get(courseExist[0]?.areaOfInstructionId)
+            .push({
+              courseNumber: course.courseNumber,
+              courseTitle: course.courseTitle,
+              hours: courseExist[0]?.newHours,
+            } as CourseAreaDetail);
+        } else {
+          //create new areaOfInstruction key
+          courseAreaOfInstructionMap.set(courseExist[0]?.areaOfInstructionId, [
+            {
+              courseNumber: course.courseNumber,
+              courseTitle: course.courseTitle,
+              hours: courseExist[0]?.newHours,
+            } as CourseAreaDetail,
+          ]);
+        }
+      } else {
+        courseAreaOfInstructionMap.set(areaOfInstr.id, []);
+      }
+    });
+  });
+  return courseAreaOfInstructionMap;
+}
+
 export function getNonAllocatedCoursesByType(
   courses: Components.Schemas.Course[] | undefined | null,
   programType: Components.Schemas.ProgramTypes,
