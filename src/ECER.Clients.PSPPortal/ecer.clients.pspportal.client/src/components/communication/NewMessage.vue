@@ -16,8 +16,9 @@
           <v-col>
             Send a message to the ECE Registry.
             <span class="font-weight-bold">
-              Please note that all users that have access to the PSP Portal at
-              your institution will be able to read and reply to this thread.
+              Please note that all users that have access to the ECE
+              Post-Secondary Programs portal at your institution will be able to
+              read and reply to this thread.
             </span>
           </v-col>
         </v-row>
