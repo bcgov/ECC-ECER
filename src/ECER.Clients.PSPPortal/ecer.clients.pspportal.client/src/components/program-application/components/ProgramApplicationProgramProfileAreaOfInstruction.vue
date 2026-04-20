@@ -14,7 +14,7 @@
     <br />
     <h3>Adding a course</h3>
     <br />
-    <p>To add a course to your program profile:</p>
+    <p>To add a course to your program profile,</p>
     <ul class="ml-10">
       <li>Select "Add course"</li>
       <li>Input the course number and course name</li>
@@ -27,7 +27,7 @@
     <br />
     <h3>Updating a course</h3>
     <br />
-    <p>To edit a course on your program profile:</p>
+    <p>To edit a course on your program profile,</p>
     <ul class="ml-10">
       <li>Select the pencil icon beside the course name</li>
       <li>Make any changes and click "Save"</li>
