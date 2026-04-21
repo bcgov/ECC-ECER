@@ -36,7 +36,8 @@
           ></ComponentGroupNavigation>
         </v-navigation-drawer>
       </v-col>
-      <v-col>
+      <!--Overriding default min-width auto to stop large v-card-titles from expanding col-->
+      <v-col style="min-width: 0">
         <router-view
           :application-type="programApplication.programApplicationType"
           @next="handleNext"
