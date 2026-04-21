@@ -299,6 +299,7 @@ public record ProgramApplication
   public string? InstituteInfoEntryProgress { get; set; }
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
+  public string? DeclarantId { get; set; }
   public string? DeclarantName { get; set; }
   public string? ProgramProfileId { get; set; }
   public string? ProgramProfileName { get; set; }

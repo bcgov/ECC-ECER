@@ -62,6 +62,7 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.ecer_OtherAdmissionOptions))
       .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.ecer_InstitutionProgramInformationEntryProgress))
       .ForMember(d => d.DeclarantName, opts => opts.MapFrom(s => s.ecer_SubmittedByProgramRepresentativeIdName))
+      .ForMember(d => d.DeclarantId, opts => opts.MapFrom(s => s.ecer_SubmittedByProgramRepresentativeId.Id))
       .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DateofApplicationShort))
       .ForMember(d => d.DeclarationAccepted, opts => opts.MapFrom(s => s.ecer_AgreeNotifyofChanges == ecer_YesNoNull.Yes))
       .ForMember(d => d.ProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId.Id))
