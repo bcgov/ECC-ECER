@@ -362,6 +362,7 @@ declare namespace Components {
       instituteInfoEntryProgress?: string | null;
       declarationDate?: string | null; // date-time
       declarationAccepted?: boolean | null;
+      declarantId?: string | null;
       declarantName?: string | null;
       programProfileId?: string | null;
       programProfileName?: string | null;
