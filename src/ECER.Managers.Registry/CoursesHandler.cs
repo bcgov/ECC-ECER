@@ -136,9 +136,7 @@ public class CoursesHandler(
     }
     else
     {
-      ecerContext.BeginTransaction();
       await courseRepository.DeleteCourse(request.CourseId, request.PostSecondaryInstituteId, cancellationToken);
-      ecerContext.CommitTransaction();
     }
 
     return request.CourseId;
