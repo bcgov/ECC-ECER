@@ -345,52 +345,41 @@ export function getCoursesForProgramApplicationReview(
   courses: Components.Schemas.Course[] | undefined | null,
   programType: Components.Schemas.ProgramTypes,
   areaOfInstructionList: Components.Schemas.AreaOfInstruction[],
-): AreaOfInstructionWithCourseHoursMap | undefined {
+) {
+  const courseAreaOfInstructionMap = new Map<
+    string | null | undefined,
+    CourseAreaDetail[]
+  >();
+
   if (!courses || courses.length === 0) {
-    return new Map();
+    return courseAreaOfInstructionMap;
   }
 
-  let filteredAreaOfInsruction = areaOfInstructionList.filter((a) =>
-    a.programTypes?.includes(programType),
-  );
+  areaOfInstructionList
+    .filter((a) => a.programTypes?.includes(programType))
+    .forEach((area) => courseAreaOfInstructionMap.set(area.id, []));
 
-  let filteredCourses = courses.filter(
-    (course: Components.Schemas.Course) => course.programType === programType,
-  ); //filter out relevant courses here
-  let courseAreaOfInstructionMap = new Map();
-  filteredAreaOfInsruction.forEach((areaOfInstr) => {
-    filteredCourses?.forEach((course: Components.Schemas.Course) => {
-      let courses = course.courseAreaOfInstruction;
-      let courseExist = courses?.filter(
-        (c) => c.areaOfInstructionId === areaOfInstr.id,
-      );
-      if (courseExist !== undefined && courseExist[0] !== undefined) {
-        if (
-          courseAreaOfInstructionMap.has(courseExist[0]?.areaOfInstructionId)
-        ) {
-          //areaOfInstructionExists -> append to array
-          courseAreaOfInstructionMap
-            .get(courseExist[0]?.areaOfInstructionId)
-            .push({
-              courseNumber: course.courseNumber,
-              courseTitle: course.courseTitle,
-              hours: courseExist[0]?.newHours,
-            } as CourseAreaDetail);
+  courses
+    .filter((course) => course.programType === programType)
+    .forEach((course) => {
+      course.courseAreaOfInstruction?.forEach((area) => {
+        const detail: CourseAreaDetail = {
+          courseNumber: course.courseNumber,
+          courseTitle: course.courseTitle,
+          hours: area.newHours,
+        } as CourseAreaDetail;
+
+        const existing = courseAreaOfInstructionMap.get(
+          area.areaOfInstructionId,
+        );
+        if (existing) {
+          existing.push(detail);
         } else {
-          //create new areaOfInstruction key
-          courseAreaOfInstructionMap.set(courseExist[0]?.areaOfInstructionId, [
-            {
-              courseNumber: course.courseNumber,
-              courseTitle: course.courseTitle,
-              hours: courseExist[0]?.newHours,
-            } as CourseAreaDetail,
-          ]);
+          courseAreaOfInstructionMap.set(area.areaOfInstructionId, [detail]);
         }
-      } else {
-        courseAreaOfInstructionMap.set(areaOfInstr.id, []);
-      }
+      });
     });
-  });
+
   return courseAreaOfInstructionMap;
 }
 

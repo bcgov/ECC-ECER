@@ -282,8 +282,8 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style scope>
 .no-course {
-  background-color: #f5e4c5;
+  background-color: #fef1d8 !important;
 }
 </style>
