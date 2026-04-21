@@ -66,10 +66,13 @@ const addCourse = async (
 
 const deleteCourse = async (
   courseId: string,
+  applicationId?: string,
 ): Promise<ApiResponse<string | null | undefined>> => {
   const client = await getClient();
-  const params: Paths.CourseDelete.PathParameters = {
-    courseId: courseId,
+  const params: Paths.CourseDelete.PathParameters &
+    Paths.CourseDelete.QueryParameters = {
+    courseId,
+    applicationId,
   };
 
   return apiResultHandler.execute<string | null | undefined>({
