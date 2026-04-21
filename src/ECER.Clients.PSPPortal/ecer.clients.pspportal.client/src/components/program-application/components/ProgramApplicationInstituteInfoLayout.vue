@@ -17,7 +17,7 @@
         name="application-summary"
         :program-type="programType"
         :institution="userStore.educationInstitution"
-        :program-application-object="programApplicationObject"
+        :delivery-type="deliveryType"
       >
         <v-row>
           <v-col cols="12" sm="4" xl="3">Institution name</v-col>
@@ -25,7 +25,12 @@
             {{ userStore.educationInstitution?.name }}
           </v-col>
         </v-row>
-        <v-row>
+        <v-row
+          v-if="
+            programApplicationObject?.programApplicationType !==
+            'AddOnlineorHybridDeliveryMethod'
+          "
+        >
           <v-col cols="12" sm="4" xl="3">Campus</v-col>
           <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
             {{ programApplicationObject?.programCampuses?.[0]?.name }}
@@ -46,7 +51,7 @@
         <v-row>
           <v-col cols="12" sm="4" md="4" xl="3">Delivery method</v-col>
           <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
-            {{ programApplicationObject?.deliveryType }}
+            {{ deliveryType }}
           </v-col>
         </v-row>
       </slot>
@@ -98,7 +103,7 @@
                   <v-checkbox
                     v-model="programCampus"
                     :value="campus.id || null"
-                    :label="campus.generatedName || '-'"
+                    :label="campus.name || '-'"
                     density="compact"
                     hide-details
                     @update:model-value="
@@ -484,6 +489,7 @@ import {
   mapProgramType,
   updateProgramApplication,
   getProgramApplicationById,
+  mapDeliveryType,
 } from "@/api/program-application";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import Loading from "@/components/Loading.vue";
@@ -679,6 +685,9 @@ export default defineComponent({
       const types = this.programApplicationObject?.programTypes;
       if (!types?.length) return "—";
       return types.map(mapProgramType).join(", ");
+    },
+    deliveryType(): string {
+      return mapDeliveryType(this.programApplicationObject?.deliveryType);
     },
   },
   data() {

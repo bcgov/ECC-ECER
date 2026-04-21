@@ -108,6 +108,7 @@ import IcraApplicationWorkExperienceReferenceWizard from "@/config/icra-eligibil
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useWizardStore } from "@/store/wizard";
+import { useCaptchaTurnstileStore } from "@/store/captchaTurnstile";
 import type { Components } from "@/types/openapi";
 import type { Wizard as WizardType } from "@/types/wizard";
 import { PortalInviteType, WorkExperienceType } from "@/utils/constant";
@@ -135,6 +136,7 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
+    const captchaTurnstileStore = useCaptchaTurnstileStore();
     if (
       data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE
     ) {
@@ -186,6 +188,7 @@ export default defineComponent({
     }
     return {
       alertStore,
+      captchaTurnstileStore,
       workExperienceReferenceWizard,
       characterReferenceWizard,
       wizardStore,
@@ -226,22 +229,16 @@ export default defineComponent({
   },
   watch: {
     "wizardStore.step"(step) {
-      //Resets recaptcha(s) if we navigate away. Prevents expiry bug if multiple recaptchas expire.
+      //Resets captcha(s) if we navigate away. Prevents expiry bug if multiple captchas expire.
       if (
         step !== this.userDeclinedStep &&
         step !== this.userReviewStep &&
-        globalThis.grecaptcha
+        globalThis.turnstile
       ) {
-        for (
-          let i = 0;
-          i < document.querySelectorAll(".g-recaptcha").length;
-          i++
-        ) {
-          globalThis.grecaptcha.reset(i);
-        }
+        this.captchaTurnstileStore.resetAllCaptchaTurnstileWidgets();
         this.wizardStore.wizardData[
-          this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
-            ?.recaptchaToken?.id || ""
+          this.wizardStore?.wizardConfig.steps.review?.form.inputs.captchaToken
+            ?.id || ""
         ] = "";
       }
     },
@@ -332,10 +329,10 @@ export default defineComponent({
             this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
               ?.confirmProvidedInformationIsRight?.id || ""
           ],
-        recaptchaToken:
+        captchaToken:
           this.wizardStore.wizardData[
-            this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
-              ?.recaptchaToken?.id || ""
+            this.wizardStore?.wizardConfig.steps.review?.form.inputs
+              .captchaToken?.id || ""
           ],
       });
 
@@ -375,10 +372,10 @@ export default defineComponent({
                 this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
                   ?.confirmProvidedInformationIsRight?.id || ""
               ],
-            recaptchaToken:
+            captchaToken:
               this.wizardStore.wizardData[
-                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
-                  ?.recaptchaToken?.id || ""
+                this.wizardStore?.wizardConfig.steps.review?.form.inputs
+                  .captchaToken?.id || ""
               ],
           });
           break;
@@ -407,10 +404,10 @@ export default defineComponent({
                 this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
                   ?.confirmProvidedInformationIsRight?.id || ""
               ],
-            recaptchaToken:
+            captchaToken:
               this.wizardStore.wizardData[
-                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
-                  ?.recaptchaToken?.id || ""
+                this.wizardStore?.wizardConfig.steps.review?.form.inputs
+                  .captchaToken?.id || ""
               ],
           });
           break;
@@ -439,10 +436,10 @@ export default defineComponent({
                 this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
                   ?.confirmProvidedInformationIsRight?.id || ""
               ],
-            recaptchaToken:
+            captchaToken:
               this.wizardStore.wizardData[
-                this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
-                  ?.recaptchaToken?.id || ""
+                this.wizardStore?.wizardConfig.steps.review?.form.inputs
+                  .captchaToken?.id || ""
               ],
           });
           break;
@@ -479,10 +476,10 @@ export default defineComponent({
             this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs
               ?.willProvideReference?.id || ""
           ],
-        recaptchaToken:
+        captchaToken:
           this.wizardStore.wizardData[
             this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs
-              ?.recaptchaToken?.id || ""
+              ?.captchaToken?.id || ""
           ],
         //contact step
         firstName: icraEligibilityContact.firstName,
@@ -524,15 +521,16 @@ export default defineComponent({
           this.wizardStore?.wizardConfig?.steps?.decline?.form?.inputs
             ?.referenceDecline?.id || ""
         ];
-      const recaptchaToken =
+      const captchaToken =
         this.wizardStore.wizardData[
-          this.wizardStore?.wizardConfig?.steps?.decline?.form?.inputs
-            ?.recaptchaToken?.id || ""
+          this.wizardStore?.wizardConfig.steps.decline?.form.inputs.captchaToken
+            ?.id || ""
         ];
+
       const result = await optOutReference(
         this.route.params.token as string,
         reason as Components.Schemas.UnabletoProvideReferenceReasons,
-        recaptchaToken,
+        captchaToken,
       );
       if (!result.error) {
         this.router.push({ path: "/reference-submitted" });

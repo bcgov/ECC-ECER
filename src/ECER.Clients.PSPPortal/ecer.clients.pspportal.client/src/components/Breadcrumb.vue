@@ -48,7 +48,7 @@ export default defineComponent({
         "edit-education-institution": [
           home,
           {
-            title: "Edit Institution",
+            title: "Edit institution contact info",
             disabled: true,
             href: "/education-institution/edit",
           },
@@ -184,6 +184,11 @@ export default defineComponent({
           return [
             home,
             {
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
               title: "Basic or post-basic program application",
               disabled: true,
               href: "/program-application-info",
@@ -195,7 +200,12 @@ export default defineComponent({
           return [
             home,
             {
-              title: "New Campus application",
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
+              title: "Application for new campus",
               disabled: true,
               href: "/program-application-info",
             },
@@ -211,6 +221,15 @@ export default defineComponent({
             {
               title:
                 "Application for adding an online or hybrid delivery method",
+              disabled: true,
+              href: "/program-application-info",
+            },
+          ];
+        } else if (applicationType === "SatelliteProgram") {
+          return [
+            home,
+            {
+              title: "Satellite application",
               disabled: true,
               href: "/program-application-info",
             },

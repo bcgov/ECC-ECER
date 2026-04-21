@@ -14,7 +14,7 @@ public record UploaderSettings
   public IEnumerable<string> AllowedFileTypes { get; set; } = Array.Empty<string>();
 }
 
-public record RecaptchaSettings
+public record CaptchaSettings
 {
   public string SiteKey { get; set; } = string.Empty;
 }

@@ -12,7 +12,7 @@
       </WizardHeader>
     </template>
     <template #stepperHeader>
-      <v-container v-show="showSteps">
+      <v-container v-show="showSteps" class="d-print-none">
         <v-stepper-header class="elevation-0">
           <template
             v-for="(step, index) in Object.values(wizardStore.steps)"

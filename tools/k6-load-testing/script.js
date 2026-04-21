@@ -43,19 +43,18 @@ export const options = {
     ],
   },
 };
-const CHARACTER_REFERENCE_INVITE_TOKEN =
-  "<<Add in verify token here>>";
+const CHARACTER_REFERENCE_INVITE_TOKEN = "<<Add in verify token here>>";
 
 //this will change based on ENV
 const BASE_ROUTE =
   "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca";
 
-//Note you will need to change the recaptcha token to a TEST one. Otherwise these recaptcha tokens will fail. Do this by changing the recaptcha tokens on openshift
+//Note you will need to change the captcha token to a TEST one. Otherwise these captcha tokens will fail. Do this by changing the captcha tokens on openshift
 function getLookupCertification() {
   const payload = {
     firstName: "",
     lastName: "smith",
-    recaptchaToken: "fakestring",
+    captchaToken: "fakestring",
     registrationNumber: "",
   };
 

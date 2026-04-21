@@ -42,7 +42,7 @@
             <v-btn value="rfai">
               Responses requiring additional information
             </v-btn>
-            <v-btn value="all">All Responses</v-btn>
+            <v-btn value="all">All responses</v-btn>
           </v-btn-toggle>
         </v-col>
       </v-row>
@@ -53,6 +53,12 @@
             Show only responses where the registry is requestimg more
             information.
           </p>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="isRFAI && filter === 'all'" class="mb-4">
+        <v-col class="d-flex" cols="12">
+          <p>Show all responses in this application.</p>
         </v-col>
       </v-row>
 
@@ -71,7 +77,7 @@
             </v-col>
             <v-col>
               <p class="small font-weight-bold">
-                {{ programApplicationObject?.declarantName }}
+                {{ declarantName }}
               </p>
             </v-col>
           </v-row>
@@ -82,7 +88,7 @@
             </v-col>
             <v-col>
               <p class="small font-weight-bold">
-                {{ programApplicationObject?.declarationDate }}
+                {{ formatDate(programApplicationObject?.declarationDate) }}
               </p>
             </v-col>
           </v-row>
@@ -144,6 +150,14 @@
             v-if="
               programApplicationObject?.programApplicationType ===
               programApplicationType.NewCampusatRecognizedPrivateInstitution
+            "
+          />
+          <OnlineOrHybridProgramOverview
+            :programApplicationObject="programApplicationObject"
+            :contactPerson="contactPerson"
+            v-if="
+              programApplicationObject?.programApplicationType ===
+              programApplicationType.AddOnlineorHybridDeliveryMethod
             "
           />
           <SatelliteProgramOverview
@@ -266,10 +280,12 @@ import {
 import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
 import Callout from "@/components/common/Callout.vue";
-import PostBasicProgramOverview from "@/components/common/PostBasicProgramOverview.vue";
 import NewCampusProgramOverview from "@/components/common/NewCampusProgramOverview.vue";
+import OnlineOrHybridProgramOverview from "@/components/common/OnlineOrHybridProgramOverview.vue";
+import PostBasicProgramOverview from "@/components/common/PostBasicProgramOverview.vue";
 import SatelliteProgramOverview from "@/components/common/SatelliteProgramOverview.vue";
 import { ProgramApplicationType } from "@/utils/constant";
+import { formatDate } from "@/utils/format";
 
 interface ComponentGroupMetaData {
   componentGroupId?: string | null;
@@ -282,8 +298,9 @@ export default defineComponent({
     PageContainer,
     Loading,
     Callout,
-    PostBasicProgramOverview,
     NewCampusProgramOverview,
+    OnlineOrHybridProgramOverview,
+    PostBasicProgramOverview,
     SatelliteProgramOverview,
   },
   props: {
@@ -300,6 +317,17 @@ export default defineComponent({
   },
   emits: { next: (_payload: NextStepPayload) => true },
   computed: {
+    declarantName(): string {
+      if (this.programApplicationObject?.declarantId) {
+        const user = this.users.find(
+          (user) => user.id === this.programApplicationObject?.declarantId,
+        );
+        if (user) {
+          return `${user.profile?.firstName} ${user.profile?.lastName}`.trim();
+        }
+      }
+      return "—";
+    },
     programApplicationType() {
       return ProgramApplicationType;
     },
@@ -344,6 +372,7 @@ export default defineComponent({
       componentGroup: [] as ComponentGroupWithComponents[] | null | undefined,
       componentAnswer: {} as Map<string, ComponentGroupMetaData> | null,
       isLoading: true,
+      users: [] as PspUserListItem[],
       activeStatus: [
         "Approved",
         "Draft",
@@ -359,20 +388,21 @@ export default defineComponent({
     this.isLoading = true;
     await this.fetchApplication();
     await this.loadComponents();
+    this.users = (await getUsers()) ?? [];
     this.isLoading = false;
   },
   methods: {
+    formatDate,
     printPage() {
       globalThis.print();
     },
     async fetchApplication() {
       const result = await getProgramApplicationById(this.programApplicationId);
-      let users = (await getUsers()) ?? [];
       if (result.error || result.data == null) {
         console.error("Failed to retrieve program application:", result.error);
       } else {
         this.programApplicationObject = result.data;
-        const contactPerson = users.find(
+        const contactPerson = this.users.find(
           (user: PspUserListItem) =>
             user.id === this.programApplicationObject?.programRepresentativeId,
         );
@@ -426,7 +456,9 @@ export default defineComponent({
           } else {
             map.set(groupName, {
               componentGroupId: c.id,
-              components: rfaiComponents,
+              components: rfaiComponents.sort(
+                (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+              ),
             });
           }
         }
@@ -435,7 +467,6 @@ export default defineComponent({
     },
     allResponses() {
       const map = new Map();
-
       this.componentGroup?.forEach((c) => {
         const groupName = c.name;
         if (map.has(groupName)) {
@@ -443,7 +474,9 @@ export default defineComponent({
         } else {
           map.set(groupName, {
             componentGroupId: c.id,
-            components: c.components,
+            components: (c.components ?? []).sort(
+              (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+            ),
           });
         }
       });

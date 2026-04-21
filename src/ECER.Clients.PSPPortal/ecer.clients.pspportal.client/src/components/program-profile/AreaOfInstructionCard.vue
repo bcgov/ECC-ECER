@@ -265,17 +265,18 @@ export default defineComponent({
         };
       });
 
-      // Ensure Program Development comes before Child Guidance
+      // Ensure parents show before children
       return areas.sort((a, b) => {
-        const aIsProgramDevelopment =
-          a.areaName === "Program Development, Curriculum and Foundations";
-        const bIsProgramDevelopment =
-          b.areaName === "Program Development, Curriculum and Foundations";
-        const aIsChildGuidance = a.areaName === "Child Guidance";
-        const bIsChildGuidance = b.areaName === "Child Guidance";
-
-        if (aIsProgramDevelopment && bIsChildGuidance) return -1;
-        if (aIsChildGuidance && bIsProgramDevelopment) return 1;
+        const aArea = this.configStore.areaOfInstructionList.find(
+          (x) => x.id === a.areaOfInstructionId,
+        );
+        const bArea = this.configStore.areaOfInstructionList.find(
+          (x) => x.id === b.areaOfInstructionId,
+        );
+        const aIsChild = aArea?.parentAreaOfInstructionId != null;
+        const bIsChild = bArea?.parentAreaOfInstructionId != null;
+        if (!aIsChild && bIsChild) return -1;
+        if (aIsChild && !bIsChild) return 1;
         return 0;
       });
     },

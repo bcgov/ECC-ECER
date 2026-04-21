@@ -25,7 +25,7 @@
           education programs against the standards as established in regulation,
           the
           <a
-            href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+            href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
             class="text-primary text-decoration-underline"
             target="_blank"
           >
@@ -63,7 +63,15 @@
         <p>
           Private institutions require an approval from their regulator to offer
           their early childhood education program at a new campus location.
-          Contact the Private Training Institutions Regulatory Unit (PTIRU) at
+          Contact the
+          <a
+            href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
+            class="text-primary text-decoration-underline"
+            target="_blank"
+          >
+            Private Training Institutions Regulatory Unit
+          </a>
+          (PTIRU) at
           <a href="mailto:PTI@gov.bc.ca">PTI@gov.bc.ca</a>
           indicating the requested change.
         </p>
@@ -111,11 +119,13 @@
               Some questions will ask you to upload documents to support your
               responses
             </li>
-            <li class="ml-8 font-weight-bold">
-              Note: Do not submit any documents containing personal details in
-              this application (for example, staff resumes).
-            </li>
           </ul>
+        </div>
+        <div class="mt-5">
+          <span class="font-weight-bold">
+            Note: Do not submit any documents containing personal details in
+            this application (for example, staff resumes).
+          </span>
         </div>
       </div>
     </v-col>
@@ -146,7 +156,7 @@
       <ECEHeader title="Related documents" />
       <div class="d-flex flex-column mt-4">
         <a
-          href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+          href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
           target="_blank"
           class="text-primary text-decoration-underline"
         >

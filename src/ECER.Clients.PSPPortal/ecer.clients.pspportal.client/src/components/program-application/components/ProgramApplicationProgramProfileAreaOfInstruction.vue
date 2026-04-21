@@ -14,7 +14,7 @@
     <br />
     <h3>Adding a course</h3>
     <br />
-    <p>To add a course to your program profile:</p>
+    <p>To add a course to your program profile,</p>
     <ul class="ml-10">
       <li>Select "Add course"</li>
       <li>Input the course number and course name</li>
@@ -27,7 +27,7 @@
     <br />
     <h3>Updating a course</h3>
     <br />
-    <p>To edit a course on your program profile:</p>
+    <p>To edit a course on your program profile,</p>
     <ul class="ml-10">
       <li>Select the pencil icon beside the course name</li>
       <li>Make any changes and click "Save"</li>
@@ -169,30 +169,19 @@ export default defineComponent({
       }
     },
     generateSubtitleMap(): Record<string, string> {
-      //specific subtitle only for Area of Instruction Child Guidance for ProgramType Basic
-      const childGuidanceAreaOfInstruction =
-        this.configStore.areaOfInstructionList.filter(
-          (area) =>
-            area.name === "Child Guidance" &&
-            area.programTypes?.includes("Basic"),
-        );
-
-      if (
-        childGuidanceAreaOfInstruction &&
-        childGuidanceAreaOfInstruction.length > 0
-      ) {
-        const childGuidanceAreaOfInstructionId =
-          childGuidanceAreaOfInstruction[0]?.id;
-
-        return {
-          [childGuidanceAreaOfInstructionId!]:
-            "Child guidance is included in Program Development, Curriculum and Foundations.",
-        };
-      }
-      console.warn(
-        "Child Guidance area of instruction not found for Basic program type.",
-      );
-      return {};
+      const subtitleMap: Record<string, string> = {};
+      this.configStore.areaOfInstructionList
+        .filter((area) => area.parentAreaOfInstructionId != null)
+        .forEach((area) => {
+          const parentArea = this.configStore.areaOfInstructionList.find(
+            (a) => a.id === area.parentAreaOfInstructionId,
+          );
+          if (area.id && parentArea?.name) {
+            subtitleMap[area.id] =
+              `${area.name} is included in ${parentArea.name}.`;
+          }
+        });
+      return subtitleMap;
     },
   },
   methods: {

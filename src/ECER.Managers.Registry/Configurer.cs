@@ -26,9 +26,9 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, ReferencePortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, IcraReferencePortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, PspPortalInvitationVerificationHandler>();
-    configurationContext.Services.AddTransient<RecaptchaHandlers>();
-    configurationContext.Services.Configure<RecaptchaAppSettings>(recaptchaAppSettings =>
-    configurationContext.Configuration.GetSection("Recaptcha").Bind(recaptchaAppSettings));
+    configurationContext.Services.AddTransient<CaptchaHandlers>();
+    configurationContext.Services.Configure<CaptchaAppSettings>(captchaAppSettings =>
+    configurationContext.Configuration.GetSection("Captcha").Bind(captchaAppSettings));
     configurationContext.Services.AddTransient<BceidRegistrationIdentityService>();
     configurationContext.Services.AddTransient<BcscRegistrationIdentityService>();
     configurationContext.Services.AddTransient<IRegistrationIdentityService>(provider =>
@@ -36,9 +36,9 @@ public class Configurer : IConfigureComponents
   }
 }
 
-public record RecaptchaAppSettings : IOptions<RecaptchaAppSettings>
+public record CaptchaAppSettings : IOptions<CaptchaAppSettings>
 {
   public string Url { get; set; } = string.Empty;
   public string Secret { get; set; } = string.Empty;
-  public RecaptchaAppSettings Value => this;
+  public CaptchaAppSettings Value => this;
 }
