@@ -27,7 +27,11 @@
         </template>
       </div>
 
-      <!-- Hidden measurement elements -->
+      <!-- Hidden measurement elements. These are to track 
+          card title and chip size to determine when two
+          shrink/wrap. First we shrink the chip then we
+          wrap the title
+      -->
       <span
         ref="nameMeasure"
         aria-hidden="true"
