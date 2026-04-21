@@ -102,6 +102,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_rfairequiredName = "ecer_rfairequiredname";
 			public const string ecer_RFAISent = "ecer_rfaisent";
 			public const string ecer_rfaisentName = "ecer_rfaisentname";
+			public const string ecer_sharedocumenturl_ProgramApplicationComponentId = "ecer_sharedocumenturl_ProgramApplicationComponentId";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -1280,6 +1281,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_sharedocumenturl_ProgramApplicationComponentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_sharedocumenturl_ProgramApplicationComponentId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL> ecer_sharedocumenturl_ProgramApplicationComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL>("ecer_sharedocumenturl_ProgramApplicationComponentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL>("ecer_sharedocumenturl_ProgramApplicationComponentId", null, value);
 			}
 		}
 		

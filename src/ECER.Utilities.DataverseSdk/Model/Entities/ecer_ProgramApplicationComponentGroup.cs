@@ -89,6 +89,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_RFAINotes = "ecer_rfainotes";
 			public const string ecer_RFAIRequired = "ecer_rfairequired";
 			public const string ecer_rfairequiredName = "ecer_rfairequiredname";
+			public const string ecer_sharedocumenturl_ProgramApplicationComponentGroupId = "ecer_sharedocumenturl_ProgramApplicationComponentGroupId";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -1092,6 +1093,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_ComponentGroup", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_sharedocumenturl_ProgramApplicationComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_sharedocumenturl_ProgramApplicationComponentGroupId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL> ecer_sharedocumenturl_ProgramApplicationComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL>("ecer_sharedocumenturl_ProgramApplicationComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL>("ecer_sharedocumenturl_ProgramApplicationComponentGroupId", null, value);
 			}
 		}
 		

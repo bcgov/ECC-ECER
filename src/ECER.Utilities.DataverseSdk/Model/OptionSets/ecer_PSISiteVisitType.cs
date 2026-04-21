@@ -30,6 +30,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		InPersonSNE = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		VirtualEvaluationMeetingOnlineorHybridDelivery = 621870009,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		VirtualorInPersonEvaluationMeetingInPersonDelivery = 621870010,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		VirtualSiteVisitBasicOnlineDelivery = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
