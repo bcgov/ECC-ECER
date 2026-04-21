@@ -346,10 +346,7 @@ export function getCoursesForProgramApplicationReview(
   programType: Components.Schemas.ProgramTypes,
   areaOfInstructionList: Components.Schemas.AreaOfInstruction[],
 ) {
-  const courseAreaOfInstructionMap = new Map<
-    string | null | undefined,
-    CourseAreaDetail[]
-  >();
+  const courseAreaOfInstructionMap = new Map<string, CourseAreaDetail[]>();
 
   if (!courses || courses.length === 0) {
     return courseAreaOfInstructionMap;
@@ -357,7 +354,11 @@ export function getCoursesForProgramApplicationReview(
 
   areaOfInstructionList
     .filter((a) => a.programTypes?.includes(programType))
-    .forEach((area) => courseAreaOfInstructionMap.set(area.id, []));
+    .forEach((area) => {
+      if (area.id !== null && area.id !== undefined) {
+        courseAreaOfInstructionMap.set(area.id, []);
+      }
+    });
 
   courses
     .filter((course) => course.programType === programType)
@@ -369,13 +370,18 @@ export function getCoursesForProgramApplicationReview(
           hours: area.newHours,
         } as CourseAreaDetail;
 
-        const existing = courseAreaOfInstructionMap.get(
-          area.areaOfInstructionId,
-        );
-        if (existing) {
-          existing.push(detail);
-        } else {
-          courseAreaOfInstructionMap.set(area.areaOfInstructionId, [detail]);
+        if (
+          area.areaOfInstructionId !== null &&
+          area.areaOfInstructionId !== undefined
+        ) {
+          const existing = courseAreaOfInstructionMap.get(
+            area.areaOfInstructionId,
+          );
+          if (existing) {
+            existing.push(detail);
+          } else {
+            courseAreaOfInstructionMap.set(area.areaOfInstructionId, [detail]);
+          }
         }
       });
     });
