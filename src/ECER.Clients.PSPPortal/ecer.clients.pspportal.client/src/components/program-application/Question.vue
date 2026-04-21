@@ -28,7 +28,7 @@
       </div>
 
       <!-- Hidden measurement elements. These are to track 
-          card title and chip size to determine when two
+          card title and chip size to determine when to
           shrink/wrap. First we shrink the chip then we
           wrap the title
       -->
