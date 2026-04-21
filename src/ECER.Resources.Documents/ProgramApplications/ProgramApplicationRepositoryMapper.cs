@@ -20,6 +20,7 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationAccepted, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarantName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.DeclarantId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramProfileId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ProgramProfileName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationText, opts => opts.DoNotValidate())
