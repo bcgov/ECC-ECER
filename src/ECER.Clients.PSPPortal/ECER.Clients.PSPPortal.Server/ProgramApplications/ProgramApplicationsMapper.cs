@@ -38,6 +38,9 @@ internal sealed class ProgramApplicationsMapper: SecureProfile
       .ForMember(d => d.ProgramProfileId, opts => opts.MapFrom(s => s.ProgramProfileId))
       .ForMember(d => d.ProgramProfileName, opts => opts.MapFrom(s => s.ProgramProfileName))
       .ForMember(d => d.DeclarationText, opts => opts.MapFrom(s => s.DeclarationText))
+      .ForMember(d => d.BasicProgress, opts => opts.MapFrom(s => s.BasicProgress))
+      .ForMember(d => d.IteProgress, opts => opts.MapFrom(s => s.IteProgress))
+      .ForMember(d => d.SneProgress, opts => opts.MapFrom(s => s.SneProgress))
       .ForMember(d => d.DeclarantId, opts => opts.MapFrom(s => s.DeclarantId))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);

@@ -475,6 +475,22 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     context.SaveChanges();
     return applicationId;
   }
+
+  public async Task UpdateCourseProgress(string applicationId, string? basicProgress, string? iteProgress, string? sneProgress, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var existing = context.ecer_PostSecondaryInstituteProgramApplicaitonSet
+      .SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == Guid.Parse(applicationId));
+    if (existing == null) return;
+
+    if (basicProgress != null) existing.ecer_BasicEntryProgress = Enum.Parse<ecer_PSPComponentProgress>(basicProgress);
+    if (iteProgress != null) existing.ecer_ITEEntryProgress = Enum.Parse<ecer_PSPComponentProgress>(iteProgress);
+    if (sneProgress != null) existing.ecer_SNEEntryProgress = Enum.Parse<ecer_PSPComponentProgress>(sneProgress);
+
+    if (!context.IsAttached(existing)) context.Attach(existing);
+    context.UpdateObject(existing);
+    context.SaveChanges();
+  }
 }
 
 //ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton

@@ -46,7 +46,7 @@
       :program-type="programType"
       :include-total-hours="showTotalHours"
       :area-subtitles="generateSubtitleMap"
-      @reload-courses="loadCourses"
+      @reload-courses="handleReloadCourses"
     ></AreaOfInstructionComponent>
     <v-row class="mt-4">
       <v-col>
@@ -99,7 +99,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: { next: (_payload: NextStepPayload) => true },
+  emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
   setup: () => {
     const configStore = useConfigStore();
     const loadingStore = useLoadingStore();
@@ -192,6 +192,10 @@ export default defineComponent({
         "ProgramApplication",
         [this.programType],
       );
+    },
+    async handleReloadCourses() {
+      await this.loadCourses();
+      this.$emit("refreshNav");
     },
     saveAndContinue() {
       this.$emit("next", { programType: this.programType });
