@@ -58,35 +58,46 @@
         </v-row>
         <v-row
           no-gutters
-          class="mb-4"
+          :class="courses.length > 0 ? 'mb-4' : 'bg-alert-warning mb-4'"
           v-for="[
             courseAreaOfInstructionId,
             courses,
-          ] in getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
-            allCourses,
-            programType,
-          )"
+          ] in getCoursesForProgramApplication(programType)"
           :key="courseAreaOfInstructionId"
         >
-          <v-col cols="4">
-            {{
-              configStore.areaOfInstructionNameById(
-                courseAreaOfInstructionId,
-              ) || courseAreaOfInstructionId
-            }}
-          </v-col>
-          <v-col cols="8">
-            <div v-for="course in courses">
-              <v-row no-gutters>
-                <v-col cols="6">
-                  <strong>{{ getCourseName(course) }}</strong>
-                </v-col>
-                <v-col cols="6">
-                  <strong>{{ course.hours }}</strong>
-                </v-col>
-              </v-row>
-            </div>
-          </v-col>
+          <template v-if="courses.length > 0">
+            <v-col cols="4">
+              {{
+                configStore.areaOfInstructionNameById(
+                  courseAreaOfInstructionId,
+                ) || courseAreaOfInstructionId
+              }}
+            </v-col>
+            <v-col cols="8">
+              <div v-for="course in courses">
+                <v-row no-gutters>
+                  <v-col cols="6">
+                    <strong>{{ getCourseName(course) }}</strong>
+                  </v-col>
+                  <v-col cols="6">
+                    <strong>{{ course.hours }}</strong>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-col>
+          </template>
+
+          <template v-else>
+            <v-icon color="warning" icon="mdi-alert-circle-outline"></v-icon>
+            <v-col cols="4">
+              {{
+                configStore.areaOfInstructionNameById(
+                  courseAreaOfInstructionId,
+                ) || courseAreaOfInstructionId
+              }}
+            </v-col>
+            <v-col>no courses provided</v-col>
+          </template>
         </v-row>
         <v-row
           v-if="
@@ -134,7 +145,7 @@ import { useLoadingStore } from "@/store/loading";
 import { useConfigStore } from "@/store/config";
 import { useRouter } from "vue-router";
 import {
-  getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction,
+  getCoursesForProgramApplicationReview,
   getNonAllocatedCoursesByType,
   getCourseTitle,
 } from "@/utils/functions";
@@ -193,7 +204,16 @@ export default defineComponent({
     await this.loadInformation();
   },
   methods: {
-    getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction,
+    getCoursesForProgramApplication(
+      programType: Components.Schemas.ProgramTypes,
+    ) {
+      return getCoursesForProgramApplicationReview(
+        this.allCourses,
+        programType,
+        this.configStore.areaOfInstructionList,
+      );
+    },
+    getCoursesForProgramApplicationReview,
     getNonAllocatedCoursesByType,
     getCourseTitle,
     printPage() {
