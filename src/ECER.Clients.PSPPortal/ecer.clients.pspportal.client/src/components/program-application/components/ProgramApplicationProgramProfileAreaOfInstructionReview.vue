@@ -58,7 +58,7 @@
         </v-row>
         <v-row
           no-gutters
-          :class="courses.length > 0 ? 'mb-4' : 'no-course mb-4'"
+          :class="courses.length > 0 ? 'mb-4' : 'bg-alert-warning mb-4'"
           v-for="[
             courseAreaOfInstructionId,
             courses,
@@ -282,8 +282,4 @@ export default defineComponent({
   },
 });
 </script>
-<style scope>
-.no-course {
-  background-color: #fef1d8 !important;
-}
-</style>
+<style scope></style>
