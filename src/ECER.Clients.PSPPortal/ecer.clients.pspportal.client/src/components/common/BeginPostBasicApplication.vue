@@ -15,7 +15,7 @@
         <div class="d-flex flex-column ga-3">
           <p>
             To begin your application, provide information about the program.
-            When you have completed these questions, choose “Continue” to save
+            When you have completed these questions, select “Continue” to save
             your responses and create your draft application.
           </p>
           <p>
@@ -31,7 +31,7 @@
           <p>
             You may reach out to the Registry for assistance at any time by
             <router-link to="/messages/new">sending a message</router-link>
-            .
+            <span>.</span>
           </p>
         </Callout>
       </v-col>
