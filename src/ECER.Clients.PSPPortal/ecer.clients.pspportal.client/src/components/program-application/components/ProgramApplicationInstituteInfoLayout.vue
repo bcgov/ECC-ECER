@@ -734,8 +734,10 @@ export default defineComponent({
 
       const sortedOtherUsers = otherUsers.sort(
         (a: PspUserListItem, b: PspUserListItem) => {
-          const nameA = `${a.profile?.firstName} ${a.profile?.lastName}`.trim();
-          const nameB = `${b.profile?.firstName} ${b.profile?.lastName}`.trim();
+          const nameA =
+            `${a.profile?.firstName ?? ""} ${a.profile?.lastName ?? ""}`.trim();
+          const nameB =
+            `${b.profile?.firstName ?? ""} ${b.profile?.lastName ?? ""}`.trim();
           return nameA.localeCompare(nameB);
         },
       );
@@ -743,14 +745,14 @@ export default defineComponent({
       if (currentUser) {
         this.contacts.push({
           id: currentUser.id,
-          name: `${currentUser.profile?.firstName} ${currentUser.profile?.lastName}`,
+          name: `${currentUser.profile?.firstName ?? ""} ${currentUser.profile?.lastName ?? ""}`,
         });
       }
 
       sortedOtherUsers.forEach((user: PspUserListItem) => {
         this.contacts.push({
           id: user.id,
-          name: `${user.profile?.firstName} ${user.profile?.lastName}`,
+          name: `${user.profile?.firstName ?? ""} ${user.profile?.lastName ?? ""}`,
         });
       });
       this.programRepresentativeId = currentUser?.id || null;

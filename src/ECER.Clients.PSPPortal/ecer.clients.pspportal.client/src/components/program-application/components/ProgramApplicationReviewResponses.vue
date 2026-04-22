@@ -323,7 +323,7 @@ export default defineComponent({
           (user) => user.id === this.programApplicationObject?.declarantId,
         );
         if (user) {
-          return `${user.profile?.firstName} ${user.profile?.lastName}`.trim();
+          return `${user.profile?.firstName ?? ""} ${user.profile?.lastName ?? ""}`.trim();
         }
       }
       return "—";
@@ -407,7 +407,7 @@ export default defineComponent({
             user.id === this.programApplicationObject?.programRepresentativeId,
         );
         this.contactPerson = contactPerson
-          ? `${contactPerson.profile?.firstName} ${contactPerson.profile?.lastName}`.trim()
+          ? `${contactPerson.profile?.firstName ?? ""} ${contactPerson.profile?.lastName ?? ""}`.trim()
           : "-";
       }
     },
