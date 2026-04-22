@@ -200,6 +200,29 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     Assert.Contains("must be a valid GUID", await response.ReadAsTextAsync());
   }
 
+  [Fact]
+  public async Task AddCourseAndDeleteCourse_ForProgramApplication_WithApplicationId_ReturnsOK()
+  {
+    var course = CreateCourseWithCourseAreaOfInstructions();
+    course.CourseTitle = "Test_psp_add_delete_with_appid";
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Post.Json(new AddCourseRequest(course, FunctionType.ProgramApplication, Fixture.draftProgramApplicationId)).ToUrl($"/api/courses");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var newCourseId = await response.ReadAsJsonAsync<string>();
+    newCourseId.ShouldNotBeNull();
+
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
+      _.Delete.Url($"/api/courses/{newCourseId}?applicationId={Fixture.draftProgramApplicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+  }
+
   private Course CreateCourse(int courseNumber, string newNumber)
   {
     return new Course

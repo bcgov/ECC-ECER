@@ -466,6 +466,7 @@ export default defineComponent({
       if (this.selectedCourseToDelete) {
         const { error } = await deleteCourse(
           this.selectedCourseToDelete.courseId || "",
+          this.type === "ProgramApplication" ? this.id : undefined,
         );
         if (error) {
           this.alertStore.setFailureAlert(

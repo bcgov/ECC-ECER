@@ -35,5 +35,8 @@ public class Configurer : IConfigureComponents
 
     // Program Application
     configurationContext.Services.AddTransient<IProgramApplicationValidationEngine, ProgramApplicationSubmissionValidationEngine>();
+
+    // Course progress
+    configurationContext.Services.AddTransient<ICourseProgressEvaluator, CourseProgressEvaluator>();
   }
 }
