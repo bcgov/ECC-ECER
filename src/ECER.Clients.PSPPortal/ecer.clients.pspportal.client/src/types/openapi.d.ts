@@ -367,6 +367,9 @@ declare namespace Components {
       programProfileId?: string | null;
       programProfileName?: string | null;
       declarationText?: string | null;
+      basicProgress?: string | null;
+      iteProgress?: string | null;
+      sneProgress?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;
@@ -584,10 +587,14 @@ declare namespace Paths {
   }
   namespace CourseDelete {
     namespace Parameters {
+      export type ApplicationId = string;
       export type CourseId = string;
     }
     export interface PathParameters {
       courseId: Parameters.CourseId;
+    }
+    export interface QueryParameters {
+      applicationId?: Parameters.ApplicationId;
     }
     namespace Responses {
       export type $200 = string;
@@ -1304,7 +1311,9 @@ export interface OperationMethods {
    * string.Empty
    */
   "course_delete"(
-    parameters?: Parameters<Paths.CourseDelete.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.CourseDelete.QueryParameters & Paths.CourseDelete.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CourseDelete.Responses.$200>;
@@ -1713,7 +1722,9 @@ export interface PathsDictionary {
      * string.Empty
      */
     "delete"(
-      parameters?: Parameters<Paths.CourseDelete.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.CourseDelete.QueryParameters & Paths.CourseDelete.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CourseDelete.Responses.$200>;

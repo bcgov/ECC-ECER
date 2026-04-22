@@ -39,6 +39,9 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForMember(d => d.ecer_OnlineDeliveryHoursPercentage, opts => opts.MapFrom(s => s.OnlineDeliveryHoursPercentage))
       .ForMember(d => d.ecer_InpersonHoursPercentage, opts => opts.MapFrom(s => s.InPersonHoursPercentage))
       .ForMember(d => d.ecer_OtherAdmissionOptions, opts => opts.MapFrom(s => s.OtherAdmissionOptions))
+      .ForMember(d => d.ecer_basicentryprogressName, opts => opts.MapFrom(s => s.BasicProgress))
+      .ForMember(d => d.ecer_iteentryprogressName, opts => opts.MapFrom(s => s.IteProgress))
+      .ForMember(d => d.ecer_sneentryprogressName, opts => opts.MapFrom(s => s.SneProgress))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(ProgramApplication.Id), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstituteProgramApplicaitonId.HasValue ? s.ecer_PostSecondaryInstituteProgramApplicaitonId.Value.ToString() : null))
@@ -69,6 +72,9 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForMember(d => d.ProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId.Id))
       .ForMember(d => d.ProgramProfileName, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId.Name))
       .ForMember(d => d.DeclarationText, opts => opts.MapFrom(s => s.ecer_DeclarationStatements))
+      .ForMember(d => d.BasicProgress, opts => opts.MapFrom(s => s.ecer_BasicEntryProgress))
+      .ForMember(d => d.IteProgress, opts => opts.MapFrom(s => s.ecer_ITEEntryProgress))
+      .ForMember(d => d.SneProgress, opts => opts.MapFrom(s => s.ecer_SNEEntryProgress))
       ;
 
     CreateMap<ecer_ProgramCampus, ProgramCampus>(MemberList.Destination)

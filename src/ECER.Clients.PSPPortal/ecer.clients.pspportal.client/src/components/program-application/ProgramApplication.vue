@@ -41,6 +41,7 @@
         <router-view
           :application-type="programApplication.programApplicationType"
           @next="handleNext"
+          @refresh-nav="getComponentGroups"
         />
       </v-col>
     </v-row>
