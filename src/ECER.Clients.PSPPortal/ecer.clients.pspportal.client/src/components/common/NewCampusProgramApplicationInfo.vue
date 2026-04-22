@@ -155,12 +155,11 @@
           B.C. Child Care Sector Occupational Competencies
         </a>
         <a
-          href="https://www2.gov.bc.ca/assets/download/C7D2FE264133456082776F45D4C69500"
+          href="https://www2.gov.bc.ca/assets/gov/family-and-social-supports/child-care/childcarebc-programs/ecer/bc_child_care_sector_occupational_competencies.pdf"
           target="_blank"
           class="text-primary text-decoration-underline"
         >
-          B.C. Child Care Sector Occupational Competencies Assessment Tool with
-          Linking Competencies
+          B.C. Child Care Sector Occupational Competencies Assessment Tool
         </a>
         <!-- prettier-ignore -->
         <p class="mt-3">
