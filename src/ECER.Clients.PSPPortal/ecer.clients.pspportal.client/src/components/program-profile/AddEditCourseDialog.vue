@@ -6,7 +6,7 @@
   >
     <v-form ref="courseForm">
       <v-card class="pa-4">
-        <v-card-title>
+        <v-card-title class="font-weight-bold">
           {{ courseDialogMode === "edit" ? "Update" : "Add" }} Course
         </v-card-title>
         <v-card-text>
@@ -176,8 +176,15 @@ export default defineComponent({
   },
   computed: {
     areas(): Components.Schemas.AreaOfInstruction[] {
-      return this.configStore.areaOfInstructionList.filter((area) => {
+      const filtered = this.configStore.areaOfInstructionList.filter((area) => {
         return area?.programTypes?.includes(this.programType);
+      });
+      return [...filtered].sort((a, b) => {
+        if (a.displayOrder === null || a.displayOrder === undefined) return 1;
+        if (b.displayOrder === null || b.displayOrder === undefined) return -1;
+        return a.displayOrder.localeCompare(b.displayOrder, undefined, {
+          numeric: true,
+        });
       });
     },
     validateHours() {
