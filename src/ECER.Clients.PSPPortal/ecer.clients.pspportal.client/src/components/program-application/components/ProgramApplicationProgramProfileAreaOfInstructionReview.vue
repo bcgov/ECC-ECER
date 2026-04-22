@@ -282,4 +282,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scope></style>
