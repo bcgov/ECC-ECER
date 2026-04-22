@@ -304,6 +304,9 @@ public record ProgramApplication
   public string? ProgramProfileId { get; set; }
   public string? ProgramProfileName { get; set; }
   public string? DeclarationText { get; set; }
+  public string? BasicProgress { get; set; }
+  public string? IteProgress { get; set; }
+  public string? SneProgress { get; set; }
 }
 
 public record ProgramCampus

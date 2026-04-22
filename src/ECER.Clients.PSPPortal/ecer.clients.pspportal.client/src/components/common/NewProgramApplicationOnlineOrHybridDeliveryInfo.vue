@@ -13,9 +13,9 @@
       <div class="d-flex flex-column ga-3">
         <p>
           Under the authority of the Community Care and Assisted Living Act and
-          the Child Care Licensing Regulation (CCLR), the Director of the Early
-          Childhood Educator Registry (Registry) sets standards for the
-          certification of Early Childhood Educators (ECEs) in British Columbia.
+          the Child Care Licensing Regulation (CCLR), the director of the Early
+          Childhood Educator Registry (ECE Registry) sets standards for the
+          certification of early childhood educators in British Columbia.
           Recognized early childhood education programs are listed in Schedule D
           of the CCLR and have been evaluated and found to provide students with
           the knowledge, skills, and abilities required to meet this standard.
@@ -32,15 +32,7 @@
             target="_blank"
           >
             B.C. Child Care Sector Occupational Competencies
-          </a>, and the
-          <a
-            href="https://www2.gov.bc.ca/assets/download/C7D2FE264133456082776F45D4C69500"
-            class="text-primary text-decoration-underline"
-            target="_blank"
-          >
-            Linking Competencies
-          </a> 
-          document.
+          </a> (CCSOC), and the Linking Competencies document.
         </p>
         <div>
           <p>
@@ -151,8 +143,8 @@
       <ECEHeader title="Assessment and recognition process" />
       <div class="d-flex flex-column ga-3 mt-4">
         <p>
-          The Registry can begin your assessment after you submit your completed
-          application package.
+          The ECE Registry can begin your assessment after you submit your
+          completed application package.
         </p>
         <p>
           A recognition evaluation meeting will be required during the
@@ -179,12 +171,11 @@
           B.C. Child Care Sector Occupational Competencies
         </a>
         <a
-          href="https://www2.gov.bc.ca/assets/download/C7D2FE264133456082776F45D4C69500"
+          href="https://www2.gov.bc.ca/assets/gov/family-and-social-supports/child-care/childcarebc-programs/ecer/bc_child_care_sector_occupational_competencies.pdf"
           target="_blank"
           class="text-primary text-decoration-underline"
         >
-          B.C. Child Care Sector Occupational Competencies Assessment Tool with
-          Linking Competencies
+          B.C. Child Care Sector Occupational Competencies Assessment Tool
         </a>
         <!-- prettier-ignore -->
         <p class="mt-3">
