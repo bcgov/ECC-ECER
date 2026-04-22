@@ -16,7 +16,7 @@
         <div class="d-flex flex-column ga-3">
           <p>
             To begin your application, provide information about the program.
-            When you have completed these questions, choose “Continue” to save
+            When you have completed these questions, select “Continue” to save
             your responses and create your draft application.
           </p>
           <p>
@@ -59,14 +59,21 @@
               responses later.
             </p>
             <p>
-              To apply to offer early childhood education program at a satelitte
-              location, an institution must already have a recognized basic or
-              post-basic early childhood education program.
+              To apply to offer an early childhood education program at a
+              satelitte location, an institution must already have a recognized
+              basic or post-basic early childhood education program.
             </p>
 
             <v-row>
-              <v-col cols="6">
-                <p class="pb-3">Program Profile</p>
+              <v-col cols="12">
+                <p class="pb-3 font-weight-bold">Program Profile</p>
+                <p class="mb-3">
+                  Select the ECE Registry-recognized program for which you are
+                  requesting approval to expand delivery to online or hybrid
+                  formats.
+                </p>
+              </v-col>
+              <v-col cols="12" md="6">
                 <v-select
                   v-model="selectedProgramProfileId"
                   class="mt-2"
@@ -77,10 +84,6 @@
                   :rules="[Rules.required('Required')]"
                   hide-details="auto"
                 ></v-select>
-                <p>
-                  Select the Registry-recognized program for which you are
-                  requesting approval to offer a satellite location.
-                </p>
               </v-col>
             </v-row>
           </div>

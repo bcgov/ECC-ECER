@@ -16,7 +16,7 @@
         <div class="d-flex flex-column ga-3">
           <p>
             To begin your application, provide information about the program.
-            When you have completed these questions, choose “Continue” to save
+            When you have completed these questions, select “Continue” to save
             your responses and create your draft application.
           </p>
           <p>
@@ -59,8 +59,8 @@
               responses later.
             </p>
             <p>
-              To apply to expand early childhood education program delivery to
-              online or hybrid methods, an institution must already have a
+              To apply to expand an early childhood education program delivery
+              to online or hybrid methods, an institution must already have a
               recognized basic or post-basic early childhood education program.
             </p>
 
