@@ -11,6 +11,22 @@
     </PageContainer>
   </v-sheet>
   <PageContainer :margin-top="false">
+    <div
+      v-for="systemMessage in configStore.systemMessages"
+      :key="systemMessage.name ?? ''"
+    >
+      <div
+        v-if="
+          systemMessage.portalTags &&
+          systemMessage.portalTags.includes('PSPPortal')
+        "
+        class="d-flex flex-column ga-3 mb-10"
+      >
+        <Alert title="Alert">
+          {{ systemMessage.message ? systemMessage.message : "" }}
+        </Alert>
+      </div>
+    </div>
     <v-row>
       <v-col cols="12" md="6" class="mb-12">
         <div class="d-flex flex-column ga-4">

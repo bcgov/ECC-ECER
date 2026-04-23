@@ -92,7 +92,7 @@
                 <v-checkbox
                   v-model="provincialCertificationTypeValues"
                   value="Basic"
-                  label="Early childhood education (Basic)"
+                  label="Early Childhood Educator"
                   density="compact"
                   hide-details
                 />

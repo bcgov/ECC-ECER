@@ -81,7 +81,8 @@ public enum PortalTags
 {
   LOGIN,
   LOOKUP,
-  REFERENCES
+  REFERENCES,
+  PSPPortal
 }
 
 public record OutOfProvinceCertificationType(string Id)
