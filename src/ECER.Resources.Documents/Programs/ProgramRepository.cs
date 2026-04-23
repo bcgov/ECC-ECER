@@ -215,7 +215,7 @@ internal sealed class ProgramRepository : IProgramRepository
     context.UpdateObject(existingProgram);
     context.SaveChanges();
 
-    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileIdName == program.Name);
+    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileId.Id == Guid.Parse(program.Id!));
     if (newProgram == null) throw new InvalidOperationException($"New program for ecer_Program '{program.Id}' not found");
 
     var newProgramId = newProgram.ecer_ProgramId != null ? newProgram.ecer_ProgramId.ToString() : string.Empty;
