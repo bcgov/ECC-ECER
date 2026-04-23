@@ -88,7 +88,11 @@
           </template>
 
           <template v-else>
-            <v-icon color="warning" icon="mdi-alert-circle-outline"></v-icon>
+            <v-icon
+              class="mr-2"
+              color="warning"
+              icon="mdi-alert-circle-outline"
+            ></v-icon>
             <v-col cols="4">
               {{
                 configStore.areaOfInstructionNameById(
