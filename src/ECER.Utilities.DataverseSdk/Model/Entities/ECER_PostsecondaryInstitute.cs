@@ -423,6 +423,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Calculated fields has been deprecated
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfulladdress")]
 		public string ecer_documentfulladdress
 		{
@@ -433,6 +436,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Calculated fields has been deprecated
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfullstreetaddress")]
 		public string ecer_documentfullstreetaddress
 		{
