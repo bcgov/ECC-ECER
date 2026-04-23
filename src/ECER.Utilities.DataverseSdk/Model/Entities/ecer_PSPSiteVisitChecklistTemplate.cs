@@ -43,7 +43,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// PSP Site Visit Checklist Template
+	/// PSP REM Checklist Template
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_pspsitevisitchecklisttemplate")]

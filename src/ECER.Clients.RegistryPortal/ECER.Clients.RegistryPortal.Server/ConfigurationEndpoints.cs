@@ -125,7 +125,8 @@ public enum PortalTags
 {
   LOGIN,
   LOOKUP,
-  REFERENCES
+  REFERENCES,
+  PSPPortal
 }
 
 public record IdentificationTypesQuery

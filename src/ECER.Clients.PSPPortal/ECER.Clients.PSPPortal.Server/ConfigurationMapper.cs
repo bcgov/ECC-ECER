@@ -19,6 +19,7 @@ public class ConfigurationMapper : SecureProfile
     CreateMap<AreaOfInstruction, Managers.Admin.Contract.Metadatas.AreaOfInstruction>()
       .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ProgramTypes != null ? s.ProgramTypes.Select(type => type.ToString()) : Array.Empty<string>()))
       .ForMember(d => d.ParentAreaOfInstructionId, opts => opts.MapFrom(s => s.ParentAreaOfInstructionId));
+    CreateMap<Managers.Admin.Contract.Metadatas.SystemMessage, SystemMessage>();
   }
 
   private static ProgramTypes[] ParseProgramTypes(IEnumerable<string>? programTypes)

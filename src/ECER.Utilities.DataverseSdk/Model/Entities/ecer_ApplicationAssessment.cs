@@ -95,6 +95,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_legacyapplicationassessmentid = "ecer_legacyapplicationassessmentid";
 			public const string ecer_legacyassessmenttraininglocationid = "ecer_legacyassessmenttraininglocationid";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
+			public const string ecer_LinkExistingCharacterReference = "ecer_linkexistingcharacterreference";
+			public const string ecer_linkexistingcharacterreferenceName = "ecer_linkexistingcharacterreferencename";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_RecommendationLetterAccepted = "ecer_recommendationletteraccepted";
 			public const string ecer_recommendationletteracceptedName = "ecer_recommendationletteracceptedname";
@@ -714,6 +716,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyentrydate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_linkexistingcharacterreference")]
+		public System.Nullable<bool> ecer_LinkExistingCharacterReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_linkexistingcharacterreference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_linkexistingcharacterreference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_linkexistingcharacterreferencename")]
+		public string ecer_linkexistingcharacterreferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_linkexistingcharacterreference"))
+				{
+					return this.FormattedValues["ecer_linkexistingcharacterreference"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
