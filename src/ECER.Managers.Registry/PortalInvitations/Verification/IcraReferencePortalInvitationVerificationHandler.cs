@@ -1,12 +1,14 @@
 using AutoMapper;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
+using Serilog;
 
 namespace ECER.Managers.Registry;
 
 public class IcraReferencePortalInvitationVerificationHandler(
   IRegistrantRepository registrantRepository,
-  IMapper mapper)
+  IMapper mapper,
+  ILogger logger)
   : IPortalInvitationVerificationHandler
 {
   public bool CanHandle(InviteType? inviteType)
@@ -17,8 +19,10 @@ public class IcraReferencePortalInvitationVerificationHandler(
   public async Task<PortalInvitationVerificationQueryResult> Verify(PortalInvitation portalInvitation, CancellationToken cancellationToken)
   {
     var emptyGuidString = Guid.Empty.ToString();
-    if (portalInvitation == null || portalInvitation.WorkexperienceReferenceId == emptyGuidString)
+    logger.Debug("Portal invitation verifying {PortalInvitation}", portalInvitation);
+    if (portalInvitation == null || portalInvitation.WorkexperienceReferenceId == emptyGuidString || portalInvitation.WorkexperienceReferenceId == null)
     {
+      logger.Debug("Reference not found");
       return PortalInvitationVerificationQueryResult.Failure("Reference not found");
     }
 
@@ -26,6 +30,7 @@ public class IcraReferencePortalInvitationVerificationHandler(
     var applicant = registrantResult.SingleOrDefault();
     if (applicant == null)
     {
+      logger.Debug("Applicant not found");
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
 
@@ -35,10 +40,13 @@ public class IcraReferencePortalInvitationVerificationHandler(
     {
       case Contract.PortalInvitations.PortalInvitationStatusCode.Completed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Expired:
         return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Cancelled:
         return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
+
       case Contract.PortalInvitations.PortalInvitationStatusCode.Failed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }
@@ -50,5 +58,3 @@ public class IcraReferencePortalInvitationVerificationHandler(
     return PortalInvitationVerificationQueryResult.Success(result);
   }
 }
-
-

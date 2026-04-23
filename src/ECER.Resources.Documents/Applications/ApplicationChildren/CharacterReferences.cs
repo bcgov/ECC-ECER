@@ -1,5 +1,6 @@
-﻿using AutoMapper;
+﻿using Amazon.Runtime.Internal;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -92,16 +93,28 @@ internal partial class ApplicationRepository
 
     var ecerCharacterReference = mapper.Map<ecer_CharacterReference>(updatedReference);
 
-    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId)).ToList();
+    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId));
 
     bool RefIdIsGuid = Guid.TryParse(referenceId, out Guid referenceIdGuid);
     if (RefIdIsGuid)
     {
       var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == referenceIdGuid);
 
-      // 1. Remove existing Character Reference
+      // 1. Remove existing Character Reference and associated portal invitations
       if (oldReference != null)
       {
+        if (oldReference.StatusCode == ecer_CharacterReference_StatusCode.Rejected || oldReference.StatusCode == ecer_CharacterReference_StatusCode.Submitted)
+        {
+          throw new InvalidOperationException($"Character reference '{oldReference.Id}' already responded cannot change to another one");
+        }
+        var invitations = context.ecer_PortalInvitationSet.Where(i => i.ecer_CharacterReferenceId.Id == referenceIdGuid).ToList();
+        if (invitations != null && invitations.Count > 0)
+        {
+          foreach (var invitation in invitations)
+          {
+            context.DeleteObject(invitation);
+          }
+        }
         context.DeleteObject(oldReference);
       }
       else

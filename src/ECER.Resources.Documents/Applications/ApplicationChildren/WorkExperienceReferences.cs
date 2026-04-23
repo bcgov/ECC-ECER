@@ -1,4 +1,5 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
+﻿using Amazon.Runtime.Internal;
+using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -129,10 +130,22 @@ internal sealed partial class ApplicationRepository
     if (RefIdIsGuid)
     {
       var oldReference = existingWorkExperiences.SingleOrDefault(t => t.Id == referenceIdGuid);
-      // 1. Remove existing WorkExperienceReference
+      // 1. Remove existing WorkExperienceReference and associated portal invitations
 
       if (oldReference != null)
       {
+        if (oldReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Rejected || oldReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Submitted)
+        {
+          throw new InvalidOperationException($"Work experience reference '{oldReference.Id}' already responded cannot change to another one");
+        }
+        var invitations = context.ecer_PortalInvitationSet.Where(i => i.ecer_WorkExperienceReferenceId.Id == referenceIdGuid).ToList();
+        if (invitations != null && invitations.Count > 0)
+        {
+          foreach (var invitation in invitations)
+          {
+            context.DeleteObject(invitation);
+          }
+        }
         context.DeleteObject(oldReference);
       }
       else

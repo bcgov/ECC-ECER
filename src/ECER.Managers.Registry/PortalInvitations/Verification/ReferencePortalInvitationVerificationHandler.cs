@@ -3,6 +3,7 @@ using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.Certifications;
+using Serilog;
 
 namespace ECER.Managers.Registry;
 
@@ -10,7 +11,7 @@ public class ReferencePortalInvitationVerificationHandler(
   IRegistrantRepository registrantRepository,
   ICertificationRepository certificationRepository,
   IApplicationRepository applicationRepository,
-  IMapper mapper)
+  IMapper mapper, ILogger logger)
   : IPortalInvitationVerificationHandler
 {
   public bool CanHandle(InviteType? inviteType)
@@ -22,8 +23,12 @@ public class ReferencePortalInvitationVerificationHandler(
   public async Task<PortalInvitationVerificationQueryResult> Verify(PortalInvitation portalInvitation, CancellationToken cancellationToken)
   {
     var emptyGuidString = Guid.Empty.ToString();
-    if (portalInvitation == null || (portalInvitation.WorkexperienceReferenceId == emptyGuidString && portalInvitation.CharacterReferenceId == emptyGuidString))
+    logger.Debug("Portal invitation verifying {PortalInvitation}", portalInvitation);
+    if (portalInvitation == null || 
+      (portalInvitation.WorkexperienceReferenceId == emptyGuidString && portalInvitation.CharacterReferenceId == emptyGuidString) || 
+      (portalInvitation.WorkexperienceReferenceId == null && portalInvitation.CharacterReferenceId == null))
     {
+      logger.Debug("Reference not found");
       return PortalInvitationVerificationQueryResult.Failure("Reference not found");
     }
 
@@ -31,6 +36,7 @@ public class ReferencePortalInvitationVerificationHandler(
     var applicant = registrantResult.SingleOrDefault();
     if (applicant == null)
     {
+      logger.Debug("Applicant not found");
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
 
@@ -38,6 +44,7 @@ public class ReferencePortalInvitationVerificationHandler(
     var application = applications.SingleOrDefault();
     if (application == null)
     {
+      logger.Debug("Application not found");
       return PortalInvitationVerificationQueryResult.Failure("Application not found");
     }
 
