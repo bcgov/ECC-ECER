@@ -66,25 +66,23 @@
   <v-row>
     <v-col cols="12">
       <Callout title="Private institutions" type="warning">
-        <p>
-          Private institutions require an approval from their regulator to add a
-          temporary offering of an early childhood education cohort at a
-          location in partnership with another organization, or at a location
-          outside of the institution.
-        </p>
-        <p>
-          Contact the
-          <a
-            href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
-            class="text-primary text-decoration-underline"
-            target="_blank"
-          >
-            Private Training Institutions Regulatory Unit
-          </a>
-          (PTIRU) at
-          <a href="mailto:PTI@gov.bc.ca">PTI@gov.bc.ca</a>
-          indicating the requested change.
-        </p>
+        <div class="d-flex flex-column ga-3">
+          <p>
+            Private institutions require additional approval from their
+            regulator before amending delivery methods.
+          </p>
+          <p>
+            Contact the
+            <a
+              href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
+              class="text-primary text-decoration-underline"
+              target="_blank"
+            >
+              Private Training Institutions Regulatory Unit
+            </a>
+            for more information.
+          </p>
+        </div>
       </Callout>
     </v-col>
   </v-row>
@@ -147,8 +145,9 @@
           completed application package.
         </p>
         <p>
-          A recognition evaluation meeting will be required during the
-          assessment to determine interim recognition and ongoing recognition.
+          Two recognition evaluation meetings are required during the
+          assessment: one to determine interim recognition to start the program,
+          and a second to determine ongoing recognition.
         </p>
         <p>
           As early childhood education continues to grow and evolve, any program
