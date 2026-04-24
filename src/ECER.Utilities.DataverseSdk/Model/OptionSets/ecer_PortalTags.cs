@@ -27,6 +27,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		LOOKUP = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PSPPortal = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		REFERENCES = 621870002,
 	}
 }

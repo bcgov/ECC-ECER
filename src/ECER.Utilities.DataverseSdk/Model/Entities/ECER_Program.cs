@@ -91,6 +91,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_course_Programid = "ecer_course_Programid";
 			public const string ecer_courseprovincialrequirement_ProgramProfileId = "ecer_courseprovincialrequirement_ProgramProfileId";
 			public const string ecer_DeclarationDate = "ecer_declarationdate";
+			public const string ecer_DeliveryMethod = "ecer_deliverymethod";
+			public const string ecer_deliverymethodName = "ecer_deliverymethodname";
 			public const string ecer_DescriptiveProgramName = "ecer_descriptiveprogramname";
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_FamilyChildCareTraining = "ecer_familychildcaretraining";
@@ -105,6 +107,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ITECoursesTotalHours = "ecer_itecoursestotalhours";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NewBasicTotalHours = "ecer_newbasictotalhours";
+			public const string ecer_NewDeliveryMethod = "ecer_newdeliverymethod";
+			public const string ecer_newdeliverymethodName = "ecer_newdeliverymethodname";
 			public const string ecer_NewDescriptiveProgramName = "ecer_newdescriptiveprogramname";
 			public const string ecer_NewITETotalHours = "ecer_newitetotalhours";
 			public const string ecer_NewOfferingType = "ecer_newofferingtype";
@@ -456,6 +460,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_deliverymethod")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSIDeliveryType> ecer_DeliveryMethod
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSIDeliveryType>(this, "ecer_deliverymethod");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_deliverymethod", EntityOptionSetEnum.GetMultiEnum(this, "ecer_deliverymethod", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_deliverymethodname")]
+		public string ecer_deliverymethodName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_deliverymethod"))
+				{
+					return this.FormattedValues["ecer_deliverymethod"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_descriptiveprogramname")]
 		public string ecer_DescriptiveProgramName
 		{
@@ -677,6 +713,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_newbasictotalhours", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newdeliverymethod")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSIDeliveryType> ecer_NewDeliveryMethod
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSIDeliveryType>(this, "ecer_newdeliverymethod");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_newdeliverymethod", EntityOptionSetEnum.GetMultiEnum(this, "ecer_newdeliverymethod", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newdeliverymethodname")]
+		public string ecer_newdeliverymethodName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_newdeliverymethod"))
+				{
+					return this.FormattedValues["ecer_newdeliverymethod"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
