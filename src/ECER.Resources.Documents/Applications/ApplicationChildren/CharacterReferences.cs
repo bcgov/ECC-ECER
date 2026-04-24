@@ -106,13 +106,12 @@ internal partial class ApplicationRepository
           throw new InvalidOperationException($"Character reference '{oldReference.Id}' already responded cannot change to another one");
         }
         var invitations = context.ecer_PortalInvitationSet.Where(i => i.ecer_CharacterReferenceId.Id == referenceIdGuid).ToList();
-        if (invitations.Count > 0)
+        
+        foreach (var invitation in invitations)
         {
-          foreach (var invitation in invitations)
-          {
-            context.DeleteObject(invitation);
-          }
+          context.DeleteObject(invitation);
         }
+        
         context.DeleteObject(oldReference);
       }
       else

@@ -138,12 +138,9 @@ internal sealed partial class ApplicationRepository
           throw new InvalidOperationException($"Work experience reference '{oldReference.Id}' already responded cannot change to another one");
         }
         var invitations = context.ecer_PortalInvitationSet.Where(i => i.ecer_WorkExperienceReferenceId.Id == referenceIdGuid).ToList();
-        if (invitations.Count > 0)
+        foreach (var invitation in invitations)
         {
-          foreach (var invitation in invitations)
-          {
-            context.DeleteObject(invitation);
-          }
+          context.DeleteObject(invitation);
         }
         context.DeleteObject(oldReference);
       }

@@ -119,13 +119,12 @@ internal sealed partial class ICRARepository
           throw new InvalidOperationException($"Work experience reference '{oldReference.Id}' already responded cannot delete");
         }
         var invitations = context.ecer_PortalInvitationSet.Where(i => i.ecer_WorkExperienceReferenceId.Id == referenceIdGuid).ToList();
-        if (invitations.Count > 0)
+        
+        foreach (var invitation in invitations)
         {
-          foreach (var invitation in invitations)
-          {
-            context.DeleteObject(invitation);
-          }
+          context.DeleteObject(invitation);
         }
+        
         context.DeleteObject(oldReference);
       }
       else
