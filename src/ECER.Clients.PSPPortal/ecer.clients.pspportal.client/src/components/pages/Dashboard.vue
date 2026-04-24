@@ -535,7 +535,9 @@ export default defineComponent({
       this.educationInstitution = await getEducationInstitution();
     },
     async getProgramProfileData() {
-      const { data: programResults } = await getPrograms("", ["Draft"]);
+      const { data: programResults } = await getPrograms("", ["Draft"], {
+        byProgramProfileType: "AnnualReview",
+      });
       this.programsRequiringReview = programResults?.programs ?? null;
     },
     setUserStoreValues() {

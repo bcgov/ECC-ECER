@@ -36,6 +36,17 @@ internal sealed class ProgramRepository : IProgramRepository
       programs = programs.WhereIn(item => item.StatusCode!.Value, statuses);
     }
 
+    if (query.ByProgramProfileType != null)
+    {
+      var profileType = query.ByProgramProfileType.Value switch
+      {
+        ProgramProfileType.AnnualReview => ecer_ProgramProfileType.AnnualReview,
+        ProgramProfileType.ChangeRequest => ecer_ProgramProfileType.ChangeRequest,
+        _ => throw new ArgumentOutOfRangeException(nameof(query), query.ByProgramProfileType, null),
+      };
+      programs = programs.Where(p => p.ecer_Type == profileType);
+    }
+
     if (query.ByFromProgramProfileId != null)
     {
       var fromProgramProfileId = Guid.Parse(query.ByFromProgramProfileId);
