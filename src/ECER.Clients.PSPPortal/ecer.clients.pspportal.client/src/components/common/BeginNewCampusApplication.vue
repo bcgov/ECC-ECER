@@ -142,7 +142,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <p class="pb-3">Campus</p>
+          <p class="pb-3 font-weight-bold">Location</p>
           <p class="pb-3">Select where this program will be administered.</p>
 
           <v-radio-group
@@ -152,10 +152,7 @@
             :rules="[Rules.required('Select a campus')]"
           >
             <div v-for="campus in userStore.educationInstitution?.campuses">
-              <v-radio
-                :label="campus.generatedName || '-'"
-                :value="campus.id || null"
-              />
+              <v-radio :label="campus.name || '-'" :value="campus.id || null" />
             </div>
           </v-radio-group>
         </v-col>

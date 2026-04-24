@@ -119,7 +119,12 @@ export default defineComponent({
       return this.programApplication.componentsGenerationCompleted !== true;
     },
     isRFAI(): boolean {
-      return this.programApplication.statusReasonDetail === "RFAIrequested";
+      return (
+        this.programApplication?.status !== undefined &&
+        (this.programApplication?.status === "InterimRecognition" ||
+          this.programApplication?.status === "ReviewAnalysis") &&
+        this.programApplication?.statusReasonDetail === "RFAIrequested"
+      );
     },
     applicationType(): string {
       return this.programApplication.programApplicationType
