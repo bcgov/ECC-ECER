@@ -67,6 +67,24 @@ public class FileEndpoints : IRegisterEndpoints
       .DisableAntiforgery()
       .RequireAuthorization()
       .WithParameterValidation();
+
+    endpointRouteBuilder.MapDelete("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, NotFound>> (
+    string fileId,
+    [FromHeader(Name = "file-folder")] string? folder,
+    [FromHeader(Name = "application")][Required] EcerWebApplicationType application,
+    IMediator messageBus,
+    HttpContext ctx,
+    CancellationToken ct) =>
+    {
+      var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, folder ?? string.Empty, application)], false), ct);
+      var file = results.Items.SingleOrDefault();
+      if (file == null) return TypedResults.NotFound();
+      await messageBus.Send(new DeleteFileCommand(file), ct);
+
+      return TypedResults.Ok(new FileResponse(fileId));
+    })
+    .RequireAuthorization()
+    .WithParameterValidation();
   }
 }
 
