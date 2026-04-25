@@ -1,6 +1,18 @@
 <template>
-  <v-breadcrumbs class="pl-0" :items="breadcrumbItems" color="primary">
+  <v-breadcrumbs class="pl-0" :items="breadcrumbItems">
     <template #divider>/</template>
+    <template #item="{ item }">
+      <v-breadcrumbs-item
+        :class="{
+          'text-decoration-underline text-primary': !item.disabled,
+          'text-grey-very-dark': item.disabled,
+        }"
+        :disabled="false"
+        :href="item.disabled ? undefined : item.href"
+      >
+        {{ item.title }}
+      </v-breadcrumbs-item>
+    </template>
   </v-breadcrumbs>
 </template>
 
@@ -291,10 +303,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.v-breadcrumbs__item:not(.v-breadcrumbs__item--disabled),
-.v-breadcrumbs-item:not(.v-breadcrumbs-item--disabled) {
-  text-decoration: underline !important;
-}
-</style>

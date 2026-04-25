@@ -5,6 +5,18 @@
   <v-container>
     <v-breadcrumbs class="pl-0" :items="breadcrumbItems" color="primary">
       <template #divider>/</template>
+      <template #item="{ item }">
+        <v-breadcrumbs-item
+          :class="{
+            'text-decoration-underline text-primary': !item.disabled,
+            'text-grey-very-dark': item.disabled,
+          }"
+          :disabled="false"
+          :href="item.disabled ? undefined : item.href"
+        >
+          {{ item.title }}
+        </v-breadcrumbs-item>
+      </template>
     </v-breadcrumbs>
     <v-row>
       <v-col cols="auto">
