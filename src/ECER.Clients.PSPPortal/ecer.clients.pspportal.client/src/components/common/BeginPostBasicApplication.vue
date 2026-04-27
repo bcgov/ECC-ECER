@@ -129,15 +129,15 @@
             :rules="[Rules.required('Select a delivery method')]"
           >
             <v-radio
-              label="In-person - All coursework, including faculty practicum supervision, is in person"
+              label="In-person - programs or courses are delivered on campus or at an approved instructional site"
               value="Inperson"
             ></v-radio>
             <v-radio
-              label="Hybrid - Combination of in-person and online delivery; faculty practicum supervision is in person"
+              label="Hybrid - courses within a program are delivered both online and in person"
               value="Hybrid"
             ></v-radio>
             <v-radio
-              label="Online - All coursework, including faculty practicum supervision, is online"
+              label="Online - programs or courses are delivered entirely through digital platforms, with no requirement for students to attend a physical campus"
               value="Online"
             ></v-radio>
           </v-radio-group>
