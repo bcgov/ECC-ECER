@@ -858,6 +858,7 @@ declare namespace Paths {
   }
   namespace ProgramGet {
     namespace Parameters {
+      export type ByProgramProfileType = Components.Schemas.ProgramProfileType;
       export type ByStatus = Components.Schemas.ProgramStatus[];
       export type CampusId = string;
       export type FromProgramId = string;
@@ -868,6 +869,7 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       byStatus?: Parameters.ByStatus;
+      byProgramProfileType?: Parameters.ByProgramProfileType;
       fromProgramId?: Parameters.FromProgramId;
       campusId?: Parameters.CampusId;
     }

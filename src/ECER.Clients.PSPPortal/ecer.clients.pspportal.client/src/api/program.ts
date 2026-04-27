@@ -19,11 +19,13 @@ const getPrograms = async (
     pageSize,
     fromProgramId,
     campusId,
+    byProgramProfileType,
   }: {
     page?: number;
     pageSize?: number;
     fromProgramId?: string;
     campusId?: string;
+    byProgramProfileType?: Components.Schemas.ProgramProfileType;
   } = {},
 ): Promise<
   ApiResponse<Components.Schemas.GetProgramsResponse | null | undefined>
@@ -42,6 +44,7 @@ const getPrograms = async (
           byStatus: statuses,
           fromProgramId: fromProgramId,
           campusId: campusId,
+          byProgramProfileType: byProgramProfileType,
         },
         null,
         config,
