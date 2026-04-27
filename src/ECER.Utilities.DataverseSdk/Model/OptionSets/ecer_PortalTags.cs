@@ -21,6 +21,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		CertificationsPortal = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		LOGIN = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

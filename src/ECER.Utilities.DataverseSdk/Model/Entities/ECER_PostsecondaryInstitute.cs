@@ -39,6 +39,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Active = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Draft = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
 	}
 	
