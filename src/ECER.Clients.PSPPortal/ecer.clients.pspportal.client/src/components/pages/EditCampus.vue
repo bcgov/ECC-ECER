@@ -155,9 +155,8 @@ export default defineComponent({
       this.isSaving = true;
       try {
         const { campus } = campusFormRef.getData();
-        const success = await updateCampus(this.campusId, campus);
-
-        if (success) {
+        const response = await updateCampus(this.campusId, campus);
+        if (response?.data === "") {
           this.alertStore.setSuccessAlert(
             "Campus has been successfully updated.",
           );
@@ -168,6 +167,11 @@ export default defineComponent({
               campusId: this.campusId,
             },
           });
+        } else if (response?.error?.status == 400) {
+          let message = response?.error?.title
+            ? response?.error?.title
+            : "Failed to update campus. Please try again.";
+          this.alertStore.setFailureAlert(message);
         } else {
           this.alertStore.setFailureAlert(
             "Failed to update campus. Please try again.",
