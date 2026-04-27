@@ -27,7 +27,7 @@ public record CreateCampusCommand(string ProgramRepresentativeId, Campus Campus,
 /// <summary>
 /// Updates an existing campus - IsSatelliteOrTemporaryLocation cannot be changed
 /// </summary>
-public record UpdateCampusCommand(string ProgramRepresentativeId, Campus Campus) : IRequest<string>;
+public record UpdateCampusCommand(string ProgramRepresentativeId, Campus Campus) : IRequest<UpdateCampusResult>;
 
 public record PostSecondaryInstitute
 {
@@ -88,3 +88,15 @@ public enum PrivateAuspiceType
   Indigenouscontrolledpostsecondaryinstitute,
 }
 
+public record UpdateCampusResult()
+{
+  public string? CampusId { get; set; }
+  public UpdateCampusError? Error { get; set; }
+}
+
+public enum UpdateCampusError
+{
+  InstitutionNotFound,
+  DuplicateCampusName,
+  InvalidCampus
+}

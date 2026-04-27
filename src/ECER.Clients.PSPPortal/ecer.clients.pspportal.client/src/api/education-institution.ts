@@ -2,6 +2,7 @@ import { getClient } from "@/api/client";
 import type {
   CreateCampusRequest,
   EducationInstitution,
+  ProblemDetails,
   UpdateCampusRequest,
 } from "@/types/openapi";
 import ApiResultHandler from "@/utils/apiResultHandler";
@@ -45,13 +46,13 @@ const createCampus = async (
 const updateCampus = async (
   campusId: string,
   campus: UpdateCampusRequest,
-): Promise<boolean> => {
+): Promise<ProblemDetails | null> => {
   const client = await getClient();
   const response = await apiResultHandler.execute({
     request: client.campus_put({ campusId }, campus),
     key: "campus_put",
   });
-  return response != null;
+  return response;
 };
 
 export {
