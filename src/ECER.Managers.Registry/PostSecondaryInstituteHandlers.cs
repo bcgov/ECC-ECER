@@ -11,7 +11,7 @@ public class PostSecondaryInstituteHandlers(
   : IRequestHandler<SearchPostSecondaryInstitutionQuery, PostSecondaryInstitutionsQueryResults>,
     IRequestHandler<UpdatePostSecondaryInstitutionCommand, string>,
     IRequestHandler<CreateCampusCommand, string>,
-    IRequestHandler<UpdateCampusCommand, string>
+    IRequestHandler<UpdateCampusCommand, UpdateCampusResult>
 {
   /// <summary>
   /// Handles search post secondary institution by program representative use case
@@ -87,7 +87,7 @@ public class PostSecondaryInstituteHandlers(
   /// <summary>
   /// Handles updating an existing campus - IsSatelliteOrTemporaryLocation is not changed
   /// </summary>
-  public async Task<string> Handle(UpdateCampusCommand request, CancellationToken cancellationToken)
+  public async Task<UpdateCampusResult> Handle(UpdateCampusCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -96,15 +96,27 @@ public class PostSecondaryInstituteHandlers(
       ByProgramRepresentativeId = request.ProgramRepresentativeId
     }, cancellationToken)).SingleOrDefault();
 
-    if (institution == null) throw new InvalidOperationException($"No institution found for program representative {request.ProgramRepresentativeId}");
+    if (institution == null)
+    {
+      return new UpdateCampusResult() { Error = UpdateCampusError.InstitutionNotFound };
+    }
 
+    var isNameDuplicate = institution.Campuses?.Any(c => c.Id != request.Campus.Id && c.Name == request.Campus.Name);
+
+    if (isNameDuplicate is true)
+    {
+      return new UpdateCampusResult() { Error = UpdateCampusError.DuplicateCampusName };
+    }
     var existingCampus = institution.Campuses?.SingleOrDefault(c => c.Id == request.Campus.Id);
-    if (existingCampus == null) throw new InvalidOperationException($"Campus {request.Campus.Id} does not belong to the user's institution");
+    if (existingCampus == null) 
+    {
+      return new UpdateCampusResult() { Error = UpdateCampusError.InvalidCampus };
+    }
 
     var campusToUpdate = request.Campus with { IsSatelliteOrTemporaryLocation = existingCampus.IsSatelliteOrTemporaryLocation };
     var campus = mapper.Map<Resources.Documents.PostSecondaryInstitutes.Campus>(campusToUpdate)!;
     await postSecondaryInstituteRepository.UpdateCampus(campus, cancellationToken);
-    return request.Campus.Id;
+    return  new UpdateCampusResult() { CampusId = request.Campus.Id };
   }
 }
 
