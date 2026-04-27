@@ -296,7 +296,7 @@ export default defineComponent({
   },
 });
 </script>
-<style scope>
+<style scoped>
 a {
   text-decoration: none;
   color: black !important;
