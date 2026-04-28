@@ -1,48 +1,46 @@
 <template>
-  <v-container>
-    <Loading v-if="loading" />
-    <template v-else>
-      <v-row v-if="componentGroup?.name || componentGroup?.instruction">
-        <v-col cols="12" class="mb-4">
-          <h2 v-if="componentGroup?.name" class="text-h6">
-            {{ componentGroup.name }}
-          </h2>
-          <p v-if="componentGroup?.instruction" class="ma-0 mt-2">
-            {{ componentGroup.instruction }}
-          </p>
-        </v-col>
-      </v-row>
-      <v-row v-if="components.length">
-        <v-col
-          v-for="(comp, index) in components"
-          :key="comp.id ?? index"
-          cols="12"
-          class="mb-4"
+  <Loading v-if="loading" />
+  <template v-else>
+    <v-row v-if="componentGroup?.name || componentGroup?.instruction">
+      <v-col cols="12" class="mb-4">
+        <h2 v-if="componentGroup?.name" class="text-h6">
+          {{ componentGroup.name }}
+        </h2>
+        <p v-if="componentGroup?.instruction" class="ma-0 mt-2">
+          {{ componentGroup.instruction }}
+        </p>
+      </v-col>
+    </v-row>
+    <v-row v-if="components.length">
+      <v-col
+        v-for="(comp, index) in components"
+        :key="comp.id ?? index"
+        cols="12"
+        class="mb-4"
+      >
+        <Question
+          v-model="formByComponentId[comp.id ?? '']"
+          :name="comp.name ?? ''"
+          :question="comp.question ?? ''"
+          :rfai-required="comp.rfaiRequired ?? false"
+          :read-only="isRFAI"
+        />
+      </v-col>
+    </v-row>
+    <p v-else class="ma-0">No components for this group.</p>
+    <v-row class="mt-4">
+      <v-col>
+        <v-btn
+          color="primary"
+          :loading="saving"
+          :disabled="saving"
+          @click="saveAndContinue"
         >
-          <Question
-            v-model="formByComponentId[comp.id ?? '']"
-            :name="comp.name ?? ''"
-            :question="comp.question ?? ''"
-            :rfai-required="comp.rfaiRequired ?? false"
-            :read-only="isRFAI"
-          />
-        </v-col>
-      </v-row>
-      <p v-else class="ma-0">No components for this group.</p>
-      <v-row class="mt-4">
-        <v-col>
-          <v-btn
-            color="primary"
-            :loading="saving"
-            :disabled="saving"
-            @click="saveAndContinue"
-          >
-            Save and continue
-          </v-btn>
-        </v-col>
-      </v-row>
-    </template>
-  </v-container>
+          Save and continue
+        </v-btn>
+      </v-col>
+    </v-row>
+  </template>
 </template>
 
 <script lang="ts">
