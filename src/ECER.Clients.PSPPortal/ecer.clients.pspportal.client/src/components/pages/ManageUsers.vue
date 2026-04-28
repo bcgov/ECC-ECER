@@ -126,6 +126,7 @@
             <UserCard
               :user="user"
               @resend-invitation="handleResendInvitation"
+              @remove-access="handleRemoveAccess"
               :currentUserId="userStore.pspUserProfile?.id || ''"
             />
           </v-col>
