@@ -3,7 +3,7 @@
   <template v-else-if="canEditProgramProfile">
     <h2>Program profile - ECE ({{ programType }})</h2>
     <br />
-    <p>This page will build your program profile with the ECE Registry</p>
+    <p>This page will build your program profile with the ECE Registry.</p>
     <br />
     <h2>Areas of instruction</h2>
     <br />
@@ -27,16 +27,16 @@
     <br />
     <h3>Updating a course</h3>
     <br />
-    <p>To edit a course on your program profile,</p>
+    <p>To edit a course on your program profile:</p>
     <ul class="ml-10">
       <li>Select the pencil icon beside the course name</li>
-      <li>Make any changes and click "Save"</li>
+      <li>Make any changes and select "Save"</li>
       <li>If you need to delete a course, select the trashcan icon</li>
     </ul>
     <br />
     <p>
       Note: If you do not input any hours for a course, it will be shown in the
-      "Non-allocated courses" section on this page
+      "Non-allocated courses" section on this page.
     </p>
     <br />
     <AreaOfInstructionComponent

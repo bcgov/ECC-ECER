@@ -53,8 +53,8 @@
       <v-card-text class="text-grey-dark">
         <v-row class="mb-4" no-gutters>
           <v-col cols="4">Area of instruction</v-col>
-          <v-col cols="4">Course number and name</v-col>
-          <v-col cols="4">Hours</v-col>
+          <v-col cols="6">Course number and name</v-col>
+          <v-col cols="2">Hours</v-col>
         </v-row>
         <v-row
           no-gutters
@@ -76,10 +76,10 @@
             <v-col cols="8">
               <div v-for="course in courses">
                 <v-row no-gutters>
-                  <v-col cols="6">
+                  <v-col cols="9">
                     <strong>{{ getCourseName(course) }}</strong>
                   </v-col>
-                  <v-col cols="6">
+                  <v-col cols="3">
                     <strong>{{ course.hours }}</strong>
                   </v-col>
                 </v-row>

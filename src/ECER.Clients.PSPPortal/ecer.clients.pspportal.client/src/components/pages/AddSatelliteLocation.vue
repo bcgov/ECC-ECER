@@ -156,8 +156,11 @@ export default defineComponent({
             "Satellite location has been successfully added.",
           );
           await this.router.push({
-            name: "education-institution",
-            params: { institutionId: this.institutionId },
+            name: "programApplicationInfo",
+            params: {
+              applicationType: "SatelliteProgram",
+              campusId: newCampusId,
+            },
           });
         } else {
           this.alertStore.setFailureAlert(
