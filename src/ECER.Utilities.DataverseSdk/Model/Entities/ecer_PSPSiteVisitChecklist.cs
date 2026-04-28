@@ -401,6 +401,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Recognition Evaluation Meeting
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_SiteVisitId
 		{

@@ -19,7 +19,6 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       var dynamicsConfig = await messageBus.Send(new DynamicsConfigQuery(), ct);
       var appConfig = configuration.Get<ApplicationConfiguration>()!;
 
-      
       appConfig.ICRAFeatureEnabled = dynamicsConfig.config.ICRAFeatureEnabled;
 
       return TypedResults.Ok(appConfig);
@@ -126,7 +125,8 @@ public enum PortalTags
   LOGIN,
   LOOKUP,
   REFERENCES,
-  PSPPortal
+  PSPPortal,
+  CertificationsPortal
 }
 
 public record IdentificationTypesQuery

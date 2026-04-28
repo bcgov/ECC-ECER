@@ -120,6 +120,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_offeringtypeName = "ecer_offeringtypename";
 			public const string ecer_OriginalApplication = "ecer_originalapplication";
 			public const string ecer_OriginalApplicationName = "ecer_originalapplicationname";
+			public const string ecer_pauseautomatedmessage = "ecer_pauseautomatedmessage";
+			public const string ecer_pauseautomatedmessageName = "ecer_pauseautomatedmessagename";
 			public const string ecer_PortalStage = "ecer_portalstage";
 			public const string ecer_PostSecondaryInstituteProgramApplica = "ecer_PostSecondaryInstituteProgramApplica";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program = "ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program";
@@ -916,6 +918,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_originalapplication"))
 				{
 					return this.FormattedValues["ecer_originalapplication"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pauseautomatedmessage")]
+		public virtual ecer_YesNoNull? ecer_pauseautomatedmessage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_pauseautomatedmessage")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_pauseautomatedmessage", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pauseautomatedmessagename")]
+		public string ecer_pauseautomatedmessageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_pauseautomatedmessage"))
+				{
+					return this.FormattedValues["ecer_pauseautomatedmessage"];
 				}
 				else
 				{
