@@ -11,22 +11,7 @@
     </PageContainer>
   </v-sheet>
   <PageContainer :margin-top="false">
-    <div
-      v-for="systemMessage in configStore.systemMessages"
-      :key="systemMessage.name ?? ''"
-    >
-      <div
-        v-if="
-          systemMessage.portalTags &&
-          systemMessage.portalTags.includes('PSPPortal')
-        "
-        class="d-flex flex-column ga-3 mb-10"
-      >
-        <Alert title="Alert">
-          {{ systemMessage.message ? systemMessage.message : "" }}
-        </Alert>
-      </div>
-    </div>
+    <SystemBanner pageTag="LOGIN" />
     <v-row>
       <v-col cols="12" md="6" class="mb-12">
         <div class="d-flex flex-column ga-4">
@@ -98,25 +83,23 @@ import { useRoute, useRouter } from "vue-router";
 
 import LoginCard from "@/components/LoginCard.vue";
 import PageContainer from "@/components/PageContainer.vue";
+import SystemBanner from "@/components/SystemBanner.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
-import { useConfigStore } from "@/store/config";
 import { useDisplay } from "vuetify";
-import Alert from "../Alert.vue";
 
 export default defineComponent({
   name: "Login",
-  components: { LoginCard, PageContainer, Alert },
+  components: { LoginCard, PageContainer, SystemBanner },
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-    const configStore = useConfigStore();
     const router = useRouter();
 
     const route = useRoute();
     const { smAndDown } = useDisplay();
 
-    return { userStore, oidcStore, configStore, route, smAndDown, router };
+    return { userStore, oidcStore, route, smAndDown, router };
   },
   methods: {
     async handleLogin() {
