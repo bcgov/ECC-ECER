@@ -133,10 +133,6 @@
               label="Hybrid - courses within a program are delivered both online and in person"
               value="Hybrid"
             ></v-radio>
-            <v-radio
-              label="Online - programs or courses are delivered entirely through digital platforms, with no requirement for students to attend a physical campus"
-              value="Online"
-            ></v-radio>
           </v-radio-group>
         </v-col>
       </v-row>
