@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Clients.PSPPortal.Server.EducationInstitutions;
 using ECER.Clients.PSPPortal.Server.Programs;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
@@ -85,5 +84,6 @@ public enum PortalTags
   LOGIN,
   LOOKUP,
   REFERENCES,
-  PSPPortal
+  PSPPortal,
+  CertificationsPortal
 }
