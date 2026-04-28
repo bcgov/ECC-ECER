@@ -18,11 +18,11 @@ export const communicationCategoryOptions: Array<
   { value: "PracticumInquiry", label: "Practicum Inquiry" },
   {
     value: "ECEProgramApplicationInquiry",
-    label: "ECE Program Application Inquiry",
+    label: "Early Childhood Education Program Application Inquiry",
   },
   {
     value: "ECEProgramApplicationRequirements",
-    label: "ECE Program Application Requirements",
+    label: "Early Childhood Education Program Application Requirements",
   },
   { value: "ProgramProfileInquiry", label: "Program Profile Inquiry" },
   {
@@ -44,11 +44,11 @@ export const initiableCommunicationCategoryOptions: Array<
   { value: "PracticumInquiry", label: "Practicum Inquiry" },
   {
     value: "ECEProgramApplicationInquiry",
-    label: "ECE Program Application Inquiry",
+    label: "Early Childhood Education Program Application Inquiry",
   },
   {
     value: "ECEProgramApplicationRequirements",
-    label: "ECE Program Application Requirements",
+    label: "Early Childhood Education Program Application Requirements",
   },
   { value: "ProgramProfileInquiry", label: "Program Profile Inquiry" },
   {

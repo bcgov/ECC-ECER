@@ -120,11 +120,17 @@
     class="mt-5"
   >
     <v-col cols="12">
+      <!--prettier-ignore-->
       <p class="mb-3">
         Ask the ECE Registry about early childhood education program
         requirements (for example, administrative guidelines and policies,
-        curriculum development and the BC Child Care Sector Occupational
-        Competencies, online program delivery).
+        curriculum development and the
+        <a
+          target="_blank"
+          href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
+        >
+          BC Child Care Sector Occupational Competencies
+        </a>, online program delivery).
       </p>
       <p class="mb-3">Please include any relevant documentation.</p>
       <p>The ECE Registry will review your inquiry and follow up with you.</p>
@@ -142,13 +148,13 @@
         Please include the program profile(s) academic year you are inquiring
         about.
       </p>
+      <!--prettier-ignore-->
       <p class="mb-3">
         For changes to a current program profile that do not impact program
-        requirements or competencies, please submit a
+        requirements or competencies, please
         <router-link :to="{ name: 'program-profiles' }">
-          program profile update
-        </router-link>
-        instead of submitting an inquiry.
+          submit a program profile update instead of submitting an inquiry
+        </router-link>.
       </p>
       <p>The ECE Registry will review your inquiry and follow up with you.</p>
     </v-col>
@@ -189,19 +195,24 @@
         The ECE Registry will review your message and follow up with you as soon
         as possible.
       </p>
+      <!--prettier-ignore-->
       <p>
         Please note: If there are concerns about the character, skill or conduct
-        of a certified ECE or ECE Assistant, please contact the ECE Registry's
-        Investigation team. For more information about the Registry's
-        Investigations Team and process, please visit
+        of a certified ECE or ECE Assistant, please
+        <a
+          target="_blank"
+          href="https://www2.gov.bc.ca/gov/content?id=9376DE7539D44C64B3E667DB53320E71"
+        >
+          contact the ECE Registry's Investigation team
+        </a>. For more information about the Registry's Investigations Team and
+        process, please visit
         <a
           href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/complaints"
           target="_blank"
           rel="noopener noreferrer"
         >
           Make a Complaint - Province of British Columbia
-        </a>
-        .
+        </a>.
       </p>
     </v-col>
   </v-row>
