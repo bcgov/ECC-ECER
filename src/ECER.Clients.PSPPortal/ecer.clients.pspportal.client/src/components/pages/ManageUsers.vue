@@ -137,6 +137,7 @@
           <v-col cols="12">
             <ECEHeader title="Inactive users" />
           </v-col>
+          <div>adding some changes</div>
         </v-row>
         <v-row>
           <v-col cols="12">

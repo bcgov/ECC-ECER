@@ -120,7 +120,7 @@
       <br />
       <p>
         If you decide to reactivate this user's account later, you can invite
-        them to the portal again at that time.
+        them to the portal again at that time. testing here
       </p>
       <br />
       <p><strong>Do you wish to continue?</strong></p>
