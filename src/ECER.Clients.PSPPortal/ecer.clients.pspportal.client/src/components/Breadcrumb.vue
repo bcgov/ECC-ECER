@@ -281,6 +281,20 @@ export default defineComponent({
               href: "/program-application-begin",
             },
           ];
+        } else if (applicationType === "SatelliteProgram") {
+          return [
+            home,
+            {
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
+              title: "Application for satellite program",
+              disabled: true,
+              href: "/program-application-info",
+            },
+          ];
         } else if (applicationType === "AddOnlineorHybridDeliveryMethod") {
           return [
             home,
