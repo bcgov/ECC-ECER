@@ -1,6 +1,6 @@
 <template>
   <Loading v-if="loading" />
-  <PageContainer v-else>
+  <template v-else>
     <v-row class="justify-space-between mb-4">
       <v-col cols="auto">
         <h1>Review program profile</h1>
@@ -135,11 +135,10 @@
         </v-btn>
       </v-col>
     </v-row>
-  </PageContainer>
+  </template>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import type { Components } from "@/types/openapi";
 import { getProgramApplicationById } from "@/api/program-application";
@@ -159,7 +158,6 @@ import type { CourseAreaDetail } from "@/types/helperFunctions";
 export default defineComponent({
   name: "ProgramApplicationReviewResponses",
   components: {
-    PageContainer,
     Loading,
   },
   props: {

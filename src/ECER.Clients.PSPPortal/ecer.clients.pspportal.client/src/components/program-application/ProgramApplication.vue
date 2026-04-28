@@ -50,11 +50,13 @@
       </v-col>
       <!--Overriding default min-width auto to stop large v-card-titles from expanding col-->
       <v-col style="min-width: 0">
-        <router-view
-          :application-type="programApplication.programApplicationType"
-          @next="handleNext"
-          @refresh-nav="getComponentGroups"
-        />
+        <PageContainer>
+          <router-view
+            :application-type="programApplication.programApplicationType"
+            @next="handleNext"
+            @refresh-nav="getComponentGroups"
+          />
+        </PageContainer>
       </v-col>
     </v-row>
   </v-container>
