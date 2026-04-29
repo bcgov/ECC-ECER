@@ -112,7 +112,14 @@ export const useConfigStore = defineStore("config", {
         areaOfInstructionList !== null &&
         areaOfInstructionList !== undefined
       ) {
-        this.areaOfInstructionList = areaOfInstructionList;
+        this.areaOfInstructionList = areaOfInstructionList.sort((a, b) => {
+          if (a.displayOrder === null || a.displayOrder === undefined) return 1;
+          if (b.displayOrder === null || b.displayOrder === undefined)
+            return -1;
+          return a.displayOrder.localeCompare(b.displayOrder, undefined, {
+            numeric: true,
+          });
+        });
       }
       if (systemMessages !== null && systemMessages !== undefined) {
         this.systemMessages = systemMessages;

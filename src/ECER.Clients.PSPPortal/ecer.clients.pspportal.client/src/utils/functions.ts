@@ -372,7 +372,8 @@ export function getCoursesForProgramApplicationReview(
 
         if (
           area.areaOfInstructionId !== null &&
-          area.areaOfInstructionId !== undefined
+          area.areaOfInstructionId !== undefined &&
+          area.newHours !== "0"
         ) {
           const existing = courseAreaOfInstructionMap.get(
             area.areaOfInstructionId,
