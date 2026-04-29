@@ -109,17 +109,18 @@
                     (checked) => onCampusChange(campus.id ?? null, checked)
                   "
                   :disabled="
-                    userStore.educationInstitution?.institutionType ===
+                    isRfai ||
+                    (userStore.educationInstitution?.institutionType ===
                       'Private' &&
-                    programApplicationObject !== null &&
-                    programApplicationObject.programCampuses !== null &&
-                    programApplicationObject.programCampuses !== undefined &&
-                    programApplicationObject.programCampuses.length >= 1 &&
-                    campus.id !== null &&
-                    campus.id !== undefined &&
-                    programApplicationObject.programCampuses.some(
-                      (camp) => camp.campusId !== campus.id,
-                    )
+                      programApplicationObject !== null &&
+                      programApplicationObject.programCampuses !== null &&
+                      programApplicationObject.programCampuses !== undefined &&
+                      programApplicationObject.programCampuses.length >= 1 &&
+                      campus.id !== null &&
+                      campus.id !== undefined &&
+                      programApplicationObject.programCampuses.some(
+                        (camp) => camp.campusId !== campus.id,
+                      ))
                   "
                 />
               </v-col>
@@ -176,6 +177,7 @@
             item-value="id"
             :rules="[Rules.required('Required')]"
             hide-details="auto"
+            :readonly="isRfai"
           ></v-select>
         </v-col>
       </v-row>
@@ -195,6 +197,7 @@
               v-model="programName"
               label="Program name"
               :rules="[Rules.required('Enter a program name')]"
+              :readonly="isRfai"
             ></EceTextField>
           </div>
         </v-col>
@@ -209,6 +212,7 @@
                   v-model="programLength"
                   label="Program length"
                   :rules="[validateHours]"
+                  :readonly="isRfai"
                 ></EceTextField>
               </div>
             </v-col>
@@ -238,6 +242,7 @@
                         value="Synchronous"
                         density="compact"
                         hide-details
+                        :disabled="isRfai"
                       />
                     </v-col>
                     <v-col cols="12">
@@ -247,6 +252,7 @@
                         value="Asynchronous"
                         density="compact"
                         hide-details
+                        :disabled="isRfai"
                       />
                     </v-col>
                   </v-row>
@@ -272,6 +278,7 @@
                         value="Inpersonsitevisits"
                         density="compact"
                         hide-details
+                        :disabled="isRfai"
                       />
                     </v-col>
                     <v-col cols="12">
@@ -281,6 +288,7 @@
                         value="Virtualsitevisits"
                         density="compact"
                         hide-details
+                        :disabled="isRfai"
                       />
                     </v-col>
                   </v-row>
@@ -329,6 +337,7 @@
                       value="PartTime"
                       density="compact"
                       hide-details
+                      :disabled="isRfai"
                     />
                   </v-col>
                   <v-col cols="12">
@@ -338,6 +347,7 @@
                       value="FullTime"
                       density="compact"
                       hide-details
+                      :disabled="isRfai"
                     />
                   </v-col>
                 </v-row>
@@ -361,6 +371,7 @@
                       value="Allcoursesrestrictedtoearlychildhoodeducationstudents"
                       density="compact"
                       hide-details
+                      :disabled="isRfai"
                     />
                   </v-col>
                   <v-col cols="12">
@@ -370,6 +381,7 @@
                       value="Oneormorecoursesopentoanystudentsintheinstitution"
                       density="compact"
                       hide-details
+                      :disabled="isRfai"
                     />
                   </v-col>
                   <v-col cols="12">
@@ -379,6 +391,7 @@
                       value="Cohortenrollmentstudentsstarttogetherandgraduatetogether"
                       density="compact"
                       hide-details
+                      :disabled="isRfai"
                     />
                   </v-col>
                   <v-col cols="12">
@@ -388,6 +401,7 @@
                       value="Continuousenrollmentstudentscanenrolatanytime"
                       density="compact"
                       hide-details
+                      :disabled="isRfai"
                     />
                   </v-col>
                   <v-col cols="12">
@@ -397,6 +411,7 @@
                       value="Other"
                       density="compact"
                       hide-details
+                      :disabled="isRfai"
                     />
                   </v-col>
                 </v-row>
@@ -410,6 +425,7 @@
                 v-model="otherAdmissionOptions"
                 label="List or describe the other admission options"
                 hide-details="auto"
+                :readonly="isRfai"
               />
             </v-col>
           </v-row>
@@ -429,6 +445,7 @@
               v-model="minimumEnrollment"
               label="Minimum enrollment per course"
               :rules="[validateHours]"
+              :readonly="isRfai"
             ></EceTextField>
           </div>
         </v-col>
@@ -438,6 +455,7 @@
               v-model="maximumEnrollment"
               label="Maximum enrollment per course"
               :rules="[validateHours]"
+              :readonly="isRfai"
             ></EceTextField>
           </div>
         </v-col>
@@ -474,18 +492,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
 import type { PspUserListItem, Components } from "@/types/openapi";
-import { cloneDeep } from "lodash";
 import type { VForm } from "vuetify/components";
 import * as Rules from "@/utils/formRules";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import {
   mapProgramType,
   updateProgramApplication,
-  getProgramApplicationById,
   mapDeliveryType,
 } from "@/api/program-application";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
@@ -498,9 +514,13 @@ export default defineComponent({
   name: "ProgramApplicationInstituteInfoLayout",
   components: { EceDateInput, EceTextField, Loading },
   props: {
-    programApplicationId: {
-      type: String,
+    programApplicationObject: {
+      type: Object as PropType<Components.Schemas.ProgramApplication | null>,
       required: true,
+    },
+    isRfai: {
+      type: Boolean,
+      required: false,
     },
   },
   setup() {
@@ -690,8 +710,6 @@ export default defineComponent({
   data() {
     return {
       users: [] as PspUserListItem[],
-      programApplicationObject:
-        null as Components.Schemas.ProgramApplication | null,
       contacts: [] as ProgramApplicationContact[],
       Rules,
       programCampus: [] as (string | null | undefined)[],
@@ -701,7 +719,6 @@ export default defineComponent({
   },
   async mounted() {
     await this.loadUsers();
-    await this.fetchApplication();
 
     this.programCampus =
       this.programApplicationObject?.programCampuses?.map(
@@ -711,14 +728,6 @@ export default defineComponent({
   },
   methods: {
     dateBeforeRule,
-    async fetchApplication() {
-      const result = await getProgramApplicationById(this.programApplicationId);
-      if (result.error || result.data == null) {
-        console.error("Failed to retrieve program application:", result.error);
-      } else {
-        this.programApplicationObject = cloneDeep(result.data);
-      }
-    },
     async loadUsers() {
       this.users = (await getUsers()) ?? [];
       let currentRepId = this.programApplicationObject?.programRepresentativeId;

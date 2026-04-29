@@ -103,7 +103,12 @@
       </v-card-text>
     </v-card>
 
-    <v-card v-if="!isRFAI" class="mb-4 pb-2" variant="outlined" rounded="lg">
+    <v-card
+      v-if="!isRFAI || (isRFAI && filter === 'all')"
+      class="mb-4 pb-2"
+      variant="outlined"
+      rounded="lg"
+    >
       <v-card-title>
         <div class="d-flex justify-space-between align-center">
           <div>

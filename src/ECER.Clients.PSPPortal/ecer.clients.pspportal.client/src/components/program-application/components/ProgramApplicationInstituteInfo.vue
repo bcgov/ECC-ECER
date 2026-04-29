@@ -2,7 +2,8 @@
   <!-- Online/Hybrid: campus changed to location input conditional input for hybrid deliveryType -->
   <ProgramApplicationInstituteInfoLayout
     v-if="applicationType === 'AddOnlineorHybridDeliveryMethod'"
-    :program-application-id="programApplicationId"
+    :programApplicationObject="programApplicationObject"
+    :is-rfai="isRFAI"
     @next="$emit('next', $event)"
   >
     <template #campus-section-title><h2>Location</h2></template>
@@ -40,6 +41,7 @@
                   Rules.numberToDecimalPlaces(2),
                 ]"
                 @update:model-value="onUpdateInPersonHoursPercentage"
+                :readonly="isRFAI"
               ></EceTextField>
             </div>
           </v-col>
@@ -54,6 +56,7 @@
                   Rules.numberToDecimalPlaces(2),
                 ]"
                 @update:model-value="onUpdateOnlineDeliveryHoursPercentage"
+                :readonly="isRFAI"
               ></EceTextField>
             </div>
           </v-col>
@@ -65,7 +68,8 @@
   <!-- New Campus: hide campus section -->
   <ProgramApplicationInstituteInfoLayout
     v-else-if="applicationType === 'NewCampusatRecognizedPrivateInstitution'"
-    :program-application-id="programApplicationId"
+    :programApplicationObject="programApplicationObject"
+    :is-rfai="isRFAI"
     @next="$emit('next', $event)"
   >
     <template #campus-section />
@@ -74,7 +78,8 @@
   <!-- Basic/Post-Basic: condensed summary, add post-basic disclaimer -->
   <ProgramApplicationInstituteInfoLayout
     v-else-if="applicationType === 'NewBasicECEPostBasicProgram'"
-    :program-application-id="programApplicationId"
+    :programApplicationObject="programApplicationObject"
+    :is-rfai="isRFAI"
     @next="$emit('next', $event)"
   >
     <template #application-summary="{ programType, institution, deliveryType }">
@@ -123,7 +128,8 @@
   <!-- Satellite: hide campus, program length, delivery, enrollment; add date fields -->
   <ProgramApplicationInstituteInfoLayout
     v-else-if="applicationType === 'SatelliteProgram'"
-    :program-application-id="programApplicationId"
+    :programApplicationObject="programApplicationObject"
+    :is-rfai="isRFAI"
     @next="$emit('next', $event)"
   >
     <template #campus-section></template>
@@ -148,6 +154,7 @@
             @update:model-value="onUpdateSatelliteStartDate"
             label="Satellite location start date"
             :rules="[requiredValidation()]"
+            :readonly="isRFAI"
           ></EceDateInput>
         </v-col>
       </v-row>
@@ -157,6 +164,7 @@
             :model-value="satelliteEndDate"
             @update:model-value="onUpdateSatelliteEndDate"
             label="Satellite location end date"
+            :readonly="isRFAI"
             :rules="[
               requiredValidation(),
               endDateValidation(satelliteStartDate),
@@ -175,6 +183,9 @@ import type { NextStepPayload } from "@/components/program-application/ProgramAp
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import * as Rules from "@/utils/formRules";
+import { getProgramApplicationById } from "@/api/program-application";
+import type { Components } from "@/types/openapi";
+import { cloneDeep } from "lodash";
 
 export default defineComponent({
   name: "ProgramApplicationInstituteInfo",
@@ -193,11 +204,36 @@ export default defineComponent({
       required: true,
     },
   },
+  async mounted() {
+    await this.fetchApplication();
+  },
+  computed: {
+    isRFAI(): boolean {
+      return (
+        this.programApplicationObject?.status !== undefined &&
+        (this.programApplicationObject?.status === "InterimRecognition" ||
+          this.programApplicationObject?.status === "ReviewAnalysis") &&
+        this.programApplicationObject?.statusReasonDetail === "RFAIrequested"
+      );
+    },
+  },
   data() {
     return {
       Rules,
+      programApplicationObject:
+        null as Components.Schemas.ProgramApplication | null,
     };
   },
   emits: { next: (_payload: NextStepPayload) => true },
+  methods: {
+    async fetchApplication() {
+      const result = await getProgramApplicationById(this.programApplicationId);
+      if (result.error || result.data == null) {
+        console.error("Failed to retrieve program application:", result.error);
+      } else {
+        this.programApplicationObject = cloneDeep(result.data);
+      }
+    },
+  },
 });
 </script>
