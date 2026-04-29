@@ -47,7 +47,8 @@
     <v-row v-if="isRFAI && filter === 'rfai'" class="mb-4">
       <v-col class="d-flex" cols="12">
         <p>
-          Show only responses where the registry is requestimg more information.
+          Show only responses where the ECE registry is requesting more
+          information.
         </p>
       </v-col>
     </v-row>
