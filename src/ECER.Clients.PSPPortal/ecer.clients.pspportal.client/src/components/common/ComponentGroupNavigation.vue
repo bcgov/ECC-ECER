@@ -33,12 +33,7 @@
             Institution and program info
           </v-list-item-title>
         </v-list-item>
-        <v-list-group
-          v-else-if="
-            category === 'Program Profile' &&
-            applicationType === 'NewBasicECEPostBasicProgram'
-          "
-        >
+        <v-list-group v-else-if="category === 'Program Profile'">
           <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title
@@ -248,7 +243,16 @@ export default defineComponent({
   },
   computed: {
     groupByCategoryName(): ComponentGroupNavigationMap | undefined {
-      return groupByCategoryName(this.componentGroups);
+      return groupByCategoryName(this.filteredComponentGroups);
+    },
+    filteredComponentGroups(): Components.Schemas.NavigationMetadata[] {
+      // The "Program Profile" category is only shown for NewBasicECEPostBasicProgram
+      if (this.applicationType === "NewBasicECEPostBasicProgram") {
+        return this.componentGroups;
+      }
+      return this.componentGroups.filter(
+        (group) => group.categoryName !== "Program Profile",
+      );
     },
   },
   data() {
