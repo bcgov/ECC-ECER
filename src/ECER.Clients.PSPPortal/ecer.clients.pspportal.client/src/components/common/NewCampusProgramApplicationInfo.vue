@@ -139,6 +139,11 @@
           assessment to determine interim recognition and ongoing recognition.
         </p>
         <p>
+          Two recognition evaluation meetings are required during the
+          assessment: one to determine interim recognition to start the program,
+          and a second to determine ongoing recognition.
+        </p>
+        <p>
           As early childhood education continues to grow and evolve, any program
           recognized under current competencies or standards will be required to
           upgrade if new standards are adopted. Recognized programs are subject

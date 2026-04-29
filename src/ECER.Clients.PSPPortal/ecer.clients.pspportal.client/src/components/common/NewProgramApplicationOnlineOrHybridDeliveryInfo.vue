@@ -145,6 +145,10 @@
           completed application package.
         </p>
         <p>
+          A recognition evaluation meeting will be required during the
+          assessment to determine interim recognition and ongoing recognition.
+        </p>
+        <p>
           Two recognition evaluation meetings are required during the
           assessment: one to determine interim recognition to start the program,
           and a second to determine ongoing recognition.
