@@ -150,8 +150,13 @@
           completed application package.
         </p>
         <p>
-          Site visits may be required during the assessment to determine interim
-          recognition and ongoing recognition.
+          A recognition evaluation meeting will be required during the
+          assessment to determine interim recognition and ongoing recognition.
+        </p>
+        <p>
+          Two recognition evaluation meetings are required during the
+          assessment: one to determine interim recognition to start the program,
+          and a second to determine ongoing recognition.
         </p>
         <p>
           As early childhood education continues to grow and evolve, any program
