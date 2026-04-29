@@ -558,7 +558,12 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
-    export type PortalTags = "LOGIN" | "LOOKUP" | "REFERENCES";
+    export type PortalTags =
+      | "LOGIN"
+      | "LOOKUP"
+      | "REFERENCES"
+      | "PSPPortal"
+      | "CertificationsPortal";
     export interface PostSecondaryInstitution {
       id?: string | null;
       name?: string | null;
