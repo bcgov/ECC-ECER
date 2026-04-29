@@ -78,7 +78,7 @@
           href="#"
           @click.prevent="showDeactivateConfirmation = true"
         >
-          cancel invitation
+          Cancel invitation
         </a>
       </v-col>
     </v-row>
