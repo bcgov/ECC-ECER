@@ -24,7 +24,7 @@
     <v-row>
       <v-col cols="12">
         <!-- prettier-ignore -->
-        <Alert type="warning" :closable="false">
+        <Alert type="warning" icon="mdi-alert-circle-outline" :closable="false">
           <p>
             <b>
               Do not edit this campus to represent a different campus or
