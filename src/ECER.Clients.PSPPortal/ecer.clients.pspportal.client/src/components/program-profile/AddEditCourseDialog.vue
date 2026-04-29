@@ -82,7 +82,7 @@
             :disabled="saving"
             @click="handleSave"
           >
-            Save changes
+            Save
           </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>

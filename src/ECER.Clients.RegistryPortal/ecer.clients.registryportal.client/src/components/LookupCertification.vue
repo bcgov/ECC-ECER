@@ -5,22 +5,7 @@
     </v-container>
   </v-sheet>
   <v-container>
-    <v-row
-      v-for="systemMessage in configStore.systemMessages"
-      class="mt-10 mb-10"
-    >
-      <v-col
-        v-if="
-          systemMessage.portalTags &&
-          systemMessage.portalTags.includes('LOOKUP')
-        "
-        cols="12"
-      >
-        <Alert title="Alert">
-          {{ systemMessage.message ? systemMessage.message : "" }}
-        </Alert>
-      </v-col>
-    </v-row>
+    <div class="mt-10"><SystemBanner pageTag="LOOKUP" /></div>
     <v-row>
       <v-col class="text-break">
         To work as an Early Childhood Educator (ECE) or ECE Assistant in a
@@ -174,12 +159,11 @@ import { useLoadingStore } from "@/store/loading";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import { postLookupCertificate } from "@/api/certification";
-import { useConfigStore } from "@/store/config";
 import * as Rules from "../utils/formRules";
 import EceCaptchaTurnstile from "./inputs/EceCaptchaTurnstile.vue";
 import type { CaptchaTurnstile } from "@/components/inputs/EceCaptchaTurnstile.vue";
 import type { Components } from "@/types/openapi";
-import Alert from "@/components/Alert.vue";
+import SystemBanner from "@/components/SystemBanner.vue";
 
 interface LookupCertificationData {
   captchaToken: string;
@@ -190,18 +174,16 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 export default defineComponent({
   name: "LookupCertification",
-  components: { EceCaptchaTurnstile, EceTextField, Alert },
+  components: { EceCaptchaTurnstile, EceTextField, SystemBanner },
   setup() {
     const alertStore = useAlertStore();
     const lookupCertificationStore = useLookupCertificationStore();
     const { mobile } = useDisplay();
-    const configStore = useConfigStore();
     const router = useRouter();
     const loadingStore = useLoadingStore();
 
     return {
       alertStore,
-      configStore,
       Rules,
       mobile,
       lookupCertificationStore,

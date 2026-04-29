@@ -300,7 +300,12 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
-    export type PortalTags = "LOGIN" | "LOOKUP" | "REFERENCES" | "PSPPortal";
+    export type PortalTags =
+      | "LOGIN"
+      | "LOOKUP"
+      | "REFERENCES"
+      | "PSPPortal"
+      | "CertificationsPortal";
     export type PrivateAuspiceType =
       | "Theologicalinstitution"
       | "FirstNationsmandatedpostsecondaryinstitute"

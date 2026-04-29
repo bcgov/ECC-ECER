@@ -33,15 +33,6 @@
                 class="text-right d-flex flex-row justify-end flex-wrap ga-2"
               >
                 <v-btn
-                  v-if="hasCancelButton"
-                  :loading="loading"
-                  class="ma-0"
-                  variant="outlined"
-                  @click="cancel"
-                >
-                  {{ cancelButtonText }}
-                </v-btn>
-                <v-btn
                   class="ma-0"
                   :loading="loading"
                   color="primary"
@@ -49,6 +40,15 @@
                   @click="accept"
                 >
                   {{ acceptButtonText }}
+                </v-btn>
+                <v-btn
+                  v-if="hasCancelButton"
+                  :loading="loading"
+                  class="ma-0"
+                  variant="outlined"
+                  @click="cancel"
+                >
+                  {{ cancelButtonText }}
                 </v-btn>
               </v-col>
             </v-row>
