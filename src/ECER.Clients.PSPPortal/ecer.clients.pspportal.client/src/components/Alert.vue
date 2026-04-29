@@ -32,7 +32,7 @@ export default defineComponent({
     },
     icon: {
       type: String,
-      default: "mdi-alert-circle",
+      default: "mdi-alert-circle-outline",
     },
     rounded: {
       type: Boolean,

@@ -12,6 +12,39 @@
       </v-col>
     </v-row>
 
+    <v-row>
+      <v-col cols="12">
+        <p>
+          You can edit details for this campus to update the current location
+          and contact information.
+        </p>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12">
+        <!-- prettier-ignore -->
+        <Alert type="warning" :closable="false">
+          <p>
+            <b>
+              Do not edit this campus to represent a different campus or
+              location. This can cause application and reporting errors.
+            </b>
+          </p>
+          <br />
+          To add a new campus or satellite location, go to
+          <router-link
+            :to="{
+              name: 'education-institution',
+              params: { institutionId },
+            }"
+          >
+            View locations
+          </router-link>.
+        </Alert>
+      </v-col>
+    </v-row>
+
     <Loading v-if="isLoading" />
 
     <template v-else>
@@ -56,6 +89,7 @@ import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Loading from "@/components/Loading.vue";
 import CampusForm from "@/components/CampusForm.vue";
+import Alert from "@/components/Alert.vue";
 import {
   getEducationInstitution,
   updateCampus,
@@ -68,7 +102,7 @@ import type { PspUserItem } from "@/components/inputs/EcePspUser.vue";
 
 export default defineComponent({
   name: "EditCampus",
-  components: { PageContainer, Breadcrumb, Loading, CampusForm },
+  components: { PageContainer, Breadcrumb, Loading, CampusForm, Alert },
   props: {
     institutionId: {
       type: String,
