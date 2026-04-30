@@ -20,7 +20,7 @@
           </p>
           <p>
             You can save and exit the form and continue with your submission
-            later from your PSP Portal dashboard.
+            later from your ECE Post-Secondary Programs portal dashboard.
           </p>
         </div>
       </v-col>
@@ -29,7 +29,7 @@
       <v-col cols="12">
         <Callout title="If you need assistance" type="warning">
           <p>
-            You may reach out to the Registry for assistance at any time by
+            You may reach out to the ECE Registry for assistance at any time by
             <router-link to="/messages/new">sending a message</router-link>
             <span>.</span>
           </p>
@@ -58,8 +58,8 @@
               responses later.
             </p>
             <p>
-              To apply for a post-basic early childhood education program (ITE
-              and/or SNE), an institution must either:
+              To apply for a post-basic (Infant and Toddler Education [ITE]
+              and/or Special Needs Educator [SNE]), an institution must either:
             </p>
             <ul class="ml-10">
               <li>
@@ -67,8 +67,7 @@
                 program, or
               </li>
               <li>
-                Apply for a basic early childhood education and post-basic early
-                childhood education program concurrently.
+                Be applying for a basic and post-basic program concurrently
               </li>
             </ul>
           </div>
