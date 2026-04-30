@@ -51,6 +51,7 @@ const updateCampus = async (
   const response = await apiResultHandler.execute({
     request: client.campus_put({ campusId }, campus),
     key: "campus_put",
+    suppressErrorToast: true,
   });
   return response;
 };
