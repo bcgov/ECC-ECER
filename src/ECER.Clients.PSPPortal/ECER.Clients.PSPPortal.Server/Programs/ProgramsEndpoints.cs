@@ -240,7 +240,8 @@ public enum ProgramTypes
 public enum ProgramProfileType
 {
   ChangeRequest,
-  AnnualReview
+  AnnualReview,
+  New
 }
 
 public record GetProgramsResponse

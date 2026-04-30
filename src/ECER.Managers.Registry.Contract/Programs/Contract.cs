@@ -85,7 +85,8 @@ public enum ProgramStatus
 public enum ProgramProfileType
 {
   ChangeRequest,
-  AnnualReview
+  AnnualReview,
+  New
 }
 
 public enum ProgramTypes
