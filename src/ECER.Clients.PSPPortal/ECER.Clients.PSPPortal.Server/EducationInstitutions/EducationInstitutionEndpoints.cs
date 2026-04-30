@@ -72,7 +72,7 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
 
         if (result.Error == UpdateCampusError.DuplicateCampusName)
         {
-          return TypedResults.BadRequest(new ProblemDetails() { Title = $"Duplicate campus name" });
+          return TypedResults.BadRequest(new ProblemDetails() { Title = $"This campus name already exists." });
         }
         
         if (result.Error == UpdateCampusError.InvalidCampus)
