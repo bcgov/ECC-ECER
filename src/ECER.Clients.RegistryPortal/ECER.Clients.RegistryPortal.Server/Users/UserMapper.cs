@@ -1,73 +1,171 @@
-﻿using ECER.Utilities.ObjectStorage.Providers;
-﻿using AutoMapper;
-using ECER.Infrastructure.Common;
+using ECER.Utilities.ObjectStorage.Providers;
+using Riok.Mapperly.Abstractions;
+using ContractRegistrants = ECER.Managers.Registry.Contract.Registrants;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
 
-internal sealed class UserMapper : SecureProfile
+internal interface IUserMapper
 {
-  public UserMapper()
+  UserInfo MapUserInfo(ContractRegistrants.UserProfile source);
+  ContractRegistrants.UserProfile MapRegistrationUserProfile(UserInfo source);
+  UserProfile MapUserProfile(ContractRegistrants.UserProfile source);
+  ContractRegistrants.UserProfile MapUserProfile(UserProfile source);
+  ContractRegistrants.ProfileIdentification MapProfileIdentification(ProfileIdentification source);
+}
+
+[Mapper]
+internal partial class UserMapper : IUserMapper
+{
+  public UserInfo MapUserInfo(ContractRegistrants.UserProfile source) => new(
+    source.LastName!,
+    source.DateOfBirth!.Value,
+    source.Email,
+    source.Phone)
   {
-    CreateMap<UserInfo, Managers.Registry.Contract.Registrants.UserProfile>()
-      .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.FirstName))
-      .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.GivenName, opts => opts.MapFrom(s => s.GivenName))
-      .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => s.DateOfBirth))
-      .ForMember(d => d.Email, opts => opts.MapFrom(s => s.Email))
-      .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.Phone))
-      .ForMember(d => d.IsVerified, opts => opts.MapFrom(s => s.IsVerified))
-      .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.RegistrationNumber))
-      .ForMember(d => d.ResidentialAddress, opts => opts.MapFrom(s => s.ResidentialAddress))
-      .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => s.MailingAddress))
-      .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.PreferredName))
-      .ForMember(d => d.AlternateContactPhone, opts => opts.MapFrom(s => (string?)null))
-      .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => (PreviousName[]?)null))
-      .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
-      .ForMember(d => d.IsRegistrant, opts => opts.MapFrom(s => s.IsRegistrant))
-      .ForMember(d => d.Status, opts => opts.Ignore())
-      .ReverseMap()
-      .ValidateMemberList(MemberList.Source)
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status))
-      .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.MailingAddress, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.PreferredName, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.AlternateContactPhone, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.PreviousNames, opts => opts.DoNotValidate());
+    FirstName = source.FirstName,
+    GivenName = source.GivenName,
+    MiddleName = source.MiddleName,
+    PreferredName = source.PreferredName,
+    RegistrationNumber = source.RegistrationNumber,
+    IsVerified = source.IsVerified,
+    Status = MapStatusCode(source.Status),
+    ResidentialAddress = source.ResidentialAddress == null ? null : MapAddress(source.ResidentialAddress),
+    MailingAddress = source.MailingAddress == null ? null : MapAddress(source.MailingAddress),
+    IsRegistrant = source.IsRegistrant,
+  };
 
-    CreateMap<PreviousName, Managers.Registry.Contract.Registrants.PreviousName>()
-      .ForCtorParam(nameof(Managers.Registry.Contract.Registrants.PreviousName.FirstName),
-        opts => opts.MapFrom(s => s.FirstName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Registrants.PreviousName.LastName),
-        opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
-      .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.PreferredName))
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status))
-      .ForMember(d => d.Id,
-        opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
-      .ReverseMap();
+  public ContractRegistrants.UserProfile MapRegistrationUserProfile(UserInfo source) => new()
+  {
+    FirstName = source.FirstName,
+    LastName = source.LastName,
+    MiddleName = source.MiddleName,
+    GivenName = source.GivenName,
+    PreferredName = source.PreferredName,
+    AlternateContactPhone = null,
+    DateOfBirth = source.DateOfBirth,
+    RegistrationNumber = source.RegistrationNumber,
+    Email = source.Email,
+    Phone = source.Phone,
+    ResidentialAddress = source.ResidentialAddress == null ? null : MapAddress(source.ResidentialAddress),
+    MailingAddress = source.MailingAddress == null ? null : MapAddress(source.MailingAddress),
+    IsVerified = source.IsVerified,
+    PreviousNames = Array.Empty<ContractRegistrants.PreviousName>(),
+    IsRegistrant = source.IsRegistrant,
+  };
 
-    CreateMap<Managers.Registry.Contract.Registrants.IdentityDocument, IdentityDocument>()
-      .ReverseMap()
-      .ForMember(s => s.EcerWebApplicationType, opts => opts.MapFrom(_ => EcerWebApplicationType.Registry)); //force any file requests from registry to send to registry;
+  public UserProfile MapUserProfile(ContractRegistrants.UserProfile source) => new()
+  {
+    FirstName = source.FirstName,
+    LastName = source.LastName,
+    MiddleName = source.MiddleName,
+    PreferredName = source.PreferredName,
+    AlternateContactPhone = source.AlternateContactPhone,
+    DateOfBirth = source.DateOfBirth,
+    Email = source.Email,
+    Phone = source.Phone,
+    ResidentialAddress = source.ResidentialAddress == null ? null : MapAddress(source.ResidentialAddress),
+    MailingAddress = source.MailingAddress == null ? null : MapAddress(source.MailingAddress),
+    PreviousNames = source.PreviousNames.Select(MapPreviousName).ToList(),
+  };
 
-    CreateMap<UserProfile, Managers.Registry.Contract.Registrants.UserProfile>()
-      .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.PreviousNames))
-      .ForMember(d => d.IsVerified, opts => opts.Ignore())
-      .ForMember(d => d.GivenName, opts => opts.Ignore())
-      .ForMember(d => d.RegistrationNumber, opts => opts.Ignore())
-      .ForMember(d => d.IsRegistrant, opts => opts.Ignore())
-      .ForMember(d => d.Status, opts => opts.Ignore())
-      .ReverseMap()
+  public ContractRegistrants.UserProfile MapUserProfile(UserProfile source) => new()
+  {
+    FirstName = source.FirstName,
+    LastName = source.LastName,
+    MiddleName = source.MiddleName,
+    PreferredName = source.PreferredName,
+    AlternateContactPhone = source.AlternateContactPhone,
+    DateOfBirth = source.DateOfBirth,
+    Email = source.Email,
+    Phone = source.Phone,
+    ResidentialAddress = source.ResidentialAddress == null ? null : MapAddress(source.ResidentialAddress),
+    MailingAddress = source.MailingAddress == null ? null : MapAddress(source.MailingAddress),
+    PreviousNames = source.PreviousNames.Select(MapPreviousName).ToList(),
+  };
 
-      .ValidateMemberList(MemberList.Destination)
-      ;
+  public ContractRegistrants.ProfileIdentification MapProfileIdentification(ProfileIdentification source) => new()
+  {
+    RegistrantId = source.RegistrantId,
+    PrimaryIdTypeObjectId = source.PrimaryIdTypeObjectId,
+    PrimaryIds = source.PrimaryIds.Select(MapIdentityDocument).ToList(),
+    SecondaryIdTypeObjectId = source.SecondaryIdTypeObjectId,
+    SecondaryIds = source.SecondaryIds.Select(MapIdentityDocument).ToList(),
+  };
 
-    CreateMap<Address, Managers.Registry.Contract.Registrants.Address>()
-      .ReverseMap()
-      .ValidateMemberList(MemberList.Source);
+  private PreviousName MapPreviousName(ContractRegistrants.PreviousName source) => new(source.FirstName, source.LastName)
+  {
+    Id = source.Id,
+    MiddleName = source.MiddleName,
+    PreferredName = source.PreferredName,
+    Status = MapPreviousNameStage(source.Status),
+    Source = MapPreviousNameSource(source.Source),
+    Documents = source.Documents.Select(MapIdentityDocument).ToList(),
+  };
 
-    CreateMap<ProfileIdentification, Managers.Registry.Contract.Registrants.ProfileIdentification>()
-      .ReverseMap()
-      .ValidateMemberList(MemberList.Source);
-  }
+  private ContractRegistrants.PreviousName MapPreviousName(PreviousName source) => new(source.FirstName, source.LastName)
+  {
+    Id = source.Id,
+    MiddleName = source.MiddleName,
+    PreferredName = source.PreferredName,
+    Status = MapPreviousNameStage(source.Status),
+    Source = MapPreviousNameSource(source.Source),
+    Documents = source.Documents.Select(MapIdentityDocument).ToList(),
+  };
+
+  private static IdentityDocument MapIdentityDocument(ContractRegistrants.IdentityDocument source) => new(source.Id)
+  {
+    Url = source.Url,
+    Extention = source.Extention,
+    Name = source.Name,
+    Size = source.Size,
+    EcerWebApplicationType = source.EcerWebApplicationType,
+  };
+
+  private static ContractRegistrants.IdentityDocument MapIdentityDocument(IdentityDocument source) => new(source.Id)
+  {
+    Url = source.Url,
+    Extention = source.Extention,
+    Name = source.Name,
+    Size = source.Size,
+    EcerWebApplicationType = EcerWebApplicationType.Registry,
+  };
+
+  private static Address MapAddress(ContractRegistrants.Address source) => new(
+    source.Line1,
+    source.Line2,
+    source.City,
+    source.PostalCode,
+    source.Province,
+    source.Country);
+
+  private static ContractRegistrants.Address MapAddress(Address source) => new(
+    source.Line1,
+    source.Line2!,
+    source.City,
+    source.PostalCode,
+    source.Province,
+    source.Country);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial StatusCode MapStatusCode(ContractRegistrants.StatusCode source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PreviousNameStage MapPreviousNameStage(ContractRegistrants.PreviousNameStage source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractRegistrants.PreviousNameStage MapPreviousNameStage(PreviousNameStage source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PreviousNameSources MapPreviousNameSource(ContractRegistrants.PreviousNameSources source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractRegistrants.PreviousNameSources MapPreviousNameSource(PreviousNameSources source);
+
+  private PreviousNameStage? MapPreviousNameStage(ContractRegistrants.PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
+  private ContractRegistrants.PreviousNameStage? MapPreviousNameStage(PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
+  private PreviousNameSources? MapPreviousNameSource(ContractRegistrants.PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
+
+  private ContractRegistrants.PreviousNameSources? MapPreviousNameSource(PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
 }

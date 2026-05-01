@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
@@ -19,66 +18,65 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       var dynamicsConfig = await messageBus.Send(new DynamicsConfigQuery(), ct);
       var appConfig = configuration.Get<ApplicationConfiguration>()!;
 
-      
       appConfig.ICRAFeatureEnabled = dynamicsConfig.config.ICRAFeatureEnabled;
 
       return TypedResults.Ok(appConfig);
     }).WithOpenApi("Returns the UI initial configuration", string.Empty, "configuration_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/provincelist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/provincelist", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new ProvincesQuery(), ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<Province>>(results.Items));
+      return TypedResults.Ok(configurationMapper.MapProvinces(results.Items));
     })
       .WithOpenApi("Handles province queries", string.Empty, "province_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/defaultContents", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/defaultContents", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new DefaultContentsQuery(), ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<DefaultContent>>(results.Items));
+      return TypedResults.Ok(configurationMapper.MapDefaultContents(results.Items));
     })
      .WithOpenApi("Handles default contents", string.Empty, "defaultContent_get")
      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/countrylist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/countrylist", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new CountriesQuery(), ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<Country>>(results.Items));
+      return TypedResults.Ok(configurationMapper.MapCountries(results.Items));
     })
     .WithOpenApi("Handles country queries", string.Empty, "country_get")
     .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/certificationComparison/{id?}", async (string? id, string? provinceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/certificationComparison/{id?}", async (string? id, string? provinceId, HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
       var results = await messageBus.Send(new CertificationComparisonQuery() { ById = id, ByProvinceId = provinceId }, ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<ComparisonRecord>>(results.Items));
+      return TypedResults.Ok(configurationMapper.MapComparisonRecords(results.Items));
     })
     .WithOpenApi("Handles certification comparison queries", string.Empty, "certificationComparison_get");
 
-    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
       var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId }, ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<PostSecondaryInstitution>>(results.Items));
+      return TypedResults.Ok(configurationMapper.MapPostSecondaryInstitutions(results.Items));
     })
     .WithOpenApi("Handles psi queries", string.Empty, "psi_get");
 
-    endpointRouteBuilder.MapGet("/api/systemMessages", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/systemMessages", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new SystemMessagesQuery(), ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<SystemMessage>>(results.Items));
+      return TypedResults.Ok(configurationMapper.MapSystemMessages(results.Items));
     })
      .WithOpenApi("Handles system messages queries", string.Empty, "systemMessage_get")
      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/identificationTypes", async ([AsParameters] IdentificationTypesQuery request, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/identificationTypes", async ([AsParameters] IdentificationTypesQuery request, HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       var query = new Managers.Admin.Contract.Metadatas.IdentificationTypesQuery() { ById = request.ById, ForPrimary = request.ForPrimary, ForSecondary = request.ForSecondary };
       var results = await messageBus.Send(query, ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<IdentificationType>>(results.Items));
+      return TypedResults.Ok(configurationMapper.MapIdentificationTypes(results.Items));
     })
      .WithOpenApi("Handles identification types queries", string.Empty, "identificationTypes_get")
      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));

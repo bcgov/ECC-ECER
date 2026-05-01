@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
 using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.References;
 
@@ -12,7 +11,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPost("/api/References/Character", async Task<Results<Ok, BadRequest<ProblemDetails>>> (CharacterReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/Character", async Task<Results<Ok, BadRequest<ProblemDetails>>> (CharacterReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails() { Detail = "Token is required" });
 
@@ -29,7 +28,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(problemDetails);
       }
 
-      var mappedCharacterReferenceRequest = mapper.Map<Managers.Registry.Contract.Applications.CharacterReferenceSubmissionRequest>(request);
+      var mappedCharacterReferenceRequest = referencesMapper.MapCharacterReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
       {
         CharacterReferenceSubmissionRequest = mappedCharacterReferenceRequest
@@ -41,7 +40,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
       return TypedResults.Ok();
     }).WithOpenApi("Handles character reference submission", string.Empty, "character_reference_post").WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/References/WorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (WorkExperienceReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/WorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (WorkExperienceReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
@@ -57,7 +56,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
         };
         return TypedResults.BadRequest(problemDetails);
       }
-      var mappedWorkExperienceRequest = mapper.Map<Managers.Registry.Contract.Applications.WorkExperienceReferenceSubmissionRequest>(request);
+      var mappedWorkExperienceRequest = referencesMapper.MapWorkExperienceReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
       {
         WorkExperienceReferenceSubmissionRequest = mappedWorkExperienceRequest
@@ -69,7 +68,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
       return TypedResults.Ok();
     }).WithOpenApi("Handles work experience reference submission", string.Empty, "workExperience_reference_post").WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/References/OptOut", async Task<Results<Ok, BadRequest<ProblemDetails>>> (OptOutReferenceRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/OptOut", async Task<Results<Ok, BadRequest<ProblemDetails>>> (OptOutReferenceRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
@@ -85,7 +84,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
         };
         return TypedResults.BadRequest(problemDetails);
       }
-      var result = await messageBus.Send(mapper.Map<Managers.Registry.Contract.Applications.OptOutReferenceRequest>(request), ct);
+      var result = await messageBus.Send(referencesMapper.MapOptOutReferenceRequest(request), ct);
       if (!result.IsSuccess)
       {
         return TypedResults.BadRequest(new ProblemDetails { Detail = result.ErrorMessage });
@@ -93,7 +92,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
       return TypedResults.Ok();
     }).WithOpenApi("Handles reference optout", string.Empty, "reference_optout").WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/References/ICRAWorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ICRAWorkExperienceReferenceSubmissionRequest request, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/ICRAWorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ICRAWorkExperienceReferenceSubmissionRequest request, IMediator messageBus, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
@@ -109,7 +108,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(problemDetails);
       }
 
-      var mapped = mapper.Map<Managers.Registry.Contract.ICRA.ICRAWorkExperienceReferenceSubmissionRequest>(request);
+      var mapped = referencesMapper.MapIcraWorkExperienceReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
       {
         ICRAWorkExperienceReferenceSubmissionRequest = mapped
@@ -159,7 +158,6 @@ public record ICRAWorkExperienceReferenceSubmissionRequest([Required] string Tok
   public ReferenceRelationship? ReferenceRelationship { get; set; }
   public bool WillProvideReference { get; set; }
   public DateTime? DateSigned { get; set; }
-
 }
 
 public record WorkExperienceReferenceDetails()
@@ -289,7 +287,6 @@ public enum ReferenceKnownTime
   Morethan5years,
 }
 
-// custom required annotations based on WorkExperienceTypes
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
 public sealed class RequiredWhenWorkExperienceTypeAttribute : ValidationAttribute
 {
