@@ -1,11 +1,9 @@
-using AutoMapper;
 using ECER.Engines.Validation.ProgramApplications;
 using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Resources.Documents.Courses;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.ProgramApplications;
 using MediatR;
-using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
 using NavigationMetadata = ECER.Managers.Registry.Contract.ProgramApplications.NavigationMetadata;
 using ComponentGroupQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupQuery;
 using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
@@ -23,7 +21,8 @@ public class ProgramApplicationHandler(
     IMetadataResourceRepository metadataResourceRepository,
     ICourseRepository courseRepository,
     IProgramApplicationValidationEngine validationEngine,
-    IMapper mapper)
+    IProgramApplicationMapper programApplicationMapper,
+    ICoursesMapper coursesMapper)
   : IRequestHandler<CreateProgramApplicationCommand, Contract.ProgramApplications.ProgramApplication?>,
     IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>,
     IRequestHandler<UpdateProgramApplicationCommand, string>,
@@ -36,8 +35,8 @@ public class ProgramApplicationHandler(
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var resourcesApplication = mapper.Map<Resources.Documents.ProgramApplications.ProgramApplication>(request.ProgramApplication);
-    var id = await programApplicationRepository.Create(resourcesApplication!, cancellationToken);
+    var resourcesApplication = programApplicationMapper.MapProgramApplication(request.ProgramApplication);
+    var id = await programApplicationRepository.Create(resourcesApplication, cancellationToken);
 
     var result = await programApplicationRepository.Query(new Resources.Documents.ProgramApplications.ProgramApplicationQuery
     {
@@ -46,14 +45,14 @@ public class ProgramApplicationHandler(
     }, cancellationToken);
 
     var created = result.Items.FirstOrDefault();
-    return created != null ? mapper.Map<Contract.ProgramApplications.ProgramApplication>(created) : null;
+    return programApplicationMapper.MapProgramApplication(created);
   }
 
 
   public async Task<string> Handle(UpdateProgramApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var programId = await programApplicationRepository.UpdateProgramApplication(mapper.Map<Resources.Documents.ProgramApplications.ProgramApplication>(request.ProgramApplication)!, cancellationToken);
+    var programId = await programApplicationRepository.UpdateProgramApplication(programApplicationMapper.MapProgramApplication(request.ProgramApplication), cancellationToken);
     return programId;
   }
 
@@ -62,7 +61,7 @@ public class ProgramApplicationHandler(
     ArgumentNullException.ThrowIfNull(request);
 
     var statusFilter = request.ByStatus != null
-      ? mapper.Map<IEnumerable<ApplicationStatus>>(request.ByStatus)
+      ? programApplicationMapper.MapApplicationStatuses(request.ByStatus)
       : null;
 
     var result = await programApplicationRepository.Query(new Resources.Documents.ProgramApplications.ProgramApplicationQuery()
@@ -75,7 +74,7 @@ public class ProgramApplicationHandler(
       PageSize = request.PageSize,
     }, cancellationToken);
 
-    return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<Contract.ProgramApplications.ProgramApplication>>(result.Items), result.Count);
+    return new ProgramApplicationQueryResults(programApplicationMapper.MapProgramApplications(result.Items), result.Count);
   }
   
   public async Task<IEnumerable<NavigationMetadata>> Handle(ComponentGroupQuery request, CancellationToken cancellationToken)
@@ -92,7 +91,7 @@ public class ProgramApplicationHandler(
     }, cancellationToken);
     
     var programApplication = programApplicationResults.Items.FirstOrDefault();
-    var mappedComponentResults = mapper.Map<IEnumerable<NavigationMetadata>>(result).ToList();
+    var mappedComponentResults = programApplicationMapper.MapNavigationMetadata(result).ToList();
 
     if (programApplication != null)
     {
@@ -111,13 +110,13 @@ public class ProgramApplicationHandler(
       ByComponentGroupId = request.ByComponentGroupId,
     };
     var result = await programApplicationRepository.QueryComponentGroupWithComponents(query, cancellationToken);
-    return mapper.Map<IEnumerable<ComponentGroupWithComponents>>(result);
+    return programApplicationMapper.MapComponentGroupsWithComponents(result);
   }
   
   public async Task<string> Handle(UpdateComponentGroupCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var result = await programApplicationRepository.UpdateComponentGroup(mapper.Map<Resources.Documents.ProgramApplications.ComponentGroupWithComponents>(request.ComponentGroup)!, request.ProgramApplicationId, request.PostSecondaryInstituteId, cancellationToken);
+    var result = await programApplicationRepository.UpdateComponentGroup(programApplicationMapper.MapComponentGroupWithComponents(request.ComponentGroup), request.ProgramApplicationId, request.PostSecondaryInstituteId, cancellationToken);
     return result;
   }
 
@@ -125,9 +124,7 @@ public class ProgramApplicationHandler(
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var applicationResult = request.ProgramApplication;
-
-    var application = mapper.Map<Contract.ProgramApplications.ProgramApplication>(applicationResult);
+    var application = request.ProgramApplication;
     
     var applicationId = application.Id
                         ?? throw new InvalidOperationException("Program application id is required for submission.");
@@ -137,7 +134,7 @@ public class ProgramApplicationHandler(
       cancellationToken);
 
     var resourcesCourses = await courseRepository.GetCourses(new GetCoursesRequest(applicationId, application.PostSecondaryInstituteId, FunctionType.ProgramApplication), cancellationToken);
-    var contractCourses = mapper.Map<IEnumerable<ContractCourse>>(resourcesCourses);
+    var contractCourses = coursesMapper.MapCourses(resourcesCourses);
 
     var areasOfInstruction = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery { ById = null }, cancellationToken);
 

@@ -1,5 +1,5 @@
-using AutoMapper;
 using ECER.Managers.Registry.Contract.PortalInvitations;
+using ECER.Managers.Registry.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.Certifications;
@@ -10,7 +10,8 @@ public class ReferencePortalInvitationVerificationHandler(
   IRegistrantRepository registrantRepository,
   ICertificationRepository certificationRepository,
   IApplicationRepository applicationRepository,
-  IMapper mapper)
+  ICertificationMapper certificationMapper,
+  IPortalInvitationMapper portalInvitationMapper)
   : IPortalInvitationVerificationHandler
 {
   public bool CanHandle(InviteType? inviteType)
@@ -44,7 +45,7 @@ public class ReferencePortalInvitationVerificationHandler(
     var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id, ById = !string.IsNullOrEmpty(application.FromCertificate?.ToString()) ? application.FromCertificate.ToString() : null });
     var fromCertificate = certifications.FirstOrDefault();
 
-    var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
+    var result = portalInvitation;
 
     switch (result.StatusCode)
     {
@@ -69,17 +70,17 @@ public class ReferencePortalInvitationVerificationHandler(
         result.WorkExperienceReferenceHours = workExRef.Hours;
         if (workExRef.Type != null)
         {
-          result.WorkExperienceType = mapper.Map<Contract.Applications.WorkExperienceTypes>(workExRef.Type);
+          result.WorkExperienceType = portalInvitationMapper.MapWorkExperienceType(workExRef.Type);
         }
       }
     }
 
     if (fromCertificate != null)
     {
-      result.FromCertificate = mapper.Map<Contract.Certifications.Certification>(fromCertificate);
+      result.FromCertificate = certificationMapper.MapCertification(fromCertificate);
     }
 
-    result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
+    result.CertificationTypes = portalInvitationMapper.MapCertificationTypes(application.CertificationTypes);
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
     result.ApplicationSubmittedOn = application.SubmittedOn;

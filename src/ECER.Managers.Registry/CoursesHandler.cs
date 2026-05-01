@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Courses;
 using ECER.Resources.Documents.Courses;
@@ -12,7 +11,7 @@ public class CoursesHandler(
   IProgramRepository programRepository,
   ICourseRepository courseRepository,
   IProgramApplicationRepository programApplicationRepository,
-  IMapper mapper)
+  ICoursesMapper coursesMapper)
 : IRequestHandler<UpdateCourseCommand, string>,
   IRequestHandler<SaveCourseCommand, SaveCourseCommandResult>,
   IRequestHandler<DeleteCourseCommand, string>,
@@ -33,7 +32,7 @@ public class CoursesHandler(
 
       if (!programProfile.Programs!.Any()) throw new InvalidOperationException($"Program profile with '{request.Id}' not found");
 
-      var programId = await courseRepository.UpdateCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, false, cancellationToken);
+      var programId = await courseRepository.UpdateCourse(coursesMapper.MapCourse(request.Course), request.Id, false, cancellationToken);
       return programId;
     }
     else if (request.Type == nameof(Contract.Courses.FunctionType.ProgramApplication))
@@ -45,7 +44,7 @@ public class CoursesHandler(
       }, cancellationToken);
       if (!programApplication.Items!.Any()) throw new InvalidOperationException($"Program application with '{request.Id}' not found");
 
-      var programId = await courseRepository.UpdateCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, true, cancellationToken);
+      var programId = await courseRepository.UpdateCourse(coursesMapper.MapCourse(request.Course), request.Id, true, cancellationToken);
       return programId;
     }
     throw new InvalidOperationException("Operation not allowed");
@@ -71,7 +70,7 @@ public class CoursesHandler(
       return new SaveCourseCommandResult() { Error = SaveCourseError.IncorrectProgramApplicationTypeToSaveCourse };
     }
 
-    var courseId = await courseRepository.AddCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, request.PostSecondaryInstituteId, cancellationToken);
+    var courseId = await courseRepository.AddCourse(coursesMapper.MapCourse(request.Course), request.Id, request.PostSecondaryInstituteId, cancellationToken);
     return new SaveCourseCommandResult() { CourseId = courseId};
   }
 
@@ -81,9 +80,9 @@ public class CoursesHandler(
 
     var courses = await courseRepository.GetCourses(new GetCoursesRequest(request.Id, request.PostSecondaryInstituteId, request.Type.Convert<Contract.Courses.FunctionType, Resources.Documents.Courses.FunctionType>())
     {
-      ProgramTypes = mapper.Map<IEnumerable<ProgramType>>(request.ProgramTypes)
+      ProgramTypes = request.ProgramTypes != null ? coursesMapper.MapProgramTypes(request.ProgramTypes) : null
     }, cancellationToken);
-    return mapper.Map<IEnumerable<Contract.Shared.Course>>(courses);
+    return coursesMapper.MapCourses(courses);
   }
 
   public async Task<string> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)

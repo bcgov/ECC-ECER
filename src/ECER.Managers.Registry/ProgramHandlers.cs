@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Engines.Validation.Programs;
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Resources.Documents.MetadataResources;
@@ -11,7 +10,7 @@ namespace ECER.Managers.Registry;
 public class ProgramHandlers(
     IProgramRepository programRepository,
     IMetadataResourceRepository metadataResourceRepository,
-    IMapper mapper,
+    IProgramMapper programMapper,
     IProgramValidationEngineResolver validationResolver)
   : IRequestHandler<SaveDraftProgramCommand, Contract.Programs.Program?>,
     IRequestHandler<ProgramsQuery, ProgramsQueryResults>,
@@ -23,7 +22,7 @@ public class ProgramHandlers(
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var programId = await programRepository.Save(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
+    var programId = await programRepository.Save(programMapper.MapProgram(request.Program), cancellationToken);
 
     var result = (await programRepository.Query(new ProgramQuery
     {
@@ -33,7 +32,7 @@ public class ProgramHandlers(
 
     var program = result.Programs?.SingleOrDefault();
 
-    return mapper.Map<Contract.Programs.Program>(program);
+    return programMapper.MapProgram(program);
   }
 
   public async Task<ProgramsQueryResults> Handle(ProgramsQuery request, CancellationToken cancellationToken)
@@ -41,7 +40,7 @@ public class ProgramHandlers(
     ArgumentNullException.ThrowIfNull(request);
 
     var statusFilter = request.ByStatus != null
-      ? mapper.Map<IEnumerable<Resources.Documents.Programs.ProgramStatus>>(request.ByStatus)
+      ? programMapper.MapProgramStatuses(request.ByStatus)
       : null;
 
     var result = await programRepository.Query(new ProgramQuery
@@ -55,20 +54,20 @@ public class ProgramHandlers(
       PageSize = request.PageSize,
     }, cancellationToken);
 
-    return new ProgramsQueryResults(mapper.Map<IEnumerable<Contract.Programs.Program>>(result.Programs), result.TotalProgramsCount);
+    return new ProgramsQueryResults(programMapper.MapPrograms(result.Programs ?? Array.Empty<Resources.Documents.Programs.Program>()), result.TotalProgramsCount);
   }
 
   public async Task<string> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var programId = await programRepository.UpdateProgram(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
+    var programId = await programRepository.UpdateProgram(programMapper.MapProgram(request.Program), cancellationToken);
     return programId;
   }
 
   public async Task<string> Handle(ChangeProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var programId = await programRepository.ChangeProgram(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
+    var programId = await programRepository.ChangeProgram(programMapper.MapProgram(request.Program), cancellationToken);
     return programId;
   }
 
@@ -87,7 +86,7 @@ public class ProgramHandlers(
       return new SubmitProgramResult { ProgramId = null, Error = ProgramSubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "Draft program profile does not exist" } };
     }
 
-    var draftProgram = mapper.Map<Contract.Programs.Program>(programResult.Programs!.First());
+    var draftProgram = programMapper.MapProgram(programResult.Programs!.First())!;
     var instructions = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery() { ById = null }, cancellationToken);
 
     var validationEngine = validationResolver?.resolve(draftProgram.ProgramProfileType);

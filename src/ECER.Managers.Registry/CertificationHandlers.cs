@@ -1,5 +1,4 @@
-﻿using AngleSharp.Dom;
-using AutoMapper;
+using AngleSharp.Dom;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Resources.Documents.Certifications;
 using MediatR;
@@ -8,7 +7,7 @@ using CertificateStatusCode = ECER.Resources.Documents.Certifications.Certificat
 
 namespace ECER.Managers.Registry;
 
-public class CertificationHandlers(ICertificationRepository CertificationRepository, IMapper mapper)
+public class CertificationHandlers(ICertificationRepository CertificationRepository, ICertificationMapper certificationMapper)
     : IRequestHandler<Contract.Certifications.UserCertificationQuery, CertificationsQueryResults>,
   IRequestHandler<UserCertificationQueryLookup, CertificationsQueryResults>,
   IRequestHandler<RequestCertificationPdfCommand, CertificationRequestPdfResult>
@@ -18,7 +17,7 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
   {
     var Certifications = await GetCertificationsPaginated(request);
 
-    return new CertificationsQueryResults(mapper.Map<IEnumerable<Contract.Certifications.Certification>>(Certifications)!);
+    return new CertificationsQueryResults(certificationMapper.MapCertifications(Certifications));
   }
 
   public async Task<CertificationRequestPdfResult> Handle(RequestCertificationPdfCommand request, CancellationToken cancellationToken)
@@ -54,14 +53,14 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
     }
 
     // map and return results
-    var dtos = mapper.Map<IEnumerable<Contract.Certifications.Certification>>(results)!;
+    var dtos = certificationMapper.MapCertifications(results);
     return new CertificationsQueryResults(dtos);
   }
 
   private async Task<IEnumerable<Resources.Documents.Certifications.Certification>> GetCertificationsPaginated(UserCertificationQueryBase request)
   {
     ArgumentNullException.ThrowIfNull(CertificationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(certificationMapper);
     ArgumentNullException.ThrowIfNull(request);
 
     request.PageSize = (request.PageSize == 0) ? 100 : request.PageSize; // By Default get Max. 100 records.

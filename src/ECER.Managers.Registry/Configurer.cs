@@ -1,11 +1,11 @@
-﻿using ECER.Infrastructure.Common;
+using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Registrants;
+using ECER.Managers.Registry.PortalInvitations;
 using ECER.Managers.Registry.UserRegistrationIdentityService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Diagnostics.CodeAnalysis;
-using ECER.Managers.Registry.PortalInvitations;
 
 namespace ECER.Managers.Registry;
 
@@ -15,7 +15,17 @@ public class Configurer : IConfigureComponents
   {
     configurationContext.Services.AddTransient<ApplicationHandlers>();
     configurationContext.Services.AddTransient<CommunicationHandlers>();
+    configurationContext.Services.AddTransient<IApplicationMapper, ApplicationMapper>();
+    configurationContext.Services.AddTransient<ICommunicationMapper, CommunicationMapper>();
+    configurationContext.Services.AddTransient<ICertificationMapper, CertificationMapper>();
+    configurationContext.Services.AddTransient<ICoursesMapper, CoursesMapper>();
     configurationContext.Services.AddTransient<ICRAEligibilityHandlers>();
+    configurationContext.Services.AddTransient<IICRAEligibilityMapper, ICRAEligibilityMapper>();
+    configurationContext.Services.AddTransient<IPostSecondaryInstituteMapper, PostSecondaryInstituteMapper>();
+    configurationContext.Services.AddTransient<IProgramApplicationMapper, ProgramApplicationMapper>();
+    configurationContext.Services.AddTransient<IProgramMapper, ProgramMapper>();
+    configurationContext.Services.AddTransient<IPspUserMapper, PspUserMapper>();
+    configurationContext.Services.AddTransient<IRegistrantMapper, RegistrantMapper>();
     configurationContext.Services.AddTransient<RegistrantHandlers>();
     configurationContext.Services.AddTransient<ProgramHandlers>();
     configurationContext.Services.AddTransient<CoursesHandler>();
@@ -23,16 +33,16 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<ProgramApplicationHandler>();
     configurationContext.Services.AddTransient<PspUserHandlers>();
     configurationContext.Services.AddTransient<PortalInvitationHandlers>();
+    configurationContext.Services.AddTransient<IPortalInvitationMapper, PortalInvitationMapper>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, ReferencePortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, IcraReferencePortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, PspPortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<RecaptchaHandlers>();
     configurationContext.Services.Configure<RecaptchaAppSettings>(recaptchaAppSettings =>
-    configurationContext.Configuration.GetSection("Recaptcha").Bind(recaptchaAppSettings));
+      configurationContext.Configuration.GetSection("Recaptcha").Bind(recaptchaAppSettings));
     configurationContext.Services.AddTransient<BceidRegistrationIdentityService>();
     configurationContext.Services.AddTransient<BcscRegistrationIdentityService>();
-    configurationContext.Services.AddTransient<IRegistrationIdentityService>(provider =>
-    { return provider.GetRequiredService<BcscRegistrationIdentityService>(); });
+    configurationContext.Services.AddTransient<IRegistrationIdentityService>(provider => provider.GetRequiredService<BcscRegistrationIdentityService>());
   }
 }
 

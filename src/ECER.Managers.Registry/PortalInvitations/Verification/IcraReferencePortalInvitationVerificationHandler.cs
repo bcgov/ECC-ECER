@@ -1,12 +1,10 @@
-using AutoMapper;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
 
 namespace ECER.Managers.Registry;
 
 public class IcraReferencePortalInvitationVerificationHandler(
-  IRegistrantRepository registrantRepository,
-  IMapper mapper)
+  IRegistrantRepository registrantRepository)
   : IPortalInvitationVerificationHandler
 {
   public bool CanHandle(InviteType? inviteType)
@@ -29,7 +27,7 @@ public class IcraReferencePortalInvitationVerificationHandler(
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
 
-    var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
+    var result = portalInvitation;
 
     switch (result.StatusCode)
     {
@@ -50,5 +48,3 @@ public class IcraReferencePortalInvitationVerificationHandler(
     return PortalInvitationVerificationQueryResult.Success(result);
   }
 }
-
-

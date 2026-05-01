@@ -12,8 +12,10 @@ public class Configurer : IConfigureComponents
   {
     configurationContext.Services.Configure<PortalAppSettings>(portalAppSettings =>
     configurationContext.Configuration.GetSection("PortalApp").Bind(portalAppSettings));
+    configurationContext.Services.AddTransient<ICertificationMapper, CertificationMapper>();
     configurationContext.Services.AddTransient<FileHandlers>();
     configurationContext.Services.AddTransient<InviteLinkHandlers>();
+    configurationContext.Services.AddTransient<IMetadataMapper, MetadataMapper>();
     configurationContext.Services.AddTransient<MetadataHandlers>();
   }
 }
