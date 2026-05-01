@@ -428,15 +428,21 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     CampusLocation = source.ecer_CampusLocation,
     Status = source.StatusCode.HasValue ? MapTranscriptStage(source.StatusCode.Value) : null,
     StudentMiddleName = source.ecer_StudentMiddleName,
-    Country = source.ecer_InstituteCountryId != null
-      ? new Country(source.ecer_InstituteCountryId.Id.ToString(), source.ecer_InstituteCountryIdName, string.Empty, false)
-      : null,
-    Province = source.ecer_ProvinceId != null
-      ? new Province(source.ecer_ProvinceId.Id.ToString(), source.ecer_ProvinceIdName, string.Empty)
-      : null,
-    PostSecondaryInstitution = source.ecer_postsecondaryinstitutionid != null
-      ? new PostSecondaryInstitution(source.ecer_postsecondaryinstitutionid.Id.ToString(), source.ecer_postsecondaryinstitutionidName, string.Empty)
-      : null,
+    Country = source.ecer_transcript_InstituteCountryId != null
+      ? MapCountry(source.ecer_transcript_InstituteCountryId)
+      : source.ecer_InstituteCountryId != null
+        ? new Country(source.ecer_InstituteCountryId.Id.ToString(), source.ecer_InstituteCountryIdName, string.Empty, false)
+        : null,
+    Province = source.ecer_transcript_ProvinceId != null
+      ? MapProvince(source.ecer_transcript_ProvinceId)
+      : source.ecer_ProvinceId != null
+        ? new Province(source.ecer_ProvinceId.Id.ToString(), source.ecer_ProvinceIdName, string.Empty)
+        : null,
+    PostSecondaryInstitution = source.ecer_transcript_postsecondaryinstitutionid != null
+      ? MapPostSecondaryInstitution(source.ecer_transcript_postsecondaryinstitutionid, GetTranscriptProvinceId(source))
+      : source.ecer_postsecondaryinstitutionid != null
+        ? new PostSecondaryInstitution(source.ecer_postsecondaryinstitutionid.Id.ToString(), source.ecer_postsecondaryinstitutionidName, GetTranscriptProvinceId(source))
+        : null,
     TranscriptReceivedByRegistry = source.ecer_TranscriptReceived,
     ComprehensiveReportReceivedByRegistry = source.ecer_ComprehensiveEvaluationReportReceived,
     CourseOutlineReceivedByRegistry = source.ecer_CourseOutlineReceived,
@@ -518,6 +524,12 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     return new ecer_Country(Guid.Parse(source.CountryId));
   }
 
+  private static Country MapCountry(ecer_Country source) => new(
+    source.ecer_CountryId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    source.ecer_ShortName ?? string.Empty,
+    source.ecer_EligibleforICRA.GetValueOrDefault());
+
   private static Province MapProvince(ecer_Province source) => new(
     source.ecer_ProvinceId?.ToString() ?? string.Empty,
     source.ecer_Name ?? string.Empty,
@@ -542,6 +554,16 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
 
     return new ecer_PostSecondaryInstitute(Guid.Parse(source.Id));
   }
+
+  private static PostSecondaryInstitution MapPostSecondaryInstitution(ecer_PostSecondaryInstitute source, string provinceId) => new(
+    source.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    provinceId);
+
+  private static string GetTranscriptProvinceId(ecer_Transcript source) =>
+    source.ecer_transcript_ProvinceId?.ecer_ProvinceId?.ToString()
+    ?? source.ecer_ProvinceId?.Id.ToString()
+    ?? string.Empty;
 
   private static TranscriptStatusOptions? GetTranscriptStatusOption(ecer_Transcript source)
   {

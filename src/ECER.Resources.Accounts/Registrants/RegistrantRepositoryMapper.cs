@@ -88,7 +88,7 @@ internal partial class RegistrantRepositoryMapper : IRegistrantRepositoryMapper
       ecer_MiddleName = source.MiddleName,
       StatusCode = MapPreviousNameStage(source.Status),
       ecer_Source = MapPreviousNameSource(source.Source),
-      ecer_documenturl_PreviousNameId = source.Documents.Any() ? MapIdentityDocuments(source.Documents) : Array.Empty<bcgov_DocumentUrl>(),
+      ecer_documenturl_PreviousNameId = source.Documents.Any() ? MapIdentityDocuments(source.Documents) : null,
     };
 
     if (Guid.TryParse(source.Id, out var previousNameId))

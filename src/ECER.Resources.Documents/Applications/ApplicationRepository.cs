@@ -58,6 +58,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       .IncludeNested(a => a.ecer_bcgov_documenturl_TranscriptId)
       .Execute();
 
+    HydrateTranscriptLookups(results);
     return mapper.MapApplications(results);
   }
 
@@ -127,6 +128,78 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
+  }
+
+  private void HydrateTranscriptLookups(IEnumerable<ecer_Application> applications)
+  {
+    var transcripts = applications
+      .SelectMany(application => application.ecer_transcript_Applicationid ?? Array.Empty<ecer_Transcript>())
+      .ToList();
+
+    if (transcripts.Count == 0)
+    {
+      return;
+    }
+
+    var countryIds = transcripts
+      .Where(transcript => transcript.ecer_transcript_InstituteCountryId == null && transcript.ecer_InstituteCountryId != null)
+      .Select(transcript => transcript.ecer_InstituteCountryId.Id)
+      .Distinct()
+      .ToList();
+
+    var provinceIds = transcripts
+      .Where(transcript => transcript.ecer_transcript_ProvinceId == null && transcript.ecer_ProvinceId != null)
+      .Select(transcript => transcript.ecer_ProvinceId.Id)
+      .Distinct()
+      .ToList();
+
+    var institutionIds = transcripts
+      .Where(transcript => transcript.ecer_transcript_postsecondaryinstitutionid == null && transcript.ecer_postsecondaryinstitutionid != null)
+      .Select(transcript => transcript.ecer_postsecondaryinstitutionid.Id)
+      .Distinct()
+      .ToList();
+
+    var countriesById = countryIds.Count == 0
+      ? new Dictionary<Guid, ecer_Country>()
+      : context.ecer_CountrySet
+        .WhereIn(country => country.ecer_CountryId!.Value, countryIds)
+        .ToDictionary(country => country.ecer_CountryId!.Value);
+
+    var provincesById = provinceIds.Count == 0
+      ? new Dictionary<Guid, ecer_Province>()
+      : context.ecer_ProvinceSet
+        .WhereIn(province => province.ecer_ProvinceId!.Value, provinceIds)
+        .ToDictionary(province => province.ecer_ProvinceId!.Value);
+
+    var institutionsById = institutionIds.Count == 0
+      ? new Dictionary<Guid, ecer_PostSecondaryInstitute>()
+      : context.ecer_PostSecondaryInstituteSet
+        .WhereIn(institution => institution.ecer_PostSecondaryInstituteId!.Value, institutionIds)
+        .ToDictionary(institution => institution.ecer_PostSecondaryInstituteId!.Value);
+
+    foreach (var transcript in transcripts)
+    {
+      if (transcript.ecer_transcript_InstituteCountryId == null &&
+          transcript.ecer_InstituteCountryId != null &&
+          countriesById.TryGetValue(transcript.ecer_InstituteCountryId.Id, out var country))
+      {
+        transcript.ecer_transcript_InstituteCountryId = country;
+      }
+
+      if (transcript.ecer_transcript_ProvinceId == null &&
+          transcript.ecer_ProvinceId != null &&
+          provincesById.TryGetValue(transcript.ecer_ProvinceId.Id, out var province))
+      {
+        transcript.ecer_transcript_ProvinceId = province;
+      }
+
+      if (transcript.ecer_transcript_postsecondaryinstitutionid == null &&
+          transcript.ecer_postsecondaryinstitutionid != null &&
+          institutionsById.TryGetValue(transcript.ecer_postsecondaryinstitutionid.Id, out var institution))
+      {
+        transcript.ecer_transcript_postsecondaryinstitutionid = institution;
+      }
+    }
   }
 
   public async Task<string> Submit(string applicationId, CancellationToken cancellationToken)

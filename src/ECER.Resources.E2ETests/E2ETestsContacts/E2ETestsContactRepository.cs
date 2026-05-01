@@ -1,7 +1,5 @@
-﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk;
 
 namespace ECER.Resources.E2ETests.E2ETestsContacts;
