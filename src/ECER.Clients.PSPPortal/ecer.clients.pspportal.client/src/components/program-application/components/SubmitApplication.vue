@@ -1,6 +1,6 @@
 <template>
   <Loading v-if="loadingStore.isLoading('program_application_get')"></Loading>
-  <v-container v-else>
+  <template v-else>
     <v-row>
       <v-col cols="12">
         <h1 class="mb-3">Submit application</h1>
@@ -59,7 +59,7 @@
         Submit application
       </v-btn>
     </v-row>
-  </v-container>
+  </template>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";

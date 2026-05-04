@@ -1,6 +1,6 @@
 <template>
   <Loading v-if="loading" />
-  <PageContainer v-else>
+  <template v-else>
     <v-row class="justify-space-between mb-4">
       <v-col cols="auto">
         <h1>Review program profile</h1>
@@ -27,7 +27,7 @@
           <div>
             <h2 class="text-wrap">{{ generateTitle(programType) }}</h2>
           </div>
-          <div v-if="editable">
+          <div v-if="isEditableStatus && isNewBasic">
             <v-tooltip location="top">
               <template #activator="{ props }">
                 <v-btn
@@ -52,41 +52,56 @@
       </v-card-title>
       <v-card-text class="text-grey-dark">
         <v-row class="mb-4" no-gutters>
-          <v-col cols="4">Area of Instruction</v-col>
-          <v-col cols="4">Course number and name</v-col>
-          <v-col cols="4">hours</v-col>
+          <v-col cols="4">Area of instruction</v-col>
+          <v-col cols="6">Course number and name</v-col>
+          <v-col cols="2">Hours</v-col>
         </v-row>
         <v-row
           no-gutters
-          class="mb-4"
+          :class="courses.length > 0 ? 'mb-4' : 'bg-alert-warning mb-4'"
           v-for="[
             courseAreaOfInstructionId,
             courses,
-          ] in getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
-            allCourses,
-            programType,
-          )"
+          ] in getCoursesForProgramApplication(programType)"
           :key="courseAreaOfInstructionId"
         >
-          <v-col cols="4">
-            {{
-              configStore.areaOfInstructionNameById(
-                courseAreaOfInstructionId,
-              ) || courseAreaOfInstructionId
-            }}
-          </v-col>
-          <v-col cols="8">
-            <div v-for="course in courses">
-              <v-row no-gutters>
-                <v-col cols="6">
-                  <strong>{{ getCourseName(course) }}</strong>
-                </v-col>
-                <v-col cols="6">
-                  <strong>{{ course.hours }}</strong>
-                </v-col>
-              </v-row>
-            </div>
-          </v-col>
+          <template v-if="courses.length > 0">
+            <v-col cols="4">
+              {{
+                configStore.areaOfInstructionNameById(
+                  courseAreaOfInstructionId,
+                ) || courseAreaOfInstructionId
+              }}
+            </v-col>
+            <v-col cols="8">
+              <div v-for="course in courses">
+                <v-row no-gutters>
+                  <v-col cols="9">
+                    <strong>{{ getCourseName(course) }}</strong>
+                  </v-col>
+                  <v-col cols="3">
+                    <strong>{{ course.hours }}</strong>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-col>
+          </template>
+
+          <template v-else>
+            <v-icon
+              class="mr-2"
+              color="warning"
+              icon="mdi-alert-circle-outline"
+            ></v-icon>
+            <v-col cols="4">
+              {{
+                configStore.areaOfInstructionNameById(
+                  courseAreaOfInstructionId,
+                ) || courseAreaOfInstructionId
+              }}
+            </v-col>
+            <v-col>no courses provided</v-col>
+          </template>
         </v-row>
         <v-row
           v-if="
@@ -113,18 +128,17 @@
       </v-card-text>
     </v-card>
 
-    <v-row v-if="editable" class="d-print-none mt-4">
+    <v-row v-if="isEditableStatus" class="d-print-none mt-4">
       <v-col>
         <v-btn rounded="lg" color="primary" @click="$emit('next', {})">
           Continue
         </v-btn>
       </v-col>
     </v-row>
-  </PageContainer>
+  </template>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import type { Components } from "@/types/openapi";
 import { getProgramApplicationById } from "@/api/program-application";
@@ -134,7 +148,7 @@ import { useLoadingStore } from "@/store/loading";
 import { useConfigStore } from "@/store/config";
 import { useRouter } from "vue-router";
 import {
-  getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction,
+  getCoursesForProgramApplicationReview,
   getNonAllocatedCoursesByType,
   getCourseTitle,
 } from "@/utils/functions";
@@ -144,7 +158,6 @@ import type { CourseAreaDetail } from "@/types/helperFunctions";
 export default defineComponent({
   name: "ProgramApplicationReviewResponses",
   components: {
-    PageContainer,
     Loading,
   },
   props: {
@@ -168,20 +181,41 @@ export default defineComponent({
         this.loadingStore.isLoading("courses_get")
       );
     },
+    isNewBasic(): boolean {
+      return (
+        this.programApplication.programApplicationType ===
+        "NewBasicECEPostBasicProgram"
+      );
+    },
+    isEditableStatus(): boolean {
+      return (
+        this.programApplication.status === "Draft" ||
+        this.programApplication.statusReasonDetail === "RFAIrequested"
+      );
+    },
   },
   data() {
     return {
       isLoading: true,
       programTypes: [] as Components.Schemas.ProgramTypes[],
       allCourses: [] as Components.Schemas.Course[],
-      editable: false,
+      programApplication: {} as Components.Schemas.ProgramApplication,
     };
   },
   async mounted() {
     await this.loadInformation();
   },
   methods: {
-    getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction,
+    getCoursesForProgramApplication(
+      programType: Components.Schemas.ProgramTypes,
+    ) {
+      return getCoursesForProgramApplicationReview(
+        this.allCourses,
+        programType,
+        this.configStore.areaOfInstructionList,
+      );
+    },
+    getCoursesForProgramApplicationReview,
     getNonAllocatedCoursesByType,
     getCourseTitle,
     printPage() {
@@ -192,36 +226,34 @@ export default defineComponent({
         console.warn("programApplicationId was not provided");
         return;
       }
-      const programApplication = await getProgramApplicationById(
+      const programApplicationResponse = await getProgramApplicationById(
         this.programApplicationId,
       );
-      if (programApplication.error || programApplication.data == null) {
+      if (
+        programApplicationResponse.error ||
+        programApplicationResponse.data == null
+      ) {
         this.alertStore.setFailureAlert("Failed to load program application");
-        console.error(programApplication.error);
+        console.error(programApplicationResponse.error);
         return;
       }
 
-      this.programTypes = programApplication.data.programTypes || [];
+      this.programTypes = programApplicationResponse.data.programTypes || [];
+      this.programApplication = programApplicationResponse.data;
 
-      const isNewBasic =
-        programApplication.data.programApplicationType ===
-        "NewBasicECEPostBasicProgram";
-      const requestType = isNewBasic ? "ProgramApplication" : "ProgramProfile";
-      const requestId = isNewBasic
+      const requestType = this.isNewBasic
+        ? "ProgramApplication"
+        : "ProgramProfile";
+      const requestId = this.isNewBasic
         ? this.programApplicationId
-        : (programApplication.data.programProfileId ??
+        : (programApplicationResponse.data.programProfileId ??
           this.programApplicationId);
-
-      this.editable =
-        isNewBasic &&
-        (programApplication.data.status === "Draft" ||
-          programApplication.data.statusReasonDetail === "RFAIrequested");
 
       this.allCourses =
         (await getCourses(
           requestId,
           requestType,
-          programApplication.data.programTypes || [],
+          programApplicationResponse.data.programTypes || [],
         )) || [];
     },
     getCourseName(course: CourseAreaDetail): string {

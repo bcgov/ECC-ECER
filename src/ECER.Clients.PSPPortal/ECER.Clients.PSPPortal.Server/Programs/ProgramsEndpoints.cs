@@ -60,7 +60,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .AddGuidValidation("id", false)
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, string? fromProgramId, string? campusId,
+    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, ProgramProfileType? byProgramProfileType, string? fromProgramId, string? campusId,
       HttpContext ctx, IMediator messageBus, IProgramMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
     {
       // Get pagination parameters from the query string with default values
@@ -80,6 +80,9 @@ public class ProgramsEndpoints : IRegisterEndpoints
         ById = id,
         ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
         ByStatus = statusFilter,
+        ByProgramProfileType = byProgramProfileType.HasValue
+          ? mapper.MapProgramProfileType(byProgramProfileType.Value)
+          : null,
         ByFromProgramProfileId = fromProgramId,
         ByCampusId = campusId,
         PageNumber = pageNumber,
@@ -236,7 +239,8 @@ public enum ProgramTypes
 public enum ProgramProfileType
 {
   ChangeRequest,
-  AnnualReview
+  AnnualReview,
+  New
 }
 
 public record GetProgramsResponse

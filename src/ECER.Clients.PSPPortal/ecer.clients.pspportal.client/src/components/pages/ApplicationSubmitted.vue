@@ -24,7 +24,7 @@
     <br />
     <p>
       It is important to keep your educational institution and user contact
-      information updated in your PSP Portal profile.
+      information updated in your ECE Post-Secondary Programs portal profile.
     </p>
     <br />
     <h2>Assessment</h2>
@@ -39,12 +39,10 @@
     <br />
     <h2>Status</h2>
     <br />
-    <ul class="ml-10">
-      <li>
-        You may view the status of your application online in the PSP Portal
-        dashboard
-      </li>
-    </ul>
+    <p>
+      You may view the status of your application online in the ECE
+      Post-Secondary Programs portal dashboard.
+    </p>
     <br />
     <v-btn
       id="btnHome"

@@ -76,12 +76,16 @@ internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationR
       .ToList(),
     OtherAdmissionOptions = source.ecer_OtherAdmissionOptions,
     InstituteInfoEntryProgress = source.ecer_InstitutionProgramInformationEntryProgress?.ToString(),
-    DeclarantName = source.ecer_SubmittedByProgramRepresentativeIdName,
     DeclarationDate = source.ecer_DateofApplicationShort,
     DeclarationAccepted = source.ecer_AgreeNotifyofChanges == ecer_YesNoNull.Yes,
+    DeclarantName = source.ecer_SubmittedByProgramRepresentativeIdName,
+    DeclarantId = source.ecer_SubmittedByProgramRepresentativeId?.Id.ToString(),
     ProgramProfileId = source.ecer_FromProgramProfileId?.Id.ToString(),
     ProgramProfileName = source.ecer_FromProgramProfileId?.Name,
     DeclarationText = source.ecer_DeclarationStatements,
+    BasicProgress = source.ecer_BasicEntryProgress?.ToString(),
+    IteProgress = source.ecer_ITEEntryProgress?.ToString(),
+    SneProgress = source.ecer_SNEEntryProgress?.ToString(),
   };
 
   private NavigationMetadata MapNavigationMetadata(ecer_ProgramApplicationComponentGroup source) => new(

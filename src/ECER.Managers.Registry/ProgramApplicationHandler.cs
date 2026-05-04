@@ -96,7 +96,14 @@ public class ProgramApplicationHandler(
     if (programApplication != null)
     {
       var status = programApplication.InstituteInfoEntryProgress ?? "ToDo";
-      mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(),  "Institution and program info", status, "Institute Info", 0, NavigationType.Other, false));
+      mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(), "Institution and program info", status, "Institute Info", 0, NavigationType.Other, false));
+
+      if (programApplication.ProgramTypes?.Contains(Resources.Documents.ProgramApplications.ProgramCertificationType.Basic) == true)
+        mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(), "Basic", programApplication.BasicProgress ?? "ToDo", "Program Profile", 97, NavigationType.Other, false));
+      if (programApplication.ProgramTypes?.Contains(Resources.Documents.ProgramApplications.ProgramCertificationType.ITE) == true)
+        mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(), "ITE", programApplication.IteProgress ?? "ToDo", "Program Profile", 98, NavigationType.Other, false));
+      if (programApplication.ProgramTypes?.Contains(Resources.Documents.ProgramApplications.ProgramCertificationType.SNE) == true)
+        mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(), "SNE", programApplication.SneProgress ?? "ToDo", "Program Profile", 99, NavigationType.Other, false));
     }
     return mappedComponentResults;
   }

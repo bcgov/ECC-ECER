@@ -21,10 +21,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		CertificationsPortal = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		LOGIN = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		LOOKUP = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PSPPortal = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		REFERENCES = 621870002,

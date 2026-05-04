@@ -47,7 +47,9 @@ public enum PortalTags
 {
   LOGIN,
   LOOKUP,
-  REFERENCES
+  REFERENCES,
+  PSPPortal,
+  CertificationsPortal
 }
 
 public record ProvincesQuery

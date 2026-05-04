@@ -43,11 +43,16 @@ public class ProgramHandlers(
       ? programMapper.MapProgramStatuses(request.ByStatus)
       : null;
 
+    Resources.Documents.Programs.ProgramProfileType? profileTypeFilter = request.ByProgramProfileType.HasValue
+      ? programMapper.MapProgramProfileType(request.ByProgramProfileType.Value)
+      : null;
+
     var result = await programRepository.Query(new ProgramQuery
     {
       ById = request.ById,
       ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
       ByStatus = statusFilter,
+      ByProgramProfileType = profileTypeFilter,
       ByFromProgramProfileId = request.ByFromProgramProfileId,
       ByCampusId = request.ByCampusId,
       PageNumber = request.PageNumber,

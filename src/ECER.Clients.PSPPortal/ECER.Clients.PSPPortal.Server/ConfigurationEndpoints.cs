@@ -40,17 +40,26 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new AreaOfInstructionListResponse(instructions));
     }).WithOpenApi("Handles area of instruction queries", string.Empty, "area_of_instruction_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
+
+    endpointRouteBuilder.MapGet("/api/systemMessages", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper mapper, CancellationToken ct) =>
+    {
+      var results = await messageBus.Send(new SystemMessagesQuery(), ct);
+      return TypedResults.Ok(mapper.MapSystemMessages(results.Items));
+    })
+     .WithOpenApi("Handles system messages queries", string.Empty, "systemMessage_get")
+     .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
   }
 }
 
-#pragma warning disable CA2227 // Collection properties should be read only
+#pragma warning disable CA2227
 
 public record ApplicationConfiguration
 {
   public Dictionary<string, OidcAuthenticationSettings> ClientAuthenticationMethods { get; set; } = [];
 }
 
-#pragma warning restore CA2227 // Collection properties should be read only
+#pragma warning restore CA2227
+
 public record OidcAuthenticationSettings
 {
   public string Authority { get; set; } = null!;
@@ -63,3 +72,19 @@ public record Province(string ProvinceId, string ProvinceName, string ProvinceCo
 public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
 public record AreaOfInstructionListResponse(IEnumerable<AreaOfInstruction> AreaOfInstruction);
 public record AreaOfInstruction(string Id, string Name, IEnumerable<ProgramTypes> ProgramTypes, int? MinimumHours, string? DisplayOrder, string? ParentAreaOfInstructionId);
+
+public record SystemMessage(string Name, string Subject, string Message)
+{
+  public DateTime StartDate { get; set; }
+  public DateTime EndDate { get; set; }
+  public IEnumerable<PortalTags> PortalTags { get; set; } = Array.Empty<PortalTags>();
+}
+
+public enum PortalTags
+{
+  LOGIN,
+  LOOKUP,
+  REFERENCES,
+  PSPPortal,
+  CertificationsPortal
+}

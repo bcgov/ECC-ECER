@@ -42,9 +42,13 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
     DeclarationDate = source.DeclarationDate,
     DeclarationAccepted = source.DeclarationAccepted,
     DeclarantName = source.DeclarantName,
+    DeclarantId = source.DeclarantId,
     ProgramProfileId = source.ProgramProfileId,
     ProgramProfileName = source.ProgramProfileName,
     DeclarationText = source.DeclarationText,
+    BasicProgress = source.BasicProgress,
+    IteProgress = source.IteProgress,
+    SneProgress = source.SneProgress,
   };
 
   public ProgramApplication MapProgramApplication(ContractProgramApplications.ProgramApplication source) => new()
@@ -74,9 +78,13 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
     DeclarationDate = source.DeclarationDate,
     DeclarationAccepted = source.DeclarationAccepted,
     DeclarantName = source.DeclarantName,
+    DeclarantId = source.DeclarantId,
     ProgramProfileId = source.ProgramProfileId,
     ProgramProfileName = source.ProgramProfileName,
     DeclarationText = source.DeclarationText,
+    BasicProgress = source.BasicProgress,
+    IteProgress = source.IteProgress,
+    SneProgress = source.SneProgress,
   };
 
   public IEnumerable<ProgramApplication> MapProgramApplications(IEnumerable<ContractProgramApplications.ProgramApplication> source) => source.Select(MapProgramApplication).ToList();

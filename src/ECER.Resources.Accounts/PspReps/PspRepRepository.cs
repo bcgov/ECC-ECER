@@ -13,11 +13,9 @@ internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMap
     if (!Guid.TryParse(user.Id, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {user.Id} is not a valid GUID");
 
     var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
-
     if (pspUser == null) throw new InvalidOperationException($"Psp Program Rep with id {user.Id} not found");
 
     var identity = user.Identities.FirstOrDefault();
-
     if (identity == null) throw new InvalidOperationException("No identity provided to attach to Psp Program Rep");
 
     var authentication = new ecer_Authentication(Guid.NewGuid())
@@ -26,7 +24,6 @@ internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMap
       ecer_IdentityProvider = identity.IdentityProvider
     };
 
-    // On registration, enable portal access and persist with the authentication link
     pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Active;
     context.UpdateObject(pspUser);
     context.AddObject(authentication);
@@ -66,7 +63,6 @@ internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMap
     }
 
     var results = context.From(pspUsers).Execute();
-
     return mapper.MapPspUsers(results);
   }
 
@@ -75,7 +71,6 @@ internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMap
     if (!Guid.TryParse(user.Id, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {user.Id} is not a valid GUID");
 
     var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
-
     if (pspUser == null) throw new InvalidOperationException($"Psp Program Rep with id {user.Id} not found");
 
     var firstName = pspUser.ecer_FirstName;
@@ -91,7 +86,6 @@ internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMap
     pspUser.ecer_LastName = lastName;
     pspUser.ecer_RepresentativeRole = representativeRole;
 
-    // Only accept terms of use once
     if (hasAcceptedTermsOfUse == true)
     {
       pspUser.ecer_HasAcceptedTermsofUse = hasAcceptedTermsOfUse;
@@ -113,6 +107,16 @@ internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMap
 
     var pspRep = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(pspRepId));
     if (pspRep == null) throw new InvalidOperationException($"psp representative with id {pspRepId} not found");
+
+    var invitations = context.ecer_PortalInvitationSet.Where(invitation =>
+      invitation.ecer_psiprogramrepresentativeid.Id == userId && invitation.StateCode == ecer_portalinvitation_statecode.Active).ToList();
+
+    foreach (var invitation in invitations)
+    {
+      invitation.StatusCode = ecer_PortalInvitation_StatusCode.Cancelled;
+      invitation.StateCode = ecer_portalinvitation_statecode.Inactive;
+      context.UpdateObject(invitation);
+    }
 
     pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Disabled;
     pspUser.ecer_HasAcceptedTermsofUse = false;
@@ -195,6 +199,7 @@ internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMap
     await Task.CompletedTask;
 
     if (!Guid.TryParse(postSecondaryInstitutionId, out var institutionId)) throw new InvalidOperationException($"Post Secondary Institution ID {postSecondaryInstitutionId} is not a valid GUID");
+
     var pspRep = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(pspRepId));
     if (pspRep == null) throw new InvalidOperationException($"psp representative with id {pspRepId} not found");
 
@@ -213,33 +218,24 @@ internal sealed class PspRepRepository(EcerContext context, IPspRepRepositoryMap
     context.SaveChanges();
   }
 
-  /// <summary>
-  /// Establishes a link between a User and their designated Program Representative.
-  /// </summary>
-  /// <param name="pspRep">The Parent record. This is the Representative being assigned.</param>
-  /// <param name="pspUser">The Child record. This is the User who will 'point to' the Representative.</param>
   private void setAddedByUserRepField(ecer_ECEProgramRepresentative pspRep, ecer_ECEProgramRepresentative pspUser)
   {
-    var Referencingecer_eceprogramrepresentative_PSIProgramRepresentative_ecer_eceprogramrepresentative = new Relationship(ecer_ECEProgramRepresentative.Fields.Referencingecer_eceprogramrepresentative_PSIProgramRepresentative_ecer_eceprogramrepresentative)
+    var relationship = new Relationship(ecer_ECEProgramRepresentative.Fields.Referencingecer_eceprogramrepresentative_PSIProgramRepresentative_ecer_eceprogramrepresentative)
     {
       PrimaryEntityRole = EntityRole.Referencing
     };
-    context.AddLink(pspUser, Referencingecer_eceprogramrepresentative_PSIProgramRepresentative_ecer_eceprogramrepresentative, pspRep);
+    context.AddLink(pspUser, relationship, pspRep);
   }
 
-  /// <summary>
-  /// Establishes a link between a User and their designated Program Representative. Sets modified flags and date fields
-  /// </summary>
-  /// <param name="pspRep">The Parent record. This is the Representative being assigned.</param>
-  /// <param name="pspUser">The Child record. This is the User who will 'point to' the Representative.</param>
   private void setModifiedByPspRepFields(ecer_ECEProgramRepresentative pspRep, ecer_ECEProgramRepresentative pspUser)
   {
     pspUser.ecer_HasChangedbyProgramRep = true;
     pspUser.ecer_ProgramRepModifiedDate = DateTime.Now;
-    var Referencingecer_eceprogramrepresentative_ModifiedByProgramRepId = new Relationship(ecer_ECEProgramRepresentative.Fields.Referencingecer_eceprogramrepresentative_ModifiedByProgramRepId)
+
+    var relationship = new Relationship(ecer_ECEProgramRepresentative.Fields.Referencingecer_eceprogramrepresentative_ModifiedByProgramRepId)
     {
       PrimaryEntityRole = EntityRole.Referencing
     };
-    context.AddLink(pspUser, Referencingecer_eceprogramrepresentative_ModifiedByProgramRepId, pspRep);
+    context.AddLink(pspUser, relationship, pspRep);
   }
 }

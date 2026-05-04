@@ -1,6 +1,18 @@
 <template>
-  <v-breadcrumbs class="pl-0" :items="breadcrumbItems" color="primary">
+  <v-breadcrumbs class="pl-0" :items="breadcrumbItems">
     <template #divider>/</template>
+    <template #item="{ item }">
+      <v-breadcrumbs-item
+        :class="{
+          'text-decoration-underline text-primary': !item.disabled,
+          'text-grey-very-dark': item.disabled,
+        }"
+        :disabled="false"
+        :href="item.disabled ? undefined : item.href"
+      >
+        {{ item.title }}
+      </v-breadcrumbs-item>
+    </template>
   </v-breadcrumbs>
 </template>
 
@@ -48,7 +60,7 @@ export default defineComponent({
         "edit-education-institution": [
           home,
           {
-            title: "Edit Institution",
+            title: "Edit institution contact info",
             disabled: true,
             href: "/education-institution/edit",
           },
@@ -184,6 +196,11 @@ export default defineComponent({
           return [
             home,
             {
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
               title: "Basic or post-basic program application",
               disabled: true,
               href: "/program-application-info",
@@ -195,7 +212,12 @@ export default defineComponent({
           return [
             home,
             {
-              title: "New Campus application",
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
+              title: "Application for new campus",
               disabled: true,
               href: "/program-application-info",
             },
@@ -211,6 +233,15 @@ export default defineComponent({
             {
               title:
                 "Application for adding an online or hybrid delivery method",
+              disabled: true,
+              href: "/program-application-info",
+            },
+          ];
+        } else if (applicationType === "SatelliteProgram") {
+          return [
+            home,
+            {
+              title: "Satellite application",
               disabled: true,
               href: "/program-application-info",
             },
@@ -250,6 +281,20 @@ export default defineComponent({
               href: "/program-application-begin",
             },
           ];
+        } else if (applicationType === "SatelliteProgram") {
+          return [
+            home,
+            {
+              title: "All applications",
+              disabled: false,
+              href: "/program-applications",
+            },
+            {
+              title: "Application for satellite program",
+              disabled: true,
+              href: "/program-application-info",
+            },
+          ];
         } else if (applicationType === "AddOnlineorHybridDeliveryMethod") {
           return [
             home,
@@ -272,10 +317,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.v-breadcrumbs__item:not(.v-breadcrumbs__item--disabled),
-.v-breadcrumbs-item:not(.v-breadcrumbs-item--disabled) {
-  text-decoration: underline !important;
-}
-</style>

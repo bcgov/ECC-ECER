@@ -27,7 +27,6 @@ public record CountriesQuery : IRequest<CountriesQueryResults>
   public string? ByCode { get; set; }
   public string? ByName { get; set; }
   public bool? ByICRA { get; set; }
-
 }
 
 public record AreaOfInstructionsQuery : IRequest<AreaOfInstructionsQueryResults>
@@ -81,7 +80,9 @@ public enum PortalTags
 {
   LOGIN,
   LOOKUP,
-  REFERENCES
+  REFERENCES,
+  PSPPortal,
+  CertificationsPortal
 }
 
 public record OutOfProvinceCertificationType(string Id)

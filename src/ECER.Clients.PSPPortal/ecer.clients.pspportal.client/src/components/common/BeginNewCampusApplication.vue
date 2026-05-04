@@ -16,7 +16,7 @@
         <div class="d-flex flex-column ga-3">
           <p>
             To begin your application, provide information about the program.
-            When you have completed these questions, choose “Continue” to save
+            When you have completed these questions, select “Continue” to save
             your responses and create your draft application.
           </p>
           <p>
@@ -59,14 +59,21 @@
               responses later.
             </p>
             <p>
-              To apply to offer early childhood education program at a new
+              To apply to offer an early childhood education program at a new
               campus, an institution must already have a recognized basic or
               poast-basic early childhood education program.
             </p>
 
-            <v-row>
-              <v-col cols="6">
-                <p class="pt-3">Program Profile</p>
+            <v-row class="mt-4">
+              <v-col cols="12">
+                <p class="pb-3 font-weight-bold">Program Profile</p>
+                <p class="mb-3">
+                  Select the ECE Registry-recognized program for which you are
+                  requesting approval to expand delivery to online or hybrid
+                  formats.
+                </p>
+              </v-col>
+              <v-col cols="12" md="6">
                 <v-select
                   v-model="selectedProgramProfileId"
                   class="mt-2"
@@ -77,10 +84,6 @@
                   :rules="[Rules.required('Required')]"
                   hide-details="auto"
                 ></v-select>
-                <p>
-                  Select the Registry-recognized program for which you are
-                  requesting approval to offer at a new campus.
-                </p>
               </v-col>
             </v-row>
           </div>
@@ -123,15 +126,15 @@
             :rules="[Rules.required('Select a delivery method')]"
           >
             <v-radio
-              label="In-person - All coursework, including faculty practicum supervision, is in person"
+              label="In-person - programs or courses are delivered on campus or at an approved instructional site"
               value="Inperson"
             ></v-radio>
             <v-radio
-              label="Hybrid - Combination of in-person and online delivery; faculty practicum supervision is in person"
+              label="Hybrid - courses within a program are delivered both online and in person"
               value="Hybrid"
             ></v-radio>
             <v-radio
-              label="Online - All coursework, including faculty practicum supervision, is online"
+              label="Online - programs or courses are delivered entirely through digital platforms, with no requirement for students to attend a physical campus"
               value="Online"
             ></v-radio>
           </v-radio-group>
@@ -139,7 +142,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <p class="pb-3">Campus</p>
+          <p class="pb-3 font-weight-bold">Location</p>
           <p class="pb-3">Select where this program will be administered.</p>
 
           <v-radio-group
@@ -149,10 +152,7 @@
             :rules="[Rules.required('Select a campus')]"
           >
             <div v-for="campus in userStore.educationInstitution?.campuses">
-              <v-radio
-                :label="campus.generatedName || '-'"
-                :value="campus.id || null"
-              />
+              <v-radio :label="campus.name || '-'" :value="campus.id || null" />
             </div>
           </v-radio-group>
         </v-col>
@@ -258,7 +258,7 @@ export default defineComponent({
     mapCertificationType(type: string) {
       switch (type) {
         case "Basic":
-          return "Early childhood education (Basic)";
+          return "Early Childhood Educator";
         case "ITE":
           return "Infant and Toddler Educator (ITE)";
         case "SNE":

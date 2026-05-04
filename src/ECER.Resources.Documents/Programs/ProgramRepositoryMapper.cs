@@ -22,6 +22,7 @@ internal partial class ProgramRepositoryMapper : IProgramRepositoryMapper
   {
     ecer_ProgramId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
     StatusCode = MapProgramStatus(source.Status),
+    ecer_Type = MapProgramProfileType(source.ProgramProfileType),
     ecer_Name = source.Name,
     ecer_NewDescriptiveProgramName = source.ProgramName,
     ecer_PortalStage = source.PortalStage,
@@ -117,11 +118,12 @@ internal partial class ProgramRepositoryMapper : IProgramRepositoryMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ProgramProfileType MapProgramProfileType(ProgramProfileType source);
 
-  private ProgramProfileType MapProgramProfileType(ecer_ProgramProfileType? source) => source switch
-  {
-    ecer_ProgramProfileType.ChangeRequest => ProgramProfileType.ChangeRequest,
-    _ => ProgramProfileType.AnnualReview,
-  };
+  private ProgramProfileType MapProgramProfileType(ecer_ProgramProfileType? source) => source.HasValue
+    ? MapProgramProfileType(source.Value)
+    : ProgramProfileType.AnnualReview;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ProgramProfileType MapProgramProfileType(ecer_ProgramProfileType source);
 
   private static ecer_PSIProgramType MapOfferedProgramType(string source) => Enum.Parse<ecer_PSIProgramType>(source);
 }

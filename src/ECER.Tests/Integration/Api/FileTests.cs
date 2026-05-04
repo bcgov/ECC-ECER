@@ -1,5 +1,6 @@
 ﻿using Alba;
 using Bogus;
+using ECER.Clients.Api.Files;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
 using Shouldly;
@@ -21,7 +22,7 @@ public class FileTests : ApiWebAppScenarioBase
 
   [Fact]
   [Category("Internal")]
-  public async Task CanUploadFile()
+  public async Task CanUploadFile_GetFile_DeleteFile()
   {
     var fileLength = 1041;
     var testFile = await faker.GenerateTestFile(fileLength);
@@ -71,5 +72,16 @@ public class FileTests : ApiWebAppScenarioBase
     testFile.Content.Position = 0;
     using var sw = new StreamReader(testFile.Content);
     returnedFile.ShouldBe(await sw.ReadToEndAsync());
+
+    var deleteResponse = await Host.Scenario(_ =>
+    {
+      _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", testEcerWebApplicationType);
+      _.Delete.Url($"/api/files/{testFileId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var deletedResponse = await deleteResponse.ReadAsJsonAsync<FileResponse>();
+    deletedResponse.fileId.ShouldBe(testFileId);
   }
 }

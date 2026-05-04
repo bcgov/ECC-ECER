@@ -29,9 +29,17 @@ const getAreaOfInstructionList = async (): Promise<
   return (await client.area_of_instruction_get()).data.areaOfInstruction;
 };
 
+const getSystemMessages = async (): Promise<
+  Components.Schemas.SystemMessage[] | null | undefined
+> => {
+  const client = await getClient(false);
+  return (await client.systemMessage_get()).data;
+};
+
 export {
   getConfiguration,
   getProvinceList,
   getCountryList,
   getAreaOfInstructionList,
+  getSystemMessages,
 };

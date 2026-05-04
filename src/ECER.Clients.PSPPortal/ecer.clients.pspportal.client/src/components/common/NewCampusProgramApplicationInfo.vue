@@ -13,9 +13,9 @@
       <div class="d-flex flex-column ga-3">
         <p>
           Under the authority of the Community Care and Assisted Living Act and
-          the Child Care Licensing Regulation (CCLR), the Director of the Early
-          Childhood Educator Registry (Registry) sets standards for the
-          certification of Early Childhood Educators (ECEs) in British Columbia.
+          the Child Care Licensing Regulation (CCLR), the director of the Early
+          Childhood Educator Registry (ECE Registry) sets standards for the
+          certification of early childhood educators in British Columbia.
           Recognized early childhood education programs are listed in Schedule D
           of the CCLR and have been evaluated and found to provide students with
           the knowledge, skills, and abilities required to meet this standard.
@@ -25,21 +25,13 @@
           education programs against the standards as established in regulation,
           the
           <a
-            href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+            href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
             class="text-primary text-decoration-underline"
             target="_blank"
           >
             B.C. Child Care Sector Occupational Competencies
           </a>
-          (CCSOC), and the
-          <a
-            href="https://www2.gov.bc.ca/assets/download/C7D2FE264133456082776F45D4C69500"
-            class="text-primary text-decoration-underline"
-            target="_blank"
-          >
-            Linking Competencies
-          </a>
-          document.
+          (CCSOC), and the Linking Competencies document.
         </p>
 
         <p>
@@ -60,13 +52,25 @@
   <v-row>
     <v-col cols="12">
       <Callout title="Private institutions" type="warning">
-        <p>
-          Private institutions require an approval from their regulator to offer
-          their early childhood education program at a new campus location.
-          Contact the Private Training Institutions Regulatory Unit (PTIRU) at
-          <a href="mailto:PTI@gov.bc.ca">PTI@gov.bc.ca</a>
-          indicating the requested change.
-        </p>
+        <div class="d-flex flex-column ga-3">
+          <p>
+            Private institutions require additional approval from their
+            regulator before adding a temporary offering of an early childhood
+            education program at a location in partnership with another
+            organization, or at a location outside of the institution.
+          </p>
+          <p>
+            Contact the
+            <a
+              href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
+              class="text-primary text-decoration-underline"
+              target="_blank"
+            >
+              Private Training Institutions Regulatory Unit
+            </a>
+            for more information.
+          </p>
+        </div>
       </Callout>
     </v-col>
   </v-row>
@@ -102,9 +106,9 @@
           <h3>Program components</h3>
           <ul class="ml-10">
             <li>
-              As the Registry's assessment is outcome-based, information must
-              clearly outline plans and provide examples of the program design
-              and how it will be implemented
+              As the ECE Registry's assessment is outcome-based, information
+              must clearly outline plans and provide examples of the program
+              design and how it will be implemented
             </li>
             <li>Clear, concise documentation is required for each component</li>
             <li>
@@ -127,12 +131,17 @@
       <ECEHeader title="Assessment and recognition process" />
       <div class="d-flex flex-column ga-3 mt-4">
         <p>
-          The Registry can begin your assessment after you submit your completed
-          application package.
+          The ECE Registry can begin your assessment after you submit your
+          completed application package.
         </p>
         <p>
           A recognition evaluation meeting will be required during the
           assessment to determine interim recognition and ongoing recognition.
+        </p>
+        <p>
+          Two recognition evaluation meetings are required during the
+          assessment: one to determine interim recognition to start the program,
+          and a second to determine ongoing recognition.
         </p>
         <p>
           As early childhood education continues to grow and evolve, any program
@@ -148,19 +157,18 @@
       <ECEHeader title="Related documents" />
       <div class="d-flex flex-column mt-4">
         <a
-          href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+          href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
           target="_blank"
           class="text-primary text-decoration-underline"
         >
           B.C. Child Care Sector Occupational Competencies
         </a>
         <a
-          href="https://www2.gov.bc.ca/assets/download/C7D2FE264133456082776F45D4C69500"
+          href="https://www2.gov.bc.ca/assets/gov/family-and-social-supports/child-care/childcarebc-programs/ecer/bc_child_care_sector_occupational_competencies.pdf"
           target="_blank"
           class="text-primary text-decoration-underline"
         >
-          B.C. Child Care Sector Occupational Competencies Assessment Tool with
-          Linking Competencies
+          B.C. Child Care Sector Occupational Competencies Assessment Tool
         </a>
         <!-- prettier-ignore -->
         <p class="mt-3">

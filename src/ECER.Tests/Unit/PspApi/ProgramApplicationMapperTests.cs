@@ -9,6 +9,39 @@ namespace ECER.Tests.Unit.PspApi;
 public class ProgramApplicationMapperTests
 {
   [Fact]
+  public void MapProgramApplication_PreservesDeclarantAndProgressFields()
+  {
+    var mapper = new ProgramApplicationMapper();
+    var applicationId = Guid.NewGuid().ToString();
+    var instituteId = Guid.NewGuid().ToString();
+
+    var source = new ProgramApplication(applicationId, instituteId)
+    {
+      DeclarantId = Guid.NewGuid().ToString(),
+      DeclarantName = "Program Rep",
+      BasicProgress = "Completed",
+      IteProgress = "InProgress",
+      SneProgress = "ToDo",
+    };
+
+    var resource = mapper.MapProgramApplication(source);
+    var mappedBack = mapper.MapProgramApplication(resource);
+
+    resource.DeclarantId.ShouldBe(source.DeclarantId);
+    resource.DeclarantName.ShouldBe(source.DeclarantName);
+    resource.BasicProgress.ShouldBe(source.BasicProgress);
+    resource.IteProgress.ShouldBe(source.IteProgress);
+    resource.SneProgress.ShouldBe(source.SneProgress);
+
+    mappedBack.ShouldNotBeNull();
+    mappedBack.DeclarantId.ShouldBe(source.DeclarantId);
+    mappedBack.DeclarantName.ShouldBe(source.DeclarantName);
+    mappedBack.BasicProgress.ShouldBe(source.BasicProgress);
+    mappedBack.IteProgress.ShouldBe(source.IteProgress);
+    mappedBack.SneProgress.ShouldBe(source.SneProgress);
+  }
+
+  [Fact]
   public void MapComponentGroupWithComponents_PreservesFileOperations()
   {
     var mapper = new ProgramApplicationMapper();

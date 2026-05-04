@@ -41,7 +41,7 @@ public class NewProgramSubmissionValidationEngineTest
   }
 
   [Fact]
-  public async Task Validate_CheckForMinimumHours_ProgramTypeSne_WithZeroHours_ReturnsValidationError()
+  public async Task Validate_CheckForTotalHours_ProgramTypeSne_WithZeroHours_ReturnsValidationError()
   {
     var areaOfInstruction = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 0, "01");
     var areaOfInstructionList = new[] { areaOfInstruction };
@@ -51,11 +51,11 @@ public class NewProgramSubmissionValidationEngineTest
     var result = await validator.Validate(program, areaOfInstructionList);
     Assert.NotEmpty(result.ValidationErrors);
     var errorMessage = result.ValidationErrors.First();
-    Assert.Contains("Total hours must be greater than zero: Test_A", errorMessage);
+    Assert.Contains("Total course hours must hit the minimum total required hours for program: SNE", errorMessage);
   }
 
   [Fact]
-  public async Task Validate_CheckForMinimumHours_ProgramTypeSne_WithZeroHours_AndUnmappedInstruction_ReturnsValidationError()
+  public async Task Validate_CheckForMinimumHours_ProgramTypeSne_WithZeroHours_AndUnmappedInstruction_ReturnsSuccess()
   {
     var areaOfInstruction1 = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 450, "01");
     var areaOfInstruction2 = new AreaOfInstruction(Guid.NewGuid().ToString(), "Test_Area", ["SNE"], 0, "02");
@@ -64,9 +64,7 @@ public class NewProgramSubmissionValidationEngineTest
     var program = CreateProgram(areaOfInstruction1.Id, areaOfInstruction1.ProgramTypes.ToList(), "450.00", true);
 
     var result = await validator.Validate(program, areaOfInstructionList);
-    Assert.NotEmpty(result.ValidationErrors);
-    var errorMessage = result.ValidationErrors.First();
-    Assert.Contains("Total hours must be greater than zero: Test_A", errorMessage);
+    Assert.Empty(result.ValidationErrors);
   }
 
   [Fact]

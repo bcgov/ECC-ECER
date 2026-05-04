@@ -103,7 +103,7 @@ public class EducationInstituteTests : PspPortalWebAppScenarioBase
   {
     var createRequest = new CreateCampusRequest
     {
-      Name = "Update Test Campus",
+      Name = "Update Test Campus"+ Guid.NewGuid(),
       IsSatelliteOrTemporaryLocation = true,
       Street1 = "789 Campus Blvd",
       City = "Vancouver",

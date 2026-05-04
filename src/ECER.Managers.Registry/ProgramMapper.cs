@@ -12,6 +12,7 @@ public interface IProgramMapper
   ContractPrograms.Program? MapProgram(ResourcePrograms.Program? source);
   IEnumerable<ContractPrograms.Program> MapPrograms(IEnumerable<ResourcePrograms.Program> source);
   IEnumerable<ResourcePrograms.ProgramStatus> MapProgramStatuses(IEnumerable<ContractPrograms.ProgramStatus> source);
+  ResourcePrograms.ProgramProfileType MapProgramProfileType(ContractPrograms.ProgramProfileType source);
 }
 
 [Mapper]
@@ -116,7 +117,7 @@ internal partial class ProgramMapper : IProgramMapper
   private partial ContractPrograms.ProgramStatus MapProgramStatus(ResourcePrograms.ProgramStatus source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
-  private partial ResourcePrograms.ProgramProfileType MapProgramProfileType(ContractPrograms.ProgramProfileType source);
+  public partial ResourcePrograms.ProgramProfileType MapProgramProfileType(ContractPrograms.ProgramProfileType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPrograms.ProgramProfileType MapProgramProfileType(ResourcePrograms.ProgramProfileType source);

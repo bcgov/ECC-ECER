@@ -169,7 +169,7 @@ declare namespace Components {
       type?: string | null;
     }
     export interface CertificationLookupRequest {
-      recaptchaToken?: string | null;
+      captchaToken?: string | null;
       firstName?: string | null;
       lastName?: string | null;
       registrationNumber?: string | null;
@@ -234,7 +234,7 @@ declare namespace Components {
       referenceContactInformation?: ReferenceContactInformation;
       referenceEvaluation?: CharacterReferenceEvaluation;
       confirmProvidedInformationIsRight?: boolean;
-      recaptchaToken?: string | null;
+      captchaToken?: string | null;
     }
     export type ChildcareAgeRanges = "_036months" | "_35years" | "_68years";
     export type ChildrenProgramType =
@@ -348,7 +348,7 @@ declare namespace Components {
     export interface DraftICRAEligibilityResponse {
       eligibility?: ICRAEligibility;
     }
-    export type EcerWebApplicationType = "Psp" | "Registry";
+    export type EcerWebApplicationType = "PSP" | "Registry";
     export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
     export type EducationRecognition = "Recognized" | "NotRecognized";
     export interface EmploymentReference {
@@ -444,7 +444,7 @@ declare namespace Components {
       | "ReadyforAssessment";
     export interface ICRAWorkExperienceReferenceSubmissionRequest {
       token?: string | null;
-      recaptchaToken?: string | null;
+      captchaToken?: string | null;
       firstName?: string | null;
       lastName?: string | null;
       emailAddress?: string | null;
@@ -473,6 +473,7 @@ declare namespace Components {
       extention?: string | null;
       name?: string | null;
       size?: string | null;
+      ecerWebApplicationType?: EcerWebApplicationType;
     }
     export type InitiatedFrom =
       | "Investigation"
@@ -530,7 +531,7 @@ declare namespace Components {
     export interface OptOutReferenceRequest {
       token?: string | null;
       unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
-      recaptchaToken?: string | null;
+      captchaToken?: string | null;
     }
     export interface OutOfProvinceCertificationType {
       id?: string | null;
@@ -557,7 +558,12 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
-    export type PortalTags = "LOGIN" | "LOOKUP" | "REFERENCES";
+    export type PortalTags =
+      | "LOGIN"
+      | "LOOKUP"
+      | "REFERENCES"
+      | "PSPPortal"
+      | "CertificationsPortal";
     export interface PostSecondaryInstitution {
       id?: string | null;
       name?: string | null;
@@ -914,7 +920,7 @@ declare namespace Components {
       workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
       workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
       confirmProvidedInformationIsRight?: boolean;
-      recaptchaToken?: string | null;
+      captchaToken?: string | null;
       workExperienceType: WorkExperienceTypes;
     }
     export type WorkExperienceTypes = "Is400Hours" | "Is500Hours" | "ICRA";
@@ -1047,6 +1053,11 @@ declare namespace Paths {
       export type $200 = Components.Schemas.UpdateReferenceResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
+    }
+  }
+  namespace CaptchaSiteKeyGet {
+    namespace Responses {
+      export type $200 = string;
     }
   }
   namespace CertificationComparisonGet {
@@ -1418,11 +1429,6 @@ declare namespace Paths {
       export type $200 = Components.Schemas.PostSecondaryInstitution[];
     }
   }
-  namespace RecaptchaSiteKeyGet {
-    namespace Responses {
-      export type $200 = string;
-    }
-  }
   namespace ReferenceOptout {
     export type RequestBody = Components.Schemas.OptOutReferenceRequest;
     namespace Responses {
@@ -1564,13 +1570,13 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.IdentificationTypesGet.Responses.$200>;
   /**
-   * recaptcha_site_key_get - Obtains site key for recaptcha
+   * captcha_site_key_get - Obtains site key for captcha
    */
-  "recaptcha_site_key_get"(
+  "captcha_site_key_get"(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.RecaptchaSiteKeyGet.Responses.$200>;
+  ): OperationResponse<Paths.CaptchaSiteKeyGet.Responses.$200>;
   /**
    * version_get - Returns the version information
    */
@@ -1999,15 +2005,15 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.IdentificationTypesGet.Responses.$200>;
   };
-  ["/api/recaptchaSiteKey"]: {
+  ["/api/captchaSiteKey"]: {
     /**
-     * recaptcha_site_key_get - Obtains site key for recaptcha
+     * captcha_site_key_get - Obtains site key for captcha
      */
     "get"(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.RecaptchaSiteKeyGet.Responses.$200>;
+    ): OperationResponse<Paths.CaptchaSiteKeyGet.Responses.$200>;
   };
   ["/api/version"]: {
     /**

@@ -300,6 +300,12 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
+    export type PortalTags =
+      | "LOGIN"
+      | "LOOKUP"
+      | "REFERENCES"
+      | "PSPPortal"
+      | "CertificationsPortal";
     export type PrivateAuspiceType =
       | "Theologicalinstitution"
       | "FirstNationsmandatedpostsecondaryinstitute"
@@ -362,10 +368,14 @@ declare namespace Components {
       instituteInfoEntryProgress?: string | null;
       declarationDate?: string | null; // date-time
       declarationAccepted?: boolean | null;
+      declarantId?: string | null;
       declarantName?: string | null;
       programProfileId?: string | null;
       programProfileName?: string | null;
       declarationText?: string | null;
+      basicProgress?: string | null;
+      iteProgress?: string | null;
+      sneProgress?: string | null;
     }
     export interface ProgramApplicationComponent {
       id?: string | null;
@@ -490,6 +500,14 @@ declare namespace Components {
     export interface SubmitProgramRequest {
       programId?: string | null;
     }
+    export interface SystemMessage {
+      name?: string | null;
+      subject?: string | null;
+      message?: string | null;
+      startDate?: string; // date-time
+      endDate?: string; // date-time
+      portalTags?: PortalTags[] | null;
+    }
     export interface UpdateCampusRequest {
       name?: string | null;
       street1?: string | null;
@@ -583,10 +601,14 @@ declare namespace Paths {
   }
   namespace CourseDelete {
     namespace Parameters {
+      export type ApplicationId = string;
       export type CourseId = string;
     }
     export interface PathParameters {
       courseId: Parameters.CourseId;
+    }
+    export interface QueryParameters {
+      applicationId?: Parameters.ApplicationId;
     }
     namespace Responses {
       export type $200 = string;
@@ -841,6 +863,7 @@ declare namespace Paths {
   }
   namespace ProgramGet {
     namespace Parameters {
+      export type ByProgramProfileType = Components.Schemas.ProgramProfileType;
       export type ByStatus = Components.Schemas.ProgramStatus[];
       export type CampusId = string;
       export type FromProgramId = string;
@@ -851,6 +874,7 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       byStatus?: Parameters.ByStatus;
+      byProgramProfileType?: Parameters.ByProgramProfileType;
       fromProgramId?: Parameters.FromProgramId;
       campusId?: Parameters.CampusId;
     }
@@ -986,6 +1010,11 @@ declare namespace Paths {
         /* Error response for PSP user registration failures. Returns only the error code for frontend handling. */ Components.Schemas.PspRegistrationErrorResponse;
     }
   }
+  namespace SystemMessageGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.SystemMessage[];
+    }
+  }
   namespace UploadFile {
     namespace Parameters {
       export type FileId = string;
@@ -1044,6 +1073,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.AreaOfInstructionGet.Responses.$200>;
+  /**
+   * systemMessage_get - Handles system messages queries
+   */
+  "systemMessage_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.SystemMessageGet.Responses.$200>;
   /**
    * version_get - Returns the version information
    */
@@ -1303,7 +1340,9 @@ export interface OperationMethods {
    * string.Empty
    */
   "course_delete"(
-    parameters?: Parameters<Paths.CourseDelete.PathParameters> | null,
+    parameters?: Parameters<
+      Paths.CourseDelete.QueryParameters & Paths.CourseDelete.PathParameters
+    > | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CourseDelete.Responses.$200>;
@@ -1401,6 +1440,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.AreaOfInstructionGet.Responses.$200>;
+  };
+  ["/api/systemMessages"]: {
+    /**
+     * systemMessage_get - Handles system messages queries
+     */
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.SystemMessageGet.Responses.$200>;
   };
   ["/api/version"]: {
     /**
@@ -1712,7 +1761,9 @@ export interface PathsDictionary {
      * string.Empty
      */
     "delete"(
-      parameters?: Parameters<Paths.CourseDelete.PathParameters> | null,
+      parameters?: Parameters<
+        Paths.CourseDelete.QueryParameters & Paths.CourseDelete.PathParameters
+      > | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CourseDelete.Responses.$200>;
@@ -1844,6 +1895,7 @@ export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult =
   Components.Schemas.PortalInvitationQueryResult;
+export type PortalTags = Components.Schemas.PortalTags;
 export type PrivateAuspiceType = Components.Schemas.PrivateAuspiceType;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type Program = Components.Schemas.Program;
@@ -1876,6 +1928,7 @@ export type SubmitProgramApplicationRequest =
 export type SubmitProgramApplicationResponse =
   Components.Schemas.SubmitProgramApplicationResponse;
 export type SubmitProgramRequest = Components.Schemas.SubmitProgramRequest;
+export type SystemMessage = Components.Schemas.SystemMessage;
 export type UpdateCampusRequest = Components.Schemas.UpdateCampusRequest;
 export type UpdateCourseRequest = Components.Schemas.UpdateCourseRequest;
 export type VersionMetadata = Components.Schemas.VersionMetadata;

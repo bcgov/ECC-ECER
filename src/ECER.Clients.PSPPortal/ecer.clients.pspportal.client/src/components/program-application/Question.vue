@@ -1,21 +1,67 @@
 <template>
   <v-card class="px-5">
     <v-card-title class="pl-0 pr-0">
-      <v-row>
-        <v-col cols="4">
-          {{ name }}
-        </v-col>
-        <v-col class="d-flex justify-end">
+      <div ref="titleRow" class="d-flex align-center">
+        <span style="flex: 1; white-space: normal">{{ name }}</span>
+        <template v-if="rfaiRequired">
+          <v-tooltip
+            v-if="chipMode === 'icon'"
+            text="Additional information requested"
+            location="bottom"
+          >
+            <template #activator="{ props }">
+              <v-icon v-bind="props" color="warning">
+                mdi-alert-circle-outline
+              </v-icon>
+            </template>
+          </v-tooltip>
           <v-chip
-            v-if="rfaiRequired"
+            v-else
             color="warning"
             variant="flat"
             size="small"
+            class="flex-shrink-0 ml-2"
           >
-            <div>Additional information requested</div>
+            Additional information requested
           </v-chip>
-        </v-col>
-      </v-row>
+        </template>
+      </div>
+
+      <!-- Hidden measurement elements. These are to track 
+          card title's name and chip size to determine when to
+          shrink/wrap. First we shrink the chip then we
+          wrap the title
+      -->
+      <span
+        ref="nameMeasure"
+        aria-hidden="true"
+        style="
+          position: absolute;
+          visibility: hidden;
+          white-space: nowrap;
+          pointer-events: none;
+        "
+      >
+        {{ name }}
+      </span>
+      <span
+        ref="fullChipMeasure"
+        aria-hidden="true"
+        style="position: absolute; visibility: hidden; pointer-events: none"
+      >
+        <v-chip color="warning" variant="flat" size="small">
+          Additional information requested
+        </v-chip>
+      </span>
+      <span
+        ref="iconChipMeasure"
+        aria-hidden="true"
+        style="position: absolute; visibility: hidden; pointer-events: none"
+      >
+        <v-chip color="warning" variant="flat" size="small">
+          <v-icon>mdi-alert-circle-outline</v-icon>
+        </v-chip>
+      </span>
 
       <v-divider />
     </v-card-title>
@@ -112,7 +158,21 @@ export default defineComponent({
       Rules,
       userFilesFromModel: [] as FileItem[],
       deletedFiles: [] as Components.Schemas.FileInfo[],
+      chipMode: "full" as "full" | "icon",
+      titleResizeObserver: null as ResizeObserver | null,
     };
+  },
+  mounted() {
+    const titleRow = this.$refs.titleRow as HTMLElement;
+    if (titleRow) {
+      this.titleResizeObserver = new ResizeObserver(() =>
+        this.updateChipMode(),
+      );
+      this.titleResizeObserver.observe(titleRow);
+    }
+  },
+  beforeUnmount() {
+    this.titleResizeObserver?.disconnect();
   },
   created() {
     if (this.modelValue?.files?.length) {
@@ -120,6 +180,20 @@ export default defineComponent({
     }
   },
   methods: {
+    updateChipMode() {
+      const titleRow = this.$refs.titleRow as HTMLElement;
+      const nameMeasure = this.$refs.nameMeasure as HTMLElement;
+      const fullChipMeasure = this.$refs.fullChipMeasure as HTMLElement;
+      if (!titleRow || !nameMeasure || !fullChipMeasure) return;
+
+      const available = titleRow.clientWidth;
+      const textWidth = nameMeasure.offsetWidth;
+      const fullChipWidth = fullChipMeasure.offsetWidth;
+      const gap = 8; // ml-2
+
+      this.chipMode =
+        textWidth + gap + fullChipWidth <= available ? "full" : "icon";
+    },
     onAnswerInput(value: string) {
       this.$emit("update:modelValue", {
         ...this.modelValue,

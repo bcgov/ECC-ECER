@@ -224,6 +224,23 @@ public class ProgramTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetProgramProfiles_ByProgramProfileTypeAnnualReview_ExcludesChangeRequests()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(this.Fixture.AuthenticatedPspUserIdentity, this.Fixture.AuthenticatedPspUserId);
+      _.Get.Url($"/api/programs?byStatus=Draft&byProgramProfileType=AnnualReview");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var status = await response.ReadAsJsonAsync<GetProgramsResponse>();
+    status.ShouldNotBeNull();
+    status.Programs.ShouldNotBeNull();
+    status.Programs.ShouldContain(p => p.Id == Fixture.submitProgramId);
+    status.Programs.ShouldNotContain(p => p.Id == Fixture.changeRequestProgramId);
+  }
+
+  [Fact]
   public async Task GetProgramProfiles_WithInvalidGuid_ReturnsBadRequest()
   {
     //Parameter test invalid guid

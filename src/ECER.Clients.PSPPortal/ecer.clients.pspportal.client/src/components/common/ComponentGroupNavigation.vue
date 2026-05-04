@@ -33,6 +33,40 @@
             Institution and program info
           </v-list-item-title>
         </v-list-item>
+        <v-list-group v-else-if="category === 'Program Profile'">
+          <template #activator="{ props }">
+            <v-list-item v-bind="props">
+              <v-list-item-title
+                class="text-support-border-info font-weight-bold"
+              >
+                <v-icon :color="mapStatusColor(categoryStatus(category))">
+                  {{ categoryStatus(category) }}
+                </v-icon>
+                Program profile
+              </v-list-item-title>
+            </v-list-item>
+          </template>
+          <v-list-item
+            v-for="componentGroup in componentGroups"
+            :key="componentGroup.id"
+            :to="{
+              name: 'program-application-program-profile-area-of-instruction',
+              params: {
+                programApplicationId: programApplicationId,
+                programType: componentGroup.name,
+              },
+            }"
+          >
+            <v-list-item>
+              <v-list-item-title>
+                <v-icon :color="mapStatusColor(componentGroup.statusIcon)">
+                  {{ componentGroup.statusIcon }}
+                </v-icon>
+                {{ mapProgramType(componentGroup.name) }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-item>
+        </v-list-group>
         <v-list-group v-else>
           <template #activator="{ props }">
             <v-list-item v-bind="props">
@@ -66,44 +100,6 @@
           </v-list-item>
         </v-list-group>
       </div>
-
-      <v-list-group
-        v-if="
-          applicationType === 'NewBasicECEPostBasicProgram' &&
-          (applicationStatus === 'Draft' || isRfai)
-        "
-        value="Program profile"
-      >
-        <template #activator="{ props }">
-          <v-list-item
-            v-bind="props"
-            class="text-support-border-info font-weight-bold"
-          >
-            <v-icon color="black">mdi-table</v-icon>
-            Program profile
-          </v-list-item>
-        </template>
-
-        <v-list-item
-          v-for="(type, index) in programTypes"
-          :key="`program-type-${type}-${index}`"
-        >
-          <v-list-item
-            :to="{
-              name: 'program-application-program-profile-area-of-instruction',
-              params: {
-                programApplicationId: programApplicationId,
-                programType: type,
-              },
-            }"
-          >
-            <v-list-item-title>
-              <v-icon>mdi-table</v-icon>
-              {{ type }}
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-item>
-      </v-list-group>
 
       <v-list-group value="Review and submit">
         <template #activator="{ props }">
@@ -247,7 +243,16 @@ export default defineComponent({
   },
   computed: {
     groupByCategoryName(): ComponentGroupNavigationMap | undefined {
-      return groupByCategoryName(this.componentGroups);
+      return groupByCategoryName(this.filteredComponentGroups);
+    },
+    filteredComponentGroups(): Components.Schemas.NavigationMetadata[] {
+      // The "Program Profile" category is only shown for NewBasicECEPostBasicProgram
+      if (this.applicationType === "NewBasicECEPostBasicProgram") {
+        return this.componentGroups;
+      }
+      return this.componentGroups.filter(
+        (group) => group.categoryName !== "Program Profile",
+      );
     },
   },
   data() {
@@ -280,10 +285,22 @@ export default defineComponent({
       }
       return mapStatusIcons("ToDo", false);
     },
+    mapProgramType(type: string = ""): string {
+      switch (type) {
+        case "Basic":
+          return "ECE (Basic)";
+        case "ITE":
+          return "Infant & Toddler Education";
+        case "SNE":
+          return "Special Needs Educator";
+        default:
+          return "-";
+      }
+    },
   },
 });
 </script>
-<style scope>
+<style scoped>
 a {
   text-decoration: none;
   color: black !important;

@@ -16,7 +16,7 @@
         <div class="d-flex flex-column ga-3">
           <p>
             To begin your application, provide information about the program.
-            When you have completed these questions, choose “Continue” to save
+            When you have completed these questions, select “Continue” to save
             your responses and create your draft application.
           </p>
           <p>
@@ -59,8 +59,8 @@
               responses later.
             </p>
             <p>
-              To apply to expand early childhood education program delivery to
-              online or hybrid methods, an institution must already have a
+              To apply to expand an early childhood education program delivery
+              to online or hybrid methods, an institution must already have a
               recognized basic or post-basic early childhood education program.
             </p>
 
@@ -126,11 +126,11 @@
             :rules="[Rules.required('Select a delivery method')]"
           >
             <v-radio
-              label="Hybrid - Combination of in-person and online delivery; faculty practicum supervision is in person"
+              label="Hybrid - courses within a program are delivered both online and in person"
               value="Hybrid"
             ></v-radio>
             <v-radio
-              label="Online - All coursework, including faculty practicum supervision, is online"
+              label="Online - programs or courses are delivered entirely through digital platforms, with no requirement for students to attend a physical campus"
               value="Online"
             ></v-radio>
           </v-radio-group>
@@ -229,7 +229,7 @@ export default defineComponent({
     mapCertificationType(type: string) {
       switch (type) {
         case "Basic":
-          return "Early childhood education (Basic)";
+          return "Early Childhood Educator";
         case "ITE":
           return "Infant and Toddler Educator (ITE)";
         case "SNE":

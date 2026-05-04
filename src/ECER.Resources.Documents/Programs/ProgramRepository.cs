@@ -35,6 +35,17 @@ internal sealed class ProgramRepository : IProgramRepository
       programs = programs.WhereIn(item => item.StatusCode!.Value, statuses);
     }
 
+    if (query.ByProgramProfileType != null)
+    {
+      var profileType = query.ByProgramProfileType.Value switch
+      {
+        ProgramProfileType.AnnualReview => ecer_ProgramProfileType.AnnualReview,
+        ProgramProfileType.ChangeRequest => ecer_ProgramProfileType.ChangeRequest,
+        _ => throw new ArgumentOutOfRangeException(nameof(query), query.ByProgramProfileType, null),
+      };
+      programs = programs.Where(p => p.ecer_Type == profileType);
+    }
+
     if (query.ByFromProgramProfileId != null)
     {
       var fromProgramProfileId = Guid.Parse(query.ByFromProgramProfileId);
@@ -214,7 +225,7 @@ internal sealed class ProgramRepository : IProgramRepository
     context.UpdateObject(existingProgram);
     context.SaveChanges();
 
-    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileIdName == program.Name);
+    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileId.Id == Guid.Parse(program.Id!));
     if (newProgram == null) throw new InvalidOperationException($"New program for ecer_Program '{program.Id}' not found");
 
     var newProgramId = newProgram.ecer_ProgramId != null ? newProgram.ecer_ProgramId.ToString() : string.Empty;

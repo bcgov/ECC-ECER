@@ -15,12 +15,12 @@
         <div class="d-flex flex-column ga-3">
           <p>
             To begin your application, provide information about the program.
-            When you have completed these questions, choose “Continue” to save
+            When you have completed these questions, select “Continue” to save
             your responses and create your draft application.
           </p>
           <p>
             You can save and exit the form and continue with your submission
-            later from your PSP Portal dashboard.
+            later from your ECE Post-Secondary Programs portal dashboard.
           </p>
         </div>
       </v-col>
@@ -29,9 +29,9 @@
       <v-col cols="12">
         <Callout title="If you need assistance" type="warning">
           <p>
-            You may reach out to the Registry for assistance at any time by
+            You may reach out to the ECE Registry for assistance at any time by
             <router-link to="/messages/new">sending a message</router-link>
-            .
+            <span>.</span>
           </p>
         </Callout>
       </v-col>
@@ -58,8 +58,8 @@
               responses later.
             </p>
             <p>
-              To apply for a post-basic early childhood education program (ITE
-              and/or SNE), an institution must either:
+              To apply for a post-basic (Infant and Toddler Education [ITE]
+              and/or Special Needs Educator [SNE]), an institution must either:
             </p>
             <ul class="ml-10">
               <li>
@@ -67,8 +67,7 @@
                 program, or
               </li>
               <li>
-                Apply for a basic early childhood education and post-basic early
-                childhood education program concurrently.
+                Be applying for a basic and post-basic program concurrently
               </li>
             </ul>
           </div>
@@ -92,7 +91,7 @@
                 <v-checkbox
                   v-model="provincialCertificationTypeValues"
                   value="Basic"
-                  label="Early childhood education (Basic)"
+                  label="Early Childhood Educator"
                   density="compact"
                   hide-details
                 />
@@ -129,15 +128,15 @@
             :rules="[Rules.required('Select a delivery method')]"
           >
             <v-radio
-              label="In-person - All coursework, including faculty practicum supervision, is in person"
+              label="In-person - programs or courses are delivered on campus or at an approved instructional site"
               value="Inperson"
             ></v-radio>
             <v-radio
-              label="Hybrid - Combination of in-person and online delivery; faculty practicum supervision is in person"
+              label="Hybrid - courses within a program are delivered both online and in person"
               value="Hybrid"
             ></v-radio>
             <v-radio
-              label="Online - All coursework, including faculty practicum supervision, is online"
+              label="Online - programs or courses are delivered entirely through digital platforms, with no requirement for students to attend a physical campus"
               value="Online"
             ></v-radio>
           </v-radio-group>

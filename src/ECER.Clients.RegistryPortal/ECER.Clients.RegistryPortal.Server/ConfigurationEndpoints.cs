@@ -81,12 +81,12 @@ public class ConfigurationEndpoints : IRegisterEndpoints
      .WithOpenApi("Handles identification types queries", string.Empty, "identificationTypes_get")
      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/recaptchaSiteKey", async (IOptions<RecaptchaSettings> recaptchaSettings, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/captchaSiteKey", async (IOptions<CaptchaSettings> captchaSettings, CancellationToken ct) =>
     {
       await Task.CompletedTask;
-      return TypedResults.Ok(recaptchaSettings.Value.SiteKey);
+      return TypedResults.Ok(captchaSettings.Value.SiteKey);
     })
-      .WithOpenApi("Obtains site key for recaptcha", string.Empty, "recaptcha_site_key_get")
+      .WithOpenApi("Obtains site key for captcha", string.Empty, "captcha_site_key_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
   }
 }
@@ -123,7 +123,9 @@ public enum PortalTags
 {
   LOGIN,
   LOOKUP,
-  REFERENCES
+  REFERENCES,
+  PSPPortal,
+  CertificationsPortal
 }
 
 public record IdentificationTypesQuery

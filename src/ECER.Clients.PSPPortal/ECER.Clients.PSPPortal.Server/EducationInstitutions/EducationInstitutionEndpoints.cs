@@ -62,7 +62,22 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
         var user = ctx.User.GetUserContext()!;
         var campus = mapper.MapUpdateCampusRequest(request);
         campus = campus with { Id = campusId };
-        await bus.Send(new UpdateCampusCommand(user.UserId, campus), ct);
+        var result = await bus.Send(new UpdateCampusCommand(user.UserId, campus), ct);
+        
+        if (result.Error == UpdateCampusError.InstitutionNotFound)
+        {
+          return TypedResults.BadRequest(new ProblemDetails() { Title = $"No institution found for program representative {user.UserId}" });
+        }
+
+        if (result.Error == UpdateCampusError.DuplicateCampusName)
+        {
+          return TypedResults.BadRequest(new ProblemDetails() { Title = $"This campus name already exists." });
+        }
+        
+        if (result.Error == UpdateCampusError.InvalidCampus)
+        {
+          return TypedResults.BadRequest(new ProblemDetails() { Title = $"Campus {request.Name} does not belong to the user's institution" });
+        }
         return TypedResults.Ok();
       })
     .WithOpenApi("Updates an existing campus", string.Empty, "campus_put")

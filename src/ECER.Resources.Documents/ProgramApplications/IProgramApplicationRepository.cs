@@ -17,6 +17,8 @@ public interface IProgramApplicationRepository
   Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, string postSecondaryInstituteId, CancellationToken cancellationToken);
 
   Task<string> Submit(string applicationId, string programRepresentativeId, bool declaration, CancellationToken cancellationToken);
+
+  Task UpdateCourseProgress(string applicationId, string? basicProgress, string? iteProgress, string? sneProgress, CancellationToken cancellationToken);
 }
 
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
@@ -85,9 +87,13 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public DateTime? DeclarationDate { get; set; }
   public bool? DeclarationAccepted { get; set; }
   public string? DeclarantName { get; set; }
+  public string? DeclarantId { get; set; }
   public string? ProgramProfileId { get; set; }
   public string? ProgramProfileName { get; set; }
   public string? DeclarationText { get; set; }
+  public string? BasicProgress { get; set; }
+  public string? IteProgress { get; set; }
+  public string? SneProgress { get; set; }
 }
 
 public record ProgramCampus

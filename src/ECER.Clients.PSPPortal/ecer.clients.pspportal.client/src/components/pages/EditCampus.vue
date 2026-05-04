@@ -12,6 +12,39 @@
       </v-col>
     </v-row>
 
+    <v-row>
+      <v-col cols="12">
+        <p>
+          You can edit details for this campus to update the current location
+          and contact information.
+        </p>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12">
+        <!-- prettier-ignore -->
+        <Alert type="warning" icon="mdi-alert-circle-outline" :closable="false">
+          <p>
+            <b>
+              Do not edit this campus to represent a different campus or
+              location. This can cause application and reporting errors.
+            </b>
+          </p>
+          <br />
+          To add a new campus or satellite location, go to
+          <router-link
+            :to="{
+              name: 'education-institution',
+              params: { institutionId },
+            }"
+          >
+            View locations
+          </router-link>.
+        </Alert>
+      </v-col>
+    </v-row>
+
     <Loading v-if="isLoading" />
 
     <template v-else>
@@ -56,6 +89,7 @@ import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Loading from "@/components/Loading.vue";
 import CampusForm from "@/components/CampusForm.vue";
+import Alert from "@/components/Alert.vue";
 import {
   getEducationInstitution,
   updateCampus,
@@ -68,7 +102,7 @@ import type { PspUserItem } from "@/components/inputs/EcePspUser.vue";
 
 export default defineComponent({
   name: "EditCampus",
-  components: { PageContainer, Breadcrumb, Loading, CampusForm },
+  components: { PageContainer, Breadcrumb, Loading, CampusForm, Alert },
   props: {
     institutionId: {
       type: String,
@@ -155,9 +189,8 @@ export default defineComponent({
       this.isSaving = true;
       try {
         const { campus } = campusFormRef.getData();
-        const success = await updateCampus(this.campusId, campus);
-
-        if (success) {
+        const response = await updateCampus(this.campusId, campus);
+        if (response?.data === "") {
           this.alertStore.setSuccessAlert(
             "Campus has been successfully updated.",
           );
@@ -168,6 +201,11 @@ export default defineComponent({
               campusId: this.campusId,
             },
           });
+        } else if (response?.error?.status == 400) {
+          let message = response?.error?.title
+            ? response?.error?.title
+            : "Failed to update campus. Please try again.";
+          this.alertStore.setFailureAlert(message);
         } else {
           this.alertStore.setFailureAlert(
             "Failed to update campus. Please try again.",

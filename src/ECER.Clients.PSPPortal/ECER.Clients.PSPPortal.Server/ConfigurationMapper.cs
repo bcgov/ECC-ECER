@@ -10,6 +10,7 @@ internal interface IConfigurationMapper
   IEnumerable<Province> MapProvinces(IEnumerable<ContractMetadatas.Province> source);
   IEnumerable<Country> MapCountries(IEnumerable<ContractMetadatas.Country> source);
   IEnumerable<AreaOfInstruction> MapAreaOfInstructions(IEnumerable<ContractMetadatas.AreaOfInstruction> source);
+  IEnumerable<SystemMessage> MapSystemMessages(IEnumerable<ContractMetadatas.SystemMessage> source);
 }
 
 [Mapper]
@@ -21,6 +22,8 @@ internal partial class ConfigurationMapper : IConfigurationMapper
 
   public IEnumerable<AreaOfInstruction> MapAreaOfInstructions(IEnumerable<ContractMetadatas.AreaOfInstruction> source) => source.Select(MapAreaOfInstruction).ToList();
 
+  public IEnumerable<SystemMessage> MapSystemMessages(IEnumerable<ContractMetadatas.SystemMessage> source) => source.Select(MapSystemMessage).ToList();
+
   private AreaOfInstruction MapAreaOfInstruction(ContractMetadatas.AreaOfInstruction source) => new(
     source.Id,
     source.Name,
@@ -29,9 +32,19 @@ internal partial class ConfigurationMapper : IConfigurationMapper
     source.DisplayOrder,
     source.ParentAreaOfInstructionId);
 
+  private SystemMessage MapSystemMessage(ContractMetadatas.SystemMessage source) => new(source.Name, source.Subject, source.Message)
+  {
+    StartDate = source.StartDate,
+    EndDate = source.EndDate,
+    PortalTags = source.PortalTags.Select(MapPortalTag).ToArray(),
+  };
+
   private partial Province MapProvince(ContractMetadatas.Province source);
 
   private partial Country MapCountry(ContractMetadatas.Country source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PortalTags MapPortalTag(ContractMetadatas.PortalTags source);
 
   private static ProgramTypes[] ParseProgramTypes(IEnumerable<string>? programTypes)
   {
