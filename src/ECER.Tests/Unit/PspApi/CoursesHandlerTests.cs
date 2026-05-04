@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Managers.Registry;
 using ECER.Managers.Registry.Contract.Courses;
 using ECER.Managers.Registry.Contract.Shared;
@@ -15,14 +14,14 @@ public class CoursesHandlerTests
   private readonly Mock<IProgramApplicationRepository> _programApplicationRepositoryMock;
   private readonly Mock<IProgramRepository> _programProfileRepositoryMock;
   private readonly Mock<ICourseRepository> _courseRepositoryMock;
-  private readonly Mock<IMapper> _mapperMock;
+  private readonly ICoursesMapper _coursesMapper;
 
   public CoursesHandlerTests()
   {
     _programApplicationRepositoryMock = new Mock<IProgramApplicationRepository>();
     _programProfileRepositoryMock = new Mock<IProgramRepository>();
     _courseRepositoryMock = new Mock<ICourseRepository>();
-    _mapperMock = new Mock<IMapper>();
+    _coursesMapper = new CoursesMapper();
   }
 
   [Fact]
@@ -33,11 +32,13 @@ public class CoursesHandlerTests
     var correctProgramApplicationId = Guid.NewGuid().ToString();
     var notFoundProgramApplicationId = Guid.NewGuid().ToString();
     var courseId = Guid.NewGuid().ToString();
+    var courseAreaOfInstructionId = Guid.NewGuid().ToString();
+    var areaOfInstructionId = Guid.NewGuid().ToString();
 
     var addCourse = new Course
     {
       CourseId = courseId,
-      CourseAreaOfInstruction = [new CourseAreaOfInstruction { AreaOfInstructionId = Guid.NewGuid().ToString(), NewHours = "0", CourseAreaOfInstructionId = Guid.NewGuid().ToString() }],
+      CourseAreaOfInstruction = [new CourseAreaOfInstruction { AreaOfInstructionId = areaOfInstructionId, NewHours = "0", CourseAreaOfInstructionId = courseAreaOfInstructionId }],
     };
 
     var incorrectCommand = new SaveCourseCommand(addCourse, incorrectProgramApplicationId, instituteId);
@@ -90,14 +91,19 @@ public class CoursesHandlerTests
 
     _courseRepositoryMock
     .Setup(r => r.AddCourse(
-      It.IsAny<Resources.Documents.Shared.Course>(), 
-      It.IsAny<string>(),                           
-      It.IsAny<string>(),                           
-      It.IsAny<CancellationToken>()                 
-    ))
+      It.Is<Resources.Documents.Shared.Course>(course =>
+        course.CourseId == courseId
+        && course.CourseAreaOfInstruction != null
+        && course.CourseAreaOfInstruction.Count() == 1
+        && course.CourseAreaOfInstruction.Single().CourseAreaOfInstructionId == courseAreaOfInstructionId
+        && course.CourseAreaOfInstruction.Single().AreaOfInstructionId == areaOfInstructionId
+        && course.CourseAreaOfInstruction.Single().NewHours == 0),
+      It.IsAny<string>(),
+      It.IsAny<string>(),
+      It.IsAny<CancellationToken>()))
     .ReturnsAsync(courseId);
 
-    var handler = new CoursesHandler(_programProfileRepositoryMock.Object, _courseRepositoryMock.Object, _programApplicationRepositoryMock.Object, _mapperMock.Object);
+    var handler = new CoursesHandler(_programProfileRepositoryMock.Object, _courseRepositoryMock.Object, _programApplicationRepositoryMock.Object, _coursesMapper);
 
     var incorrectProgramApplicationTypeResult = await handler.Handle(incorrectCommand, CancellationToken.None);
     var notFoundProgramApplicationTypeResult = await handler.Handle(notFoundCommand, CancellationToken.None);

@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Clients.PSPPortal.Server.EducationInstitutions;
 using ECER.Clients.PSPPortal.Server.Programs;
 using ECER.Managers.Admin.Contract.Metadatas;
@@ -20,24 +19,24 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     }).WithOpenApi("Returns the UI initial configuration", string.Empty, "configuration_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/provincelist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/provincelist", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper mapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new ProvincesQuery(), ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<Province>>(results.Items));
+      return TypedResults.Ok(mapper.MapProvinces(results.Items));
     }).WithOpenApi("Handles province queries", string.Empty, "province_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/countrylist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/countrylist", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper mapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new CountriesQuery(), ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<Country>>(results.Items));
+      return TypedResults.Ok(mapper.MapCountries(results.Items));
     }).WithOpenApi("Handles country queries", string.Empty, "country_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/areaofinstructionlist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/areaofinstructionlist", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper mapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new AreaOfInstructionsQuery(), ct);
-      var instructions = mapper.Map<IEnumerable<AreaOfInstruction>>(results.Items);
+      var instructions = mapper.MapAreaOfInstructions(results.Items);
       return TypedResults.Ok(new AreaOfInstructionListResponse(instructions));
     }).WithOpenApi("Handles area of instruction queries", string.Empty, "area_of_instruction_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));

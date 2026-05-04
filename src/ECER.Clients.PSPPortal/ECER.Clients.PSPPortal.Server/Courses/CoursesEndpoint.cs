@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Programs;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
@@ -20,7 +19,7 @@ public class CoursesEndpoint : IRegisterEndpoints
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     const string PolicyNames = "psp_user";
-    endpointRouteBuilder.MapPut("/api/courses/{courseId}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string courseId, UpdateCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/courses/{courseId}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string courseId, UpdateCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, ICoursesMapper mapper) =>
       {
         if (string.IsNullOrWhiteSpace(request.Id)) return TypedResults.BadRequest("id cannot be null or whitespace");
         bool IdIsNotGuid = !Guid.TryParse(request.Id, out _);
@@ -32,7 +31,7 @@ public class CoursesEndpoint : IRegisterEndpoints
         var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
         if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-        var mappedCourses = mapper.Map<Managers.Registry.Contract.Shared.Course>(request.Course);
+        var mappedCourses = mapper.MapCourse(request.Course);
 
         var result = await messageBus.Send(new UpdateCourseCommand(mappedCourses, request.Id, request.Type.ToString(), programRep.PostSecondaryInstituteId), ct);
         return TypedResults.Ok(result);
@@ -41,7 +40,7 @@ public class CoursesEndpoint : IRegisterEndpoints
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/courses", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (AddCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/courses", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (AddCourseRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, ICoursesMapper mapper) =>
       {
         if (request.Type == FunctionType.ProgramProfile) return TypedResults.BadRequest(new ProblemDetails() { Title = "User cannot add courses for a Program Profile" });
 
@@ -52,7 +51,7 @@ public class CoursesEndpoint : IRegisterEndpoints
         var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
         if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-        var mappedCourse = mapper.Map<Managers.Registry.Contract.Shared.Course>(request.Course);
+        var mappedCourse = mapper.MapCourse(request.Course);
 
         var result = await messageBus.Send(new SaveCourseCommand(mappedCourse, request.ApplicationId, programRep.PostSecondaryInstituteId), ct);
 
@@ -90,7 +89,7 @@ public class CoursesEndpoint : IRegisterEndpoints
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/courses", async Task<Results<Ok<IEnumerable<Course>>, BadRequest<string>, NotFound>> (FunctionType type, string id, ProgramTypes[]? programTypes, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("/api/courses", async Task<Results<Ok<IEnumerable<Course>>, BadRequest<string>, NotFound>> (FunctionType type, string id, ProgramTypes[]? programTypes, HttpContext ctx, CancellationToken ct, IMediator messageBus, ICoursesMapper mapper) =>
     {
       var userContext = ctx.User.GetUserContext()!;
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
@@ -98,9 +97,9 @@ public class CoursesEndpoint : IRegisterEndpoints
 
       var courses = await messageBus.Send(new GetCoursesCommand(id, programRep.PostSecondaryInstituteId, type.Convert<FunctionType, Managers.Registry.Contract.Courses.FunctionType>())
       {
-        ProgramTypes = mapper.Map<Managers.Registry.Contract.Programs.ProgramTypes[]>(programTypes)
+        ProgramTypes = mapper.MapProgramTypes(programTypes)
       }, ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<Course>>(courses));
+      return TypedResults.Ok(mapper.MapCourses(courses));
     })
     .WithOpenApi("Gets courses by program profile id or program application id depending on type", "string.Empty", "courses_get")
     .RequireAuthorization(PolicyNames)

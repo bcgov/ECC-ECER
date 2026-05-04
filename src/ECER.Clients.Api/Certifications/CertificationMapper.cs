@@ -1,13 +1,22 @@
-﻿using AutoMapper;
-using ECER.Infrastructure.Common;
+using Riok.Mapperly.Abstractions;
+using ContractCertifications = ECER.Managers.Admin.Contract.Certifications;
 
 namespace ECER.Clients.Api.Certifications;
 
-public class CertificationMapper : SecureProfile
+internal interface ICertificationMapper
 {
-  public CertificationMapper()
+  IEnumerable<CertificationSummary> MapCertificationSummaries(IEnumerable<ContractCertifications.CertificationSummary> source);
+}
+
+[Mapper]
+internal partial class CertificationMapper : ICertificationMapper
+{
+  public IEnumerable<CertificationSummary> MapCertificationSummaries(IEnumerable<ContractCertifications.CertificationSummary> source) => source.Select(MapCertificationSummary).ToList();
+
+  private CertificationSummary MapCertificationSummary(ContractCertifications.CertificationSummary source) => new(source.Id)
   {
-    CreateMap<Managers.Admin.Contract.Certifications.CertificationSummary, CertificationSummary>()
-      .ReverseMap();
-  }
+    FileName = source.FileName,
+    FileId = source.FileId,
+    CreatedOn = source.CreatedOn,
+  };
 }

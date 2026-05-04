@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
 using ECER.Infrastructure.Common.Validators;
@@ -26,7 +25,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     const string PolicyNames = "psp_user";
-    endpointRouteBuilder.MapPut("/api/draftprograms/{id?}", async Task<Results<Ok<DraftProgramResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftprograms/{id?}", async Task<Results<Ok<DraftProgramResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IProgramMapper mapper) =>
     {
       if (request.Program.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
@@ -34,7 +33,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-      var draftProgram = mapper.Map<ContractProgram>(request.Program)
+      var draftProgram = mapper.MapProgram(request.Program)
         with
       { PostSecondaryInstituteId = programRep.PostSecondaryInstituteId, Status = ContractProgramStatus.Draft };
 
@@ -51,9 +50,9 @@ public class ProgramsEndpoints : IRegisterEndpoints
       }
 
       var program = await messageBus.Send(new SaveDraftProgramCommand(draftProgram), ct);
-      var mappedProgram = mapper.Map<Program>(program);
-      if (mappedProgram == null) return TypedResults.NotFound();
+      if (program == null) return TypedResults.NotFound();
 
+      var mappedProgram = mapper.MapProgram(program);
       return TypedResults.Ok(new DraftProgramResponse(mappedProgram));
     })
     .WithOpenApi("Save a draft program for the current user", string.Empty, "draftprogram_put")
@@ -62,7 +61,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, string? fromProgramId, string? campusId,
-      HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
+      HttpContext ctx, IMediator messageBus, IProgramMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
     {
       // Get pagination parameters from the query string with default values
       var pageNumber = int.TryParse(ctx.Request.Query[paginationOptions.Value.PageProperty], out var page) && page > 0 ? page : paginationOptions.Value.DefaultPageNumber;
@@ -87,7 +86,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
         PageSize = pageSize
       }, ct);
 
-      return TypedResults.Ok(new GetProgramsResponse() { Programs = mapper.Map<IEnumerable<Program>>(results.Items), TotalProgramsCount = results.TotalProgramsCount });
+      return TypedResults.Ok(new GetProgramsResponse() { Programs = mapper.MapPrograms(results.Items), TotalProgramsCount = results.TotalProgramsCount });
     })
     .WithOpenApi("Handles program queries", string.Empty, "program_get")
     .RequireAuthorization(PolicyNames)
@@ -95,7 +94,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
     .AddGuidValidationQueryParams(["campusId"], isRequired: false)
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IProgramMapper mapper) =>
       {
         if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
@@ -116,7 +115,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
             && existing.Items.First().ProgramProfileType != ContractProgramProfileType.ChangeRequest)
           return TypedResults.BadRequest("update not allowed on a draft program");
 
-        var programId = await messageBus.Send(new UpdateProgramCommand(mapper.Map<ContractProgram>(request)), ct);
+        var programId = await messageBus.Send(new UpdateProgramCommand(mapper.MapProgram(request)), ct);
         return TypedResults.Ok(programId);
       })
       .WithOpenApi("Update program profile", string.Empty, "program_put")
@@ -124,7 +123,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
       .AddGuidValidation("id")
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/programs", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (SubmitProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/programs", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (SubmitProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
       {
         var userId = ctx.User.GetUserContext()!.UserId;
 
@@ -151,7 +150,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPut("/api/changeprogram/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/changeprogram/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IProgramMapper mapper) =>
     {
       if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
@@ -173,7 +172,7 @@ public class ProgramsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest("update must be on an approved change request program");
       }
 
-      var programId = await messageBus.Send(new ChangeProgramCommand(mapper.Map<ContractProgram>(request)), ct);
+      var programId = await messageBus.Send(new ChangeProgramCommand(mapper.MapProgram(request)), ct);
       return TypedResults.Ok(programId);
     })
   .WithOpenApi("Initiate program profile change", string.Empty, "changeprogram_put")
