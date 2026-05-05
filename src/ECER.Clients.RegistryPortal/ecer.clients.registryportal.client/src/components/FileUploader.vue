@@ -66,6 +66,7 @@
         :model-value="userFiles"
         :hide-details="'auto'"
         :rules="[
+          !emptyFiles,
           !fileErrors,
           !tooManyFiles,
           !filesInProgress,
@@ -175,6 +176,9 @@ export default defineComponent({
     };
   },
   computed: {
+    emptyFiles() {
+      return this.selectedFiles.some((file) => file.file.size === 0);
+    },
     fileErrors() {
       return this.selectedFiles.some((file) => file.fileErrors.length !== 0);
     },
@@ -239,6 +243,11 @@ export default defineComponent({
           const file = files[i] as File;
           let fileErrors: string[] = [];
 
+          if (file.size === 0) {
+            fileErrors.push(
+              "This file is empty. Please upload a file with content.",
+            );
+          }
           if (file.size > this.maxFileSizeInBytes) {
             fileErrors.push(
               `This file is too big. Only files ${this.maxFileSizeInMB}MB or smaller are accepted.`,
