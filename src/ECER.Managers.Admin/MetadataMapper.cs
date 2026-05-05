@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.EnumMapping;
 using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.MetadataResources;
 
@@ -15,6 +16,9 @@ internal class MetadataMapper : SecureProfile
     CreateMap<SystemMessage, Contract.Metadatas.SystemMessage>();
     CreateMap<IdentificationType, Contract.Metadatas.IdentificationType>();
     CreateMap<PostSecondaryInstitutionsQuery, Contract.Metadatas.PostSecondaryInstitutionsQuery>().ReverseMap();
+    CreateMap<PostSecondaryInstitutionStatus, Contract.Metadatas.PostSecondaryInstitutionStatus>()
+        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+        .ReverseMap();
     CreateMap<CertificationComparison, Contract.Metadatas.CertificationComparison>().ReverseMap();
     CreateMap<OutOfProvinceCertificationType, Contract.Metadatas.OutOfProvinceCertificationType>().ReverseMap();
     CreateMap<DefaultContent, Contract.Metadatas.DefaultContent>().ReverseMap();

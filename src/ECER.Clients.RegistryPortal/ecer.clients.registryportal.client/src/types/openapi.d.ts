@@ -569,6 +569,10 @@ declare namespace Components {
       name?: string | null;
       provinceId?: string | null;
     }
+    export type PostSecondaryInstitutionStatus =
+      | "Active"
+      | "Draft"
+      | "Inactive";
     /**
      * Previous Name
      */
@@ -1417,6 +1421,7 @@ declare namespace Paths {
       export type Id = string;
       export type Name = string;
       export type ProvinceId = string;
+      export type Status = Components.Schemas.PostSecondaryInstitutionStatus;
     }
     export interface PathParameters {
       id?: Parameters.Id;
@@ -1424,6 +1429,7 @@ declare namespace Paths {
     export interface QueryParameters {
       name?: Parameters.Name;
       provinceId?: Parameters.ProvinceId;
+      status?: Parameters.Status;
     }
     namespace Responses {
       export type $200 = Components.Schemas.PostSecondaryInstitution[];
@@ -2539,6 +2545,8 @@ export type PortalInvitationQueryResult =
 export type PortalTags = Components.Schemas.PortalTags;
 export type PostSecondaryInstitution =
   Components.Schemas.PostSecondaryInstitution;
+export type PostSecondaryInstitutionStatus =
+  Components.Schemas.PostSecondaryInstitutionStatus;
 export type PreviousName = Components.Schemas.PreviousName;
 export type PreviousNameSources = Components.Schemas.PreviousNameSources;
 export type PreviousNameStage = Components.Schemas.PreviousNameStage;
