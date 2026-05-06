@@ -11,7 +11,7 @@
               v-bind="props"
               icon="mdi-pencil"
               variant="plain"
-              @click="router.push('education-institution/edit')"
+              @click="router.push({ name: 'edit-education-institution' })"
             />
           </template>
         </v-tooltip>
@@ -20,10 +20,30 @@
 
     <v-row>
       <v-col cols="12" sm="3">
-        <span>Institution type:</span>
+        <span>Institution type</span>
       </v-col>
       <v-col cols="12" sm="9">
-        <span class="font-weight-bold">{{ formattedAuspice }}</span>
+        <span class="font-weight-bold">{{ formattedInstitutionType }}</span>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="educationInstitution.institutionType === 'Private'">
+      <v-col cols="12" sm="3">
+        <span>Private institution type</span>
+      </v-col>
+      <v-col cols="12" sm="9">
+        <span class="font-weight-bold">{{ formattedPrivateAuspiceType }}</span>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="educationInstitution.ptiruInstitutionId">
+      <v-col cols="12" sm="3">
+        <span>PTIRU identification number</span>
+      </v-col>
+      <v-col cols="12" sm="9">
+        <span class="font-weight-bold">
+          {{ educationInstitution.ptiruInstitutionId }}
+        </span>
       </v-col>
     </v-row>
 
@@ -52,6 +72,26 @@
         <span v-else class="font-weight-bold">—</span>
       </v-col>
     </v-row>
+
+    <v-row v-if="!hideViewButton" class="mt-4">
+      <v-col>
+        <v-btn
+          variant="outlined"
+          size="large"
+          class="mt-4"
+          color="primary"
+          id="btnEducationInstitution"
+          @click="
+            router.push({
+              name: 'education-institution',
+              params: { institutionId: educationInstitution.id },
+            })
+          "
+        >
+          View institution details
+        </v-btn>
+      </v-col>
+    </v-row>
   </Card>
 </template>
 
@@ -60,6 +100,11 @@ import { defineComponent, type PropType } from "vue";
 import Card from "@/components/Card.vue";
 import type { Components } from "@/types/openapi";
 import { useRouter } from "vue-router";
+import {
+  formatAddress,
+  formatInstitutionType,
+  formatPrivateAuspiceType,
+} from "@/utils/format";
 
 export default defineComponent({
   name: "EducationInstitutionCard",
@@ -69,47 +114,26 @@ export default defineComponent({
       type: Object as PropType<Components.Schemas.EducationInstitution>,
       required: true,
     },
+    hideViewButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     const router = useRouter();
     return { router };
   },
   computed: {
-    formattedAuspice(): string {
-      if (!this.educationInstitution.auspice) return "—";
-      const auspiceMap: Record<Components.Schemas.Auspice, string> = {
-        Public: "Public",
-        Private: "Private",
-        PublicOOP: "Public — OOP",
-        ContinuingEducation: "Continuing Education",
-      };
-      return (
-        auspiceMap[this.educationInstitution.auspice] ||
-        this.educationInstitution.auspice
+    formattedInstitutionType(): string {
+      return formatInstitutionType(this.educationInstitution.institutionType);
+    },
+    formattedPrivateAuspiceType(): string {
+      return formatPrivateAuspiceType(
+        this.educationInstitution.privateAuspiceType,
       );
     },
     formattedAddress(): string {
-      const parts: string[] = [];
-      if (this.educationInstitution.street1)
-        parts.push(this.educationInstitution.street1);
-      if (this.educationInstitution.street2)
-        parts.push(this.educationInstitution.street2);
-      if (this.educationInstitution.street3)
-        parts.push(this.educationInstitution.street3);
-
-      const cityParts: string[] = [];
-      if (this.educationInstitution.city)
-        cityParts.push(this.educationInstitution.city);
-      if (this.educationInstitution.province)
-        cityParts.push(this.educationInstitution.province);
-      if (this.educationInstitution.postalCode)
-        cityParts.push(this.educationInstitution.postalCode);
-
-      if (cityParts.length > 0) {
-        parts.push(cityParts.join(", "));
-      }
-
-      return parts.length > 0 ? parts.join(", ") : "—";
+      return formatAddress(this.educationInstitution);
     },
   },
 });

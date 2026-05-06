@@ -1,6 +1,5 @@
 using AutoMapper;
 using ECER.Infrastructure.Common;
-using ECER.Resources.Documents.Shared;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.Programs;
@@ -18,7 +17,6 @@ internal class ProgramRepositoryMapper : SecureProfile
       .ForSourceMember(s => s.NewBasicTotalHours, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.NewSneTotalHours, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.NewIteTotalHours, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramProfileType, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeclarationUserName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.OfferedProgramTypes, opts => opts.DoNotValidate())
@@ -27,6 +25,7 @@ internal class ProgramRepositoryMapper : SecureProfile
       .ForSourceMember(s => s.ReadyForReview, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
+      .ForMember(d => d.ecer_Type, opts => opts.MapFrom(s => s.ProgramProfileType))
       .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Name))
       .ForMember(d => d.ecer_NewDescriptiveProgramName, opts => opts.MapFrom(s => s.ProgramName))
       .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.PortalStage))

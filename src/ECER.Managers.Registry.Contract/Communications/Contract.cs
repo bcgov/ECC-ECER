@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ECER.Utilities.ObjectStorage.Providers;
+using MediatR;
 
 namespace ECER.Managers.Registry.Contract.Communications;
 
@@ -28,7 +29,7 @@ public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
   public string? ByPostSecondaryInstituteId { get; set; }
-} 
+}
 public record CommunicationsQueryResults(IEnumerable<Communication> Items)
 {
   public int TotalMessagesCount { get; set; }
@@ -70,6 +71,7 @@ public record CommunicationDocument(string Id)
   public string Extention { get; set; } = null!;
   public string Name { get; set; } = null!;
   public string Size { get; set; } = null!;
+  public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
 public enum CommunicationStatus

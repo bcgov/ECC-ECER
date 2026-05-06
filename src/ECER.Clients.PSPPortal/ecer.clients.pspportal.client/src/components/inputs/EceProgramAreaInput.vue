@@ -42,7 +42,7 @@
       <h3>You may continue to the next page</h3>
       <p>
         As you are not offering this program at this time, you do not have to
-        update the course hours for this {{ programType }} program.
+        complete the course hours for this {{ programType }} program.
       </p>
       <br />
       <p>Press continue to move through to the next page.</p>
@@ -52,7 +52,7 @@
       <br />
       <ul v-if="programType === 'Basic'" class="ml-10">
         <li>
-          Basic ECE education must total a minimum of
+          A Basic ECE program must total a minimum of
           {{ calculateMinimumHoursRequired }} hours, including practicum
         </li>
         <li>
@@ -81,7 +81,7 @@
       <p>
         For a detailed description of Provincial requirements, refer to
         <a
-          href="https://www2.gov.bc.ca/assets/gov/education/early-learning/teach/ece/bc_occupational_competencies.pdf"
+          href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
           target="_blank"
         >
           Table 1, 2 or 3 of the Child Care Occupational Competencies.
@@ -89,11 +89,13 @@
       </p>
       <br />
       <AreaOfInstructionComponent
-        :program="programStore.draftProgram"
         :program-type="programType"
+        :id="programStore.draftProgram.id || ''"
+        type="ProgramProfile"
+        :courses="programStore.draftProgram.courses || []"
         :include-total-hours="showTotalHours"
         :area-subtitles="generateSubtitleMap"
-        @reload-program="reloadProgram"
+        @reload-courses="reloadProgram"
       >
         <template #description>
           <p>
@@ -214,30 +216,19 @@ export default defineComponent({
       }
     },
     generateSubtitleMap(): Record<string, string> {
-      //specific subtitle only for Area of Instruction Child Guidance for ProgramType Basic
-      const childGuidanceAreaOfInstruction =
-        this.configStore.areaOfInstructionList.filter(
-          (area) =>
-            area.name === "Child Guidance" &&
-            area.programTypes?.includes("Basic"),
-        );
-
-      if (
-        childGuidanceAreaOfInstruction &&
-        childGuidanceAreaOfInstruction.length > 0
-      ) {
-        const childGuidanceAreaOfInstructionId =
-          childGuidanceAreaOfInstruction[0]?.id;
-
-        return {
-          [childGuidanceAreaOfInstructionId!]:
-            "Child guidance is included in Program Development, Curriculum and Foundations.",
-        };
-      }
-      console.warn(
-        "Child Guidance area of instruction not found for Basic program type.",
-      );
-      return {};
+      const subtitleMap: Record<string, string> = {};
+      this.configStore.areaOfInstructionList
+        .filter((area) => area.parentAreaOfInstructionId != null)
+        .forEach((area) => {
+          const parentArea = this.configStore.areaOfInstructionList.find(
+            (a) => a.id === area.parentAreaOfInstructionId,
+          );
+          if (area.id && parentArea?.name) {
+            subtitleMap[area.id] =
+              `${area.name} is included in ${parentArea.name}.`;
+          }
+        });
+      return subtitleMap;
     },
     authorizedToOfferProgramType(): boolean {
       const result =

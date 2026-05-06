@@ -4,9 +4,11 @@
     @update:model-value="handleDialogClose($event)"
     :persistent="saving"
   >
-    <v-form ref="updateCourse">
+    <v-form ref="courseForm">
       <v-card class="pa-4">
-        <v-card-title>Update Course</v-card-title>
+        <v-card-title class="font-weight-bold">
+          {{ courseDialogMode === "edit" ? "Update" : "Add" }} Course
+        </v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
@@ -80,7 +82,7 @@
             :disabled="saving"
             @click="handleSave"
           >
-            Save changes
+            Save
           </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -90,16 +92,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, toRaw, toRefs } from "vue";
+import { defineComponent, type PropType, toRaw } from "vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Components } from "@/types/openapi";
 import { useConfigStore } from "@/store/config";
+import { useAlertStore } from "@/store/alert";
 import * as Rules from "@/utils/formRules";
 import { number } from "@/utils/formRules";
 import { useDisplay } from "vuetify";
+import type { VForm } from "vuetify/components";
 
 export default defineComponent({
-  name: "EditCourseDialog",
+  name: "AddEditCourseDialog",
   components: { EceTextField },
   props: {
     course: {
@@ -122,14 +126,19 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    courseDialogMode: {
+      type: String as PropType<"edit" | "add">,
+      required: true,
+    },
   },
   emits: ["save", "cancel"],
   setup() {
     const configStore = useConfigStore();
-    const display = useDisplay();
-    const { mdAndUp, smAndDown } = toRefs(display);
+    const alertStore = useAlertStore();
+    const { mdAndUp, smAndDown } = useDisplay();
     return {
       configStore,
+      alertStore,
       mdAndUp,
       smAndDown,
     };
@@ -167,8 +176,15 @@ export default defineComponent({
   },
   computed: {
     areas(): Components.Schemas.AreaOfInstruction[] {
-      return this.configStore.areaOfInstructionList.filter((area) => {
+      const filtered = this.configStore.areaOfInstructionList.filter((area) => {
         return area?.programTypes?.includes(this.programType);
+      });
+      return [...filtered].sort((a, b) => {
+        if (a.displayOrder === null || a.displayOrder === undefined) return 1;
+        if (b.displayOrder === null || b.displayOrder === undefined) return -1;
+        return a.displayOrder.localeCompare(b.displayOrder, undefined, {
+          numeric: true,
+        });
       });
     },
     validateHours() {
@@ -271,19 +287,37 @@ export default defineComponent({
       }
       // else it doesn't exist and hours is 0, so don't create it
     },
-    handleSave() {
-      if (this.localCourse) {
-        if (this.localCourse.courseNumber === this.courseNumber) {
-          this.localCourse.newCourseNumber = null;
-        } else {
-          this.localCourse.newCourseNumber = this.courseNumber;
+    async handleSave() {
+      const { valid } = await (this.$refs.courseForm as VForm).validate();
+
+      if (valid) {
+        if (this.localCourse) {
+          if (this.localCourse.courseNumber === this.courseNumber) {
+            this.localCourse.newCourseNumber = null;
+          } else {
+            this.localCourse.newCourseNumber = this.courseNumber;
+          }
+          if (this.localCourse.courseTitle === this.courseTitle) {
+            this.localCourse.newCourseTitle = null;
+          } else {
+            this.localCourse.newCourseTitle = this.courseTitle;
+          }
+
+          if (this.courseDialogMode === "add") {
+            // When we are adding a course, we have to set courseNumber + courseTitle instead of newCourseNumber/newCourseTitle
+            this.localCourse.courseNumber =
+              this.localCourse.newCourseNumber || "";
+            this.localCourse.courseTitle =
+              this.localCourse.newCourseTitle || "";
+            this.localCourse.newCourseNumber = null;
+            this.localCourse.newCourseTitle = null;
+          }
+          this.$emit("save", this.localCourse);
         }
-        if (this.localCourse.courseTitle === this.courseTitle) {
-          this.localCourse.newCourseTitle = null;
-        } else {
-          this.localCourse.newCourseTitle = this.courseTitle;
-        }
-        this.$emit("save", this.localCourse);
+      } else {
+        this.alertStore.setFailureAlert(
+          "You must enter all required fields in the valid format.",
+        );
       }
     },
     handleCancel() {

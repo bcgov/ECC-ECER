@@ -63,7 +63,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_AddressedDate = "ecer_addresseddate";
 			public const string ecer_Competency = "ecer_competency";
 			public const string ecer_CompetencyName = "ecer_competencyname";
 			public const string ecer_Investigation = "ecer_investigation";
@@ -250,21 +249,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addresseddate")]
-		public System.Nullable<System.DateTime> ecer_AddressedDate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_addresseddate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_addresseddate", value);
 			}
 		}
 		

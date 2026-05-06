@@ -39,6 +39,14 @@ public record PostSecondaryInstitutionsQuery : IRequest<PostSecondaryInstitution
   public string? ById { get; set; }
   public string? ByProvinceId { get; set; }
   public string? ByName { get; set; }
+  public PostSecondaryInstitutionStatus? ByStatus { get; set; }
+}
+
+public enum PostSecondaryInstitutionStatus
+{
+  Active,
+  Draft,
+  Inactive,
 }
 
 public record SystemMessagesQuery : IRequest<SystemMessagesQueryResults>
@@ -81,7 +89,8 @@ public enum PortalTags
   LOGIN,
   LOOKUP,
   REFERENCES,
-  PSPPortal
+  PSPPortal,
+  CertificationsPortal
 }
 
 public record OutOfProvinceCertificationType(string Id)

@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -217,6 +218,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       bcgov_Url = url,
       StateCode = bcgov_documenturl_statecode.Active,
       StatusCode = bcgov_DocumentUrl_StatusCode.Active,
+      ecer_ApplicationName = EcerWebApplicationType.Registry.ToString()
     };
     context.AddObject(document);
     context.AddLink(registrant, Contact.Fields.bcgov_contact_bcgov_documenturl, document);
@@ -550,6 +552,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_LastName = "autotest_charref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
+        ecer_Type = ecer_PortalInvitationTypes.CharacterReference,
       };
 
       context.AddObject(characterReference);
@@ -601,6 +604,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_FirstName = "autotest_workref_first",
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
+        ecer_Type = ecer_WorkExperienceTypes._500Hours,
       };
 
       var guid = Guid.NewGuid();
@@ -612,10 +616,12 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_FirstName = "autotest_workref_first",
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
+        ecer_Type = ecer_PortalInvitationTypes.WorkExperienceReferenceforApplication,
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
       context.AddObject(workexperienceReference);
+      context.AddLink(workexperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, registrant);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
@@ -662,9 +668,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
+        ecer_Type = ecer_PortalInvitationTypes.WorkExperienceReferenceforApplication,
       };
 
       context.AddObject(workexperienceReference);
+      context.AddLink(workexperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, registrant);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication2);

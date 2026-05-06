@@ -115,6 +115,17 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     var pspRep = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(pspRepId));
     if (pspRep == null) throw new InvalidOperationException($"psp representative with id {pspRepId} not found");
 
+    //disable any active portal invitations
+    var invitations = context.ecer_PortalInvitationSet.Where(invitation =>
+      invitation.ecer_psiprogramrepresentativeid.Id == userId && invitation.StateCode == ecer_portalinvitation_statecode.Active).ToList();
+
+    foreach (var invitation in invitations)
+    {
+      invitation.StatusCode = ecer_PortalInvitation_StatusCode.Cancelled;
+      invitation.StateCode = ecer_portalinvitation_statecode.Inactive;
+      context.UpdateObject(invitation);
+    }
+
     pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Disabled;
     pspUser.ecer_HasAcceptedTermsofUse = false;
     setModifiedByPspRepFields(pspRep, pspUser);

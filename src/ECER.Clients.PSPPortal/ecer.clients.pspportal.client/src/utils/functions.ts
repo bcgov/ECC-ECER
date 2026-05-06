@@ -1,6 +1,12 @@
 import type { Components } from "@/types/openapi";
 import { DateTime } from "luxon";
 import { EARLIEST_PROFILE_YEAR } from "@/utils/constant";
+import type {
+  AreaOfInstructionWithCourseHoursMap,
+  ComponentGroupNavigation,
+  ComponentGroupNavigationMap,
+  CourseAreaDetail,
+} from "@/types/helperFunctions";
 
 /**
  * Checks if a program's start date is on or after the earliest profile year
@@ -295,10 +301,13 @@ export function parseCertificationType(input: string): CertificationType {
 
 // this method will return a Map that looks like this {Key = AreaOfInstructionId, Values = Array of courses with name and hours}
 export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
-  program: Components.Schemas.Program,
+  courses: Components.Schemas.Course[] | undefined | null,
   programType: Components.Schemas.ProgramTypes,
 ): AreaOfInstructionWithCourseHoursMap | undefined {
-  let filteredCourses = program?.courses?.filter(
+  if (!courses || courses.length === 0) {
+    return new Map();
+  }
+  let filteredCourses = courses.filter(
     (course: Components.Schemas.Course) => course.programType === programType,
   ); //filter out relevant courses here
   let courseAreaOfInstructionMap = new Map();
@@ -338,15 +347,64 @@ export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
   return courseAreaOfInstructionMap;
 }
 
+export function getCoursesForProgramApplicationReview(
+  courses: Components.Schemas.Course[] | undefined | null,
+  programType: Components.Schemas.ProgramTypes,
+  areaOfInstructionList: Components.Schemas.AreaOfInstruction[],
+) {
+  const courseAreaOfInstructionMap = new Map<string, CourseAreaDetail[]>();
+
+  if (!courses || courses.length === 0) {
+    return courseAreaOfInstructionMap;
+  }
+
+  areaOfInstructionList
+    .filter((a) => a.programTypes?.includes(programType))
+    .forEach((area) => {
+      if (area.id !== null && area.id !== undefined) {
+        courseAreaOfInstructionMap.set(area.id, []);
+      }
+    });
+
+  courses
+    .filter((course) => course.programType === programType)
+    .forEach((course) => {
+      course.courseAreaOfInstruction?.forEach((area) => {
+        const detail: CourseAreaDetail = {
+          courseNumber: course.courseNumber,
+          courseTitle: course.courseTitle,
+          hours: area.newHours,
+        } as CourseAreaDetail;
+
+        if (
+          area.areaOfInstructionId !== null &&
+          area.areaOfInstructionId !== undefined &&
+          area.newHours !== "0"
+        ) {
+          const existing = courseAreaOfInstructionMap.get(
+            area.areaOfInstructionId,
+          );
+          if (existing) {
+            existing.push(detail);
+          } else {
+            courseAreaOfInstructionMap.set(area.areaOfInstructionId, [detail]);
+          }
+        }
+      });
+    });
+
+  return courseAreaOfInstructionMap;
+}
+
 export function getNonAllocatedCoursesByType(
-  program: Components.Schemas.Program,
+  courses: Components.Schemas.Course[] | undefined | null,
   programType: Components.Schemas.ProgramTypes,
 ) {
-  if (!program?.courses) {
+  if (!courses || courses.length === 0) {
     return [];
   }
 
-  let filteredCourses = program?.courses?.filter(
+  let filteredCourses = courses.filter(
     (course: Components.Schemas.Course) => course.programType === programType,
   );
 
@@ -375,5 +433,76 @@ export function getCourseTitle(course: Components.Schemas.Course): string {
     return courseTitle;
   } else {
     return "Untitled Course";
+  }
+}
+
+export function groupByCategoryName(
+  categoryGroups: Components.Schemas.NavigationMetadata[],
+): ComponentGroupNavigationMap | undefined {
+  const map = new Map();
+  categoryGroups.forEach((group: Components.Schemas.NavigationMetadata) => {
+    const category = group.categoryName;
+
+    if (map.has(category)) {
+      map.get(category).push({
+        id: group.id,
+        name: group.name,
+        status: group.status,
+        categoryName: group.categoryName,
+        displayOrder: group.displayOrder,
+        statusIcon: mapStatusIcons(group.status, group.rfaiRequired),
+        navigationRoute: "/component/" + group.id,
+        navigationType: group.navigationType,
+        rfaiRequired: group.rfaiRequired,
+      } as ComponentGroupNavigation);
+    } else {
+      map.set(category, [
+        {
+          id: group.id,
+          name: group.name,
+          status: group.status,
+          categoryName: group.categoryName,
+          displayOrder: group.displayOrder,
+          statusIcon: mapStatusIcons(group.status, group.rfaiRequired),
+          navigationRoute: "/component/" + group.id,
+          navigationType: group.navigationType,
+          rfaiRequired: group.rfaiRequired,
+        } as ComponentGroupNavigation,
+      ]);
+    }
+  });
+
+  return map;
+}
+
+export function mapStatusIcons(
+  status: string | null | undefined,
+  rfaiRequired: boolean | null | undefined,
+): string {
+  if (rfaiRequired) return "mdi-alert-circle-outline";
+  switch (status) {
+    case "ToDo":
+      return "mdi-circle-outline";
+    case "InProgress":
+      return "mdi-circle-half-full";
+    case "Completed":
+      return "mdi-check-circle";
+    default:
+      return "mdi-circle-outline";
+  }
+}
+
+export function mapStatusColor(icon: string): string {
+  switch (icon) {
+    case "mdi-circle-outline":
+      return "grey";
+    case "mdi-circle-half-full":
+      return "success";
+    case "mdi-check-circle":
+      return "success";
+    case "mdi-alert-circle-outline":
+      return "warning";
+    default:
+      return "grey";
   }
 }

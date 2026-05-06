@@ -1,14 +1,13 @@
+using ECER.Clients.E2ETestData.Authentication;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using ECER.Clients.E2ETestData.Authentication;
-using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.E2ETestData;
-
 
 internal class Program
 {

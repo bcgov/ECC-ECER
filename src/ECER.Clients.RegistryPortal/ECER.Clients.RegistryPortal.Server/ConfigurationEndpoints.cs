@@ -57,10 +57,10 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     })
     .WithOpenApi("Handles certification comparison queries", string.Empty, "certificationComparison_get");
 
-    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, PostSecondaryInstitutionStatus? status, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
-      var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId }, ct);
+      var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId, ByStatus = status }, ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<PostSecondaryInstitution>>(results.Items));
     })
     .WithOpenApi("Handles psi queries", string.Empty, "psi_get");
@@ -82,12 +82,12 @@ public class ConfigurationEndpoints : IRegisterEndpoints
      .WithOpenApi("Handles identification types queries", string.Empty, "identificationTypes_get")
      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/recaptchaSiteKey", async (IOptions<RecaptchaSettings> recaptchaSettings, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/captchaSiteKey", async (IOptions<CaptchaSettings> captchaSettings, CancellationToken ct) =>
     {
       await Task.CompletedTask;
-      return TypedResults.Ok(recaptchaSettings.Value.SiteKey);
+      return TypedResults.Ok(captchaSettings.Value.SiteKey);
     })
-      .WithOpenApi("Obtains site key for recaptcha", string.Empty, "recaptcha_site_key_get")
+      .WithOpenApi("Obtains site key for captcha", string.Empty, "captcha_site_key_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
   }
 }
@@ -125,7 +125,8 @@ public enum PortalTags
   LOGIN,
   LOOKUP,
   REFERENCES,
-  PSPPortal
+  PSPPortal,
+  CertificationsPortal
 }
 
 public record IdentificationTypesQuery

@@ -15,8 +15,9 @@ public class InviteLinkHandlerTests : ApiWebAppScenarioBase
   [Fact]
   public async Task CanTransformPortalInvitationToLink()
   {
+    var portalInvitationId = Fixture.testPortalInvitationForLinkGeneration.Id;
     var bus = Fixture.Services.GetRequiredService<IMediator>();
-    var response = await bus.Send(new GenerateInviteLinkCommand(Guid.NewGuid(), 7), CancellationToken.None);
+    var response = await bus.Send(new GenerateInviteLinkCommand(portalInvitationId, 7), CancellationToken.None);
     response.ShouldNotBeNull();
   }
 }

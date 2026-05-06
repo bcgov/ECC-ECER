@@ -29,9 +29,16 @@ public static class RegistryPortalClaims
   public const string Verified = "verified";
   public const string IdentityProvider = "identity_provider";
 }
+
 public static class PSPPortalClaims
 {
   public const string UserId = "user_id";
   public const string TermsOfUse = "terms_of_use";
   public const string IdentityProvider = "identity_provider";
+}
+
+public static class ApiClaims
+{
+  public const string EcerApiUser = "ecer-api";
+  public const string EcerEwUser = "ecer-ew";
 }

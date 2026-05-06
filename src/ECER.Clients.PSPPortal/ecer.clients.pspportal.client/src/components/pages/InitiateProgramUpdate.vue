@@ -136,20 +136,6 @@
             Continue to program profile
           </v-btn>
         </div>
-        <div>
-          <div v-if="updateInProgress" class="mt-8">
-            <v-progress-circular
-              class="mb-2"
-              color="primary"
-              indeterminate
-            ></v-progress-circular>
-            <h4>
-              Your request has been initiated. Please wait a few minutes while
-              we prepare it for review. When ready, it will appear here and will
-              also be available in your dashboard.
-            </h4>
-          </div>
-        </div>
       </div>
     </div>
   </PageContainer>
@@ -167,6 +153,7 @@ import ECEHeader from "@/components/ECEHeader.vue";
 import Callout from "@/components/common/Callout.vue";
 import { getPrograms, initiateProgramChange } from "@/api/program";
 import { IntervalTime } from "@/utils/constant";
+import router from "@/router.ts";
 
 export default defineComponent({
   name: "ProgramProfiles",
@@ -283,14 +270,12 @@ export default defineComponent({
       this.updateInProgress = true;
       const response = await initiateProgramChange(this.program);
 
-      if (response.error) {
+      if (response.error || !response.data) {
         console.error("Failed to initiate program change:", response.error);
         this.updateInProgress = false;
         return;
       }
-
-      await this.fetchNewProgram();
-      this.startPolling();
+      router.push(`/program/${response.data}`);
     },
     stopPolling() {
       if (this.pollInterval) {

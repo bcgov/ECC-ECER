@@ -3,7 +3,6 @@ using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -13,15 +12,13 @@ internal class CommunicationRepository : ICommunicationRepository
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
-  private readonly IObjecStorageProvider objectStorageProvider;
-  private readonly IConfiguration configuration;
+  private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
 
-  public CommunicationRepository(EcerContext context, IMapper mapper, IObjecStorageProvider objecStorageProvider, IConfiguration configuration)
+  public CommunicationRepository(EcerContext context, IMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver)
   {
     this.context = context;
     this.mapper = mapper;
-    this.objectStorageProvider = objecStorageProvider;
-    this.configuration = configuration;
+    this.objectStorageProviderResolver = objectStorageProviderResolver;
   }
 
   public async Task<int> QueryStatus(UserCommunicationsStatusQuery query)
@@ -212,7 +209,8 @@ internal class CommunicationRepository : ICommunicationRepository
       var sourceFolder = "tempfolder";
       var destinationFolder = "ecer_communication/" + ecerCommunication.ecer_CommunicationId;
       var fileId = document.Id;
-      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), cancellationToken);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(document.EcerWebApplicationType);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), cancellationToken);
 
       var documenturl = new bcgov_DocumentUrl()
       {
@@ -224,7 +222,8 @@ internal class CommunicationRepository : ICommunicationRepository
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
         StateCode = bcgov_documenturl_statecode.Active,
         bcgov_OriginCode = bcgov_OriginCode.Web,
-        ecer_DocumentInternallyReviewed = ecer_YesNoNull.No
+        ecer_DocumentInternallyReviewed = ecer_YesNoNull.No,
+        ecer_ApplicationName = document.EcerWebApplicationType.ToString()
       };
 
       context.AddObject(documenturl);
@@ -259,7 +258,4 @@ internal class CommunicationRepository : ICommunicationRepository
 
     return ecerCommunication;
   }
-
-  private static string GetBucketName(IConfiguration configuration) =>
-  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

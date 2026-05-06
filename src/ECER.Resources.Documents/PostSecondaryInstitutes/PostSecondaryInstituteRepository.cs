@@ -43,7 +43,10 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
       }
     }
 
-    var results = context.From(institutes).Execute();
+    var results = context.From(institutes)
+      .Join()
+      .Include(c => c.ecer_postsecondaryinstitutecampus_postsecondaryinstitute_ecer_postsecondaryinstitute)
+      .Execute();
     
     return mapper.Map<IEnumerable<PostSecondaryInstitute>>(results)!.ToList();
   }
@@ -81,6 +84,80 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
     }
 
     context.UpdateObject(updatedInstitute);
+    context.SaveChanges();
+    await Task.CompletedTask;
+  }
+
+  public async Task<string> CreateCampus(string institutionId, Campus campus, CancellationToken ct, IEnumerable<string>? programIds = null)
+  {
+    ArgumentNullException.ThrowIfNull(campus);
+    if (!Guid.TryParse(institutionId, out var institutionGuid))
+      throw new InvalidOperationException($"Institution id {institutionId} is not a valid GUID");
+
+    var institution = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(r => r.Id == institutionGuid);
+    if (institution == null) throw new InvalidOperationException($"Institution with id {institutionId} not found");
+
+    var newCampus = mapper.Map<ecer_PostSecondaryInstituteCampus>(campus);
+    newCampus.ecer_PostSecondaryInstituteCampusId = Guid.NewGuid();
+    newCampus.StatusCode = ecer_PostSecondaryInstituteCampus_StatusCode.Active;
+    newCampus.StateCode = ecer_postsecondaryinstitutecampus_statecode.Active;
+    newCampus.ecer_postsecondaryinstitute = new Microsoft.Xrm.Sdk.EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institutionGuid);
+
+    context.AddObject(newCampus);
+
+    if (!string.IsNullOrWhiteSpace(campus.Province))
+    {
+      var existingProvince = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_Name == campus.Province);
+      if (existingProvince != null)
+        context.AddLink(newCampus, ecer_PostSecondaryInstituteCampus.Fields.ecer_postsecondaryinstitutecampus_province_ecer_province, existingProvince);
+    }
+
+    context.SaveChanges();
+
+    foreach (var programId in programIds ?? [])
+    {
+      if (!Guid.TryParse(programId, out var programGuid)) continue;
+      var programCampus = new ecer_ProgramCampus
+      {
+        ecer_ProgramCampusId = Guid.NewGuid(),
+        ecer_CampusId = new Microsoft.Xrm.Sdk.EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, newCampus.ecer_PostSecondaryInstituteCampusId!.Value),
+        ecer_ProgramProfileId = new Microsoft.Xrm.Sdk.EntityReference(ecer_Program.EntityLogicalName, programGuid),
+        ecer_EducationalInstitutionId = new Microsoft.Xrm.Sdk.EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institutionGuid),
+        StatusCode = ecer_ProgramCampus_StatusCode.Active,
+        StateCode = ecer_programcampus_statecode.Active,
+      };
+      context.AddObject(programCampus);
+    }
+
+    context.SaveChanges();
+    await Task.CompletedTask;
+    return newCampus.ecer_PostSecondaryInstituteCampusId!.Value.ToString();
+  }
+
+  public async Task UpdateCampus(Campus campus, CancellationToken ct)
+  {
+    ArgumentNullException.ThrowIfNull(campus);
+    if (!Guid.TryParse(campus.Id, out var campusGuid))
+      throw new InvalidOperationException($"Campus id {campus.Id} is not a valid GUID");
+
+    var existingCampus = context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(r => r.Id == campusGuid);
+    if (existingCampus == null) throw new InvalidOperationException($"Campus with id {campus.Id} not found");
+
+    context.Detach(existingCampus);
+
+    var updatedCampus = mapper.Map<ecer_PostSecondaryInstituteCampus>(campus);
+    updatedCampus.ecer_PostSecondaryInstituteCampusId = campusGuid;
+
+    context.Attach(updatedCampus);
+
+    if (!string.IsNullOrWhiteSpace(campus.Province))
+    {
+      var existingProvince = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_Name == campus.Province);
+      if (existingProvince != null)
+        context.AddLink(updatedCampus, ecer_PostSecondaryInstituteCampus.Fields.ecer_postsecondaryinstitutecampus_province_ecer_province, existingProvince);
+    }
+
+    context.UpdateObject(updatedCampus);
     context.SaveChanges();
     await Task.CompletedTask;
   }

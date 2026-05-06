@@ -39,6 +39,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Active = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Draft = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
 	}
 	
@@ -72,7 +75,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CountryId = "ecer_countryid";
 			public const string ecer_CountryIdName = "ecer_countryidname";
 			public const string ecer_documentfulladdress = "ecer_documentfulladdress";
-			public const string ecer_documentfullstreetaddress = "ecer_documentfullstreetaddress";
+			public const string ecer_DocumentFullCityAddressComposed = "ecer_documentfullcityaddresscomposed";
+			public const string ecer_DocumentFullStreetAddressComposed = "ecer_documentfullstreetaddresscomposed";
 			public const string ecer_eceprogramrepresentative_PostSecondaryIns = "ecer_eceprogramrepresentative_PostSecondaryIns";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
 			public const string ecer_ECESchoolordepartment = "ecer_eceschoolordepartment";
@@ -106,12 +110,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PrivateAuspiceType = "ecer_privateauspicetype";
 			public const string ecer_privateauspicetypeName = "ecer_privateauspicetypename";
 			public const string ecer_program_PostSecondaryInstitution_ecer_pos = "ecer_program_PostSecondaryInstitution_ecer_pos";
+			public const string ecer_programapplicationlog_EducationalInstitution_ecer_postsecondaryinstitute = "ecer_programapplicationlog_EducationalInstitution_ecer_postsecondaryinstitute";
 			public const string ecer_ProvinceId = "ecer_provinceid";
 			public const string ecer_ProvinceIdName = "ecer_provinceidname";
 			public const string ecer_PSIInstitutionType = "ecer_psiinstitutiontype";
 			public const string ecer_psiinstitutiontypeName = "ecer_psiinstitutiontypename";
 			public const string ecer_pspobservation_postsecondaryinstitutionid_ecer_postsecondaryinstitute = "ecer_pspobservation_postsecondaryinstitutionid_ecer_postsecondaryinstitute";
 			public const string ecer_pspreferral_pspinstitution_ecer_postsecondaryinstitute = "ecer_pspreferral_pspinstitution_ecer_postsecondaryinstitute";
+			public const string ecer_PTIRUInstitutionID = "ecer_ptiruinstitutionid";
 			public const string ecer_StateProvince = "ecer_stateprovince";
 			public const string ecer_Street1 = "ecer_street1";
 			public const string ecer_Street2 = "ecer_street2";
@@ -423,9 +429,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Calculated fields has been deprecated
-		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfulladdress")]
 		public string ecer_documentfulladdress
 		{
@@ -436,16 +439,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Calculated fields has been deprecated
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfullstreetaddress")]
-		public string ecer_documentfullstreetaddress
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfullcityaddresscomposed")]
+		public string ecer_DocumentFullCityAddressComposed
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_documentfullstreetaddress");
+				return this.GetAttributeValue<string>("ecer_documentfullcityaddresscomposed");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfullstreetaddresscomposed")]
+		public string ecer_DocumentFullStreetAddressComposed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_documentfullstreetaddresscomposed");
 			}
 		}
 		
@@ -858,6 +868,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ptiruinstitutionid")]
+		public string ecer_PTIRUInstitutionID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_ptiruinstitutionid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ptiruinstitutionid", value);
 			}
 		}
 		
@@ -1548,6 +1573,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_PostSecondaryInstitution_ecer_pos", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_programapplicationlog_EducationalInstitution_ecer_postsecondaryinstitute
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationlog_EducationalInstitution_ecer_postsecondaryinstitute")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog> ecer_programapplicationlog_EducationalInstitution_ecer_postsecondaryinstitute
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog>("ecer_programapplicationlog_EducationalInstitution_ecer_postsecondaryinstitute", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog>("ecer_programapplicationlog_EducationalInstitution_ecer_postsecondaryinstitute", null, value);
 			}
 		}
 		
