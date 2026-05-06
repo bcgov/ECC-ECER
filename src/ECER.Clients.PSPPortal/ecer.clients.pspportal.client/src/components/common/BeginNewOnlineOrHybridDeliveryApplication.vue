@@ -21,7 +21,7 @@
           </p>
           <p>
             You can save and exit the form and continue with your submission
-            later from your PSP Portal dashboard.
+            later from your ECE Post-Secondary Programs portal dashboard.
           </p>
         </div>
       </v-col>
@@ -60,7 +60,7 @@
             </p>
             <p>
               To apply to expand an early childhood education program delivery
-              to online or hybrid methods, an institution must already have a
+              to online or hybrid formats, an institution must already have a
               recognized basic or post-basic early childhood education program.
             </p>
 
