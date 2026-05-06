@@ -108,6 +108,8 @@ export default defineComponent({
                 );
               }
             });
+
+            void this.messageStore.refreshUnreadCount();
           } catch (error) {
             this.alertStore.setFailureAlert(
               "An error occurred while marking messages as read",
