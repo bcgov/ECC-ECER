@@ -55,7 +55,14 @@ export default defineComponent({
   emits: ["view"],
   computed: {
     chipColour(): string {
-      return this.campus.status === "Active" ? "success" : "grey-darkest";
+      switch (this.campus.status) {
+        case "Active":
+          return "success";
+        case "Pending":
+          return "warning";
+        default:
+          return "grey-darkest";
+      }
     },
   },
 });
