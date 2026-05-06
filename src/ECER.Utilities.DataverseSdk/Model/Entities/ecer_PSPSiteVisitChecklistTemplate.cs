@@ -384,6 +384,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Replaced by Multiple Selection field
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisittype")]
 		public virtual ecer_PSISiteVisitType? ecer_SiteVisitType
 		{

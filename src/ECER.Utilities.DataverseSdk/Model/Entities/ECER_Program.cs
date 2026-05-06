@@ -143,6 +143,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_pspreferral_programprofile_ecer_program = "ecer_pspreferral_programprofile_ecer_program";
 			public const string ecer_ReadyforReview = "ecer_readyforreview";
 			public const string ecer_readyforreviewName = "ecer_readyforreviewname";
+			public const string ecer_ReadytoReviewDate = "ecer_readytoreviewdate";
 			public const string ecer_SNECoursesTotalHours = "ecer_snecoursestotalhours";
 			public const string ecer_SNECoursesTotalHoursDecimal = "ecer_snecoursestotalhoursdecimal";
 			public const string ecer_StartDate = "ecer_startdate";
@@ -1139,6 +1140,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_readytoreviewdate")]
+		public System.Nullable<System.DateTime> ecer_ReadytoReviewDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_readytoreviewdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_readytoreviewdate", value);
 			}
 		}
 		

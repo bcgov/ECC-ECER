@@ -165,7 +165,7 @@
                       class="mt-4"
                       :is-rounded="false"
                       :certification="certificationStore.currentCertification"
-                      :has-application="applicationStore.hasApplication"
+                      :has-application="hideRenewOptionCertificationCard"
                       :is-latest-of-type="true"
                     />
                   </template>
@@ -564,6 +564,15 @@ export default defineComponent({
         !this.applicationStore.hasApplication &&
         !this.certificationStore.holdsAllCertifications &&
         !this.showIcraEligibilityStep2StartCard
+      );
+    },
+    hideRenewOptionCertificationCard(): boolean {
+      return (
+        this.applicationStore.hasApplication ||
+        this.icraStore.hasIcraEligibilityInProcess ||
+        //user has an approved icra eligibility, but user has not submitted one yet then they need to start their application do not show renew option
+        (!this.applicationStore.hasIcraApplication &&
+          this.icraStore.hasApprovedIcraEligibility)
       );
     },
     cancelApplicationLoading(): boolean {

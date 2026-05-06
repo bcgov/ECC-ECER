@@ -129,10 +129,19 @@ internal sealed partial class ApplicationRepository
     if (RefIdIsGuid)
     {
       var oldReference = existingWorkExperiences.SingleOrDefault(t => t.Id == referenceIdGuid);
-      // 1. Remove existing WorkExperienceReference
+      // 1. Remove existing WorkExperienceReference and associated portal invitations
 
       if (oldReference != null)
       {
+        if (oldReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Rejected || oldReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Submitted)
+        {
+          throw new InvalidOperationException($"Work experience reference '{oldReference.Id}' already responded cannot change to another one");
+        }
+        var invitations = context.ecer_PortalInvitationSet.Where(i => i.ecer_WorkExperienceReferenceId.Id == referenceIdGuid).ToList();
+        foreach (var invitation in invitations)
+        {
+          context.DeleteObject(invitation);
+        }
         context.DeleteObject(oldReference);
       }
       else
