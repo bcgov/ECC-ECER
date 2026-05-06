@@ -396,7 +396,7 @@ declare namespace Components {
       endDate?: string | null; // date-time
     }
     export type ProgramCertificationType = "Basic" | "ITE" | "SNE";
-    export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
+    export type ProgramProfileType = "ChangeRequest" | "AnnualReview" | "New";
     export type ProgramStatus =
       | "Draft"
       | "UnderReview"
