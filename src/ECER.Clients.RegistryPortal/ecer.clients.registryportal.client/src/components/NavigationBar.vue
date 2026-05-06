@@ -70,9 +70,17 @@
             <v-btn
               class="font-weight-regular"
               color="primary"
-              prepend-icon="mdi-bell"
               @click="router.push('/messages')"
             >
+              <template #prepend>
+                <v-badge
+                  dot
+                  color="error"
+                  :model-value="messageStore.unreadMessageCount > 0"
+                >
+                  <v-icon>mdi-bell</v-icon>
+                </v-badge>
+              </template>
               Messages
             </v-btn>
             <v-menu offset-y bottom transition="slide-y-transition">
@@ -127,6 +135,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { cleanPreferredName } from "@/utils/functions";
+import { useMessageStore } from "@/store/message";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
@@ -136,8 +145,9 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
+    const messageStore = useMessageStore();
     const router = useRouter();
-    return { userStore, oidcStore, router, cleanPreferredName };
+    return { userStore, oidcStore, messageStore, router, cleanPreferredName };
   },
 });
 </script>
