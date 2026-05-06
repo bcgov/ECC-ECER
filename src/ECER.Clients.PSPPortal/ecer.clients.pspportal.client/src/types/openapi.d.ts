@@ -75,7 +75,7 @@ declare namespace Components {
       keyCampusContactName?: string | null;
       otherCampusContactName?: string | null;
     }
-    export type CampusStatus = "None" | "Active" | "Inactive";
+    export type CampusStatus = "None" | "Active" | "Inactive" | "Pending";
     export interface Communication {
       id?: string | null;
       category?: CommunicationCategory;
@@ -396,7 +396,7 @@ declare namespace Components {
       endDate?: string | null; // date-time
     }
     export type ProgramCertificationType = "Basic" | "ITE" | "SNE";
-    export type ProgramProfileType = "ChangeRequest" | "AnnualReview";
+    export type ProgramProfileType = "ChangeRequest" | "AnnualReview" | "New";
     export type ProgramStatus =
       | "Draft"
       | "UnderReview"
