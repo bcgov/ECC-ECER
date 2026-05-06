@@ -264,7 +264,7 @@ export default defineComponent({
           const fileId = uuidv4(); // Generate a unique file ID using uuid
           const selectedFile: FileItem = {
             file,
-            fileSize: file.size,
+            fileSize: Functions.humanFileSize(file.size),
             fileName: file.name,
             progress: 0,
             fileId,

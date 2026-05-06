@@ -131,7 +131,7 @@ import { useAlertStore } from "@/store/alert";
 import { useApplicationFilesStore } from "@/store/applicationFiles";
 import * as Functions from "@/utils/functions";
 
-const allowedFileTypes = [
+const allowedFileTypes = new Set([
   "application/pdf",
   "text/plain",
   "application/msword",
@@ -145,7 +145,7 @@ const allowedFileTypes = [
   "image/bmp",
   "image/tiff",
   "image/x-tiff",
-];
+]);
 
 export default defineComponent({
   name: "ProgramApplicationFileUploader",
@@ -258,10 +258,10 @@ export default defineComponent({
   watch: {
     selectedFiles: {
       handler() {
-        if (!this.firstLoad) {
-          this.$emit("update:files", this.selectedFiles);
-        } else {
+        if (this.firstLoad) {
           this.firstLoad = false;
+        } else {
+          this.$emit("update:files", this.selectedFiles);
         }
       },
       deep: true,
@@ -292,60 +292,64 @@ export default defineComponent({
         this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
       }
 
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i] as File;
-        const fileErrors: string[] = [];
+      for (const file of Array.from(files)) {
+        this.addFileToQueue(file);
+      }
+    },
+    addFileToQueue(file: File) {
+      const fileErrors = this.validateFile(file);
+      const fileId = uuidv4();
+      const selectedFile: FileItem = {
+        file,
+        fileSize: Functions.humanFileSize(file.size),
+        fileName: file.name,
+        progress: 0,
+        fileId,
+        fileErrors,
+        storageFolder: "permanent",
+      };
+      this.selectedFiles.push(selectedFile);
 
-        if (file.size > this.maxFileSizeInBytes) {
+      if (this.selectedFiles.length > 1) {
+        const totalSize = this.selectedFiles.reduce(
+          (acc, sf) => acc + sf.file.size,
+          0,
+        );
+        if (totalSize > this.maxFileSizeInBytes) {
           fileErrors.push(
-            `This file is too big. Only files ${this.maxFileSizeInMB}MB or smaller are accepted.`,
+            `The total file size exceeds the maximum allowed. Upload a file that is ${Functions.humanFileSize(selectedFile.file.size - (totalSize - this.maxFileSizeInBytes))} or smaller.`,
           );
-        }
-        if (!allowedFileTypes.includes(file.type)) {
-          fileErrors.push(
-            "This type of file is not accepted. The following file types are accepted: .txt, .pdf, .doc, .docx, .rtf, .xls, .xlsx, .jpg/jpeg, .gif, .png, .bmp, .tiff, .x-tiff",
-          );
-        }
-        if (
-          this.selectedFiles.some(
-            (f) => f.fileName.toLowerCase() === file.name.toLowerCase(),
-          )
-        ) {
-          fileErrors.push("A file with this name has already been added.");
-        } else if (this.isNameTakenByApplication(file.name)) {
-          fileErrors.push(
-            "A file with this name has already been uploaded to this application.",
-          );
-        }
-
-        const fileId = uuidv4();
-        const selectedFile: FileItem = {
-          file,
-          fileSize: Functions.humanFileSize(file.size),
-          fileName: file.name,
-          progress: 0,
-          fileId,
-          fileErrors,
-          storageFolder: "permanent",
-        };
-        this.selectedFiles.push(selectedFile);
-
-        if (this.selectedFiles.length > 1) {
-          const totalSize = this.selectedFiles.reduce(
-            (acc, sf) => acc + sf.file.size,
-            0,
-          );
-          if (totalSize > this.maxFileSizeInBytes) {
-            fileErrors.push(
-              `The total file size exceeds the maximum allowed. Upload a file that is ${Functions.humanFileSize(selectedFile.file.size - (totalSize - this.maxFileSizeInBytes))} or smaller.`,
-            );
-          }
-        }
-
-        if (fileErrors.length === 0) {
-          this.uploadFileWithProgress(selectedFile);
         }
       }
+
+      if (fileErrors.length === 0) {
+        this.uploadFileWithProgress(selectedFile);
+      }
+    },
+    validateFile(file: File): string[] {
+      const fileErrors: string[] = [];
+      if (file.size > this.maxFileSizeInBytes) {
+        fileErrors.push(
+          `This file is too big. Only files ${this.maxFileSizeInMB}MB or smaller are accepted.`,
+        );
+      }
+      if (!allowedFileTypes.has(file.type)) {
+        fileErrors.push(
+          "This type of file is not accepted. The following file types are accepted: .txt, .pdf, .doc, .docx, .rtf, .xls, .xlsx, .jpg/jpeg, .gif, .png, .bmp, .tiff, .x-tiff",
+        );
+      }
+      if (
+        this.selectedFiles.some(
+          (f) => f.fileName.toLowerCase() === file.name.toLowerCase(),
+        )
+      ) {
+        fileErrors.push("A file with this name has already been added.");
+      } else if (this.isNameTakenByApplication(file.name)) {
+        fileErrors.push(
+          "A file with this name has already been uploaded to this application.",
+        );
+      }
+      return fileErrors;
     },
     async uploadFileWithProgress(selectedFile: FileItem) {
       try {
@@ -425,7 +429,7 @@ export default defineComponent({
         return;
       }
 
-      if (idx > -1) {
+      if (idx > -1 && this.selectedFiles[idx]) {
         this.selectedFiles[idx].shareDocumentUrlId =
           response.data.shareDocumentUrlId ?? undefined;
         this.selectedFiles[idx].fileSize =
@@ -438,7 +442,8 @@ export default defineComponent({
       const idx = this.selectedFiles.findIndex(
         (f) => f.fileId === selectedFile.fileId,
       );
-      if (idx > -1) this.selectedFiles[idx].isDeleting = true;
+      if (idx > -1 && this.selectedFiles[idx])
+        this.selectedFiles[idx].isDeleting = true;
 
       try {
         if (
@@ -460,10 +465,12 @@ export default defineComponent({
         this.$emit("delete:file", selectedFile);
         this.showErrorBanner = false;
       } catch (error) {
-        if (idx > -1) this.selectedFiles[idx].isDeleting = false;
+        if (idx > -1 && this.selectedFiles[idx])
+          this.selectedFiles[idx].isDeleting = false;
         this.alertStore.setFailureAlert(
           "An error occurred during file deletion.",
         );
+        console.error(error);
       }
     },
     triggerFileInput() {

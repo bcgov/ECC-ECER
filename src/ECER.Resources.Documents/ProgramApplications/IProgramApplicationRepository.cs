@@ -20,7 +20,7 @@ public interface IProgramApplicationRepository
 
   Task UpdateCourseProgress(string applicationId, string? basicProgress, string? iteProgress, string? sneProgress, CancellationToken cancellationToken);
 
-  Task<ApplicationFileInfo> CreateDocumentUrlAndShare(string fileId, string fileName, string fileSize, string folder, string programApplicationId, string componentGroupId, string componentId, string instituteId, CancellationToken cancellationToken);
+  Task<ApplicationFileInfo> CreateDocumentUrlAndShare(CreateDocumentUrlRequest request, CancellationToken cancellationToken);
 
   Task<ApplicationFileInfo> CreateShareOnly(string documentId, string programApplicationId, string componentGroupId, string componentId, CancellationToken cancellationToken);
 
@@ -34,6 +34,16 @@ public interface IProgramApplicationRepository
 }
 
 public record ApplicationFileInfo(string DocumentId, string ShareDocumentId, string FileName, string FileSize, string StorageFolder, string? Extension, EcerWebApplicationType EcerWebApplicationType);
+
+public record CreateDocumentUrlRequest(
+  string FileId,
+  string FileName,
+  string FileSize,
+  string Folder,
+  string ProgramApplicationId,
+  string ComponentGroupId,
+  string ComponentId,
+  string InstituteId);
 
 public record ShareDocumentUrlDetails(string DocumentId, string Folder, EcerWebApplicationType EcerWebApplicationType, int RemainingShareCount);
 

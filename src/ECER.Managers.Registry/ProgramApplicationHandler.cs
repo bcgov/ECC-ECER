@@ -158,10 +158,11 @@ public class ProgramApplicationHandler(
       throw new InvalidOperationException(saveResult?.Message ?? "File upload failed");
     }
     var humanSize = UtilityFunctions.HumanFileSize(request.FileSizeBytes);
-    var resourcesResult = await programApplicationRepository.CreateDocumentUrlAndShare(
+    var createRequest = new CreateDocumentUrlRequest(
       request.FileId, request.FileName, humanSize, folder,
       request.ProgramApplicationId, request.ComponentGroupId, request.ComponentId,
-      request.PostSecondaryInstituteId, cancellationToken);
+      request.PostSecondaryInstituteId);
+    var resourcesResult = await programApplicationRepository.CreateDocumentUrlAndShare(createRequest, cancellationToken);
     return mapper.Map<ApplicationFileInfo>(resourcesResult);
   }
 

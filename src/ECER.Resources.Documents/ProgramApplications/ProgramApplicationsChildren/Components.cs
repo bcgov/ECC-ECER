@@ -7,30 +7,31 @@ namespace ECER.Resources.Documents.ProgramApplications;
 
 internal sealed partial class ProgramApplicationRepository
 {
-  public async Task<ApplicationFileInfo> CreateDocumentUrlAndShare(
-    string fileId, string fileName, string fileSize, string folder,
-    string programApplicationId, string componentGroupId, string componentId,
-    string instituteId, CancellationToken cancellationToken)
+  public async Task<ApplicationFileInfo> CreateDocumentUrlAndShare(CreateDocumentUrlRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
-    var documentGuid = Guid.Parse(fileId);
-    var programApplicationGuid = Guid.Parse(programApplicationId);
-    var componentGroupGuid = Guid.Parse(componentGroupId);
-    var componentGuid = Guid.Parse(componentId);
-    var instituteGuid = Guid.Parse(instituteId);
+    var documentGuid = Guid.Parse(request.FileId);
+    var programApplicationGuid = Guid.Parse(request.ProgramApplicationId);
+    var componentGroupGuid = Guid.Parse(request.ComponentGroupId);
+    var componentGuid = Guid.Parse(request.ComponentId);
+    var instituteGuid = Guid.Parse(request.InstituteId);
+    var fileId = request.FileId;
+    var fileName = request.FileName;
+    var fileSize = request.FileSize;
+    var folder = request.Folder;
 
     var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(d => d.ecer_PostSecondaryInstituteId == instituteGuid)
-      ?? throw new InvalidOperationException($"Institute '{instituteId}' not found");
+      ?? throw new InvalidOperationException($"Institute '{request.FileId}' not found");
 
     var componentGroup = context.ecer_ProgramApplicationComponentGroupSet.SingleOrDefault(cg => cg.ecer_ProgramApplicationComponentGroupId == componentGroupGuid)
-      ?? throw new InvalidOperationException($"Component group '{componentGroupId}' not found");
+      ?? throw new InvalidOperationException($"Component group '{request.ComponentGroupId}' not found");
 
     var programApplication = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.SingleOrDefault(a => a.ecer_PostSecondaryInstituteProgramApplicaitonId == programApplicationGuid)
-      ?? throw new InvalidOperationException($"Program application '{programApplicationId}' not found");
+      ?? throw new InvalidOperationException($"Program application '{request.ProgramApplicationId}' not found");
 
     var component = context.ecer_ProgramApplicationComponentSet.SingleOrDefault(c => c.ecer_ProgramApplicationComponentId == componentGuid)
-      ?? throw new InvalidOperationException($"Component '{componentId}' not found");
+      ?? throw new InvalidOperationException($"Component '{request.ComponentId}' not found");
 
     var extension = Path.GetExtension(fileName);
 
@@ -55,8 +56,8 @@ internal sealed partial class ProgramApplicationRepository
 
     // Dynamics auto-creates the ecer_ShareDocumentURL on save; query it back to get its ID
     var autoShare = context.ecer_ShareDocumentURLSet
-      .Where(s => s.ecer_DocumentURLId != null && s.ecer_DocumentURLId.Id == documentGuid)
-      .ToList()
+      .Where(s => s.ecer_DocumentURLId.Id == documentGuid)
+      .AsEnumerable()
       .FirstOrDefault();
 
     var shareId = autoShare?.ecer_ShareDocumentURLId?.ToString() ?? string.Empty;
@@ -123,7 +124,7 @@ internal sealed partial class ProgramApplicationRepository
 
     var docUrls = context.bcgov_DocumentUrlSet
       .WhereIn(d => d.bcgov_DocumentUrlId!.Value, documentIds)
-      .ToList()
+      .AsEnumerable()
       .ToDictionary(d => d.bcgov_DocumentUrlId!.Value);
 
     return shareDocUrls

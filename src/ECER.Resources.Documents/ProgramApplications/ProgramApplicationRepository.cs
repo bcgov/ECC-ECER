@@ -400,7 +400,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     var docUrlsById = allDocUrlIds.Count > 0
       ? context.bcgov_DocumentUrlSet
           .WhereIn(d => d.bcgov_DocumentUrlId!.Value, allDocUrlIds)
-          .ToList()
+          .AsEnumerable()
           .ToDictionary(d => d.bcgov_DocumentUrlId!.Value)
       : new Dictionary<Guid, bcgov_DocumentUrl>();
 
