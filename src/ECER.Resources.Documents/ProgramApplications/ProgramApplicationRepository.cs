@@ -1,7 +1,6 @@
 using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
-using ECER.Utilities.ObjectStorage.Providers;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -11,13 +10,11 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
-  private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
 
-  public ProgramApplicationRepository(EcerContext context, IMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver)
+  public ProgramApplicationRepository(EcerContext context, IMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
-    this.objectStorageProviderResolver = objectStorageProviderResolver;
   }
 
   public async Task<string> Create(ProgramApplication programApplication, CancellationToken cancellationToken)
@@ -382,19 +379,43 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     var categoryGroups = context.ecer_ProgramApplicationComponentGroupSet.AsQueryable();
 
     if (query.ByComponentGroupId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplicationComponentGroupId == Guid.Parse(query.ByComponentGroupId));
-
     if (query.ByProgramApplicationId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplication.Id == Guid.Parse(query.ByProgramApplicationId));
 
     var results = context.From(categoryGroups)
       .Join()
       .Include(e => e.ecer_programapplicationcomponentgroup_ComponentGroup)
       .Include(e => e.ecer_programapplicationcomponent_ComponentGroup)
-      .IncludeNested(e => e.ecer_documenturl_ProgramApplicationComponentId)
-      .Execute();
+        .IncludeNested(c => c.ecer_sharedocumenturl_ProgramApplicationComponentId)
+      .Execute()
+      .ToList();
+
+    var allDocUrlIds = results
+      .SelectMany(g => g.ecer_programapplicationcomponent_ComponentGroup ?? [])
+      .SelectMany(c => c.ecer_sharedocumenturl_ProgramApplicationComponentId ?? [])
+      .Where(s => s.ecer_DocumentURLId != null)
+      .Select(s => s.ecer_DocumentURLId!.Id)
+      .Distinct()
+      .ToList();
+
+    var docUrlsById = allDocUrlIds.Count > 0
+      ? context.bcgov_DocumentUrlSet
+          .WhereIn(d => d.bcgov_DocumentUrlId!.Value, allDocUrlIds)
+          .ToList()
+          .ToDictionary(d => d.bcgov_DocumentUrlId!.Value)
+      : new Dictionary<Guid, bcgov_DocumentUrl>();
+
+    foreach (var share in results
+      .SelectMany(g => g.ecer_programapplicationcomponent_ComponentGroup ?? [])
+      .SelectMany(c => c.ecer_sharedocumenturl_ProgramApplicationComponentId ?? [])
+      .Where(s => s.ecer_DocumentURLId != null && docUrlsById.ContainsKey(s.ecer_DocumentURLId.Id)))
+    {
+      share.ecer_sharedocumenturl_DocumentURLId = docUrlsById[share.ecer_DocumentURLId!.Id];
+    }
+
     return mapper.Map<IEnumerable<ComponentGroupWithComponents>>(results)!.ToList();
   }
 
-  public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, string postSecondaryInstituteId, CancellationToken cancellationToken)
+  public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -422,8 +443,6 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       context.Detach(existingComponent);
       context.Attach(ecerComponent);
       context.UpdateObject(ecerComponent);
-      await HandleComponentFiles(ecerComponent, component.NewFiles, component.DeletedFiles, postSecondaryInstituteId, existingComponent.ecer_ProgramApplication.Id.ToString(), existingComponent.ecer_ComponentGroup.Id.ToString(), cancellationToken);
-
       existingComponents[componentId] = ecerComponent;
     }
 

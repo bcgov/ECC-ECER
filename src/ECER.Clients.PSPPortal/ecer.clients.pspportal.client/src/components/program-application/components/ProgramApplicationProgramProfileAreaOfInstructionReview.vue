@@ -161,6 +161,7 @@ export default defineComponent({
     Loading,
   },
   props: {
+    applicationType: { type: String, required: false },
     programApplicationId: {
       type: String,
       required: true,
@@ -173,7 +174,7 @@ export default defineComponent({
     const router = useRouter();
     return { alertStore, loadingStore, configStore, router };
   },
-  emits: { next: (_payload: NextStepPayload) => true },
+  emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
   computed: {
     loading(): boolean {
       return (

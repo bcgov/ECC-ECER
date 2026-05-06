@@ -14,12 +14,28 @@ public interface IProgramApplicationRepository
 
   Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken);
 
-  Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, string postSecondaryInstituteId, CancellationToken cancellationToken);
+  Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken);
 
   Task<string> Submit(string applicationId, string programRepresentativeId, bool declaration, CancellationToken cancellationToken);
 
   Task UpdateCourseProgress(string applicationId, string? basicProgress, string? iteProgress, string? sneProgress, CancellationToken cancellationToken);
+
+  Task<ApplicationFileInfo> CreateDocumentUrlAndShare(string fileId, string fileName, string fileSize, string folder, string programApplicationId, string componentGroupId, string componentId, string instituteId, CancellationToken cancellationToken);
+
+  Task<ApplicationFileInfo> CreateShareOnly(string documentId, string programApplicationId, string componentGroupId, string componentId, CancellationToken cancellationToken);
+
+  Task<IEnumerable<ApplicationFileInfo>> GetApplicationFiles(string programApplicationId, CancellationToken cancellationToken);
+
+  Task<IEnumerable<ApplicationFileInfo>> GetApplicationDocumentUrls(string programApplicationId, CancellationToken cancellationToken);
+
+  Task<ShareDocumentUrlDetails> GetShareDocumentUrlDetails(string shareDocumentId, CancellationToken cancellationToken);
+
+  Task DeleteShareDocumentUrlById(string shareDocumentId, CancellationToken cancellationToken);
 }
+
+public record ApplicationFileInfo(string DocumentId, string ShareDocumentId, string FileName, string FileSize, string StorageFolder, string? Extension, EcerWebApplicationType EcerWebApplicationType);
+
+public record ShareDocumentUrlDetails(string DocumentId, string Folder, EcerWebApplicationType EcerWebApplicationType, int RemainingShareCount);
 
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
 
@@ -43,6 +59,7 @@ public record ProgramApplicationComponent(string Id, string Name, string? Questi
 
 public record FileInfo(string Id)
 {
+  public string? ShareDocumentUrlId { get; set; }
   public string? Name { get; set; }
   public string? Url { get; set; }
   public string? Size { get; set; }

@@ -79,11 +79,13 @@ import { getPspUserProfile } from "@/api/psp-rep";
 import Loading from "@/components/Loading.vue";
 import { formatDate } from "@/utils/format";
 import { DateTime } from "luxon";
+import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 
 export default defineComponent({
   name: "SubmitApplication",
   components: { Loading, EceCheckbox, EceDateInput, EceTextField },
   props: {
+    applicationType: { type: String, required: false },
     programApplicationId: {
       type: String,
       required: true,
@@ -142,6 +144,7 @@ export default defineComponent({
       return false;
     },
   },
+  emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
   methods: {
     async fetchApplication() {
       if (!this.programApplicationId) {

@@ -236,7 +236,7 @@ public class ProgramTests : PspPortalWebAppScenarioBase
     var status = await response.ReadAsJsonAsync<GetProgramsResponse>();
     status.ShouldNotBeNull();
     status.Programs.ShouldNotBeNull();
-    status.Programs.ShouldContain(p => p.Id == Fixture.submitProgramId);
+    status.Programs.ShouldContain(p => p.Id == Fixture.programId);
     status.Programs.ShouldNotContain(p => p.Id == Fixture.changeRequestProgramId);
   }
 

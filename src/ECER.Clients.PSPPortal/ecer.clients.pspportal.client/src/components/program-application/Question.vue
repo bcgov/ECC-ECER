@@ -85,11 +85,14 @@
     </v-row>
     <v-row no-gutters class="pt-5">
       <suspense>
-        <FileUploader
+        <ProgramApplicationFileUploader
           :user-files="userFilesFromModel"
           :show-add-file-button="rfaiRequired ? rfaiRequired : !readOnly"
           :max-number-of-files="5"
-          :can-delete-permanent-files="false"
+          :can-delete-permanent-files="rfaiRequired || !readOnly"
+          :program-application-id="programApplicationId"
+          :component-group-id="componentGroupId"
+          :component-id="componentId"
           @update:files="onFilesUpdate"
           @delete:file="handleFileDelete"
         />
@@ -99,11 +102,11 @@
 </template>
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import FileUploader from "@/components/common/FileUploader.vue";
+import ProgramApplicationFileUploader from "@/components/program-application/ProgramApplicationFileUploader.vue";
 import type { FileItem } from "@/components/common/UploadFileItem.vue";
 import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
-import { removeElementByIndex, parseHumanFileSize } from "@/utils/functions";
+import { removeElementByIndex } from "@/utils/functions";
 
 export interface QuestionModelValue {
   answer?: string;
@@ -116,9 +119,10 @@ function toFileItem(info: Components.Schemas.FileInfo): FileItem {
   return {
     file: new File([], info.name ?? ""),
     fileId: info.id ?? "",
+    shareDocumentUrlId: info.shareDocumentUrlId ?? undefined,
     progress: 101,
     fileErrors: [],
-    fileSize: parseHumanFileSize(info.size ?? ""),
+    fileSize: info.size ?? "",
     fileName: info.name ?? "",
     storageFolder: "permanent",
   };
@@ -126,7 +130,7 @@ function toFileItem(info: Components.Schemas.FileInfo): FileItem {
 
 export default defineComponent({
   name: "Question",
-  components: { FileUploader },
+  components: { ProgramApplicationFileUploader },
   props: {
     modelValue: {
       type: Object as PropType<QuestionModelValue>,
@@ -151,13 +155,24 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    programApplicationId: {
+      type: String,
+      required: true,
+    },
+    componentGroupId: {
+      type: String,
+      required: true,
+    },
+    componentId: {
+      type: String,
+      required: true,
+    },
   },
   emits: { "update:modelValue": (_payload: QuestionModelValue) => true },
   data() {
     return {
       Rules,
       userFilesFromModel: [] as FileItem[],
-      deletedFiles: [] as Components.Schemas.FileInfo[],
       chipMode: "full" as "full" | "icon",
       titleResizeObserver: null as ResizeObserver | null,
     };
@@ -202,9 +217,10 @@ export default defineComponent({
     },
     onFilesUpdate(files: FileItem[]) {
       this.userFilesFromModel = files;
-      let newFilesWithData = [] as FileItem[]; // Reset attachments
 
-      newFilesWithData = files.filter(
+      // Files in program-application mode are uploaded/deleted immediately.
+      // Only track temp-storage new files (for non-program-application usage).
+      const newFilesWithData = files.filter(
         (file) =>
           file.fileErrors.length === 0 &&
           file.progress === 101 &&
@@ -214,8 +230,12 @@ export default defineComponent({
       this.$emit("update:modelValue", {
         ...this.modelValue,
         files: files
-          .filter((f) => f.storageFolder === "permanent")
-          .map((f) => ({ id: f.fileId, name: f.fileName })),
+          .filter((f) => f.progress === 101 && f.fileErrors.length === 0)
+          .map((f) => ({
+            id: f.fileId,
+            shareDocumentUrlId: f.shareDocumentUrlId,
+            name: f.fileName,
+          })),
         newFiles: newFilesWithData.map((file) => ({
           id: file.fileId,
           ecerWebApplicationType: "PSP",
@@ -223,26 +243,28 @@ export default defineComponent({
       });
     },
     handleFileDelete(fileItem: FileItem) {
-      if (fileItem.storageFolder === "permanent") {
-        //we need to add it to the list of deleted files for the backend to remove.
-        this.deletedFiles?.push({
-          id: fileItem.fileId,
-          ecerWebApplicationType: "PSP",
-        });
-        let index = this.userFilesFromModel?.findIndex(
-          (file) => file.fileId === fileItem.fileId,
+      // Permanent files are deleted immediately by FileUploader via the delete endpoint.
+      // Update local state to reflect removal.
+      const index = this.userFilesFromModel?.findIndex(
+        (file) => file.fileId === fileItem.fileId,
+      );
+      if (index !== undefined && index >= 0) {
+        this.userFilesFromModel = removeElementByIndex(
+          this.userFilesFromModel,
+          index,
         );
-        if (index) {
-          this.userFilesFromModel = removeElementByIndex(
-            this.userFilesFromModel,
-            index,
-          );
-        }
-        this.$emit("update:modelValue", {
-          ...this.modelValue,
-          deletedFiles: this.deletedFiles,
-        });
       }
+      this.$emit("update:modelValue", {
+        ...this.modelValue,
+        files: this.userFilesFromModel
+          .filter((f) => f.progress === 101 && f.fileErrors.length === 0)
+          .map((f) => ({
+            id: f.fileId,
+            shareDocumentUrlId: f.shareDocumentUrlId,
+            name: f.fileName,
+          })),
+        deletedFiles: [],
+      });
     },
   },
 });

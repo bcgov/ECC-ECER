@@ -24,6 +24,9 @@
           :question="comp.question ?? ''"
           :rfai-required="comp.rfaiRequired ?? false"
           :read-only="isRFAI"
+          :program-application-id="programApplicationId"
+          :component-group-id="componentGroupId"
+          :component-id="comp.id ?? ''"
         />
       </v-col>
     </v-row>
@@ -70,6 +73,7 @@ export default defineComponent({
   name: "ProgramApplicationComponent",
   components: { Question, Loading },
   props: {
+    applicationType: { type: String, required: false },
     programApplicationId: {
       type: String,
       required: true,
@@ -79,7 +83,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: { next: (_payload: NextStepPayload) => true },
+  emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
   computed: {
     isRFAI(): boolean {
       return (

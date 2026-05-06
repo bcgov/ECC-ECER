@@ -140,19 +140,20 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForCtorParam(nameof(ProgramApplicationComponent.Question), opt => opt.MapFrom(src => src.ecer_Question))
       .ForCtorParam(nameof(ProgramApplicationComponent.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
       .ForCtorParam(nameof(ProgramApplicationComponent.Answer), opt => opt.MapFrom(src => src.ecer_Componentanswer))
-      .ForCtorParam(nameof(ProgramApplicationComponent.Files), opt => opt.MapFrom(src => src.ecer_documenturl_ProgramApplicationComponentId))
+      .ForCtorParam(nameof(ProgramApplicationComponent.Files), opt => opt.MapFrom(src => src.ecer_sharedocumenturl_ProgramApplicationComponentId))
       .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ForMember(s => s.NewFiles, opts => opts.Ignore())
       .ForMember(s => s.DeletedFiles, opts => opts.Ignore())
       .ValidateMemberList(MemberList.Destination);
 
-    CreateMap<bcgov_DocumentUrl, FileInfo>(MemberList.Destination)
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
-      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
-      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
-      .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
-      .ForMember(d => d.Extension, opts => opts.MapFrom(s => s.bcgov_FileExtension))
-      .ForMember(d => d.EcerWebApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationName));
+    CreateMap<ecer_ShareDocumentURL, FileInfo>(MemberList.Destination)
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_DocumentURLId.Id.ToString()))
+      .ForMember(d => d.ShareDocumentUrlId, opts => opts.MapFrom(s => s.ecer_ShareDocumentURLId))
+      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.bcgov_FileName))
+      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.bcgov_Url))
+      .ForMember(d => d.Size, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.bcgov_FileSize))
+      .ForMember(d => d.Extension, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.bcgov_FileExtension))
+      .ForMember(d => d.EcerWebApplicationType, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.ecer_ApplicationName));
 
     CreateMap<ProgramApplicationComponent, ecer_ProgramApplicationComponent>(MemberList.Source)
       .ForSourceMember(s => s.Name, opts => opts.DoNotValidate())

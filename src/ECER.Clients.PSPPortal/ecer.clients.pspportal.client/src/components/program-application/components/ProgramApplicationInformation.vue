@@ -67,6 +67,6 @@ export default defineComponent({
       return ProgramApplicationType;
     },
   },
-  emits: { next: (_payload: NextStepPayload) => true },
+  emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
 });
 </script>

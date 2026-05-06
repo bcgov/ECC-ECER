@@ -88,5 +88,12 @@ internal class ProgramApplicationMapper: SecureProfile
     CreateMap<Contract.ProgramApplications.FileInfo, Resources.Documents.ProgramApplications.FileInfo>().ReverseMap();
     CreateMap<ProgramApplicationComponent, Resources.Documents.ProgramApplications.ProgramApplicationComponent>().ReverseMap();
     CreateMap<ComponentGroupWithComponents, Resources.Documents.ProgramApplications.ComponentGroupWithComponents>().ReverseMap();
+    CreateMap<Resources.Documents.ProgramApplications.ApplicationFileInfo, Contract.ProgramApplications.ApplicationFileInfo>()
+      .ForCtorParam(nameof(ApplicationFileInfo.DocumentId), opts => opts.MapFrom(s => s.DocumentId))
+      .ForCtorParam(nameof(ApplicationFileInfo.ShareDocumentId), opts => opts.MapFrom(s => s.ShareDocumentId))
+      .ForCtorParam(nameof(ApplicationFileInfo.FileName), opts => opts.MapFrom(s => s.FileName))
+      .ForCtorParam(nameof(ApplicationFileInfo.FileSize), opts => opts.MapFrom(s => s.FileSize))
+      .ForCtorParam(nameof(ApplicationFileInfo.StorageFolder), opts => opts.MapFrom(s => s.StorageFolder))
+      .ForCtorParam(nameof(ApplicationFileInfo.Extension), opts => opts.MapFrom(s => s.Extension));
   }
 }

@@ -217,7 +217,7 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
       }, ct);
       if (!existing.Items.Any()) return TypedResults.NotFound();
 
-      var result = await messageBus.Send(new UpdateComponentGroupCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>(request), id, programRep.PostSecondaryInstituteId), ct);
+      var result = await messageBus.Send(new UpdateComponentGroupCommand(mapper.Map<Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents>(request), id), ct);
       return TypedResults.Ok(result);
     })
       .WithOpenApi("Update program application component group", string.Empty, "program_application_component_group_put")
@@ -384,11 +384,28 @@ public enum NavigationType
 
 public record FileInfo(string Id)
 {
+  public string? ShareDocumentUrlId { get; set; }
   public string? Name { get; set; }
   public string? Url { get; set; }
   public string? Size { get; set; }
   public string? Extension { get; set; }
   public EcerWebApplicationType? EcerWebApplicationType { get; set; }
+}
+
+public record ApplicationFileInfo
+{
+  public string? DocumentUrlId { get; set; }
+  public string? ShareDocumentUrlId { get; set; }
+  public string? FileName { get; set; }
+  public string? FileSize { get; set; }
+  public string? Url { get; set; }
+  public string? Extension { get; set; }
+}
+
+public record ShareExistingDocumentRequest
+{
+  public string? ComponentGroupId { get; set; }
+  public string? ComponentId { get; set; }
 }
 
 public enum ApplicationStatus

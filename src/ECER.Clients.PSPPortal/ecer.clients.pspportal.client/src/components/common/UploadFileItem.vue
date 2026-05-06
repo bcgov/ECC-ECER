@@ -5,9 +5,7 @@
       <v-col cols="4">
         <div class="d-flex justify-start">
           <p class="text-truncate">{{ fileItem.fileName }}</p>
-          <p class="text-no-wrap">
-            &nbsp;({{ Functions.humanFileSize(fileItem.fileSize) }})
-          </p>
+          <p class="text-no-wrap">&nbsp;({{ fileItem.fileSize }})</p>
         </div>
       </v-col>
       <v-col cols="2">
@@ -20,7 +18,13 @@
 
       <!-- Progress Bar or Upload Completed -->
       <v-col cols="4">
-        <div v-if="!(fileItem.fileErrors.length > 0)">
+        <div v-if="fileItem.isDeleting">
+          <v-progress-linear indeterminate height="20" color="error" />
+        </div>
+        <div v-else-if="fileItem.isLinking">
+          <v-progress-linear indeterminate height="20" color="primary" />
+        </div>
+        <div v-else-if="!(fileItem.fileErrors.length > 0)">
           <div v-if="isUploadComplete">Upload complete</div>
           <v-progress-linear
             v-else
@@ -37,6 +41,8 @@
           <template #activator="{ props }">
             <v-btn
               v-if="
+                !fileItem.isDeleting &&
+                !fileItem.isLinking &&
                 (fileItem.fileErrors.length > 0 || isUploadComplete) &&
                 canDelete
               "
@@ -66,11 +72,14 @@ import * as Functions from "@/utils/functions";
 export interface FileItem {
   file: File;
   fileId: string;
+  shareDocumentUrlId?: string;
   progress: number;
   fileErrors: string[];
-  fileSize: number;
+  fileSize: string;
   fileName: string;
   storageFolder: "temporary" | "permanent";
+  isDeleting?: boolean;
+  isLinking?: boolean;
 }
 
 export default defineComponent({
