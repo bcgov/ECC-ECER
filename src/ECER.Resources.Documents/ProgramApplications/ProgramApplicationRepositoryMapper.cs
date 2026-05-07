@@ -142,8 +142,6 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForCtorParam(nameof(ProgramApplicationComponent.Answer), opt => opt.MapFrom(src => src.ecer_Componentanswer))
       .ForCtorParam(nameof(ProgramApplicationComponent.Files), opt => opt.MapFrom(src => src.ecer_sharedocumenturl_ProgramApplicationComponentId))
       .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
-      .ForMember(s => s.NewFiles, opts => opts.Ignore())
-      .ForMember(s => s.DeletedFiles, opts => opts.Ignore())
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_ShareDocumentURL, FileInfo>(MemberList.Destination)
@@ -161,8 +159,6 @@ internal class ProgramApplicationRepositoryMapper : SecureProfile
       .ForSourceMember(s => s.DisplayOrder, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.RfaiRequired, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ProgramApplicationComponentId, opts => opts.MapFrom(s => Guid.Parse(s.Id)))
       .ForMember(d => d.ecer_Componentanswer, opts => opts.MapFrom(s => s.Answer));
   }

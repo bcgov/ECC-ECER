@@ -370,11 +370,7 @@ public record SubmitProgramApplicationResponse(string ProgramApplicationId);
 public record SubmitProgramApplicationValidationError(string Error, IEnumerable<string> ValidationErrors);
 public record NavigationMetadata(string Id, string Name, string Status, string CategoryName, int DisplayOrder, NavigationType NavigationType, bool? RfaiRequired);
 public record ComponentGroupWithComponents(string Id, string Name, string? Instruction, string Status, string CategoryName, int DisplayOrder, IEnumerable<ProgramApplicationComponent> Components);
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired)
-{
-  public IEnumerable<FileInfo> NewFiles { get; set; } = Array.Empty<FileInfo>();
-  public IEnumerable<FileInfo> DeletedFiles { get; set; } = Array.Empty<FileInfo>();
-};
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired);
 
 public enum NavigationType
 {

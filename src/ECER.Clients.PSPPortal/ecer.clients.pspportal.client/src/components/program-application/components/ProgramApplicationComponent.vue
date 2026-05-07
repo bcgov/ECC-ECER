@@ -146,8 +146,6 @@ export default defineComponent({
           {
             answer: c.answer ?? "",
             files: c.files ?? [],
-            newFiles: c.newFiles ?? [],
-            deletedFiles: c.deletedFiles ?? [],
           },
         ]),
       );
@@ -159,9 +157,6 @@ export default defineComponent({
         ...c,
         answer: this.formByComponentId[c.id ?? ""]?.answer ?? c.answer,
         files: this.formByComponentId[c.id ?? ""]?.files ?? c.files,
-        newFiles: this.formByComponentId[c.id ?? ""]?.newFiles ?? c.newFiles,
-        deletedFiles:
-          this.formByComponentId[c.id ?? ""]?.deletedFiles ?? c.deletedFiles,
       }));
       const payload: Components.Schemas.ComponentGroupWithComponents = {
         ...this.componentGroup,

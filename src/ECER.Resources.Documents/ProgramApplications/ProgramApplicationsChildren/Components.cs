@@ -95,6 +95,8 @@ internal sealed partial class ProgramApplicationRepository
     context.AddObject(shareDocumentUrl);
     context.SaveChanges();
 
+    if (!Enum.TryParse(docUrl.ecer_ApplicationName, out EcerWebApplicationType appType))
+      appType = EcerWebApplicationType.PSP;
     return new ApplicationFileInfo(
       documentId,
       shareGuid.ToString(),
@@ -102,7 +104,7 @@ internal sealed partial class ProgramApplicationRepository
       docUrl.bcgov_FileSize ?? string.Empty,
       docUrl.bcgov_Url ?? string.Empty,
       docUrl.bcgov_FileExtension,
-      EcerWebApplicationType.PSP);
+      appType);
   }
 
   public async Task<IEnumerable<ApplicationFileInfo>> GetApplicationFiles(string programApplicationId, CancellationToken cancellationToken)
@@ -134,6 +136,8 @@ internal sealed partial class ProgramApplicationRepository
       {
         var s = g.First();
         var docUrl = docUrls[s.ecer_DocumentURLId!.Id];
+        if (!Enum.TryParse(docUrl.ecer_ApplicationName, out EcerWebApplicationType appType))
+          appType = EcerWebApplicationType.PSP;
         return new ApplicationFileInfo(
           s.ecer_DocumentURLId.Id.ToString(),
           s.ecer_ShareDocumentURLId?.ToString() ?? string.Empty,
@@ -141,7 +145,7 @@ internal sealed partial class ProgramApplicationRepository
           docUrl.bcgov_FileSize ?? string.Empty,
           docUrl.bcgov_Url ?? string.Empty,
           docUrl.bcgov_FileExtension,
-          EcerWebApplicationType.PSP);
+          appType);
       })
       .ToList();
   }
@@ -155,14 +159,19 @@ internal sealed partial class ProgramApplicationRepository
       .Where(d => d.ecer_programapplicationid != null && d.ecer_programapplicationid.Id == programApplicationGuid)
       .ToList();
 
-    return docUrls.Select(d => new ApplicationFileInfo(
-      d.bcgov_DocumentUrlId?.ToString() ?? string.Empty,
-      string.Empty,
-      d.bcgov_FileName ?? string.Empty,
-      d.bcgov_FileSize ?? string.Empty,
-      d.bcgov_Url ?? string.Empty,
-      d.bcgov_FileExtension,
-      EcerWebApplicationType.PSP))
+    return docUrls.Select(d =>
+      {
+        if (!Enum.TryParse(d.ecer_ApplicationName, out EcerWebApplicationType appType))
+          appType = EcerWebApplicationType.PSP;
+        return new ApplicationFileInfo(
+          d.bcgov_DocumentUrlId?.ToString() ?? string.Empty,
+          string.Empty,
+          d.bcgov_FileName ?? string.Empty,
+          d.bcgov_FileSize ?? string.Empty,
+          d.bcgov_Url ?? string.Empty,
+          d.bcgov_FileExtension,
+          appType);
+      })
     .ToList();
   }
 

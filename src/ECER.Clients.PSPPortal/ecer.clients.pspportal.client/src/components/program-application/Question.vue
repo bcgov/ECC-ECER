@@ -111,8 +111,6 @@ import { removeElementByIndex } from "@/utils/functions";
 export interface QuestionModelValue {
   answer?: string;
   files?: Components.Schemas.FileInfo[];
-  newFiles?: Components.Schemas.FileInfo[] | null;
-  deletedFiles?: Components.Schemas.FileInfo[] | null;
 }
 
 function toFileItem(info: Components.Schemas.FileInfo): FileItem {
@@ -218,15 +216,6 @@ export default defineComponent({
     onFilesUpdate(files: FileItem[]) {
       this.userFilesFromModel = files;
 
-      // Files in program-application mode are uploaded/deleted immediately.
-      // Only track temp-storage new files (for non-program-application usage).
-      const newFilesWithData = files.filter(
-        (file) =>
-          file.fileErrors.length === 0 &&
-          file.progress === 101 &&
-          file.storageFolder === "temporary",
-      );
-
       this.$emit("update:modelValue", {
         ...this.modelValue,
         files: files
@@ -236,10 +225,6 @@ export default defineComponent({
             shareDocumentUrlId: f.shareDocumentUrlId,
             name: f.fileName,
           })),
-        newFiles: newFilesWithData.map((file) => ({
-          id: file.fileId,
-          ecerWebApplicationType: "PSP",
-        })),
       });
     },
     handleFileDelete(fileItem: FileItem) {
@@ -263,7 +248,6 @@ export default defineComponent({
             shareDocumentUrlId: f.shareDocumentUrlId,
             name: f.fileName,
           })),
-        deletedFiles: [],
       });
     },
   },
