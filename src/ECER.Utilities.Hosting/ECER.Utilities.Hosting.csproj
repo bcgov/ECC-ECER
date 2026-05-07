@@ -4,12 +4,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" VersionOverride="15.1.1" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="10.0.5" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="10.0.5" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
