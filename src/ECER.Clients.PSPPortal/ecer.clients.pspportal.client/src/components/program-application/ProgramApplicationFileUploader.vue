@@ -98,6 +98,7 @@
         :model-value="selectedFiles"
         :hide-details="'auto'"
         :rules="[
+          !emptyFiles,
           !fileErrors,
           !tooManyFiles,
           !filesInProgress,
@@ -226,6 +227,9 @@ export default defineComponent({
       return this.availableFiles.filter(
         (f) => !attachedNames.has((f.fileName ?? "").toLowerCase()),
       );
+    },
+    emptyFiles() {
+      return this.selectedFiles.some((file) => file.file.size === 0);
     },
     fileErrors(): boolean {
       return this.selectedFiles.some((f) => f.fileErrors.length !== 0);
