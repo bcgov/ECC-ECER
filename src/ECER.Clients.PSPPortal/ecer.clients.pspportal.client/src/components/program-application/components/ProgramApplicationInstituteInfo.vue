@@ -1,7 +1,11 @@
 <template>
   <!-- Online/Hybrid: campus changed to location input conditional input for hybrid deliveryType -->
   <ProgramApplicationInstituteInfoLayout
-    v-if="applicationType === 'AddOnlineorHybridDeliveryMethod'"
+    ref="instituteInfoLayoutRef"
+    v-if="
+      applicationType === 'AddOnlineorHybridDeliveryMethod' &&
+      programApplicationObject !== null
+    "
     :programApplicationObject="programApplicationObject"
     :is-rfai="isRFAI"
     @next="$emit('next', $event)"
@@ -23,7 +27,12 @@
         onUpdateOnlineDeliveryHoursPercentage,
       }"
     >
-      <template v-if="programApplicationObject.deliveryType === 'Hybrid'">
+      <template
+        v-if="
+          programApplicationObject.deliveryType === 'Hybrid' &&
+          programApplicationObject !== null
+        "
+      >
         <v-row>
           <v-col cols="12">
             <p>Approximate percentage of instructional hours (hybrid only)</p>
@@ -67,7 +76,11 @@
 
   <!-- New Campus: hide campus section -->
   <ProgramApplicationInstituteInfoLayout
-    v-else-if="applicationType === 'NewCampusatRecognizedPrivateInstitution'"
+    ref="instituteInfoLayoutRef"
+    v-else-if="
+      applicationType === 'NewCampusatRecognizedPrivateInstitution' &&
+      programApplicationObject !== null
+    "
     :programApplicationObject="programApplicationObject"
     :is-rfai="isRFAI"
     @next="$emit('next', $event)"
@@ -77,7 +90,11 @@
 
   <!-- Basic/Post-Basic: condensed summary, add post-basic disclaimer -->
   <ProgramApplicationInstituteInfoLayout
-    v-else-if="applicationType === 'NewBasicECEPostBasicProgram'"
+    ref="instituteInfoLayoutRef"
+    v-else-if="
+      applicationType === 'NewBasicECEPostBasicProgram' &&
+      programApplicationObject !== null
+    "
     :programApplicationObject="programApplicationObject"
     :is-rfai="isRFAI"
     @next="$emit('next', $event)"
@@ -127,7 +144,11 @@
 
   <!-- Satellite: hide campus, program length, delivery, enrollment; add date fields -->
   <ProgramApplicationInstituteInfoLayout
-    v-else-if="applicationType === 'SatelliteProgram'"
+    ref="instituteInfoLayoutRef"
+    v-else-if="
+      applicationType === 'SatelliteProgram' &&
+      programApplicationObject !== null
+    "
     :programApplicationObject="programApplicationObject"
     :is-rfai="isRFAI"
     @next="$emit('next', $event)"
@@ -182,6 +203,7 @@ import ProgramApplicationInstituteInfoLayout from "./ProgramApplicationInstitute
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import * as Rules from "@/utils/formRules";
 import { getProgramApplicationById } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
@@ -193,6 +215,7 @@ export default defineComponent({
     ProgramApplicationInstituteInfoLayout,
     EceDateInput,
     EceTextField,
+    ConfirmationDialog,
   },
   props: {
     programApplicationId: {
@@ -203,6 +226,22 @@ export default defineComponent({
       type: String,
       required: true,
     },
+  },
+  async beforeRouteLeave(_to, _from, next) {
+    const instituteInfoLayout = this.$refs
+      .instituteInfoLayoutRef as InstanceType<
+      typeof ProgramApplicationInstituteInfoLayout
+    >;
+    const leave = await instituteInfoLayout.waitForConfirmation();
+    next(leave);
+  },
+  async beforeRouteUpdate(_to, _from, next) {
+    const instituteInfoLayout = this.$refs
+      .instituteInfoLayoutRef as InstanceType<
+      typeof ProgramApplicationInstituteInfoLayout
+    >;
+    const leave = await instituteInfoLayout.waitForConfirmation();
+    next(leave);
   },
   async mounted() {
     await this.fetchApplication();
