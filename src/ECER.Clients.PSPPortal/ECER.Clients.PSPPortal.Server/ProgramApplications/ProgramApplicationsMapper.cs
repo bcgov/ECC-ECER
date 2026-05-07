@@ -92,8 +92,16 @@ internal sealed class ProgramApplicationsMapper: SecureProfile
     CreateMap<NavigationMetadata, Managers.Registry.Contract.ProgramApplications.NavigationMetadata>().ReverseMap();
 
     CreateMap<FileInfo, Managers.Registry.Contract.ProgramApplications.FileInfo>()
-      .ForMember(s => s.EcerWebApplicationType, opts => opts.MapFrom(d => EcerWebApplicationType.PSP)) //default to PSP when saving anything from the frontend.
+      .ForMember(s => s.EcerWebApplicationType, opts => opts.MapFrom(d => EcerWebApplicationType.PSP))
       .ReverseMap();
+
+    CreateMap<Managers.Registry.Contract.ProgramApplications.ApplicationFileInfo, ApplicationFileInfo>()
+      .ForMember(d => d.DocumentUrlId, opts => opts.MapFrom(s => s.DocumentId))
+      .ForMember(d => d.ShareDocumentUrlId, opts => opts.MapFrom(s => s.ShareDocumentId))
+      .ForMember(d => d.FileName, opts => opts.MapFrom(s => s.FileName))
+      .ForMember(d => d.FileSize, opts => opts.MapFrom(s => s.FileSize))
+      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.StorageFolder))
+      .ForMember(d => d.Extension, opts => opts.MapFrom(s => s.Extension));
       
     CreateMap<ProgramApplicationComponent, Managers.Registry.Contract.ProgramApplications.ProgramApplicationComponent>()
       .ForMember(d => d.Name, opts => opts.Ignore())

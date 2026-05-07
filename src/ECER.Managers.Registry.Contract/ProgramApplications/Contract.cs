@@ -36,14 +36,11 @@ public record ComponentGroupWithComponentsQuery : IRequest<IEnumerable<Component
   public string? ByComponentGroupId { get; set; }
 }
 
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired)
-{
-  public IEnumerable<FileInfo> NewFiles { get; set; } = Array.Empty<FileInfo>();
-  public IEnumerable<FileInfo> DeletedFiles { get; set; } = Array.Empty<FileInfo>();
-};
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired);
 
 public record FileInfo(string Id)
 {
+  public string? ShareDocumentUrlId { get; set; }
   public string? Name { get; set; }
   public string? Url { get; set; }
   public string? Size { get; set; }
@@ -51,7 +48,34 @@ public record FileInfo(string Id)
   public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
-public record UpdateComponentGroupCommand(ComponentGroupWithComponents ComponentGroup, string ProgramApplicationId, string PostSecondaryInstituteId) : IRequest<string>;
+public record ApplicationFileInfo(string DocumentId, string ShareDocumentId, string FileName, string FileSize, string StorageFolder, string? Extension);
+
+public record UploadProgramApplicationFileCommand(
+  string FileId,
+  string ProgramApplicationId,
+  string ComponentGroupId,
+  string ComponentId,
+  string PostSecondaryInstituteId,
+  string FileName,
+  string ContentType,
+  long FileSizeBytes,
+  Stream Content
+) : IRequest<ApplicationFileInfo>;
+
+public record ShareExistingDocumentCommand(
+  string DocumentId,
+  string ProgramApplicationId,
+  string ComponentGroupId,
+  string ComponentId
+) : IRequest<ApplicationFileInfo>;
+
+public record ProgramApplicationFilesQuery(string ProgramApplicationId) : IRequest<IEnumerable<ApplicationFileInfo>>;
+
+public record ProgramApplicationDocumentUrlsQuery(string ProgramApplicationId) : IRequest<IEnumerable<ApplicationFileInfo>>;
+
+public record DeleteProgramApplicationFileCommand(string ShareDocumentId) : IRequest;
+
+public record UpdateComponentGroupCommand(ComponentGroupWithComponents ComponentGroup, string ProgramApplicationId) : IRequest<string>;
 
 public record UpdateProgramApplicationCommand(ProgramApplication ProgramApplication) : IRequest<string>;
 

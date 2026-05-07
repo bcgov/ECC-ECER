@@ -1,8 +1,6 @@
 using Alba;
 using Bogus;
-using ECER.Clients.PSPPortal.Server.Files;
 using ECER.Clients.PSPPortal.Server.ProgramApplications;
-using ECER.Utilities.ObjectStorage.Providers;
 using Shouldly;
 using System.Net;
 using System.Net.Http.Headers;
@@ -287,58 +285,34 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
   /// 2. Local ClamAV (clamd) must be running for file scanning middleware.
   /// </remarks>
   [Fact]
-  public async Task UpdateComponentGroup_WithValidAnswerAndFiles_ReturnsOkAndPersistsAnswers_ThenDeleteFiles_ShouldRemoveFiles()
+  public async Task UploadFileToComponent_FileAppearsInComponentFiles_ThenDelete_RemovesFile()
   {
     var appId = Fixture.componentTestProgramApplicationId;
     var groupId = Fixture.componentTestComponentGroupId;
     var componentId = Fixture.componentTestComponentId;
-    var expectedAnswer = $"My answer {Guid.NewGuid():N}";
-
-    //create file and add to the temp folder so that we may add it as part of the updateComponentGroup call
-    var fileLength = 1041;
-    var testFile = await faker.GenerateTestFile(fileLength);
     var testFileId = Guid.NewGuid().ToString();
-    var testFolder = "tempfolder";
-    var testClassification = "test-classification";
+
+    var testFile = await faker.GenerateTestFile(1041);
     using var content = new StreamContent(testFile.Content);
     content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
     using var formData = new MultipartFormDataContent
-{
-  { content, "file", testFile.FileName }
-};
-
-    var fileResponse = await Host.Scenario(_ =>
     {
-      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.WithRequestHeader("file-classification", testClassification);
-      _.WithRequestHeader("file-folder", testFolder);
-      _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
-      _.StatusCodeShouldBeOk();
-    });
-    var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
-
-    //add file to the updated component piece
-    var updatedComponent = new ProgramApplicationComponent(componentId, string.Empty, null, 0, expectedAnswer, null, null)
-    {
-      NewFiles = new List<Clients.PSPPortal.Server.ProgramApplications.FileInfo>
-      {
-        new Clients.PSPPortal.Server.ProgramApplications.FileInfo(uploadedFileResponse.fileId) { EcerWebApplicationType = EcerWebApplicationType.PSP }
-      }
+      { content, "file", testFile.FileName }
     };
-    var request = new ComponentGroupWithComponents(groupId, string.Empty, null, "Draft", string.Empty, 0, new[] { updatedComponent });
 
-    var response = await Host.Scenario(_ =>
+    // Upload file directly to the component via the immediate upload endpoint
+    var uploadResponse = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(request).ToUrl($"/api/programApplications/{appId}/componentGroups/{groupId}");
+      _.Post.MultipartFormData(formData).ToUrl($"/api/programApplications/{appId}/componentGroups/{groupId}/components/{componentId}/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
 
-    var result = await response.ReadAsJsonAsync<string>();
-    result.ShouldNotBeNull();
+    var uploadedFile = (await uploadResponse.ReadAsJsonAsync<ApplicationFileInfo>()).ShouldNotBeNull();
+    uploadedFile.ShareDocumentUrlId.ShouldNotBeNullOrEmpty();
 
-    //get component group and see if file as been added
+    // Verify file appears in the component's file list
     var getResponse = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
@@ -346,34 +320,27 @@ public class ProgramApplicationTest : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var componentGroupResponse = (await getResponse.ReadAsJsonAsync<IEnumerable<ComponentGroupWithComponents>>()).ShouldNotBeNull().FirstOrDefault().ShouldNotBeNull();
+    var componentGroup = (await getResponse.ReadAsJsonAsync<IEnumerable<ComponentGroupWithComponents>>()).ShouldNotBeNull().FirstOrDefault().ShouldNotBeNull();
+    componentGroup.Components.Any(c => c.Files!.Any(f => f.Name == testFile.FileName)).ShouldBeTrue();
 
-    bool fileFound = componentGroupResponse.Components.Any(c => c.Files!.Any(f => f.Name == testFile.FileName));
-    fileFound.ShouldBeTrue();
-
-    //delete the file by adding it to the deleted files list
-    componentGroupResponse.Components.FirstOrDefault().ShouldNotBeNull().DeletedFiles = new List<Clients.PSPPortal.Server.ProgramApplications.FileInfo>
-      {
-        new Clients.PSPPortal.Server.ProgramApplications.FileInfo(uploadedFileResponse.fileId) { EcerWebApplicationType = EcerWebApplicationType.PSP }
-      };
-
+    // Delete the file via the immediate delete endpoint using the share document URL ID
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
-      _.Put.Json(componentGroupResponse).ToUrl($"/api/programApplications/{appId}/componentGroups/{groupId}");
+      _.Delete.Url($"/api/programApplications/{appId}/files/{uploadedFile.ShareDocumentUrlId}");
       _.StatusCodeShouldBeOk();
     });
 
-    var getResponseNoFile = await Host.Scenario(_ =>
+    // Verify file is no longer in the component's file list
+    var getResponseAfterDelete = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
       _.Get.Url($"/api/programApplications/{appId}/componentGroups/{groupId}");
       _.StatusCodeShouldBeOk();
     });
 
-    var componentGroupResponseNoFile = (await getResponseNoFile.ReadAsJsonAsync<IEnumerable<ComponentGroupWithComponents>>()).ShouldNotBeNull().FirstOrDefault().ShouldNotBeNull();
-
-    componentGroupResponseNoFile.Components.FirstOrDefault().ShouldNotBeNull().Files.ShouldBeEmpty();
+    var componentGroupAfterDelete = (await getResponseAfterDelete.ReadAsJsonAsync<IEnumerable<ComponentGroupWithComponents>>()).ShouldNotBeNull().FirstOrDefault().ShouldNotBeNull();
+    componentGroupAfterDelete.Components.FirstOrDefault().ShouldNotBeNull().Files.ShouldBeEmpty();
   }
 
   [Fact]

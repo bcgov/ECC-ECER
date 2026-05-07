@@ -516,7 +516,8 @@ export default defineComponent({
   props: {
     programApplicationObject: {
       type: Object as PropType<Components.Schemas.ProgramApplication | null>,
-      required: true,
+      required: false,
+      default: null,
     },
     isRfai: {
       type: Boolean,
@@ -529,7 +530,7 @@ export default defineComponent({
       userStore,
     };
   },
-  emits: { next: (_payload: NextStepPayload) => true },
+  emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
   computed: {
     validateHours() {
       return (v: string) => {

@@ -24,6 +24,14 @@ declare namespace Components {
         [name: string]: OidcAuthenticationSettings;
       } | null;
     }
+    export interface ApplicationFileInfo {
+      documentUrlId?: string | null;
+      shareDocumentUrlId?: string | null;
+      fileName?: string | null;
+      fileSize?: string | null;
+      url?: string | null;
+      extension?: string | null;
+    }
     export type ApplicationStatus =
       | "Approved"
       | "Archived"
@@ -222,6 +230,7 @@ declare namespace Components {
     }
     export interface FileInfo {
       id?: string | null;
+      shareDocumentUrlId?: string | null;
       name?: string | null;
       url?: string | null;
       size?: string | null;
@@ -804,6 +813,90 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace ProgramApplicationDocumentUrlsGet {
+    namespace Parameters {
+      export type ProgramApplicationId = string;
+    }
+    export interface PathParameters {
+      programApplicationId: Parameters.ProgramApplicationId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ApplicationFileInfo[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationFileDelete {
+    namespace Parameters {
+      export type ProgramApplicationId = string;
+      export type ShareDocumentUrlId = string;
+    }
+    export interface PathParameters {
+      programApplicationId: Parameters.ProgramApplicationId;
+      shareDocumentUrlId: Parameters.ShareDocumentUrlId;
+    }
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationFileShare {
+    namespace Parameters {
+      export type ComponentGroupId = string;
+      export type ComponentId = string;
+      export type DocumentUrlId = string;
+      export type ProgramApplicationId = string;
+    }
+    export interface PathParameters {
+      programApplicationId: Parameters.ProgramApplicationId;
+      componentGroupId: Parameters.ComponentGroupId;
+      componentId: Parameters.ComponentId;
+      documentUrlId: Parameters.DocumentUrlId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ApplicationFileInfo;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationFileUpload {
+    namespace Parameters {
+      export type ComponentGroupId = string;
+      export type ComponentId = string;
+      export type FileId = string;
+      export type ProgramApplicationId = string;
+    }
+    export interface PathParameters {
+      programApplicationId: Parameters.ProgramApplicationId;
+      componentGroupId: Parameters.ComponentGroupId;
+      componentId: Parameters.ComponentId;
+      fileId: Parameters.FileId;
+    }
+    export interface RequestBody {
+      file: string; // binary
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ApplicationFileInfo;
+      export type $400 =
+        | Components.Schemas.ProblemDetails
+        | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ProgramApplicationFilesGet {
+    namespace Parameters {
+      export type ProgramApplicationId = string;
+    }
+    export interface PathParameters {
+      programApplicationId: Parameters.ProgramApplicationId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ApplicationFileInfo[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace ProgramApplicationGet {
     namespace Parameters {
       export type ByStatus = Components.Schemas.ApplicationStatus[];
@@ -1204,6 +1297,46 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>;
   /**
+   * program_application_files_get - Get all document files for a program application
+   */
+  "program_application_files_get"(
+    parameters?: Parameters<Paths.ProgramApplicationFilesGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationFilesGet.Responses.$200>;
+  /**
+   * program_application_document_urls_get - Get all document URLs for a program application
+   */
+  "program_application_document_urls_get"(
+    parameters?: Parameters<Paths.ProgramApplicationDocumentUrlsGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationDocumentUrlsGet.Responses.$200>;
+  /**
+   * program_application_file_upload - Upload a file immediately for a program application component
+   */
+  "program_application_file_upload"(
+    parameters?: Parameters<Paths.ProgramApplicationFileUpload.PathParameters> | null,
+    data?: Paths.ProgramApplicationFileUpload.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationFileUpload.Responses.$200>;
+  /**
+   * program_application_file_share - Share an existing document URL to a program application component
+   */
+  "program_application_file_share"(
+    parameters?: Parameters<Paths.ProgramApplicationFileShare.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationFileShare.Responses.$200>;
+  /**
+   * program_application_file_delete - Delete a shared document URL (and conditionally the underlying file)
+   */
+  "program_application_file_delete"(
+    parameters?: Parameters<Paths.ProgramApplicationFileDelete.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProgramApplicationFileDelete.Responses.$200>;
+  /**
    * program_application_post - Create a draft program application
    */
   "program_application_post"(
@@ -1601,6 +1734,56 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ChangeprogramPut.Responses.$200>;
   };
+  ["/api/programApplications/{programApplicationId}/files"]: {
+    /**
+     * program_application_files_get - Get all document files for a program application
+     */
+    "get"(
+      parameters?: Parameters<Paths.ProgramApplicationFilesGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationFilesGet.Responses.$200>;
+  };
+  ["/api/programApplications/{programApplicationId}/documentUrls"]: {
+    /**
+     * program_application_document_urls_get - Get all document URLs for a program application
+     */
+    "get"(
+      parameters?: Parameters<Paths.ProgramApplicationDocumentUrlsGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationDocumentUrlsGet.Responses.$200>;
+  };
+  ["/api/programApplications/{programApplicationId}/componentGroups/{componentGroupId}/components/{componentId}/files/{fileId}"]: {
+    /**
+     * program_application_file_upload - Upload a file immediately for a program application component
+     */
+    "post"(
+      parameters?: Parameters<Paths.ProgramApplicationFileUpload.PathParameters> | null,
+      data?: Paths.ProgramApplicationFileUpload.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationFileUpload.Responses.$200>;
+  };
+  ["/api/programApplications/{programApplicationId}/componentGroups/{componentGroupId}/components/{componentId}/files/{documentUrlId}/share"]: {
+    /**
+     * program_application_file_share - Share an existing document URL to a program application component
+     */
+    "post"(
+      parameters?: Parameters<Paths.ProgramApplicationFileShare.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationFileShare.Responses.$200>;
+  };
+  ["/api/programApplications/{programApplicationId}/files/{shareDocumentUrlId}"]: {
+    /**
+     * program_application_file_delete - Delete a shared document URL (and conditionally the underlying file)
+     */
+    "delete"(
+      parameters?: Parameters<Paths.ProgramApplicationFileDelete.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProgramApplicationFileDelete.Responses.$200>;
+  };
   ["/api/programApplications"]: {
     /**
      * program_application_post - Create a draft program application
@@ -1838,6 +2021,7 @@ export type AddCourseRequest = Components.Schemas.AddCourseRequest;
 export type AdmissionOptions = Components.Schemas.AdmissionOptions;
 export type ApplicationConfiguration =
   Components.Schemas.ApplicationConfiguration;
+export type ApplicationFileInfo = Components.Schemas.ApplicationFileInfo;
 export type ApplicationStatus = Components.Schemas.ApplicationStatus;
 export type ApplicationStatusReasonDetail =
   Components.Schemas.ApplicationStatusReasonDetail;

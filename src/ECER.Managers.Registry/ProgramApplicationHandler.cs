@@ -1,5 +1,7 @@
 using AutoMapper;
 using ECER.Engines.Validation.ProgramApplications;
+using ECER.Infrastructure.Common;
+using ECER.Managers.Admin.Contract.Files;
 using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Resources.Documents.Courses;
 using ECER.Resources.Documents.MetadataResources;
@@ -15,6 +17,7 @@ using ComponentGroupWithComponents = ECER.Managers.Registry.Contract.ProgramAppl
 using NavigationType = ECER.Managers.Registry.Contract.ProgramApplications.NavigationType;
 using ProgramApplicationQueryResults = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQueryResults;
 using ContractCourse = ECER.Managers.Registry.Contract.Shared.Course;
+using ApplicationFileInfo = ECER.Managers.Registry.Contract.ProgramApplications.ApplicationFileInfo;
 
 namespace ECER.Managers.Registry;
 
@@ -23,14 +26,20 @@ public class ProgramApplicationHandler(
     IMetadataResourceRepository metadataResourceRepository,
     ICourseRepository courseRepository,
     IProgramApplicationValidationEngine validationEngine,
-    IMapper mapper)
+    IMapper mapper,
+    IMediator mediator)
   : IRequestHandler<CreateProgramApplicationCommand, Contract.ProgramApplications.ProgramApplication?>,
     IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>,
     IRequestHandler<UpdateProgramApplicationCommand, string>,
     IRequestHandler<ComponentGroupQuery, IEnumerable<NavigationMetadata>>,
     IRequestHandler<ComponentGroupWithComponentsQuery, IEnumerable<ComponentGroupWithComponents>>,
     IRequestHandler<UpdateComponentGroupCommand, string>,
-    IRequestHandler<SubmitProgramApplicationCommand, ProgramApplicationSubmissionResult>
+    IRequestHandler<SubmitProgramApplicationCommand, ProgramApplicationSubmissionResult>,
+    IRequestHandler<UploadProgramApplicationFileCommand, ApplicationFileInfo>,
+    IRequestHandler<ShareExistingDocumentCommand, ApplicationFileInfo>,
+    IRequestHandler<ProgramApplicationFilesQuery, IEnumerable<ApplicationFileInfo>>,
+    IRequestHandler<ProgramApplicationDocumentUrlsQuery, IEnumerable<ApplicationFileInfo>>,
+    IRequestHandler<DeleteProgramApplicationFileCommand>
 {
   public async Task<Contract.ProgramApplications.ProgramApplication?> Handle(CreateProgramApplicationCommand request, CancellationToken cancellationToken)
   {
@@ -124,8 +133,74 @@ public class ProgramApplicationHandler(
   public async Task<string> Handle(UpdateComponentGroupCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var result = await programApplicationRepository.UpdateComponentGroup(mapper.Map<Resources.Documents.ProgramApplications.ComponentGroupWithComponents>(request.ComponentGroup)!, request.ProgramApplicationId, request.PostSecondaryInstituteId, cancellationToken);
+    var result = await programApplicationRepository.UpdateComponentGroup(mapper.Map<Resources.Documents.ProgramApplications.ComponentGroupWithComponents>(request.ComponentGroup)!, request.ProgramApplicationId, cancellationToken);
     return result;
+  }
+
+  public async Task<ApplicationFileInfo> Handle(UploadProgramApplicationFileCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var folder = $"ecer_programapplicationcomponent/{request.ComponentId}";
+    var fileProperties = new FileProperties();
+    var files = new[]
+    {
+      new FileData(
+        new FileLocation(request.FileId, folder, Utilities.ObjectStorage.Providers.EcerWebApplicationType.PSP),
+        fileProperties,
+        request.FileName,
+        request.ContentType,
+        request.Content)
+    };
+    var saveResponse = await mediator.Send(new SaveFileCommand(files), cancellationToken);
+    var saveResult = saveResponse.Items.FirstOrDefault();
+    if (saveResult == null || !saveResult.IsSuccessful)
+    {
+      throw new InvalidOperationException(saveResult?.Message ?? "File upload failed");
+    }
+    var humanSize = UtilityFunctions.HumanFileSize(request.FileSizeBytes);
+    var createRequest = new CreateDocumentUrlRequest(
+      request.FileId, request.FileName, humanSize, folder,
+      request.ProgramApplicationId, request.ComponentGroupId, request.ComponentId,
+      request.PostSecondaryInstituteId);
+    var resourcesResult = await programApplicationRepository.CreateDocumentUrlAndShare(createRequest, cancellationToken);
+    return mapper.Map<ApplicationFileInfo>(resourcesResult);
+  }
+
+  public async Task<ApplicationFileInfo> Handle(ShareExistingDocumentCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var resourcesResult = await programApplicationRepository.CreateShareOnly(
+      request.DocumentId, request.ProgramApplicationId,
+      request.ComponentGroupId, request.ComponentId, cancellationToken);
+    return mapper.Map<ApplicationFileInfo>(resourcesResult);
+  }
+
+  public async Task<IEnumerable<ApplicationFileInfo>> Handle(ProgramApplicationFilesQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var resourcesResult = await programApplicationRepository.GetApplicationFiles(request.ProgramApplicationId, cancellationToken);
+    return mapper.Map<IEnumerable<ApplicationFileInfo>>(resourcesResult);
+  }
+
+  public async Task<IEnumerable<ApplicationFileInfo>> Handle(ProgramApplicationDocumentUrlsQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var resourcesResult = await programApplicationRepository.GetApplicationDocumentUrls(request.ProgramApplicationId, cancellationToken);
+    return mapper.Map<IEnumerable<ApplicationFileInfo>>(resourcesResult);
+  }
+
+  public async Task Handle(DeleteProgramApplicationFileCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var details = await programApplicationRepository.GetShareDocumentUrlDetails(request.ShareDocumentId, cancellationToken);
+    if (details.RemainingShareCount <= 1)
+    {
+      var fileData = new FileData(
+        new FileLocation(details.DocumentId, details.Folder, details.EcerWebApplicationType),
+        new FileProperties(), string.Empty, string.Empty, Stream.Null);
+      await mediator.Send(new DeleteFileCommand(fileData), cancellationToken);
+    }
+    await programApplicationRepository.DeleteShareDocumentUrlById(request.ShareDocumentId, cancellationToken);
   }
 
   public async Task<ProgramApplicationSubmissionResult> Handle(SubmitProgramApplicationCommand request, CancellationToken cancellationToken)
