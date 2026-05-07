@@ -83,7 +83,7 @@ declare namespace Components {
       keyCampusContactName?: string | null;
       otherCampusContactName?: string | null;
     }
-    export type CampusStatus = "None" | "Active" | "Inactive";
+    export type CampusStatus = "None" | "Active" | "Inactive" | "Pending";
     export interface Communication {
       id?: string | null;
       category?: CommunicationCategory;

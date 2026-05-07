@@ -318,19 +318,25 @@ export function getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
           //if courseAreaOfInstruction has 0 newHours we will not show it. Do not add to map
           return;
         }
+        const courseNumber = course.newCourseNumber
+          ? course.newCourseNumber
+          : course.courseNumber;
+        const courseTitle = course.newCourseTitle
+          ? course.newCourseTitle
+          : course.courseTitle;
         if (courseAreaOfInstructionMap.has(area.areaOfInstructionId)) {
           //areaOfInstructionExists -> append to array
           courseAreaOfInstructionMap.get(area.areaOfInstructionId).push({
-            courseNumber: course.courseNumber,
-            courseTitle: course.courseTitle,
+            courseNumber,
+            courseTitle,
             hours: area.newHours,
           } as CourseAreaDetail);
         } else {
           //create new areaOfInstruction key
           courseAreaOfInstructionMap.set(area.areaOfInstructionId, [
             {
-              courseNumber: course.courseNumber,
-              courseTitle: course.courseTitle,
+              courseNumber,
+              courseTitle,
               hours: area.newHours,
             } as CourseAreaDetail,
           ]);

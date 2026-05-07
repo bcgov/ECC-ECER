@@ -18,37 +18,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InPersonBasic = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InPersonITE = 621870006,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InPersonITESNE = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InPersonSNE = 621870007,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		VirtualEvaluationMeetingOnlineorHybridDelivery = 621870009,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		VirtualorInPersonEvaluationMeetingInPersonDelivery = 621870010,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		VirtualSiteVisitBasicOnlineDelivery = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		VirtualSiteVisitITEOnlineDelivery = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		VirtualSiteVisitITESNEOnlineDelivery = 621870005,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		VirtualSiteVisitSNEOnlineDelivery = 621870004,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		WIL = 621870008,
 	}
 }
 #pragma warning restore CS1591

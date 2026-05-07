@@ -6,7 +6,7 @@
         <h2 v-if="componentGroup?.name" class="text-h6">
           {{ componentGroup.name }}
         </h2>
-        <p v-if="componentGroup?.instruction" class="ma-0 mt-2">
+        <p v-if="componentGroup?.instruction" class="multiline mt-2 mb-2">
           {{ componentGroup.instruction }}
         </p>
       </v-col>
