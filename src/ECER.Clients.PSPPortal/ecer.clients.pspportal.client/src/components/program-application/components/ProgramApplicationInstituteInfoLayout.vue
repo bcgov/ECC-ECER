@@ -488,6 +488,37 @@
         </v-col>
       </v-row>
     </v-form>
+    <ConfirmationDialog
+      ref="confirmationDialogRef"
+      title="Unsaved changes"
+      accept-button-text="Save changes"
+      cancel-button-text="Continue without saving"
+      :loading="isSaving"
+      persistent
+    >
+      <template #confirmation-text>
+        <p>You have made changes to this page that have not been saved.</p>
+        <br />
+        <p>Are you sure you want to leave this page without saving changes?</p>
+      </template>
+    </ConfirmationDialog>
+    <ConfirmationDialog
+      ref="confirmationDialogInvalidFormRef"
+      title="Unsaved changes"
+      accept-button-text="Leave page"
+      cancel-button-text="Stay and fix errors"
+      :loading="isSaving"
+      persistent
+    >
+      <template #confirmation-text>
+        <p>
+          You have made changes on this page that cannot be saved until the
+          errors are corrected.
+        </p>
+        <br />
+        <p>Are you sure you want to leave this page and abandon changes?</p>
+      </template>
+    </ConfirmationDialog>
   </template>
 </template>
 
@@ -497,8 +528,10 @@ import { useUserStore } from "@/store/user";
 import { getUsers } from "@/api/manage-users";
 import type { PspUserListItem, Components } from "@/types/openapi";
 import type { VForm } from "vuetify/components";
+import type { ProgramApplicationContact } from "@/types/helperFunctions";
 import * as Rules from "@/utils/formRules";
 import EceTextField from "@/components/inputs/EceTextField.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import {
   mapProgramType,
   updateProgramApplication,
@@ -506,13 +539,13 @@ import {
 } from "@/api/program-application";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import Loading from "@/components/Loading.vue";
-import type { ProgramApplicationContact } from "@/types/helperFunctions";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { dateBeforeRule } from "@/utils/formRules";
+import { cloneDeep, isEqual } from "lodash";
 
 export default defineComponent({
   name: "ProgramApplicationInstituteInfoLayout",
-  components: { EceDateInput, EceTextField, Loading },
+  components: { EceDateInput, EceTextField, Loading, ConfirmationDialog },
   props: {
     programApplicationObject: {
       type: Object as PropType<Components.Schemas.ProgramApplication | null>,
@@ -532,6 +565,12 @@ export default defineComponent({
   },
   emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
   computed: {
+    hasChanges(): boolean {
+      return !isEqual(
+        this.programApplicationObject,
+        this.originalProgramApplicationObject,
+      );
+    },
     validateHours() {
       return (v: string) => {
         if (!v) return true;
@@ -716,9 +755,14 @@ export default defineComponent({
       programCampus: [] as (string | null | undefined)[],
       isLoading: true,
       isSaving: false,
+      originalProgramApplicationObject:
+        null as Components.Schemas.ProgramApplication | null,
     };
   },
   async mounted() {
+    this.originalProgramApplicationObject = cloneDeep(
+      this.programApplicationObject,
+    );
     await this.loadUsers();
 
     this.programCampus =
@@ -764,12 +808,13 @@ export default defineComponent({
       });
       this.programRepresentativeId = currentUser?.id || null;
     },
-    async saveAndContinue() {
+    async handleSave() {
       const { valid } = await (
         this.$refs.instituteInfoForm as VForm
       ).validate();
 
-      if (!valid) return;
+      if (!valid) return false;
+
       this.isSaving = true;
       try {
         if (this.programApplicationObject !== null) {
@@ -783,11 +828,17 @@ export default defineComponent({
             );
           } else {
             this.isSaving = false;
-            this.$emit("next", {});
+            return true;
           }
         }
       } finally {
         this.isSaving = false;
+      }
+    },
+    async saveAndContinue() {
+      const success = await this.handleSave();
+      if (success) {
+        this.$emit("next", {});
       }
     },
     //This is so we can pass an empty slot to override default slot
@@ -830,6 +881,45 @@ export default defineComponent({
             });
           }
         }
+      }
+    },
+    async waitForConfirmation() {
+      const { valid } = await (
+        this.$refs.instituteInfoForm as VForm
+      ).validate();
+
+      //if form is invalid and user wants to leave we need to see if they want to try to fix their changes
+      if (!valid) {
+        let dialogInvalidFormRef = this.$refs
+          .confirmationDialogInvalidFormRef as InstanceType<
+          typeof ConfirmationDialog
+        >;
+        const confirmedLeaveWithoutSave = await dialogInvalidFormRef.open();
+        if (confirmedLeaveWithoutSave) {
+          dialogInvalidFormRef.close();
+          return true;
+        } else if (!confirmedLeaveWithoutSave) {
+          dialogInvalidFormRef.close();
+          return false;
+        }
+      }
+
+      //form is valid proceed with checking for changes to save
+      if (this.hasChanges) {
+        let dialogRef = this.$refs.confirmationDialogRef as InstanceType<
+          typeof ConfirmationDialog
+        >;
+        const confirmed = await dialogRef.open();
+        if (confirmed) {
+          await this.handleSave();
+          dialogRef.close();
+          return true;
+        } else if (!confirmed) {
+          dialogRef.close();
+          return true;
+        }
+      } else {
+        return true;
       }
     },
   },

@@ -13,8 +13,13 @@
             Application: {{ programApplicationName }}
           </span>
           <div :class="[{ ['text-right mb-2']: mobile }]">
-            <v-btn id="btnSaveAndExit" variant="outlined" @click="exit">
-              Save and exit
+            <v-btn
+              id="btnSaveAndExit"
+              variant="outlined"
+              prepend-icon="mdi-door-open"
+              @click="exit"
+            >
+              Exit application
             </v-btn>
           </div>
         </v-col>
