@@ -212,6 +212,7 @@ export default defineComponent({
     },
     async saveAndContinue() {
       await this.handleSave();
+      this.originalFormByComponentId = cloneDeep(this.formByComponentId);
       this.$emit("next", { currentComponentGroupId: this.componentGroupId });
     },
     async waitForConfirmation(): Promise<boolean> {
