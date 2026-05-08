@@ -44,14 +44,35 @@
       Post-Secondary Programs portal dashboard.
     </p>
     <br />
-    <v-btn
-      id="btnHome"
-      rounded="lg"
-      color="primary"
-      @click="router.push({ name: 'dashboard' })"
-    >
-      Home
-    </v-btn>
+
+    <v-row>
+      <v-col cols="auto">
+        <v-btn
+          id="btnHome"
+          rounded="lg"
+          color="primary"
+          @click="router.push({ name: 'dashboard' })"
+        >
+          Home
+        </v-btn>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn
+          id="btnViewApplication"
+          variant="outlined"
+          rounded="lg"
+          color="primary"
+          @click="
+            router.push({
+              name: 'programApplication',
+              params: { programApplicationId: programApplicationId },
+            })
+          "
+        >
+          View application summary
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script lang="ts">
