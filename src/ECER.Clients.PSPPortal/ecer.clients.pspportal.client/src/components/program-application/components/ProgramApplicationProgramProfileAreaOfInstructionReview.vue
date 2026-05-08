@@ -88,12 +88,12 @@
           </template>
 
           <template v-else>
-            <v-icon
-              class="mr-2"
-              color="warning"
-              icon="mdi-alert-circle-outline"
-            ></v-icon>
             <v-col cols="4">
+              <v-icon
+                class="mr-2"
+                color="warning"
+                icon="mdi-alert-circle-outline"
+              ></v-icon>
               {{
                 configStore.areaOfInstructionNameById(
                   courseAreaOfInstructionId,
