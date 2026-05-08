@@ -838,6 +838,9 @@ export default defineComponent({
     async saveAndContinue() {
       const success = await this.handleSave();
       if (success) {
+        this.originalProgramApplicationObject = cloneDeep(
+          this.programApplicationObject,
+        );
         this.$emit("next", {});
       }
     },
