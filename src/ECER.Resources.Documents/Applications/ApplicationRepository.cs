@@ -172,21 +172,21 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       .Distinct()
       .ToList();
 
-  private Dictionary<Guid, ecer_Country> LoadCountriesById(IReadOnlyCollection<Guid> countryIds) =>
+  private Dictionary<Guid, ecer_Country> LoadCountriesById(List<Guid> countryIds) =>
     countryIds.Count == 0
       ? new Dictionary<Guid, ecer_Country>()
       : context.ecer_CountrySet
         .WhereIn(country => country.ecer_CountryId!.Value, countryIds)
         .ToDictionary(country => country.ecer_CountryId!.Value);
 
-  private Dictionary<Guid, ecer_Province> LoadProvincesById(IReadOnlyCollection<Guid> provinceIds) =>
+  private Dictionary<Guid, ecer_Province> LoadProvincesById(List<Guid> provinceIds) =>
     provinceIds.Count == 0
       ? new Dictionary<Guid, ecer_Province>()
       : context.ecer_ProvinceSet
         .WhereIn(province => province.ecer_ProvinceId!.Value, provinceIds)
         .ToDictionary(province => province.ecer_ProvinceId!.Value);
 
-  private Dictionary<Guid, ecer_PostSecondaryInstitute> LoadInstitutionsById(IReadOnlyCollection<Guid> institutionIds) =>
+  private Dictionary<Guid, ecer_PostSecondaryInstitute> LoadInstitutionsById(List<Guid> institutionIds) =>
     institutionIds.Count == 0
       ? new Dictionary<Guid, ecer_PostSecondaryInstitute>()
       : context.ecer_PostSecondaryInstituteSet
@@ -195,9 +195,9 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 
   private static void HydrateTranscriptLookup(
     ecer_Transcript transcript,
-    IReadOnlyDictionary<Guid, ecer_Country> countriesById,
-    IReadOnlyDictionary<Guid, ecer_Province> provincesById,
-    IReadOnlyDictionary<Guid, ecer_PostSecondaryInstitute> institutionsById)
+    Dictionary<Guid, ecer_Country> countriesById,
+    Dictionary<Guid, ecer_Province> provincesById,
+    Dictionary<Guid, ecer_PostSecondaryInstitute> institutionsById)
   {
     if (transcript.ecer_transcript_InstituteCountryId == null &&
         transcript.ecer_InstituteCountryId != null &&

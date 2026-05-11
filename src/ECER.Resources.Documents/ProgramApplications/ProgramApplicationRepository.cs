@@ -467,17 +467,32 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 
   private static ecer_PSPComponentProgress CalculateEntryProgress(IEnumerable<string?> answers)
   {
-    if (answers.All(string.IsNullOrWhiteSpace))
+    var hasValue = false;
+    var hasEmpty = false;
+
+    foreach (var answer in answers)
+    {
+      if (string.IsNullOrWhiteSpace(answer))
+      {
+        hasEmpty = true;
+      }
+      else
+      {
+        hasValue = true;
+      }
+
+      if (hasValue && hasEmpty)
+      {
+        return ecer_PSPComponentProgress.InProgress;
+      }
+    }
+
+    if (!hasValue)
     {
       return ecer_PSPComponentProgress.ToDo;
     }
 
-    if (answers.All(answer => !string.IsNullOrWhiteSpace(answer)))
-    {
-      return ecer_PSPComponentProgress.Completed;
-    }
-
-    return ecer_PSPComponentProgress.InProgress;
+    return ecer_PSPComponentProgress.Completed;
   }
 
   public async Task UpdateCourseProgress(string applicationId, string? basicProgress, string? iteProgress, string? sneProgress, CancellationToken cancellationToken)
