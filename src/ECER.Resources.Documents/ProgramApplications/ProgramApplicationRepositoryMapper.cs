@@ -97,7 +97,7 @@ internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationR
     NavigationType.Component,
     source.ecer_RFAIRequired.HasValue ? source.ecer_RFAIRequired == ecer_YesNoNull.Yes : null);
 
-  private ComponentGroupWithComponents MapComponentGroupWithComponents(ecer_ProgramApplicationComponentGroup source) => new(
+  private static ComponentGroupWithComponents MapComponentGroupWithComponents(ecer_ProgramApplicationComponentGroup source) => new(
     source.ecer_ProgramApplicationComponentGroupId?.ToString() ?? string.Empty,
     source.ecer_GroupName ?? string.Empty,
     source.ecer_programapplicationcomponentgroup_ComponentGroup?.ecer_Instructions,

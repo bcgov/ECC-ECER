@@ -130,7 +130,7 @@ internal partial class RegistrantRepositoryMapper : IRegistrantRepositoryMapper
     return document;
   }
 
-  private List<UserIdentity> MapUserIdentities(IEnumerable<ecer_Authentication>? source) =>
+  private static List<UserIdentity> MapUserIdentities(IEnumerable<ecer_Authentication>? source) =>
     source?.Select(MapUserIdentity).ToList() ?? new List<UserIdentity>();
 
   private static UserIdentity MapUserIdentity(ecer_Authentication source) =>

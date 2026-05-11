@@ -137,7 +137,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     destination.ecer_DateSigned = source.DateSigned;
   }
 
-  private void ApplyReferenceContactInformation(ReferenceContactInformation source, ecer_WorkExperienceRef destination)
+  private static void ApplyReferenceContactInformation(ReferenceContactInformation source, ecer_WorkExperienceRef destination)
   {
     destination.ecer_referencefirstname = source.FirstName;
     destination.ecer_referencelastname = source.LastName;
@@ -221,6 +221,12 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
 
   private void ApplyWorkExperienceCompetenciesAssessment(WorkExperienceReferenceCompetenciesAssessment source, ecer_WorkExperienceRef destination)
   {
+    ApplyCoreCompetenciesAssessment(source, destination);
+    ApplyRelationshipCompetenciesAssessment(source, destination);
+  }
+
+  private void ApplyCoreCompetenciesAssessment(WorkExperienceReferenceCompetenciesAssessment source, ecer_WorkExperienceRef destination)
+  {
     if (source.ChildDevelopment.HasValue)
     {
       destination.ecer_CompetenceChildDevelopment = MapLikertScale(source.ChildDevelopment.Value);
@@ -270,7 +276,10 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     {
       destination.ecer_CompetenceImplementECECurriculumReason = source.ImplementAnEceCurriculumReason;
     }
+  }
 
+  private void ApplyRelationshipCompetenciesAssessment(WorkExperienceReferenceCompetenciesAssessment source, ecer_WorkExperienceRef destination)
+  {
     if (source.FosteringPositiveRelationChild.HasValue)
     {
       destination.ecer_CompetenceFosteringPositiveRelationChild = MapLikertScale(source.FosteringPositiveRelationChild.Value);
