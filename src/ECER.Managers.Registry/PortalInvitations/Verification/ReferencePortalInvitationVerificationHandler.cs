@@ -23,26 +23,32 @@ public class ReferencePortalInvitationVerificationHandler(
   public async Task<PortalInvitationVerificationQueryResult> Verify(PortalInvitation portalInvitation, CancellationToken cancellationToken)
   {
     var emptyGuidString = Guid.Empty.ToString();
-    if (portalInvitation == null || (portalInvitation.WorkexperienceReferenceId == emptyGuidString && portalInvitation.CharacterReferenceId == emptyGuidString))
+    if (portalInvitation == null
+        || ((portalInvitation.WorkexperienceReferenceId == emptyGuidString || portalInvitation.WorkexperienceReferenceId == null)
+            && (portalInvitation.CharacterReferenceId == emptyGuidString || portalInvitation.CharacterReferenceId == null)))
     {
       return PortalInvitationVerificationQueryResult.Failure("Reference not found");
     }
 
-    var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
+    var registrantResult = await registrantRepository.Query(new RegistrantQuery { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
     var applicant = registrantResult.SingleOrDefault();
     if (applicant == null)
     {
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
 
-    var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
+    var applications = await applicationRepository.Query(new ApplicationQuery { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();
     if (application == null)
     {
       return PortalInvitationVerificationQueryResult.Failure("Application not found");
     }
 
-    var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id, ById = !string.IsNullOrEmpty(application.FromCertificate?.ToString()) ? application.FromCertificate.ToString() : null });
+    var certifications = await certificationRepository.Query(new UserCertificationQuery
+    {
+      ByApplicantId = applicant.Id,
+      ById = !string.IsNullOrEmpty(application.FromCertificate?.ToString()) ? application.FromCertificate.ToString() : null
+    });
     var fromCertificate = certifications.FirstOrDefault();
 
     var result = portalInvitation;
@@ -51,13 +57,10 @@ public class ReferencePortalInvitationVerificationHandler(
     {
       case Contract.PortalInvitations.PortalInvitationStatusCode.Completed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
-
       case Contract.PortalInvitations.PortalInvitationStatusCode.Expired:
         return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
-
       case Contract.PortalInvitations.PortalInvitationStatusCode.Cancelled:
         return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
-
       case Contract.PortalInvitations.PortalInvitationStatusCode.Failed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }

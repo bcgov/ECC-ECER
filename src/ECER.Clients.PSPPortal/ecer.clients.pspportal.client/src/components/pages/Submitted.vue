@@ -71,6 +71,16 @@
         <p>No further action is required.</p>
         <br />
       </template>
+      <template
+        v-else-if="programProfile.programProfileType === 'ChangeRequest'"
+      >
+        <h2>What to expect next</h2>
+        <br />
+        <p>
+          You have updated your program profile. No further action is required.
+        </p>
+        <br />
+      </template>
       <v-btn
         id="btnHome"
         rounded="lg"

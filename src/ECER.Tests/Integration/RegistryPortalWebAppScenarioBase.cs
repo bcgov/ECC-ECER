@@ -238,7 +238,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_startdate = DateTime.Now.AddYears(-3),
         ecer_enddate = DateTime.Now.AddYears(3),
         ecer_message = "test message",
-        ecer_PortalTags = new List<ecer_PortalTags>() { ecer_PortalTags.LOGIN, ecer_PortalTags.REFERENCES, ecer_PortalTags.REFERENCES },
+        ecer_PortalTags = new List<ecer_PortalTags>() { ecer_PortalTags.LOGIN, ecer_PortalTags.REFERENCES },
         ecer_subject = "test",
         StatusCode = ecer_SystemMessage_StatusCode.Active,
         StateCode = ecer_systemmessage_statecode.Active,
@@ -496,10 +496,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant, DateTime? expiryDate = null)
   {
+    var certificateId = Guid.NewGuid();
     var certification = new ecer_Certificate
     {
-      Id = Guid.NewGuid(),
-      ecer_CertificateNumber = TestRunId + "cert",
+      Id = certificateId,
+      ecer_CertificateNumber = $"{TestRunId}cert_{certificateId:N}",
       StatusCode = ecer_Certificate_StatusCode.Active,
       ecer_ExpiryDate = expiryDate ?? DateTime.Today, // Default to today if expiryDate is null
       ecer_GenerateCertificate = true,

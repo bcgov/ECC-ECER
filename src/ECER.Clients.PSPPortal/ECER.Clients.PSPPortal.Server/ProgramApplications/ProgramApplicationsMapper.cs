@@ -12,6 +12,8 @@ internal interface IProgramApplicationsMapper
   IEnumerable<NavigationMetadata> MapNavigationMetadata(IEnumerable<ContractProgramApplications.NavigationMetadata> source);
   IEnumerable<ComponentGroupWithComponents> MapComponentGroups(IEnumerable<ContractProgramApplications.ComponentGroupWithComponents> source);
   ContractProgramApplications.ComponentGroupWithComponents MapComponentGroup(ComponentGroupWithComponents source);
+  ApplicationFileInfo MapApplicationFileInfo(ContractProgramApplications.ApplicationFileInfo source);
+  IEnumerable<ApplicationFileInfo> MapApplicationFiles(IEnumerable<ContractProgramApplications.ApplicationFileInfo> source);
 }
 
 [Mapper]
@@ -95,12 +97,24 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
 
   public ContractProgramApplications.ComponentGroupWithComponents MapComponentGroup(ComponentGroupWithComponents source) => new(
     source.Id,
-    string.Empty,
-    null,
-    string.Empty,
-    string.Empty,
-    default,
+    source.Name,
+    source.Instruction,
+    source.Status,
+    source.CategoryName,
+    source.DisplayOrder,
     source.Components.Select(MapProgramApplicationComponent).ToList());
+
+  public ApplicationFileInfo MapApplicationFileInfo(ContractProgramApplications.ApplicationFileInfo source) => new()
+  {
+    DocumentUrlId = source.DocumentId,
+    ShareDocumentUrlId = source.ShareDocumentId,
+    FileName = source.FileName,
+    FileSize = source.FileSize,
+    Url = source.StorageFolder,
+    Extension = source.Extension,
+  };
+
+  public IEnumerable<ApplicationFileInfo> MapApplicationFiles(IEnumerable<ContractProgramApplications.ApplicationFileInfo> source) => source.Select(MapApplicationFileInfo).ToList();
 
   private NavigationMetadata MapNavigationMetadata(ContractProgramApplications.NavigationMetadata source) => new(
     source.Id,
@@ -153,11 +167,11 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
 
   private ContractProgramApplications.ProgramApplicationComponent MapProgramApplicationComponent(ProgramApplicationComponent source) => new(
     source.Id,
-    string.Empty,
-    null,
-    default,
+    source.Name,
+    source.Question,
+    source.DisplayOrder,
     source.Answer,
-    null,
+    source.Files?.Select(MapFileInfo).ToList(),
     source.RfaiRequired)
   {
     NewFiles = source.NewFiles.Select(MapFileInfo).ToList(),
@@ -166,6 +180,7 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
 
   private static FileInfo MapFileInfo(ContractProgramApplications.FileInfo source) => new(source.Id)
   {
+    ShareDocumentUrlId = source.ShareDocumentUrlId,
     Name = source.Name,
     Url = source.Url,
     Size = source.Size,
@@ -175,11 +190,12 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
 
   private static ContractProgramApplications.FileInfo MapFileInfo(FileInfo source) => new(source.Id)
   {
+    ShareDocumentUrlId = source.ShareDocumentUrlId,
     Name = source.Name,
     Url = source.Url,
     Size = source.Size,
     Extension = source.Extension,
-    EcerWebApplicationType = EcerWebApplicationType.PSP,
+    EcerWebApplicationType = source.EcerWebApplicationType ?? EcerWebApplicationType.PSP,
   };
 
   [MapEnum(EnumMappingStrategy.ByName)]

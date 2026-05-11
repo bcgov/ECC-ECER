@@ -16,6 +16,7 @@ public class MetadataMapperTests
       ById = Guid.NewGuid().ToString(),
       ByProvinceId = Guid.NewGuid().ToString(),
       ByName = "Institute",
+      ByStatus = ContractMetadatas.PostSecondaryInstitutionStatus.Active,
     };
 
     var result = mapper.MapPostSecondaryInstitutionsQuery(source);
@@ -23,6 +24,7 @@ public class MetadataMapperTests
     result.ById.ShouldBe(source.ById);
     result.ByProvinceId.ShouldBe(source.ByProvinceId);
     result.ByName.ShouldBe(source.ByName);
+    result.ByStatus.ShouldBe(ResourceMetadata.PostSecondaryInstitutionStatus.Active);
   }
 
   [Fact]

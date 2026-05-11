@@ -13,6 +13,8 @@ public interface IProgramApplicationMapper
   IEnumerable<ContractProgramApplications.NavigationMetadata> MapNavigationMetadata(IEnumerable<ResourceProgramApplications.NavigationMetadata> source);
   IEnumerable<ContractProgramApplications.ComponentGroupWithComponents> MapComponentGroupsWithComponents(IEnumerable<ResourceProgramApplications.ComponentGroupWithComponents> source);
   ResourceProgramApplications.ComponentGroupWithComponents MapComponentGroupWithComponents(ContractProgramApplications.ComponentGroupWithComponents source);
+  ContractProgramApplications.ApplicationFileInfo MapApplicationFileInfo(ResourceProgramApplications.ApplicationFileInfo source);
+  IEnumerable<ContractProgramApplications.ApplicationFileInfo> MapApplicationFiles(IEnumerable<ResourceProgramApplications.ApplicationFileInfo> source);
 }
 
 [Mapper]
@@ -52,39 +54,41 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
     SneProgress = source.SneProgress,
   };
 
-  public ContractProgramApplications.ProgramApplication? MapProgramApplication(ResourceProgramApplications.ProgramApplication? source) => source == null ? null : new ContractProgramApplications.ProgramApplication(source.Id, source.PostSecondaryInstituteId)
-  {
-    ProgramApplicationName = source.ProgramApplicationName,
-    ProgramApplicationType = MapApplicationType(source.ProgramApplicationType),
-    Status = MapApplicationStatus(source.Status),
-    StatusReasonDetail = MapStatusReasonDetail(source.StatusReasonDetail),
-    ProgramTypes = source.ProgramTypes?.Select(MapProgramCertificationType).ToList(),
-    DeliveryType = MapDeliveryType(source.DeliveryType),
-    ComponentsGenerationCompleted = source.ComponentsGenerationCompleted,
-    ProgramRepresentativeId = source.ProgramRepresentativeId,
-    ProgramLength = MapNumber(source.ProgramLength),
-    OnlineMethodOfInstruction = source.OnlineMethodOfInstruction?.Select(MapMethodOfInstruction).ToList(),
-    DeliveryMethod = source.DeliveryMethod?.Select(MapDeliveryMethod).ToList(),
-    EnrollmentOptions = source.EnrollmentOptions?.Select(MapWorkHoursType).ToList(),
-    AdmissionOptions = source.AdmissionOptions?.Select(MapAdmissionOptions).ToList(),
-    MinimumEnrollment = MapNumber(source.MinimumEnrollment),
-    MaximumEnrollment = MapNumber(source.MaximumEnrollment),
-    InPersonHoursPercentage = source.InPersonHoursPercentage,
-    OnlineDeliveryHoursPercentage = source.OnlineDeliveryHoursPercentage,
-    ProgramCampuses = source.ProgramCampuses?.Select(MapProgramCampus).ToList(),
-    OtherAdmissionOptions = source.OtherAdmissionOptions,
-    InstituteInfoEntryProgress = source.InstituteInfoEntryProgress,
-    DeclarationDate = source.DeclarationDate,
-    DeclarationAccepted = source.DeclarationAccepted,
-    DeclarantName = source.DeclarantName,
-    DeclarantId = source.DeclarantId,
-    ProgramProfileId = source.ProgramProfileId,
-    ProgramProfileName = source.ProgramProfileName,
-    DeclarationText = source.DeclarationText,
-    BasicProgress = source.BasicProgress,
-    IteProgress = source.IteProgress,
-    SneProgress = source.SneProgress,
-  };
+  public ContractProgramApplications.ProgramApplication? MapProgramApplication(ResourceProgramApplications.ProgramApplication? source) => source == null
+    ? null
+    : new ContractProgramApplications.ProgramApplication(source.Id, source.PostSecondaryInstituteId)
+    {
+      ProgramApplicationName = source.ProgramApplicationName,
+      ProgramApplicationType = MapApplicationType(source.ProgramApplicationType),
+      Status = MapApplicationStatus(source.Status),
+      StatusReasonDetail = MapStatusReasonDetail(source.StatusReasonDetail),
+      ProgramTypes = source.ProgramTypes?.Select(MapProgramCertificationType).ToList(),
+      DeliveryType = MapDeliveryType(source.DeliveryType),
+      ComponentsGenerationCompleted = source.ComponentsGenerationCompleted,
+      ProgramRepresentativeId = source.ProgramRepresentativeId,
+      ProgramLength = MapNumber(source.ProgramLength),
+      OnlineMethodOfInstruction = source.OnlineMethodOfInstruction?.Select(MapMethodOfInstruction).ToList(),
+      DeliveryMethod = source.DeliveryMethod?.Select(MapDeliveryMethod).ToList(),
+      EnrollmentOptions = source.EnrollmentOptions?.Select(MapWorkHoursType).ToList(),
+      AdmissionOptions = source.AdmissionOptions?.Select(MapAdmissionOptions).ToList(),
+      MinimumEnrollment = MapNumber(source.MinimumEnrollment),
+      MaximumEnrollment = MapNumber(source.MaximumEnrollment),
+      InPersonHoursPercentage = source.InPersonHoursPercentage,
+      OnlineDeliveryHoursPercentage = source.OnlineDeliveryHoursPercentage,
+      ProgramCampuses = source.ProgramCampuses?.Select(MapProgramCampus).ToList(),
+      OtherAdmissionOptions = source.OtherAdmissionOptions,
+      InstituteInfoEntryProgress = source.InstituteInfoEntryProgress,
+      DeclarationDate = source.DeclarationDate,
+      DeclarationAccepted = source.DeclarationAccepted,
+      DeclarantName = source.DeclarantName,
+      DeclarantId = source.DeclarantId,
+      ProgramProfileId = source.ProgramProfileId,
+      ProgramProfileName = source.ProgramProfileName,
+      DeclarationText = source.DeclarationText,
+      BasicProgress = source.BasicProgress,
+      IteProgress = source.IteProgress,
+      SneProgress = source.SneProgress,
+    };
 
   public IEnumerable<ContractProgramApplications.ProgramApplication> MapProgramApplications(IEnumerable<ResourceProgramApplications.ProgramApplication> source) => source.Select(programApplication => MapProgramApplication(programApplication)!).ToList();
 
@@ -102,6 +106,16 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
     source.CategoryName,
     source.DisplayOrder,
     source.Components.Select(MapProgramApplicationComponent).ToList());
+
+  public ContractProgramApplications.ApplicationFileInfo MapApplicationFileInfo(ResourceProgramApplications.ApplicationFileInfo source) => new(
+    source.DocumentId,
+    source.ShareDocumentId,
+    source.FileName,
+    source.FileSize,
+    source.StorageFolder,
+    source.Extension);
+
+  public IEnumerable<ContractProgramApplications.ApplicationFileInfo> MapApplicationFiles(IEnumerable<ResourceProgramApplications.ApplicationFileInfo> source) => source.Select(MapApplicationFileInfo).ToList();
 
   private ContractProgramApplications.NavigationMetadata MapNavigationMetadata(ResourceProgramApplications.NavigationMetadata source) => new(
     source.Id,
@@ -167,6 +181,7 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
 
   private static ResourceProgramApplications.FileInfo MapFileInfo(ContractProgramApplications.FileInfo source) => new(source.Id)
   {
+    ShareDocumentUrlId = source.ShareDocumentUrlId,
     Name = source.Name,
     Url = source.Url,
     Size = source.Size,
@@ -176,6 +191,7 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
 
   private static ContractProgramApplications.FileInfo MapFileInfo(ResourceProgramApplications.FileInfo source) => new(source.Id)
   {
+    ShareDocumentUrlId = source.ShareDocumentUrlId,
     Name = source.Name,
     Url = source.Url,
     Size = source.Size,

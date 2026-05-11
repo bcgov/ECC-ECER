@@ -8,6 +8,7 @@
     <ProjectReference Include="..\ECER.Engines.Transformation\ECER.Engines.Transformation.csproj" />
     <ProjectReference Include="..\ECER.Engines.Validation\ECER.Engines.Validation.csproj" />
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\ECER.Managers.Admin.Contract\ECER.Managers.Admin.Contract.csproj" />
     <ProjectReference Include="..\ECER.Managers.Registry.Contract\ECER.Managers.Registry.Contract.csproj" />
     <ProjectReference Include="..\ECER.Resources.Accounts\ECER.Resources.Accounts.csproj" />
     <ProjectReference Include="..\ECER.Resources.Documents\ECER.Resources.Documents.csproj" />

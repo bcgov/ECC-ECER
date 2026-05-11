@@ -15,12 +15,12 @@ public class IcraReferencePortalInvitationVerificationHandler(
   public async Task<PortalInvitationVerificationQueryResult> Verify(PortalInvitation portalInvitation, CancellationToken cancellationToken)
   {
     var emptyGuidString = Guid.Empty.ToString();
-    if (portalInvitation == null || portalInvitation.WorkexperienceReferenceId == emptyGuidString)
+    if (portalInvitation == null || portalInvitation.WorkexperienceReferenceId == emptyGuidString || portalInvitation.WorkexperienceReferenceId == null)
     {
       return PortalInvitationVerificationQueryResult.Failure("Reference not found");
     }
 
-    var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
+    var registrantResult = await registrantRepository.Query(new RegistrantQuery { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
     var applicant = registrantResult.SingleOrDefault();
     if (applicant == null)
     {
@@ -41,7 +41,6 @@ public class IcraReferencePortalInvitationVerificationHandler(
         return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }
 
-    // For ICRA references there is no ApplicationId; do not attempt to load application or certification data
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
 

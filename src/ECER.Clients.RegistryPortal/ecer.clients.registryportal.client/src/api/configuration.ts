@@ -30,12 +30,14 @@ const getCountryList = async (): Promise<
 };
 
 const getPostSecondaryInstitutionList = async (
+  status?: Components.Schemas.PostSecondaryInstitutionStatus,
   provinceId?: string,
 ): Promise<
   Components.Schemas.PostSecondaryInstitution[] | null | undefined
 > => {
   const client = await getClient(false);
-  return (await client.psi_get()).data;
+  const parameters: Paths.PsiGet.QueryParameters = { status };
+  return (await client.psi_get(parameters)).data;
 };
 
 const getCertificationComparisonList = async (

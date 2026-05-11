@@ -64,5 +64,8 @@ internal partial class MetadataMapper : IMetadataMapper
   private partial ContractMetadatas.IdentificationType MapIdentificationType(ResourceMetadata.IdentificationType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceMetadata.PostSecondaryInstitutionStatus MapPostSecondaryInstitutionStatus(ContractMetadatas.PostSecondaryInstitutionStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractMetadatas.PortalTags MapPortalTag(ResourceMetadata.PortalTags source);
 }

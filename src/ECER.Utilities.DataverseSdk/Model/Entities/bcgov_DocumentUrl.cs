@@ -1646,6 +1646,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// PSP Recognition Evaluation Meeting
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_PSPSiteVisitId
 		{

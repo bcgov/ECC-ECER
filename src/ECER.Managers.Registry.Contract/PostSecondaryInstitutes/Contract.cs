@@ -68,7 +68,8 @@ public enum CampusStatus
 {
   None,
   Active = 1,
-  Inactive = 2
+  Inactive = 2,
+  Pending = 621870001
 }
 
 public enum PsiInstitutionType

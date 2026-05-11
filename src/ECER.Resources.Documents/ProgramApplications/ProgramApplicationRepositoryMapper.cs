@@ -114,10 +114,25 @@ internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationR
     source.ecer_Question,
     MapDisplayOrder(source.ecer_DisplayOrder),
     source.ecer_Componentanswer,
-    (source.ecer_documenturl_ProgramApplicationComponentId ?? Array.Empty<bcgov_DocumentUrl>())
-      .Select(MapFileInfo)
-      .ToList(),
+    MapComponentFiles(source).ToList(),
     source.ecer_RFAIRequired.HasValue ? source.ecer_RFAIRequired == ecer_YesNoNull.Yes : null);
+
+  private static List<FileInfo> MapComponentFiles(ecer_ProgramApplicationComponent source)
+  {
+    var sharedFiles = (source.ecer_sharedocumenturl_ProgramApplicationComponentId ?? Array.Empty<ecer_ShareDocumentURL>())
+      .Select(MapFileInfo)
+      .OfType<FileInfo>()
+      .ToList();
+
+    if (sharedFiles.Count > 0)
+    {
+      return sharedFiles;
+    }
+
+    return (source.ecer_documenturl_ProgramApplicationComponentId ?? Array.Empty<bcgov_DocumentUrl>())
+      .Select(MapFileInfo)
+      .ToList();
+  }
 
   private static ProgramCampus MapProgramCampus(ecer_ProgramCampus source) => new()
   {
@@ -128,14 +143,38 @@ internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationR
     EndDate = source.ecer_Enddate,
   };
 
+  private static FileInfo? MapFileInfo(ecer_ShareDocumentURL source)
+  {
+    var documentUrl = source.ecer_sharedocumenturl_DocumentURLId;
+    if (documentUrl?.bcgov_DocumentUrlId == null)
+    {
+      return null;
+    }
+
+    return new FileInfo(documentUrl.bcgov_DocumentUrlId.Value.ToString())
+    {
+      ShareDocumentUrlId = source.ecer_ShareDocumentURLId?.ToString(),
+      Name = documentUrl.bcgov_FileName,
+      Url = documentUrl.bcgov_Url,
+      Size = documentUrl.bcgov_FileSize,
+      Extension = documentUrl.bcgov_FileExtension,
+      EcerWebApplicationType = ParseApplicationName(documentUrl.ecer_ApplicationName),
+    };
+  }
+
   private static FileInfo MapFileInfo(bcgov_DocumentUrl source) => new(source.bcgov_DocumentUrlId?.ToString() ?? string.Empty)
   {
     Name = source.bcgov_FileName,
     Url = source.bcgov_Url,
     Size = source.bcgov_FileSize,
     Extension = source.bcgov_FileExtension,
-    EcerWebApplicationType = Enum.Parse<EcerWebApplicationType>(source.ecer_ApplicationName),
+    EcerWebApplicationType = ParseApplicationName(source.ecer_ApplicationName),
   };
+
+  private static EcerWebApplicationType ParseApplicationName(string? source) =>
+    Enum.TryParse<EcerWebApplicationType>(source, out var value)
+      ? value
+      : EcerWebApplicationType.PSP;
 
   private static int MapDisplayOrder(string? source) => int.TryParse(source, out var value) ? value : 0;
 

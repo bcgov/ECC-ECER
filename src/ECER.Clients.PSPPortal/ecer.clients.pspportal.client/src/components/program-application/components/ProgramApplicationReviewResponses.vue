@@ -303,6 +303,7 @@ export default defineComponent({
     SatelliteProgramOverview,
   },
   props: {
+    applicationType: { type: String, required: false },
     programApplicationId: {
       type: String,
       required: true,
@@ -314,7 +315,7 @@ export default defineComponent({
       userStore,
     };
   },
-  emits: { next: (_payload: NextStepPayload) => true },
+  emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
   computed: {
     declarantName(): string {
       if (this.programApplicationObject?.declarantId) {

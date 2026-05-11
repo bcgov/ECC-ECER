@@ -11,7 +11,6 @@ internal sealed partial class ICRARepository
 
     var existing = context.ecer_WorkExperienceRefSet.Where(t => t.ecer_ICRAEligibilityAssessment.Id == icraEligibility.Id).ToList();
 
-    // Remove those not present anymore
     foreach (var reference in existing)
     {
       if (!updatedEntities.Any(t => t.ecer_WorkExperienceRefId == reference.ecer_WorkExperienceRefId))
@@ -20,7 +19,6 @@ internal sealed partial class ICRARepository
       }
     }
 
-    // Update existing
     foreach (var reference in updatedEntities.Where(d => d.ecer_WorkExperienceRefId != null))
     {
       var oldRef = existing.SingleOrDefault(t => t.ecer_WorkExperienceRefId == reference.ecer_WorkExperienceRefId);
@@ -34,7 +32,6 @@ internal sealed partial class ICRARepository
       context.UpdateObject(reference);
     }
 
-    // Add new
     foreach (var reference in updatedEntities.Where(d => d.ecer_WorkExperienceRefId == null))
     {
       reference.ecer_WorkExperienceRefId = Guid.NewGuid();
@@ -106,14 +103,27 @@ internal sealed partial class ICRARepository
     {
       throw new InvalidOperationException($"Icra eligibility application '{request.icraEligibilityId}' not found");
     }
-    var existingWorkExperiences = context.ecer_WorkExperienceRefSet.Where(t => t.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment.Id == icraEligibilityApplication.Id).ToList();
 
-    bool RefIdIsGuid = Guid.TryParse(request.referenceId, out Guid referenceIdGuid);
-    if (RefIdIsGuid)
+    var existingWorkExperiences = context.ecer_WorkExperienceRefSet
+      .Where(t => t.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment.Id == icraEligibilityApplication.Id)
+      .ToList();
+
+    if (Guid.TryParse(request.referenceId, out var referenceIdGuid))
     {
       var oldReference = existingWorkExperiences.SingleOrDefault(t => t.Id == referenceIdGuid);
       if (oldReference != null)
       {
+        if (oldReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Rejected || oldReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Submitted)
+        {
+          throw new InvalidOperationException($"Work experience reference '{oldReference.Id}' already responded cannot delete");
+        }
+
+        var invitations = context.ecer_PortalInvitationSet.Where(i => i.ecer_WorkExperienceReferenceId.Id == referenceIdGuid).ToList();
+        foreach (var invitation in invitations)
+        {
+          context.DeleteObject(invitation);
+        }
+
         context.DeleteObject(oldReference);
       }
       else
@@ -147,10 +157,8 @@ internal sealed partial class ICRARepository
   {
     await Task.CompletedTask;
 
-    var reference = context.ecer_WorkExperienceRefSet.Where(
-      t => t.ecer_Applicantid.Id == Guid.Parse(applicantId) &&
-      t.ecer_WorkExperienceRefId == Guid.Parse(referenceId))
-    .FirstOrDefault();
+    var reference = context.ecer_WorkExperienceRefSet
+      .FirstOrDefault(t => t.ecer_Applicantid.Id == Guid.Parse(applicantId) && t.ecer_WorkExperienceRefId == Guid.Parse(referenceId));
 
     if (reference == null)
     {

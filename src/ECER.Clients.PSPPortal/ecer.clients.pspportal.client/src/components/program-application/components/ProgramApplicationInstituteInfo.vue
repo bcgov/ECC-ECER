@@ -224,7 +224,7 @@ export default defineComponent({
         null as Components.Schemas.ProgramApplication | null,
     };
   },
-  emits: { next: (_payload: NextStepPayload) => true },
+  emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
   methods: {
     async fetchApplication() {
       const result = await getProgramApplicationById(this.programApplicationId);
