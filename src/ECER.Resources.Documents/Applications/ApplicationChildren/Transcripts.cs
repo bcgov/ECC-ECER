@@ -36,27 +36,17 @@ internal sealed partial class ApplicationRepository
     {
       transcript.ecer_TranscriptId = Guid.NewGuid();
       transcript.StatusCode = ecer_Transcript_StatusCode.Draft;
-      var country = transcript.ecer_transcript_InstituteCountryId == null ? null : context.ecer_CountrySet.SingleOrDefault(c => c.ecer_CountryId == transcript.ecer_transcript_InstituteCountryId!.ecer_CountryId);
-      var province = transcript.ecer_transcript_ProvinceId == null ? null : context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == transcript.ecer_transcript_ProvinceId!.ecer_ProvinceId);
-      var institution = transcript.ecer_transcript_postsecondaryinstitutionid == null ? null : context.ecer_PostSecondaryInstituteSet.SingleOrDefault(p => p.ecer_PostSecondaryInstituteId == transcript.ecer_transcript_postsecondaryinstitutionid!.ecer_PostSecondaryInstituteId);
+      var countryReference = transcript.ecer_transcript_InstituteCountryId?.ToEntityReference();
+      var provinceReference = transcript.ecer_transcript_ProvinceId?.ToEntityReference();
+      var institutionReference = transcript.ecer_transcript_postsecondaryinstitutionid?.ToEntityReference();
       transcript.ecer_transcript_InstituteCountryId = null;
       transcript.ecer_transcript_ProvinceId = null;
       transcript.ecer_transcript_postsecondaryinstitutionid = null;
+      transcript.ecer_InstituteCountryId = countryReference;
+      transcript.ecer_ProvinceId = provinceReference;
+      transcript.ecer_postsecondaryinstitutionid = institutionReference;
       context.AddObject(transcript);
       context.AddLink(application, ecer_Application.Fields.ecer_transcript_Applicationid, transcript);
-
-      if (country != null)
-      {
-        context.AddLink(country, ecer_Country.Fields.ecer_transcript_InstituteCountryId, transcript);
-      }
-      if (province != null)
-      {
-        context.AddLink(province, ecer_Province.Fields.ecer_transcript_ProvinceId, transcript);
-      }
-      if (institution != null)
-      {
-        context.AddLink(institution, ecer_PostSecondaryInstitute.Fields.ecer_transcript_postsecondaryinstitutionid, transcript);
-      }
     }
   }
 

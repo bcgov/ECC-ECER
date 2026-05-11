@@ -1,21 +1,97 @@
-using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
 using ECER.Utilities.ObjectStorage.Providers;
-using ECER.Infrastructure.Common;
+using Riok.Mapperly.Abstractions;
+using ContractCommunications = ECER.Managers.Registry.Contract.Communications;
 
-namespace ECER.Clients.PSPPortal.Server.Communications
+namespace ECER.Clients.PSPPortal.Server.Communications;
+
+internal interface ICommunicationMapper
 {
-  public class CommunicationMapper : SecureProfile
+  IEnumerable<Communication> MapCommunications(IEnumerable<ContractCommunications.Communication> source);
+  ContractCommunications.Communication MapCommunication(Communication source);
+}
+
+[Mapper]
+internal partial class CommunicationMapper : ICommunicationMapper
+{
+  public IEnumerable<Communication> MapCommunications(IEnumerable<ContractCommunications.Communication> source) => source.Select(MapCommunication).ToList();
+
+  public ContractCommunications.Communication MapCommunication(Communication source) => new()
   {
-    public CommunicationMapper()
-    {
-      CreateMap<Managers.Registry.Contract.Communications.Communication, Communication>().ReverseMap();
-      CreateMap<Managers.Registry.Contract.Communications.CommunicationDocument, CommunicationDocument>()
-        .ReverseMap()
-        .ForMember(s => s.EcerWebApplicationType, opts => opts.MapFrom(d => EcerWebApplicationType.PSP)); //default to PSP when saving anything from the frontend
-      CreateMap<Managers.Registry.Contract.Communications.CommunicationCategory, CommunicationCategory>()
-        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-        .ReverseMap();
-    }
-  }
+    Id = source.Id,
+    Category = MapCommunicationCategory(source.Category),
+    Subject = source.Subject,
+    Text = source.Text,
+    From = MapInitiatedFrom(source.From),
+    Acknowledged = source.Acknowledged,
+    NotifiedOn = source.NotifiedOn,
+    Status = MapCommunicationStatus(source.Status),
+    DoNotReply = source.DoNotReply,
+    LatestMessageNotifiedOn = source.LatestMessageNotifiedOn,
+    IsRead = source.IsRead,
+    ApplicationId = source.ApplicationId,
+    IcraEligibilityId = source.IcraEligibilityId,
+    ProgramRepresentativeId = source.ProgramRepresentativeId,
+    EducationInstituteName = source.EducationInstituteName,
+    Documents = source.Documents?.Select(MapCommunicationDocument).ToList() ?? [],
+  };
+
+  private Communication MapCommunication(ContractCommunications.Communication source) => new()
+  {
+    Id = source.Id,
+    Category = MapCommunicationCategory(source.Category),
+    Subject = source.Subject,
+    Text = source.Text,
+    From = MapInitiatedFrom(source.From),
+    Acknowledged = source.Acknowledged,
+    NotifiedOn = source.NotifiedOn,
+    Status = MapCommunicationStatus(source.Status),
+    DoNotReply = source.DoNotReply,
+    LatestMessageNotifiedOn = source.LatestMessageNotifiedOn,
+    IsRead = source.IsRead,
+    ApplicationId = source.ApplicationId,
+    IcraEligibilityId = source.IcraEligibilityId,
+    ProgramRepresentativeId = source.ProgramRepresentativeId,
+    EducationInstituteName = source.EducationInstituteName,
+    Documents = source.Documents?.Select(MapCommunicationDocument).ToList() ?? [],
+  };
+
+  private static CommunicationDocument MapCommunicationDocument(ContractCommunications.CommunicationDocument source) => new(source.Id)
+  {
+    Url = source.Url,
+    Extention = source.Extention,
+    Name = source.Name,
+    Size = source.Size,
+    EcerWebApplicationType = source.EcerWebApplicationType,
+  };
+
+  private static ContractCommunications.CommunicationDocument MapCommunicationDocument(CommunicationDocument source) => new(source.Id)
+  {
+    Url = source.Url,
+    Extention = source.Extention,
+    Name = source.Name,
+    Size = source.Size,
+    EcerWebApplicationType = EcerWebApplicationType.PSP,
+  };
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CommunicationCategory MapCommunicationCategory(ContractCommunications.CommunicationCategory source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractCommunications.CommunicationCategory MapCommunicationCategory(CommunicationCategory source);
+
+  private CommunicationCategory? MapCommunicationCategory(ContractCommunications.CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
+
+  private ContractCommunications.CommunicationCategory? MapCommunicationCategory(CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial InitiatedFrom MapInitiatedFrom(ContractCommunications.InitiatedFrom source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractCommunications.InitiatedFrom MapInitiatedFrom(InitiatedFrom source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CommunicationStatus MapCommunicationStatus(ContractCommunications.CommunicationStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractCommunications.CommunicationStatus MapCommunicationStatus(CommunicationStatus source);
 }

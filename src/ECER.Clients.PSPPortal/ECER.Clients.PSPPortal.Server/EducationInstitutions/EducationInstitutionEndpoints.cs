@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.PostSecondaryInstitutes;
 using ECER.Utilities.Hosting;
@@ -14,7 +13,7 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
   {
     endpointRouteBuilder.MapGet("api/education-institution",
       async Task<Results<Ok<EducationInstitution>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus,
-        IMapper mapper) =>
+        IEducationInstitutionMapper mapper) =>
       {
         var user = ctx.User.GetUserContext()!;
         var results = await bus.Send<PostSecondaryInstitutionsQueryResults>(
@@ -22,26 +21,26 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
         var institution = results.Items.SingleOrDefault();
         if (institution == null) return TypedResults.NotFound();
 
-        var educationInstitution = mapper.Map<EducationInstitution>(institution);
+        var educationInstitution = mapper.MapEducationInstitution(institution);
         return TypedResults.Ok(educationInstitution);
       }).WithOpenApi("Get users education institution", string.Empty, "education_institution_get")
         .WithOpenApi()
         .RequireAuthorization("psp_user");
 
     endpointRouteBuilder.MapPut("/api/education-institution",
-      async Task<Results<Ok, BadRequest<ProblemDetails>>> (EducationInstitution institute, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      async Task<Results<Ok, BadRequest<ProblemDetails>>> (EducationInstitution institute, HttpContext ctx, CancellationToken ct, IMediator bus, IEducationInstitutionMapper mapper) =>
       {
-        await bus.Send(new UpdatePostSecondaryInstitutionCommand(mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.PostSecondaryInstitute>(institute)!), ctx.RequestAborted);
+        await bus.Send(new UpdatePostSecondaryInstitutionCommand(mapper.MapEducationInstitution(institute)), ctx.RequestAborted);
         return TypedResults.Ok();
       })
     .WithOpenApi("Updates the education institution", string.Empty, "education_institution_put")
     .RequireAuthorization("psp_user");
 
     endpointRouteBuilder.MapPost("/api/education-institution/campus",
-      async Task<Results<Ok<string>, BadRequest<ProblemDetails>>> (CreateCampusRequest request, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      async Task<Results<Ok<string>, BadRequest<ProblemDetails>>> (CreateCampusRequest request, HttpContext ctx, CancellationToken ct, IMediator bus, IEducationInstitutionMapper mapper) =>
       {
         var user = ctx.User.GetUserContext()!;
-        var campus = mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.Campus>(request);
+        var campus = mapper.MapCreateCampusRequest(request);
         var isSatellite = request.IsSatelliteOrTemporaryLocation == true;
         try
         {
@@ -58,10 +57,10 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
     .RequireAuthorization("psp_user");
 
     endpointRouteBuilder.MapPut("/api/education-institution/campus/{campusId}",
-      async Task<Results<Ok, NotFound, BadRequest<ProblemDetails>>> (string campusId, UpdateCampusRequest request, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      async Task<Results<Ok, NotFound, BadRequest<ProblemDetails>>> (string campusId, UpdateCampusRequest request, HttpContext ctx, CancellationToken ct, IMediator bus, IEducationInstitutionMapper mapper) =>
       {
         var user = ctx.User.GetUserContext()!;
-        var campus = mapper.Map<Managers.Registry.Contract.PostSecondaryInstitutes.Campus>(request);
+        var campus = mapper.MapUpdateCampusRequest(request);
         campus = campus with { Id = campusId };
         var result = await bus.Send(new UpdateCampusCommand(user.UserId, campus), ct);
         
@@ -179,5 +178,3 @@ public record EducationInstitution
     public string? KeyCampusContactId { get; set; }
     public string? OtherCampusContactName { get; set; }
   }
-
-

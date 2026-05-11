@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
@@ -11,10 +10,10 @@ namespace ECER.Resources.Accounts.Communications;
 internal class CommunicationRepository : ICommunicationRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly ICommunicationRepositoryMapper mapper;
   private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
 
-  public CommunicationRepository(EcerContext context, IMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver)
+  public CommunicationRepository(EcerContext context, ICommunicationRepositoryMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver)
   {
     this.context = context;
     this.mapper = mapper;
@@ -77,7 +76,7 @@ internal class CommunicationRepository : ICommunicationRepository
     // Filtering by status
     if (query.ByStatus != null)
     {
-      var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus)!.ToList();
+      var statuses = mapper.MapCommunicationStatuses(query.ByStatus);
       communications = communications.WhereIn(item => item.StatusCode!.Value, statuses);
     }
 
@@ -111,7 +110,7 @@ internal class CommunicationRepository : ICommunicationRepository
       .Include(c => c.ecer_communication_ICRAEligibilityAssessmentId)
       .Execute();
 
-    var finalCommunications = mapper.Map<IEnumerable<Communication>>(results)!.ToList();
+    var finalCommunications = mapper.MapCommunications(results);
 
     return new CommunicationResult
     {
@@ -157,7 +156,7 @@ internal class CommunicationRepository : ICommunicationRepository
     var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(userId));
     var registrant = context.ContactSet.SingleOrDefault(r => r.ContactId == Guid.Parse(userId));
     var isPspUser = communication.IsPspUser.GetValueOrDefault();
-    var ecerCommunication = mapper.Map<ecer_Communication>(communication);
+    var ecerCommunication = mapper.MapCommunication(communication);
 
     if (isPspUser && pspUser == null)
     {

@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -14,7 +13,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     endpointRouteBuilder.MapGet("api/users/manage",
-      async Task<Results<Ok<IEnumerable<PspUserListItem>>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      async Task<Results<Ok<IEnumerable<PspUserListItem>>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus, IPspUserMapper mapper) =>
       {
         var user = ctx.User.GetUserContext()!;
         var currentRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = user.Identity }, ct)).Items.SingleOrDefault();
@@ -28,7 +27,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
           ByPostSecondaryInstituteId = currentRep.PostSecondaryInstituteId
         }, ct);
 
-        var result = mapper.Map<IEnumerable<PspUserListItem>>(reps.Items);
+        var result = mapper.MapUserListItems(reps.Items);
         return TypedResults.Ok(result);
       })
       .WithOpenApi("Gets PSP representatives for the current user's institution", string.Empty, "psp_user_manage_get")
@@ -140,7 +139,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("api/users/manage/add",
-      async Task<Results<Ok<NewPspUserResponse>, BadRequest<string>, NotFound>> (PspUserProfile userProfile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      async Task<Results<Ok<NewPspUserResponse>, BadRequest<string>, NotFound>> (PspUserProfile userProfile, HttpContext ctx, CancellationToken ct, IMediator bus, IPspUserMapper mapper) =>
       {
         var user = ctx.User.GetUserContext()!;
         var currentRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = user.Identity }, ct)).Items.SingleOrDefault();
@@ -149,7 +148,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
           return TypedResults.NotFound();
         }
 
-        var newPspUser = mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(userProfile)!;
+        var newPspUser = mapper.MapUserProfile(userProfile);
         var newPspUserId = Guid.NewGuid().ToString();
         newPspUser.Id = newPspUserId;
 

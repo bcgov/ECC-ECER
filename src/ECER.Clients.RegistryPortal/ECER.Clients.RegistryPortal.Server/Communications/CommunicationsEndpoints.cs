@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
@@ -15,11 +14,10 @@ public class CommunicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/messages/{parentId?}", async Task<Results<Ok<GetMessagesResponse>, BadRequest<ProblemDetails>, NotFound>> (string? parentId, HttpContext httpContext, IMediator messageBus, IMapper mapper, IOptions<PaginationSettings> paginationOptions) =>
+    endpointRouteBuilder.MapGet("/api/messages/{parentId?}", async Task<Results<Ok<GetMessagesResponse>, BadRequest<ProblemDetails>, NotFound>> (string? parentId, HttpContext httpContext, IMediator messageBus, ICommunicationMapper communicationMapper, IOptions<PaginationSettings> paginationOptions) =>
     {
       var userContext = httpContext.User.GetUserContext();
       bool IdIsNotGuid = !Guid.TryParse(parentId, out _); if (IdIsNotGuid && parentId != null) { parentId = null; }
-      // Get pagination parameters from the query string with default values
       var pageNumber = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageProperty], out var page) && page > 0 ? page : paginationOptions.Value.DefaultPageNumber;
       var pageSize = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageSizeProperty], out var size) ? size : paginationOptions.Value.DefaultPageSize;
 
@@ -33,12 +31,12 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       };
       var results = await messageBus.Send<CommunicationsQueryResults>(query);
 
-      return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), TotalMessagesCount = results.TotalMessagesCount });
+      return TypedResults.Ok(new GetMessagesResponse() { Communications = communicationMapper.MapCommunications(results.Items), TotalMessagesCount = results.TotalMessagesCount });
     })
      .WithOpenApi("Handles messages queries", string.Empty, "message_get")
      .RequireAuthorization("registry_user");
 
-    endpointRouteBuilder.MapPost("/api/messages", async Task<Results<Ok<SendMessageResponse>, BadRequest<ProblemDetails>, NotFound>> (SendMessageRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/messages", async Task<Results<Ok<SendMessageResponse>, BadRequest<ProblemDetails>, NotFound>> (SendMessageRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, ICommunicationMapper communicationMapper) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
       bool IsNotGuid = !Guid.TryParse(request.Communication.Id, out _);
@@ -47,7 +45,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails() { Title = "Communication Id is not valid" });
       }
 
-      var mappedCommunication = mapper.Map<Managers.Registry.Contract.Communications.Communication>(request.Communication);
+      var mappedCommunication = communicationMapper.MapCommunication(request.Communication);
       var cmd = new SendMessageCommand(mappedCommunication, userId!);
       var result = await messageBus.Send(cmd, ct);
 
@@ -80,10 +78,10 @@ public class CommunicationsEndpoints : IRegisterEndpoints
 
           var markCommunicationCmd = new MarkCommunicationAsSeenCommand
           {
-            CommunicationId = request.CommunicationId, 
+            CommunicationId = request.CommunicationId,
             UserId = userId!
           };
-          
+
           var communicationId =
             await messageBus.Send(markCommunicationCmd, ct);
           return TypedResults.Ok(new CommunicationResponse(communicationId));

@@ -1,103 +1,178 @@
-﻿using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Accounts.Registrants;
 
-internal sealed class RegistrantRepositoryMapper : SecureProfile
+internal interface IRegistrantRepositoryMapper
 {
-  public RegistrantRepositoryMapper()
+  List<Registrant> MapRegistrants(IEnumerable<Contact> source);
+  Contact MapUserProfile(UserProfile source);
+  List<ecer_PreviousName> MapPreviousNames(IEnumerable<PreviousName> source);
+  List<bcgov_DocumentUrl> MapIdentityDocuments(IEnumerable<IdentityDocument> source);
+}
+
+[Mapper]
+internal partial class RegistrantRepositoryMapper : IRegistrantRepositoryMapper
+{
+  public List<Registrant> MapRegistrants(IEnumerable<Contact> source) => source.Select(MapRegistrant).ToList();
+
+  public Contact MapUserProfile(UserProfile source) => new()
   {
-    CreateMap<Contact, Registrant>()
-        .ForMember(d => d.Profile, opts => opts.MapFrom(s => s))
-        .ForMember(d => d.Identities, opts => opts.MapFrom(s => s.ecer_contact_ecer_authentication_455))
-        .ReverseMap()
-        .ValidateMemberList(MemberList.Source)
-        ;
+    FirstName = source.FirstName,
+    LastName = source.LastName,
+    BirthDate = source.DateOfBirth == null ? null : source.DateOfBirth.Value.ToDateTime(TimeOnly.MinValue),
+    Address1_Telephone1 = source.Phone,
+    Telephone1 = source.Phone,
+    ecer_IsVerified = source.IsVerified,
+    ecer_TempClientID = source.RegistrationNumber,
+    ecer_IsBCECE = !string.IsNullOrEmpty(source.RegistrationNumber),
+    ecer_PreferredName = source.PreferredName,
+    Address1_Telephone2 = source.AlternateContactPhone,
+    MiddleName = source.MiddleName,
+    EMailAddress1 = source.Email,
+    Address1_Line1 = source.ResidentialAddress?.Line1,
+    Address1_Line2 = source.ResidentialAddress?.Line2,
+    Address1_City = source.ResidentialAddress?.City,
+    Address1_PostalCode = source.ResidentialAddress?.PostalCode,
+    Address1_StateOrProvince = source.ResidentialAddress?.Province,
+    Address1_Country = source.ResidentialAddress?.Country,
+    Address2_Line1 = source.MailingAddress?.Line1,
+    Address2_Line2 = source.MailingAddress?.Line2,
+    Address2_City = source.MailingAddress?.City,
+    Address2_PostalCode = source.MailingAddress?.PostalCode,
+    Address2_StateOrProvince = source.MailingAddress?.Province,
+    Address2_Country = source.MailingAddress?.Country,
+    StatusCode = MapStatusCode(source.Status),
+    ecer_idverificationdecision = MapIdVerificationDecision(source.IDVerificationDecision),
+  };
 
-    CreateMap<PreviousName, ecer_PreviousName>(MemberList.Source)
-      .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
-      .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.ecer_PreferredName, opts => opts.MapFrom(s => s.PreferredName))
-      .ForMember(d => d.ecer_MiddleName, opts => opts.MapFrom(s => s.MiddleName))
-      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-      .ForMember(d => d.ecer_Source, opts => opts.MapFrom(s => s.Source))
-      .ForMember(d => d.ecer_documenturl_PreviousNameId, opts => { opts.Condition(s => s.Documents.Any()); opts.MapFrom(s => s.Documents); });
+  public List<ecer_PreviousName> MapPreviousNames(IEnumerable<PreviousName> source) => source.Select(MapPreviousName).ToList();
 
-    CreateMap<ecer_PreviousName, PreviousName>(MemberList.Source)
-      .ForCtorParam(nameof(PreviousName.FirstName), opts => opts.MapFrom(s => s.ecer_FirstName))
-      .ForCtorParam(nameof(PreviousName.LastName), opts => opts.MapFrom(s => s.ecer_LastName))
-      .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.ecer_PreferredName))
-      .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.ecer_MiddleName))
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_PreviousNameId))
-      .ForMember(d => d.Source, opts => opts.MapFrom(s => s.ecer_Source))
-      .ForMember(d => d.Documents, opts => opts.Ignore())
-      .ValidateMemberList(MemberList.Destination);
+  public List<bcgov_DocumentUrl> MapIdentityDocuments(IEnumerable<IdentityDocument> source) => source.Select(MapIdentityDocument).ToList();
 
-    CreateMap<IdentityDocument, bcgov_DocumentUrl>(MemberList.Source)
-      .ForMember(d => d.bcgov_DocumentUrlId, opts => opts.MapFrom(s => s.Id))
-      .ForMember(d => d.bcgov_FileName, opts => opts.MapFrom(s => s.Name))
-      .ForMember(d => d.bcgov_FileSize, opts => opts.MapFrom(s => s.Size))
-      .ForMember(d => d.bcgov_Url, opts => opts.MapFrom(s => s.Url))
-      .ForMember(d => d.bcgov_FileExtension, opts => opts.MapFrom(s => s.Extention))
-      .ForMember(d => d.ecer_ApplicationName, opts => opts.MapFrom(s => s.EcerWebApplicationType));
+  private Registrant MapRegistrant(Contact source) => new()
+  {
+    Id = source.Id.ToString(),
+    Identities = MapUserIdentities(source.ecer_contact_ecer_authentication_455),
+    Profile = MapUserProfile(source),
+  };
 
-    CreateMap<ecer_Authentication, UserIdentity>()
-        .ForCtorParam(nameof(UserIdentity.UserId), opts => opts.MapFrom(s => s.ecer_ExternalID))
-        .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ecer_IdentityProvider));
+  private UserProfile MapUserProfile(Contact source) => new()
+  {
+    FirstName = source.FirstName,
+    LastName = source.LastName,
+    MiddleName = source.MiddleName,
+    PreferredName = source.ecer_PreferredName,
+    AlternateContactPhone = source.Address1_Telephone2,
+    DateOfBirth = source.BirthDate.HasValue ? DateOnly.FromDateTime(source.BirthDate.Value) : null,
+    Email = source.EMailAddress1 ?? string.Empty,
+    Phone = source.Address1_Telephone1 ?? string.Empty,
+    IsVerified = source.ecer_IsVerified ?? false,
+    ResidentialAddress = source.Address1_Line1 == null ? null : new Address(source.Address1_Line1, source.Address1_Line2, source.Address1_City, source.Address1_PostalCode, source.Address1_StateOrProvince, source.Address1_Country),
+    MailingAddress = source.Address2_Line1 == null ? null : new Address(source.Address2_Line1, source.Address2_Line2, source.Address2_City, source.Address2_PostalCode, source.Address2_StateOrProvince, source.Address2_Country),
+    PreviousNames = MapRegistrantPreviousNames(source.ecer_previousname_Contactid),
+    RegistrationNumber = source.ecer_ClientID,
+    Status = MapStatusCode(source.StatusCode) ?? default,
+    IDVerificationDecision = MapIdVerificationDecision(source.ecer_idverificationdecision),
+  };
 
-    CreateMap<Contact, UserProfile>()
-        .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => DateOnly.FromDateTime(s.BirthDate.GetValueOrDefault())))
-        .ForMember(d => d.Email, opts => opts.MapFrom(s => s.EMailAddress1))
-        .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
-        .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.ecer_PreferredName))
-        .ForMember(d => d.AlternateContactPhone, opts => opts.MapFrom(s => s.Address1_Telephone2))
-        .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.Address1_Telephone1))
-        .ForMember(d => d.IsVerified, opts => opts.MapFrom(s => s.ecer_IsVerified ?? false))
-        .ForMember(d => d.ResidentialAddress, opts => opts.MapFrom(s => s.Address1_Line1 == null ? null : new Address(s.Address1_Line1, s.Address1_Line2, s.Address1_City, s.Address1_PostalCode, s.Address1_StateOrProvince, s.Address1_Country)))
-        .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => s.Address2_Line1 == null ? null : new Address(s.Address2_Line1, s.Address2_Line2, s.Address2_City, s.Address2_PostalCode, s.Address2_StateOrProvince, s.Address2_Country)))
-        .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.ecer_previousname_Contactid))
-        .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.ecer_ClientID))
-        .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-        .ForMember(d => d.IDVerificationDecision, opts => opts.MapFrom(s => s.ecer_idverificationdecision))
-        .ForMember(d => d.IsRegistrant, opts => opts.Ignore())
-        .ReverseMap()
-        .ValidateMemberList(MemberList.Source)
-        .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())
-        .ForSourceMember(s => s.MailingAddress, opts => opts.DoNotValidate())
-        .ForSourceMember(s => s.DateOfBirth, opts => opts.DoNotValidate())
-        .ForMember(d => d.ecer_previousname_Contactid, opts => opts.Ignore())
-        .ForMember(d => d.BirthDate, opts => opts.MapFrom(s => s.DateOfBirth == null ? (DateTime?)null : s.DateOfBirth.Value.ToDateTime(TimeOnly.MinValue)))
-        .ForMember(d => d.Telephone1, opts => opts.MapFrom(s => s.Phone))
-        .ForMember(d => d.ecer_IsVerified, opts => opts.MapFrom(s => s.IsVerified))
-        .ForMember(d => d.ecer_TempClientID, opts => opts.MapFrom(s => s.RegistrationNumber))
-        .ForMember(d => d.ecer_IsBCECE, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.RegistrationNumber)))
-        .ForMember(d => d.ecer_PreferredName, opts => opts.MapFrom(s => s.PreferredName))
-        .ForMember(d => d.Address1_Telephone2, opts => opts.MapFrom(s => s.AlternateContactPhone))
-        .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
-        .ForMember(d => d.EMailAddress1, opts => opts.MapFrom(s => s.Email))
-        .ForMember(d => d.Address1_Line1, opts => opts.MapFrom(s => s.ResidentialAddress == null ? null : s.ResidentialAddress.Line1))
-        .ForMember(d => d.Address1_Line2, opts => opts.MapFrom(s => s.ResidentialAddress == null ? null : s.ResidentialAddress.Line2))
-        .ForMember(d => d.Address1_City, opts => opts.MapFrom(s => s.ResidentialAddress == null ? null : s.ResidentialAddress.City))
-        .ForMember(d => d.Address1_PostalCode, opts => opts.MapFrom(s => s.ResidentialAddress == null ? null : s.ResidentialAddress.PostalCode))
-        .ForMember(d => d.Address1_StateOrProvince, opts => opts.MapFrom(s => s.ResidentialAddress == null ? null : s.ResidentialAddress.Province))
-        .ForMember(d => d.Address1_Country, opts => opts.MapFrom(s => s.ResidentialAddress == null ? null : s.ResidentialAddress.Country))
-        .ForMember(d => d.Address2_Line1, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Line1))
-        .ForMember(d => d.Address2_Line2, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Line2))
-        .ForMember(d => d.Address2_City, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.City))
-        .ForMember(d => d.Address2_PostalCode, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.PostalCode))
-        .ForMember(d => d.Address2_StateOrProvince, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Province))
-        .ForMember(d => d.Address2_Country, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Country));
+  private ecer_PreviousName MapPreviousName(PreviousName source)
+  {
+    var previousName = new ecer_PreviousName
+    {
+      ecer_FirstName = source.FirstName,
+      ecer_LastName = source.LastName,
+      ecer_PreferredName = source.PreferredName,
+      ecer_MiddleName = source.MiddleName,
+      StatusCode = MapPreviousNameStage(source.Status),
+      ecer_Source = MapPreviousNameSource(source.Source),
+      ecer_documenturl_PreviousNameId = source.Documents.Any() ? MapIdentityDocuments(source.Documents) : null,
+    };
 
-    CreateMap<ecer_PreviousName_StatusCode, PreviousNameStage>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
+    if (Guid.TryParse(source.Id, out var previousNameId))
+    {
+      previousName.Id = previousNameId;
+    }
 
-    CreateMap<ecer_PreviousNameSources, PreviousNameSources>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
+    return previousName;
   }
+
+  private PreviousName MapPreviousName(ecer_PreviousName source) => new(source.ecer_FirstName ?? string.Empty, source.ecer_LastName ?? string.Empty)
+  {
+    PreferredName = source.ecer_PreferredName,
+    MiddleName = source.ecer_MiddleName,
+    Status = MapPreviousNameStage(source.StatusCode),
+    Id = source.ecer_PreviousNameId?.ToString(),
+    Source = MapPreviousNameSource(source.ecer_Source),
+  };
+
+  private List<PreviousName> MapRegistrantPreviousNames(IEnumerable<ecer_PreviousName>? source) =>
+    source?.Select(MapPreviousName).ToList() ?? new List<PreviousName>();
+
+  private bcgov_DocumentUrl MapIdentityDocument(IdentityDocument source)
+  {
+    var document = new bcgov_DocumentUrl
+    {
+      bcgov_FileName = source.Name,
+      bcgov_FileSize = source.Size,
+      bcgov_Url = source.Url,
+      bcgov_FileExtension = source.Extention,
+      ecer_ApplicationName = source.EcerWebApplicationType.ToString(),
+    };
+
+    if (Guid.TryParse(source.Id, out var documentId))
+    {
+      document.bcgov_DocumentUrlId = documentId;
+    }
+
+    return document;
+  }
+
+  private static List<UserIdentity> MapUserIdentities(IEnumerable<ecer_Authentication>? source) =>
+    source?.Select(MapUserIdentity).ToList() ?? new List<UserIdentity>();
+
+  private static UserIdentity MapUserIdentity(ecer_Authentication source) =>
+    new(source.ecer_ExternalID ?? string.Empty, source.ecer_IdentityProvider ?? string.Empty);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PreviousName_StatusCode MapPreviousNameStage(PreviousNameStage source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PreviousNameStage MapPreviousNameStage(ecer_PreviousName_StatusCode source);
+
+  private ecer_PreviousName_StatusCode? MapPreviousNameStage(PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
+  private PreviousNameStage? MapPreviousNameStage(ecer_PreviousName_StatusCode? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PreviousNameSources MapPreviousNameSource(PreviousNameSources source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PreviousNameSources MapPreviousNameSource(ecer_PreviousNameSources source);
+
+  private ecer_PreviousNameSources? MapPreviousNameSource(PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
+
+  private PreviousNameSources? MapPreviousNameSource(ecer_PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial Contact_StatusCode MapStatusCode(StatusCode source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial StatusCode MapStatusCode(Contact_StatusCode source);
+
+  private Contact_StatusCode? MapStatusCode(StatusCode? source) => source.HasValue ? MapStatusCode(source.Value) : null;
+
+  private StatusCode? MapStatusCode(Contact_StatusCode? source) => source.HasValue ? MapStatusCode(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_IDVerificationDecision MapIdVerificationDecision(IDVerificationDecision source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial IDVerificationDecision MapIdVerificationDecision(ecer_IDVerificationDecision source);
+
+  private ecer_IDVerificationDecision? MapIdVerificationDecision(IDVerificationDecision? source) => source.HasValue ? MapIdVerificationDecision(source.Value) : null;
+
+  private IDVerificationDecision? MapIdVerificationDecision(ecer_IDVerificationDecision? source) => source.HasValue ? MapIdVerificationDecision(source.Value) : null;
 }

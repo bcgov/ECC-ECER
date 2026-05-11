@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
@@ -15,14 +14,14 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IApplicationMapper applicationMapper) =>
         {
           bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
           bool ApplicationIdIsNotGuid = !Guid.TryParse(request.DraftApplication.Id, out _); if (ApplicationIdIsNotGuid && request.DraftApplication.Id != null) { request.DraftApplication.Id = null; }
 
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
-          var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
+          var draftApplication = applicationMapper.MapDraftApplication(request.DraftApplication, userContext!.UserId);
 
           if (id != null)
           {
@@ -37,13 +36,14 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           }
 
           var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
-          return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
+          ArgumentNullException.ThrowIfNull(application);
+          return TypedResults.Ok(new DraftApplicationResponse(applicationMapper.MapApplication(application)));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IApplicationMapper applicationMapper) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
@@ -68,13 +68,14 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             return TypedResults.BadRequest(problemDetails);
           }
 
-          return TypedResults.Ok(new SubmitApplicationResponse(mapper.Map<Application>(result.Application)));
+          ArgumentNullException.ThrowIfNull(result.Application);
+          return TypedResults.Ok(new SubmitApplicationResponse(applicationMapper.MapApplication(result.Application)));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/applications/{id?}", async (string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/applications/{id?}", async (string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IApplicationMapper applicationMapper, CancellationToken ct) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 
@@ -86,13 +87,13 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             ByStatus = byStatus?.Convert<ApplicationStatus, Managers.Registry.Contract.Applications.ApplicationStatus>()
           };
           var results = await messageBus.Send(query, ct);
-          return TypedResults.Ok(mapper.Map<IEnumerable<Application>>(results.Items));
+          return TypedResults.Ok(applicationMapper.MapApplications(results.Items));
         })
         .WithOpenApi("Handles application queries", string.Empty, "application_get")
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/applications/{id}/status", async Task<Results<Ok<SubmittedApplicationStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/applications/{id}/status", async Task<Results<Ok<SubmittedApplicationStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IApplicationMapper applicationMapper, CancellationToken ct) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool IdIsNotGuid = !Guid.TryParse(id, out _);
@@ -111,7 +112,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           {
             return TypedResults.NotFound(new ProblemDetails() { Title = "Application not found" });
           }
-          return TypedResults.Ok(mapper.Map<SubmittedApplicationStatus>(application));
+          return TypedResults.Ok(applicationMapper.MapSubmittedApplicationStatus(application));
         })
         .WithOpenApi("Handles application status queries", string.Empty, "application_status_get")
         .RequireAuthorization()
@@ -133,7 +134,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{application_id}/workexperiencereference/{reference_id?}", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, WorkExperienceReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/workexperiencereference/{reference_id?}", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, WorkExperienceReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IApplicationMapper applicationMapper) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
@@ -154,7 +155,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           {
             reference_id = "";
           }
-          var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.Applications.WorkExperienceReference>(request);
+          var mappedWorkExperienceReference = applicationMapper.MapWorkExperienceReference(request);
           var cmd = new UpdateWorkExperienceReferenceCommand(mappedWorkExperienceReference, application_id, reference_id, userId!);
           var result = await messageBus.Send(cmd, ct);
 
@@ -174,7 +175,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{application_id}/characterreference/{reference_id?}", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, CharacterReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/characterreference/{reference_id?}", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, CharacterReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IApplicationMapper applicationMapper) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
@@ -195,7 +196,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           {
             reference_id = "";
           }
-          var mappedCharacterReference = mapper.Map<Managers.Registry.Contract.Applications.CharacterReference>(request);
+          var mappedCharacterReference = applicationMapper.MapCharacterReference(request);
           var cmd = new UpdateCharacterReferenceCommand(mappedCharacterReference, application_id, reference_id, userId!);
           var result = await messageBus.Send(cmd, ct);
 
@@ -259,7 +260,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{application_id}/professionaldevelopment/add", async Task<Results<Ok<AddProfessionalDevelopmentResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, ProfessionalDevelopment request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/professionaldevelopment/add", async Task<Results<Ok<AddProfessionalDevelopmentResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, ProfessionalDevelopment request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IApplicationMapper applicationMapper) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
@@ -268,7 +269,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
           }
 
-          var mappedProfessionalDevelopment = mapper.Map<Managers.Registry.Contract.Applications.ProfessionalDevelopment>(request);
+          var mappedProfessionalDevelopment = applicationMapper.MapProfessionalDevelopment(request);
           var cmd = new AddProfessionalDevelopmentCommand(mappedProfessionalDevelopment, application_id, userId!);
           var result = await messageBus.Send(cmd, ct);
 
@@ -288,7 +289,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
        .RequireAuthorization()
        .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{application_id}/transcriptDocuments", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (TranscriptDocuments request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/transcriptDocuments", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (TranscriptDocuments request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IApplicationMapper applicationMapper) =>
     {
       bool ApplicationIdIsNotGuid = !Guid.TryParse(request.ApplicationId, out _);
       if (ApplicationIdIsNotGuid)
@@ -303,10 +304,11 @@ public class ApplicationsEndpoints : IRegisterEndpoints
       }
 
       var userContext = ctx.User.GetUserContext();
-      var transcriptDocuments = mapper.Map<Managers.Registry.Contract.Applications.TranscriptDocuments>(request, opts => opts.Items.Add("RegistrantId", userContext!.UserId))!;
+      var transcriptDocuments = applicationMapper.MapTranscriptDocuments(request, userContext!.UserId);
 
       var application = await messageBus.Send(new SaveApplicationTranscriptCommand(transcriptDocuments), ct);
-      return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
+      ArgumentNullException.ThrowIfNull(application);
+      return TypedResults.Ok(new DraftApplicationResponse(applicationMapper.MapApplication(application)));
     })
     .WithOpenApi("Save application transcript documents and options", string.Empty, "application_update_transcript_post")
     .RequireAuthorization()

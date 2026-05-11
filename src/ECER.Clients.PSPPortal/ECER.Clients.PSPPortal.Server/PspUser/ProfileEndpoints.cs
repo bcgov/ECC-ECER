@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+using System.ComponentModel.DataAnnotations;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
@@ -15,7 +14,7 @@ public class ProfileEndpoints : IRegisterEndpoints
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     endpointRouteBuilder.MapGet("api/users/profile", async Task<Results<Ok<PspUserProfile>, NotFound>> (
-        HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper,
+        HttpContext ctx, CancellationToken ct, IMediator bus, IPspUserMapper mapper,
         string? bceidBusinessId, string? bceidBusinessName) =>
       {
         var user = ctx.User.GetUserContext()!;
@@ -42,7 +41,7 @@ public class ProfileEndpoints : IRegisterEndpoints
         };
         var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query, ct);
 
-        var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
+        var pspUserProfile = mapper.MapUserProfile(pspUser.Profile);
         pspUserProfile!.UnreadMessagesCount = communicationsStatus.Status.Count;
 
         return TypedResults.Ok(pspUserProfile);
@@ -51,9 +50,9 @@ public class ProfileEndpoints : IRegisterEndpoints
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPut("/api/users/profile", async Task<Ok> (PspUserProfile profile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/users/profile", async Task<Ok> (PspUserProfile profile, HttpContext ctx, CancellationToken ct, IMediator bus, IPspUserMapper mapper) =>
       {
-        var pspUser = new PspUser(ctx.User.GetUserContext()!.UserId, mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(profile)!);
+        var pspUser = new PspUser(ctx.User.GetUserContext()!.UserId, mapper.MapUserProfile(profile));
         await bus.Send(new UpdatePspRepProfileCommand(pspUser), ctx.RequestAborted);
         return TypedResults.Ok();
       })
@@ -64,7 +63,7 @@ public class ProfileEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapPost("/api/users/register",
         async Task<Results<Ok, BadRequest<PspRegistrationErrorResponse>>> (
           RegisterPspUserRequest request, HttpContext ctx,
-          CancellationToken ct, IMediator bus, IMapper mapper) =>
+          CancellationToken ct, IMediator bus, IPspUserMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
           var result = await bus.Send(
@@ -73,7 +72,7 @@ public class ProfileEndpoints : IRegisterEndpoints
               request.ProgramRepresentativeId,
               request.BceidBusinessId,
               request.BceidBusinessName,
-              mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(request.Profile)!,
+              mapper.MapUserProfile(request.Profile),
               user.Identity
             ),
             ctx.RequestAborted);

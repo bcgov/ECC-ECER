@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Managers.Registry.Contract.Communications;
@@ -67,7 +66,7 @@ public class FilesEndpoints : IRegisterEndpoints
     .DisableAntiforgery();
 
     endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, BadRequest<ProblemDetails>, NotFound>> (string fileId,
-        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper, IOptions<UploaderSettings> uploaderOptions) =>
+        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IOptions<UploaderSettings> uploaderOptions) =>
     {
       if (!Guid.TryParse(fileId, out _))
       {

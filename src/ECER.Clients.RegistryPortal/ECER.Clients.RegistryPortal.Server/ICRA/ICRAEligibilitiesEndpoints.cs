@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.ICRA;
 using ECER.Utilities.Hosting;
@@ -13,7 +12,7 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPut("/api/icra/{id?}", async Task<Results<Ok<DraftICRAEligibilityResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftICRAEligibilityRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/icra/{id?}", async Task<Results<Ok<DraftICRAEligibilityResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftICRAEligibilityRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IICRAEligibilityMapper icraEligibilityMapper) =>
         {
           bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
           bool PayloadIdIsNotGuid = !Guid.TryParse(request.Eligibility.Id, out _); if (PayloadIdIsNotGuid && request.Eligibility.Id != null) { request.Eligibility.Id = null; }
@@ -21,7 +20,7 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
           if (request.Eligibility.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
           request.Eligibility.ApplicantId = userContext!.UserId;
-          var eligibility = mapper.Map<Managers.Registry.Contract.ICRA.ICRAEligibility>(request.Eligibility)!;
+          var eligibility = icraEligibilityMapper.MapEligibility(request.Eligibility);
 
           if (id != null)
           {
@@ -36,13 +35,14 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
           }
 
           var freshEligibility = await messageBus.Send(new SaveICRAEligibilityCommand(eligibility), ct);
-          return TypedResults.Ok(new DraftICRAEligibilityResponse(mapper.Map<ICRAEligibility>(freshEligibility)));
+          ArgumentNullException.ThrowIfNull(freshEligibility);
+          return TypedResults.Ok(new DraftICRAEligibilityResponse(icraEligibilityMapper.MapEligibility(freshEligibility)));
         })
         .WithOpenApi("Save a draft icra eligibility for the current user", string.Empty, "icra_put")
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/icra/{id?}", async (string? id, ICRAStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/icra/{id?}", async (string? id, ICRAStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IICRAEligibilityMapper icraEligibilityMapper, CancellationToken ct) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 
@@ -54,13 +54,13 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
             ByStatus = byStatus?.Convert<ICRAStatus, Managers.Registry.Contract.ICRA.ICRAStatus>()
           };
           var results = await messageBus.Send(query, ct);
-          return TypedResults.Ok(mapper.Map<IEnumerable<ICRAEligibility>>(results.Items));
+          return TypedResults.Ok(icraEligibilityMapper.MapEligibilities(results.Items));
         })
         .WithOpenApi("Handles icra queries", string.Empty, "icra_get")
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/icra", async Task<Results<Ok<SubmitICRAEligibilityResponse>, BadRequest<ProblemDetails>, NotFound>> (ICRAEligibilitySubmissionRequest request, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/icra", async Task<Results<Ok<SubmitICRAEligibilityResponse>, BadRequest<ProblemDetails>, NotFound>> (ICRAEligibilitySubmissionRequest request, HttpContext ctx, IMediator messageBus, IICRAEligibilityMapper icraEligibilityMapper, CancellationToken ct) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
@@ -84,13 +84,14 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
             };
             return TypedResults.BadRequest(problemDetails);
           }
-          return TypedResults.Ok(new SubmitICRAEligibilityResponse(mapper.Map<ICRAEligibility>(result.Eligibility)));
+          ArgumentNullException.ThrowIfNull(result.Eligibility);
+          return TypedResults.Ok(new SubmitICRAEligibilityResponse(icraEligibilityMapper.MapEligibility(result.Eligibility)));
         })
         .WithOpenApi("Submit an ICRA Eligibility", string.Empty, "icra_post")
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/icra/{id}/status", async Task<Results<Ok<ICRAEligibilityStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/icra/{id}/status", async Task<Results<Ok<ICRAEligibilityStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IICRAEligibilityMapper icraEligibilityMapper, CancellationToken ct) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool IdIsNotGuid = !Guid.TryParse(id, out _);
@@ -110,7 +111,7 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
           {
             return TypedResults.NotFound(new ProblemDetails() { Title = "ICRA eligibility not found" });
           }
-          return TypedResults.Ok(mapper.Map<ICRAEligibilityStatus>(eligibility));
+          return TypedResults.Ok(icraEligibilityMapper.MapEligibilityStatus(eligibility));
         })
         .WithOpenApi("Handles icra eligibility status queries", string.Empty, "icra_status_get")
         .RequireAuthorization()
@@ -138,7 +139,7 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
     .RequireAuthorization()
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/add", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string icraEligibilityId, EmploymentReference employmentReference, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/add", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string icraEligibilityId, EmploymentReference employmentReference, HttpContext ctx, CancellationToken ct, IMediator messageBus, IICRAEligibilityMapper icraEligibilityMapper) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
       bool AppIdIsNotGuid = !Guid.TryParse(icraEligibilityId, out _);
@@ -146,7 +147,7 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
       {
         return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
       }
-      var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.ICRA.EmploymentReference>(employmentReference);
+      var mappedWorkExperienceReference = icraEligibilityMapper.MapEmploymentReference(employmentReference);
       var cmd = new AddIcraWorkExperienceReferenceCommand(mappedWorkExperienceReference, icraEligibilityId, userId!);
       var result = await messageBus.Send(cmd, ct);
 
@@ -160,13 +161,13 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
         };
         return TypedResults.BadRequest(problemDetails);
       }
-      return TypedResults.Ok(mapper.Map<EmploymentReference>(result.EmploymentReference));
+      return TypedResults.Ok(icraEligibilityMapper.MapEmploymentReference(result.EmploymentReference));
     })
     .WithOpenApi("Update work experience reference", string.Empty, "icra_work_reference_add_post")
     .RequireAuthorization()
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/{referenceId}/replace", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string icraEligibilityId, string referenceId, EmploymentReference employmentReference, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/{referenceId}/replace", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string icraEligibilityId, string referenceId, EmploymentReference employmentReference, HttpContext ctx, CancellationToken ct, IMediator messageBus, IICRAEligibilityMapper icraEligibilityMapper) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
       bool AppIdIsNotGuid = !Guid.TryParse(icraEligibilityId, out _);
@@ -181,7 +182,7 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
       }
 
-      var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.ICRA.EmploymentReference>(employmentReference);
+      var mappedWorkExperienceReference = icraEligibilityMapper.MapEmploymentReference(employmentReference);
       var cmd = new ReplaceIcraWorkExperienceReferenceCommand(mappedWorkExperienceReference, icraEligibilityId, referenceId, userId!);
       var result = await messageBus.Send(cmd, ct);
 
@@ -195,13 +196,13 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
         };
         return TypedResults.BadRequest(problemDetails);
       }
-      return TypedResults.Ok(mapper.Map<EmploymentReference>(result.EmploymentReference));
+      return TypedResults.Ok(icraEligibilityMapper.MapEmploymentReference(result.EmploymentReference));
     })
     .WithOpenApi("Replace work experience reference", string.Empty, "icra_work_reference_replace_post")
     .RequireAuthorization()
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/icra/workReference/{workExperienceReferenceId}", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string workExperienceReferenceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/icra/workReference/{workExperienceReferenceId}", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string workExperienceReferenceId, HttpContext ctx, IMediator messageBus, IICRAEligibilityMapper icraEligibilityMapper, CancellationToken ct) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
 
@@ -218,7 +219,7 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
       {
         return TypedResults.NotFound();
       }
-      return TypedResults.Ok(mapper.Map<EmploymentReference>(result));
+      return TypedResults.Ok(icraEligibilityMapper.MapEmploymentReference(result));
     })
 
     .WithOpenApi("Get work experience reference by id", string.Empty, "icra_work_reference_by_id_get")

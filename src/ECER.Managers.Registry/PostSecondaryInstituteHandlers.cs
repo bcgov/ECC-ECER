@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Managers.Registry.Contract.PostSecondaryInstitutes;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
 using MediatR;
@@ -7,7 +6,7 @@ namespace ECER.Managers.Registry;
 
 public class PostSecondaryInstituteHandlers(
     IPostSecondaryInstituteRepository postSecondaryInstituteRepository,
-    IMapper mapper)
+    IPostSecondaryInstituteMapper postSecondaryInstituteMapper)
   : IRequestHandler<SearchPostSecondaryInstitutionQuery, PostSecondaryInstitutionsQueryResults>,
     IRequestHandler<UpdatePostSecondaryInstitutionCommand, string>,
     IRequestHandler<CreateCampusCommand, string>,
@@ -26,7 +25,7 @@ public class PostSecondaryInstituteHandlers(
       ByProgramRepresentativeId = request.ByProgramRepresentativeId
     }, cancellationToken);
 
-    return new PostSecondaryInstitutionsQueryResults(mapper.Map<IEnumerable<Contract.PostSecondaryInstitutes.PostSecondaryInstitute>>(institute)!);
+    return new PostSecondaryInstitutionsQueryResults(postSecondaryInstituteMapper.MapPostSecondaryInstitutions(institute));
   }
 
   /// <summary>
@@ -45,7 +44,7 @@ public class PostSecondaryInstituteHandlers(
     }, cancellationToken)).SingleOrDefault();
 
     if (institution == null) throw new InvalidOperationException($"Institute {request.Institute.Id} wasn't found");
-    var institute = mapper.Map<Resources.Documents.PostSecondaryInstitutes.PostSecondaryInstitute>(request.Institute)!;
+    var institute = postSecondaryInstituteMapper.MapPostSecondaryInstitute(request.Institute);
     await postSecondaryInstituteRepository.Save(new Resources.Documents.PostSecondaryInstitutes.PostSecondaryInstitute {
       Id = request.Institute.Id,
       InstitutionType = institute.InstitutionType,
@@ -80,7 +79,7 @@ public class PostSecondaryInstituteHandlers(
 
     if (institution == null) throw new InvalidOperationException($"No institution found for program representative {request.ProgramRepresentativeId}");
 
-    var campus = mapper.Map<Resources.Documents.PostSecondaryInstitutes.Campus>(request.Campus)! with { IsSatelliteOrTemporaryLocation = request.IsSatelliteOrTemporaryLocation };
+    var campus = postSecondaryInstituteMapper.MapCampus(request.Campus) with { IsSatelliteOrTemporaryLocation = request.IsSatelliteOrTemporaryLocation };
     return await postSecondaryInstituteRepository.CreateCampus(institution.Id, campus, cancellationToken, request.ProgramIds);
   }
 
@@ -114,9 +113,8 @@ public class PostSecondaryInstituteHandlers(
     }
 
     var campusToUpdate = request.Campus with { IsSatelliteOrTemporaryLocation = existingCampus.IsSatelliteOrTemporaryLocation };
-    var campus = mapper.Map<Resources.Documents.PostSecondaryInstitutes.Campus>(campusToUpdate)!;
+    var campus = postSecondaryInstituteMapper.MapCampus(campusToUpdate);
     await postSecondaryInstituteRepository.UpdateCampus(campus, cancellationToken);
     return  new UpdateCampusResult() { CampusId = request.Campus.Id };
   }
 }
-

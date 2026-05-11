@@ -1,8 +1,6 @@
-﻿using AutoMapper;
 using ECER.Engines.Transformation;
 using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Managers.Registry.Contract.PortalInvitations;
-using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Resources.Documents.PortalInvitations;
 using MediatR;
 
@@ -11,7 +9,7 @@ namespace ECER.Managers.Registry.PortalInvitations;
 public class PortalInvitationHandlers(
   IPortalInvitationTransformationEngine transformationEngine,
   IPortalInvitationRepository portalInvitationRepository,
-  IMapper mapper,
+  IPortalInvitationMapper portalInvitationMapper,
   IEnumerable<IPortalInvitationVerificationHandler> verificationHandlers)
   : IRequestHandler<PortalInvitationVerificationQuery, PortalInvitationVerificationQueryResult>
 {
@@ -35,13 +33,13 @@ public class PortalInvitationHandlers(
       return PortalInvitationVerificationQueryResult.Failure("Portal Invitation Wrong Status");
     }
 
-    var portalInvitation_Manager = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
-    var handler = verificationHandlers.FirstOrDefault(h => h.CanHandle(portalInvitation_Manager.InviteType));
+    var mappedPortalInvitation = portalInvitationMapper.MapPortalInvitation(portalInvitation);
+    var handler = verificationHandlers.FirstOrDefault(h => h.CanHandle(mappedPortalInvitation.InviteType));
     if (handler == null)
     {
       return PortalInvitationVerificationQueryResult.Failure("Unsupported invite type.");
     }
 
-    return await handler.Verify(portalInvitation_Manager, cancellationToken);
+    return await handler.Verify(mappedPortalInvitation, cancellationToken);
   }
 }

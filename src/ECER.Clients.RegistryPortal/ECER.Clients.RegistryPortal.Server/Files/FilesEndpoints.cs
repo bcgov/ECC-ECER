@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Managers.Registry.Contract.Certifications;
@@ -36,7 +35,6 @@ public class FilesEndpoints : IRegisterEndpoints
       if (certificateQueryResult.Items == null || !certificateQueryResult.Items.Any()) return TypedResults.NotFound();
 
       var certificate = certificateQueryResult.Items.FirstOrDefault();
-      //Filter Certificate Files to get latest certificate where Tag1 is "Certificate"
       var certificateFile = certificate?.Files.Where(f => f.Tag1Name == "Certificate").OrderByDescending(f => f.CreatedOn).FirstOrDefault();
       if (certificateFile == null) return TypedResults.NotFound();
 
@@ -84,7 +82,6 @@ public class FilesEndpoints : IRegisterEndpoints
       .RequireAuthorization("registry_user")
       .WithParameterValidation();
 
-    // This delete just works for temp folder...
     endpointRouteBuilder.MapDelete("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, NotFound>> (
       string fileId,
       IMediator messageBus,
@@ -104,7 +101,7 @@ public class FilesEndpoints : IRegisterEndpoints
     .DisableAntiforgery();
 
     endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, BadRequest<ProblemDetails>, NotFound>> (string fileId,
-        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper, IOptions<UploaderSettings> uploaderOptions) =>
+        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IOptions<UploaderSettings> uploaderOptions) =>
     {
       if (!Guid.TryParse(fileId, out _))
       {
@@ -116,7 +113,6 @@ public class FilesEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails { Title = "No file uploaded or file is empty" });
       }
 
-      // Check if the file extension is allowed
       var fileExtension = Path.GetExtension(file.FileName)?.ToLowerInvariant();
       if (string.IsNullOrEmpty(fileExtension) || !uploaderOptions.Value.AllowedFileTypes.Contains(fileExtension))
       {

@@ -1,32 +1,56 @@
-﻿using ECER.Managers.Admin.Contract.Metadatas;
-using AutoMapper;
 using ECER.Clients.PSPPortal.Server.EducationInstitutions;
 using ECER.Clients.PSPPortal.Server.Programs;
-using System;
-using System.Linq;
-using ECER.Infrastructure.Common;
+using Riok.Mapperly.Abstractions;
+using ContractMetadatas = ECER.Managers.Admin.Contract.Metadatas;
 
 namespace ECER.Clients.PSPPortal.Server;
 
-public class ConfigurationMapper : SecureProfile
+internal interface IConfigurationMapper
 {
-  public ConfigurationMapper()
+  IEnumerable<Province> MapProvinces(IEnumerable<ContractMetadatas.Province> source);
+  IEnumerable<Country> MapCountries(IEnumerable<ContractMetadatas.Country> source);
+  IEnumerable<AreaOfInstruction> MapAreaOfInstructions(IEnumerable<ContractMetadatas.AreaOfInstruction> source);
+  IEnumerable<SystemMessage> MapSystemMessages(IEnumerable<ContractMetadatas.SystemMessage> source);
+}
+
+[Mapper]
+internal partial class ConfigurationMapper : IConfigurationMapper
+{
+  public IEnumerable<Province> MapProvinces(IEnumerable<ContractMetadatas.Province> source) => source.Select(MapProvince).ToList();
+
+  public IEnumerable<Country> MapCountries(IEnumerable<ContractMetadatas.Country> source) => source.Select(MapCountry).ToList();
+
+  public IEnumerable<AreaOfInstruction> MapAreaOfInstructions(IEnumerable<ContractMetadatas.AreaOfInstruction> source) => source.Select(MapAreaOfInstruction).ToList();
+
+  public IEnumerable<SystemMessage> MapSystemMessages(IEnumerable<ContractMetadatas.SystemMessage> source) => source.Select(MapSystemMessage).ToList();
+
+  private static AreaOfInstruction MapAreaOfInstruction(ContractMetadatas.AreaOfInstruction source) => new(
+    source.Id,
+    source.Name,
+    ParseProgramTypes(source.ProgramTypes),
+    source.MinimumHours,
+    source.DisplayOrder,
+    source.ParentAreaOfInstructionId);
+
+  private SystemMessage MapSystemMessage(ContractMetadatas.SystemMessage source) => new(source.Name, source.Subject, source.Message)
   {
-    CreateMap<Managers.Admin.Contract.Metadatas.Province, Province>().ReverseMap();
-    CreateMap<Managers.Admin.Contract.Metadatas.Country, Country>().ReverseMap();
-    CreateMap<Managers.Admin.Contract.Metadatas.AreaOfInstruction, AreaOfInstruction>()
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => ParseProgramTypes(s.ProgramTypes)));
-    CreateMap<AreaOfInstruction, Managers.Admin.Contract.Metadatas.AreaOfInstruction>()
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ProgramTypes != null ? s.ProgramTypes.Select(type => type.ToString()) : Array.Empty<string>()))
-      .ForMember(d => d.ParentAreaOfInstructionId, opts => opts.MapFrom(s => s.ParentAreaOfInstructionId));
-    CreateMap<Managers.Admin.Contract.Metadatas.SystemMessage, SystemMessage>();
-  }
+    StartDate = source.StartDate,
+    EndDate = source.EndDate,
+    PortalTags = source.PortalTags.Select(MapPortalTag).ToArray(),
+  };
+
+  private partial Province MapProvince(ContractMetadatas.Province source);
+
+  private partial Country MapCountry(ContractMetadatas.Country source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PortalTags MapPortalTag(ContractMetadatas.PortalTags source);
 
   private static ProgramTypes[] ParseProgramTypes(IEnumerable<string>? programTypes)
   {
     if (programTypes == null)
     {
-      return Array.Empty<ProgramTypes>();
+      return [];
     }
 
     return programTypes

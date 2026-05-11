@@ -1,37 +1,39 @@
-﻿using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Documents.PortalInvitations;
 
-internal sealed class PortalInvitationMapper : SecureProfile
+internal interface IPortalInvitationRepositoryMapper
 {
-  public PortalInvitationMapper()
-  {
-    CreateMap<ecer_PortalInvitation, PortalInvitation>(MemberList.Destination)
-      .ForCtorParam(nameof(PortalInvitation.Id), opts => opts.MapFrom(s => s.ecer_PortalInvitationId))
-      .ForCtorParam(nameof(PortalInvitation.Name), opts => opts.MapFrom(s => s.ecer_Name))
-      .ForCtorParam(nameof(PortalInvitation.ReferenceFirstName), opts => opts.MapFrom(s => s.ecer_FirstName))
-      .ForCtorParam(nameof(PortalInvitation.ReferenceLastName), opts => opts.MapFrom(s => s.ecer_LastName))
-      .ForCtorParam(nameof(PortalInvitation.ReferenceEmailAddress), opts => opts.MapFrom(s => s.ecer_EmailAddress))
-      .ForMember(d => d.WorkexperienceReferenceId, opts => opts.MapFrom(s => s.ecer_WorkExperienceReferenceId == null ? null : s.ecer_WorkExperienceReferenceId.Id.ToString()))
-      .ForMember(d => d.CharacterReferenceId, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId == null ? null : s.ecer_CharacterReferenceId.Id.ToString()))
-      .ForMember(d => d.ApplicantId, opts => opts.MapFrom(s => s.ecer_ApplicantId == null ? null : s.ecer_ApplicantId.Id.ToString()))
-      .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.ecer_ApplicationId == null ? null : s.ecer_ApplicationId.Id.ToString()))
-      .ForMember(d => d.PspProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_psiprogramrepresentativeid == null ? null : s.ecer_psiprogramrepresentativeid.Id.ToString()))
-      .ForMember(d => d.InviteType, opts => opts.MapFrom(s => s.ecer_Type))
-      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
-      .ForMember(d => d.BceidBusinessName, opts => opts.Ignore())
-      .ForMember(d => d.PostSecondaryInstitutionName, opts => opts.Ignore())
-      .ForMember(d => d.IsLinked, opts => opts.Ignore())
-      ;
+  PortalInvitation MapPortalInvitation(ecer_PortalInvitation source);
+}
 
-    CreateMap<PortalInvitationStatusCode, ecer_PortalInvitation_StatusCode>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<InviteType, ecer_PortalInvitationTypes>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-  }
+[Mapper]
+internal sealed partial class PortalInvitationMapper : IPortalInvitationRepositoryMapper
+{
+  public PortalInvitation MapPortalInvitation(ecer_PortalInvitation source) => new(
+    source.ecer_PortalInvitationId.ToString(),
+    source.ecer_Name ?? string.Empty,
+    source.ecer_FirstName ?? string.Empty,
+    source.ecer_LastName ?? string.Empty,
+    source.ecer_EmailAddress ?? string.Empty)
+  {
+    WorkexperienceReferenceId = source.ecer_WorkExperienceReferenceId?.Id.ToString(),
+    CharacterReferenceId = source.ecer_CharacterReferenceId?.Id.ToString(),
+    ApplicantId = source.ecer_ApplicantId?.Id.ToString(),
+    ApplicationId = source.ecer_ApplicationId?.Id.ToString(),
+    PspProgramRepresentativeId = source.ecer_psiprogramrepresentativeid?.Id.ToString(),
+    InviteType = MapInviteType(source.ecer_Type),
+    StatusCode = MapPortalInvitationStatusCode(source.StatusCode),
+  };
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial InviteType MapInviteType(ecer_PortalInvitationTypes source);
+
+  private InviteType? MapInviteType(ecer_PortalInvitationTypes? source) => source.HasValue ? MapInviteType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PortalInvitationStatusCode MapPortalInvitationStatusCode(ecer_PortalInvitation_StatusCode source);
+
+  private PortalInvitationStatusCode? MapPortalInvitationStatusCode(ecer_PortalInvitation_StatusCode? source) => source.HasValue ? MapPortalInvitationStatusCode(source.Value) : null;
 }

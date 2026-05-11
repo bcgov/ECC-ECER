@@ -23,10 +23,6 @@ internal class Program
     try
     {
       builder.Services.AddMediatR(opts => opts.RegisterServicesFromAssemblies(assemblies));
-      builder.Services.AddAutoMapper(cfg =>
-      {
-        cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
-      }, assemblies);
 
       // Configure Swagger/OpenAPI with API Key authentication definition
       builder.Services.AddEndpointsApiExplorer();
