@@ -120,6 +120,10 @@ internal partial class CommunicationRepositoryMapper : ICommunicationRepositoryM
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CommunicationCategory MapCommunicationCategory(ecer_PSPCommunicationCategories source);
 
+  private ecer_PSPCommunicationCategories? MapCommunicationCategory(CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
+
+  private CommunicationCategory? MapCommunicationCategory(ecer_PSPCommunicationCategories? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_Communication_StatusCode MapCommunicationStatus(CommunicationStatus source);
 
@@ -128,10 +132,6 @@ internal partial class CommunicationRepositoryMapper : ICommunicationRepositoryM
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial InitiatedFrom MapInitiatedFrom(ecer_InitiatedFrom source);
-
-  private ecer_PSPCommunicationCategories? MapCommunicationCategory(CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
-
-  private CommunicationCategory? MapCommunicationCategory(ecer_PSPCommunicationCategories? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
 
   private CommunicationStatus? MapCommunicationStatus(ecer_Communication_StatusCode? source) => source.HasValue ? MapCommunicationStatus(source.Value) : null;
 

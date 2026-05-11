@@ -60,20 +60,20 @@ internal partial class PspUserMapper : IPspUserMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPspUsers.PortalAccessStatus MapPortalAccessStatus(ResourcePspReps.PortalAccessStatus source);
 
-  [MapEnum(EnumMappingStrategy.ByName)]
-  private partial ContractPspUsers.PspUserRole MapPspUserRole(ResourcePspReps.PspUserRole source);
+  private ContractPspUsers.PortalAccessStatus? MapPortalAccessStatus(ResourcePspReps.PortalAccessStatus? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourcePspReps.PortalAccessStatus MapPortalAccessStatus(ContractPspUsers.PortalAccessStatus source);
 
-  [MapEnum(EnumMappingStrategy.ByName)]
-  private partial ResourcePspReps.PspUserRole MapPspUserRole(ContractPspUsers.PspUserRole source);
+  private ResourcePspReps.PortalAccessStatus? MapPortalAccessStatus(ContractPspUsers.PortalAccessStatus? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
 
-  private ContractPspUsers.PortalAccessStatus? MapPortalAccessStatus(ResourcePspReps.PortalAccessStatus? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractPspUsers.PspUserRole MapPspUserRole(ResourcePspReps.PspUserRole source);
 
   private ContractPspUsers.PspUserRole? MapPspUserRole(ResourcePspReps.PspUserRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
 
-  private ResourcePspReps.PortalAccessStatus? MapPortalAccessStatus(ContractPspUsers.PortalAccessStatus? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourcePspReps.PspUserRole MapPspUserRole(ContractPspUsers.PspUserRole source);
 
   private ResourcePspReps.PspUserRole? MapPspUserRole(ContractPspUsers.PspUserRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
 }

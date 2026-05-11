@@ -410,59 +410,50 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     ecer_transcript_postsecondaryinstitutionid = MapPostSecondaryInstitution(source.PostSecondaryInstitution),
   };
 
-  private Transcript MapTranscript(ecer_Transcript source) => new(
-    source.ecer_TranscriptId?.ToString(),
-    source.ecer_EducationInstitutionFullName,
-    source.ecer_ProgramCourseName,
-    source.ecer_StudentNumber,
-    source.ecer_StartDate.GetValueOrDefault(),
-    source.ecer_EndDate.GetValueOrDefault(),
-    source.ecer_IsECEAssistant.GetValueOrDefault(),
-    source.ecer_StudentFirstName ?? string.Empty,
-    source.ecer_StudentLastName ?? string.Empty,
-    source.ecer_IsNameUnverified.GetValueOrDefault(),
-    source.ecer_EducationRecognition.HasValue ? MapEducationRecognition(source.ecer_EducationRecognition.Value) : default,
-    source.ecer_EducationOrigin.HasValue ? MapEducationOrigin(source.ecer_EducationOrigin.Value) : default)
+  private Transcript MapTranscript(ecer_Transcript source)
   {
-    TranscriptStatusOption = GetTranscriptStatusOption(source),
-    CampusLocation = source.ecer_CampusLocation,
-    Status = source.StatusCode.HasValue ? MapTranscriptStage(source.StatusCode.Value) : null,
-    StudentMiddleName = source.ecer_StudentMiddleName,
-    Country = source.ecer_transcript_InstituteCountryId != null
-      ? MapCountry(source.ecer_transcript_InstituteCountryId)
-      : source.ecer_InstituteCountryId != null
-        ? new Country(source.ecer_InstituteCountryId.Id.ToString(), source.ecer_InstituteCountryIdName, string.Empty, false)
-        : null,
-    Province = source.ecer_transcript_ProvinceId != null
-      ? MapProvince(source.ecer_transcript_ProvinceId)
-      : source.ecer_ProvinceId != null
-        ? new Province(source.ecer_ProvinceId.Id.ToString(), source.ecer_ProvinceIdName, string.Empty)
-        : null,
-    PostSecondaryInstitution = source.ecer_transcript_postsecondaryinstitutionid != null
-      ? MapPostSecondaryInstitution(source.ecer_transcript_postsecondaryinstitutionid, GetTranscriptProvinceId(source))
-      : source.ecer_postsecondaryinstitutionid != null
-        ? new PostSecondaryInstitution(source.ecer_postsecondaryinstitutionid.Id.ToString(), source.ecer_postsecondaryinstitutionidName, GetTranscriptProvinceId(source))
-        : null,
-    TranscriptReceivedByRegistry = source.ecer_TranscriptReceived,
-    ComprehensiveReportReceivedByRegistry = source.ecer_ComprehensiveEvaluationReportReceived,
-    CourseOutlineReceivedByRegistry = source.ecer_CourseOutlineReceived,
-    ProgramConfirmationReceivedByRegistry = source.ecer_ProgramConfirmationFormReceived,
-    ProgramConfirmationFiles = (source.ecer_bcgov_documenturl_TranscriptId ?? Array.Empty<bcgov_DocumentUrl>())
-      .Where(file => file.ecer_Tag1 == "Program Confirmation Form")
-      .Select(MapFileInfo)
-      .ToList(),
-    CourseOutlineFiles = (source.ecer_bcgov_documenturl_TranscriptId ?? Array.Empty<bcgov_DocumentUrl>())
-      .Where(file => file.ecer_Tag1 == "Course Outline")
-      .Select(MapFileInfo)
-      .ToList(),
-    CourseOutlineOptions = source.ecer_Ihavemycourseoutlinessyllabiandwillupload == true ? CourseOutlineOptions.UploadNow :
-      source.ecer_isECEregistryalreadyhasmycourseoutline == true ? CourseOutlineOptions.RegistryAlreadyHas : null,
-    ProgramConfirmationOptions = source.ecer_IhavemyProgramConfirmationandwillupload == true ? ProgramConfirmationOptions.UploadNow :
-      source.ecer_isECEregistryhasprogramconfirmation == true ? ProgramConfirmationOptions.RegistryAlreadyHas : null,
-    ComprehensiveReportOptions = source.ecer_ECERegistryalreadyhasmyComprehensiveReport == true ? ComprehensiveReportOptions.RegistryAlreadyHas :
-      source.ecer_iwishtoapplyforafeewaiver == true ? ComprehensiveReportOptions.FeeWaiver :
-      source.ecer_ihavesubmittedanapplicationtobcits == true ? ComprehensiveReportOptions.InternationalCredentialEvaluationService : null,
-  };
+    var country = MapTranscriptCountry(source);
+    var province = MapTranscriptProvince(source);
+    var provinceId = province?.ProvinceId ?? string.Empty;
+
+    return new Transcript(
+      source.ecer_TranscriptId?.ToString(),
+      source.ecer_EducationInstitutionFullName,
+      source.ecer_ProgramCourseName,
+      source.ecer_StudentNumber,
+      source.ecer_StartDate.GetValueOrDefault(),
+      source.ecer_EndDate.GetValueOrDefault(),
+      source.ecer_IsECEAssistant.GetValueOrDefault(),
+      source.ecer_StudentFirstName ?? string.Empty,
+      source.ecer_StudentLastName ?? string.Empty,
+      source.ecer_IsNameUnverified.GetValueOrDefault(),
+      source.ecer_EducationRecognition.HasValue ? MapEducationRecognition(source.ecer_EducationRecognition.Value) : default,
+      source.ecer_EducationOrigin.HasValue ? MapEducationOrigin(source.ecer_EducationOrigin.Value) : default)
+    {
+      TranscriptStatusOption = GetTranscriptStatusOption(source),
+      CampusLocation = source.ecer_CampusLocation,
+      Status = source.StatusCode.HasValue ? MapTranscriptStage(source.StatusCode.Value) : null,
+      StudentMiddleName = source.ecer_StudentMiddleName,
+      Country = country,
+      Province = province,
+      PostSecondaryInstitution = MapTranscriptPostSecondaryInstitution(source, provinceId),
+      TranscriptReceivedByRegistry = source.ecer_TranscriptReceived,
+      ComprehensiveReportReceivedByRegistry = source.ecer_ComprehensiveEvaluationReportReceived,
+      CourseOutlineReceivedByRegistry = source.ecer_CourseOutlineReceived,
+      ProgramConfirmationReceivedByRegistry = source.ecer_ProgramConfirmationFormReceived,
+      ProgramConfirmationFiles = (source.ecer_bcgov_documenturl_TranscriptId ?? Array.Empty<bcgov_DocumentUrl>())
+        .Where(file => file.ecer_Tag1 == "Program Confirmation Form")
+        .Select(MapFileInfo)
+        .ToList(),
+      CourseOutlineFiles = (source.ecer_bcgov_documenturl_TranscriptId ?? Array.Empty<bcgov_DocumentUrl>())
+        .Where(file => file.ecer_Tag1 == "Course Outline")
+        .Select(MapFileInfo)
+        .ToList(),
+      CourseOutlineOptions = GetCourseOutlineOptions(source),
+      ProgramConfirmationOptions = GetProgramConfirmationOptions(source),
+      ComprehensiveReportOptions = GetComprehensiveReportOptions(source),
+    };
+  }
 
   private ProfessionalDevelopment MapProfessionalDevelopment(ecer_ProfessionalDevelopment source) => new(
     source.ecer_ProfessionalDevelopmentId?.ToString(),
@@ -560,10 +551,50 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     source.ecer_Name ?? string.Empty,
     provinceId);
 
-  private static string GetTranscriptProvinceId(ecer_Transcript source) =>
-    source.ecer_transcript_ProvinceId?.ecer_ProvinceId?.ToString()
-    ?? source.ecer_ProvinceId?.Id.ToString()
-    ?? string.Empty;
+  private static Country? MapTranscriptCountry(ecer_Transcript source)
+  {
+    if (source.ecer_transcript_InstituteCountryId != null)
+    {
+      return MapCountry(source.ecer_transcript_InstituteCountryId);
+    }
+
+    if (source.ecer_InstituteCountryId == null)
+    {
+      return null;
+    }
+
+    return new Country(source.ecer_InstituteCountryId.Id.ToString(), source.ecer_InstituteCountryIdName, string.Empty, false);
+  }
+
+  private static Province? MapTranscriptProvince(ecer_Transcript source)
+  {
+    if (source.ecer_transcript_ProvinceId != null)
+    {
+      return MapProvince(source.ecer_transcript_ProvinceId);
+    }
+
+    if (source.ecer_ProvinceId == null)
+    {
+      return null;
+    }
+
+    return new Province(source.ecer_ProvinceId.Id.ToString(), source.ecer_ProvinceIdName, string.Empty);
+  }
+
+  private static PostSecondaryInstitution? MapTranscriptPostSecondaryInstitution(ecer_Transcript source, string provinceId)
+  {
+    if (source.ecer_transcript_postsecondaryinstitutionid != null)
+    {
+      return MapPostSecondaryInstitution(source.ecer_transcript_postsecondaryinstitutionid, provinceId);
+    }
+
+    if (source.ecer_postsecondaryinstitutionid == null)
+    {
+      return null;
+    }
+
+    return new PostSecondaryInstitution(source.ecer_postsecondaryinstitutionid.Id.ToString(), source.ecer_postsecondaryinstitutionidName, provinceId);
+  }
 
   private static TranscriptStatusOptions? GetTranscriptStatusOption(ecer_Transcript source)
   {
@@ -580,6 +611,56 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     if (source.ecer_mytranscriptwillrequireenglishtranslation == true)
     {
       return TranscriptStatusOptions.TranscriptWillRequireEnglishTranslation;
+    }
+
+    return null;
+  }
+
+  private static CourseOutlineOptions? GetCourseOutlineOptions(ecer_Transcript source)
+  {
+    if (source.ecer_Ihavemycourseoutlinessyllabiandwillupload == true)
+    {
+      return CourseOutlineOptions.UploadNow;
+    }
+
+    if (source.ecer_isECEregistryalreadyhasmycourseoutline == true)
+    {
+      return CourseOutlineOptions.RegistryAlreadyHas;
+    }
+
+    return null;
+  }
+
+  private static ProgramConfirmationOptions? GetProgramConfirmationOptions(ecer_Transcript source)
+  {
+    if (source.ecer_IhavemyProgramConfirmationandwillupload == true)
+    {
+      return ProgramConfirmationOptions.UploadNow;
+    }
+
+    if (source.ecer_isECEregistryhasprogramconfirmation == true)
+    {
+      return ProgramConfirmationOptions.RegistryAlreadyHas;
+    }
+
+    return null;
+  }
+
+  private static ComprehensiveReportOptions? GetComprehensiveReportOptions(ecer_Transcript source)
+  {
+    if (source.ecer_ECERegistryalreadyhasmyComprehensiveReport == true)
+    {
+      return ComprehensiveReportOptions.RegistryAlreadyHas;
+    }
+
+    if (source.ecer_iwishtoapplyforafeewaiver == true)
+    {
+      return ComprehensiveReportOptions.FeeWaiver;
+    }
+
+    if (source.ecer_ihavesubmittedanapplicationtobcits == true)
+    {
+      return ComprehensiveReportOptions.InternationalCredentialEvaluationService;
     }
 
     return null;
@@ -652,6 +733,8 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ApplicationStatusReasonDetail MapApplicationStatusReasonDetail(ecer_ApplicationStatusReasonDetail source);
 
+  private ecer_ApplicationStatusReasonDetail? MapApplicationStatusReasonDetail(ApplicationStatusReasonDetail? source) => source.HasValue ? MapApplicationStatusReasonDetail(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_yrrenewalexplanations MapOneYearRenewalExplanation(OneYearRenewalexplanations source);
 
@@ -669,6 +752,8 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ApplicationTypes MapApplicationType(ecer_ApplicationTypes source);
+
+  private ecer_ApplicationTypes? MapApplicationType(ApplicationTypes? source) => source.HasValue ? MapApplicationType(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_EducationOrigin MapEducationOrigin(EducationOrigin source);
@@ -688,6 +773,8 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial TranscriptStage MapTranscriptStage(ecer_Transcript_StatusCode source);
 
+  private ecer_Transcript_StatusCode? MapTranscriptStage(TranscriptStage? source) => source.HasValue ? MapTranscriptStage(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ProfessionalDevelopment_StatusCode MapProfessionalDevelopmentStatus(ProfessionalDevelopmentStatusCode source);
 
@@ -705,6 +792,8 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial WorkExperienceRefStage MapWorkExperienceReferenceStage(ecer_WorkExperienceRef_StatusCode source);
+
+  private ecer_WorkExperienceRef_StatusCode? MapWorkExperienceReferenceStage(WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_UnabletoProvideReferenceReasons MapUnableToProvideReferenceReason(UnabletoProvideReferenceReasons source);
@@ -748,25 +837,17 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ReferenceKnownTime MapReferenceKnownTime(ecer_ReferenceKnownTime source);
 
-  private ecer_ApplicationStatusReasonDetail? MapApplicationStatusReasonDetail(ApplicationStatusReasonDetail? source) => source.HasValue ? MapApplicationStatusReasonDetail(source.Value) : null;
-
   private ecer_yrrenewalexplanations? MapOneYearRenewalExplanation(OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
 
   private ecer_fiveyrrenewalexplanations? MapFiveYearRenewalExplanation(FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
-
-  private ecer_ApplicationTypes? MapApplicationType(ApplicationTypes? source) => source.HasValue ? MapApplicationType(source.Value) : null;
 
   private ecer_EducationOrigin? MapEducationOrigin(EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
 
   private ecer_EducationRecognition? MapEducationRecognition(EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
 
-  private ecer_Transcript_StatusCode? MapTranscriptStage(TranscriptStage? source) => source.HasValue ? MapTranscriptStage(source.Value) : null;
-
   private ecer_ProfessionalDevelopment_StatusCode? MapProfessionalDevelopmentStatus(ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
 
   private ecer_CharacterReference_StatusCode? MapCharacterReferenceStage(CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
-
-  private ecer_WorkExperienceRef_StatusCode? MapWorkExperienceReferenceStage(WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
 
   private ecer_UnabletoProvideReferenceReasons? MapUnableToProvideReferenceReason(UnabletoProvideReferenceReasons? source) => source.HasValue ? MapUnableToProvideReferenceReason(source.Value) : null;
 
@@ -778,7 +859,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
 
   private ecer_WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
 
-  private ecer_WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+  private static ecer_WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
 
   private static ecer_WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypes source) => source switch
   {

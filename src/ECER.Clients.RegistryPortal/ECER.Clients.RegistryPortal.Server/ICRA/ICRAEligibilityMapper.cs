@@ -169,6 +169,10 @@ internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractICRA.IcraEligibilityOrigin MapIcraEligibilityOrigin(IcraEligibilityOrigin source);
 
+  private IcraEligibilityOrigin? MapIcraEligibilityOrigin(ContractICRA.IcraEligibilityOrigin? source) => source.HasValue ? MapIcraEligibilityOrigin(source.Value) : null;
+
+  private ContractICRA.IcraEligibilityOrigin? MapIcraEligibilityOrigin(IcraEligibilityOrigin? source) => source.HasValue ? MapIcraEligibilityOrigin(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CertificateStatus MapCertificateStatus(ContractICRA.CertificateStatus source);
 
@@ -194,10 +198,6 @@ internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
     ContractApplications.WorkExperienceRefStage.ICRAEligibilitySubmitted => Applications.WorkExperienceRefStage.ICRAEligibilitySubmitted,
     _ => throw new ArgumentOutOfRangeException(nameof(source), source, null)
   };
-
-  private IcraEligibilityOrigin? MapIcraEligibilityOrigin(ContractICRA.IcraEligibilityOrigin? source) => source.HasValue ? MapIcraEligibilityOrigin(source.Value) : null;
-
-  private ContractICRA.IcraEligibilityOrigin? MapIcraEligibilityOrigin(IcraEligibilityOrigin? source) => source.HasValue ? MapIcraEligibilityOrigin(source.Value) : null;
 
   private Applications.WorkExperienceRefStage? MapWorkExperienceRefStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceRefStage(source.Value) : null;
 }

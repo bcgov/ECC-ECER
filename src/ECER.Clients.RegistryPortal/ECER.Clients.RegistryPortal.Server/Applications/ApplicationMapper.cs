@@ -372,6 +372,10 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ApplicationOrigin MapApplicationOrigin(ApplicationOrigin source);
 
+  private ApplicationOrigin? MapApplicationOrigin(ContractApplications.ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
+
+  private ContractApplications.ApplicationOrigin? MapApplicationOrigin(ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial TranscriptStage MapTranscriptStage(ContractApplications.TranscriptStage source);
 
@@ -404,17 +408,29 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypes source);
 
+  private WorkExperienceTypes? MapWorkExperienceType(ContractApplications.WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+
+  private ContractApplications.WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CourseOutlineOptions MapCourseOutlineOptions(ContractApplications.CourseOutlineOptions source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.CourseOutlineOptions MapCourseOutlineOptions(CourseOutlineOptions source);
 
+  private CourseOutlineOptions? MapCourseOutlineOptions(ContractApplications.CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
+
+  private ContractApplications.CourseOutlineOptions? MapCourseOutlineOptions(CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ComprehensiveReportOptions MapComprehensiveReportOptions(ContractApplications.ComprehensiveReportOptions source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ComprehensiveReportOptions MapComprehensiveReportOptions(ComprehensiveReportOptions source);
+
+  private ComprehensiveReportOptions? MapComprehensiveReportOptions(ContractApplications.ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
+
+  private ContractApplications.ComprehensiveReportOptions? MapComprehensiveReportOptions(ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ProgramConfirmationOptions MapProgramConfirmationOptions(ContractApplications.ProgramConfirmationOptions source);
@@ -444,23 +460,7 @@ internal partial class ApplicationMapper : IApplicationMapper
 
   private ContractApplications.FiveYearRenewalExplanations? MapFiveYearRenewalExplanation(FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
 
-  private ApplicationOrigin? MapApplicationOrigin(ContractApplications.ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
-
-  private ContractApplications.ApplicationOrigin? MapApplicationOrigin(ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
-
   private ProfessionalDevelopmentStatusCode? MapProfessionalDevelopmentStatus(ContractApplications.ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
-
-  private WorkExperienceTypes? MapWorkExperienceType(ContractApplications.WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
-
-  private ContractApplications.WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
-
-  private CourseOutlineOptions? MapCourseOutlineOptions(ContractApplications.CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
-
-  private ContractApplications.CourseOutlineOptions? MapCourseOutlineOptions(CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
-
-  private ComprehensiveReportOptions? MapComprehensiveReportOptions(ContractApplications.ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
-
-  private ContractApplications.ComprehensiveReportOptions? MapComprehensiveReportOptions(ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
 
   private ProgramConfirmationOptions? MapProgramConfirmationOptions(ContractApplications.ProgramConfirmationOptions? source) => source.HasValue ? MapProgramConfirmationOptions(source.Value) : null;
 

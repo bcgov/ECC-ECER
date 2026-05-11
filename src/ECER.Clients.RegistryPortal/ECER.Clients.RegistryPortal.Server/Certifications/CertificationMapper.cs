@@ -62,13 +62,13 @@ internal partial class CertificationMapper : ICertificationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CertificateStatusCode MapCertificateStatusCode(ContractCertifications.CertificateStatusCode source);
 
+  private CertificateStatusCode? MapCertificateStatusCode(ContractCertifications.CertificateStatusCode? source) => source.HasValue ? MapCertificateStatusCode(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CertificatePDFGeneration MapCertificatePdfGeneration(ContractCertifications.CertificatePDFGeneration source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial YesNoNull MapYesNoNull(ContractCertifications.YesNoNull source);
-
-  private CertificateStatusCode? MapCertificateStatusCode(ContractCertifications.CertificateStatusCode? source) => source.HasValue ? MapCertificateStatusCode(source.Value) : null;
 
   private CertificatePDFGeneration? MapCertificatePdfGeneration(ContractCertifications.CertificatePDFGeneration? source) => source.HasValue ? MapCertificatePdfGeneration(source.Value) : null;
 

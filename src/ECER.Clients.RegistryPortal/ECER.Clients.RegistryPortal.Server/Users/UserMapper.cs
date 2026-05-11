@@ -155,15 +155,15 @@ internal partial class UserMapper : IUserMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractRegistrants.PreviousNameStage MapPreviousNameStage(PreviousNameStage source);
 
+  private PreviousNameStage? MapPreviousNameStage(ContractRegistrants.PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
+  private ContractRegistrants.PreviousNameStage? MapPreviousNameStage(PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial PreviousNameSources MapPreviousNameSource(ContractRegistrants.PreviousNameSources source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractRegistrants.PreviousNameSources MapPreviousNameSource(PreviousNameSources source);
-
-  private PreviousNameStage? MapPreviousNameStage(ContractRegistrants.PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
-
-  private ContractRegistrants.PreviousNameStage? MapPreviousNameStage(PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
 
   private PreviousNameSources? MapPreviousNameSource(ContractRegistrants.PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
 

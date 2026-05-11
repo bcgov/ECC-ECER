@@ -22,7 +22,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<ICourseRepositoryMapper, CourseRepositoryMapper>();
     configurationContext.Services.AddTransient<IMetadataResourceRepositoryMapper, MetadataResourceRepositoryMapper>();
     configurationContext.Services.AddTransient<IPortalInvitationRepositoryMapper, PortalInvitationMapper>();
-    configurationContext.Services.AddTransient<IICRARepositoryMapper, ICRARepositoryMapper>();
+    configurationContext.Services.AddTransient<IICRARepositoryMapper, IcraRepositoryMapper>();
     configurationContext.Services.AddTransient<IPostSecondaryInstituteRepositoryMapper, PostSecondaryInstituteRepositoryMapper>();
     configurationContext.Services.AddTransient<IProgramApplicationRepositoryMapper, ProgramApplicationRepositoryMapper>();
     configurationContext.Services.AddTransient<IProgramRepositoryMapper, ProgramRepositoryMapper>();

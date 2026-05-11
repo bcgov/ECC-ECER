@@ -88,8 +88,6 @@ internal partial class PostSecondaryInstituteRepositoryMapper : IPostSecondaryIn
     OtherCampusContactName = source.ecer_OtherContactName,
   };
 
-  private PrivateAuspiceType? MapPrivateAuspiceType(ecer_PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
-
   private static ecer_psiinstitutiontype? MapInstitutionType(PsiInstitutionType? source) => source switch
   {
     null => null,
@@ -99,6 +97,18 @@ internal partial class PostSecondaryInstituteRepositoryMapper : IPostSecondaryIn
     PsiInstitutionType.PublicOOP => ecer_psiinstitutiontype.Publicoutofprovince,
     _ => null,
   };
+
+  private static PsiInstitutionType? MapInstitutionType(ecer_psiinstitutiontype? source) => source switch
+  {
+    null => null,
+    ecer_psiinstitutiontype.Private => PsiInstitutionType.Private,
+    ecer_psiinstitutiontype.Public => PsiInstitutionType.Public,
+    ecer_psiinstitutiontype.ContinuingEducation => PsiInstitutionType.ContinuingEducation,
+    ecer_psiinstitutiontype.Publicoutofprovince => PsiInstitutionType.PublicOOP,
+    _ => null,
+  };
+
+  private PrivateAuspiceType? MapPrivateAuspiceType(ecer_PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_PrivateAuspiceType MapPrivateAuspiceType(PrivateAuspiceType source);
@@ -110,16 +120,6 @@ internal partial class PostSecondaryInstituteRepositoryMapper : IPostSecondaryIn
     null => null,
     ecer_PostSecondaryInstituteCampus_StatusCode.Active => CampusStatus.Active,
     ecer_PostSecondaryInstituteCampus_StatusCode.Inactive => CampusStatus.Inactive,
-    _ => null,
-  };
-
-  private static PsiInstitutionType? MapInstitutionType(ecer_psiinstitutiontype? source) => source switch
-  {
-    null => null,
-    ecer_psiinstitutiontype.Private => PsiInstitutionType.Private,
-    ecer_psiinstitutiontype.Public => PsiInstitutionType.Public,
-    ecer_psiinstitutiontype.ContinuingEducation => PsiInstitutionType.ContinuingEducation,
-    ecer_psiinstitutiontype.Publicoutofprovince => PsiInstitutionType.PublicOOP,
     _ => null,
   };
 

@@ -103,7 +103,7 @@ internal partial class ProgramRepositoryMapper : IProgramRepositoryMapper
   [MapEnumValue(ProgramStatus.Withdrawn, ecer_Program_StatusCode.Withdrawn)]
   private partial ecer_Program_StatusCode MapProgramStatus(ProgramStatus source);
 
-  private ProgramStatus MapProgramStatus(ecer_Program_StatusCode? source) => source switch
+  private static ProgramStatus MapProgramStatus(ecer_Program_StatusCode? source) => source switch
   {
     ecer_Program_StatusCode.RequiresReview => ProgramStatus.Draft,
     ecer_Program_StatusCode.UnderRegistryReview => ProgramStatus.UnderReview,

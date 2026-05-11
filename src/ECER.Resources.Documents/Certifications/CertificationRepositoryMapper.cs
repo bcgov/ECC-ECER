@@ -85,8 +85,6 @@ internal partial class CertificationRepositoryMapper : ICertificationRepositoryM
 
   private CertificatePDFGeneration? MapCertificatePdfGeneration(ecer_CertificatePDFGeneration? source) => source.HasValue ? MapCertificatePdfGeneration(source.Value) : null;
 
-  private YesNoNull? MapYesNoNull(ecer_YesNoNull? source) => source.HasValue ? MapYesNoNull(source.Value) : null;
-
   private static int? MapBaseCertificateTypeId(string? source) => int.TryParse(source, out var parsed) ? parsed : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
@@ -97,4 +95,6 @@ internal partial class CertificationRepositoryMapper : ICertificationRepositoryM
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial YesNoNull MapYesNoNull(ecer_YesNoNull source);
+
+  private YesNoNull? MapYesNoNull(ecer_YesNoNull? source) => source.HasValue ? MapYesNoNull(source.Value) : null;
 }

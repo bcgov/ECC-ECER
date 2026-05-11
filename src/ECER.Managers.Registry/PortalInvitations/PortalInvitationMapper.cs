@@ -42,6 +42,8 @@ internal partial class PortalInvitationMapper : IPortalInvitationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPortalInvitations.InviteType MapInviteType(ResourcePortalInvitations.InviteType source);
 
+  private ContractPortalInvitations.InviteType? MapInviteType(ResourcePortalInvitations.InviteType? source) => source.HasValue ? MapInviteType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPortalInvitations.PortalInvitationStatusCode MapPortalInvitationStatusCode(ResourcePortalInvitations.PortalInvitationStatusCode source);
 
@@ -50,8 +52,6 @@ internal partial class PortalInvitationMapper : IPortalInvitationMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.WorkExperienceTypes MapWorkExperienceType(ResourceApplications.WorkExperienceTypes source);
-
-  private ContractPortalInvitations.InviteType? MapInviteType(ResourcePortalInvitations.InviteType? source) => source.HasValue ? MapInviteType(source.Value) : null;
 
   private ContractPortalInvitations.PortalInvitationStatusCode? MapPortalInvitationStatusCode(ResourcePortalInvitations.PortalInvitationStatusCode? source) => source.HasValue ? MapPortalInvitationStatusCode(source.Value) : null;
 }

@@ -94,6 +94,10 @@ internal partial class PostSecondaryInstituteMapper : IPostSecondaryInstituteMap
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPostSecondaryInstitutes.CampusStatus MapCampusStatus(ResourcePostSecondaryInstitutes.CampusStatus source);
 
+  private ResourcePostSecondaryInstitutes.CampusStatus? MapCampusStatus(ContractPostSecondaryInstitutes.CampusStatus? source) => source.HasValue ? MapCampusStatus(source.Value) : null;
+
+  private ContractPostSecondaryInstitutes.CampusStatus? MapCampusStatus(ResourcePostSecondaryInstitutes.CampusStatus? source) => source.HasValue ? MapCampusStatus(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourcePostSecondaryInstitutes.PsiInstitutionType MapInstitutionType(ContractPostSecondaryInstitutes.PsiInstitutionType source);
 
@@ -105,10 +109,6 @@ internal partial class PostSecondaryInstituteMapper : IPostSecondaryInstituteMap
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPostSecondaryInstitutes.PrivateAuspiceType MapPrivateAuspiceType(ResourcePostSecondaryInstitutes.PrivateAuspiceType source);
-
-  private ResourcePostSecondaryInstitutes.CampusStatus? MapCampusStatus(ContractPostSecondaryInstitutes.CampusStatus? source) => source.HasValue ? MapCampusStatus(source.Value) : null;
-
-  private ContractPostSecondaryInstitutes.CampusStatus? MapCampusStatus(ResourcePostSecondaryInstitutes.CampusStatus? source) => source.HasValue ? MapCampusStatus(source.Value) : null;
 
   private ResourcePostSecondaryInstitutes.PsiInstitutionType? MapInstitutionType(ContractPostSecondaryInstitutes.PsiInstitutionType? source) => source.HasValue ? MapInstitutionType(source.Value) : null;
 

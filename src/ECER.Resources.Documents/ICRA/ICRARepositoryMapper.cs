@@ -19,7 +19,7 @@ internal interface IICRARepositoryMapper
 }
 
 [Mapper]
-internal partial class ICRARepositoryMapper : IICRARepositoryMapper
+internal partial class IcraRepositoryMapper : IICRARepositoryMapper
 {
   public ecer_ICRAEligibilityAssessment MapIcraEligibility(ICRAEligibility source) => new()
   {
@@ -90,9 +90,7 @@ internal partial class ICRARepositoryMapper : IICRARepositoryMapper
     destination.ecer_Role = source.PositionTitle;
     destination.ecer_StartDate = source.StartDate;
     destination.ecer_EndDate = source.EndDate;
-    destination.ecer_Applicantworkchildren = source.WorkedWithChildren.HasValue
-      ? source.WorkedWithChildren.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No
-      : null;
+    destination.ecer_Applicantworkchildren = MapWorkedWithChildren(source.WorkedWithChildren);
     destination.ecer_ChildcareAgeRangeNew = source.ChildcareAgeRanges?.Select(MapChildcareAgeRange).ToList();
     destination.ecer_RelationshiptoApplicant = MapReferenceRelationship(source.ReferenceRelationship);
     destination.ecer_WillProvideReference = source.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
@@ -150,6 +148,16 @@ internal partial class ICRARepositoryMapper : IICRARepositoryMapper
     Extention = source.bcgov_FileExtension,
   };
 
+  private static ecer_YesNoNull? MapWorkedWithChildren(bool? workedWithChildren)
+  {
+    if (!workedWithChildren.HasValue)
+    {
+      return null;
+    }
+
+    return workedWithChildren.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+  }
+
   private ecer_ReferenceRelationships? MapReferenceRelationship(ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
@@ -181,7 +189,7 @@ internal partial class ICRARepositoryMapper : IICRARepositoryMapper
 
   private static ecer_WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypesIcra source) => ecer_WorkExperienceTypes.ICRA;
 
-  private static WorkExperienceTypesIcra MapWorkExperienceType(ecer_WorkExperienceTypes source) => WorkExperienceTypesIcra.ICRA;
+  private static WorkExperienceTypesIcra MapWorkExperienceType(ecer_WorkExperienceTypes _) => WorkExperienceTypesIcra.ICRA;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ChildcareAgeRange MapChildcareAgeRange(ChildcareAgeRanges source);

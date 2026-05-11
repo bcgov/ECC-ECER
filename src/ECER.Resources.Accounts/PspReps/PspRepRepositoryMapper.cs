@@ -65,7 +65,7 @@ internal partial class PspRepRepositoryMapper : IPspRepRepositoryMapper
   private List<UserIdentity> MapUserIdentities(IEnumerable<ecer_Authentication>? source) =>
     source?.Select(MapUserIdentity).ToList() ?? new List<UserIdentity>();
 
-  private UserIdentity MapUserIdentity(ecer_Authentication source) =>
+  private static UserIdentity MapUserIdentity(ecer_Authentication source) =>
     new(source.ecer_ExternalID ?? string.Empty, source.ecer_IdentityProvider ?? string.Empty);
 
   [MapEnum(EnumMappingStrategy.ByName)]

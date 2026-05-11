@@ -177,6 +177,10 @@ internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
     return (ResourceApplications.WorkExperienceRefStage)(int)source;
   }
 
+  private static ResourceApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
+
+  private static ContractApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ResourceApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceICRA.ICRAStatus MapIcraStatus(ContractICRA.ICRAStatus source);
 
@@ -188,6 +192,10 @@ internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractICRA.IcraEligibilityOrigin MapIcraEligibilityOrigin(ResourceICRA.IcraEligibilityOrigin source);
+
+  private ResourceICRA.IcraEligibilityOrigin? MapIcraEligibilityOrigin(ContractICRA.IcraEligibilityOrigin? source) => source.HasValue ? MapIcraEligibilityOrigin(source.Value) : null;
+
+  private ContractICRA.IcraEligibilityOrigin? MapIcraEligibilityOrigin(ResourceICRA.IcraEligibilityOrigin? source) => source.HasValue ? MapIcraEligibilityOrigin(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceICRA.CertificateStatus MapCertificateStatus(ContractICRA.CertificateStatus source);
@@ -212,14 +220,6 @@ internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ReferenceRelationship MapReferenceRelationship(ContractApplications.ReferenceRelationship source);
-
-  private ResourceICRA.IcraEligibilityOrigin? MapIcraEligibilityOrigin(ContractICRA.IcraEligibilityOrigin? source) => source.HasValue ? MapIcraEligibilityOrigin(source.Value) : null;
-
-  private ContractICRA.IcraEligibilityOrigin? MapIcraEligibilityOrigin(ResourceICRA.IcraEligibilityOrigin? source) => source.HasValue ? MapIcraEligibilityOrigin(source.Value) : null;
-
-  private ResourceApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
-
-  private ContractApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ResourceApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
 
   private ResourceApplications.ReferenceRelationship? MapReferenceRelationship(ContractApplications.ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
 }

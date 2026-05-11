@@ -132,15 +132,15 @@ internal partial class RegistrantMapper : IRegistrantMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractRegistrants.PreviousNameStage MapPreviousNameStage(ResourceRegistrants.PreviousNameStage source);
 
+  private ResourceRegistrants.PreviousNameStage? MapPreviousNameStage(ContractRegistrants.PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
+  private ContractRegistrants.PreviousNameStage? MapPreviousNameStage(ResourceRegistrants.PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceRegistrants.PreviousNameSources MapPreviousNameSource(ContractRegistrants.PreviousNameSources source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractRegistrants.PreviousNameSources MapPreviousNameSource(ResourceRegistrants.PreviousNameSources source);
-
-  private ResourceRegistrants.PreviousNameStage? MapPreviousNameStage(ContractRegistrants.PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
-
-  private ContractRegistrants.PreviousNameStage? MapPreviousNameStage(ResourceRegistrants.PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
 
   private ResourceRegistrants.PreviousNameSources? MapPreviousNameSource(ContractRegistrants.PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
 

@@ -142,11 +142,19 @@ internal partial class RegistrantRepositoryMapper : IRegistrantRepositoryMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial PreviousNameStage MapPreviousNameStage(ecer_PreviousName_StatusCode source);
 
+  private ecer_PreviousName_StatusCode? MapPreviousNameStage(PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
+  private PreviousNameStage? MapPreviousNameStage(ecer_PreviousName_StatusCode? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_PreviousNameSources MapPreviousNameSource(PreviousNameSources source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial PreviousNameSources MapPreviousNameSource(ecer_PreviousNameSources source);
+
+  private ecer_PreviousNameSources? MapPreviousNameSource(PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
+
+  private PreviousNameSources? MapPreviousNameSource(ecer_PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial Contact_StatusCode MapStatusCode(StatusCode source);
@@ -159,14 +167,6 @@ internal partial class RegistrantRepositoryMapper : IRegistrantRepositoryMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial IDVerificationDecision MapIdVerificationDecision(ecer_IDVerificationDecision source);
-
-  private ecer_PreviousName_StatusCode? MapPreviousNameStage(PreviousNameStage? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
-
-  private PreviousNameStage? MapPreviousNameStage(ecer_PreviousName_StatusCode? source) => source.HasValue ? MapPreviousNameStage(source.Value) : null;
-
-  private ecer_PreviousNameSources? MapPreviousNameSource(PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
-
-  private PreviousNameSources? MapPreviousNameSource(ecer_PreviousNameSources? source) => source.HasValue ? MapPreviousNameSource(source.Value) : null;
 
   private Contact_StatusCode? MapStatusCode(StatusCode? source) => source.HasValue ? MapStatusCode(source.Value) : null;
 

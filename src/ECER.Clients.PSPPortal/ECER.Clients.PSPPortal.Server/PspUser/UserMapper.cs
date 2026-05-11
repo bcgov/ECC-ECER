@@ -58,12 +58,12 @@ internal partial class PspUserMapper : IPspUserMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPspUsers.PspUserRole MapPspUserRole(PspUserRole source);
 
-  [MapEnum(EnumMappingStrategy.ByName)]
-  private partial PortalAccessStatus MapPortalAccessStatus(ContractPspUsers.PortalAccessStatus source);
-
   private PspUserRole? MapPspUserRole(ContractPspUsers.PspUserRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
 
   private ContractPspUsers.PspUserRole? MapPspUserRole(PspUserRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PortalAccessStatus MapPortalAccessStatus(ContractPspUsers.PortalAccessStatus source);
 
   private PortalAccessStatus? MapPortalAccessStatus(ContractPspUsers.PortalAccessStatus? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
 }

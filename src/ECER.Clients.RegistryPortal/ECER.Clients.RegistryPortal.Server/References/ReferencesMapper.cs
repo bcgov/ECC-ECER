@@ -135,6 +135,8 @@ internal partial class ReferencesMapper : IReferencesMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.LikertScale MapLikertScale(LikertScale source);
 
+  private ContractApplications.LikertScale? MapLikertScale(LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
+
   private ContractApplications.ReferenceRelationship? MapReferenceRelationship(ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
 
   private ContractApplications.WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
@@ -143,5 +145,4 @@ internal partial class ReferencesMapper : IReferencesMapper
 
   private ContractApplications.WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
 
-  private ContractApplications.LikertScale? MapLikertScale(LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
 }

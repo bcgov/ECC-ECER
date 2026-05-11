@@ -37,7 +37,7 @@ internal partial class MetadataResourceRepositoryMapper : IMetadataResourceRepos
 
   public List<DynamicsConfig> MapDynamicsConfigurations(IEnumerable<bcgov_config> source) => source.Select(MapDynamicsConfiguration).ToList();
 
-  private Province MapProvince(ecer_Province source) => new(
+  private static Province MapProvince(ecer_Province source) => new(
     source.ecer_ProvinceId?.ToString() ?? string.Empty,
     source.ecer_Name ?? string.Empty,
     source.ecer_Abbreviation ?? string.Empty);
@@ -52,13 +52,13 @@ internal partial class MetadataResourceRepositoryMapper : IMetadataResourceRepos
     PortalTags = source.ecer_PortalTags?.Select(MapPortalTag).ToArray() ?? Array.Empty<PortalTags>(),
   };
 
-  private Country MapCountry(ecer_Country source) => new(
+  private static Country MapCountry(ecer_Country source) => new(
     source.ecer_CountryId?.ToString() ?? string.Empty,
     source.ecer_Name ?? string.Empty,
     source.ecer_ShortName ?? string.Empty,
     source.ecer_EligibleforICRA.GetValueOrDefault());
 
-  private AreaOfInstruction MapAreaOfInstruction(ecer_ProvincialRequirement source) => new(
+  private static AreaOfInstruction MapAreaOfInstruction(ecer_ProvincialRequirement source) => new(
     source.ecer_ProvincialRequirementId?.ToString() ?? string.Empty,
     source.ecer_Name ?? string.Empty,
     source.ecer_CertificateLevels?.Select(level => level.ToString()).ToArray() ?? Array.Empty<string>(),
@@ -97,7 +97,7 @@ internal partial class MetadataResourceRepositoryMapper : IMetadataResourceRepos
     MultiText = source.ecer_MultipleLineofText,
   };
 
-  private DynamicsConfig MapDynamicsConfiguration(bcgov_config source) => new(
+  private static DynamicsConfig MapDynamicsConfiguration(bcgov_config source) => new(
     source.bcgov_Key ?? string.Empty,
     source.bcgov_Value ?? string.Empty);
 

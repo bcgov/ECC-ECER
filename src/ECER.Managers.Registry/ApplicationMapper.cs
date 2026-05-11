@@ -176,7 +176,7 @@ internal partial class ApplicationMapper : IApplicationMapper
     Status = MapTranscriptStage(source.Status),
     StudentMiddleName = source.StudentMiddleName,
     Country = source.Country == null ? null : MapCountry(source.Country),
-    Province = source.Province == null ? null : MapProvince(source.Province),
+    Province = MapNullableProvince(source.Province),
     PostSecondaryInstitution = source.PostSecondaryInstitution == null ? null : MapPostSecondaryInstitution(source.PostSecondaryInstitution),
     TranscriptStatusOption = MapTranscriptStatusOption(source.TranscriptStatusOption),
     CourseOutlineReceivedByRegistry = source.CourseOutlineReceivedByRegistry,
@@ -208,7 +208,7 @@ internal partial class ApplicationMapper : IApplicationMapper
     Status = MapTranscriptStage(source.Status),
     StudentMiddleName = source.StudentMiddleName,
     Country = source.Country == null ? null : MapCountry(source.Country),
-    Province = source.Province == null ? null : MapProvince(source.Province),
+    Province = MapNullableProvince(source.Province),
     PostSecondaryInstitution = source.PostSecondaryInstitution == null ? null : MapPostSecondaryInstitution(source.PostSecondaryInstitution),
     TranscriptStatusOption = MapTranscriptStatusOption(source.TranscriptStatusOption),
     CourseOutlineReceivedByRegistry = source.CourseOutlineReceivedByRegistry,
@@ -345,7 +345,7 @@ internal partial class ApplicationMapper : IApplicationMapper
     : new ResourceApplications.CertificateInformation
     {
       CertificateComparisonId = source.CertificateComparisonId,
-      LabourMobilityProvince = source.LabourMobilityProvince == null ? null : MapProvince(source.LabourMobilityProvince),
+      LabourMobilityProvince = MapNullableProvince(source.LabourMobilityProvince),
       CurrentCertificationNumber = source.CurrentCertificationNumber,
       ExistingCertificationType = source.ExistingCertificationType,
       LegalFirstName = source.LegalFirstName,
@@ -359,7 +359,7 @@ internal partial class ApplicationMapper : IApplicationMapper
     : new ContractApplications.CertificateInformation
     {
       CertificateComparisonId = source.CertificateComparisonId,
-      LabourMobilityProvince = source.LabourMobilityProvince == null ? null : MapProvince(source.LabourMobilityProvince),
+      LabourMobilityProvince = MapNullableProvince(source.LabourMobilityProvince),
       CurrentCertificationNumber = source.CurrentCertificationNumber,
       ExistingCertificationType = source.ExistingCertificationType,
       LegalFirstName = source.LegalFirstName,
@@ -375,6 +375,10 @@ internal partial class ApplicationMapper : IApplicationMapper
   private static ResourceMetadata.Province MapProvince(ContractMetadatas.Province source) => new(source.ProvinceId, source.ProvinceName, source.ProvinceCode);
 
   private static ContractMetadatas.Province MapProvince(ResourceMetadata.Province source) => new(source.ProvinceId, source.ProvinceName, source.ProvinceCode);
+
+  private static ResourceMetadata.Province? MapNullableProvince(ContractMetadatas.Province? source) => source == null ? null : MapProvince(source);
+
+  private static ContractMetadatas.Province? MapNullableProvince(ResourceMetadata.Province? source) => source == null ? null : MapProvince(source);
 
   private static ResourceMetadata.PostSecondaryInstitution MapPostSecondaryInstitution(ContractMetadatas.PostSecondaryInstitution source) => new(source.Id, source.Name, source.ProvinceId);
 
@@ -399,6 +403,10 @@ internal partial class ApplicationMapper : IApplicationMapper
 
     return (ResourceApplications.WorkExperienceRefStage)(int)source;
   }
+
+  private static ResourceApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
+
+  private static ContractApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ResourceApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ApplicationStatus MapApplicationStatus(ContractApplications.ApplicationStatus source);
@@ -454,6 +462,10 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.TranscriptStage MapTranscriptStage(ResourceApplications.TranscriptStage source);
 
+  private ResourceApplications.TranscriptStage? MapTranscriptStage(ContractApplications.TranscriptStage? source) => source.HasValue ? MapTranscriptStage(source.Value) : null;
+
+  private ContractApplications.TranscriptStage? MapTranscriptStage(ResourceApplications.TranscriptStage? source) => source.HasValue ? MapTranscriptStage(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ProfessionalDevelopmentStatusCode MapProfessionalDevelopmentStatus(ContractApplications.ProfessionalDevelopmentStatusCode source);
 
@@ -472,6 +484,10 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.WorkExperienceTypes MapWorkExperienceType(ResourceApplications.WorkExperienceTypes source);
 
+  private ResourceApplications.WorkExperienceTypes? MapWorkExperienceType(ContractApplications.WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+
+  private ContractApplications.WorkExperienceTypes? MapWorkExperienceType(ResourceApplications.WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.UnabletoProvideReferenceReasons MapUnableToProvideReferenceReason(ContractApplications.UnabletoProvideReferenceReasons source);
 
@@ -481,11 +497,15 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ReferenceRelationship MapReferenceRelationship(ContractApplications.ReferenceRelationship source);
 
+  private ResourceApplications.ReferenceRelationship? MapReferenceRelationship(ContractApplications.ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ChildrenProgramType MapChildrenProgramType(ContractApplications.ChildrenProgramType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.WorkHoursType MapWorkHoursType(ContractApplications.WorkHoursType source);
+
+  private ResourceApplications.WorkHoursType? MapWorkHoursType(ContractApplications.WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ChildcareAgeRanges MapChildcareAgeRange(ContractApplications.ChildcareAgeRanges source);
@@ -499,11 +519,19 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.CourseOutlineOptions MapCourseOutlineOptions(ResourceApplications.CourseOutlineOptions source);
 
+  private ResourceApplications.CourseOutlineOptions? MapCourseOutlineOptions(ContractApplications.CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
+
+  private ContractApplications.CourseOutlineOptions? MapCourseOutlineOptions(ResourceApplications.CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ComprehensiveReportOptions MapComprehensiveReportOptions(ContractApplications.ComprehensiveReportOptions source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ComprehensiveReportOptions MapComprehensiveReportOptions(ResourceApplications.ComprehensiveReportOptions source);
+
+  private ResourceApplications.ComprehensiveReportOptions? MapComprehensiveReportOptions(ContractApplications.ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
+
+  private ContractApplications.ComprehensiveReportOptions? MapComprehensiveReportOptions(ResourceApplications.ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ProgramConfirmationOptions MapProgramConfirmationOptions(ContractApplications.ProgramConfirmationOptions source);
@@ -543,10 +571,6 @@ internal partial class ApplicationMapper : IApplicationMapper
 
   private ContractApplications.ApplicationOrigin? MapApplicationOrigin(ResourceApplications.ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
 
-  private ResourceApplications.TranscriptStage? MapTranscriptStage(ContractApplications.TranscriptStage? source) => source.HasValue ? MapTranscriptStage(source.Value) : null;
-
-  private ContractApplications.TranscriptStage? MapTranscriptStage(ResourceApplications.TranscriptStage? source) => source.HasValue ? MapTranscriptStage(source.Value) : null;
-
   private ResourceApplications.ProfessionalDevelopmentStatusCode? MapProfessionalDevelopmentStatus(ContractApplications.ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
 
   private ContractApplications.ProfessionalDevelopmentStatusCode? MapProfessionalDevelopmentStatus(ResourceApplications.ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
@@ -555,29 +579,9 @@ internal partial class ApplicationMapper : IApplicationMapper
 
   private ContractApplications.CharacterReferenceStage? MapCharacterReferenceStage(ResourceApplications.CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
 
-  private ResourceApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
-
-  private ContractApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ResourceApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
-
-  private ResourceApplications.WorkExperienceTypes? MapWorkExperienceType(ContractApplications.WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
-
-  private ContractApplications.WorkExperienceTypes? MapWorkExperienceType(ResourceApplications.WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
-
   private ResourceApplications.LikertScale? MapLikertScale(ContractApplications.LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
 
-  private ResourceApplications.ReferenceRelationship? MapReferenceRelationship(ContractApplications.ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
-
   private ResourceApplications.ChildrenProgramType? MapChildrenProgramType(ContractApplications.ChildrenProgramType? source) => source.HasValue ? MapChildrenProgramType(source.Value) : null;
-
-  private ResourceApplications.WorkHoursType? MapWorkHoursType(ContractApplications.WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
-
-  private ResourceApplications.CourseOutlineOptions? MapCourseOutlineOptions(ContractApplications.CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
-
-  private ContractApplications.CourseOutlineOptions? MapCourseOutlineOptions(ResourceApplications.CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
-
-  private ResourceApplications.ComprehensiveReportOptions? MapComprehensiveReportOptions(ContractApplications.ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
-
-  private ContractApplications.ComprehensiveReportOptions? MapComprehensiveReportOptions(ResourceApplications.ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
 
   private ResourceApplications.ProgramConfirmationOptions? MapProgramConfirmationOptions(ContractApplications.ProgramConfirmationOptions? source) => source.HasValue ? MapProgramConfirmationOptions(source.Value) : null;
 
