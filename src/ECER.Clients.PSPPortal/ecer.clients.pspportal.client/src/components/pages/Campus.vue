@@ -110,10 +110,17 @@
 
         <v-row>
           <v-col cols="12">
+            <!-- prettier-ignore -->
             <p>
               This application is for private institutions with existing early
               childhood education programs that are recognized by the ECE
-              Registry to offer their program at a new campus location.
+              Registry to offer their program at a new campus location. Private
+              institutions require additional approval from their regulator
+              before adding a new campus location. Contact the <a
+                href="https://www.privatetraininginstitutions.gov.bc.ca/institutions"
+                target="_blank"
+                class="text-primary text-decoration-underline"
+              >Private Training Institutions Regulatory Unit</a> for more information.
             </p>
             <p class="mt-4">
               The application is based on curriculum previously approved by the

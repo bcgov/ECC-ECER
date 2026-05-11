@@ -16,9 +16,9 @@
       <v-col cols="12">
         <ECEHeader title="Satellite details"></ECEHeader>
         <p class="mt-3">
-          Satellite program offerings are time-limited and require ongoing
-          Registry recognition. To complete your submission, enter the satellite
-          location details and continue to the satellite program application.
+          An existing program may be offered at a satellite location but must
+          have ongoing recognition with the ECE Registry. Once approved, the
+          satellite program offering will have a fixed end date.
         </p>
       </v-col>
     </v-row>
