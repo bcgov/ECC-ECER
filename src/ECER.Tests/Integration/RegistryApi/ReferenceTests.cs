@@ -49,7 +49,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         referenceContactInfo,
         referenceEvaluation,
         true,
-        faker.Random.Word() //recaptcha token
+        faker.Random.Word() //captcha token
     );
 
     return referenceSubmissionRequest;
@@ -119,7 +119,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         workExperienceReferenceDetails,
         workExperienceReferenceCompetenciesAssessment,
         faker.Random.Bool(), // ConfirmProvidedInformationIsRight
-        faker.Random.Word() //recaptcha token
+        faker.Random.Word() //captcha token
     )
     { WorkExperienceType = WorkExperienceTypes.Is500Hours }; // Set 500 hours Type Work Experience for Validations
 
@@ -169,7 +169,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         workExperienceReferenceDetails,
         null, // Competencies Assessment - skipped for 400 hours type work experience reference
         faker.Random.Bool(), // ConfirmProvidedInformationIsRight
-        faker.Random.Word() //recaptcha token
+        faker.Random.Word() //captcha token
     )
     { WorkExperienceType = WorkExperienceTypes.Is400Hours };// Set 400 hours Type Work Experience for Validations
 

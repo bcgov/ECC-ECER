@@ -2,6 +2,7 @@
   <PageContainer :margin-top="false">
     <Loading v-if="isLoading"></Loading>
     <div v-else>
+      <!-- Unread messages banner -->
       <v-row v-if="messageStore?.unreadMessageCount > 0" justify="center">
         <v-col>
           <v-row>
@@ -17,17 +18,22 @@
           </v-row>
         </v-col>
       </v-row>
+
+      <!-- Page title -->
       <v-row justify="center">
         <v-col cols="12">
           <h1>My PSP dashboard</h1>
         </v-col>
-        <v-col
-          v-if="
-            programsRequiringReview != null &&
-            programsRequiringReview?.length > 0
-          "
-          cols="12"
-        >
+      </v-row>
+
+      <!-- Program review callout -->
+      <v-row
+        v-if="
+          programsRequiringReview != null && programsRequiringReview?.length > 0
+        "
+        justify="center"
+      >
+        <v-col cols="12">
           <Card color="primary" class="d-flex flex-column">
             <h2 color="surface">You have program profiles to review</h2>
             <p color="surface" class="mt-4">
@@ -48,112 +54,301 @@
             </div>
           </Card>
         </v-col>
-        <v-col v-if="educationInstitution" cols="12">
-          <EducationInstitutionCard
-            :education-institution="educationInstitution"
-          />
-        </v-col>
       </v-row>
-      <v-row justify="center">
-        <v-col cols="12">
-          <ECEHeader title="Portal options" />
-        </v-col>
-      </v-row>
-      <v-row align="stretch">
-        <v-col class="d-flex" cols="12" sm="6" md="4">
-          <Card class="d-flex flex-column">
-            <h2>Program profiles</h2>
-            <p class="mt-4">
-              View or manage your institution’s annual program profiles.
+
+      <!-- Institution management section -->
+      <v-sheet color="hawkes-blue" rounded class="pa-6 mt-4">
+        <v-row>
+          <v-col cols="12">
+            <ECEHeader title="Institution management" />
+            <p class="mt-1">
+              Manage your institution's profile, locations and user access.
             </p>
-            <div class="mt-auto">
-              <v-btn
-                variant="outlined"
-                size="large"
-                class="mt-4"
-                color="primary"
-                id="btnNeedOtherOptions"
-                @click="router.push('/program-profiles')"
-              >
-                View program profiles
-              </v-btn>
-            </div>
-          </Card>
-        </v-col>
-        <v-col class="d-flex" cols="12" sm="6" md="4">
-          <Card class="d-flex flex-column">
-            <h2>Messages</h2>
-            <p class="mt-4">View or send a new message to the ECE Registry.</p>
-            <div class="mt-auto">
-              <v-btn
-                variant="outlined"
-                size="large"
-                class="mt-4"
-                color="primary"
-                id="btnMessages"
-                @click="router.push('/messages')"
-              >
-                Go to messages
-              </v-btn>
-            </div>
-          </Card>
-        </v-col>
-        <v-col class="d-flex" cols="12" sm="6" md="4">
-          <Card class="d-flex flex-column">
-            <h2>User management</h2>
-            <p class="mt-4">
-              Manage which users at your institution have access to this portal.
+          </v-col>
+        </v-row>
+
+        <!-- Institution profile -->
+        <v-row>
+          <v-col cols="12">
+            <h3>Institution profile</h3>
+          </v-col>
+        </v-row>
+        <v-row align="stretch">
+          <v-col class="d-flex" cols="12" md="6">
+            <Card v-if="educationInstitution" class="d-flex flex-column">
+              <v-row align="start" justify="space-between" no-gutters>
+                <v-col>
+                  <p class="font-weight-bold">
+                    {{ educationInstitution.name }}
+                    <span v-if="educationInstitution.institutionType">
+                      ({{ formattedInstitutionType }})
+                    </span>
+                  </p>
+                </v-col>
+                <v-col cols="auto">
+                  <v-tooltip text="Edit Institution Information" location="top">
+                    <template #activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        icon="mdi-pencil"
+                        variant="plain"
+                        @click="router.push('/education-institution/edit')"
+                      />
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+              <p class="mt-2">
+                <span class="font-weight-bold">Address:</span>
+              </p>
+              <p>{{ formattedAddress }}</p>
+            </Card>
+          </v-col>
+
+          <!-- Campus and satellite locations -->
+          <v-col class="d-flex" cols="12" md="6">
+            <Card class="d-flex flex-column">
+              <h3>Campus and satellite locations</h3>
+              <p class="mt-4">
+                View and manage where your institution offers programs.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  variant="outlined"
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="btnViewLocations"
+                  @click="
+                    router.push({
+                      name: 'education-institution',
+                      params: {
+                        institutionId: educationInstitution?.id,
+                      },
+                    })
+                  "
+                >
+                  View locations
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+        </v-row>
+
+        <!-- Institution administration -->
+        <v-row class="mt-2">
+          <v-col cols="12">
+            <h3>Institution administration</h3>
+          </v-col>
+        </v-row>
+        <v-row align="stretch">
+          <v-col class="d-flex" cols="12" md="6">
+            <Card class="d-flex flex-column">
+              <h3>Messages</h3>
+              <p class="mt-4">
+                View or send a new message to the ECE Registry.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  variant="outlined"
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="btnMessages"
+                  @click="router.push('/messages')"
+                >
+                  Go to messages
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+          <v-col class="d-flex" cols="12" md="6">
+            <Card class="d-flex flex-column">
+              <h3>User management</h3>
+              <p class="mt-4">
+                Manage which users at your institution have access to this
+                portal.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  variant="outlined"
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="btnManageUsers"
+                  @click="
+                    router.push({
+                      name: 'manage-users',
+                      params: {
+                        educationInstitutionName: educationInstitution?.name,
+                      },
+                    })
+                  "
+                >
+                  Manage users
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+        </v-row>
+      </v-sheet>
+
+      <div class="px-6">
+        <!-- Programs section -->
+        <v-row class="mt-6">
+          <v-col cols="12">
+            <ECEHeader title="Programs" />
+            <p class="mt-1">
+              View and manage your institution's program profiles and change
+              requests.
             </p>
-            <div class="mt-auto">
-              <v-btn
-                variant="outlined"
-                size="large"
-                class="mt-4"
-                color="primary"
-                id="btnManageUsers"
-                @click="
-                  router.push({
-                    name: 'manage-users',
-                    params: {
-                      educationInstitutionName: educationInstitution?.name,
-                    },
-                  })
-                "
-              >
-                Manage users
-              </v-btn>
-            </div>
-          </Card>
-        </v-col>
-        <v-col class="d-flex" cols="12" sm="6" md="4">
-          <Card class="d-flex flex-column">
-            <h2>Change requests</h2>
-            <p class="mt-4">
-              Request a program change (for example, adding or removing courses)
-              that affects program requirements or competencies.
+          </v-col>
+        </v-row>
+        <v-row align="stretch">
+          <v-col class="d-flex" cols="12" md="6">
+            <Card class="d-flex flex-column">
+              <h3>Program profiles</h3>
+              <p class="mt-4">
+                View or manage your institution's annual program profiles.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  variant="outlined"
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="btnViewProgramProfiles"
+                  @click="router.push('/program-profiles')"
+                >
+                  View program profiles
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+          <v-col class="d-flex" cols="12" md="6">
+            <Card class="d-flex flex-column">
+              <h3>Change requests</h3>
+              <p class="mt-4">
+                Request a program change (for example, adding or removing
+                courses) that affects program requirements or competencies.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  variant="outlined"
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="btnRequestChange"
+                  @click="
+                    router.push({
+                      name: 'new-message',
+                      params: {
+                        initialCategory: 'ProgramChangeRequest',
+                      },
+                    })
+                  "
+                >
+                  Request a change
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+        </v-row>
+
+        <!-- Applications section -->
+        <v-row class="mt-6">
+          <v-col cols="12">
+            <ECEHeader title="Applications" />
+            <p class="mt-1">
+              Submit and manage applications for new programs and delivery
+              methods.
             </p>
-            <div class="mt-auto">
-              <v-btn
-                variant="outlined"
-                size="large"
-                class="mt-4"
-                color="primary"
-                id="btnRequestChange"
-                @click="
-                  router.push({
-                    name: 'new-message',
-                    params: {
-                      initialCategory: 'ProgramChangeRequest',
-                    },
-                  })
-                "
-              >
-                Request a change
-              </v-btn>
-            </div>
-          </Card>
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+        <v-row align="stretch">
+          <v-col class="d-flex" cols="12" md="6">
+            <Card class="d-flex flex-column">
+              <h3>Apply for a new program</h3>
+              <p class="mt-4">
+                Submit your program details online to begin your application for
+                a new program.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  variant="outlined"
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="createProgramApplications"
+                  @click="
+                    router.push({
+                      name: 'programApplicationInfo',
+                      params: {
+                        applicationType:
+                          ProgramApplicationType.NewBasicECEPostBasicProgram,
+                      },
+                    })
+                  "
+                >
+                  Begin application
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+          <v-col class="d-flex" cols="12" md="6">
+            <Card class="d-flex flex-column">
+              <h3>Online or hybrid delivery</h3>
+              <p class="mt-4">
+                Submit an application to expand an existing recognized program
+                to include online or hybrid delivery.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  variant="outlined"
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="createProgramApplicationAddOnlineOrHybridDelivery"
+                  @click="
+                    router.push({
+                      name: 'programApplicationInfo',
+                      params: {
+                        applicationType:
+                          ProgramApplicationType.AddOnlineorHybridDeliveryMethod,
+                      },
+                    })
+                  "
+                >
+                  Add delivery method
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="d-flex" cols="12" md="6">
+            <Card class="d-flex flex-column">
+              <h3>View all applications</h3>
+              <p class="mt-4">
+                View all applications for my educational institution and edit
+                any draft applications.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  variant="outlined"
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="viewProgramApplications"
+                  @click="router.push('/program-applications')"
+                >
+                  View applications
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+        </v-row>
+      </div>
     </div>
   </PageContainer>
 </template>
@@ -177,12 +372,13 @@ import type {
   Program,
 } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
+import { formatAddress, formatInstitutionType } from "@/utils/format";
 import ECEHeader from "@/components/ECEHeader.vue";
 import Card from "@/components/Card.vue";
-import EducationInstitutionCard from "@/components/EducationInstitutionCard.vue";
 import { useMessageStore } from "@/store/message";
 import { getEducationInstitution } from "@/api/education-institution";
 import { getPrograms } from "@/api/program";
+import { ProgramApplicationType } from "@/utils/constant";
 
 export default defineComponent({
   name: "Dashboard",
@@ -191,7 +387,6 @@ export default defineComponent({
     Loading,
     ECEHeader,
     Card,
-    EducationInstitutionCard,
     Alert,
     UnreadMessages,
   },
@@ -201,6 +396,7 @@ export default defineComponent({
       educationInstitution: null as EducationInstitution | null,
       programsRequiringReview: null as Program[] | null,
       loading: true,
+      ProgramApplicationType: ProgramApplicationType,
     };
   },
   async setup() {
@@ -327,13 +523,21 @@ export default defineComponent({
         this.loading
       );
     },
+    formattedInstitutionType(): string {
+      return formatInstitutionType(this.educationInstitution?.institutionType);
+    },
+    formattedAddress(): string {
+      return formatAddress(this.educationInstitution);
+    },
   },
   methods: {
     async getInstitutionData() {
       this.educationInstitution = await getEducationInstitution();
     },
     async getProgramProfileData() {
-      const { data: programResults } = await getPrograms("", ["Draft"]);
+      const { data: programResults } = await getPrograms("", ["Draft"], {
+        byProgramProfileType: "AnnualReview",
+      });
       this.programsRequiringReview = programResults?.programs ?? null;
     },
     setUserStoreValues() {

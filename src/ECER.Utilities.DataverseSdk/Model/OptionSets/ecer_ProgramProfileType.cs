@@ -22,6 +22,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ChangeRequest = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		New = 621870002,
 	}
 }
 #pragma warning restore CS1591

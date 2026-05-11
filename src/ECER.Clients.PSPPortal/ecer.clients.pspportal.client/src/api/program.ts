@@ -18,7 +18,15 @@ const getPrograms = async (
     page,
     pageSize,
     fromProgramId,
-  }: { page?: number; pageSize?: number; fromProgramId?: string } = {},
+    campusId,
+    byProgramProfileType,
+  }: {
+    page?: number;
+    pageSize?: number;
+    fromProgramId?: string;
+    campusId?: string;
+    byProgramProfileType?: Components.Schemas.ProgramProfileType;
+  } = {},
 ): Promise<
   ApiResponse<Components.Schemas.GetProgramsResponse | null | undefined>
 > => {
@@ -35,6 +43,8 @@ const getPrograms = async (
           id: id || "",
           byStatus: statuses,
           fromProgramId: fromProgramId,
+          campusId: campusId,
+          byProgramProfileType: byProgramProfileType,
         },
         null,
         config,
@@ -62,26 +72,6 @@ const createOrUpdateDraftApplication = async (
   >({
     request: client.draftprogram_put(pathParameters, body),
     key: "draftprogram_put",
-  });
-};
-
-const updateCourse = async (
-  programId: string,
-  course: Components.Schemas.Course,
-): Promise<ApiResponse<string | null | undefined>> => {
-  const client = await getClient();
-  const pathParameters: Paths.CoursePut.PathParameters = {
-    courseId: course.courseId,
-  };
-  const body: Paths.CoursePut.RequestBody = {
-    course: course,
-    type: "ProgramProfile",
-    id: programId,
-  };
-
-  return apiResultHandler.execute<string | null | undefined>({
-    request: client.course_put(pathParameters, body),
-    key: "course_put",
   });
 };
 
@@ -138,7 +128,6 @@ export {
   createOrUpdateDraftApplication,
   getPrograms,
   submitDraftProgramApplication,
-  updateCourse,
   withdrawProgram,
   initiateProgramChange,
 };

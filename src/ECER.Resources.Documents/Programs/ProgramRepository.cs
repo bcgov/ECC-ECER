@@ -36,10 +36,32 @@ internal sealed class ProgramRepository : IProgramRepository
       programs = programs.WhereIn(item => item.StatusCode!.Value, statuses);
     }
 
+    if (query.ByProgramProfileType != null)
+    {
+      var profileType = query.ByProgramProfileType.Value switch
+      {
+        ProgramProfileType.AnnualReview => ecer_ProgramProfileType.AnnualReview,
+        ProgramProfileType.ChangeRequest => ecer_ProgramProfileType.ChangeRequest,
+        _ => throw new ArgumentOutOfRangeException(nameof(query), query.ByProgramProfileType, null),
+      };
+      programs = programs.Where(p => p.ecer_Type == profileType);
+    }
+
     if (query.ByFromProgramProfileId != null)
     {
       var fromProgramProfileId = Guid.Parse(query.ByFromProgramProfileId);
       programs = programs.Where(p => p.ecer_FromProgramProfileId.Id == fromProgramProfileId);
+    }
+
+    if (query.ByCampusId != null)
+    {
+      var campusId = Guid.Parse(query.ByCampusId);
+      var programIdsForCampus = context.ecer_ProgramCampusSet
+        .Where(c => c.ecer_CampusId.Id == campusId && c.ecer_ProgramProfileId != null)
+        .Select(c => c.ecer_ProgramProfileId.Id)
+        .ToList();
+      if (programIdsForCampus.Count == 0) return new ProgramResult { Programs = [], TotalProgramsCount = 0 };
+      programs = programs.WhereIn(p => p.ecer_ProgramId!.Value, programIdsForCampus);
     }
 
     int paginatedTotalProgramCount = 0;
@@ -204,7 +226,7 @@ internal sealed class ProgramRepository : IProgramRepository
     context.UpdateObject(existingProgram);
     context.SaveChanges();
 
-    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileIdName == program.Name);
+    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileId.Id == Guid.Parse(program.Id!));
     if (newProgram == null) throw new InvalidOperationException($"New program for ecer_Program '{program.Id}' not found");
 
     var newProgramId = newProgram.ecer_ProgramId != null ? newProgram.ecer_ProgramId.ToString() : string.Empty;

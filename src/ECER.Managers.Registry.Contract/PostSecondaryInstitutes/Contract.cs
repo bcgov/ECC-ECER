@@ -19,11 +19,23 @@ public record PostSecondaryInstitutionsQueryResults(IEnumerable<PostSecondaryIns
 
 public record UpdatePostSecondaryInstitutionCommand(PostSecondaryInstitute Institute) : IRequest<string>;
 
+/// <summary>
+/// Creates a new campus or satellite location under the institution of the given program representative
+/// </summary>
+public record CreateCampusCommand(string ProgramRepresentativeId, Campus Campus, bool IsSatelliteOrTemporaryLocation, IEnumerable<string>? ProgramIds = null) : IRequest<string>;
+
+/// <summary>
+/// Updates an existing campus - IsSatelliteOrTemporaryLocation cannot be changed
+/// </summary>
+public record UpdateCampusCommand(string ProgramRepresentativeId, Campus Campus) : IRequest<UpdateCampusResult>;
+
 public record PostSecondaryInstitute
 {
   public string Id { get; set; } = null!;
   public string? Name { get; set; }
-  public Auspice? Auspice { get; set; }
+  public PsiInstitutionType? InstitutionType { get; set; }
+  public PrivateAuspiceType? PrivateAuspiceType { get; set; }
+  public string? PtiruInstitutionId { get; set; }
   public string? WebsiteUrl { get; set; }
   public string? Street1 { get; set; }
   public string? Street2 { get; set; }
@@ -32,13 +44,60 @@ public record PostSecondaryInstitute
   public string? Province { get; set; }
   public string? Country { get; set; }
   public string? PostalCode { get; set; }
+  public IEnumerable<Campus>? Campuses { get; set; }
 };
 
-public enum Auspice
+public record Campus
 {
-  ContinuingEducation,
-  PublicOOP,
-  Private,
-  Public
+  public string Id { get; set; } = null!;
+  public string? Name { get; set; }
+  public string? GeneratedName { get; set; }
+  public CampusStatus? Status { get; set; }
+  public bool? IsSatelliteOrTemporaryLocation { get; set; }
+  public string? Street1 { get; set; }
+  public string? Street2 { get; set; }
+  public string? Street3 { get; set; }
+  public string? City { get; set; }
+  public string? Province { get; set; }
+  public string? PostalCode { get; set; }
+  public string? KeyCampusContactId { get; set; }
+  public string? KeyCampusContactName { get; set; }
+  public string? OtherCampusContactName { get; set; }
+}
+public enum CampusStatus
+{
+  None,
+  Active = 1,
+  Inactive = 2,
+  Pending = 621870001
 }
 
+public enum PsiInstitutionType
+{
+  Private,
+  Public,
+  ContinuingEducation,
+  PublicOOP,
+}
+
+public enum PrivateAuspiceType
+{
+  Theologicalinstitution,
+  FirstNationsmandatedpostsecondaryinstitute,
+  Other,
+  Privatetraininginstitution,
+  Indigenouscontrolledpostsecondaryinstitute,
+}
+
+public record UpdateCampusResult()
+{
+  public string? CampusId { get; set; }
+  public UpdateCampusError? Error { get; set; }
+}
+
+public enum UpdateCampusError
+{
+  InstitutionNotFound,
+  DuplicateCampusName,
+  InvalidCampus
+}

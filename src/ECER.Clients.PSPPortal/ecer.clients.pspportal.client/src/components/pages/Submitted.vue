@@ -16,7 +16,7 @@
             class="mr-2"
           ></v-icon>
           <h1 id="programProfileSubmitted" class="align-self-center">
-            Submitted
+            Submission received
           </h1>
         </div>
       </v-container>
@@ -33,7 +33,8 @@
         <br />
         <p>
           It is important to keep your educational institution and user contact
-          information updated in your PSP Portal profile.
+          information updated in your ECE Post-Secondary Programs portal
+          profile.
         </p>
         <br />
         <h2>Review</h2>
@@ -48,12 +49,10 @@
         <br />
         <h2>Status</h2>
         <br />
-        <ul class="ml-10">
-          <li>
-            You may view the status of your submission online in the PSP Portal
-            dashboard
-          </li>
-        </ul>
+        <p>
+          You may view the status of your submission online in the ECE
+          Post-Secondary Programs portal dashboard.
+        </p>
         <br />
       </template>
       <template
@@ -70,6 +69,16 @@
         </p>
         <br />
         <p>No further action is required.</p>
+        <br />
+      </template>
+      <template
+        v-else-if="programProfile.programProfileType === 'ChangeRequest'"
+      >
+        <h2>What to expect next</h2>
+        <br />
+        <p>
+          You have updated your program profile. No further action is required.
+        </p>
         <br />
       </template>
       <v-btn

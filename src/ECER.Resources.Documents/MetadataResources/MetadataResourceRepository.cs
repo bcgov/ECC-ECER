@@ -44,12 +44,25 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     if (query.ById != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_PostSecondaryInstituteId == Guid.Parse(query.ById));
     if (query.ByProvinceId != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_ProvinceId.Id == Guid.Parse(query.ByProvinceId));
     if (query.ByName != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_Name == query.ByName);
+    if (query.ByStatus != null)
+    {
+      var statusCode = MapToStatusCode(query.ByStatus.Value);
+      postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.StatusCode == statusCode);
+    }
 
     var results = context.From(postSecondaryInstitutions)
       .Execute();
 
     return mapper.Map<IEnumerable<PostSecondaryInstitution>>(results)!.ToList();
   }
+
+  private static ecer_PostSecondaryInstitute_StatusCode MapToStatusCode(PostSecondaryInstitutionStatus status) => status switch
+  {
+    PostSecondaryInstitutionStatus.Active => ecer_PostSecondaryInstitute_StatusCode.Active,
+    PostSecondaryInstitutionStatus.Draft => ecer_PostSecondaryInstitute_StatusCode.Draft,
+    PostSecondaryInstitutionStatus.Inactive => ecer_PostSecondaryInstitute_StatusCode.Inactive,
+    _ => throw new ArgumentOutOfRangeException(nameof(status), status, null),
+  };
 
   public async Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken)
   {

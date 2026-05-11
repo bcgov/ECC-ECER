@@ -1,0 +1,251 @@
+using AutoMapper;
+using ECER.Engines.Validation.ProgramApplications;
+using ECER.Infrastructure.Common;
+using ECER.Managers.Admin.Contract.Files;
+using ECER.Managers.Registry.Contract.ProgramApplications;
+using ECER.Resources.Documents.Courses;
+using ECER.Resources.Documents.MetadataResources;
+using ECER.Resources.Documents.ProgramApplications;
+using MediatR;
+using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
+using NavigationMetadata = ECER.Managers.Registry.Contract.ProgramApplications.NavigationMetadata;
+using ComponentGroupQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupQuery;
+using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
+using ProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
+using ComponentGroupWithComponentsQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponentsQuery;
+using ComponentGroupWithComponents = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents;
+using NavigationType = ECER.Managers.Registry.Contract.ProgramApplications.NavigationType;
+using ProgramApplicationQueryResults = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQueryResults;
+using ContractCourse = ECER.Managers.Registry.Contract.Shared.Course;
+using ApplicationFileInfo = ECER.Managers.Registry.Contract.ProgramApplications.ApplicationFileInfo;
+
+namespace ECER.Managers.Registry;
+
+public class ProgramApplicationHandler(
+    IProgramApplicationRepository programApplicationRepository,
+    IMetadataResourceRepository metadataResourceRepository,
+    ICourseRepository courseRepository,
+    IProgramApplicationValidationEngine validationEngine,
+    IMapper mapper,
+    IMediator mediator)
+  : IRequestHandler<CreateProgramApplicationCommand, Contract.ProgramApplications.ProgramApplication?>,
+    IRequestHandler<ProgramApplicationQuery, ProgramApplicationQueryResults>,
+    IRequestHandler<UpdateProgramApplicationCommand, string>,
+    IRequestHandler<ComponentGroupQuery, IEnumerable<NavigationMetadata>>,
+    IRequestHandler<ComponentGroupWithComponentsQuery, IEnumerable<ComponentGroupWithComponents>>,
+    IRequestHandler<UpdateComponentGroupCommand, string>,
+    IRequestHandler<SubmitProgramApplicationCommand, ProgramApplicationSubmissionResult>,
+    IRequestHandler<UploadProgramApplicationFileCommand, ApplicationFileInfo>,
+    IRequestHandler<ShareExistingDocumentCommand, ApplicationFileInfo>,
+    IRequestHandler<ProgramApplicationFilesQuery, IEnumerable<ApplicationFileInfo>>,
+    IRequestHandler<ProgramApplicationDocumentUrlsQuery, IEnumerable<ApplicationFileInfo>>,
+    IRequestHandler<DeleteProgramApplicationFileCommand>
+{
+  public async Task<Contract.ProgramApplications.ProgramApplication?> Handle(CreateProgramApplicationCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var resourcesApplication = mapper.Map<Resources.Documents.ProgramApplications.ProgramApplication>(request.ProgramApplication);
+    var id = await programApplicationRepository.Create(resourcesApplication!, cancellationToken);
+
+    var result = await programApplicationRepository.Query(new Resources.Documents.ProgramApplications.ProgramApplicationQuery
+    {
+      ById = id,
+      ByPostSecondaryInstituteId = request.ProgramApplication.PostSecondaryInstituteId,
+    }, cancellationToken);
+
+    var created = result.Items.FirstOrDefault();
+    return created != null ? mapper.Map<Contract.ProgramApplications.ProgramApplication>(created) : null;
+  }
+
+
+  public async Task<string> Handle(UpdateProgramApplicationCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var programId = await programApplicationRepository.UpdateProgramApplication(mapper.Map<Resources.Documents.ProgramApplications.ProgramApplication>(request.ProgramApplication)!, cancellationToken);
+    return programId;
+  }
+
+  public async Task<ProgramApplicationQueryResults> Handle(ProgramApplicationQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var statusFilter = request.ByStatus != null
+      ? mapper.Map<IEnumerable<ApplicationStatus>>(request.ByStatus)
+      : null;
+
+    var result = await programApplicationRepository.Query(new Resources.Documents.ProgramApplications.ProgramApplicationQuery()
+    {
+      ById = request.ById,
+      ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
+      ByStatus = statusFilter,
+      ByCampusId = request.ByCampusId,
+      PageNumber = request.PageNumber,
+      PageSize = request.PageSize,
+    }, cancellationToken);
+
+    return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<Contract.ProgramApplications.ProgramApplication>>(result.Items), result.Count);
+  }
+  
+  public async Task<IEnumerable<NavigationMetadata>> Handle(ComponentGroupQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var result = await programApplicationRepository.QueryComponentGroups(new Resources.Documents.ProgramApplications.ComponentGroupQuery()
+    {
+      ByProgramApplicationId = request.ByProgramApplicationId,
+    }, cancellationToken);
+    
+    var programApplicationResults = await programApplicationRepository.Query(new Resources.Documents.ProgramApplications.ProgramApplicationQuery()
+    {
+      ById = request.ByProgramApplicationId,
+    }, cancellationToken);
+    
+    var programApplication = programApplicationResults.Items.FirstOrDefault();
+    var mappedComponentResults = mapper.Map<IEnumerable<NavigationMetadata>>(result).ToList();
+
+    if (programApplication != null)
+    {
+      var status = programApplication.InstituteInfoEntryProgress ?? "ToDo";
+      mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(), "Institution and program info", status, "Institute Info", 0, NavigationType.Other, false));
+
+      if (programApplication.ProgramTypes?.Contains(Resources.Documents.ProgramApplications.ProgramCertificationType.Basic) == true)
+        mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(), "Basic", programApplication.BasicProgress ?? "ToDo", "Program Profile", 97, NavigationType.Other, false));
+      if (programApplication.ProgramTypes?.Contains(Resources.Documents.ProgramApplications.ProgramCertificationType.ITE) == true)
+        mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(), "ITE", programApplication.IteProgress ?? "ToDo", "Program Profile", 98, NavigationType.Other, false));
+      if (programApplication.ProgramTypes?.Contains(Resources.Documents.ProgramApplications.ProgramCertificationType.SNE) == true)
+        mappedComponentResults.Add(new NavigationMetadata(Guid.NewGuid().ToString(), "SNE", programApplication.SneProgress ?? "ToDo", "Program Profile", 99, NavigationType.Other, false));
+    }
+    return mappedComponentResults;
+  }
+
+  public async Task<IEnumerable<ComponentGroupWithComponents>> Handle(ComponentGroupWithComponentsQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var query = new Resources.Documents.ProgramApplications.ComponentGroupWithComponentsQuery
+    {
+      ByProgramApplicationId = request.ByProgramApplicationId,
+      ByComponentGroupId = request.ByComponentGroupId,
+    };
+    var result = await programApplicationRepository.QueryComponentGroupWithComponents(query, cancellationToken);
+    return mapper.Map<IEnumerable<ComponentGroupWithComponents>>(result);
+  }
+  
+  public async Task<string> Handle(UpdateComponentGroupCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var result = await programApplicationRepository.UpdateComponentGroup(mapper.Map<Resources.Documents.ProgramApplications.ComponentGroupWithComponents>(request.ComponentGroup)!, request.ProgramApplicationId, cancellationToken);
+    return result;
+  }
+
+  public async Task<ApplicationFileInfo> Handle(UploadProgramApplicationFileCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var folder = $"ecer_programapplicationcomponent/{request.ComponentId}";
+    var fileProperties = new FileProperties();
+    var files = new[]
+    {
+      new FileData(
+        new FileLocation(request.FileId, folder, Utilities.ObjectStorage.Providers.EcerWebApplicationType.PSP),
+        fileProperties,
+        request.FileName,
+        request.ContentType,
+        request.Content)
+    };
+    var saveResponse = await mediator.Send(new SaveFileCommand(files), cancellationToken);
+    var saveResult = saveResponse.Items.FirstOrDefault();
+    if (saveResult == null || !saveResult.IsSuccessful)
+    {
+      throw new InvalidOperationException(saveResult?.Message ?? "File upload failed");
+    }
+    var humanSize = UtilityFunctions.HumanFileSize(request.FileSizeBytes);
+    var createRequest = new CreateDocumentUrlRequest(
+      request.FileId, request.FileName, humanSize, folder,
+      request.ProgramApplicationId, request.ComponentGroupId, request.ComponentId,
+      request.PostSecondaryInstituteId);
+    var resourcesResult = await programApplicationRepository.CreateDocumentUrlAndShare(createRequest, cancellationToken);
+    return mapper.Map<ApplicationFileInfo>(resourcesResult);
+  }
+
+  public async Task<ApplicationFileInfo> Handle(ShareExistingDocumentCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var resourcesResult = await programApplicationRepository.CreateShareOnly(
+      request.DocumentId, request.ProgramApplicationId,
+      request.ComponentGroupId, request.ComponentId, cancellationToken);
+    return mapper.Map<ApplicationFileInfo>(resourcesResult);
+  }
+
+  public async Task<IEnumerable<ApplicationFileInfo>> Handle(ProgramApplicationFilesQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var resourcesResult = await programApplicationRepository.GetApplicationFiles(request.ProgramApplicationId, cancellationToken);
+    return mapper.Map<IEnumerable<ApplicationFileInfo>>(resourcesResult);
+  }
+
+  public async Task<IEnumerable<ApplicationFileInfo>> Handle(ProgramApplicationDocumentUrlsQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var resourcesResult = await programApplicationRepository.GetApplicationDocumentUrls(request.ProgramApplicationId, cancellationToken);
+    return mapper.Map<IEnumerable<ApplicationFileInfo>>(resourcesResult);
+  }
+
+  public async Task Handle(DeleteProgramApplicationFileCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var details = await programApplicationRepository.GetShareDocumentUrlDetails(request.ShareDocumentId, cancellationToken);
+    if (details.RemainingShareCount <= 1)
+    {
+      var fileData = new FileData(
+        new FileLocation(details.DocumentId, details.Folder, details.EcerWebApplicationType),
+        new FileProperties(), string.Empty, string.Empty, Stream.Null);
+      await mediator.Send(new DeleteFileCommand(fileData), cancellationToken);
+    }
+    await programApplicationRepository.DeleteShareDocumentUrlById(request.ShareDocumentId, cancellationToken);
+  }
+
+  public async Task<ProgramApplicationSubmissionResult> Handle(SubmitProgramApplicationCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var applicationResult = request.ProgramApplication;
+
+    var application = mapper.Map<Contract.ProgramApplications.ProgramApplication>(applicationResult);
+    
+    var applicationId = application.Id
+                        ?? throw new InvalidOperationException("Program application id is required for submission.");
+
+    var componentGroups = await programApplicationRepository.QueryComponentGroups(
+      new Resources.Documents.ProgramApplications.ComponentGroupQuery { ByProgramApplicationId = applicationId },
+      cancellationToken);
+
+    var resourcesCourses = await courseRepository.GetCourses(new GetCoursesRequest(applicationId, application.PostSecondaryInstituteId, FunctionType.ProgramApplication), cancellationToken);
+    var contractCourses = mapper.Map<IEnumerable<ContractCourse>>(resourcesCourses);
+
+    var areasOfInstruction = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery { ById = null }, cancellationToken);
+
+    var validationContext = new ProgramApplicationValidationContext(
+      ComponentGroupStatuses: componentGroups.Select(g => new ComponentGroupValidationStatus(g.Id, g.Name, g.Status)),
+      Courses: contractCourses,
+      ProgramApplication: application,
+      AreasOfInstruction: areasOfInstruction.ToList().AsReadOnly(),
+      DeclarationAccepted: request.Declaration);
+
+    var validationResults = await validationEngine.Validate(validationContext);
+    if (!validationResults.IsValid)
+    {
+      return new ProgramApplicationSubmissionResult
+      {
+        Error = ProgramApplicationSubmissionError.ValidationFailed,
+        ValidationErrors = validationResults.ValidationErrors
+      };
+    }
+
+    var resultApplicationId = await programApplicationRepository.Submit(
+      application.Id,
+      request.ProgramRepresentativeId,
+      request.Declaration,
+      cancellationToken);
+
+    return new ProgramApplicationSubmissionResult { ProgramApplicationId = resultApplicationId };
+  }
+}

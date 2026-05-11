@@ -63,7 +63,7 @@ internal class Program
       builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<PaginationSettings>(builder.Configuration.GetSection("Pagination"));
       builder.Services.Configure<UploaderSettings>(builder.Configuration.GetSection("Uploader"));
-      builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("Recaptcha"));
+      builder.Services.Configure<CaptchaSettings>(builder.Configuration.GetSection("Captcha"));
       builder.Services.Configure<ClaimCacheSettings>(builder.Configuration.GetSection("Claims"));
 
       builder.Services

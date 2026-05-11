@@ -1,6 +1,10 @@
 ﻿using Alba;
 using Bogus;
+using ECER.Clients.Api.Files;
+using ECER.Utilities.ObjectStorage.Providers;
+using ECER.Utilities.Security;
 using Shouldly;
+using System.IdentityModel.Claims;
 using System.Net;
 using System.Net.Http.Headers;
 using Xunit.Abstractions;
@@ -18,7 +22,7 @@ public class FileTests : ApiWebAppScenarioBase
 
   [Fact]
   [Category("Internal")]
-  public async Task CanUploadFile()
+  public async Task CanUploadFile_GetFile_DeleteFile()
   {
     var fileLength = 1041;
     var testFile = await faker.GenerateTestFile(fileLength);
@@ -26,6 +30,7 @@ public class FileTests : ApiWebAppScenarioBase
     var testFolder = "integrationtests";
     var testTags = "tag1=1,tag2=2";
     var testClassification = "test-classification";
+    var testEcerWebApplicationType = EcerWebApplicationType.Registry.ToString();
     using var content = new StreamContent(testFile.Content);
     content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
@@ -36,9 +41,11 @@ public class FileTests : ApiWebAppScenarioBase
 
     var uploadResponse = await Host.Scenario(_ =>
     {
+      _.WithClaim(ClaimTypes.Name, ApiClaims.EcerApiUser);
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", testEcerWebApplicationType);
       _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
@@ -48,6 +55,7 @@ public class FileTests : ApiWebAppScenarioBase
     var response = await Host.Scenario(_ =>
     {
       _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", testEcerWebApplicationType);
       _.Get.Url($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
@@ -57,11 +65,23 @@ public class FileTests : ApiWebAppScenarioBase
     response.Context.Response.Headers["file-folder"].ToString().ShouldBe(testFolder);
     response.Context.Response.Headers["file-tag"].ToString().ShouldBe(testTags);
     response.Context.Response.Headers["file-classification"].ToString().ShouldBe(testClassification);
+    response.Context.Response.Headers["application"].ToString().ShouldBe(testEcerWebApplicationType);
 
     var returnedFile = await response.ReadAsTextAsync();
     returnedFile.Length.ShouldBe(fileLength);
     testFile.Content.Position = 0;
     using var sw = new StreamReader(testFile.Content);
     returnedFile.ShouldBe(await sw.ReadToEndAsync());
+
+    var deleteResponse = await Host.Scenario(_ =>
+    {
+      _.WithRequestHeader("file-folder", testFolder);
+      _.WithRequestHeader("application", testEcerWebApplicationType);
+      _.Delete.Url($"/api/files/{testFileId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var deletedResponse = await deleteResponse.ReadAsJsonAsync<FileResponse>();
+    deletedResponse.fileId.ShouldBe(testFileId);
   }
 }

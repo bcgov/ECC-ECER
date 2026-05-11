@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :model-value="show"
+    :model-value="visible"
     width="650"
     :disabled="disabled"
     @click:outside="cancel"
@@ -33,15 +33,6 @@
                 class="text-right d-flex flex-row justify-end flex-wrap ga-2"
               >
                 <v-btn
-                  v-if="hasCancelButton"
-                  :loading="loading"
-                  class="ma-0"
-                  variant="outlined"
-                  @click="cancel"
-                >
-                  {{ cancelButtonText }}
-                </v-btn>
-                <v-btn
                   class="ma-0"
                   :loading="loading"
                   color="primary"
@@ -49,6 +40,15 @@
                   @click="accept"
                 >
                   {{ acceptButtonText }}
+                </v-btn>
+                <v-btn
+                  v-if="hasCancelButton"
+                  :loading="loading"
+                  class="ma-0"
+                  variant="outlined"
+                  @click="cancel"
+                >
+                  {{ cancelButtonText }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -104,17 +104,46 @@ export default defineComponent({
       default: false,
     },
   },
+  data() {
+    return {
+      internalShow: false,
+      resolvePromise: null as ((value: boolean) => void) | null,
+    };
+  },
   emits: {
     accept: () => true,
     cancel: () => true,
   },
-
   methods: {
     cancel() {
       this.$emit("cancel");
+      if (this.resolvePromise) {
+        this.resolvePromise(false);
+      }
     },
     accept() {
       this.$emit("accept");
+      if (this.resolvePromise) {
+        this.resolvePromise(true);
+      }
+    },
+    open() {
+      this.internalShow = true;
+      return new Promise<boolean>((resolve) => {
+        this.resolvePromise = resolve;
+      });
+    },
+    close() {
+      this.internalShow = false;
+      if (this.resolvePromise) {
+        this.resolvePromise(false);
+        this.resolvePromise = null;
+      }
+    },
+  },
+  computed: {
+    visible() {
+      return this.show || this.internalShow;
     },
   },
 });

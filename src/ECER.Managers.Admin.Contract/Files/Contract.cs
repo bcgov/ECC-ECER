@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ECER.Utilities.ObjectStorage.Providers;
+using MediatR;
 
 namespace ECER.Managers.Admin.Contract.Files;
 public record SaveFileCommand(IEnumerable<FileData> Items) : IRequest<SaveFileCommandResponse>;
@@ -7,7 +8,7 @@ public record DeleteFileCommand(FileData Item) : IRequest;
 
 public record FileQuery(IEnumerable<FileLocation> FileLocations, bool TrackDownload = true) : IRequest<FileQueryResults>;
 
-public record FileLocation(string Id, string Folder);
+public record FileLocation(string Id, string Folder, EcerWebApplicationType ecerWebApplicationType);
 
 public record FileProperties
 {

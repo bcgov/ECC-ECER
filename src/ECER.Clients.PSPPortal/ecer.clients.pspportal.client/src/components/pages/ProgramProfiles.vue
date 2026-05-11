@@ -87,6 +87,31 @@
           <ECEHeader title="Current program profiles" />
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="12">
+          <p>
+            These are the program profiles for the current and following
+            academic year. You can click "View" to see the details of a program
+            profile or update a program profile outside of the annual review
+            period if the changes do not impact program requirements or
+            competencies.
+          </p>
+          <p class="mt-3">
+            If your update will affect program requirements or competencies,
+            please
+            <router-link
+              :to="{
+                name: 'new-message',
+                params: { initialCategory: 'ProgramChangeRequest' },
+              }"
+              class="text-primary text-decoration-underline"
+            >
+              submit a change request
+            </router-link>
+            instead.
+          </p>
+        </v-col>
+      </v-row>
       <ProgramProfilesList
         :programs="currentProgramProfiles"
         @withdrawn="fetchPrograms"
@@ -138,7 +163,7 @@ import type { Components } from "@/types/openapi";
 import ECEHeader from "@/components/ECEHeader.vue";
 import { IntervalTime } from "@/utils/constant";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 
 export default defineComponent({
   name: "ProgramProfiles",

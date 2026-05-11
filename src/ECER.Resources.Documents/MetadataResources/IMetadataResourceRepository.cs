@@ -48,7 +48,8 @@ public enum PortalTags
   LOGIN,
   LOOKUP,
   REFERENCES,
-  PSPPortal
+  PSPPortal,
+  CertificationsPortal
 }
 
 public record ProvincesQuery
@@ -86,6 +87,14 @@ public record PostSecondaryInstitutionsQuery
   public string? ById { get; set; }
   public string? ByProvinceId { get; set; }
   public string? ByName { get; set; }
+  public PostSecondaryInstitutionStatus? ByStatus { get; set; }
+}
+
+public enum PostSecondaryInstitutionStatus
+{
+  Active,
+  Draft,
+  Inactive,
 }
 
 public record IdentificationTypesQuery

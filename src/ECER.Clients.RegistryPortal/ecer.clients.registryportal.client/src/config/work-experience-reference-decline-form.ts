@@ -1,5 +1,5 @@
 import EceRadio from "@/components/inputs/EceRadio.vue";
-import EceRecaptcha from "@/components/inputs/EceRecaptcha.vue";
+import EceCaptchaTurnstile from "@/components/inputs/EceCaptchaTurnstile.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
 
@@ -30,12 +30,13 @@ const workExperienceDeclineForm: Form = {
         xl: 12,
       },
     },
-    recaptchaToken: {
-      id: "recaptchaToken",
-      component: EceRecaptcha,
+    captchaToken: {
+      id: "captchaToken",
+      component: EceCaptchaTurnstile,
       props: {
+        ref: "captchaTest",
         rules: [Rules.required("Check to confirm you are not a robot")],
-        recaptchaElementId: "recaptchaDecline",
+        captchaElementId: "captchaDecline",
       },
       cols: {
         md: 12,

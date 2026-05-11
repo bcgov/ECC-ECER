@@ -30,8 +30,7 @@ public record CourseAreaOfInstruction
 
 public record Course
 {
-  [Required]
-  public string CourseId { get; set; } = null!;
+  public string? CourseId { get; set; } = null!;
   [Required]
   public string CourseNumber { get; set; } = null!;
   [Required]
