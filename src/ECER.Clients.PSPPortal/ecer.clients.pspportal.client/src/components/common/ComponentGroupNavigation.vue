@@ -1,5 +1,6 @@
 <template>
   <v-container fluid class="pl-0 d-print-none">
+    <h2 class="text-h6 font-weight-bold mb-2">Application</h2>
     <v-list v-if="isDraftApplication || isRfai" color="primary">
       <v-list-item
         :to="{

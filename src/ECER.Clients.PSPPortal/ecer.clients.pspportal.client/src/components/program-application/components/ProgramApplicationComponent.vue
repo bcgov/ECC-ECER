@@ -44,11 +44,26 @@
       </v-col>
     </v-row>
   </template>
+  <ConfirmationDialog
+    ref="confirmationDialogRef"
+    title="Unsaved changes"
+    accept-button-text="Save changes"
+    cancel-button-text="Continue without saving"
+    :loading="saving"
+    persistent
+  >
+    <template #confirmation-text>
+      <p>You have made changes to this page that have not been saved.</p>
+      <br />
+      <p>Are you sure you want to leave this page without saving changes?</p>
+    </template>
+  </ConfirmationDialog>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Loading from "@/components/Loading.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import {
   getComponentGroupComponents,
   updateComponentGroup,
@@ -58,6 +73,7 @@ import type { Components, ComponentGroupWithComponents } from "@/types/openapi";
 import Question from "@/components/program-application/Question.vue";
 import type { QuestionModelValue } from "@/components/program-application/Question.vue";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
+import { cloneDeep, isEqual, mapValues, omit } from "lodash";
 
 interface ComponentGroupWithComponentsFlat {
   id?: string | null;
@@ -71,7 +87,7 @@ interface ComponentGroupWithComponentsFlat {
 
 export default defineComponent({
   name: "ProgramApplicationComponent",
-  components: { Question, Loading },
+  components: { Question, Loading, ConfirmationDialog },
   props: {
     applicationType: { type: String, required: false },
     programApplicationId: {
@@ -84,6 +100,14 @@ export default defineComponent({
     },
   },
   emits: { next: (_payload: NextStepPayload) => true, refreshNav: () => true },
+  async beforeRouteLeave(_to, _from, next) {
+    const leave = await this.waitForConfirmation();
+    next(leave);
+  },
+  async beforeRouteUpdate(_to, _from, next) {
+    const leave = await this.waitForConfirmation();
+    next(leave);
+  },
   computed: {
     isRFAI(): boolean {
       return (
@@ -91,6 +115,21 @@ export default defineComponent({
         (this.programApplicationObject?.status === "InterimRecognition" ||
           this.programApplicationObject?.status === "ReviewAnalysis") &&
         this.programApplicationObject?.statusReasonDetail === "RFAIrequested"
+      );
+    },
+    hasChanges(): boolean {
+      //we do not need to compare files for changes since those are automatically saved when uploaded
+      const componentsWithFormWithoutFiles = mapValues(
+        this.formByComponentId,
+        (value) => omit(value, ["files"]),
+      );
+      const originalComponentsWithFormWithoutFiles = mapValues(
+        this.originalFormByComponentId,
+        (value) => omit(value, ["files"]),
+      );
+      return !isEqual(
+        componentsWithFormWithoutFiles,
+        originalComponentsWithFormWithoutFiles,
       );
     },
   },
@@ -101,6 +140,7 @@ export default defineComponent({
       loading: true,
       saving: false,
       formByComponentId: {} as Record<string, QuestionModelValue>,
+      originalFormByComponentId: {} as Record<string, QuestionModelValue>,
       programApplicationObject:
         null as Components.Schemas.ProgramApplication | null,
     };
@@ -149,6 +189,7 @@ export default defineComponent({
           },
         ]),
       );
+      this.originalFormByComponentId = cloneDeep(this.formByComponentId);
     },
     async handleSave() {
       if (!this.componentGroup) return;
@@ -171,7 +212,25 @@ export default defineComponent({
     },
     async saveAndContinue() {
       await this.handleSave();
+      this.originalFormByComponentId = cloneDeep(this.formByComponentId);
       this.$emit("next", { currentComponentGroupId: this.componentGroupId });
+    },
+    async waitForConfirmation(): Promise<boolean> {
+      if (this.hasChanges) {
+        let dialogRef = this.$refs.confirmationDialogRef as InstanceType<
+          typeof ConfirmationDialog
+        >;
+        const saveBeforeLeaving = await dialogRef.open();
+        if (saveBeforeLeaving) {
+          await this.handleSave();
+          dialogRef.close();
+          return true;
+        } else if (!saveBeforeLeaving) {
+          dialogRef.close();
+          return true;
+        }
+      }
+      return true;
     },
   },
 });

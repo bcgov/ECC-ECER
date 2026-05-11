@@ -12,7 +12,7 @@
             'text-grey-very-dark': item.disabled,
           }"
           :disabled="false"
-          :href="item.disabled ? undefined : item.href"
+          :to="item.disabled ? undefined : item.to"
         >
           {{ item.title }}
         </v-breadcrumbs-item>
@@ -191,11 +191,11 @@ export default defineComponent({
             this.programApplication.programApplicationType;
       }
       return [
-        { title: "Home", disabled: false, href: "/" },
+        { title: "Home", disabled: false, to: { name: "dashboard" } },
         {
           title: "All applications",
           disabled: false,
-          href: "/program-applications",
+          to: { name: "program-applications" },
         },
         { title: `${programApplicationTypeDisplay}`, disabled: true },
       ];
