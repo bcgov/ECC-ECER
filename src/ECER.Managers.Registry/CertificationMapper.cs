@@ -61,15 +61,15 @@ internal partial class CertificationMapper : ICertificationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractCertifications.CertificateStatusCode MapCertificateStatusCode(ResourceCertifications.CertificateStatusCode source);
 
+  private ContractCertifications.CertificateStatusCode? MapCertificateStatusCode(ResourceCertifications.CertificateStatusCode? source) => source.HasValue ? MapCertificateStatusCode(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractCertifications.CertificatePDFGeneration MapCertificatePDFGeneration(ResourceCertifications.CertificatePDFGeneration source);
 
+  private ContractCertifications.CertificatePDFGeneration? MapCertificatePDFGeneration(ResourceCertifications.CertificatePDFGeneration? source) => source.HasValue ? MapCertificatePDFGeneration(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractCertifications.YesNoNull MapYesNoNull(ResourceCertifications.YesNoNull source);
-
-  private ContractCertifications.CertificateStatusCode? MapCertificateStatusCode(ResourceCertifications.CertificateStatusCode? source) => source.HasValue ? MapCertificateStatusCode(source.Value) : null;
-
-  private ContractCertifications.CertificatePDFGeneration? MapCertificatePDFGeneration(ResourceCertifications.CertificatePDFGeneration? source) => source.HasValue ? MapCertificatePDFGeneration(source.Value) : null;
 
   private ContractCertifications.YesNoNull? MapYesNoNull(ResourceCertifications.YesNoNull? source) => source.HasValue ? MapYesNoNull(source.Value) : null;
 }

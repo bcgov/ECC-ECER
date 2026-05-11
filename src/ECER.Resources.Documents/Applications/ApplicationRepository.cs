@@ -141,64 +141,83 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       return;
     }
 
-    var countryIds = transcripts
+    var countriesById = LoadCountriesById(GetMissingCountryIds(transcripts));
+    var provincesById = LoadProvincesById(GetMissingProvinceIds(transcripts));
+    var institutionsById = LoadInstitutionsById(GetMissingInstitutionIds(transcripts));
+
+    foreach (var transcript in transcripts)
+    {
+      HydrateTranscriptLookup(transcript, countriesById, provincesById, institutionsById);
+    }
+  }
+
+  private static List<Guid> GetMissingCountryIds(IEnumerable<ecer_Transcript> transcripts) =>
+    transcripts
       .Where(transcript => transcript.ecer_transcript_InstituteCountryId == null && transcript.ecer_InstituteCountryId != null)
       .Select(transcript => transcript.ecer_InstituteCountryId.Id)
       .Distinct()
       .ToList();
 
-    var provinceIds = transcripts
+  private static List<Guid> GetMissingProvinceIds(IEnumerable<ecer_Transcript> transcripts) =>
+    transcripts
       .Where(transcript => transcript.ecer_transcript_ProvinceId == null && transcript.ecer_ProvinceId != null)
       .Select(transcript => transcript.ecer_ProvinceId.Id)
       .Distinct()
       .ToList();
 
-    var institutionIds = transcripts
+  private static List<Guid> GetMissingInstitutionIds(IEnumerable<ecer_Transcript> transcripts) =>
+    transcripts
       .Where(transcript => transcript.ecer_transcript_postsecondaryinstitutionid == null && transcript.ecer_postsecondaryinstitutionid != null)
       .Select(transcript => transcript.ecer_postsecondaryinstitutionid.Id)
       .Distinct()
       .ToList();
 
-    var countriesById = countryIds.Count == 0
+  private Dictionary<Guid, ecer_Country> LoadCountriesById(IReadOnlyCollection<Guid> countryIds) =>
+    countryIds.Count == 0
       ? new Dictionary<Guid, ecer_Country>()
       : context.ecer_CountrySet
         .WhereIn(country => country.ecer_CountryId!.Value, countryIds)
         .ToDictionary(country => country.ecer_CountryId!.Value);
 
-    var provincesById = provinceIds.Count == 0
+  private Dictionary<Guid, ecer_Province> LoadProvincesById(IReadOnlyCollection<Guid> provinceIds) =>
+    provinceIds.Count == 0
       ? new Dictionary<Guid, ecer_Province>()
       : context.ecer_ProvinceSet
         .WhereIn(province => province.ecer_ProvinceId!.Value, provinceIds)
         .ToDictionary(province => province.ecer_ProvinceId!.Value);
 
-    var institutionsById = institutionIds.Count == 0
+  private Dictionary<Guid, ecer_PostSecondaryInstitute> LoadInstitutionsById(IReadOnlyCollection<Guid> institutionIds) =>
+    institutionIds.Count == 0
       ? new Dictionary<Guid, ecer_PostSecondaryInstitute>()
       : context.ecer_PostSecondaryInstituteSet
         .WhereIn(institution => institution.ecer_PostSecondaryInstituteId!.Value, institutionIds)
         .ToDictionary(institution => institution.ecer_PostSecondaryInstituteId!.Value);
 
-    foreach (var transcript in transcripts)
+  private static void HydrateTranscriptLookup(
+    ecer_Transcript transcript,
+    IReadOnlyDictionary<Guid, ecer_Country> countriesById,
+    IReadOnlyDictionary<Guid, ecer_Province> provincesById,
+    IReadOnlyDictionary<Guid, ecer_PostSecondaryInstitute> institutionsById)
+  {
+    if (transcript.ecer_transcript_InstituteCountryId == null &&
+        transcript.ecer_InstituteCountryId != null &&
+        countriesById.TryGetValue(transcript.ecer_InstituteCountryId.Id, out var country))
     {
-      if (transcript.ecer_transcript_InstituteCountryId == null &&
-          transcript.ecer_InstituteCountryId != null &&
-          countriesById.TryGetValue(transcript.ecer_InstituteCountryId.Id, out var country))
-      {
-        transcript.ecer_transcript_InstituteCountryId = country;
-      }
+      transcript.ecer_transcript_InstituteCountryId = country;
+    }
 
-      if (transcript.ecer_transcript_ProvinceId == null &&
-          transcript.ecer_ProvinceId != null &&
-          provincesById.TryGetValue(transcript.ecer_ProvinceId.Id, out var province))
-      {
-        transcript.ecer_transcript_ProvinceId = province;
-      }
+    if (transcript.ecer_transcript_ProvinceId == null &&
+        transcript.ecer_ProvinceId != null &&
+        provincesById.TryGetValue(transcript.ecer_ProvinceId.Id, out var province))
+    {
+      transcript.ecer_transcript_ProvinceId = province;
+    }
 
-      if (transcript.ecer_transcript_postsecondaryinstitutionid == null &&
-          transcript.ecer_postsecondaryinstitutionid != null &&
-          institutionsById.TryGetValue(transcript.ecer_postsecondaryinstitutionid.Id, out var institution))
-      {
-        transcript.ecer_transcript_postsecondaryinstitutionid = institution;
-      }
+    if (transcript.ecer_transcript_postsecondaryinstitutionid == null &&
+        transcript.ecer_postsecondaryinstitutionid != null &&
+        institutionsById.TryGetValue(transcript.ecer_postsecondaryinstitutionid.Id, out var institution))
+    {
+      transcript.ecer_transcript_postsecondaryinstitutionid = institution;
     }
   }
 

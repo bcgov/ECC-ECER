@@ -62,7 +62,7 @@ internal partial class PspRepRepositoryMapper : IPspRepRepositoryMapper
     HasAcceptedTermsOfUse = source.ecer_HasAcceptedTermsofUse,
   };
 
-  private List<UserIdentity> MapUserIdentities(IEnumerable<ecer_Authentication>? source) =>
+  private static List<UserIdentity> MapUserIdentities(IEnumerable<ecer_Authentication>? source) =>
     source?.Select(MapUserIdentity).ToList() ?? new List<UserIdentity>();
 
   private static UserIdentity MapUserIdentity(ecer_Authentication source) =>
@@ -74,6 +74,8 @@ internal partial class PspRepRepositoryMapper : IPspRepRepositoryMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial PortalAccessStatus MapPortalAccessStatus(ecer_AccessToPortal source);
 
+  private PortalAccessStatus? MapPortalAccessStatus(ecer_AccessToPortal? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_RepresentativeRole MapPspUserRole(PspUserRole source);
 
@@ -83,6 +85,4 @@ internal partial class PspRepRepositoryMapper : IPspRepRepositoryMapper
   private ecer_RepresentativeRole? MapPspUserRole(PspUserRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
 
   private PspUserRole? MapPspUserRole(ecer_RepresentativeRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
-
-  private PortalAccessStatus? MapPortalAccessStatus(ecer_AccessToPortal? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
 }

@@ -86,6 +86,10 @@ internal partial class CommunicationMapper : ICommunicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceCommunications.CommunicationCategory MapCommunicationCategory(ContractCommunications.CommunicationCategory source);
 
+  private ContractCommunications.CommunicationCategory? MapCommunicationCategory(ResourceCommunications.CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
+
+  private ResourceCommunications.CommunicationCategory? MapCommunicationCategory(ContractCommunications.CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractCommunications.CommunicationStatus MapCommunicationStatus(ResourceCommunications.CommunicationStatus source);
 
@@ -97,8 +101,4 @@ internal partial class CommunicationMapper : ICommunicationMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceCommunications.InitiatedFrom MapInitiatedFrom(ContractCommunications.InitiatedFrom source);
-
-  private ContractCommunications.CommunicationCategory? MapCommunicationCategory(ResourceCommunications.CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
-
-  private ResourceCommunications.CommunicationCategory? MapCommunicationCategory(ContractCommunications.CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
 }

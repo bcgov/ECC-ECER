@@ -24,7 +24,7 @@ internal partial class ConfigurationMapper : IConfigurationMapper
 
   public IEnumerable<SystemMessage> MapSystemMessages(IEnumerable<ContractMetadatas.SystemMessage> source) => source.Select(MapSystemMessage).ToList();
 
-  private AreaOfInstruction MapAreaOfInstruction(ContractMetadatas.AreaOfInstruction source) => new(
+  private static AreaOfInstruction MapAreaOfInstruction(ContractMetadatas.AreaOfInstruction source) => new(
     source.Id,
     source.Name,
     ParseProgramTypes(source.ProgramTypes),

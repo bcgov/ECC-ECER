@@ -1,9 +1,11 @@
 using Riok.Mapperly.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 using ContractApplications = ECER.Managers.Registry.Contract.Applications;
 using ContractICRA = ECER.Managers.Registry.Contract.ICRA;
 
 namespace ECER.Clients.RegistryPortal.Server.ICRA;
 
+[SuppressMessage("Naming", "S101:Types should be named in PascalCase", Justification = "ICRA is a domain acronym used consistently throughout the solution.")]
 internal interface IICRAEligibilityMapper
 {
   ContractICRA.ICRAEligibility MapEligibility(ICRAEligibility source);
@@ -14,6 +16,7 @@ internal interface IICRAEligibilityMapper
   EmploymentReference MapEmploymentReference(ContractICRA.EmploymentReference source);
 }
 
+[SuppressMessage("Naming", "S101:Types should be named in PascalCase", Justification = "ICRA is a domain acronym used consistently throughout the solution.")]
 [Mapper]
 internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
 {
@@ -199,5 +202,5 @@ internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
     _ => throw new ArgumentOutOfRangeException(nameof(source), source, null)
   };
 
-  private Applications.WorkExperienceRefStage? MapWorkExperienceRefStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceRefStage(source.Value) : null;
+  private static Applications.WorkExperienceRefStage? MapWorkExperienceRefStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceRefStage(source.Value) : null;
 }

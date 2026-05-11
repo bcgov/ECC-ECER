@@ -1,4 +1,5 @@
 using Riok.Mapperly.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 using ContractApplications = ECER.Managers.Registry.Contract.Applications;
 using ContractICRA = ECER.Managers.Registry.Contract.ICRA;
 using ResourceApplications = ECER.Resources.Documents.Applications;
@@ -6,6 +7,7 @@ using ResourceICRA = ECER.Resources.Documents.ICRA;
 
 namespace ECER.Managers.Registry;
 
+[SuppressMessage("Naming", "S101:Types should be named in PascalCase", Justification = "ICRA is a domain acronym used consistently throughout the solution.")]
 public interface IICRAEligibilityMapper
 {
   ResourceICRA.ICRAEligibility MapEligibility(ContractICRA.ICRAEligibility source);
@@ -16,6 +18,7 @@ public interface IICRAEligibilityMapper
   ResourceICRA.ICRAWorkExperienceReferenceSubmissionRequest MapIcraWorkExperienceReferenceSubmissionRequest(ContractICRA.ICRAWorkExperienceReferenceSubmissionRequest source);
 }
 
+[SuppressMessage("Naming", "S101:Types should be named in PascalCase", Justification = "ICRA is a domain acronym used consistently throughout the solution.")]
 [Mapper]
 internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
 {

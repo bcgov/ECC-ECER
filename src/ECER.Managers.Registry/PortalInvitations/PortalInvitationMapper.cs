@@ -47,11 +47,11 @@ internal partial class PortalInvitationMapper : IPortalInvitationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPortalInvitations.PortalInvitationStatusCode MapPortalInvitationStatusCode(ResourcePortalInvitations.PortalInvitationStatusCode source);
 
+  private ContractPortalInvitations.PortalInvitationStatusCode? MapPortalInvitationStatusCode(ResourcePortalInvitations.PortalInvitationStatusCode? source) => source.HasValue ? MapPortalInvitationStatusCode(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.CertificationType MapCertificationType(ResourceApplications.CertificationType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.WorkExperienceTypes MapWorkExperienceType(ResourceApplications.WorkExperienceTypes source);
-
-  private ContractPortalInvitations.PortalInvitationStatusCode? MapPortalInvitationStatusCode(ResourcePortalInvitations.PortalInvitationStatusCode? source) => source.HasValue ? MapPortalInvitationStatusCode(source.Value) : null;
 }

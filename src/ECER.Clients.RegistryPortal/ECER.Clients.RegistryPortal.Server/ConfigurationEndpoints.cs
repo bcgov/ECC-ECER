@@ -56,7 +56,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     })
     .WithOpenApi("Handles certification comparison queries", string.Empty, "certificationComparison_get");
 
-    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, PostSecondaryInstitutionStatus? status, HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, PostSecondaryInstitutionStatus? status, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
       var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId, ByStatus = status }, ct);

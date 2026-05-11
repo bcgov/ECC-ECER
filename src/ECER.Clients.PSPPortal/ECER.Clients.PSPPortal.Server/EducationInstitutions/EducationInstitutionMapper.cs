@@ -119,25 +119,25 @@ internal partial class EducationInstitutionMapper : IEducationInstitutionMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractInstitutions.PsiInstitutionType MapPsiInstitutionType(PsiInstitutionType source);
 
+  private PsiInstitutionType? MapPsiInstitutionType(ContractInstitutions.PsiInstitutionType? source) => source.HasValue ? MapPsiInstitutionType(source.Value) : null;
+
+  private ContractInstitutions.PsiInstitutionType? MapPsiInstitutionType(PsiInstitutionType? source) => source.HasValue ? MapPsiInstitutionType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial PrivateAuspiceType MapPrivateAuspiceType(ContractInstitutions.PrivateAuspiceType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractInstitutions.PrivateAuspiceType MapPrivateAuspiceType(PrivateAuspiceType source);
 
+  private PrivateAuspiceType? MapPrivateAuspiceType(ContractInstitutions.PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
+
+  private ContractInstitutions.PrivateAuspiceType? MapPrivateAuspiceType(PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CampusStatus MapCampusStatus(ContractInstitutions.CampusStatus source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractInstitutions.CampusStatus MapCampusStatus(CampusStatus source);
-
-  private PsiInstitutionType? MapPsiInstitutionType(ContractInstitutions.PsiInstitutionType? source) => source.HasValue ? MapPsiInstitutionType(source.Value) : null;
-
-  private ContractInstitutions.PsiInstitutionType? MapPsiInstitutionType(PsiInstitutionType? source) => source.HasValue ? MapPsiInstitutionType(source.Value) : null;
-
-  private PrivateAuspiceType? MapPrivateAuspiceType(ContractInstitutions.PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
-
-  private ContractInstitutions.PrivateAuspiceType? MapPrivateAuspiceType(PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
 
   private CampusStatus? MapCampusStatus(ContractInstitutions.CampusStatus? source) => source.HasValue ? MapCampusStatus(source.Value) : null;
 

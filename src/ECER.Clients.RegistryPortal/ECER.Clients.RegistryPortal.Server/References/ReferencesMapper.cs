@@ -117,14 +117,20 @@ internal partial class ReferencesMapper : IReferencesMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ReferenceRelationship MapReferenceRelationship(ReferenceRelationship source);
 
+  private ContractApplications.ReferenceRelationship? MapReferenceRelationship(ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ReferenceKnownTime MapReferenceKnownTime(ReferenceKnownTime source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.WorkHoursType MapWorkHoursType(WorkHoursType source);
 
+  private ContractApplications.WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ChildrenProgramType MapChildrenProgramType(ChildrenProgramType source);
+
+  private ContractApplications.ChildrenProgramType? MapChildrenProgramType(ChildrenProgramType? source) => source.HasValue ? MapChildrenProgramType(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ChildcareAgeRanges MapChildcareAgeRange(ChildcareAgeRanges source);
@@ -132,17 +138,10 @@ internal partial class ReferencesMapper : IReferencesMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypes source);
 
+  private ContractApplications.WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.LikertScale MapLikertScale(LikertScale source);
 
   private ContractApplications.LikertScale? MapLikertScale(LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
-
-  private ContractApplications.ReferenceRelationship? MapReferenceRelationship(ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
-
-  private ContractApplications.WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
-
-  private ContractApplications.ChildrenProgramType? MapChildrenProgramType(ChildrenProgramType? source) => source.HasValue ? MapChildrenProgramType(source.Value) : null;
-
-  private ContractApplications.WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
-
 }

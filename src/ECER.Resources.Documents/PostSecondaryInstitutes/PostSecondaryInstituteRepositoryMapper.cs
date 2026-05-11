@@ -108,12 +108,15 @@ internal partial class PostSecondaryInstituteRepositoryMapper : IPostSecondaryIn
     _ => null,
   };
 
-  private PrivateAuspiceType? MapPrivateAuspiceType(ecer_PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
-
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_PrivateAuspiceType MapPrivateAuspiceType(PrivateAuspiceType source);
 
   private ecer_PrivateAuspiceType? MapPrivateAuspiceType(PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PrivateAuspiceType MapPrivateAuspiceType(ecer_PrivateAuspiceType source);
+
+  private PrivateAuspiceType? MapPrivateAuspiceType(ecer_PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
 
   private static CampusStatus? MapCampusStatus(ecer_PostSecondaryInstituteCampus_StatusCode? source) => source switch
   {
@@ -140,8 +143,5 @@ internal partial class PostSecondaryInstituteRepositoryMapper : IPostSecondaryIn
     if (contactId == null) return null;
     return new EntityReference(ecer_ECEProgramRepresentative.EntityLogicalName, Guid.Parse(contactId));
   }
-
-  [MapEnum(EnumMappingStrategy.ByName)]
-  private partial PrivateAuspiceType MapPrivateAuspiceType(ecer_PrivateAuspiceType source);
 
 }

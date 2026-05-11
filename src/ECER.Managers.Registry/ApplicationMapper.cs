@@ -432,11 +432,19 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.EducationOrigin MapEducationOrigin(ResourceApplications.EducationOrigin source);
 
+  private ResourceApplications.EducationOrigin? MapEducationOrigin(ContractApplications.EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
+
+  private ContractApplications.EducationOrigin? MapEducationOrigin(ResourceApplications.EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.EducationRecognition MapEducationRecognition(ContractApplications.EducationRecognition source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.EducationRecognition MapEducationRecognition(ResourceApplications.EducationRecognition source);
+
+  private ResourceApplications.EducationRecognition? MapEducationRecognition(ContractApplications.EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
+
+  private ContractApplications.EducationRecognition? MapEducationRecognition(ResourceApplications.EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.OneYearRenewalexplanations MapOneYearRenewalExplanation(ContractApplications.OneYearRenewalexplanations source);
@@ -444,17 +452,29 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.OneYearRenewalexplanations MapOneYearRenewalExplanation(ResourceApplications.OneYearRenewalexplanations source);
 
+  private ResourceApplications.OneYearRenewalexplanations? MapOneYearRenewalExplanation(ContractApplications.OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
+
+  private ContractApplications.OneYearRenewalexplanations? MapOneYearRenewalExplanation(ResourceApplications.OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.FiveYearRenewalExplanations MapFiveYearRenewalExplanation(ContractApplications.FiveYearRenewalExplanations source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.FiveYearRenewalExplanations MapFiveYearRenewalExplanation(ResourceApplications.FiveYearRenewalExplanations source);
 
+  private ResourceApplications.FiveYearRenewalExplanations? MapFiveYearRenewalExplanation(ContractApplications.FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
+
+  private ContractApplications.FiveYearRenewalExplanations? MapFiveYearRenewalExplanation(ResourceApplications.FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ApplicationOrigin MapApplicationOrigin(ContractApplications.ApplicationOrigin source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ApplicationOrigin MapApplicationOrigin(ResourceApplications.ApplicationOrigin source);
+
+  private ResourceApplications.ApplicationOrigin? MapApplicationOrigin(ContractApplications.ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
+
+  private ContractApplications.ApplicationOrigin? MapApplicationOrigin(ResourceApplications.ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.TranscriptStage MapTranscriptStage(ContractApplications.TranscriptStage source);
@@ -472,11 +492,19 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ProfessionalDevelopmentStatusCode MapProfessionalDevelopmentStatus(ResourceApplications.ProfessionalDevelopmentStatusCode source);
 
+  private ResourceApplications.ProfessionalDevelopmentStatusCode? MapProfessionalDevelopmentStatus(ContractApplications.ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
+
+  private ContractApplications.ProfessionalDevelopmentStatusCode? MapProfessionalDevelopmentStatus(ResourceApplications.ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.CharacterReferenceStage MapCharacterReferenceStage(ContractApplications.CharacterReferenceStage source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.CharacterReferenceStage MapCharacterReferenceStage(ResourceApplications.CharacterReferenceStage source);
+
+  private ResourceApplications.CharacterReferenceStage? MapCharacterReferenceStage(ContractApplications.CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
+
+  private ContractApplications.CharacterReferenceStage? MapCharacterReferenceStage(ResourceApplications.CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.WorkExperienceTypes MapWorkExperienceType(ContractApplications.WorkExperienceTypes source);
@@ -494,6 +522,8 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.LikertScale MapLikertScale(ContractApplications.LikertScale source);
 
+  private ResourceApplications.LikertScale? MapLikertScale(ContractApplications.LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ReferenceRelationship MapReferenceRelationship(ContractApplications.ReferenceRelationship source);
 
@@ -501,6 +531,8 @@ internal partial class ApplicationMapper : IApplicationMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.ChildrenProgramType MapChildrenProgramType(ContractApplications.ChildrenProgramType source);
+
+  private ResourceApplications.ChildrenProgramType? MapChildrenProgramType(ContractApplications.ChildrenProgramType? source) => source.HasValue ? MapChildrenProgramType(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.WorkHoursType MapWorkHoursType(ContractApplications.WorkHoursType source);
@@ -539,55 +571,23 @@ internal partial class ApplicationMapper : IApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.ProgramConfirmationOptions MapProgramConfirmationOptions(ResourceApplications.ProgramConfirmationOptions source);
 
+  private ResourceApplications.ProgramConfirmationOptions? MapProgramConfirmationOptions(ContractApplications.ProgramConfirmationOptions? source) => source.HasValue ? MapProgramConfirmationOptions(source.Value) : null;
+
+  private ContractApplications.ProgramConfirmationOptions? MapProgramConfirmationOptions(ResourceApplications.ProgramConfirmationOptions? source) => source.HasValue ? MapProgramConfirmationOptions(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.TranscriptStatusOptions MapTranscriptStatusOption(ContractApplications.TranscriptStatusOptions source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.TranscriptStatusOptions MapTranscriptStatusOption(ResourceApplications.TranscriptStatusOptions source);
 
+  private ResourceApplications.TranscriptStatusOptions? MapTranscriptStatusOption(ContractApplications.TranscriptStatusOptions? source) => source.HasValue ? MapTranscriptStatusOption(source.Value) : null;
+
+  private ContractApplications.TranscriptStatusOptions? MapTranscriptStatusOption(ResourceApplications.TranscriptStatusOptions? source) => source.HasValue ? MapTranscriptStatusOption(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceApplications.CertificationType MapCertificationType(ContractApplications.CertificationType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractApplications.CertificationType MapCertificationType(ResourceApplications.CertificationType source);
-
-  private ResourceApplications.EducationOrigin? MapEducationOrigin(ContractApplications.EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
-
-  private ContractApplications.EducationOrigin? MapEducationOrigin(ResourceApplications.EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
-
-  private ResourceApplications.EducationRecognition? MapEducationRecognition(ContractApplications.EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
-
-  private ContractApplications.EducationRecognition? MapEducationRecognition(ResourceApplications.EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
-
-  private ResourceApplications.OneYearRenewalexplanations? MapOneYearRenewalExplanation(ContractApplications.OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
-
-  private ContractApplications.OneYearRenewalexplanations? MapOneYearRenewalExplanation(ResourceApplications.OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
-
-  private ResourceApplications.FiveYearRenewalExplanations? MapFiveYearRenewalExplanation(ContractApplications.FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
-
-  private ContractApplications.FiveYearRenewalExplanations? MapFiveYearRenewalExplanation(ResourceApplications.FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
-
-  private ResourceApplications.ApplicationOrigin? MapApplicationOrigin(ContractApplications.ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
-
-  private ContractApplications.ApplicationOrigin? MapApplicationOrigin(ResourceApplications.ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
-
-  private ResourceApplications.ProfessionalDevelopmentStatusCode? MapProfessionalDevelopmentStatus(ContractApplications.ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
-
-  private ContractApplications.ProfessionalDevelopmentStatusCode? MapProfessionalDevelopmentStatus(ResourceApplications.ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
-
-  private ResourceApplications.CharacterReferenceStage? MapCharacterReferenceStage(ContractApplications.CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
-
-  private ContractApplications.CharacterReferenceStage? MapCharacterReferenceStage(ResourceApplications.CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
-
-  private ResourceApplications.LikertScale? MapLikertScale(ContractApplications.LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
-
-  private ResourceApplications.ChildrenProgramType? MapChildrenProgramType(ContractApplications.ChildrenProgramType? source) => source.HasValue ? MapChildrenProgramType(source.Value) : null;
-
-  private ResourceApplications.ProgramConfirmationOptions? MapProgramConfirmationOptions(ContractApplications.ProgramConfirmationOptions? source) => source.HasValue ? MapProgramConfirmationOptions(source.Value) : null;
-
-  private ContractApplications.ProgramConfirmationOptions? MapProgramConfirmationOptions(ResourceApplications.ProgramConfirmationOptions? source) => source.HasValue ? MapProgramConfirmationOptions(source.Value) : null;
-
-  private ResourceApplications.TranscriptStatusOptions? MapTranscriptStatusOption(ContractApplications.TranscriptStatusOptions? source) => source.HasValue ? MapTranscriptStatusOption(source.Value) : null;
-
-  private ContractApplications.TranscriptStatusOptions? MapTranscriptStatusOption(ResourceApplications.TranscriptStatusOptions? source) => source.HasValue ? MapTranscriptStatusOption(source.Value) : null;
 }

@@ -224,6 +224,10 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.WorkHoursType MapWorkHoursType(WorkHoursType source);
 
+  private WorkHoursType? MapWorkHoursType(ContractProgramApplications.WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
+
+  private ContractProgramApplications.WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial AdmissionOptions MapAdmissionOptions(ContractProgramApplications.AdmissionOptions source);
 
@@ -250,11 +254,19 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.ApplicationStatusReasonDetail MapApplicationStatusReasonDetail(ApplicationStatusReasonDetail source);
 
+  private ApplicationStatusReasonDetail? MapApplicationStatusReasonDetail(ContractProgramApplications.ApplicationStatusReasonDetail? source) => source.HasValue ? MapApplicationStatusReasonDetail(source.Value) : null;
+
+  private ContractProgramApplications.ApplicationStatusReasonDetail? MapApplicationStatusReasonDetail(ApplicationStatusReasonDetail? source) => source.HasValue ? MapApplicationStatusReasonDetail(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ApplicationType MapApplicationType(ContractProgramApplications.ApplicationType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.ApplicationType MapApplicationType(ApplicationType source);
+
+  private ApplicationType? MapApplicationType(ContractProgramApplications.ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
+
+  private ContractProgramApplications.ApplicationType? MapApplicationType(ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial DeliveryType MapDeliveryType(ContractProgramApplications.DeliveryType source);
@@ -281,17 +293,5 @@ internal partial class ProgramApplicationsMapper : IProgramApplicationsMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.NavigationType MapNavigationType(NavigationType source);
-
-  private WorkHoursType? MapWorkHoursType(ContractProgramApplications.WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
-
-  private ContractProgramApplications.WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
-
-  private ApplicationStatusReasonDetail? MapApplicationStatusReasonDetail(ContractProgramApplications.ApplicationStatusReasonDetail? source) => source.HasValue ? MapApplicationStatusReasonDetail(source.Value) : null;
-
-  private ContractProgramApplications.ApplicationStatusReasonDetail? MapApplicationStatusReasonDetail(ApplicationStatusReasonDetail? source) => source.HasValue ? MapApplicationStatusReasonDetail(source.Value) : null;
-
-  private ApplicationType? MapApplicationType(ContractProgramApplications.ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
-
-  private ContractProgramApplications.ApplicationType? MapApplicationType(ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
 
 }

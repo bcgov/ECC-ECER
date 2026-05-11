@@ -81,17 +81,17 @@ internal partial class CertificationRepositoryMapper : ICertificationRepositoryM
     };
   }
 
-  private CertificateStatusCode? MapCertificateStatusCode(ecer_Certificate_StatusCode? source) => source.HasValue ? MapCertificateStatusCode(source.Value) : null;
-
-  private CertificatePDFGeneration? MapCertificatePdfGeneration(ecer_CertificatePDFGeneration? source) => source.HasValue ? MapCertificatePdfGeneration(source.Value) : null;
-
   private static int? MapBaseCertificateTypeId(string? source) => int.TryParse(source, out var parsed) ? parsed : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CertificateStatusCode MapCertificateStatusCode(ecer_Certificate_StatusCode source);
 
+  private CertificateStatusCode? MapCertificateStatusCode(ecer_Certificate_StatusCode? source) => source.HasValue ? MapCertificateStatusCode(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CertificatePDFGeneration MapCertificatePdfGeneration(ecer_CertificatePDFGeneration source);
+
+  private CertificatePDFGeneration? MapCertificatePdfGeneration(ecer_CertificatePDFGeneration? source) => source.HasValue ? MapCertificatePdfGeneration(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial YesNoNull MapYesNoNull(ecer_YesNoNull source);

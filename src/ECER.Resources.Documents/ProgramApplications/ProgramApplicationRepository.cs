@@ -432,13 +432,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     }
 
     var allAnswers = existingComponents.Values.Select(c => c.ecer_Componentanswer).ToList();
-    var progress = allAnswers.All(string.IsNullOrWhiteSpace)
-      ? ecer_PSPComponentProgress.ToDo
-      : allAnswers.All(answer => !string.IsNullOrWhiteSpace(answer))
-        ? ecer_PSPComponentProgress.Completed
-        : ecer_PSPComponentProgress.InProgress;
-
-    componentGroup.ecer_EntryProgress = progress;
+    componentGroup.ecer_EntryProgress = CalculateEntryProgress(allAnswers);
     context.UpdateObject(componentGroup);
 
     context.SaveChanges();
@@ -469,6 +463,21 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     context.UpdateObject(existing);
     context.SaveChanges();
     return applicationId;
+  }
+
+  private static ecer_PSPComponentProgress CalculateEntryProgress(IEnumerable<string?> answers)
+  {
+    if (answers.All(string.IsNullOrWhiteSpace))
+    {
+      return ecer_PSPComponentProgress.ToDo;
+    }
+
+    if (answers.All(answer => !string.IsNullOrWhiteSpace(answer)))
+    {
+      return ecer_PSPComponentProgress.Completed;
+    }
+
+    return ecer_PSPComponentProgress.InProgress;
   }
 
   public async Task UpdateCourseProgress(string applicationId, string? basicProgress, string? iteProgress, string? sneProgress, CancellationToken cancellationToken)

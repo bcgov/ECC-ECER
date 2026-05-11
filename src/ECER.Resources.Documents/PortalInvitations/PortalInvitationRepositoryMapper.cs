@@ -27,13 +27,13 @@ internal sealed partial class PortalInvitationMapper : IPortalInvitationReposito
     StatusCode = MapPortalInvitationStatusCode(source.StatusCode),
   };
 
-  private InviteType? MapInviteType(ecer_PortalInvitationTypes? source) => source.HasValue ? MapInviteType(source.Value) : null;
-
-  private PortalInvitationStatusCode? MapPortalInvitationStatusCode(ecer_PortalInvitation_StatusCode? source) => source.HasValue ? MapPortalInvitationStatusCode(source.Value) : null;
-
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial InviteType MapInviteType(ecer_PortalInvitationTypes source);
 
+  private InviteType? MapInviteType(ecer_PortalInvitationTypes? source) => source.HasValue ? MapInviteType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial PortalInvitationStatusCode MapPortalInvitationStatusCode(ecer_PortalInvitation_StatusCode source);
+
+  private PortalInvitationStatusCode? MapPortalInvitationStatusCode(ecer_PortalInvitation_StatusCode? source) => source.HasValue ? MapPortalInvitationStatusCode(source.Value) : null;
 }

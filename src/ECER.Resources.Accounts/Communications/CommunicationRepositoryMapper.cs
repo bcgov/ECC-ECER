@@ -130,10 +130,10 @@ internal partial class CommunicationRepositoryMapper : ICommunicationRepositoryM
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CommunicationStatus MapCommunicationStatus(ecer_Communication_StatusCode source);
 
+  private CommunicationStatus? MapCommunicationStatus(ecer_Communication_StatusCode? source) => source.HasValue ? MapCommunicationStatus(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial InitiatedFrom MapInitiatedFrom(ecer_InitiatedFrom source);
-
-  private CommunicationStatus? MapCommunicationStatus(ecer_Communication_StatusCode? source) => source.HasValue ? MapCommunicationStatus(source.Value) : null;
 
   private InitiatedFrom? MapInitiatedFrom(ecer_InitiatedFrom? source) => source.HasValue ? MapInitiatedFrom(source.Value) : null;
 }

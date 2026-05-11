@@ -2,9 +2,11 @@ using ApplicationFileInfo = ECER.Resources.Documents.Applications.FileInfo;
 using ECER.Resources.Documents.Applications;
 using ECER.Utilities.DataverseSdk.Model;
 using Riok.Mapperly.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Resources.Documents.ICRA;
 
+[SuppressMessage("Naming", "S101:Types should be named in PascalCase", Justification = "ICRA is a domain acronym used consistently throughout the solution.")]
 internal interface IICRARepositoryMapper
 {
   ecer_ICRAEligibilityAssessment MapIcraEligibility(ICRAEligibility source);
@@ -187,9 +189,17 @@ internal partial class IcraRepositoryMapper : IICRARepositoryMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial WorkExperienceRefStage MapEmploymentReferenceStatus(ecer_WorkExperienceRef_StatusCode source);
 
-  private static ecer_WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypesIcra source) => ecer_WorkExperienceTypes.ICRA;
+  private static ecer_WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypesIcra source)
+  {
+    _ = source;
+    return ecer_WorkExperienceTypes.ICRA;
+  }
 
-  private static WorkExperienceTypesIcra MapWorkExperienceType(ecer_WorkExperienceTypes _) => WorkExperienceTypesIcra.ICRA;
+  private static WorkExperienceTypesIcra MapWorkExperienceType(ecer_WorkExperienceTypes source)
+  {
+    _ = source;
+    return WorkExperienceTypesIcra.ICRA;
+  }
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ChildcareAgeRange MapChildcareAgeRange(ChildcareAgeRanges source);

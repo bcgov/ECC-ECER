@@ -124,161 +124,9 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
 
   public void ApplyWorkExperienceReferenceSubmission(WorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination)
   {
-    destination.ecer_referencefirstname = source.ReferenceContactInformation.FirstName;
-    destination.ecer_referencelastname = source.ReferenceContactInformation.LastName;
-    destination.ecer_ReferencePhoneNumber = source.ReferenceContactInformation.PhoneNumber;
-    destination.ecer_referenceemailaddress = source.ReferenceContactInformation.Email;
-    destination.ecer_ReferenceECECertifiedProvince = source.ReferenceContactInformation.CertificateProvinceOther;
-
-    if (source.ReferenceContactInformation.CertificateNumber != null)
-    {
-      destination.ecer_ReferenceECECertificationNumber = source.ReferenceContactInformation.CertificateNumber;
-    }
-
-    if (source.ReferenceContactInformation.DateOfBirth.HasValue)
-    {
-      destination.ecer_ReferenceBirthDate = source.ReferenceContactInformation.DateOfBirth;
-    }
-
-    if (source.WorkExperienceReferenceDetails.Hours.HasValue)
-    {
-      destination.ecer_TotalNumberofHoursObserved = Convert.ToDecimal(source.WorkExperienceReferenceDetails.Hours.Value);
-    }
-
-    if (source.WorkExperienceReferenceDetails.WorkHoursType.HasValue)
-    {
-      destination.ecer_WorkHoursType = MapWorkHoursType(source.WorkExperienceReferenceDetails.WorkHoursType.Value);
-    }
-
-    if (source.WorkExperienceReferenceDetails.ChildrenProgramName != null)
-    {
-      destination.ecer_ChildCareProgramName = source.WorkExperienceReferenceDetails.ChildrenProgramName;
-    }
-
-    if (source.WorkExperienceReferenceDetails.ChildrenProgramType.HasValue)
-    {
-      destination.ecer_TypeofChildrenProgram = MapChildrenProgramType(source.WorkExperienceReferenceDetails.ChildrenProgramType.Value);
-    }
-
-    if (source.WorkExperienceReferenceDetails.ChildrenProgramTypeOther != null)
-    {
-      destination.ecer_OtherChildProgramType = source.WorkExperienceReferenceDetails.ChildrenProgramTypeOther;
-    }
-
-    if (source.WorkExperienceReferenceDetails.Role != null)
-    {
-      destination.ecer_Role = source.WorkExperienceReferenceDetails.Role;
-    }
-
-    if (source.WorkExperienceReferenceDetails.AgeofChildrenCaredFor != null)
-    {
-      destination.ecer_AgeofChildrenCaredFor = source.WorkExperienceReferenceDetails.AgeofChildrenCaredFor;
-    }
-
-    if (source.WorkExperienceReferenceDetails.StartDate.HasValue)
-    {
-      destination.ecer_StartDate = source.WorkExperienceReferenceDetails.StartDate;
-    }
-
-    if (source.WorkExperienceReferenceDetails.EndDate.HasValue)
-    {
-      destination.ecer_EndDate = source.WorkExperienceReferenceDetails.EndDate;
-    }
-
-    if (source.WorkExperienceReferenceDetails.ReferenceRelationship.HasValue)
-    {
-      destination.ecer_RelationshiptoApplicant = MapReferenceRelationship(source.WorkExperienceReferenceDetails.ReferenceRelationship.Value);
-    }
-
-    if (source.WorkExperienceReferenceDetails.ReferenceRelationshipOther != null)
-    {
-      destination.ecer_RelationshiptoApplicantOther = source.WorkExperienceReferenceDetails.ReferenceRelationshipOther;
-    }
-
-    if (source.WorkExperienceReferenceDetails.AdditionalComments != null)
-    {
-      destination.ecer_AdditionalComments = source.WorkExperienceReferenceDetails.AdditionalComments;
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopment.HasValue)
-    {
-      destination.ecer_CompetenceChildDevelopment = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopment.Value);
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopmentReason != null)
-    {
-      destination.ecer_CompetenceChildDevelopmentReason = source.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopmentReason;
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.ChildGuidance.HasValue)
-    {
-      destination.ecer_CompetenceChildGuidance = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.ChildGuidance.Value);
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.ChildGuidanceReason != null)
-    {
-      destination.ecer_CompetenceChildGuidanceReason = source.WorkExperienceReferenceCompetenciesAssessment.ChildGuidanceReason;
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutrition.HasValue)
-    {
-      destination.ecer_CompetenceHealthSafetyandNutrition = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutrition.Value);
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutritionReason != null)
-    {
-      destination.ecer_CompetenceHealthSafetyandNutritionReason = source.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutritionReason;
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculum.HasValue)
-    {
-      destination.ecer_CompetenceDevelopanECECurriculum = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculum.Value);
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculumReason != null)
-    {
-      destination.ecer_CompetenceDevelopanECECurriculumReason = source.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculumReason;
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculum.HasValue)
-    {
-      destination.ecer_CompetenceImplementanECECurriculum = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculum.Value);
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculumReason != null)
-    {
-      destination.ecer_CompetenceImplementECECurriculumReason = source.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculumReason;
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChild.HasValue)
-    {
-      destination.ecer_CompetenceFosteringPositiveRelationChild = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChild.Value);
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChildReason != null)
-    {
-      destination.ecer_CompetenceFosteringRelationChildReason = source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChildReason;
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamily.HasValue)
-    {
-      destination.ecer_CompetenceFosteringPositiveRelationFamily = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamily.Value);
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamilyReason != null)
-    {
-      destination.ecer_CompetenceFosteringRelationFamilyReason = source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamilyReason;
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker.HasValue)
-    {
-      destination.ecer_CompetenceFosteringPositiveRelationCoworker = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker.Value);
-    }
-
-    if (source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason != null)
-    {
-      destination.ecer_CompetenceFosteringRelationCoworkerReason = source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason;
-    }
+    ApplyReferenceContactInformation(source.ReferenceContactInformation, destination);
+    ApplyWorkExperienceReferenceDetails(source.WorkExperienceReferenceDetails, destination);
+    ApplyWorkExperienceCompetenciesAssessment(source.WorkExperienceReferenceCompetenciesAssessment, destination);
 
     if (source.WorkExperienceReferenceDetails.ChildcareAgeRanges != null && source.WorkExperienceReferenceDetails.ChildcareAgeRanges.Any())
     {
@@ -287,6 +135,171 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
 
     destination.ecer_WillProvideReference = source.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
     destination.ecer_DateSigned = source.DateSigned;
+  }
+
+  private void ApplyReferenceContactInformation(ReferenceContactInformation source, ecer_WorkExperienceRef destination)
+  {
+    destination.ecer_referencefirstname = source.FirstName;
+    destination.ecer_referencelastname = source.LastName;
+    destination.ecer_ReferencePhoneNumber = source.PhoneNumber;
+    destination.ecer_referenceemailaddress = source.Email;
+    destination.ecer_ReferenceECECertifiedProvince = source.CertificateProvinceOther;
+
+    if (source.CertificateNumber != null)
+    {
+      destination.ecer_ReferenceECECertificationNumber = source.CertificateNumber;
+    }
+
+    if (source.DateOfBirth.HasValue)
+    {
+      destination.ecer_ReferenceBirthDate = source.DateOfBirth;
+    }
+  }
+
+  private void ApplyWorkExperienceReferenceDetails(WorkExperienceReferenceDetails source, ecer_WorkExperienceRef destination)
+  {
+    if (source.Hours.HasValue)
+    {
+      destination.ecer_TotalNumberofHoursObserved = Convert.ToDecimal(source.Hours.Value);
+    }
+
+    if (source.WorkHoursType.HasValue)
+    {
+      destination.ecer_WorkHoursType = MapWorkHoursType(source.WorkHoursType.Value);
+    }
+
+    if (source.ChildrenProgramName != null)
+    {
+      destination.ecer_ChildCareProgramName = source.ChildrenProgramName;
+    }
+
+    if (source.ChildrenProgramType.HasValue)
+    {
+      destination.ecer_TypeofChildrenProgram = MapChildrenProgramType(source.ChildrenProgramType.Value);
+    }
+
+    if (source.ChildrenProgramTypeOther != null)
+    {
+      destination.ecer_OtherChildProgramType = source.ChildrenProgramTypeOther;
+    }
+
+    if (source.Role != null)
+    {
+      destination.ecer_Role = source.Role;
+    }
+
+    if (source.AgeofChildrenCaredFor != null)
+    {
+      destination.ecer_AgeofChildrenCaredFor = source.AgeofChildrenCaredFor;
+    }
+
+    if (source.StartDate.HasValue)
+    {
+      destination.ecer_StartDate = source.StartDate;
+    }
+
+    if (source.EndDate.HasValue)
+    {
+      destination.ecer_EndDate = source.EndDate;
+    }
+
+    if (source.ReferenceRelationship.HasValue)
+    {
+      destination.ecer_RelationshiptoApplicant = MapReferenceRelationship(source.ReferenceRelationship.Value);
+    }
+
+    if (source.ReferenceRelationshipOther != null)
+    {
+      destination.ecer_RelationshiptoApplicantOther = source.ReferenceRelationshipOther;
+    }
+
+    if (source.AdditionalComments != null)
+    {
+      destination.ecer_AdditionalComments = source.AdditionalComments;
+    }
+  }
+
+  private void ApplyWorkExperienceCompetenciesAssessment(WorkExperienceReferenceCompetenciesAssessment source, ecer_WorkExperienceRef destination)
+  {
+    if (source.ChildDevelopment.HasValue)
+    {
+      destination.ecer_CompetenceChildDevelopment = MapLikertScale(source.ChildDevelopment.Value);
+    }
+
+    if (source.ChildDevelopmentReason != null)
+    {
+      destination.ecer_CompetenceChildDevelopmentReason = source.ChildDevelopmentReason;
+    }
+
+    if (source.ChildGuidance.HasValue)
+    {
+      destination.ecer_CompetenceChildGuidance = MapLikertScale(source.ChildGuidance.Value);
+    }
+
+    if (source.ChildGuidanceReason != null)
+    {
+      destination.ecer_CompetenceChildGuidanceReason = source.ChildGuidanceReason;
+    }
+
+    if (source.HealthSafetyAndNutrition.HasValue)
+    {
+      destination.ecer_CompetenceHealthSafetyandNutrition = MapLikertScale(source.HealthSafetyAndNutrition.Value);
+    }
+
+    if (source.HealthSafetyAndNutritionReason != null)
+    {
+      destination.ecer_CompetenceHealthSafetyandNutritionReason = source.HealthSafetyAndNutritionReason;
+    }
+
+    if (source.DevelopAnEceCurriculum.HasValue)
+    {
+      destination.ecer_CompetenceDevelopanECECurriculum = MapLikertScale(source.DevelopAnEceCurriculum.Value);
+    }
+
+    if (source.DevelopAnEceCurriculumReason != null)
+    {
+      destination.ecer_CompetenceDevelopanECECurriculumReason = source.DevelopAnEceCurriculumReason;
+    }
+
+    if (source.ImplementAnEceCurriculum.HasValue)
+    {
+      destination.ecer_CompetenceImplementanECECurriculum = MapLikertScale(source.ImplementAnEceCurriculum.Value);
+    }
+
+    if (source.ImplementAnEceCurriculumReason != null)
+    {
+      destination.ecer_CompetenceImplementECECurriculumReason = source.ImplementAnEceCurriculumReason;
+    }
+
+    if (source.FosteringPositiveRelationChild.HasValue)
+    {
+      destination.ecer_CompetenceFosteringPositiveRelationChild = MapLikertScale(source.FosteringPositiveRelationChild.Value);
+    }
+
+    if (source.FosteringPositiveRelationChildReason != null)
+    {
+      destination.ecer_CompetenceFosteringRelationChildReason = source.FosteringPositiveRelationChildReason;
+    }
+
+    if (source.FosteringPositiveRelationFamily.HasValue)
+    {
+      destination.ecer_CompetenceFosteringPositiveRelationFamily = MapLikertScale(source.FosteringPositiveRelationFamily.Value);
+    }
+
+    if (source.FosteringPositiveRelationFamilyReason != null)
+    {
+      destination.ecer_CompetenceFosteringRelationFamilyReason = source.FosteringPositiveRelationFamilyReason;
+    }
+
+    if (source.FosteringPositiveRelationCoworker.HasValue)
+    {
+      destination.ecer_CompetenceFosteringPositiveRelationCoworker = MapLikertScale(source.FosteringPositiveRelationCoworker.Value);
+    }
+
+    if (source.FosteringPositiveRelationCoworkerReason != null)
+    {
+      destination.ecer_CompetenceFosteringRelationCoworkerReason = source.FosteringPositiveRelationCoworkerReason;
+    }
   }
 
   public void ApplyIcraWorkExperienceReferenceSubmission(IcraWorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination)
@@ -413,7 +426,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   private Transcript MapTranscript(ecer_Transcript source)
   {
     var country = MapTranscriptCountry(source);
-    var province = MapTranscriptProvince(source);
+    var province = GetTranscriptProvince(source);
     var provinceId = province?.ProvinceId ?? string.Empty;
 
     return new Transcript(
@@ -566,7 +579,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     return new Country(source.ecer_InstituteCountryId.Id.ToString(), source.ecer_InstituteCountryIdName, string.Empty, false);
   }
 
-  private static Province? MapTranscriptProvince(ecer_Transcript source)
+  private static Province? GetTranscriptProvince(ecer_Transcript source)
   {
     if (source.ecer_transcript_ProvinceId != null)
     {
@@ -741,11 +754,15 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial OneYearRenewalexplanations MapOneYearRenewalExplanation(ecer_yrrenewalexplanations source);
 
+  private ecer_yrrenewalexplanations? MapOneYearRenewalExplanation(OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_fiveyrrenewalexplanations MapFiveYearRenewalExplanation(FiveYearRenewalExplanations source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial FiveYearRenewalExplanations MapFiveYearRenewalExplanation(ecer_fiveyrrenewalexplanations source);
+
+  private ecer_fiveyrrenewalexplanations? MapFiveYearRenewalExplanation(FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ApplicationTypes MapApplicationType(ApplicationTypes source);
@@ -761,11 +778,15 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial EducationOrigin MapEducationOrigin(ecer_EducationOrigin source);
 
+  private ecer_EducationOrigin? MapEducationOrigin(EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_EducationRecognition MapEducationRecognition(EducationRecognition source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial EducationRecognition MapEducationRecognition(ecer_EducationRecognition source);
+
+  private ecer_EducationRecognition? MapEducationRecognition(EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_Transcript_StatusCode MapTranscriptStage(TranscriptStage source);
@@ -781,11 +802,15 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ProfessionalDevelopmentStatusCode MapProfessionalDevelopmentStatus(ecer_ProfessionalDevelopment_StatusCode source);
 
+  private ecer_ProfessionalDevelopment_StatusCode? MapProfessionalDevelopmentStatus(ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_CharacterReference_StatusCode MapCharacterReferenceStage(CharacterReferenceStage source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial CharacterReferenceStage MapCharacterReferenceStage(ecer_CharacterReference_StatusCode source);
+
+  private ecer_CharacterReference_StatusCode? MapCharacterReferenceStage(CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_WorkExperienceRef_StatusCode MapWorkExperienceReferenceStage(WorkExperienceRefStage source);
@@ -801,11 +826,15 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial UnabletoProvideReferenceReasons MapUnableToProvideReferenceReason(ecer_UnabletoProvideReferenceReasons source);
 
+  private ecer_UnabletoProvideReferenceReasons? MapUnableToProvideReferenceReason(UnabletoProvideReferenceReasons? source) => source.HasValue ? MapUnableToProvideReferenceReason(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_likertscales MapLikertScale(LikertScale source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial LikertScale MapLikertScale(ecer_likertscales source);
+
+  private ecer_likertscales? MapLikertScale(LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ReferenceRelationships MapReferenceRelationship(ReferenceRelationship source);
@@ -813,17 +842,23 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ReferenceRelationship MapReferenceRelationship(ecer_ReferenceRelationships source);
 
+  private ecer_ReferenceRelationships? MapReferenceRelationship(ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ChildrenProgramTypes MapChildrenProgramType(ChildrenProgramType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ChildrenProgramType MapChildrenProgramType(ecer_ChildrenProgramTypes source);
 
+  private ecer_ChildrenProgramTypes? MapChildrenProgramType(ChildrenProgramType? source) => source.HasValue ? MapChildrenProgramType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_WorkHoursType MapWorkHoursType(WorkHoursType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial WorkHoursType MapWorkHoursType(ecer_WorkHoursType source);
+
+  private ecer_WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ChildcareAgeRange MapChildcareAgeRange(ChildcareAgeRanges source);
@@ -836,28 +871,6 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ReferenceKnownTime MapReferenceKnownTime(ecer_ReferenceKnownTime source);
-
-  private ecer_yrrenewalexplanations? MapOneYearRenewalExplanation(OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
-
-  private ecer_fiveyrrenewalexplanations? MapFiveYearRenewalExplanation(FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
-
-  private ecer_EducationOrigin? MapEducationOrigin(EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
-
-  private ecer_EducationRecognition? MapEducationRecognition(EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
-
-  private ecer_ProfessionalDevelopment_StatusCode? MapProfessionalDevelopmentStatus(ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
-
-  private ecer_CharacterReference_StatusCode? MapCharacterReferenceStage(CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
-
-  private ecer_UnabletoProvideReferenceReasons? MapUnableToProvideReferenceReason(UnabletoProvideReferenceReasons? source) => source.HasValue ? MapUnableToProvideReferenceReason(source.Value) : null;
-
-  private ecer_likertscales? MapLikertScale(LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
-
-  private ecer_ReferenceRelationships? MapReferenceRelationship(ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
-
-  private ecer_ChildrenProgramTypes? MapChildrenProgramType(ChildrenProgramType? source) => source.HasValue ? MapChildrenProgramType(source.Value) : null;
-
-  private ecer_WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
 
   private static ecer_WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
 

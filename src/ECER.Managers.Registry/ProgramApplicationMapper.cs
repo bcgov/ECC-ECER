@@ -209,11 +209,19 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.ApplicationStatus MapApplicationStatus(ResourceProgramApplications.ApplicationStatus source);
 
+  private ResourceProgramApplications.ApplicationStatus? MapApplicationStatus(ContractProgramApplications.ApplicationStatus? source) => source.HasValue ? MapApplicationStatus(source.Value) : null;
+
+  private ContractProgramApplications.ApplicationStatus? MapApplicationStatus(ResourceProgramApplications.ApplicationStatus? source) => source.HasValue ? MapApplicationStatus(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceProgramApplications.ApplicationStatusReasonDetail MapStatusReasonDetail(ContractProgramApplications.ApplicationStatusReasonDetail source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.ApplicationStatusReasonDetail MapStatusReasonDetail(ResourceProgramApplications.ApplicationStatusReasonDetail source);
+
+  private ResourceProgramApplications.ApplicationStatusReasonDetail? MapStatusReasonDetail(ContractProgramApplications.ApplicationStatusReasonDetail? source) => source.HasValue ? MapStatusReasonDetail(source.Value) : null;
+
+  private ContractProgramApplications.ApplicationStatusReasonDetail? MapStatusReasonDetail(ResourceProgramApplications.ApplicationStatusReasonDetail? source) => source.HasValue ? MapStatusReasonDetail(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceProgramApplications.ApplicationType MapApplicationType(ContractProgramApplications.ApplicationType source);
@@ -221,11 +229,19 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.ApplicationType MapApplicationType(ResourceProgramApplications.ApplicationType source);
 
+  private ResourceProgramApplications.ApplicationType? MapApplicationType(ContractProgramApplications.ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
+
+  private ContractProgramApplications.ApplicationType? MapApplicationType(ResourceProgramApplications.ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceProgramApplications.DeliveryType MapDeliveryType(ContractProgramApplications.DeliveryType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.DeliveryType MapDeliveryType(ResourceProgramApplications.DeliveryType source);
+
+  private ResourceProgramApplications.DeliveryType? MapDeliveryType(ContractProgramApplications.DeliveryType? source) => source.HasValue ? MapDeliveryType(source.Value) : null;
+
+  private ContractProgramApplications.DeliveryType? MapDeliveryType(ResourceProgramApplications.DeliveryType? source) => source.HasValue ? MapDeliveryType(source.Value) : null;
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceProgramApplications.ProgramCertificationType MapProgramCertificationType(ContractProgramApplications.ProgramCertificationType source);
@@ -262,20 +278,4 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractProgramApplications.AdmissionOptions MapAdmissionOptions(ResourceProgramApplications.AdmissionOptions source);
-
-  private ResourceProgramApplications.ApplicationStatus? MapApplicationStatus(ContractProgramApplications.ApplicationStatus? source) => source.HasValue ? MapApplicationStatus(source.Value) : null;
-
-  private ContractProgramApplications.ApplicationStatus? MapApplicationStatus(ResourceProgramApplications.ApplicationStatus? source) => source.HasValue ? MapApplicationStatus(source.Value) : null;
-
-  private ResourceProgramApplications.ApplicationStatusReasonDetail? MapStatusReasonDetail(ContractProgramApplications.ApplicationStatusReasonDetail? source) => source.HasValue ? MapStatusReasonDetail(source.Value) : null;
-
-  private ContractProgramApplications.ApplicationStatusReasonDetail? MapStatusReasonDetail(ResourceProgramApplications.ApplicationStatusReasonDetail? source) => source.HasValue ? MapStatusReasonDetail(source.Value) : null;
-
-  private ResourceProgramApplications.ApplicationType? MapApplicationType(ContractProgramApplications.ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
-
-  private ContractProgramApplications.ApplicationType? MapApplicationType(ResourceProgramApplications.ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
-
-  private ResourceProgramApplications.DeliveryType? MapDeliveryType(ContractProgramApplications.DeliveryType? source) => source.HasValue ? MapDeliveryType(source.Value) : null;
-
-  private ContractProgramApplications.DeliveryType? MapDeliveryType(ResourceProgramApplications.DeliveryType? source) => source.HasValue ? MapDeliveryType(source.Value) : null;
 }

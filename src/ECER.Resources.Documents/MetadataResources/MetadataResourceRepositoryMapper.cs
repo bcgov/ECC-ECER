@@ -66,12 +66,12 @@ internal partial class MetadataResourceRepositoryMapper : IMetadataResourceRepos
     source.ecer_DisplayOrder,
     source.ecer_ParentAreaofInstructionId?.Id.ToString());
 
-  private PostSecondaryInstitution MapPostSecondaryInstitution(ecer_PostSecondaryInstitute source) => new(
+  private static PostSecondaryInstitution MapPostSecondaryInstitution(ecer_PostSecondaryInstitute source) => new(
     source.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty,
     source.ecer_Name ?? string.Empty,
     source.ecer_ProvinceId?.Id.ToString() ?? string.Empty);
 
-  private IdentificationType MapIdentificationType(ecer_identificationtype source) => new(
+  private static IdentificationType MapIdentificationType(ecer_identificationtype source) => new(
     source.ecer_identificationtypeId?.ToString() ?? string.Empty,
     source.ecer_Name ?? string.Empty,
     source.ecer_ForPrimary.GetValueOrDefault(),

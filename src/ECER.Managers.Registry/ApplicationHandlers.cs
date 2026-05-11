@@ -8,12 +8,14 @@ using ECER.Resources.Documents.ICRA;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Managers.Registry;
 
 /// <summary>
 /// Message handlers
 /// </summary>
+[SuppressMessage("Design", "S107:Methods should not have too many parameters", Justification = "This handler composes several feature-specific services, and keeping the dependencies explicit is clearer than hiding them behind an artificial aggregate.")]
 public class ApplicationHandlers(
     IPortalInvitationTransformationEngine transformationEngine,
     IPortalInvitationRepository portalInvitationRepository,

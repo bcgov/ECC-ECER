@@ -133,7 +133,7 @@ internal partial class RegistrantRepositoryMapper : IRegistrantRepositoryMapper
   private List<UserIdentity> MapUserIdentities(IEnumerable<ecer_Authentication>? source) =>
     source?.Select(MapUserIdentity).ToList() ?? new List<UserIdentity>();
 
-  private UserIdentity MapUserIdentity(ecer_Authentication source) =>
+  private static UserIdentity MapUserIdentity(ecer_Authentication source) =>
     new(source.ecer_ExternalID ?? string.Empty, source.ecer_IdentityProvider ?? string.Empty);
 
   [MapEnum(EnumMappingStrategy.ByName)]
@@ -162,15 +162,15 @@ internal partial class RegistrantRepositoryMapper : IRegistrantRepositoryMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial StatusCode MapStatusCode(Contact_StatusCode source);
 
+  private Contact_StatusCode? MapStatusCode(StatusCode? source) => source.HasValue ? MapStatusCode(source.Value) : null;
+
+  private StatusCode? MapStatusCode(Contact_StatusCode? source) => source.HasValue ? MapStatusCode(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_IDVerificationDecision MapIdVerificationDecision(IDVerificationDecision source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial IDVerificationDecision MapIdVerificationDecision(ecer_IDVerificationDecision source);
-
-  private Contact_StatusCode? MapStatusCode(StatusCode? source) => source.HasValue ? MapStatusCode(source.Value) : null;
-
-  private StatusCode? MapStatusCode(Contact_StatusCode? source) => source.HasValue ? MapStatusCode(source.Value) : null;
 
   private ecer_IDVerificationDecision? MapIdVerificationDecision(IDVerificationDecision? source) => source.HasValue ? MapIdVerificationDecision(source.Value) : null;
 

@@ -104,15 +104,15 @@ internal partial class PostSecondaryInstituteMapper : IPostSecondaryInstituteMap
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPostSecondaryInstitutes.PsiInstitutionType MapInstitutionType(ResourcePostSecondaryInstitutes.PsiInstitutionType source);
 
+  private ResourcePostSecondaryInstitutes.PsiInstitutionType? MapInstitutionType(ContractPostSecondaryInstitutes.PsiInstitutionType? source) => source.HasValue ? MapInstitutionType(source.Value) : null;
+
+  private ContractPostSecondaryInstitutes.PsiInstitutionType? MapInstitutionType(ResourcePostSecondaryInstitutes.PsiInstitutionType? source) => source.HasValue ? MapInstitutionType(source.Value) : null;
+
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourcePostSecondaryInstitutes.PrivateAuspiceType MapPrivateAuspiceType(ContractPostSecondaryInstitutes.PrivateAuspiceType source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractPostSecondaryInstitutes.PrivateAuspiceType MapPrivateAuspiceType(ResourcePostSecondaryInstitutes.PrivateAuspiceType source);
-
-  private ResourcePostSecondaryInstitutes.PsiInstitutionType? MapInstitutionType(ContractPostSecondaryInstitutes.PsiInstitutionType? source) => source.HasValue ? MapInstitutionType(source.Value) : null;
-
-  private ContractPostSecondaryInstitutes.PsiInstitutionType? MapInstitutionType(ResourcePostSecondaryInstitutes.PsiInstitutionType? source) => source.HasValue ? MapInstitutionType(source.Value) : null;
 
   private ResourcePostSecondaryInstitutes.PrivateAuspiceType? MapPrivateAuspiceType(ContractPostSecondaryInstitutes.PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
 

@@ -88,7 +88,7 @@ internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationR
     SneProgress = source.ecer_SNEEntryProgress?.ToString(),
   };
 
-  private NavigationMetadata MapNavigationMetadata(ecer_ProgramApplicationComponentGroup source) => new(
+  private static NavigationMetadata MapNavigationMetadata(ecer_ProgramApplicationComponentGroup source) => new(
     source.ecer_ProgramApplicationComponentGroupId?.ToString() ?? string.Empty,
     source.ecer_GroupName ?? string.Empty,
     source.ecer_EntryProgress?.ToString() ?? string.Empty,
@@ -108,7 +108,7 @@ internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationR
       .Select(MapProgramApplicationComponent)
       .ToList());
 
-  private ProgramApplicationComponent MapProgramApplicationComponent(ecer_ProgramApplicationComponent source) => new(
+  private static ProgramApplicationComponent MapProgramApplicationComponent(ecer_ProgramApplicationComponent source) => new(
     source.ecer_ProgramApplicationComponentId?.ToString() ?? string.Empty,
     source.ecer_Component ?? string.Empty,
     source.ecer_Question,
