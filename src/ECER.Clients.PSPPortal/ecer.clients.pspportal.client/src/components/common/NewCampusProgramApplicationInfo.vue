@@ -49,7 +49,7 @@
     </v-col>
   </v-row>
 
-  <v-row>
+  <v-row v-if="institutionType === 'Private'">
     <v-col cols="12">
       <Callout title="Private institutions" type="warning">
         <div class="d-flex flex-column ga-3">
@@ -187,6 +187,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import type { PropType } from "vue";
+import type { PsiInstitutionType } from "@/types/openapi";
 import Callout from "@/components/common/Callout.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -195,5 +197,11 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 export default defineComponent({
   name: "NewCampusProgramApplicationInfo",
   components: { Breadcrumb, ECEHeader, Callout, PageContainer },
+  props: {
+    institutionType: {
+      type: String as PropType<PsiInstitutionType | undefined>,
+      required: true,
+    },
+  },
 });
 </script>

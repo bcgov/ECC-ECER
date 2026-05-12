@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { Components } from "@/types/openapi";
+import type { Components, PsiInstitutionType } from "@/types/openapi";
 
 export interface UserState {
   pspUserProfile: Components.Schemas.PspUserProfile | null;
@@ -38,6 +38,8 @@ export const useUserStore = defineStore("user", {
     province: (state): string => state.educationInstitution?.province ?? "",
     postalCode: (state): string => state.educationInstitution?.postalCode ?? "",
     websiteUrl: (state): string => state.educationInstitution?.websiteUrl ?? "",
+    institutionType: (state): PsiInstitutionType | undefined =>
+      state.educationInstitution?.institutionType ?? undefined,
   },
   actions: {
     setPspUserProfile(
