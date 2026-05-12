@@ -17,8 +17,8 @@
         <v-col cols="12">
           <p>
             This process is for institutions with existing early childhood
-            education programs that are recognized by the ECE Registry to seek
-            approval to add a program offering at a new campus location.
+            education programs that are recognized by the ECE Registry to offer
+            their program at a new campus location.
           </p>
           <p class="mt-3">
             Private institutions require additional approval from their

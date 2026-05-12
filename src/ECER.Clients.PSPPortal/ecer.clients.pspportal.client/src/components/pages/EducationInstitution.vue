@@ -100,11 +100,11 @@
           <div class="d-flex flex-column ga-3">
             <p>
               This process is for institutions with existing early childhood
-              education programs that are recognized by the ECE Registry to seek
-              approval to add a
-              <strong>temporary offering</strong>
-              of a program at a location in partnership with another
-              organization, or at a location outside of the institution.
+              education programs that are recognized by the ECE Registry to
+              offer their program
+              <strong>temporarily</strong>
+              at a location in partnership with another organization, or at a
+              location outside of the institution.
             </p>
             <!-- prettier-ignore -->
             <p>
