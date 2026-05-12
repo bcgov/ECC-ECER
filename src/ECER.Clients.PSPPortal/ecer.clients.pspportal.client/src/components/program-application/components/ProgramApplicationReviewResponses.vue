@@ -22,8 +22,8 @@
         <Callout title="Additional information requested" type="warning">
           <p>
             Refer to your messages for details on resolving this request. You
-            may edit the questions in your application requiring additional
-            information.
+            may edit the questions in your application where additional
+            information is requested.
           </p>
         </Callout>
       </v-col>

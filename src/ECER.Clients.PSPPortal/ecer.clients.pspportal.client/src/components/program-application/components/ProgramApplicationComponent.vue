@@ -11,6 +11,17 @@
         </p>
       </v-col>
     </v-row>
+    <v-row v-if="isRFAI && hasRfaiComponents" class="mb-4">
+      <v-col cols="12">
+        <Callout title="Additional information requested" type="warning">
+          <p>
+            Refer to your messages for details on resolving this request. You
+            may edit the questions in your application where additional
+            information is requested.
+          </p>
+        </Callout>
+      </v-col>
+    </v-row>
     <v-row v-if="components.length">
       <v-col
         v-for="(comp, index) in components"
@@ -64,6 +75,7 @@
 import { defineComponent } from "vue";
 import Loading from "@/components/Loading.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
+import Callout from "@/components/common/Callout.vue";
 import {
   getComponentGroupComponents,
   updateComponentGroup,
@@ -87,7 +99,7 @@ interface ComponentGroupWithComponentsFlat {
 
 export default defineComponent({
   name: "ProgramApplicationComponent",
-  components: { Question, Loading, ConfirmationDialog },
+  components: { Question, Loading, ConfirmationDialog, Callout },
   props: {
     applicationType: { type: String, required: false },
     programApplicationId: {
@@ -116,6 +128,9 @@ export default defineComponent({
           this.programApplicationObject?.status === "ReviewAnalysis") &&
         this.programApplicationObject?.statusReasonDetail === "RFAIrequested"
       );
+    },
+    hasRfaiComponents(): boolean {
+      return this.components.some((c) => c.rfaiRequired === true);
     },
     hasChanges(): boolean {
       //we do not need to compare files for changes since those are automatically saved when uploaded
