@@ -1,80 +1,66 @@
-﻿using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using Ganss.Xss;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Accounts.Communications;
 
-internal class CommunicationRepositoryMapper : SecureProfile
+internal interface ICommunicationRepositoryMapper
+{
+  List<ecer_Communication_StatusCode> MapCommunicationStatuses(IEnumerable<CommunicationStatus> source);
+  List<Communication> MapCommunications(IEnumerable<ecer_Communication> source);
+  Communication MapCommunication(ecer_Communication source);
+  ecer_Communication MapCommunication(Communication source);
+}
+
+[Mapper]
+internal partial class CommunicationRepositoryMapper : ICommunicationRepositoryMapper
 {
   private static readonly HtmlSanitizer htmlSanitizer = new();
 
-  public CommunicationRepositoryMapper()
+  public List<ecer_Communication_StatusCode> MapCommunicationStatuses(IEnumerable<CommunicationStatus> source) => source.Select(MapCommunicationStatus).ToList();
+
+  public List<Communication> MapCommunications(IEnumerable<ecer_Communication> source) => source.Select(MapCommunication).ToList();
+
+  public Communication MapCommunication(ecer_Communication source) => new(source.ecer_CommunicationId?.ToString())
   {
-    CreateMap<ecer_Communication, Communication>(MemberList.Destination)
-     .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CommunicationId))
-     .ForMember(d => d.Category, opts => opts.MapFrom(s => s.ecer_PSPCommunicationCategory))
-     .ForMember(d => d.Body, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.ecer_Message, "", null)))
-     .ForMember(d => d.Subject, opts => opts.MapFrom(s => s.ecer_Name))
-     .ForMember(d => d.From, opts => opts.MapFrom(s => s.ecer_InitiatedFrom))
-     .ForMember(d => d.Acknowledged, opts => opts.MapFrom(s => s.ecer_Acknowledged))
-     .ForMember(d => d.NotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
-     .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-     .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => GetApplicationId(s)))
-     .ForMember(d => d.IcraEligibilityId, opts => opts.MapFrom(s => GetIcraEligibilityId(s)))
-     .ForMember(d => d.DoNotReply, opts => opts.MapFrom(s => s.ecer_DoNotReply))
-     .ForMember(d => d.Documents, opts => opts.MapFrom(s => s.ecer_bcgov_documenturl_CommunicationId_ecer_communication))
-     .ForMember(d => d.LatestMessageNotifiedOn, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? (s.ecer_LatestMessageNotifiedDate ?? s.ecer_DateNotified) : s.ecer_DateNotified))
-     .ForMember(d => d.IsRead, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? s.ecer_AreAllRead : s.ecer_Acknowledged))
-     .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_ProgramRepresentativeId.Id))
-     .ForMember(d => d.EducationInstituteName, opts => opts.MapFrom(s => s.ecer_EducationInstitutionIdName))
-     .ForMember(d => d.IsPspUser, opts => opts.Ignore());
+    Category = MapCommunicationCategory(source.ecer_PSPCommunicationCategory),
+    Body = htmlSanitizer.Sanitize(source.ecer_Message ?? string.Empty, "", null),
+    Subject = source.ecer_Name ?? string.Empty,
+    From = MapInitiatedFrom(source.ecer_InitiatedFrom) ?? default,
+    Acknowledged = source.ecer_Acknowledged.GetValueOrDefault(),
+    NotifiedOn = source.ecer_DateNotified.GetValueOrDefault(),
+    Status = MapCommunicationStatus(source.StatusCode) ?? default,
+    ApplicationId = GetApplicationId(source)?.ToString(),
+    IcraEligibilityId = GetIcraEligibilityId(source)?.ToString(),
+    DoNotReply = source.ecer_DoNotReply.GetValueOrDefault(),
+    Documents = MapCommunicationDocuments(source.ecer_bcgov_documenturl_CommunicationId_ecer_communication),
+    LatestMessageNotifiedOn = source.ecer_IsRoot == true ? (source.ecer_LatestMessageNotifiedDate ?? source.ecer_DateNotified) : source.ecer_DateNotified,
+    IsRead = source.ecer_IsRoot == true ? source.ecer_AreAllRead : source.ecer_Acknowledged,
+    ProgramRepresentativeId = source.ecer_ProgramRepresentativeId?.Id != Guid.Empty ? source.ecer_ProgramRepresentativeId?.Id.ToString() : null,
+    EducationInstituteName = source.ecer_EducationInstitutionIdName,
+  };
 
-    CreateMap<Communication, ecer_Communication>(MemberList.Source)
-      .ForSourceMember(s => s.Subject, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.From, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.NotifiedOn, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Acknowledged, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Body, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DoNotReply, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.LatestMessageNotifiedOn, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.IsRead, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Documents, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ApplicationId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.IcraEligibilityId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Category, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)))
-      .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Subject, "", null)))
-      .ForMember(d => d.ecer_PSPCommunicationCategory, opts => opts.MapFrom(s => s.Category))
-      .ForSourceMember(s => s.IsPspUser, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramRepresentativeId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.EducationInstituteName, opts => opts.DoNotValidate());
+  public ecer_Communication MapCommunication(Communication source) => new()
+  {
+    ecer_Message = htmlSanitizer.Sanitize(source.Body, "", null),
+    ecer_Name = htmlSanitizer.Sanitize(source.Subject, "", null),
+    ecer_PSPCommunicationCategory = MapCommunicationCategory(source.Category),
+  };
 
-    CreateMap<ecer_PSPCommunicationCategories, CommunicationCategory>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true));
+  private List<CommunicationDocument> MapCommunicationDocuments(IEnumerable<bcgov_DocumentUrl>? source) =>
+    source?.Select(MapCommunicationDocument).ToList() ?? new List<CommunicationDocument>();
 
-    CreateMap<CommunicationCategory, ecer_PSPCommunicationCategories>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true));
+  private CommunicationDocument MapCommunicationDocument(bcgov_DocumentUrl source) => new(source.bcgov_DocumentUrlId?.ToString() ?? string.Empty)
+  {
+    Name = source.bcgov_FileName,
+    Size = source.bcgov_FileSize,
+    Url = source.bcgov_Url,
+    Extention = source.bcgov_FileExtension,
+    EcerWebApplicationType = MapEcerWebApplicationType(source.ecer_ApplicationName),
+  };
 
-
-    CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true));
-
-    CreateMap<ecer_InitiatedFrom, InitiatedFrom>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true));
-
-    CreateMap<bcgov_DocumentUrl, CommunicationDocument>(MemberList.Destination)
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
-      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
-      .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
-      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
-      .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension))
-      .ForMember(d => d.EcerWebApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationName));
-  }
-
-  private static Guid? GetIcraEligibilityId(ecer_Communication src)
+  private static Guid? GetIcraEligibilityId(ecer_Communication source)
   {
     var allowedStatusCodes = new List<ecer_ICRAEligibilityAssessment_StatusCode>
     {
@@ -85,20 +71,20 @@ internal class CommunicationRepositoryMapper : SecureProfile
       ecer_ICRAEligibilityAssessment_StatusCode.ReadyforAssessment,
     };
 
-    if (src.ecer_communication_ICRAEligibilityAssessmentId == null || src.ecer_communication_ICRAEligibilityAssessmentId?.StatusCode == null)
+    if (source.ecer_communication_ICRAEligibilityAssessmentId == null || source.ecer_communication_ICRAEligibilityAssessmentId.StatusCode == null)
     {
       return null;
     }
 
-    if (!allowedStatusCodes.Contains(src.ecer_communication_ICRAEligibilityAssessmentId.StatusCode.Value))
+    if (!allowedStatusCodes.Contains(source.ecer_communication_ICRAEligibilityAssessmentId.StatusCode.Value))
     {
       return null;
     }
 
-    return src.ecer_communication_ICRAEligibilityAssessmentId.ecer_ICRAEligibilityAssessmentId;
+    return source.ecer_communication_ICRAEligibilityAssessmentId.ecer_ICRAEligibilityAssessmentId;
   }
 
-  private static Guid? GetApplicationId(ecer_Communication src)
+  private static Guid? GetApplicationId(ecer_Communication source)
   {
     var allowedStatusCodes = new List<ecer_Application_StatusCode>
     {
@@ -112,16 +98,42 @@ internal class CommunicationRepositoryMapper : SecureProfile
       ecer_Application_StatusCode.Submitted
     };
 
-    if (src.ecer_communication_Applicationid == null || src.ecer_communication_Applicationid?.StatusCode == null)
+    if (source.ecer_communication_Applicationid == null || source.ecer_communication_Applicationid.StatusCode == null)
     {
       return null;
     }
 
-    if (!allowedStatusCodes.Contains(src.ecer_communication_Applicationid.StatusCode.Value))
+    if (!allowedStatusCodes.Contains(source.ecer_communication_Applicationid.StatusCode.Value))
     {
       return null;
     }
 
-    return src.ecer_communication_Applicationid.ecer_ApplicationId;
+    return source.ecer_communication_Applicationid.ecer_ApplicationId;
   }
+
+  private static EcerWebApplicationType MapEcerWebApplicationType(string? source) =>
+    Enum.TryParse<EcerWebApplicationType>(source, out var applicationType) ? applicationType : default;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PSPCommunicationCategories MapCommunicationCategory(CommunicationCategory source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CommunicationCategory MapCommunicationCategory(ecer_PSPCommunicationCategories source);
+
+  private ecer_PSPCommunicationCategories? MapCommunicationCategory(CommunicationCategory? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
+
+  private CommunicationCategory? MapCommunicationCategory(ecer_PSPCommunicationCategories? source) => source.HasValue ? MapCommunicationCategory(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_Communication_StatusCode MapCommunicationStatus(CommunicationStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CommunicationStatus MapCommunicationStatus(ecer_Communication_StatusCode source);
+
+  private CommunicationStatus? MapCommunicationStatus(ecer_Communication_StatusCode? source) => source.HasValue ? MapCommunicationStatus(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial InitiatedFrom MapInitiatedFrom(ecer_InitiatedFrom source);
+
+  private InitiatedFrom? MapInitiatedFrom(ecer_InitiatedFrom? source) => source.HasValue ? MapInitiatedFrom(source.Value) : null;
 }

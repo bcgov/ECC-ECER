@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk.Client;
@@ -8,9 +7,9 @@ namespace ECER.Resources.Documents.Programs;
 internal sealed class ProgramRepository : IProgramRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly IProgramRepositoryMapper mapper;
 
-  public ProgramRepository(EcerContext context, IMapper mapper)
+  public ProgramRepository(EcerContext context, IProgramRepositoryMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
@@ -32,7 +31,7 @@ internal sealed class ProgramRepository : IProgramRepository
 
     if (query.ByStatus != null && query.ByStatus.Any())
     {
-      var statuses = mapper.Map<IEnumerable<ecer_Program_StatusCode>>(query.ByStatus)!.ToList();
+      var statuses = mapper.MapProgramStatuses(query.ByStatus);
       programs = programs.WhereIn(item => item.StatusCode!.Value, statuses);
     }
 
@@ -105,7 +104,7 @@ internal sealed class ProgramRepository : IProgramRepository
 
     return new ProgramResult
     {
-      Programs = mapper.Map<IEnumerable<Program>>(results)!,
+      Programs = mapper.MapPrograms(results),
       TotalProgramsCount = query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count,
     };
   }
@@ -123,7 +122,7 @@ internal sealed class ProgramRepository : IProgramRepository
     var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
     if (institute == null) throw new InvalidOperationException($"Post secondary institute '{program.PostSecondaryInstituteId}' not found");
 
-    var ecerProgram = mapper.Map<ecer_Program>(program)!;
+    var ecerProgram = mapper.MapProgram(program);
     var defaultStatus = ecer_Program_StatusCode.RequiresReview;
 
     if (!ecerProgram.ecer_ProgramId.HasValue)

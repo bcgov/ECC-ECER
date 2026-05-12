@@ -2,6 +2,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="MediatR" />
+    <PackageReference Include="Riok.Mapperly" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECER.Engines.Transformation\ECER.Engines.Transformation.csproj" />

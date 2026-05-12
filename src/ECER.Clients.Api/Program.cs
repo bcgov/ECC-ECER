@@ -33,10 +33,6 @@ internal class Program
       {
         opts.RegisterServicesFromAssemblies(assemblies);
       });
-      builder.Services.AddAutoMapper(cfg =>
-      {
-        cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
-      }, assemblies);
 
       builder.Services.AddEndpointsApiExplorer();
       builder.Services.AddSwaggerGen(opts =>

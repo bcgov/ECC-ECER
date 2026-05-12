@@ -1,4 +1,4 @@
-using AutoMapper;
+using System.Text;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.ProgramApplications;
@@ -9,7 +9,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Text;
 using ContractProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
 
 namespace ECER.Clients.PSPPortal.Server.ProgramApplications;
@@ -26,7 +25,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         string programApplicationId,
         HttpContext ctx,
         IMediator messageBus,
-        IMapper mapper,
+        IProgramApplicationsMapper mapper,
         CancellationToken ct) =>
       {
         var userContext = ctx.User.GetUserContext()!;
@@ -37,7 +36,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         if (!existing.Items.Any()) return TypedResults.NotFound();
 
         var files = await messageBus.Send(new ProgramApplicationFilesQuery(programApplicationId), ct);
-        return TypedResults.Ok(mapper.Map<IEnumerable<ApplicationFileInfo>>(files));
+        return TypedResults.Ok(mapper.MapApplicationFiles(files));
       })
       .WithOpenApi("Get all document files for a program application", string.Empty, "program_application_files_get")
       .RequireAuthorization(policyName)
@@ -50,7 +49,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         string programApplicationId,
         HttpContext ctx,
         IMediator messageBus,
-        IMapper mapper,
+        IProgramApplicationsMapper mapper,
         CancellationToken ct) =>
       {
         var userContext = ctx.User.GetUserContext()!;
@@ -61,7 +60,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         if (!existing.Items.Any()) return TypedResults.NotFound();
 
         var files = await messageBus.Send(new ProgramApplicationDocumentUrlsQuery(programApplicationId), ct);
-        return TypedResults.Ok(mapper.Map<IEnumerable<ApplicationFileInfo>>(files));
+        return TypedResults.Ok(mapper.MapApplicationFiles(files));
       })
       .WithOpenApi("Get all document URLs for a program application", string.Empty, "program_application_document_urls_get")
       .RequireAuthorization(policyName)
@@ -78,7 +77,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         [FromForm(Name = "file")] IFormFile file,
         HttpContext httpContext,
         IMediator messageBus,
-        IMapper mapper,
+        IProgramApplicationsMapper mapper,
         IOptions<UploaderSettings> uploaderOptions,
         CancellationToken ct) =>
       {
@@ -90,7 +89,13 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
 
         var fileExtension = Path.GetExtension(file.FileName)?.ToLowerInvariant();
         if (string.IsNullOrEmpty(fileExtension) || !uploaderOptions.Value.AllowedFileTypes.Contains(fileExtension))
-          return TypedResults.BadRequest(new ProblemDetails { Title = "Unsupported file type", Detail = $"Supported file types: {string.Join(", ", uploaderOptions.Value.AllowedFileTypes)}" });
+        {
+          return TypedResults.BadRequest(new ProblemDetails
+          {
+            Title = "Unsupported file type",
+            Detail = $"Supported file types: {string.Join(", ", uploaderOptions.Value.AllowedFileTypes)}"
+          });
+        }
 
         var userContext = httpContext.User.GetUserContext()!;
         var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
@@ -99,19 +104,30 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         var existing = await messageBus.Send(new ContractProgramApplicationQuery { ById = programApplicationId, ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId }, ct);
         if (!existing.Items.Any()) return TypedResults.NotFound();
 
-        // Duplicate name check across all existing files in the application
         var existingFiles = await messageBus.Send(new ProgramApplicationFilesQuery(programApplicationId), ct);
         if (existingFiles.Any(f => string.Equals(f.FileName, file.FileName, StringComparison.OrdinalIgnoreCase)))
-          return TypedResults.BadRequest(new ProblemDetails { Title = "Duplicate file name", Detail = "A file with this name has already been uploaded to this application." });
+        {
+          return TypedResults.BadRequest(new ProblemDetails
+          {
+            Title = "Duplicate file name",
+            Detail = "A file with this name has already been uploaded to this application."
+          });
+        }
 
         var sanitizedFilename = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(file.FileName));
         var command = new UploadProgramApplicationFileCommand(
-          fileId, programApplicationId, componentGroupId, componentId,
+          fileId,
+          programApplicationId,
+          componentGroupId,
+          componentId,
           programRep.PostSecondaryInstituteId,
-          sanitizedFilename, file.ContentType, file.Length, file.OpenReadStream());
+          sanitizedFilename,
+          file.ContentType,
+          file.Length,
+          file.OpenReadStream());
 
         var result = await messageBus.Send(command, ct);
-        return TypedResults.Ok(mapper.Map<ApplicationFileInfo>(result));
+        return TypedResults.Ok(mapper.MapApplicationFileInfo(result));
       })
       .WithOpenApi("Upload a file immediately for a program application component", string.Empty, "program_application_file_upload")
       .RequireAuthorization(policyName)
@@ -127,7 +143,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         string documentUrlId,
         HttpContext ctx,
         IMediator messageBus,
-        IMapper mapper,
+        IProgramApplicationsMapper mapper,
         CancellationToken ct) =>
       {
         var userContext = ctx.User.GetUserContext()!;
@@ -139,7 +155,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
 
         var command = new ShareExistingDocumentCommand(documentUrlId, programApplicationId, componentGroupId, componentId);
         var result = await messageBus.Send(command, ct);
-        return TypedResults.Ok(mapper.Map<ApplicationFileInfo>(result));
+        return TypedResults.Ok(mapper.MapApplicationFileInfo(result));
       })
       .WithOpenApi("Share an existing document URL to a program application component", string.Empty, "program_application_file_share")
       .RequireAuthorization(policyName)

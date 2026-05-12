@@ -1,165 +1,258 @@
-using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Documents.ProgramApplications;
 
-internal class ProgramApplicationRepositoryMapper : SecureProfile
+internal interface IProgramApplicationRepositoryMapper
 {
-  public ProgramApplicationRepositoryMapper()
+  ecer_PostSecondaryInstituteProgramApplicaiton MapProgramApplication(ProgramApplication source);
+  List<ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode> MapApplicationStatuses(IEnumerable<ApplicationStatus> source);
+  List<ProgramApplication> MapProgramApplications(IEnumerable<ecer_PostSecondaryInstituteProgramApplicaiton> source);
+  List<NavigationMetadata> MapNavigationMetadata(IEnumerable<ecer_ProgramApplicationComponentGroup> source);
+  List<ComponentGroupWithComponents> MapComponentGroupsWithComponents(IEnumerable<ecer_ProgramApplicationComponentGroup> source);
+  ecer_ProgramApplicationComponent MapProgramApplicationComponent(ProgramApplicationComponent source);
+}
+
+[Mapper]
+internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationRepositoryMapper
+{
+  public ecer_PostSecondaryInstituteProgramApplicaiton MapProgramApplication(ProgramApplication source) => new()
   {
-    CreateMap<ProgramApplication, ecer_PostSecondaryInstituteProgramApplicaiton>(MemberList.Source)
-      .ForSourceMember(s => s.PostSecondaryInstituteId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ComponentsGenerationCompleted, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramRepresentativeId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramCampuses, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeliveryType, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramTypes, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.InstituteInfoEntryProgress, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeclarationDate, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeclarationAccepted, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeclarantName, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeclarantId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramProfileId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ProgramProfileName, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeclarationText, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_PostSecondaryInstituteProgramApplicaitonId, opts => opts.MapFrom(s => s.Id))
-      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-      .ForMember(d => d.ecer_statusreasondetail, opts => opts.MapFrom(s => s.StatusReasonDetail))
-      .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.ProgramApplicationName))
-      .ForMember(d => d.ecer_ApplicationType, opts => opts.MapFrom(s => s.ProgramApplicationType))
-      .ForMember(d => d.ecer_ProjectedLength, opts => opts.MapFrom(s => s.ProgramLength))
-      .ForMember(d => d.ecer_Onlinemethodsofinstruction, opts => opts.MapFrom(s => s.OnlineMethodOfInstruction))
-      .ForMember(d => d.ecer_Deliverymethodforpracticuminstructor, opts => opts.MapFrom(s => s.DeliveryMethod))
-      .ForMember(d => d.ecer_ProgramEnrollment, opts => opts.MapFrom(s => s.EnrollmentOptions))
-      .ForMember(d => d.ecer_AdmissionOptions, opts => opts.MapFrom(s => s.AdmissionOptions))
-      .ForMember(d => d.ecer_MinimumStudentEnrollmentperCourse, opts => opts.MapFrom(s => s.MinimumEnrollment))
-      .ForMember(d => d.ecer_MaximumStudentEnrollmentperCourse, opts => opts.MapFrom(s => s.MaximumEnrollment))
-      .ForMember(d => d.ecer_OnlineDeliveryHoursPercentage, opts => opts.MapFrom(s => s.OnlineDeliveryHoursPercentage))
-      .ForMember(d => d.ecer_InpersonHoursPercentage, opts => opts.MapFrom(s => s.InPersonHoursPercentage))
-      .ForMember(d => d.ecer_OtherAdmissionOptions, opts => opts.MapFrom(s => s.OtherAdmissionOptions))
-      .ForMember(d => d.ecer_basicentryprogressName, opts => opts.MapFrom(s => s.BasicProgress))
-      .ForMember(d => d.ecer_iteentryprogressName, opts => opts.MapFrom(s => s.IteProgress))
-      .ForMember(d => d.ecer_sneentryprogressName, opts => opts.MapFrom(s => s.SneProgress))
-      .ReverseMap()
-      .ValidateMemberList(MemberList.Destination)
-      .ForCtorParam(nameof(ProgramApplication.Id), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstituteProgramApplicaitonId.HasValue ? s.ecer_PostSecondaryInstituteProgramApplicaitonId.Value.ToString() : null))
-      .ForCtorParam(nameof(ProgramApplication.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitute.Id.ToString()))
-      .ForMember(d => d.ProgramApplicationName, opts => opts.MapFrom(s => s.ecer_Name))
-      .ForMember(d => d.StatusReasonDetail, opts => opts.MapFrom(s => s.ecer_statusreasondetail))
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ecer_ProgramType))
-      .ForMember(d => d.DeliveryType, opts => opts.MapFrom(s => s.ecer_DeliveryType))
-      .ForMember(d => d.ProgramApplicationType, opts => opts.MapFrom(s => s.ecer_ApplicationType))
-      .ForMember(d => d.ComponentsGenerationCompleted, opts => opts.MapFrom(s => s.ecer_ComponentsGenerationCompleted))
-      .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_PSIProgramRepresentative == null ? null : s.ecer_PSIProgramRepresentative.Id.ToString()))
-      .ForMember(d => d.ProgramLength, opts => opts.MapFrom(s => s.ecer_ProjectedLength))
-      .ForMember(d => d.OnlineMethodOfInstruction, opts => opts.MapFrom(s => s.ecer_Onlinemethodsofinstruction))
-      .ForMember(d => d.DeliveryMethod, opts => opts.MapFrom(s => s.ecer_Deliverymethodforpracticuminstructor))
-      .ForMember(d => d.EnrollmentOptions, opts => opts.MapFrom(s => s.ecer_ProgramEnrollment))
-      .ForMember(d => d.AdmissionOptions, opts => opts.MapFrom(s => s.ecer_AdmissionOptions))
-      .ForMember(d => d.MinimumEnrollment, opts => opts.MapFrom(s => s.ecer_MinimumStudentEnrollmentperCourse))
-      .ForMember(d => d.MaximumEnrollment, opts => opts.MapFrom(s => s.ecer_MaximumStudentEnrollmentperCourse))
-      .ForMember(d => d.OnlineDeliveryHoursPercentage, opts => opts.MapFrom(s => s.ecer_OnlineDeliveryHoursPercentage))
-      .ForMember(d => d.InPersonHoursPercentage, opts => opts.MapFrom(s => s.ecer_InpersonHoursPercentage))
-      .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton))
-      .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.ecer_OtherAdmissionOptions))
-      .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.ecer_InstitutionProgramInformationEntryProgress))
-      .ForMember(d => d.DeclarantName, opts => opts.MapFrom(s => s.ecer_SubmittedByProgramRepresentativeIdName))
-      .ForMember(d => d.DeclarantId, opts => opts.MapFrom(s => s.ecer_SubmittedByProgramRepresentativeId.Id))
-      .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.ecer_DateofApplicationShort))
-      .ForMember(d => d.DeclarationAccepted, opts => opts.MapFrom(s => s.ecer_AgreeNotifyofChanges == ecer_YesNoNull.Yes))
-      .ForMember(d => d.ProgramProfileId, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId.Id))
-      .ForMember(d => d.ProgramProfileName, opts => opts.MapFrom(s => s.ecer_FromProgramProfileId.Name))
-      .ForMember(d => d.DeclarationText, opts => opts.MapFrom(s => s.ecer_DeclarationStatements))
-      .ForMember(d => d.BasicProgress, opts => opts.MapFrom(s => s.ecer_BasicEntryProgress))
-      .ForMember(d => d.IteProgress, opts => opts.MapFrom(s => s.ecer_ITEEntryProgress))
-      .ForMember(d => d.SneProgress, opts => opts.MapFrom(s => s.ecer_SNEEntryProgress))
-      ;
+    ecer_PostSecondaryInstituteProgramApplicaitonId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    StatusCode = MapApplicationStatus(source.Status),
+    ecer_statusreasondetail = MapStatusReasonDetail(source.StatusReasonDetail),
+    ecer_Name = source.ProgramApplicationName,
+    ecer_ApplicationType = MapApplicationType(source.ProgramApplicationType),
+    ecer_ProjectedLength = MapDecimal(source.ProgramLength),
+    ecer_Onlinemethodsofinstruction = source.OnlineMethodOfInstruction?.Select(MapMethodOfInstruction).ToList(),
+    ecer_Deliverymethodforpracticuminstructor = source.DeliveryMethod?.Select(MapDeliveryMethod).ToList(),
+    ecer_ProgramEnrollment = source.EnrollmentOptions?.Select(MapWorkHoursType).ToList(),
+    ecer_AdmissionOptions = source.AdmissionOptions?.Select(MapAdmissionOptions).ToList(),
+    ecer_MinimumStudentEnrollmentperCourse = MapEnrollment(source.MinimumEnrollment),
+    ecer_MaximumStudentEnrollmentperCourse = MapEnrollment(source.MaximumEnrollment),
+    ecer_OnlineDeliveryHoursPercentage = MapDecimal(source.OnlineDeliveryHoursPercentage),
+    ecer_InpersonHoursPercentage = MapDecimal(source.InPersonHoursPercentage),
+    ecer_OtherAdmissionOptions = source.OtherAdmissionOptions,
+  };
 
-    CreateMap<ecer_ProgramCampus, ProgramCampus>(MemberList.Destination)
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
-      .ForMember(d => d.CampusId, opts => opts.MapFrom(s => s.ecer_CampusId.Id))
-      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_CampusIdName))
-      .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_Startdate))
-      .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_Enddate))
-      .ReverseMap();
+  public List<ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode> MapApplicationStatuses(IEnumerable<ApplicationStatus> source) => source.Select(MapApplicationStatus).ToList();
 
-    CreateMap<ApplicationStatus, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<ApplicationStatusReasonDetail, ecer_Statusreasondetail>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<ApplicationType, ecer_PSIApplicationType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<DeliveryType, ecer_PSIDeliveryType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<ProgramCertificationType, ecer_PSIProgramType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
+  public List<ProgramApplication> MapProgramApplications(IEnumerable<ecer_PostSecondaryInstituteProgramApplicaiton> source) => source.Select(MapProgramApplication).ToList();
 
-    CreateMap<MethodofInstruction, ecer_PSPMethodofInstruction>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<DeliveryMethodforInstructor, ecer_PSPDeliveryMethodforInstructor>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<WorkHoursType, ecer_WorkHoursType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<AdmissionOptions, ecer_PSPAdmissionOptions>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
+  public List<NavigationMetadata> MapNavigationMetadata(IEnumerable<ecer_ProgramApplicationComponentGroup> source) => source.Select(MapNavigationMetadata).ToList();
 
-    CreateMap<ecer_ProgramApplicationComponentGroup, NavigationMetadata>(MemberList.Source)
-      .ForCtorParam(nameof(NavigationMetadata.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentGroupId))
-      .ForCtorParam(nameof(NavigationMetadata.Name), opt => opt.MapFrom(src => src.ecer_GroupName))
-      .ForCtorParam(nameof(NavigationMetadata.Status), opt => opt.MapFrom(src => src.ecer_EntryProgress))
-      .ForCtorParam(nameof(NavigationMetadata.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
-      .ForCtorParam(nameof(NavigationMetadata.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
-      .ForCtorParam(nameof(NavigationMetadata.NavigationType), opt => opt.MapFrom(_ => NavigationType.Component))
-      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
-      .ValidateMemberList(MemberList.Destination);
+  public List<ComponentGroupWithComponents> MapComponentGroupsWithComponents(IEnumerable<ecer_ProgramApplicationComponentGroup> source) => source.Select(MapComponentGroupWithComponents).ToList();
 
-    CreateMap<ecer_ProgramApplicationComponentGroup, ComponentGroupWithComponents>(MemberList.Source)
-      .ForCtorParam(nameof(ComponentGroupWithComponents.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentGroupId))
-      .ForCtorParam(nameof(ComponentGroupWithComponents.Name), opt => opt.MapFrom(src => src.ecer_GroupName))
-      .ForCtorParam(nameof(ComponentGroupWithComponents.Instruction), opt => opt.MapFrom(src => src.ecer_programapplicationcomponentgroup_ComponentGroup.ecer_Instructions))
-      .ForCtorParam(nameof(ComponentGroupWithComponents.CategoryName), opt => opt.MapFrom(src => src.ecer_categoryName))
-      .ForCtorParam(nameof(ComponentGroupWithComponents.Status), opt => opt.MapFrom(src => src.ecer_EntryProgress))
-      .ForCtorParam(nameof(ComponentGroupWithComponents.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
-      .ForCtorParam(nameof(ComponentGroupWithComponents.Components), opt => opt.MapFrom(src => src.ecer_programapplicationcomponent_ComponentGroup))
-      .ValidateMemberList(MemberList.Destination);
+  public ecer_ProgramApplicationComponent MapProgramApplicationComponent(ProgramApplicationComponent source) => new()
+  {
+    ecer_ProgramApplicationComponentId = Guid.Parse(source.Id),
+    ecer_Componentanswer = source.Answer,
+  };
 
-    CreateMap<ecer_ProgramApplicationComponent, ProgramApplicationComponent>(MemberList.Source)
-      .ForCtorParam(nameof(ProgramApplicationComponent.Id), opt => opt.MapFrom(src => src.ecer_ProgramApplicationComponentId.HasValue ? src.ecer_ProgramApplicationComponentId.Value.ToString() : string.Empty))
-      .ForCtorParam(nameof(ProgramApplicationComponent.Name), opt => opt.MapFrom(src => src.ecer_Component))
-      .ForCtorParam(nameof(ProgramApplicationComponent.Question), opt => opt.MapFrom(src => src.ecer_Question))
-      .ForCtorParam(nameof(ProgramApplicationComponent.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
-      .ForCtorParam(nameof(ProgramApplicationComponent.Answer), opt => opt.MapFrom(src => src.ecer_Componentanswer))
-      .ForCtorParam(nameof(ProgramApplicationComponent.Files), opt => opt.MapFrom(src => src.ecer_sharedocumenturl_ProgramApplicationComponentId))
-      .ForCtorParam(nameof(ProgramApplicationComponent.RfaiRequired), opt => opt.MapFrom(src => src.ecer_RFAIRequired.HasValue ? src.ecer_RFAIRequired.Equals(ecer_YesNoNull.Yes) : default(bool?)))
-      .ValidateMemberList(MemberList.Destination);
+  private ProgramApplication MapProgramApplication(ecer_PostSecondaryInstituteProgramApplicaiton source) => new(
+    source.ecer_PostSecondaryInstituteProgramApplicaitonId?.ToString(),
+    source.ecer_PostSecondaryInstitute?.Id.ToString() ?? string.Empty)
+  {
+    ProgramApplicationName = source.ecer_Name,
+    Status = MapApplicationStatus(source.StatusCode),
+    StatusReasonDetail = MapStatusReasonDetail(source.ecer_statusreasondetail),
+    ProgramTypes = source.ecer_ProgramType?.Select(MapProgramCertificationType).ToList(),
+    DeliveryType = MapDeliveryType(source.ecer_DeliveryType),
+    ProgramApplicationType = MapApplicationType(source.ecer_ApplicationType),
+    ComponentsGenerationCompleted = source.ecer_ComponentsGenerationCompleted,
+    ProgramRepresentativeId = source.ecer_PSIProgramRepresentative?.Id.ToString(),
+    ProgramLength = MapFloat(source.ecer_ProjectedLength),
+    OnlineMethodOfInstruction = source.ecer_Onlinemethodsofinstruction?.Select(MapMethodOfInstruction).ToList(),
+    DeliveryMethod = source.ecer_Deliverymethodforpracticuminstructor?.Select(MapDeliveryMethod).ToList(),
+    EnrollmentOptions = source.ecer_ProgramEnrollment?.Select(MapWorkHoursType).ToList(),
+    AdmissionOptions = source.ecer_AdmissionOptions?.Select(MapAdmissionOptions).ToList(),
+    MinimumEnrollment = MapEnrollment(source.ecer_MinimumStudentEnrollmentperCourse),
+    MaximumEnrollment = MapEnrollment(source.ecer_MaximumStudentEnrollmentperCourse),
+    OnlineDeliveryHoursPercentage = MapFloat(source.ecer_OnlineDeliveryHoursPercentage),
+    InPersonHoursPercentage = MapFloat(source.ecer_InpersonHoursPercentage),
+    ProgramCampuses = (source.ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton ?? Array.Empty<ecer_ProgramCampus>())
+      .Select(MapProgramCampus)
+      .ToList(),
+    OtherAdmissionOptions = source.ecer_OtherAdmissionOptions,
+    InstituteInfoEntryProgress = source.ecer_InstitutionProgramInformationEntryProgress?.ToString(),
+    DeclarationDate = source.ecer_DateofApplicationShort,
+    DeclarationAccepted = source.ecer_AgreeNotifyofChanges == ecer_YesNoNull.Yes,
+    DeclarantName = source.ecer_SubmittedByProgramRepresentativeIdName,
+    DeclarantId = source.ecer_SubmittedByProgramRepresentativeId?.Id.ToString(),
+    ProgramProfileId = source.ecer_FromProgramProfileId?.Id.ToString(),
+    ProgramProfileName = source.ecer_FromProgramProfileId?.Name,
+    DeclarationText = source.ecer_DeclarationStatements,
+    BasicProgress = source.ecer_BasicEntryProgress?.ToString(),
+    IteProgress = source.ecer_ITEEntryProgress?.ToString(),
+    SneProgress = source.ecer_SNEEntryProgress?.ToString(),
+  };
 
-    CreateMap<ecer_ShareDocumentURL, FileInfo>(MemberList.Destination)
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_DocumentURLId.Id.ToString()))
-      .ForMember(d => d.ShareDocumentUrlId, opts => opts.MapFrom(s => s.ecer_ShareDocumentURLId))
-      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.bcgov_FileName))
-      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.bcgov_Url))
-      .ForMember(d => d.Size, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.bcgov_FileSize))
-      .ForMember(d => d.Extension, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.bcgov_FileExtension))
-      .ForMember(d => d.EcerWebApplicationType, opts => opts.MapFrom(s => s.ecer_sharedocumenturl_DocumentURLId.ecer_ApplicationName));
+  private static NavigationMetadata MapNavigationMetadata(ecer_ProgramApplicationComponentGroup source) => new(
+    source.ecer_ProgramApplicationComponentGroupId?.ToString() ?? string.Empty,
+    source.ecer_GroupName ?? string.Empty,
+    source.ecer_EntryProgress?.ToString() ?? string.Empty,
+    source.ecer_categoryName ?? string.Empty,
+    MapDisplayOrder(source.ecer_DisplayOrder),
+    NavigationType.Component,
+    source.ecer_RFAIRequired.HasValue ? source.ecer_RFAIRequired == ecer_YesNoNull.Yes : null);
 
-    CreateMap<ProgramApplicationComponent, ecer_ProgramApplicationComponent>(MemberList.Source)
-      .ForSourceMember(s => s.Name, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Question, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DisplayOrder, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.RfaiRequired, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_ProgramApplicationComponentId, opts => opts.MapFrom(s => Guid.Parse(s.Id)))
-      .ForMember(d => d.ecer_Componentanswer, opts => opts.MapFrom(s => s.Answer));
+  private static ComponentGroupWithComponents MapComponentGroupWithComponents(ecer_ProgramApplicationComponentGroup source) => new(
+    source.ecer_ProgramApplicationComponentGroupId?.ToString() ?? string.Empty,
+    source.ecer_GroupName ?? string.Empty,
+    source.ecer_programapplicationcomponentgroup_ComponentGroup?.ecer_Instructions,
+    source.ecer_EntryProgress?.ToString() ?? string.Empty,
+    source.ecer_categoryName ?? string.Empty,
+    MapDisplayOrder(source.ecer_DisplayOrder),
+    (source.ecer_programapplicationcomponent_ComponentGroup ?? Array.Empty<ecer_ProgramApplicationComponent>())
+      .Select(MapProgramApplicationComponent)
+      .ToList());
+
+  private static ProgramApplicationComponent MapProgramApplicationComponent(ecer_ProgramApplicationComponent source) => new(
+    source.ecer_ProgramApplicationComponentId?.ToString() ?? string.Empty,
+    source.ecer_Component ?? string.Empty,
+    source.ecer_Question,
+    MapDisplayOrder(source.ecer_DisplayOrder),
+    source.ecer_Componentanswer,
+    MapComponentFiles(source).ToList(),
+    source.ecer_RFAIRequired.HasValue ? source.ecer_RFAIRequired == ecer_YesNoNull.Yes : null);
+
+  private static List<FileInfo> MapComponentFiles(ecer_ProgramApplicationComponent source)
+  {
+    var sharedFiles = (source.ecer_sharedocumenturl_ProgramApplicationComponentId ?? Array.Empty<ecer_ShareDocumentURL>())
+      .Select(MapFileInfo)
+      .OfType<FileInfo>()
+      .ToList();
+
+    if (sharedFiles.Count > 0)
+    {
+      return sharedFiles;
+    }
+
+    return (source.ecer_documenturl_ProgramApplicationComponentId ?? Array.Empty<bcgov_DocumentUrl>())
+      .Select(MapFileInfo)
+      .ToList();
   }
+
+  private static ProgramCampus MapProgramCampus(ecer_ProgramCampus source) => new()
+  {
+    Id = source.Id.ToString(),
+    CampusId = source.ecer_CampusId?.Id.ToString(),
+    Name = source.ecer_CampusIdName,
+    StartDate = source.ecer_Startdate,
+    EndDate = source.ecer_Enddate,
+  };
+
+  private static FileInfo? MapFileInfo(ecer_ShareDocumentURL source)
+  {
+    var documentUrl = source.ecer_sharedocumenturl_DocumentURLId;
+    if (documentUrl?.bcgov_DocumentUrlId == null)
+    {
+      return null;
+    }
+
+    return new FileInfo(documentUrl.bcgov_DocumentUrlId.Value.ToString())
+    {
+      ShareDocumentUrlId = source.ecer_ShareDocumentURLId?.ToString(),
+      Name = documentUrl.bcgov_FileName,
+      Url = documentUrl.bcgov_Url,
+      Size = documentUrl.bcgov_FileSize,
+      Extension = documentUrl.bcgov_FileExtension,
+      EcerWebApplicationType = ParseApplicationName(documentUrl.ecer_ApplicationName),
+    };
+  }
+
+  private static FileInfo MapFileInfo(bcgov_DocumentUrl source) => new(source.bcgov_DocumentUrlId?.ToString() ?? string.Empty)
+  {
+    Name = source.bcgov_FileName,
+    Url = source.bcgov_Url,
+    Size = source.bcgov_FileSize,
+    Extension = source.bcgov_FileExtension,
+    EcerWebApplicationType = ParseApplicationName(source.ecer_ApplicationName),
+  };
+
+  private static EcerWebApplicationType ParseApplicationName(string? source) =>
+    Enum.TryParse<EcerWebApplicationType>(source, out var value)
+      ? value
+      : EcerWebApplicationType.PSP;
+
+  private static int MapDisplayOrder(string? source) => int.TryParse(source, out var value) ? value : 0;
+
+  private static decimal? MapDecimal(float? source) => source.HasValue ? Convert.ToDecimal(source.Value) : null;
+
+  private static float? MapFloat(decimal? source) => source.HasValue ? Convert.ToSingle(source.Value) : null;
+
+  private static int? MapEnrollment(float? source) => source.HasValue ? Convert.ToInt32(source.Value) : null;
+
+  private static float? MapEnrollment(int? source) => source.HasValue ? Convert.ToSingle(source.Value) : null;
+
+  private ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode? MapApplicationStatus(ApplicationStatus? source) => source.HasValue ? MapApplicationStatus(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode MapApplicationStatus(ApplicationStatus source);
+
+  private ApplicationStatus? MapApplicationStatus(ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode? source) => source.HasValue ? MapApplicationStatus(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationStatus MapApplicationStatus(ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode source);
+
+  private ecer_Statusreasondetail? MapStatusReasonDetail(ApplicationStatusReasonDetail? source) => source.HasValue ? MapStatusReasonDetail(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_Statusreasondetail MapStatusReasonDetail(ApplicationStatusReasonDetail source);
+
+  private ApplicationStatusReasonDetail? MapStatusReasonDetail(ecer_Statusreasondetail? source) => source.HasValue ? MapStatusReasonDetail(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationStatusReasonDetail MapStatusReasonDetail(ecer_Statusreasondetail source);
+
+  private ecer_PSIApplicationType? MapApplicationType(ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PSIApplicationType MapApplicationType(ApplicationType source);
+
+  private ApplicationType? MapApplicationType(ecer_PSIApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationType MapApplicationType(ecer_PSIApplicationType source);
+
+  private ecer_PSIDeliveryType? MapDeliveryType(DeliveryType? source) => source.HasValue ? MapDeliveryType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PSIDeliveryType MapDeliveryType(DeliveryType source);
+
+  private DeliveryType? MapDeliveryType(ecer_PSIDeliveryType? source) => source.HasValue ? MapDeliveryType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial DeliveryType MapDeliveryType(ecer_PSIDeliveryType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PSIProgramType MapProgramCertificationType(ProgramCertificationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ProgramCertificationType MapProgramCertificationType(ecer_PSIProgramType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PSPMethodofInstruction MapMethodOfInstruction(MethodofInstruction source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial MethodofInstruction MapMethodOfInstruction(ecer_PSPMethodofInstruction source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PSPDeliveryMethodforInstructor MapDeliveryMethod(DeliveryMethodforInstructor source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial DeliveryMethodforInstructor MapDeliveryMethod(ecer_PSPDeliveryMethodforInstructor source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_WorkHoursType MapWorkHoursType(WorkHoursType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial WorkHoursType MapWorkHoursType(ecer_WorkHoursType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_PSPAdmissionOptions MapAdmissionOptions(AdmissionOptions source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial AdmissionOptions MapAdmissionOptions(ecer_PSPAdmissionOptions source);
 }

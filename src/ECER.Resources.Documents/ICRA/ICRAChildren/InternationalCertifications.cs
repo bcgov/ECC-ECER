@@ -26,7 +26,7 @@ internal sealed partial class ICRARepository
     foreach (var InternationalCertification in updatedEntities.Where(d => !string.IsNullOrEmpty(d.Id)))
     {
       var oldInternationalCertification = existingInternationalCertifications.SingleOrDefault(t => t.Id.ToString() == InternationalCertification.Id);
-      var ecerInternationalCertification = mapper.Map<ecer_InternationalCertification>(InternationalCertification)!;
+      var ecerInternationalCertification = mapper.MapInternationalCertification(InternationalCertification);
 
       if (oldInternationalCertification != null)
       {
@@ -51,7 +51,7 @@ internal sealed partial class ICRARepository
     {
       var newId = Guid.NewGuid();
       InternationalCertification.Id = newId.ToString();
-      var ecerInternationalCertification = mapper.Map<ecer_InternationalCertification>(InternationalCertification)!;
+      var ecerInternationalCertification = mapper.MapInternationalCertification(InternationalCertification);
       // no draft status handling required here beyond default mapping
 
       ecerInternationalCertification.ecer_InternationalCertificationId = newId;

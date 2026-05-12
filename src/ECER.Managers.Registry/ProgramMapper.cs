@@ -1,39 +1,124 @@
-using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
-using ECER.Resources.Documents.Programs;
-using Program = ECER.Resources.Documents.Programs.Program;
-using ProgramProfileType = ECER.Resources.Documents.Programs.ProgramProfileType;
-using ProgramStatus = ECER.Resources.Documents.Programs.ProgramStatus;
+using Riok.Mapperly.Abstractions;
+using ContractPrograms = ECER.Managers.Registry.Contract.Programs;
+using ContractShared = ECER.Managers.Registry.Contract.Shared;
+using ResourcePrograms = ECER.Resources.Documents.Programs;
+using ResourceShared = ECER.Resources.Documents.Shared;
 
 namespace ECER.Managers.Registry;
 
-internal class ProgramMapper : SecureProfile
+public interface IProgramMapper
 {
-  public ProgramMapper()
+  ResourcePrograms.Program MapProgram(ContractPrograms.Program source);
+  ContractPrograms.Program? MapProgram(ResourcePrograms.Program? source);
+  IEnumerable<ContractPrograms.Program> MapPrograms(IEnumerable<ResourcePrograms.Program> source);
+  IEnumerable<ResourcePrograms.ProgramStatus> MapProgramStatuses(IEnumerable<ContractPrograms.ProgramStatus> source);
+  ResourcePrograms.ProgramProfileType MapProgramProfileType(ContractPrograms.ProgramProfileType source);
+}
+
+[Mapper]
+internal partial class ProgramMapper : IProgramMapper
+{
+  public ResourcePrograms.Program MapProgram(ContractPrograms.Program source) => new(source.Id, source.PostSecondaryInstituteId)
   {
-    CreateMap<Contract.Programs.Program, Program>()
-      .ForCtorParam(nameof(Program.Id), opts => opts.MapFrom(s => s.Id))
-      .ForCtorParam(nameof(Program.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.PostSecondaryInstituteId))
-      .ForMember(d => d.PortalStage, opts => opts.MapFrom(s => s.PortalStage))
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status))
-      .ForMember(d => d.ProgramProfileType, opts => opts.MapFrom(s => s.ProgramProfileType))
-      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.Name))
-      .ForMember(d => d.FromProgramProfileId, opts => opts.MapFrom(s => s.FromProgramProfileId))
-      .ReverseMap()
-      .ValidateMemberList(MemberList.Destination)
-      .ForCtorParam(nameof(Contract.Programs.Program.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.PostSecondaryInstituteId));
+    PortalStage = source.PortalStage,
+    Status = MapProgramStatus(source.Status),
+    CreatedOn = source.CreatedOn,
+    Name = source.Name,
+    ProgramName = source.ProgramName,
+    PostSecondaryInstituteName = source.PostSecondaryInstituteName,
+    StartDate = source.StartDate,
+    EndDate = source.EndDate,
+    NewBasicTotalHours = MapHours(source.NewBasicTotalHours),
+    NewSneTotalHours = MapHours(source.NewSneTotalHours),
+    NewIteTotalHours = MapHours(source.NewIteTotalHours),
+    DeclarationDate = source.DeclarationDate,
+    DeclarationUserName = source.DeclarationUserName,
+    ProgramProfileType = MapProgramProfileType(source.ProgramProfileType),
+    ProgramTypes = source.ProgramTypes,
+    Courses = source.Courses?.Select(MapCourse).ToList(),
+    OfferedProgramTypes = source.OfferedProgramTypes,
+    ChangesMade = source.ChangesMade,
+    FromProgramProfileId = source.FromProgramProfileId,
+    ReadyForReview = source.ReadyForReview,
+  };
 
-    CreateMap<Contract.Programs.ProgramStatus, ProgramStatus>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
+  public ContractPrograms.Program? MapProgram(ResourcePrograms.Program? source) => source == null ? null : new ContractPrograms.Program(source.Id, source.PostSecondaryInstituteId)
+  {
+    PortalStage = source.PortalStage,
+    Status = MapProgramStatus(source.Status),
+    CreatedOn = source.CreatedOn,
+    Name = source.Name,
+    ProgramName = source.ProgramName,
+    PostSecondaryInstituteName = source.PostSecondaryInstituteName,
+    StartDate = source.StartDate,
+    EndDate = source.EndDate,
+    NewBasicTotalHours = MapHours(source.NewBasicTotalHours),
+    NewSneTotalHours = MapHours(source.NewSneTotalHours),
+    NewIteTotalHours = MapHours(source.NewIteTotalHours),
+    DeclarationDate = source.DeclarationDate,
+    DeclarationUserName = source.DeclarationUserName,
+    ProgramProfileType = MapProgramProfileType(source.ProgramProfileType),
+    ProgramTypes = source.ProgramTypes,
+    Courses = source.Courses?.Select(MapCourse).ToList(),
+    OfferedProgramTypes = source.OfferedProgramTypes,
+    ChangesMade = source.ChangesMade,
+    FromProgramProfileId = source.FromProgramProfileId,
+    ReadyForReview = source.ReadyForReview,
+  };
 
-    CreateMap<Contract.Programs.ProgramProfileType, ProgramProfileType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
+  public IEnumerable<ContractPrograms.Program> MapPrograms(IEnumerable<ResourcePrograms.Program> source) => source.Select(program => MapProgram(program)!).ToList();
 
-    CreateMap<Contract.Programs.ProgramTypes, ProgramType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-  }
+  public IEnumerable<ResourcePrograms.ProgramStatus> MapProgramStatuses(IEnumerable<ContractPrograms.ProgramStatus> source) => source.Select(MapProgramStatus).ToList();
+
+  private static ResourceShared.Course MapCourse(ContractShared.Course source) => new()
+  {
+    CourseId = source.CourseId,
+    CourseNumber = source.CourseNumber,
+    CourseTitle = source.CourseTitle,
+    NewCourseNumber = source.NewCourseNumber,
+    NewCourseTitle = source.NewCourseTitle,
+    CourseAreaOfInstruction = source.CourseAreaOfInstruction?.Select(MapCourseAreaOfInstruction).ToList(),
+    ProgramType = source.ProgramType,
+  };
+
+  private static ContractShared.Course MapCourse(ResourceShared.Course source) => new()
+  {
+    CourseId = source.CourseId,
+    CourseNumber = source.CourseNumber,
+    CourseTitle = source.CourseTitle,
+    NewCourseNumber = source.NewCourseNumber,
+    NewCourseTitle = source.NewCourseTitle,
+    CourseAreaOfInstruction = source.CourseAreaOfInstruction?.Select(MapCourseAreaOfInstruction).ToList(),
+    ProgramType = source.ProgramType,
+  };
+
+  private static ResourceShared.CourseAreaOfInstruction MapCourseAreaOfInstruction(ContractShared.CourseAreaOfInstruction source) => new()
+  {
+    CourseAreaOfInstructionId = source.CourseAreaOfInstructionId,
+    NewHours = string.IsNullOrWhiteSpace(source.NewHours) ? null : Convert.ToSingle(source.NewHours),
+    AreaOfInstructionId = source.AreaOfInstructionId,
+  };
+
+  private static ContractShared.CourseAreaOfInstruction MapCourseAreaOfInstruction(ResourceShared.CourseAreaOfInstruction source) => new()
+  {
+    CourseAreaOfInstructionId = source.CourseAreaOfInstructionId ?? string.Empty,
+    NewHours = source.NewHours?.ToString(),
+    AreaOfInstructionId = source.AreaOfInstructionId,
+  };
+
+  private static float? MapHours(string? source) => string.IsNullOrWhiteSpace(source) ? null : Convert.ToSingle(source);
+
+  private static string? MapHours(float? source) => source?.ToString();
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourcePrograms.ProgramStatus MapProgramStatus(ContractPrograms.ProgramStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractPrograms.ProgramStatus MapProgramStatus(ResourcePrograms.ProgramStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  public partial ResourcePrograms.ProgramProfileType MapProgramProfileType(ContractPrograms.ProgramProfileType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractPrograms.ProgramProfileType MapProgramProfileType(ResourcePrograms.ProgramProfileType source);
 }

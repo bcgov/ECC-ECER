@@ -1,99 +1,281 @@
-using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
-using ECER.Managers.Registry.Contract.ProgramApplications;
-using ApplicationStatus = ECER.Resources.Documents.ProgramApplications.ApplicationStatus;
-using NavigationMetadata = ECER.Resources.Documents.ProgramApplications.NavigationMetadata;
-using ProgramCampus = ECER.Resources.Documents.ProgramApplications.ProgramCampus;
-using ResourcesProgramCertificationType = ECER.Resources.Documents.ProgramApplications.ProgramCertificationType;
+using Riok.Mapperly.Abstractions;
+using ContractProgramApplications = ECER.Managers.Registry.Contract.ProgramApplications;
+using ResourceProgramApplications = ECER.Resources.Documents.ProgramApplications;
 
 namespace ECER.Managers.Registry;
 
-internal class ProgramApplicationMapper: SecureProfile
+public interface IProgramApplicationMapper
 {
-  public ProgramApplicationMapper()
+  ResourceProgramApplications.ProgramApplication MapProgramApplication(ContractProgramApplications.ProgramApplication source);
+  ContractProgramApplications.ProgramApplication? MapProgramApplication(ResourceProgramApplications.ProgramApplication? source);
+  IEnumerable<ContractProgramApplications.ProgramApplication> MapProgramApplications(IEnumerable<ResourceProgramApplications.ProgramApplication> source);
+  IEnumerable<ResourceProgramApplications.ApplicationStatus> MapApplicationStatuses(IEnumerable<ContractProgramApplications.ApplicationStatus> source);
+  IEnumerable<ContractProgramApplications.NavigationMetadata> MapNavigationMetadata(IEnumerable<ResourceProgramApplications.NavigationMetadata> source);
+  IEnumerable<ContractProgramApplications.ComponentGroupWithComponents> MapComponentGroupsWithComponents(IEnumerable<ResourceProgramApplications.ComponentGroupWithComponents> source);
+  ResourceProgramApplications.ComponentGroupWithComponents MapComponentGroupWithComponents(ContractProgramApplications.ComponentGroupWithComponents source);
+  ContractProgramApplications.ApplicationFileInfo MapApplicationFileInfo(ResourceProgramApplications.ApplicationFileInfo source);
+  IEnumerable<ContractProgramApplications.ApplicationFileInfo> MapApplicationFiles(IEnumerable<ResourceProgramApplications.ApplicationFileInfo> source);
+}
+
+[Mapper]
+internal partial class ProgramApplicationMapper : IProgramApplicationMapper
+{
+  public ResourceProgramApplications.ProgramApplication MapProgramApplication(ContractProgramApplications.ProgramApplication source) => new(source.Id, source.PostSecondaryInstituteId)
   {
-    CreateMap<ProgramApplication, Resources.Documents.ProgramApplications.ProgramApplication>()
-      .ForCtorParam(nameof(ProgramApplication.Id), opts => opts.MapFrom(s => s.Id))
-      .ForCtorParam(nameof(ProgramApplication.PostSecondaryInstituteId), opts => opts.MapFrom(s => s.PostSecondaryInstituteId))
-      .ForMember(d => d.ProgramApplicationName, opts => opts.MapFrom(s => s.ProgramApplicationName))
-      .ForMember(d => d.ProgramApplicationType, opts => opts.MapFrom(s => s.ProgramApplicationType))
-      .ForMember(d => d.ProgramTypes, opts => opts.MapFrom(s => s.ProgramTypes))
-      .ForMember(d => d.DeliveryType, opts => opts.MapFrom(s => s.DeliveryType))
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status))
-      .ForMember(d => d.ComponentsGenerationCompleted, opts => opts.MapFrom(s => s.ComponentsGenerationCompleted))
-      .ForMember(d => d.ProgramRepresentativeId, opts => opts.MapFrom(s => s.ProgramRepresentativeId))
-      .ForMember(d => d.ProgramLength, opts => opts.MapFrom(s => s.ProgramLength))
-      .ForMember(d => d.OnlineMethodOfInstruction, opts => opts.MapFrom(s => s.OnlineMethodOfInstruction))
-      .ForMember(d => d.DeliveryMethod, opts => opts.MapFrom(s => s.DeliveryMethod))
-      .ForMember(d => d.EnrollmentOptions, opts => opts.MapFrom(s => s.EnrollmentOptions))
-      .ForMember(d => d.AdmissionOptions, opts => opts.MapFrom(s => s.AdmissionOptions))
-      .ForMember(d => d.MinimumEnrollment, opts => opts.MapFrom(s => s.MinimumEnrollment))
-      .ForMember(d => d.MaximumEnrollment, opts => opts.MapFrom(s => s.MaximumEnrollment))
-      .ForMember(d => d.InPersonHoursPercentage, opts => opts.MapFrom(s => s.InPersonHoursPercentage))
-      .ForMember(d => d.OnlineDeliveryHoursPercentage, opts => opts.MapFrom(s => s.OnlineDeliveryHoursPercentage))
-      .ForMember(d => d.ProgramCampuses, opts => opts.MapFrom(s => s.ProgramCampuses))
-      .ForMember(d => d.OtherAdmissionOptions, opts => opts.MapFrom(s => s.OtherAdmissionOptions))
-      .ForMember(d => d.InstituteInfoEntryProgress, opts => opts.MapFrom(s => s.InstituteInfoEntryProgress))
-      .ForMember(d => d.DeclarantName, opts => opts.MapFrom(s => s.DeclarantName))
-      .ForMember(d => d.DeclarantId, opts => opts.MapFrom(s => s.DeclarantId))
-      .ForMember(d => d.DeclarationAccepted, opts => opts.MapFrom(s => s.DeclarationAccepted))
-      .ForMember(d => d.DeclarationDate, opts => opts.MapFrom(s => s.DeclarationDate))
-      .ForMember(d => d.ProgramProfileId, opts => opts.MapFrom(s => s.ProgramProfileId))
-      .ForMember(d => d.ProgramProfileName, opts => opts.MapFrom(s => s.ProgramProfileName))
-      .ForMember(d => d.DeclarationText, opts => opts.MapFrom(s => s.DeclarationText))
-      .ForMember(d => d.BasicProgress, opts => opts.MapFrom(s => s.BasicProgress))
-      .ForMember(d => d.IteProgress, opts => opts.MapFrom(s => s.IteProgress))
-      .ForMember(d => d.SneProgress, opts => opts.MapFrom(s => s.SneProgress))
-      .ReverseMap()
-      .ValidateMemberList(MemberList.Destination);
-    
-    CreateMap<Contract.ProgramApplications.ProgramCampus, ProgramCampus>()
-      .ReverseMap();
-    
-    CreateMap<Contract.ProgramApplications.ApplicationStatus, ApplicationStatus>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    
-    CreateMap<ApplicationType, Resources.Documents.ProgramApplications.ApplicationType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    
-    CreateMap<DeliveryType, Resources.Documents.ProgramApplications.DeliveryType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    
-    CreateMap<ProgramCertificationType, ResourcesProgramCertificationType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    
-    CreateMap<NavigationType, NavigationType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    
-    CreateMap<MethodofInstruction, Resources.Documents.ProgramApplications.MethodofInstruction>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<DeliveryMethodforInstructor, Resources.Documents.ProgramApplications.DeliveryMethodforInstructor>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<WorkHoursType, Resources.Documents.ProgramApplications.WorkHoursType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<AdmissionOptions, Resources.Documents.ProgramApplications.AdmissionOptions>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    
-    CreateMap<Contract.ProgramApplications.NavigationMetadata, NavigationMetadata>().ReverseMap();
-    CreateMap<Contract.ProgramApplications.FileInfo, Resources.Documents.ProgramApplications.FileInfo>().ReverseMap();
-    CreateMap<ProgramApplicationComponent, Resources.Documents.ProgramApplications.ProgramApplicationComponent>().ReverseMap();
-    CreateMap<ComponentGroupWithComponents, Resources.Documents.ProgramApplications.ComponentGroupWithComponents>().ReverseMap();
-    CreateMap<Resources.Documents.ProgramApplications.ApplicationFileInfo, Contract.ProgramApplications.ApplicationFileInfo>()
-      .ForCtorParam(nameof(ApplicationFileInfo.DocumentId), opts => opts.MapFrom(s => s.DocumentId))
-      .ForCtorParam(nameof(ApplicationFileInfo.ShareDocumentId), opts => opts.MapFrom(s => s.ShareDocumentId))
-      .ForCtorParam(nameof(ApplicationFileInfo.FileName), opts => opts.MapFrom(s => s.FileName))
-      .ForCtorParam(nameof(ApplicationFileInfo.FileSize), opts => opts.MapFrom(s => s.FileSize))
-      .ForCtorParam(nameof(ApplicationFileInfo.StorageFolder), opts => opts.MapFrom(s => s.StorageFolder))
-      .ForCtorParam(nameof(ApplicationFileInfo.Extension), opts => opts.MapFrom(s => s.Extension));
-  }
+    ProgramApplicationName = source.ProgramApplicationName,
+    ProgramApplicationType = MapApplicationType(source.ProgramApplicationType),
+    Status = MapApplicationStatus(source.Status),
+    StatusReasonDetail = MapStatusReasonDetail(source.StatusReasonDetail),
+    ProgramTypes = source.ProgramTypes?.Select(MapProgramCertificationType).ToList(),
+    DeliveryType = MapDeliveryType(source.DeliveryType),
+    ComponentsGenerationCompleted = source.ComponentsGenerationCompleted,
+    ProgramRepresentativeId = source.ProgramRepresentativeId,
+    ProgramLength = MapNumber(source.ProgramLength),
+    OnlineMethodOfInstruction = source.OnlineMethodOfInstruction?.Select(MapMethodOfInstruction).ToList(),
+    DeliveryMethod = source.DeliveryMethod?.Select(MapDeliveryMethod).ToList(),
+    EnrollmentOptions = source.EnrollmentOptions?.Select(MapWorkHoursType).ToList(),
+    AdmissionOptions = source.AdmissionOptions?.Select(MapAdmissionOptions).ToList(),
+    MinimumEnrollment = MapNumber(source.MinimumEnrollment),
+    MaximumEnrollment = MapNumber(source.MaximumEnrollment),
+    InPersonHoursPercentage = source.InPersonHoursPercentage,
+    OnlineDeliveryHoursPercentage = source.OnlineDeliveryHoursPercentage,
+    ProgramCampuses = source.ProgramCampuses?.Select(MapProgramCampus).ToList(),
+    OtherAdmissionOptions = source.OtherAdmissionOptions,
+    InstituteInfoEntryProgress = source.InstituteInfoEntryProgress,
+    DeclarationDate = source.DeclarationDate,
+    DeclarationAccepted = source.DeclarationAccepted,
+    DeclarantName = source.DeclarantName,
+    DeclarantId = source.DeclarantId,
+    ProgramProfileId = source.ProgramProfileId,
+    ProgramProfileName = source.ProgramProfileName,
+    DeclarationText = source.DeclarationText,
+    BasicProgress = source.BasicProgress,
+    IteProgress = source.IteProgress,
+    SneProgress = source.SneProgress,
+  };
+
+  public ContractProgramApplications.ProgramApplication? MapProgramApplication(ResourceProgramApplications.ProgramApplication? source) => source == null
+    ? null
+    : new ContractProgramApplications.ProgramApplication(source.Id, source.PostSecondaryInstituteId)
+    {
+      ProgramApplicationName = source.ProgramApplicationName,
+      ProgramApplicationType = MapApplicationType(source.ProgramApplicationType),
+      Status = MapApplicationStatus(source.Status),
+      StatusReasonDetail = MapStatusReasonDetail(source.StatusReasonDetail),
+      ProgramTypes = source.ProgramTypes?.Select(MapProgramCertificationType).ToList(),
+      DeliveryType = MapDeliveryType(source.DeliveryType),
+      ComponentsGenerationCompleted = source.ComponentsGenerationCompleted,
+      ProgramRepresentativeId = source.ProgramRepresentativeId,
+      ProgramLength = MapNumber(source.ProgramLength),
+      OnlineMethodOfInstruction = source.OnlineMethodOfInstruction?.Select(MapMethodOfInstruction).ToList(),
+      DeliveryMethod = source.DeliveryMethod?.Select(MapDeliveryMethod).ToList(),
+      EnrollmentOptions = source.EnrollmentOptions?.Select(MapWorkHoursType).ToList(),
+      AdmissionOptions = source.AdmissionOptions?.Select(MapAdmissionOptions).ToList(),
+      MinimumEnrollment = MapNumber(source.MinimumEnrollment),
+      MaximumEnrollment = MapNumber(source.MaximumEnrollment),
+      InPersonHoursPercentage = source.InPersonHoursPercentage,
+      OnlineDeliveryHoursPercentage = source.OnlineDeliveryHoursPercentage,
+      ProgramCampuses = source.ProgramCampuses?.Select(MapProgramCampus).ToList(),
+      OtherAdmissionOptions = source.OtherAdmissionOptions,
+      InstituteInfoEntryProgress = source.InstituteInfoEntryProgress,
+      DeclarationDate = source.DeclarationDate,
+      DeclarationAccepted = source.DeclarationAccepted,
+      DeclarantName = source.DeclarantName,
+      DeclarantId = source.DeclarantId,
+      ProgramProfileId = source.ProgramProfileId,
+      ProgramProfileName = source.ProgramProfileName,
+      DeclarationText = source.DeclarationText,
+      BasicProgress = source.BasicProgress,
+      IteProgress = source.IteProgress,
+      SneProgress = source.SneProgress,
+    };
+
+  public IEnumerable<ContractProgramApplications.ProgramApplication> MapProgramApplications(IEnumerable<ResourceProgramApplications.ProgramApplication> source) => source.Select(programApplication => MapProgramApplication(programApplication)!).ToList();
+
+  public IEnumerable<ResourceProgramApplications.ApplicationStatus> MapApplicationStatuses(IEnumerable<ContractProgramApplications.ApplicationStatus> source) => source.Select(MapApplicationStatus).ToList();
+
+  public IEnumerable<ContractProgramApplications.NavigationMetadata> MapNavigationMetadata(IEnumerable<ResourceProgramApplications.NavigationMetadata> source) => source.Select(MapNavigationMetadata).ToList();
+
+  public IEnumerable<ContractProgramApplications.ComponentGroupWithComponents> MapComponentGroupsWithComponents(IEnumerable<ResourceProgramApplications.ComponentGroupWithComponents> source) => source.Select(MapComponentGroupWithComponents).ToList();
+
+  public ResourceProgramApplications.ComponentGroupWithComponents MapComponentGroupWithComponents(ContractProgramApplications.ComponentGroupWithComponents source) => new(
+    source.Id,
+    source.Name,
+    source.Instruction,
+    source.Status,
+    source.CategoryName,
+    source.DisplayOrder,
+    source.Components.Select(MapProgramApplicationComponent).ToList());
+
+  public ContractProgramApplications.ApplicationFileInfo MapApplicationFileInfo(ResourceProgramApplications.ApplicationFileInfo source) => new(
+    source.DocumentId,
+    source.ShareDocumentId,
+    source.FileName,
+    source.FileSize,
+    source.StorageFolder,
+    source.Extension);
+
+  public IEnumerable<ContractProgramApplications.ApplicationFileInfo> MapApplicationFiles(IEnumerable<ResourceProgramApplications.ApplicationFileInfo> source) => source.Select(MapApplicationFileInfo).ToList();
+
+  private ContractProgramApplications.NavigationMetadata MapNavigationMetadata(ResourceProgramApplications.NavigationMetadata source) => new(
+    source.Id,
+    source.Name,
+    source.Status,
+    source.CategoryName,
+    source.DisplayOrder,
+    MapNavigationType(source.NavigationType),
+    source.RfaiRequired);
+
+  private ContractProgramApplications.ComponentGroupWithComponents MapComponentGroupWithComponents(ResourceProgramApplications.ComponentGroupWithComponents source) => new(
+    source.Id,
+    source.Name,
+    source.Instruction,
+    source.Status,
+    source.CategoryName,
+    source.DisplayOrder,
+    source.Components.Select(MapProgramApplicationComponent).ToList());
+
+  private static ResourceProgramApplications.ProgramCampus MapProgramCampus(ContractProgramApplications.ProgramCampus source) => new()
+  {
+    Id = source.Id,
+    CampusId = source.CampusId,
+    Name = source.Name,
+    StartDate = source.StartDate,
+    EndDate = source.EndDate,
+  };
+
+  private static ContractProgramApplications.ProgramCampus MapProgramCampus(ResourceProgramApplications.ProgramCampus source) => new()
+  {
+    Id = source.Id,
+    CampusId = source.CampusId,
+    Name = source.Name,
+    StartDate = source.StartDate,
+    EndDate = source.EndDate,
+  };
+
+  private ResourceProgramApplications.ProgramApplicationComponent MapProgramApplicationComponent(ContractProgramApplications.ProgramApplicationComponent source) => new(
+    source.Id,
+    source.Name,
+    source.Question,
+    source.DisplayOrder,
+    source.Answer,
+    source.Files?.Select(MapFileInfo).ToList(),
+    source.RfaiRequired)
+  {
+    NewFiles = source.NewFiles.Select(MapFileInfo).ToList(),
+    DeletedFiles = source.DeletedFiles.Select(MapFileInfo).ToList(),
+  };
+
+  private ContractProgramApplications.ProgramApplicationComponent MapProgramApplicationComponent(ResourceProgramApplications.ProgramApplicationComponent source) => new(
+    source.Id,
+    source.Name,
+    source.Question,
+    source.DisplayOrder,
+    source.Answer,
+    source.Files?.Select(MapFileInfo).ToList(),
+    source.RfaiRequired)
+  {
+    NewFiles = source.NewFiles.Select(MapFileInfo).ToList(),
+    DeletedFiles = source.DeletedFiles.Select(MapFileInfo).ToList(),
+  };
+
+  private static ResourceProgramApplications.FileInfo MapFileInfo(ContractProgramApplications.FileInfo source) => new(source.Id)
+  {
+    ShareDocumentUrlId = source.ShareDocumentUrlId,
+    Name = source.Name,
+    Url = source.Url,
+    Size = source.Size,
+    Extension = source.Extension,
+    EcerWebApplicationType = source.EcerWebApplicationType,
+  };
+
+  private static ContractProgramApplications.FileInfo MapFileInfo(ResourceProgramApplications.FileInfo source) => new(source.Id)
+  {
+    ShareDocumentUrlId = source.ShareDocumentUrlId,
+    Name = source.Name,
+    Url = source.Url,
+    Size = source.Size,
+    Extension = source.Extension,
+    EcerWebApplicationType = source.EcerWebApplicationType,
+  };
+
+  private static float? MapNumber(string? source) => string.IsNullOrWhiteSpace(source) ? null : Convert.ToSingle(source);
+
+  private static string? MapNumber(float? source) => source?.ToString();
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.ApplicationStatus MapApplicationStatus(ContractProgramApplications.ApplicationStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.ApplicationStatus MapApplicationStatus(ResourceProgramApplications.ApplicationStatus source);
+
+  private ResourceProgramApplications.ApplicationStatus? MapApplicationStatus(ContractProgramApplications.ApplicationStatus? source) => source.HasValue ? MapApplicationStatus(source.Value) : null;
+
+  private ContractProgramApplications.ApplicationStatus? MapApplicationStatus(ResourceProgramApplications.ApplicationStatus? source) => source.HasValue ? MapApplicationStatus(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.ApplicationStatusReasonDetail MapStatusReasonDetail(ContractProgramApplications.ApplicationStatusReasonDetail source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.ApplicationStatusReasonDetail MapStatusReasonDetail(ResourceProgramApplications.ApplicationStatusReasonDetail source);
+
+  private ResourceProgramApplications.ApplicationStatusReasonDetail? MapStatusReasonDetail(ContractProgramApplications.ApplicationStatusReasonDetail? source) => source.HasValue ? MapStatusReasonDetail(source.Value) : null;
+
+  private ContractProgramApplications.ApplicationStatusReasonDetail? MapStatusReasonDetail(ResourceProgramApplications.ApplicationStatusReasonDetail? source) => source.HasValue ? MapStatusReasonDetail(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.ApplicationType MapApplicationType(ContractProgramApplications.ApplicationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.ApplicationType MapApplicationType(ResourceProgramApplications.ApplicationType source);
+
+  private ResourceProgramApplications.ApplicationType? MapApplicationType(ContractProgramApplications.ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
+
+  private ContractProgramApplications.ApplicationType? MapApplicationType(ResourceProgramApplications.ApplicationType? source) => source.HasValue ? MapApplicationType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.DeliveryType MapDeliveryType(ContractProgramApplications.DeliveryType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.DeliveryType MapDeliveryType(ResourceProgramApplications.DeliveryType source);
+
+  private ResourceProgramApplications.DeliveryType? MapDeliveryType(ContractProgramApplications.DeliveryType? source) => source.HasValue ? MapDeliveryType(source.Value) : null;
+
+  private ContractProgramApplications.DeliveryType? MapDeliveryType(ResourceProgramApplications.DeliveryType? source) => source.HasValue ? MapDeliveryType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.ProgramCertificationType MapProgramCertificationType(ContractProgramApplications.ProgramCertificationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.ProgramCertificationType MapProgramCertificationType(ResourceProgramApplications.ProgramCertificationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.NavigationType MapNavigationType(ContractProgramApplications.NavigationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.NavigationType MapNavigationType(ResourceProgramApplications.NavigationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.MethodofInstruction MapMethodOfInstruction(ContractProgramApplications.MethodofInstruction source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.MethodofInstruction MapMethodOfInstruction(ResourceProgramApplications.MethodofInstruction source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.DeliveryMethodforInstructor MapDeliveryMethod(ContractProgramApplications.DeliveryMethodforInstructor source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.DeliveryMethodforInstructor MapDeliveryMethod(ResourceProgramApplications.DeliveryMethodforInstructor source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.WorkHoursType MapWorkHoursType(ContractProgramApplications.WorkHoursType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.WorkHoursType MapWorkHoursType(ResourceProgramApplications.WorkHoursType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceProgramApplications.AdmissionOptions MapAdmissionOptions(ContractProgramApplications.AdmissionOptions source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractProgramApplications.AdmissionOptions MapAdmissionOptions(ResourceProgramApplications.AdmissionOptions source);
 }

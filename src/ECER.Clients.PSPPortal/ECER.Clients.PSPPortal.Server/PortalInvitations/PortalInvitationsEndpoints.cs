@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Utilities.Hosting;
 using MediatR;
@@ -11,7 +10,7 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/PortalInvitations/{token?}", async Task<Results<Ok<PortalInvitationQueryResult>, BadRequest<ProblemDetails>>> (string? token, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/PortalInvitations/{token?}", async Task<Results<Ok<PortalInvitationQueryResult>, BadRequest<ProblemDetails>>> (string? token, IMediator messageBus, HttpContext httpContext, IPortalInvitationMapper mapper, CancellationToken ct) =>
     {
       if (string.IsNullOrWhiteSpace(token))
       {
@@ -24,7 +23,7 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = result.ErrorMessage });
       }
 
-      return TypedResults.Ok(new PortalInvitationQueryResult(mapper.Map<PortalInvitation>(result.Invitation)));
+      return TypedResults.Ok(new PortalInvitationQueryResult(mapper.MapPortalInvitation(result.Invitation)));
     }).WithOpenApi("Handles portal invitation queries", string.Empty, "portal_invitation_get").WithParameterValidation();
   }
 }

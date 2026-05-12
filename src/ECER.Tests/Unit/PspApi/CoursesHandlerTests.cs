@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Engines.Validation;
 using ECER.Managers.Registry;
 using ECER.Managers.Registry.Contract.Courses;
@@ -21,7 +20,7 @@ public class CoursesHandlerTests
   private readonly Mock<ICourseRepository> _courseRepositoryMock;
   private readonly Mock<IMetadataResourceRepository> _metadataRepositoryMock;
   private readonly Mock<ICourseProgressEvaluator> _courseProgressEvaluatorMock;
-  private readonly Mock<IMapper> _mapperMock;
+  private readonly ICoursesMapper _coursesMapper;
   private readonly EcerContext _ecerContext;
 
   public CoursesHandlerTests()
@@ -31,7 +30,7 @@ public class CoursesHandlerTests
     _courseRepositoryMock = new Mock<ICourseRepository>();
     _metadataRepositoryMock = new Mock<IMetadataResourceRepository>();
     _courseProgressEvaluatorMock = new Mock<ICourseProgressEvaluator>();
-    _mapperMock = new Mock<IMapper>();
+    _coursesMapper = new CoursesMapper();
     _ecerContext = new EcerContext(new Mock<IOrganizationService>().Object);
 
     _courseRepositoryMock
@@ -49,24 +48,16 @@ public class CoursesHandlerTests
     _courseProgressEvaluatorMock
       .Setup(e => e.EvaluateProgress(It.IsAny<IEnumerable<Course>>(), It.IsAny<string>(), It.IsAny<IReadOnlyCollection<AreaOfInstruction>>(), It.IsAny<bool>()))
       .Returns("ToDo");
-
-    _mapperMock
-      .Setup(m => m.Map<IList<Course>>(It.IsAny<object>()))
-      .Returns(new List<Course>());
-
-    _mapperMock
-      .Setup(m => m.Map<ECER.Resources.Documents.Shared.Course>(It.IsAny<object>()))
-      .Returns(new ECER.Resources.Documents.Shared.Course { CourseId = "mapped-id", CourseNumber = "100", CourseTitle = "Test", ProgramType = "SNE" });
   }
 
   private CoursesHandler CreateHandler() =>
-    new CoursesHandler(
+    new(
       _programProfileRepositoryMock.Object,
       _courseRepositoryMock.Object,
       _programApplicationRepositoryMock.Object,
       _metadataRepositoryMock.Object,
       _courseProgressEvaluatorMock.Object,
-      _mapperMock.Object,
+      _coursesMapper,
       _ecerContext);
 
   [Fact]
@@ -77,11 +68,21 @@ public class CoursesHandlerTests
     var correctProgramApplicationId = Guid.NewGuid().ToString();
     var notFoundProgramApplicationId = Guid.NewGuid().ToString();
     var courseId = Guid.NewGuid().ToString();
+    var courseAreaOfInstructionId = Guid.NewGuid().ToString();
+    var areaOfInstructionId = Guid.NewGuid().ToString();
 
     var addCourse = new Course
     {
       CourseId = courseId,
-      CourseAreaOfInstruction = [new CourseAreaOfInstruction { AreaOfInstructionId = Guid.NewGuid().ToString(), NewHours = "0", CourseAreaOfInstructionId = Guid.NewGuid().ToString() }],
+      CourseAreaOfInstruction =
+      [
+        new CourseAreaOfInstruction
+        {
+          AreaOfInstructionId = areaOfInstructionId,
+          NewHours = "0",
+          CourseAreaOfInstructionId = courseAreaOfInstructionId
+        }
+      ],
     };
 
     var incorrectCommand = new SaveCourseCommand(addCourse, incorrectProgramApplicationId, instituteId);
@@ -106,40 +107,42 @@ public class CoursesHandlerTests
       Status = Resources.Documents.ProgramApplications.ApplicationStatus.Draft
     };
 
-    var incorrectResourcesProgramApplicationQueryResults = new Resources.Documents.ProgramApplications.ProgramApplicationQueryResults([incorrectResourcesProgramApplication], 1);
-    var correctResourcesProgramApplicationQueryResults = new Resources.Documents.ProgramApplications.ProgramApplicationQueryResults([correctResourcesProgramApplication], 1);
-    var emptyResourcesProgramApplicationQueryResults = new Resources.Documents.ProgramApplications.ProgramApplicationQueryResults([], 0);
+    var incorrectResults = new Resources.Documents.ProgramApplications.ProgramApplicationQueryResults([incorrectResourcesProgramApplication], 1);
+    var correctResults = new Resources.Documents.ProgramApplications.ProgramApplicationQueryResults([correctResourcesProgramApplication], 1);
+    var emptyResults = new Resources.Documents.ProgramApplications.ProgramApplicationQueryResults([], 0);
 
     _programApplicationRepositoryMock
       .Setup(r => r.Query(It.IsAny<ProgramApplicationQuery>(), It.IsAny<CancellationToken>()))
-      .ReturnsAsync((ProgramApplicationQuery query, CancellationToken ct) =>
+      .ReturnsAsync((ProgramApplicationQuery query, CancellationToken _) => query.ById switch
       {
-        return query.ById switch
-        {
-          var id when id == incorrectProgramApplicationId => incorrectResourcesProgramApplicationQueryResults,
-          var id when id == correctProgramApplicationId => correctResourcesProgramApplicationQueryResults,
-          _ => emptyResourcesProgramApplicationQueryResults
-        };
+        var id when id == incorrectProgramApplicationId => incorrectResults,
+        var id when id == correctProgramApplicationId => correctResults,
+        _ => emptyResults
       });
 
     _courseRepositoryMock
       .Setup(r => r.AddCourse(
-        It.IsAny<Resources.Documents.Shared.Course>(),
+        It.Is<ECER.Resources.Documents.Shared.Course>(course =>
+          course.CourseId == courseId
+          && course.CourseAreaOfInstruction != null
+          && course.CourseAreaOfInstruction.Count() == 1
+          && course.CourseAreaOfInstruction.Single().CourseAreaOfInstructionId == courseAreaOfInstructionId
+          && course.CourseAreaOfInstruction.Single().AreaOfInstructionId == areaOfInstructionId
+          && course.CourseAreaOfInstruction.Single().NewHours == 0),
         It.IsAny<string>(),
         It.IsAny<string>(),
-        It.IsAny<CancellationToken>()
-      ))
+        It.IsAny<CancellationToken>()))
       .ReturnsAsync(courseId);
 
     var handler = CreateHandler();
 
-    var incorrectProgramApplicationTypeResult = await handler.Handle(incorrectCommand, CancellationToken.None);
-    var notFoundProgramApplicationTypeResult = await handler.Handle(notFoundCommand, CancellationToken.None);
-    var correctProgramApplicationTypeResult = await handler.Handle(correctCommand, CancellationToken.None);
+    var incorrectResult = await handler.Handle(incorrectCommand, CancellationToken.None);
+    var notFoundResult = await handler.Handle(notFoundCommand, CancellationToken.None);
+    var correctResult = await handler.Handle(correctCommand, CancellationToken.None);
 
-    incorrectProgramApplicationTypeResult.Error.ShouldBe(SaveCourseError.IncorrectProgramApplicationTypeToSaveCourse);
-    notFoundProgramApplicationTypeResult.Error.ShouldBe(SaveCourseError.ProgramApplicationNotFound);
-    correctProgramApplicationTypeResult.CourseId.ShouldBe(courseId);
+    incorrectResult.Error.ShouldBe(SaveCourseError.IncorrectProgramApplicationTypeToSaveCourse);
+    notFoundResult.Error.ShouldBe(SaveCourseError.ProgramApplicationNotFound);
+    correctResult.CourseId.ShouldBe(courseId);
   }
 
   [Fact]
@@ -217,7 +220,7 @@ public class CoursesHandlerTests
       .ReturnsAsync(new ProgramApplicationQueryResults([programApplication], 1));
 
     _courseRepositoryMock
-      .Setup(r => r.UpdateCourse(It.IsAny<Resources.Documents.Shared.Course>(), applicationId, true, It.IsAny<CancellationToken>()))
+      .Setup(r => r.UpdateCourse(It.IsAny<ECER.Resources.Documents.Shared.Course>(), applicationId, true, It.IsAny<CancellationToken>()))
       .ReturnsAsync(applicationId);
 
     var course = new Course { CourseId = courseId, CourseAreaOfInstruction = [] };
@@ -227,7 +230,7 @@ public class CoursesHandlerTests
     var result = await handler.Handle(command, CancellationToken.None);
 
     result.ShouldBe(applicationId);
-    _courseRepositoryMock.Verify(r => r.UpdateCourse(It.IsAny<Resources.Documents.Shared.Course>(), applicationId, true, It.IsAny<CancellationToken>()), Times.Once);
+    _courseRepositoryMock.Verify(r => r.UpdateCourse(It.IsAny<ECER.Resources.Documents.Shared.Course>(), applicationId, true, It.IsAny<CancellationToken>()), Times.Once);
     _programApplicationRepositoryMock.Verify(
       r => r.UpdateCourseProgress(applicationId, It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<CancellationToken>()),
       Times.Once);

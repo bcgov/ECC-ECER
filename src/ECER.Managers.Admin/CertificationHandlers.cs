@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Managers.Admin.Contract.Certifications;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Resources.Documents.Certifications;
@@ -9,18 +8,19 @@ using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
 
-public class CertificationHandlers(IObjectStorageProviderResolver objectStorageProviderResolver, ICertificationRepository certificationRepository,
-    IMapper mapper)
+public class CertificationHandlers(
+  IObjectStorageProviderResolver objectStorageProviderResolver,
+  ICertificationRepository certificationRepository,
+  ICertificationMapper certificationMapper)
   : IRequestHandler<GetCertificationsCommand, GetCertificationsCommandResponse>,
     IRequestHandler<GetCertificationFileCommand, FileQueryResults>
-
 {
   public async Task<GetCertificationsCommandResponse> Handle(GetCertificationsCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var certifications = await certificationRepository.QueryCertificateSummary(new UserCertificationSummaryQuery() { ById = request.Id });
-    return new GetCertificationsCommandResponse(mapper.Map<IEnumerable<ECER.Managers.Admin.Contract.Certifications.CertificationSummary>>(certifications)!);
+    return new GetCertificationsCommandResponse(certificationMapper.MapCertificationSummaries(certifications));
   }
 
   public async Task<FileQueryResults> Handle(GetCertificationFileCommand request, CancellationToken cancellationToken)
@@ -28,12 +28,12 @@ public class CertificationHandlers(IObjectStorageProviderResolver objectStorageP
     ArgumentNullException.ThrowIfNull(request);
 
     var certifications = await certificationRepository.QueryCertificateSummary(new UserCertificationSummaryQuery() { ById = request.Id });
-    var mappedCertifications = mapper.Map<IEnumerable<ECER.Managers.Admin.Contract.Certifications.CertificationSummary>>(certifications)!;
+    var mappedCertifications = certificationMapper.MapCertificationSummaries(certifications);
 
     var fileLocations = new List<FileLocation>();
     foreach (var certification in mappedCertifications)
     {
-      fileLocations.Add(new FileLocation(certification!.FileId!, certification.FilePath ?? string.Empty, request.EcerWebApplicationType));
+      fileLocations.Add(new FileLocation(certification.FileId!, certification.FilePath ?? string.Empty, request.EcerWebApplicationType));
     }
 
     var files = new ConcurrentBag<FileData>();

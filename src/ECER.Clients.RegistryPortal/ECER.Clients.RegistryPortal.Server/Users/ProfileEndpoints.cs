@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.ObjectStorage.Providers;
@@ -14,29 +13,29 @@ public class ProfileEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/profile", async Task<Results<Ok<UserProfile>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("/api/profile", async Task<Results<Ok<UserProfile>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus, IUserMapper userMapper) =>
     {
       var profile = (await bus.Send(new SearchRegistrantQuery { ByUserIdentity = ctx.User.GetUserContext()!.Identity }, ctx.RequestAborted)).Items.SingleOrDefault();
       if (profile == null) return TypedResults.NotFound();
-      return TypedResults.Ok(mapper.Map<UserProfile>(profile.Profile));
+      return TypedResults.Ok(userMapper.MapUserProfile(profile.Profile));
     })
       .WithOpenApi("Gets the current user profile", string.Empty, "profile_get")
       .RequireAuthorization();
 
-    endpointRouteBuilder.MapPut("/api/profile", async Task<Ok> (UserProfile profile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/profile", async Task<Ok> (UserProfile profile, HttpContext ctx, CancellationToken ct, IMediator bus, IUserMapper userMapper) =>
     {
-      var registrant = new Registrant(ctx.User.GetUserContext()!.UserId, mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(profile)!);
+      var registrant = new Registrant(ctx.User.GetUserContext()!.UserId, userMapper.MapUserProfile(profile));
       await bus.Send(new UpdateRegistrantProfileCommand(registrant), ctx.RequestAborted);
       return TypedResults.Ok();
     })
   .WithOpenApi("Gets the current user profile", string.Empty, "profile_put")
   .RequireAuthorization();
 
-    endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IUserMapper userMapper) =>
     {
       profileIdentification.RegistrantId = ctx.User.GetUserContext()!.UserId;
 
-      await bus.Send(new UpdateRegistrantProfileIdentificationCommand(mapper.Map<Managers.Registry.Contract.Registrants.ProfileIdentification>(profileIdentification)!), ctx.RequestAborted);
+      await bus.Send(new UpdateRegistrantProfileIdentificationCommand(userMapper.MapProfileIdentification(profileIdentification)), ctx.RequestAborted);
       return TypedResults.Ok();
     })
   .WithOpenApi("Sets user verification Ids", string.Empty, "profileVerification_post")

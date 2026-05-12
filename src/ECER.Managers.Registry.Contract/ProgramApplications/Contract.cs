@@ -36,7 +36,11 @@ public record ComponentGroupWithComponentsQuery : IRequest<IEnumerable<Component
   public string? ByComponentGroupId { get; set; }
 }
 
-public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired);
+public record ProgramApplicationComponent(string Id, string Name, string? Question, int DisplayOrder, string? Answer, IEnumerable<FileInfo>? Files, bool? RfaiRequired)
+{
+  public IEnumerable<FileInfo> NewFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> DeletedFiles { get; set; } = Array.Empty<FileInfo>();
+}
 
 public record FileInfo(string Id)
 {

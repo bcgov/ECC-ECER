@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Engines.Transformation;
 using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Managers.Registry.Contract.PspUsers;
@@ -19,7 +18,7 @@ public class PspUserHandlers(
     IPortalInvitationRepository portalInvitationRepository,
     IPspRepRepository pspRepRepository,
     IPostSecondaryInstituteRepository postSecondaryInstituteRepository,
-    IMapper mapper,
+    IPspUserMapper pspUserMapper,
     EcerContext ecerContext,
     IServiceProvider serviceProvider)
   : IRequestHandler<SearchPspRepQuery, PspRepQueryResults>,
@@ -47,7 +46,7 @@ public class PspUserHandlers(
       ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId
     }, cancellationToken);
 
-    return new PspRepQueryResults(mapper.Map<IEnumerable<Contract.PspUsers.PspUser>>(pspUsers)!);
+    return new PspRepQueryResults(pspUserMapper.MapPspUsers(pspUsers));
   }
 
   /// <summary>
@@ -66,7 +65,7 @@ public class PspUserHandlers(
     }, cancellationToken)).SingleOrDefault();
 
     if (pspUser == null) throw new InvalidOperationException($"Psp user with id {request.User.Id} not found");
-    var profile = mapper.Map<Resources.Accounts.PspReps.PspUserProfile>(request.User.Profile);
+    var profile = pspUserMapper.MapPspUserProfile(request.User.Profile);
     await pspRepRepository.Save(new Resources.Accounts.PspReps.PspUser { Id = request.User.Id, Profile = profile }, cancellationToken);
 
     return request.User.Id;
@@ -145,7 +144,7 @@ public class PspUserHandlers(
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var profile = mapper.Map<Resources.Accounts.PspReps.PspUserProfile>(request.userProfile);
+    var profile = pspUserMapper.MapPspUserProfile(request.userProfile);
     await pspRepRepository.Add(profile, request.postSecondaryInstitutionId, request.pspRepId, cancellationToken);
     return request.userProfile.Id!;
   }

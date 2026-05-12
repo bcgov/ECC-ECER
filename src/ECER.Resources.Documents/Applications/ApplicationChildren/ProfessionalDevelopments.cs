@@ -27,7 +27,7 @@ internal sealed partial class ApplicationRepository
     foreach (var professionalDevelopment in updatedEntities.Where(d => !string.IsNullOrEmpty(d.Id)))
     {
       var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id.ToString() == professionalDevelopment.Id);
-      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+      var ecerProfessionalDevelopment = mapper.MapProfessionalDevelopment(professionalDevelopment);
 
       if (oldProfessionalDevelopment != null)
       {
@@ -42,7 +42,7 @@ internal sealed partial class ApplicationRepository
 
     foreach (var professionalDevelopment in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
     {
-      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+      var ecerProfessionalDevelopment = mapper.MapProfessionalDevelopment(professionalDevelopment);
       if (application.StatusCode == ecer_Application_StatusCode.Draft)
       {
         ecerProfessionalDevelopment.StatusCode = ecer_ProfessionalDevelopment_StatusCode.Draft;

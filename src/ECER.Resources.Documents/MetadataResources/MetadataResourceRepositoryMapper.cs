@@ -1,102 +1,106 @@
-﻿using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Documents.MetadataResources;
 
-internal class MetadataResourceRepositoryMapper : SecureProfile
+internal interface IMetadataResourceRepositoryMapper
 {
-  public MetadataResourceRepositoryMapper()
+  List<Country> MapCountries(IEnumerable<ecer_Country> source);
+  List<AreaOfInstruction> MapAreasOfInstruction(IEnumerable<ecer_ProvincialRequirement> source);
+  List<PostSecondaryInstitution> MapPostSecondaryInstitutions(IEnumerable<ecer_PostSecondaryInstitute> source);
+  List<IdentificationType> MapIdentificationTypes(IEnumerable<ecer_identificationtype> source);
+  List<Province> MapProvinces(IEnumerable<ecer_Province> source);
+  List<CertificationComparison> MapCertificationComparisons(IEnumerable<ecer_certificationcomparison> source);
+  List<SystemMessage> MapSystemMessages(IEnumerable<ecer_SystemMessage> source);
+  List<DefaultContent> MapDefaultContents(IEnumerable<ecer_DefaultContents> source);
+  List<DynamicsConfig> MapDynamicsConfigurations(IEnumerable<bcgov_config> source);
+}
+
+[Mapper]
+internal partial class MetadataResourceRepositoryMapper : IMetadataResourceRepositoryMapper
+{
+  public List<Country> MapCountries(IEnumerable<ecer_Country> source) => source.Select(MapCountry).ToList();
+
+  public List<AreaOfInstruction> MapAreasOfInstruction(IEnumerable<ecer_ProvincialRequirement> source) => source.Select(MapAreaOfInstruction).ToList();
+
+  public List<PostSecondaryInstitution> MapPostSecondaryInstitutions(IEnumerable<ecer_PostSecondaryInstitute> source) => source.Select(MapPostSecondaryInstitution).ToList();
+
+  public List<IdentificationType> MapIdentificationTypes(IEnumerable<ecer_identificationtype> source) => source.Select(MapIdentificationType).ToList();
+
+  public List<Province> MapProvinces(IEnumerable<ecer_Province> source) => source.Select(MapProvince).ToList();
+
+  public List<CertificationComparison> MapCertificationComparisons(IEnumerable<ecer_certificationcomparison> source) => source.Select(MapCertificationComparison).ToList();
+
+  public List<SystemMessage> MapSystemMessages(IEnumerable<ecer_SystemMessage> source) => source.Select(MapSystemMessage).ToList();
+
+  public List<DefaultContent> MapDefaultContents(IEnumerable<ecer_DefaultContents> source) => source.Select(MapDefaultContent).ToList();
+
+  public List<DynamicsConfig> MapDynamicsConfigurations(IEnumerable<bcgov_config> source) => source.Select(MapDynamicsConfiguration).ToList();
+
+  private static Province MapProvince(ecer_Province source) => new(
+    source.ecer_ProvinceId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    source.ecer_Abbreviation ?? string.Empty);
+
+  private SystemMessage MapSystemMessage(ecer_SystemMessage source) => new(
+    source.ecer_name ?? string.Empty,
+    source.ecer_subject ?? string.Empty,
+    source.ecer_message ?? string.Empty)
   {
-    CreateMap<ecer_Province, Province>(MemberList.Source)
-        .ForCtorParam(nameof(Province.ProvinceId), opt => opt.MapFrom(src => src.ecer_ProvinceId))
-        .ForCtorParam(nameof(Province.ProvinceName), opt => opt.MapFrom(src => src.ecer_Name))
-        .ForCtorParam(nameof(Province.ProvinceCode), opt => opt.MapFrom(src => src.ecer_Abbreviation))
-        .ValidateMemberList(MemberList.Destination)
-        .ReverseMap()
-        .ForMember(dest => dest.ecer_ProvinceId, opt => opt.MapFrom(src => src.ProvinceId))
-        .ForMember(dest => dest.ecer_Name, opt => opt.MapFrom(src => src.ProvinceName))
-        .ForMember(dest => dest.ecer_Abbreviation, opt => opt.MapFrom(src => src.ProvinceCode));
+    StartDate = source.ecer_startdate.GetValueOrDefault(),
+    EndDate = source.ecer_enddate.GetValueOrDefault(),
+    PortalTags = source.ecer_PortalTags?.Select(MapPortalTag).ToArray() ?? Array.Empty<PortalTags>(),
+  };
 
-    CreateMap<ecer_SystemMessage, SystemMessage>(MemberList.Source)
-        .ForCtorParam(nameof(SystemMessage.Message), opt => opt.MapFrom(src => src.ecer_message))
-        .ForCtorParam(nameof(SystemMessage.Subject), opt => opt.MapFrom(src => src.ecer_subject))
-        .ForCtorParam(nameof(SystemMessage.Name), opt => opt.MapFrom(src => src.ecer_name))
-        .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_startdate))
-        .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_enddate))
-        .ForMember(d => d.PortalTags, opts => opts.MapFrom(s => s.ecer_PortalTags))
-        .ValidateMemberList(MemberList.Destination);
+  private static Country MapCountry(ecer_Country source) => new(
+    source.ecer_CountryId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    source.ecer_ShortName ?? string.Empty,
+    source.ecer_EligibleforICRA.GetValueOrDefault());
 
-    CreateMap<ecer_Country, Country>(MemberList.Source)
-        .ForCtorParam(nameof(Country.CountryId), opt => opt.MapFrom(src => src.ecer_CountryId))
-        .ForCtorParam(nameof(Country.CountryName), opt => opt.MapFrom(src => src.ecer_Name))
-        .ForCtorParam(nameof(Country.CountryCode), opt => opt.MapFrom(src => src.ecer_ShortName))
-        .ForCtorParam(nameof(Country.IsICRA), opt => opt.MapFrom(src => src.ecer_EligibleforICRA))
-        .ValidateMemberList(MemberList.Destination)
-        .ReverseMap()
-        .ForMember(dest => dest.ecer_CountryId, opt => opt.MapFrom(src => src.CountryId))
-        .ForMember(dest => dest.ecer_Name, opt => opt.MapFrom(src => src.CountryName))
-        .ForMember(dest => dest.ecer_EligibleforICRA, opt => opt.MapFrom(src => src.IsICRA))
-        .ForMember(dest => dest.ecer_ShortName, opt => opt.MapFrom(src => src.CountryCode));
+  private static AreaOfInstruction MapAreaOfInstruction(ecer_ProvincialRequirement source) => new(
+    source.ecer_ProvincialRequirementId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    source.ecer_CertificateLevels?.Select(level => level.ToString()).ToArray() ?? Array.Empty<string>(),
+    source.ecer_MinimumHours,
+    source.ecer_DisplayOrder,
+    source.ecer_ParentAreaofInstructionId?.Id.ToString());
 
-    CreateMap<ecer_ProvincialRequirement, AreaOfInstruction>(MemberList.Source)
-        .ForCtorParam(nameof(AreaOfInstruction.Id), opt => opt.MapFrom(src => src.ecer_ProvincialRequirementId))
-        .ForCtorParam(nameof(AreaOfInstruction.Name), opt => opt.MapFrom(src => src.ecer_Name))
-        .ForCtorParam(nameof(AreaOfInstruction.ProgramTypes), opt => opt.MapFrom(src =>
-          src.ecer_CertificateLevels == null
-            ? Array.Empty<string>()
-            : src.ecer_CertificateLevels.Select(level => level.ToString())))
-        .ForCtorParam(nameof(AreaOfInstruction.MinimumHours), opt => opt.MapFrom(src => src.ecer_MinimumHours))
-        .ForCtorParam(nameof(AreaOfInstruction.DisplayOrder), opt => opt.MapFrom(src => src.ecer_DisplayOrder))
-        .ForCtorParam(nameof(AreaOfInstruction.ParentAreaOfInstructionId), opt => opt.MapFrom(src => src.ecer_ParentAreaofInstructionId != null ? src.ecer_ParentAreaofInstructionId.Id.ToString() : null))
-        .ValidateMemberList(MemberList.Destination);
+  private static PostSecondaryInstitution MapPostSecondaryInstitution(ecer_PostSecondaryInstitute source) => new(
+    source.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    source.ecer_ProvinceId?.Id.ToString() ?? string.Empty);
 
-    CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)
-       .ForCtorParam(nameof(PostSecondaryInstitution.Id), opt => opt.MapFrom(src => src.ecer_PostSecondaryInstituteId))
-       .ForCtorParam(nameof(PostSecondaryInstitution.Name), opt => opt.MapFrom(src => src.ecer_Name))
-       .ForCtorParam(nameof(PostSecondaryInstitution.ProvinceId), opt => opt.MapFrom(src => src.ecer_ProvinceId.Id))
-       .ValidateMemberList(MemberList.Destination)
-       .ReverseMap()
-       .ForMember(dest => dest.ecer_PostSecondaryInstituteId, opt => opt.MapFrom(src => src.Id))
-       .ForMember(dest => dest.ecer_Name, opt => opt.MapFrom(src => src.Name));
+  private static IdentificationType MapIdentificationType(ecer_identificationtype source) => new(
+    source.ecer_identificationtypeId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    source.ecer_ForPrimary.GetValueOrDefault(),
+    source.ecer_ForSecondary.GetValueOrDefault());
 
-    CreateMap<ecer_identificationtype, IdentificationType>(MemberList.Source)
-        .ForCtorParam(nameof(IdentificationType.Id), opt => opt.MapFrom(src => src.ecer_identificationtypeId))
-        .ForCtorParam(nameof(IdentificationType.Name), opt => opt.MapFrom(src => src.ecer_Name))
-        .ForCtorParam(nameof(IdentificationType.ForPrimary), opt => opt.MapFrom(src => src.ecer_ForPrimary))
-        .ForCtorParam(nameof(IdentificationType.ForSecondary), opt => opt.MapFrom(src => src.ecer_ForSecondary))
-        .ValidateMemberList(MemberList.Destination)
-        .ReverseMap()
-        .ForMember(dest => dest.ecer_identificationtypeId, opt => opt.MapFrom(src => src.Id))
-        .ForMember(dest => dest.ecer_Name, opt => opt.MapFrom(src => src.Name))
-        .ForMember(dest => dest.ecer_ForPrimary, opt => opt.MapFrom(src => src.ForPrimary))
-        .ForMember(dest => dest.ecer_ForSecondary, opt => opt.MapFrom(src => src.ForSecondary));
+  private OutOfProvinceCertificationType MapOutOfProvinceCertificationType(ecer_outofprovincecertificationtype source) => new(source.Id.ToString())
+  {
+    CertificationType = source.ecer_certificationtype,
+  };
 
-    CreateMap<PortalTags, ecer_PortalTags>()
-        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-        .ReverseMap();
+  private CertificationComparison MapCertificationComparison(ecer_certificationcomparison source) => new(source.Id.ToString())
+  {
+    BcCertificate = source.ecer_bccertificate,
+    TransferringCertificate = source.ecer_certificationcomparisontransferringcertificate == null
+      ? null
+      : MapOutOfProvinceCertificationType(source.ecer_certificationcomparisontransferringcertificate),
+  };
 
-    CreateMap<ecer_outofprovincecertificationtype, OutOfProvinceCertificationType>(MemberList.Source)
-        .ForCtorParam(nameof(ecer_outofprovincecertificationtype.Id), opt => opt.MapFrom(src => src.Id))
-        .ForMember(d => d.CertificationType, opts => opts.MapFrom(s => s.ecer_certificationtype))
-        .ValidateMemberList(MemberList.Destination);
+  private DefaultContent MapDefaultContent(ecer_DefaultContents source) => new()
+  {
+    Name = source.ecer_Name,
+    SingleText = source.ecer_SingleLineofText,
+    MultiText = source.ecer_MultipleLineofText,
+  };
 
-    CreateMap<ecer_certificationcomparison, CertificationComparison>(MemberList.Source)
-        .ForCtorParam(nameof(ecer_certificationcomparison.Id), opt => opt.MapFrom(src => src.Id))
-        .ForMember(d => d.BcCertificate, opts => opts.MapFrom(s => s.ecer_bccertificate))
-        .ForMember(d => d.TransferringCertificate, opts => opts.MapFrom(s => s.ecer_certificationcomparisontransferringcertificate))
-        .ValidateMemberList(MemberList.Destination);
+  private static DynamicsConfig MapDynamicsConfiguration(bcgov_config source) => new(
+    source.bcgov_Key ?? string.Empty,
+    source.bcgov_Value ?? string.Empty);
 
-    CreateMap<ecer_DefaultContents, DefaultContent>(MemberList.Source)
-        .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
-        .ForMember(d => d.SingleText, opts => opts.MapFrom(s => s.ecer_SingleLineofText))
-        .ForMember(d => d.MultiText, opts => opts.MapFrom(s => s.ecer_MultipleLineofText))
-        .ValidateMemberList(MemberList.Destination);
-
-    CreateMap<bcgov_config, DynamicsConfig>(MemberList.Source)
-        .ForCtorParam(nameof(DynamicsConfig.Key), opts => opts.MapFrom(s => s.bcgov_Key))
-        .ForCtorParam(nameof(DynamicsConfig.Value), opts => opts.MapFrom(s => s.bcgov_Value))
-        .ValidateMemberList(MemberList.Destination);
-  }
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PortalTags MapPortalTag(ecer_PortalTags source);
 }

@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk;
@@ -9,9 +8,9 @@ namespace ECER.Resources.Documents.ProgramApplications;
 internal sealed partial class ProgramApplicationRepository : IProgramApplicationRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly IProgramApplicationRepositoryMapper mapper;
 
-  public ProgramApplicationRepository(EcerContext context, IMapper mapper)
+  public ProgramApplicationRepository(EcerContext context, IProgramApplicationRepositoryMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
@@ -43,7 +42,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       throw new InvalidOperationException("Delivery type is required");
     }
 
-    var entity = mapper.Map<ecer_PostSecondaryInstituteProgramApplicaiton>(programApplication)!;
+    var entity = mapper.MapProgramApplication(programApplication);
     entity.ecer_PostSecondaryInstituteProgramApplicaitonId = Guid.NewGuid();
     entity.StatusCode = ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft;
     entity.StateCode = ecer_postsecondaryinstituteprogramapplicaiton_statecode.Active;
@@ -65,6 +64,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     {
       CreateProgramCampus(programApplication.ProgramCampuses, programProfileId, instituteId, entity);
     }
+
     if (string.IsNullOrWhiteSpace(entity.ecer_Name))
     {
       entity.ecer_Name = "Draft Program Application";
@@ -81,26 +81,24 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
   {
     foreach (var campus in programCampuses)
     {
-      if (!Guid.TryParse(campus.CampusId, out Guid campusGuid))
+      if (!Guid.TryParse(campus.CampusId, out var campusGuid))
       {
         throw new InvalidOperationException("Campus id cannot be null");
       }
-      var psiCampus =
-        context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(c => c.Id == campusGuid);
+
+      var psiCampus = context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(c => c.Id == campusGuid);
       if (psiCampus != null && campus.Id == null)
       {
         var programCampus = new ecer_ProgramCampus
         {
           Id = Guid.NewGuid(),
           ecer_EducationalInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, instituteId),
-          ecer_ProgramApplicationId =
-            new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
+          ecer_ProgramApplicationId = new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
           ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, psiCampus.Id)
         };
         if (programProfileId != Guid.Empty)
         {
-          programCampus.ecer_ProgramProfileId =
-            new EntityReference(ecer_Program.EntityLogicalName, programProfileId);
+          programCampus.ecer_ProgramProfileId = new EntityReference(ecer_Program.EntityLogicalName, programProfileId);
         }
         context.AddObject(programCampus);
       }
@@ -121,7 +119,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     }
     else
     {
-      var entity = mapper.Map<ecer_PostSecondaryInstituteProgramApplicaiton>(application)!;
+      var entity = mapper.MapProgramApplication(application);
       var instituteId = Guid.Parse(application.PostSecondaryInstituteId);
       var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
       if (institute == null)
@@ -136,13 +134,9 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         {
           var listOfExistingProgramCampuses = context.ecer_ProgramCampusSet.Where(c =>
             c.ecer_EducationalInstitutionId.Id == instituteId && c.ecer_ProgramApplicationId.Id == entity.Id).ToList();
-          var existingIncomingProgramCampus = application.ProgramCampuses.Where(c => c.Id != null)
-            .Select(c => Guid.Parse(c.Id!)).ToList();
+          var existingIncomingProgramCampus = application.ProgramCampuses.Where(c => c.Id != null).Select(c => Guid.Parse(c.Id!)).ToList();
 
-          var campusesToDelete = listOfExistingProgramCampuses
-            .Where(c => !existingIncomingProgramCampus.Contains(c.Id))
-            .ToList();
-
+          var campusesToDelete = listOfExistingProgramCampuses.Where(c => !existingIncomingProgramCampus.Contains(c.Id)).ToList();
           foreach (var campus in campusesToDelete)
           {
             context.DeleteObject(campus);
@@ -150,22 +144,19 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 
           foreach (var campus in application.ProgramCampuses)
           {
-            if (!Guid.TryParse(campus.CampusId, out Guid campusGuid))
+            if (!Guid.TryParse(campus.CampusId, out var campusGuid))
             {
               throw new InvalidOperationException("Campus id cannot be null");
             }
 
-            var psiCampus =
-              context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(c => c.Id == campusGuid);
+            var psiCampus = context.ecer_PostSecondaryInstituteCampusSet.SingleOrDefault(c => c.Id == campusGuid);
             if (psiCampus != null && campus.Id == null)
             {
               var programCampus = new ecer_ProgramCampus
               {
                 Id = Guid.NewGuid(),
-                ecer_EducationalInstitutionId =
-                  new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, instituteId),
-                ecer_ProgramApplicationId =
-                  new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
+                ecer_EducationalInstitutionId = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, instituteId),
+                ecer_ProgramApplicationId = new EntityReference(ecer_PostSecondaryInstituteProgramApplicaiton.EntityLogicalName, entity.Id),
                 ecer_CampusId = new EntityReference(ecer_PostSecondaryInstituteCampus.EntityLogicalName, psiCampus.Id)
               };
               context.AddObject(programCampus);
@@ -194,19 +185,13 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_, institute);
       if (application.ProgramRepresentativeId != null)
       {
-        var user = context.ecer_ECEProgramRepresentativeSet
-          .SingleOrDefault(r => r.Id == Guid.Parse(application.ProgramRepresentativeId));
+        var user = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == Guid.Parse(application.ProgramRepresentativeId));
         context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ, user!);
       }
 
-      if (ValidateInstituteInfo(entity, institute, application))
-      {
-        entity.ecer_InstitutionProgramInformationEntryProgress = ecer_PSPComponentProgress.Completed;
-      }
-      else
-      {
-        entity.ecer_InstitutionProgramInformationEntryProgress = ecer_PSPComponentProgress.InProgress;
-      }
+      entity.ecer_InstitutionProgramInformationEntryProgress = ValidateInstituteInfo(entity, institute, application)
+        ? ecer_PSPComponentProgress.Completed
+        : ecer_PSPComponentProgress.InProgress;
       context.UpdateObject(entity);
     }
 
@@ -219,8 +204,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     var satelliteCampus = application.ProgramCampuses?.FirstOrDefault(c => c.Id != null);
     if (satelliteCampus == null || !Guid.TryParse(satelliteCampus.Id, out var campusGuid)) return;
 
-    var existingCampus = context.ecer_ProgramCampusSet
-      .SingleOrDefault(c => c.ecer_ProgramCampusId == campusGuid);
+    var existingCampus = context.ecer_ProgramCampusSet.SingleOrDefault(c => c.ecer_ProgramCampusId == campusGuid);
     if (existingCampus == null) return;
 
     existingCampus.ecer_Startdate = satelliteCampus.StartDate;
@@ -228,7 +212,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 
     context.UpdateObject(existingCampus);
   }
-  
+
   private static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
   {
     if (incomingApplication.ProgramApplicationType == ApplicationType.NewBasicECEPostBasicProgram)
@@ -243,13 +227,15 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 
       if (incomingApplication.DeliveryType == DeliveryType.Inperson)
       {
-        return HasRepresentative(application)
-          && ValidateCampus(incomingApplication, institute);
+        return HasRepresentative(application) && ValidateCampus(incomingApplication, institute);
       }
     }
 
     if (incomingApplication.ProgramApplicationType == ApplicationType.NewCampusatRecognizedPrivateInstitution)
+    {
       return HasRepresentative(application);
+    }
+
     if (incomingApplication.ProgramApplicationType == ApplicationType.SatelliteProgram)
     {
       var campus = incomingApplication.ProgramCampuses?.FirstOrDefault(c => c.Id != null);
@@ -261,10 +247,11 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 
     if (incomingApplication.ProgramApplicationType == ApplicationType.AddOnlineorHybridDeliveryMethod)
     {
-      if (incomingApplication.DeliveryType == DeliveryType.Hybrid &&
-        (incomingApplication.InPersonHoursPercentage == null ||
-        incomingApplication.OnlineDeliveryHoursPercentage == null))
-      { return false; }
+      if (incomingApplication.DeliveryType == DeliveryType.Hybrid
+          && (incomingApplication.InPersonHoursPercentage == null || incomingApplication.OnlineDeliveryHoursPercentage == null))
+      {
+        return false;
+      }
 
       if (incomingApplication.ProgramCampuses == null || !incomingApplication.ProgramCampuses.Any())
       {
@@ -282,11 +269,15 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         return false;
       }
 
-      if (!application.ecer_Onlinemethodsofinstruction.Any() || !application.ecer_Deliverymethodforpracticuminstructor.Any() || !application.ecer_ProgramEnrollment.Any() || !application.ecer_AdmissionOptions.Any())
+      if (!application.ecer_Onlinemethodsofinstruction.Any()
+          || !application.ecer_Deliverymethodforpracticuminstructor.Any()
+          || !application.ecer_ProgramEnrollment.Any()
+          || !application.ecer_AdmissionOptions.Any())
       {
         return false;
       }
     }
+
     return true;
   }
 
@@ -300,9 +291,9 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
   {
     if (institute.ecer_PSIInstitutionType == ecer_psiinstitutiontype.Private)
     {
-      return incomingApplication.ProgramCampuses != null
-             && incomingApplication.ProgramCampuses.Any();
+      return incomingApplication.ProgramCampuses != null && incomingApplication.ProgramCampuses.Any();
     }
+
     return true;
   }
 
@@ -311,24 +302,20 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     await Task.CompletedTask;
     var applications = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.AsQueryable();
 
-    //Filter by Id
     if (query.ById != null) applications = applications.Where(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == Guid.Parse(query.ById));
 
-    //By status
     if (query.ByStatus != null && query.ByStatus.Any())
     {
-      var statuses = mapper.Map<IEnumerable<ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode>>(query.ByStatus)!.ToList();
+      var statuses = mapper.MapApplicationStatuses(query.ByStatus);
       applications = applications.WhereIn(p => p.StatusCode!.Value, statuses);
     }
 
-    //By post secondary
     if (query.ByPostSecondaryInstituteId != null)
     {
       var instituteId = Guid.Parse(query.ByPostSecondaryInstituteId);
       applications = applications.Where(p => p.ecer_PostSecondaryInstitute.Id == instituteId);
     }
 
-    //By campus
     if (query.ByCampusId != null)
     {
       var campusId = Guid.Parse(query.ByCampusId);
@@ -340,7 +327,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       applications = applications.WhereIn(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId!.Value, programApplicationIdsForCampus);
     }
 
-    int paginatedTotalProgramCount = 0;
+    var paginatedTotalProgramCount = 0;
     if (query.PageNumber > 0)
     {
       paginatedTotalProgramCount = context.From(applications).Aggregate().Count();
@@ -357,7 +344,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       .Execute()
       .ToList();
 
-    return new ProgramApplicationQueryResults(mapper.Map<IEnumerable<ProgramApplication>>(results)!, query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count);
+    return new ProgramApplicationQueryResults(mapper.MapProgramApplications(results), query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count);
   }
 
   public async Task<IEnumerable<NavigationMetadata>> QueryComponentGroups(ComponentGroupQuery query, CancellationToken cancellationToken)
@@ -365,12 +352,10 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     await Task.CompletedTask;
     var categoryGroups = context.ecer_ProgramApplicationComponentGroupSet.AsQueryable();
 
-    //Filter by Id
     if (query.ByProgramApplicationId != null) categoryGroups = categoryGroups.Where(p => p.ecer_ProgramApplication.Id == Guid.Parse(query.ByProgramApplicationId));
-    var results = context.From(categoryGroups)
-      .Execute();
 
-    return mapper.Map<IEnumerable<NavigationMetadata>>(results)!.ToList();
+    var results = context.From(categoryGroups).Execute();
+    return mapper.MapNavigationMetadata(results).ToList();
   }
 
   public async Task<IEnumerable<ComponentGroupWithComponents>> QueryComponentGroupWithComponents(ComponentGroupWithComponentsQuery query, CancellationToken cancellationToken)
@@ -385,34 +370,35 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       .Join()
       .Include(e => e.ecer_programapplicationcomponentgroup_ComponentGroup)
       .Include(e => e.ecer_programapplicationcomponent_ComponentGroup)
-        .IncludeNested(c => c.ecer_sharedocumenturl_ProgramApplicationComponentId)
+      .IncludeNested(e => e.ecer_sharedocumenturl_ProgramApplicationComponentId)
+      .IncludeNested(e => e.ecer_documenturl_ProgramApplicationComponentId)
       .Execute()
       .ToList();
 
-    var allDocUrlIds = results
-      .SelectMany(g => g.ecer_programapplicationcomponent_ComponentGroup ?? [])
-      .SelectMany(c => c.ecer_sharedocumenturl_ProgramApplicationComponentId ?? [])
-      .Where(s => s.ecer_DocumentURLId != null)
-      .Select(s => s.ecer_DocumentURLId!.Id)
+    var documentIds = results
+      .SelectMany(group => group.ecer_programapplicationcomponent_ComponentGroup ?? Array.Empty<ecer_ProgramApplicationComponent>())
+      .SelectMany(component => component.ecer_sharedocumenturl_ProgramApplicationComponentId ?? Array.Empty<ecer_ShareDocumentURL>())
+      .Where(share => share.ecer_DocumentURLId != null)
+      .Select(share => share.ecer_DocumentURLId!.Id)
       .Distinct()
       .ToList();
 
-    var docUrlsById = allDocUrlIds.Count > 0
+    var documentsById = documentIds.Count > 0
       ? context.bcgov_DocumentUrlSet
-          .WhereIn(d => d.bcgov_DocumentUrlId!.Value, allDocUrlIds)
+          .WhereIn(document => document.bcgov_DocumentUrlId!.Value, documentIds)
           .AsEnumerable()
-          .ToDictionary(d => d.bcgov_DocumentUrlId!.Value)
+          .ToDictionary(document => document.bcgov_DocumentUrlId!.Value)
       : new Dictionary<Guid, bcgov_DocumentUrl>();
 
     foreach (var share in results
-      .SelectMany(g => g.ecer_programapplicationcomponent_ComponentGroup ?? [])
-      .SelectMany(c => c.ecer_sharedocumenturl_ProgramApplicationComponentId ?? [])
-      .Where(s => s.ecer_DocumentURLId != null && docUrlsById.ContainsKey(s.ecer_DocumentURLId.Id)))
+      .SelectMany(group => group.ecer_programapplicationcomponent_ComponentGroup ?? Array.Empty<ecer_ProgramApplicationComponent>())
+      .SelectMany(component => component.ecer_sharedocumenturl_ProgramApplicationComponentId ?? Array.Empty<ecer_ShareDocumentURL>())
+      .Where(share => share.ecer_DocumentURLId != null && documentsById.ContainsKey(share.ecer_DocumentURLId.Id)))
     {
-      share.ecer_sharedocumenturl_DocumentURLId = docUrlsById[share.ecer_DocumentURLId!.Id];
+      share.ecer_sharedocumenturl_DocumentURLId = documentsById[share.ecer_DocumentURLId!.Id];
     }
 
-    return mapper.Map<IEnumerable<ComponentGroupWithComponents>>(results)!.ToList();
+    return mapper.MapComponentGroupsWithComponents(results).ToList();
   }
 
   public async Task<string> UpdateComponentGroup(ComponentGroupWithComponents componentGroupToUpdate, string applicationId, CancellationToken cancellationToken)
@@ -426,8 +412,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       .SingleOrDefault(g => g.ecer_ProgramApplicationComponentGroupId == groupId && g.ecer_ProgramApplication.Id == appId);
     if (componentGroup == null) throw new InvalidOperationException($"Component group '{componentGroupToUpdate.Id}' not found");
 
-    var existingComponentsQuery = context.ecer_ProgramApplicationComponentSet
-      .Where(c => c.ecer_ComponentGroup.Id == groupId);
+    var existingComponentsQuery = context.ecer_ProgramApplicationComponentSet.Where(c => c.ecer_ComponentGroup.Id == groupId);
 
     var existingComponents = context.From(existingComponentsQuery)
       .Execute()
@@ -439,7 +424,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       if (!Guid.TryParse(component.Id, out var componentId)) continue;
       if (!existingComponents.TryGetValue(componentId, out var existingComponent)) continue;
 
-      var ecerComponent = mapper.Map<ecer_ProgramApplicationComponent>(component)!;
+      var ecerComponent = mapper.MapProgramApplicationComponent(component);
       context.Detach(existingComponent);
       context.Attach(ecerComponent);
       context.UpdateObject(ecerComponent);
@@ -447,21 +432,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     }
 
     var allAnswers = existingComponents.Values.Select(c => c.ecer_Componentanswer).ToList();
-    ecer_PSPComponentProgress progress;
-    if (allAnswers.All(string.IsNullOrWhiteSpace))
-    {
-      progress = ecer_PSPComponentProgress.ToDo;
-    }
-    else if (allAnswers.All(a => !string.IsNullOrWhiteSpace(a)))
-    {
-      progress = ecer_PSPComponentProgress.Completed;
-    }
-    else
-    {
-      progress = ecer_PSPComponentProgress.InProgress;
-    }
-
-    componentGroup.ecer_EntryProgress = progress;
+    componentGroup.ecer_EntryProgress = CalculateEntryProgress(allAnswers);
     context.UpdateObject(componentGroup);
 
     context.SaveChanges();
@@ -472,8 +443,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
   {
     await Task.CompletedTask;
     var appGuid = Guid.Parse(applicationId);
-    var existing = context.ecer_PostSecondaryInstituteProgramApplicaitonSet
-      .SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == appGuid);
+    var existing = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == appGuid);
     if (existing == null) throw new InvalidOperationException($"Program application '{applicationId}' not found");
 
     if (existing.StatusCode == ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft)
@@ -495,11 +465,40 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     return applicationId;
   }
 
+  private static ecer_PSPComponentProgress CalculateEntryProgress(IEnumerable<string?> answers)
+  {
+    var hasValue = false;
+    var hasEmpty = false;
+
+    foreach (var answer in answers)
+    {
+      if (string.IsNullOrWhiteSpace(answer))
+      {
+        hasEmpty = true;
+      }
+      else
+      {
+        hasValue = true;
+      }
+
+      if (hasValue && hasEmpty)
+      {
+        return ecer_PSPComponentProgress.InProgress;
+      }
+    }
+
+    if (!hasValue)
+    {
+      return ecer_PSPComponentProgress.ToDo;
+    }
+
+    return ecer_PSPComponentProgress.Completed;
+  }
+
   public async Task UpdateCourseProgress(string applicationId, string? basicProgress, string? iteProgress, string? sneProgress, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var existing = context.ecer_PostSecondaryInstituteProgramApplicaitonSet
-      .SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == Guid.Parse(applicationId));
+    var existing = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.SingleOrDefault(p => p.ecer_PostSecondaryInstituteProgramApplicaitonId == Guid.Parse(applicationId));
     if (existing == null) return;
 
     if (basicProgress != null) existing.ecer_BasicEntryProgress = Enum.Parse<ecer_PSPComponentProgress>(basicProgress);
@@ -511,5 +510,3 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     context.SaveChanges();
   }
 }
-
-//ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton

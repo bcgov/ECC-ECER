@@ -5,7 +5,6 @@ using ECER.Managers.E2ETest.Contract.E2ETestsContacts;
 using Microsoft.AspNetCore.Mvc;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Security;
-using AutoMapper;
 using ECER.Managers.Registry.Contract.Applications;
 using Bogus;
 
@@ -35,7 +34,7 @@ public class E2ETestsEndpoints : IRegisterEndpoints
     .DisableAntiforgery()
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/E2ETests/applications/seed/renewal", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/E2ETests/applications/seed/renewal", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
     {
       if (!ctx.Request.Headers.TryGetValue("EXTERNAL-USER-ID", out var externalUserId))
       {

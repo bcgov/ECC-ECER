@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Engines.Validation;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Courses;
@@ -17,12 +16,12 @@ public class CoursesHandler(
   IProgramApplicationRepository programApplicationRepository,
   IMetadataResourceRepository metadataResourceRepository,
   ICourseProgressEvaluator courseProgressEvaluator,
-  IMapper mapper,
+  ICoursesMapper coursesMapper,
   EcerContext ecerContext)
-: IRequestHandler<UpdateCourseCommand, string>,
-  IRequestHandler<SaveCourseCommand, SaveCourseCommandResult>,
-  IRequestHandler<DeleteCourseCommand, string>,
-  IRequestHandler<GetCoursesCommand, IEnumerable<Contract.Shared.Course>>
+  : IRequestHandler<UpdateCourseCommand, string>,
+    IRequestHandler<SaveCourseCommand, SaveCourseCommandResult>,
+    IRequestHandler<DeleteCourseCommand, string>,
+    IRequestHandler<GetCoursesCommand, IEnumerable<Contract.Shared.Course>>
 {
   public async Task<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
   {
@@ -40,7 +39,7 @@ public class CoursesHandler(
       if (!programProfile.Programs!.Any()) throw new InvalidOperationException($"Program profile with '{request.Id}' not found");
 
       ecerContext.BeginTransaction();
-      await courseRepository.UpdateCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, false, cancellationToken);
+      await courseRepository.UpdateCourse(coursesMapper.MapCourse(request.Course), request.Id, false, cancellationToken);
       ecerContext.CommitTransaction();
       return request.Id;
     }
@@ -59,7 +58,7 @@ public class CoursesHandler(
       var areasOfInstruction = await GetAreasOfInstructionAsync(cancellationToken);
 
       ecerContext.BeginTransaction();
-      await courseRepository.UpdateCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, true, cancellationToken);
+      await courseRepository.UpdateCourse(coursesMapper.MapCourse(request.Course), request.Id, true, cancellationToken);
       await UpdateCourseProgressAsync(request.Id, adjustedCourses, programApplicationResult.Items.First().ProgramTypes, areasOfInstruction, cancellationToken);
       ecerContext.CommitTransaction();
       return request.Id;
@@ -81,13 +80,13 @@ public class CoursesHandler(
     }, cancellationToken);
     if (!programApplications.Items!.Any())
     {
-      return new SaveCourseCommandResult() { Error = SaveCourseError.ProgramApplicationNotFound };
+      return new SaveCourseCommandResult { Error = SaveCourseError.ProgramApplicationNotFound };
     }
 
     var programApplication = programApplications.Items.First();
     if (programApplication.ProgramApplicationType != ApplicationType.NewBasicECEPostBasicProgram)
     {
-      return new SaveCourseCommandResult() { Error = SaveCourseError.IncorrectProgramApplicationTypeToSaveCourse };
+      return new SaveCourseCommandResult { Error = SaveCourseError.IncorrectProgramApplicationTypeToSaveCourse };
     }
 
     var existingCourses = await GetCoursesAsync(request.Id, request.PostSecondaryInstituteId, cancellationToken);
@@ -95,21 +94,23 @@ public class CoursesHandler(
     var areasOfInstruction = await GetAreasOfInstructionAsync(cancellationToken);
 
     ecerContext.BeginTransaction();
-    var courseId = await courseRepository.AddCourse(mapper.Map<Resources.Documents.Shared.Course>(request.Course)!, request.Id, request.PostSecondaryInstituteId, cancellationToken);
+    var courseId = await courseRepository.AddCourse(coursesMapper.MapCourse(request.Course), request.Id, request.PostSecondaryInstituteId, cancellationToken);
     await UpdateCourseProgressAsync(request.Id, adjustedCourses, programApplication.ProgramTypes, areasOfInstruction, cancellationToken);
     ecerContext.CommitTransaction();
-    return new SaveCourseCommandResult() { CourseId = courseId };
+
+    return new SaveCourseCommandResult { CourseId = courseId };
   }
 
-  public async Task<IEnumerable<ECER.Managers.Registry.Contract.Shared.Course>> Handle(GetCoursesCommand request, CancellationToken cancellationToken)
+  public async Task<IEnumerable<Contract.Shared.Course>> Handle(GetCoursesCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var courses = await courseRepository.GetCourses(new GetCoursesRequest(request.Id, request.PostSecondaryInstituteId, request.Type.Convert<Contract.Courses.FunctionType, Resources.Documents.Courses.FunctionType>())
     {
-      ProgramTypes = mapper.Map<IEnumerable<ProgramType>>(request.ProgramTypes)
+      ProgramTypes = request.ProgramTypes != null ? coursesMapper.MapProgramTypes(request.ProgramTypes) : null
     }, cancellationToken);
-    return mapper.Map<IEnumerable<Contract.Shared.Course>>(courses);
+
+    return coursesMapper.MapCourses(courses);
   }
 
   public async Task<string> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
@@ -147,7 +148,8 @@ public class CoursesHandler(
     var resourceCourses = await courseRepository.GetCourses(
       new GetCoursesRequest(applicationId, postSecondaryInstituteId, Resources.Documents.Courses.FunctionType.ProgramApplication),
       cancellationToken);
-    return mapper.Map<IList<Contract.Shared.Course>>(resourceCourses);
+
+    return coursesMapper.MapCourses(resourceCourses).ToList();
   }
 
   private async Task<IReadOnlyCollection<AreaOfInstruction>> GetAreasOfInstructionAsync(CancellationToken cancellationToken)
