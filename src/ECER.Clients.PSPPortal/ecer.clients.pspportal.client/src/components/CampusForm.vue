@@ -13,7 +13,7 @@
           v-model="name"
           label="Location name"
           :maxLength="100"
-          :rules="[Rules.required()]"
+          :rules="[Rules.required(), duplicateCampusNameRule()]"
         />
       </v-col>
     </v-row>
@@ -142,6 +142,7 @@ import EcePspUser, {
 } from "@/components/inputs/EcePspUser.vue";
 import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   name: "CampusForm",
@@ -168,6 +169,10 @@ export default defineComponent({
       default: null,
     },
   },
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
+  },
   data() {
     return {
       name: (this.initialData?.name ?? "") as string,
@@ -185,6 +190,18 @@ export default defineComponent({
     };
   },
   methods: {
+    duplicateCampusNameRule() {
+      let campuses = this.userStore.educationInstitution?.campuses ?? [];
+      if (this.initialData) {
+        campuses = campuses.filter((c) => c.id !== this.initialData?.id);
+      }
+
+      return (value: string) => {
+        if (!value) return true;
+        const duplicate = campuses.find((c) => c.name === value.trim());
+        return duplicate ? "A campus with this name already exists." : true;
+      };
+    },
     programLabel(program: Components.Schemas.Program): string {
       const name = program.programName ?? program.name ?? "";
       if (!program.startDate) return name;
