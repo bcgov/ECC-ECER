@@ -66,6 +66,8 @@
       cancel-button-text="Cancel"
       @accept="confirmWithdraw"
       @cancel="showWithdrawConfirmation = false"
+      @click-outside="showWithdrawConfirmation = false"
+      @exit="showWithdrawConfirmation = false"
     >
       <template #confirmation-text>
         <p class="font-weight-bold pb-3">

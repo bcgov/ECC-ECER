@@ -64,6 +64,14 @@
       showAddEditCourseDialog = false;
       selectedCourse = null;
     "
+    @click-outside="
+      showAddEditCourseDialog = false;
+      selectedCourse = null;
+    "
+    @exit="
+      showAddEditCourseDialog = false;
+      selectedCourse = null;
+    "
   />
   <ConfirmationDialog
     v-if="selectedCourseToDelete"
@@ -74,6 +82,14 @@
     :loading="loadingStore.isLoading('course_delete')"
     @accept="deleteCourse"
     @cancel="
+      showConfirmationDialog = false;
+      selectedCourseToDelete = null;
+    "
+    @click-outside="
+      showConfirmationDialog = false;
+      selectedCourseToDelete = null;
+    "
+    @exit="
       showConfirmationDialog = false;
       selectedCourseToDelete = null;
     "

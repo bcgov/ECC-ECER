@@ -258,7 +258,6 @@ import ProgramApplicationInstituteInfoLayout from "./ProgramApplicationInstitute
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
-import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import * as Rules from "@/utils/formRules";
 import { getProgramApplicationById } from "@/api/program-application";
 import type { Components } from "@/types/openapi";
@@ -270,7 +269,6 @@ export default defineComponent({
     ProgramApplicationInstituteInfoLayout,
     EceDateInput,
     EceTextField,
-    ConfirmationDialog,
   },
   props: {
     programApplicationId: {
