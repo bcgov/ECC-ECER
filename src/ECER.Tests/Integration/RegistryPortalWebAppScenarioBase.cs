@@ -186,7 +186,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     context.SaveChanges();
     MarkCertificateAsInactive(context, testInactiveCertification.Id);
-    CompletePortalInvitation_WorkExperienceReference(context, shortName: "name6");
+    CompletePortalInvitation_WorkExperienceReference(context, "name6");
 
     //load dependent properties
     context.Attach(AuthenticatedBcscUser);
