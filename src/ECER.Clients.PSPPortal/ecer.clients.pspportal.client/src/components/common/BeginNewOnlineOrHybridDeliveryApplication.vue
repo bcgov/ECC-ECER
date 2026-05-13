@@ -229,7 +229,7 @@ export default defineComponent({
     mapCertificationType(type: string) {
       switch (type) {
         case "Basic":
-          return "Early Childhood Educator";
+          return "Early Childhood Educator (Basic)";
         case "ITE":
           return "Infant and Toddler Educator (ITE)";
         case "SNE":
