@@ -142,7 +142,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <p class="pb-3 font-weight-bold">Location</p>
+          <p class="pb-3 font-weight-bold">Campus</p>
           <p class="pb-3">Select where this program will be administered.</p>
 
           <v-radio-group
@@ -258,7 +258,7 @@ export default defineComponent({
     mapCertificationType(type: string) {
       switch (type) {
         case "Basic":
-          return "Early Childhood Educator";
+          return "Early Childhood Educator (Basic)";
         case "ITE":
           return "Infant and Toddler Educator (ITE)";
         case "SNE":
