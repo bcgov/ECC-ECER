@@ -3,20 +3,24 @@
     v-if="
       applicationType === programApplicationType.NewBasicECEPostBasicProgram
     "
+    :institutionType="userStore.institutionType"
   />
   <NewCampusProgramApplicationInfo
     v-if="
       applicationType ===
       programApplicationType.NewCampusatRecognizedPrivateInstitution
     "
+    :institutionType="userStore.institutionType"
   />
   <NewProgramApplicationOnlineOrHybridDeliveryInfo
     v-if="
       applicationType === programApplicationType.AddOnlineorHybridDeliveryMethod
     "
+    :institutionType="userStore.institutionType"
   />
   <SatelliteProgramApplicationInfo
     v-if="applicationType === programApplicationType.SatelliteProgram"
+    :institutionType="userStore.institutionType"
   />
   <v-row>
     <v-col>
@@ -39,6 +43,7 @@ import { ProgramApplicationType } from "@/utils/constant";
 import NewCampusProgramApplicationInfo from "@/components/common/NewCampusProgramApplicationInfo.vue";
 import SatelliteProgramApplicationInfo from "@/components/common/SatelliteProgramApplicationInfo.vue";
 import NewProgramApplicationOnlineOrHybridDeliveryInfo from "@/components/common/NewProgramApplicationOnlineOrHybridDeliveryInfo.vue";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   name: "ProgramApplicationInformation",
@@ -51,6 +56,10 @@ export default defineComponent({
     NewCampusProgramApplicationInfo,
     NewProgramApplicationOnlineOrHybridDeliveryInfo,
     SatelliteProgramApplicationInfo,
+  },
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
   },
   props: {
     programApplicationId: {
