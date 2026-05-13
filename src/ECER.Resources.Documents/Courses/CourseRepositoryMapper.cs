@@ -24,6 +24,7 @@ internal partial class CourseRepositoryMapper : ICourseRepositoryMapper
     ecer_CourseName = source.CourseTitle,
     ecer_NewCode = source.NewCourseNumber,
     ecer_NewCourseName = source.NewCourseTitle,
+    ecer_ProgramType = MapProgramType(source.ProgramType),
   };
 
   public List<ecer_PSIProgramType> MapProgramTypes(IEnumerable<ProgramType> source) => source.Select(MapProgramType).ToList();
@@ -50,4 +51,6 @@ internal partial class CourseRepositoryMapper : ICourseRepositoryMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_PSIProgramType MapProgramType(ProgramType source);
+
+  private static ecer_PSIProgramType MapProgramType(string source) => Enum.Parse<ecer_PSIProgramType>(source);
 }
