@@ -58,8 +58,8 @@
               responses later.
             </p>
             <p>
-              To apply for a post-basic (Infant and Toddler Education [ITE]
-              and/or Special Needs Educator [SNE]), an institution must either:
+              To apply for a post-basic program (Infant and Toddler Educator
+              and/or Special Needs Educator), an institution must either:
             </p>
             <ul class="ml-10">
               <li>

@@ -59,9 +59,9 @@
               responses later.
             </p>
             <p>
-              To apply to offer an early childhood education program at a new
+              To apply to offer early childhood education program at a new
               campus, an institution must already have a recognized basic or
-              poast-basic early childhood education program.
+              post-basic early childhood education program.
             </p>
 
             <v-row class="mt-4">

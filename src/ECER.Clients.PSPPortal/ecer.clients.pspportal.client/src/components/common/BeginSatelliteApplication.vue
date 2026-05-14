@@ -59,9 +59,9 @@
               responses later.
             </p>
             <p>
-              To apply to offer an early childhood education program at a
-              satellite location, an institution must already have a recognized
-              basic or post-basic early childhood education program.
+              To apply to offer early childhood education program at a satellite
+              location, an institution must already have a recognized basic or
+              post-basic early childhood education program.
             </p>
 
             <v-row>
