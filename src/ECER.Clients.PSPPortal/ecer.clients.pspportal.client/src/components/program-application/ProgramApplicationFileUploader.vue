@@ -332,6 +332,11 @@ export default defineComponent({
     },
     validateFile(file: File): string[] {
       const fileErrors: string[] = [];
+      if (file.size === 0) {
+        fileErrors.push(
+          "This file is empty. Please upload a file with content.",
+        );
+      }
       if (file.size > this.maxFileSizeInBytes) {
         fileErrors.push(
           `This file is too big. Only files ${this.maxFileSizeInMB}MB or smaller are accepted.`,
