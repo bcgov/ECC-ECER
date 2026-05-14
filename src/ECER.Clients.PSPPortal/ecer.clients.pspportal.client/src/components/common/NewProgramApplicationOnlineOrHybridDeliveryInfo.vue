@@ -51,18 +51,6 @@
     </v-col>
   </v-row>
 
-  <v-row>
-    <v-col cols="12">
-      <h3>First-time applications</h3>
-      <ul class="ml-10">
-        <li>
-          A first-time application for a basic early childhood education program
-          is restricted to one campus
-        </li>
-      </ul>
-    </v-col>
-  </v-row>
-
   <v-row v-if="institutionType === 'Private'">
     <v-col cols="12">
       <Callout title="Private institutions" type="warning">
