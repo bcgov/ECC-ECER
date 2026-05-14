@@ -291,6 +291,8 @@ const mapAdmissionOptions = (type: string = ""): string => {
       return "Continuous enrollment - students can enrol at any time";
     case "Oneormorecoursesopentoanystudentsintheinstitution":
       return "One or more courses open to any students in the institution";
+    case "Other":
+      return "Other";
     default:
       return "-";
   }

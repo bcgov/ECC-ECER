@@ -204,7 +204,7 @@ export default defineComponent({
           .map((c) => {
             return c.name;
           })
-          .join(",");
+          .join(", ");
       }
       return "-";
     },
