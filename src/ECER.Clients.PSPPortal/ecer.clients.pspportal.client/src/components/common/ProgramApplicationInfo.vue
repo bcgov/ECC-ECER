@@ -69,12 +69,14 @@
   <v-row v-if="institutionType === 'Private'">
     <v-col cols="12">
       <Callout title="Private institutions" type="warning">
+        <br />
         <p>
           Private institutions planning to offer early childhood education
           programs must first receive certification from the Ministry of
           Post-Secondary Education and Future Skills, Private Training
           Institutions Regulatory Unit.
         </p>
+        <br />
         <p>
           Once certification is received, the post-secondary institution may
           then apply to become a recognized early childhood education program.
