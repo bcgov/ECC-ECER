@@ -54,25 +54,25 @@
   <v-row v-if="institutionType === 'Private'">
     <v-col cols="12">
       <Callout title="Private institutions" type="warning">
-        <div class="d-flex flex-column ga-3">
-          <p>
-            Private institutions require additional approval from their
-            regulator before adding a temporary offering of an early childhood
-            education program at a location in partnership with another
-            organization, or at a location outside of the institution.
-          </p>
-          <p>
-            Contact the
-            <a
-              href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
-              class="text-primary text-decoration-underline"
-              target="_blank"
-            >
-              Private Training Institutions Regulatory Unit
-            </a>
-            for more information.
-          </p>
-        </div>
+        <br />
+        <p>
+          Private institutions require additional approval from their regulator
+          before adding a temporary offering of an early childhood education
+          program at a location in partnership with another organization, or at
+          a location outside of the institution.
+        </p>
+        <br />
+        <p>
+          Contact the
+          <a
+            href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
+            class="text-primary text-decoration-underline"
+            target="_blank"
+          >
+            Private Training Institutions Regulatory Unit
+          </a>
+          for more information.
+        </p>
       </Callout>
     </v-col>
   </v-row>
