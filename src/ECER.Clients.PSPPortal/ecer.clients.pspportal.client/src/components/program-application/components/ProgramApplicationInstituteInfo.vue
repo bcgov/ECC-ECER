@@ -13,8 +13,8 @@
     <template #campus-section-title><h2>Location</h2></template>
     <template #campus-section-subtitle>
       <p>
-        Select where this program will be offered. A first-time application for
-        a basic early childhood education program is restricted to one location.
+        Select where this program will be administered. If your program is fully
+        online, use the administrative location.
       </p>
       <br />
     </template>
@@ -113,7 +113,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-n3">
-        <v-col cols="12" sm="4" xl="3">Institution</v-col>
+        <v-col cols="12" sm="4" xl="3">Institution name</v-col>
         <v-col class="font-weight-bold" cols="12" sm="8" xl="9">
           {{ institution?.name }}
         </v-col>
