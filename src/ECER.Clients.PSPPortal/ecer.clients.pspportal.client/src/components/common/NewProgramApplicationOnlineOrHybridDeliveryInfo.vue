@@ -13,12 +13,13 @@
       <div class="d-flex flex-column ga-3">
         <p>
           Under the authority of the Community Care and Assisted Living Act and
-          the Child Care Licensing Regulation (CCLR), the director of the Early
+          the Child Care Licensing Regulation, the director of the Early
           Childhood Educator Registry (ECE Registry) sets standards for the
           certification of early childhood educators in British Columbia.
           Recognized early childhood education programs are listed in Schedule D
-          of the CCLR and have been evaluated and found to provide students with
-          the knowledge, skills, and abilities required to meet this standard.
+          of the Child Care Licensing Regulation and have been evaluated and
+          found to provide students with the knowledge, skills, and abilities
+          required to meet this standard.
         </p>
         <!-- prettier-ignore -->
         <p>
@@ -34,19 +35,16 @@
             B.C. Child Care Sector Occupational Competencies
           </a> (CCSOC), and the Linking Competencies document.
         </p>
-        <div>
-          <p>
-            To apply for a post-basic program (Infant and Toddler Educator
-            and/or Special Needs Educator), an institution must either:
-          </p>
-          <ul class="ml-10">
-            <li>
-              Already have a recognized early childhood education basic program,
-              or
-            </li>
-            <li>Be applying for a basic and post-basic program concurrently</li>
-          </ul>
-        </div>
+        <p>
+          This application is for institutions offering recognized early
+          childhood education programs that want approval to expand their
+          program to a new delivery method.
+        </p>
+        <p>
+          The application is based on curriculum previously approved by the ECE
+          Registry. Any changes to the approved curriculum must be submitted to
+          the ECE Registry for review and approval.
+        </p>
       </div>
     </v-col>
   </v-row>
@@ -61,7 +59,7 @@
         </p>
         <br />
         <p>
-          Contact the
+          Visit the
           <a
             href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
             class="text-primary text-decoration-underline"
@@ -82,10 +80,6 @@
           <h3>To begin your application</h3>
           <ul class="ml-10">
             <li>Provide the requested institution and program information</li>
-            <li>
-              When you continue, the application will be saved for you to
-              complete
-            </li>
           </ul>
         </div>
         <div>
@@ -93,7 +87,7 @@
           <ul class="ml-10">
             <li>
               As your application will take some time to complete, you may save
-              and exit at any point in the form to resume editing later
+              and exit at any point to resume editing later
             </li>
             <li>You may complete the sections in any order</li>
             <li>
