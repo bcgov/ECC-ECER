@@ -59,8 +59,8 @@
               responses later.
             </p>
             <p>
-              To apply to expand an early childhood education program delivery
-              to online or hybrid formats, an institution must already have a
+              To apply to expand early childhood education program delivery to
+              online or hybrid methods, an institution must already have a
               recognized basic or post-basic early childhood education program.
             </p>
 
