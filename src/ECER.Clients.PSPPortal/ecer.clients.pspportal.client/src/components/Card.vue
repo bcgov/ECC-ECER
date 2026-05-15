@@ -3,9 +3,10 @@
     :rounded="true"
     :border="true"
     flat
-    class="pa-6 border-primary border-opacity-100 w-100"
+    class="pa-6 w-100"
     :class="[
       {
+        'border-primary border-opacity-100': !hasTopBorder,
         'card-top-border-large': hasTopBorder && topBorderSize === 'large',
         'card-top-border-medium': hasTopBorder && topBorderSize === 'medium',
         'card-top-border-small': hasTopBorder && topBorderSize === 'small',
