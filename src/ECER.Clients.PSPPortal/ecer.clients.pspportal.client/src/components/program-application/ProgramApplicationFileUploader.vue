@@ -9,7 +9,7 @@
         <p class="small">
           You can upload images, Microsoft Word documents, Microsoft Excel
           documents, and PDFs. Max file size accepted is 10MB. The maximum
-          number of files for each question is 5.
+          number of files for each question is {{ maxNumberOfFiles }}.
         </p>
         <p class="small font-weight-bold">
           All attachments must be directly related to your request. Do not
@@ -193,7 +193,7 @@ export default defineComponent({
     maxNumberOfFiles: {
       type: Number,
       required: false,
-      default: 5,
+      default: 25,
     },
   },
   emits: ["update:files", "delete:file"],

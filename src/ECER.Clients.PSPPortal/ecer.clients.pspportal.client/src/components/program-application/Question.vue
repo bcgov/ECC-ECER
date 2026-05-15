@@ -94,7 +94,7 @@
         <ProgramApplicationFileUploader
           :user-files="userFilesFromModel"
           :show-add-file-button="rfaiRequired ? rfaiRequired : !readOnly"
-          :max-number-of-files="5"
+          :max-number-of-files="25"
           :can-delete-permanent-files="rfaiRequired || !readOnly"
           :program-application-id="programApplicationId"
           :component-group-id="componentGroupId"
