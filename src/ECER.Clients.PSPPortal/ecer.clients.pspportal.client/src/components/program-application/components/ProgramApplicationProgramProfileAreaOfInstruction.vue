@@ -14,7 +14,7 @@
     <br />
     <h3>Adding a course</h3>
     <br />
-    <p>To add a course to your program profile,</p>
+    <p>To add a course to your program profile</p>
     <ul class="ml-10">
       <li>Select "Add course"</li>
       <li>Input the course number and course name</li>
@@ -35,8 +35,10 @@
     </ul>
     <br />
     <p>
-      Note: If you do not input any hours for a course, it will be shown in the
-      "Non-allocated courses" section on this page.
+      <strong>
+        Note: If you do not input any hours for a course, it will be shown in
+        the "Non-allocated courses" section on this page.
+      </strong>
     </p>
     <br />
     <AreaOfInstructionComponent
