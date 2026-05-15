@@ -1,73 +1,68 @@
 <template>
-  <v-list-item>
-    <v-row class="d-flex align-center">
-      <!-- File Name and Size -->
-      <v-col cols="4">
-        <div class="d-flex justify-start">
-          <p class="text-truncate">{{ fileItem.fileName }}</p>
-          <p class="text-no-wrap">&nbsp;({{ fileItem.fileSize }})</p>
-        </div>
-      </v-col>
-      <v-col cols="2">
-        <v-icon
-          v-if="fileItem.fileErrors.length > 0"
-          color="#CE3E39"
-          icon="mdi-alert-circle"
-        ></v-icon>
-      </v-col>
+  <v-list-item density="compact">
+    <div class="d-flex align-center ga-3 w-100 py-1">
+      <!-- Filename + (optional) inline error -->
+      <div class="d-flex flex-column flex-grow-1 file-row__name-col">
+        <span class="text-truncate">
+          {{ fileItem.fileName }}
+        </span>
+        <ul v-if="hasErrors" class="small text-error ma-0 pl-5">
+          <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+        </ul>
+      </div>
 
-      <!-- Progress Bar or Upload Completed -->
-      <v-col cols="4">
-        <div v-if="fileItem.isDeleting">
-          <v-progress-linear indeterminate height="20" color="error" />
-        </div>
-        <div v-else-if="fileItem.isLinking">
-          <v-progress-linear indeterminate height="20" color="primary" />
-        </div>
-        <div v-else-if="!(fileItem.fileErrors.length > 0)">
-          <div v-if="isUploadComplete">Upload complete</div>
-          <v-progress-linear
-            v-else
-            :model-value="uploadProgress"
-            height="20"
-            color="primary"
-          ></v-progress-linear>
-        </div>
-      </v-col>
+      <!-- Progress bar — only while in-flight -->
+      <div v-if="showProgressBar" class="flex-grow-1">
+        <v-progress-linear
+          v-if="fileItem.isDeleting"
+          indeterminate
+          height="20"
+          color="error"
+        />
+        <v-progress-linear
+          v-else-if="fileItem.isLinking"
+          indeterminate
+          height="20"
+          color="primary"
+        />
+        <v-progress-linear
+          v-else
+          :model-value="uploadProgress"
+          height="20"
+          color="primary"
+        />
+      </div>
 
-      <!-- Delete Button -->
-      <v-col cols="2" class="d-flex justify-end">
-        <v-tooltip text="Delete" location="top">
-          <template #activator="{ props }">
-            <v-btn
-              v-if="
-                !fileItem.isDeleting &&
-                !fileItem.isLinking &&
-                (fileItem.fileErrors.length > 0 || isUploadComplete) &&
-                canDelete
-              "
-              v-bind="props"
-              icon="mdi-trash-can-outline"
-              variant="plain"
-              @click="deleteFile"
-            />
-          </template>
-        </v-tooltip>
-      </v-col>
-    </v-row>
-    <div v-if="errors.length > 0" style="color: #ea4335">
-      <ul>
-        <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-      </ul>
+      <!-- File size, right-aligned, muted -->
+      <span class="text-no-wrap text-medium-emphasis flex-shrink-0">
+        ({{ fileItem.fileSize }})
+      </span>
+
+      <!-- Trash -->
+      <v-tooltip text="Delete" location="top">
+        <template #activator="{ props }">
+          <v-btn
+            v-if="
+              !fileItem.isDeleting &&
+              !fileItem.isLinking &&
+              (hasErrors || isUploadComplete) &&
+              canDelete
+            "
+            v-bind="props"
+            icon="mdi-trash-can-outline"
+            variant="plain"
+            density="comfortable"
+            @click="deleteFile"
+          />
+        </template>
+      </v-tooltip>
     </div>
   </v-list-item>
-  <v-divider class="border-opacity-100" color="ash-grey"></v-divider>
+  <v-divider class="border-opacity-100" color="ash-grey" />
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-
-import * as Functions from "@/utils/functions";
 
 export interface FileItem {
   file: File;
@@ -98,22 +93,23 @@ export default defineComponent({
       required: false,
       default: true,
     },
-    errors: { type: Array, required: true },
+    errors: { type: Array as PropType<string[]>, required: true },
   },
-  emits: ["delete-file"], // Declare the delete-file event here
-  data() {
-    return {
-      Functions,
-    };
-  },
+  emits: ["delete-file"],
   computed: {
-    isUploadComplete() {
+    hasErrors(): boolean {
+      return this.errors.length > 0;
+    },
+    isUploadComplete(): boolean {
       return this.uploadProgress > 100; // 101 means api call was successful
+    },
+    showProgressBar(): boolean {
+      if (this.fileItem.isDeleting || this.fileItem.isLinking) return true;
+      return !this.hasErrors && !this.isUploadComplete;
     },
   },
   methods: {
     deleteFile() {
-      // Emit the delete-file event with the file as payload
       if (this.canDelete) {
         this.$emit("delete-file", this.$props.fileItem);
       }
@@ -121,3 +117,12 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+/* Vuetify has no utility for min-width: 0; it's required for text-truncate
+   to work inside a flex container (flex children default to min-width: auto
+   which blocks shrinking below content size). */
+.file-row__name-col {
+  min-width: 0;
+}
+</style>
