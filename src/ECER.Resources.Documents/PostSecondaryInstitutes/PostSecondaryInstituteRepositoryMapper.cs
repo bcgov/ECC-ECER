@@ -118,13 +118,11 @@ internal partial class PostSecondaryInstituteRepositoryMapper : IPostSecondaryIn
 
   private PrivateAuspiceType? MapPrivateAuspiceType(ecer_PrivateAuspiceType? source) => source.HasValue ? MapPrivateAuspiceType(source.Value) : null;
 
-  private static CampusStatus? MapCampusStatus(ecer_PostSecondaryInstituteCampus_StatusCode? source) => source switch
-  {
-    null => null,
-    ecer_PostSecondaryInstituteCampus_StatusCode.Active => CampusStatus.Active,
-    ecer_PostSecondaryInstituteCampus_StatusCode.Inactive => CampusStatus.Inactive,
-    _ => null,
-  };
+  [MapEnum(EnumMappingStrategy.ByName)]
+  [MapperIgnoreTargetValue(CampusStatus.None)]
+  private partial CampusStatus MapCampusStatus(ecer_PostSecondaryInstituteCampus_StatusCode source);
+
+  private CampusStatus? MapCampusStatus(ecer_PostSecondaryInstituteCampus_StatusCode? source) => source.HasValue ? MapCampusStatus(source.Value) : null;
 
   private static bool? MapSatelliteOrTemporaryLocation(ecer_YesNoNull? value)
   {
