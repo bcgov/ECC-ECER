@@ -1,7 +1,7 @@
-﻿using ECER.Managers.Admin.Contract.Files;
+using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.ObjectStorage.Providers;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

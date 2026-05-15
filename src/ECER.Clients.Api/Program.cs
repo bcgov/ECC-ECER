@@ -29,9 +29,15 @@ internal class Program
 
     try
     {
-      builder.Services.AddMediatR(opts =>
+      builder.Services.AddMediator(opts =>
       {
-        opts.RegisterServicesFromAssemblies(assemblies);
+        opts.ServiceLifetime = ServiceLifetime.Transient;
+        opts.GenerateTypesAsInternal = true;
+        opts.Assemblies =
+        [
+          typeof(ECER.Managers.Admin.Contract.Certifications.GetCertificationsCommand),
+          typeof(ECER.Managers.Admin.CertificationHandlers)
+        ];
       });
 
       builder.Services.AddEndpointsApiExplorer();

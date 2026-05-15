@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="MediatR.Contracts" />
+    <PackageReference Include="Mediator.Abstractions" />
     <ProjectReference Include="..\ECER.Utilities.ObjectStorage\ECER.Utilities.ObjectStorage.csproj" />
   </ItemGroup>
 </Project>

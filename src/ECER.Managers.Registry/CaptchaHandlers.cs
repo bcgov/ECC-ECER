@@ -1,5 +1,5 @@
-﻿using ECER.Managers.Registry.Contract.Captcha;
-using MediatR;
+using ECER.Managers.Registry.Contract.Captcha;
+using Mediator;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 
@@ -13,7 +13,7 @@ namespace ECER.Managers.Registry
     /// <param name="request">The command</param>
     /// <param name="cancellationToken">cancellation token</param>
     /// <returns></returns>
-    public async Task<CaptchaResponse> Handle(VerifyCaptchaCommand request, CancellationToken cancellationToken)
+    public async ValueTask<CaptchaResponse> Handle(VerifyCaptchaCommand request, CancellationToken cancellationToken)
     {
       ArgumentNullException.ThrowIfNull(request);
 

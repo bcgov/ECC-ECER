@@ -2,7 +2,7 @@ using ECER.Engines.Validation.ICRA;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.ICRA;
 using ECER.Resources.Documents.ICRA;
-using MediatR;
+using Mediator;
 using ICRAStatus = ECER.Resources.Documents.ICRA.ICRAStatus;
 
 namespace ECER.Managers.Registry;
@@ -22,7 +22,7 @@ public class ICRAEligibilityHandlers(
     IRequestHandler<ReplaceIcraWorkExperienceReferenceCommand, AddOrReplaceIcraWorkExperienceReferenceResult>,
     IRequestHandler<GetIcraWorkExperienceReferenceByIdCommand, Contract.ICRA.EmploymentReference>
 {
-  public async Task<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     if (request.eligibility.Id == null)
@@ -68,7 +68,7 @@ public class ICRAEligibilityHandlers(
     return icraEligibilityMapper.MapEligibility(freshIcraEligibilities.SingleOrDefault());
   }
 
-  public async Task<SubmitICRAEligibilityResult> Handle(SubmitICRAEligibilityCommand request, CancellationToken cancellationToken)
+  public async ValueTask<SubmitICRAEligibilityResult> Handle(SubmitICRAEligibilityCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -109,7 +109,7 @@ public class ICRAEligibilityHandlers(
     return new SubmitICRAEligibilityResult { Eligibility = icraEligibilityMapper.MapEligibility(fresh.SingleOrDefault()) };
   }
 
-  public async Task<ICRAEligibilitiesQueryResults> Handle(ICRAEligibilitiesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<ICRAEligibilitiesQueryResults> Handle(ICRAEligibilitiesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -122,7 +122,7 @@ public class ICRAEligibilityHandlers(
     return new ICRAEligibilitiesQueryResults(icraEligibilityMapper.MapEligibilities(eligibilities));
   }
 
-  public async Task<string> Handle(ResendIcraWorkExperienceReferenceInviteCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(ResendIcraWorkExperienceReferenceInviteCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -152,7 +152,7 @@ public class ICRAEligibilityHandlers(
     return icraWorkExperienceReferenceId;
   }
 
-  public async Task<AddOrReplaceIcraWorkExperienceReferenceResult> Handle(AddIcraWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
+  public async ValueTask<AddOrReplaceIcraWorkExperienceReferenceResult> Handle(AddIcraWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -182,7 +182,7 @@ public class ICRAEligibilityHandlers(
     return new AddOrReplaceIcraWorkExperienceReferenceResult { IsSuccess = true, EmploymentReference = icraEligibilityMapper.MapEmploymentReference(icraWorkExperienceReference) };
   }
 
-  public async Task<AddOrReplaceIcraWorkExperienceReferenceResult> Handle(ReplaceIcraWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
+  public async ValueTask<AddOrReplaceIcraWorkExperienceReferenceResult> Handle(ReplaceIcraWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -226,7 +226,7 @@ public class ICRAEligibilityHandlers(
     return new AddOrReplaceIcraWorkExperienceReferenceResult { IsSuccess = true, EmploymentReference = icraEligibilityMapper.MapEmploymentReference(icraWorkExperienceReference) };
   }
 
-  public async Task<Contract.ICRA.EmploymentReference> Handle(GetIcraWorkExperienceReferenceByIdCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Contract.ICRA.EmploymentReference> Handle(GetIcraWorkExperienceReferenceByIdCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 

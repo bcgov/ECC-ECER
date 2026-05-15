@@ -1,4 +1,4 @@
-﻿using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Admin.Contract.Metadatas;
 

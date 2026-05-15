@@ -1,6 +1,6 @@
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.Shared;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry.Contract.Courses;
 

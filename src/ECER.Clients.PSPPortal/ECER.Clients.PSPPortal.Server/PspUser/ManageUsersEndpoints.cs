@@ -1,7 +1,7 @@
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 using ContractPortalAccessStatus = ECER.Managers.Registry.Contract.PspUsers.PortalAccessStatus;

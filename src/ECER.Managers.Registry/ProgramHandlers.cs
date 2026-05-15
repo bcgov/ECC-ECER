@@ -2,7 +2,7 @@ using ECER.Engines.Validation.Programs;
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.Programs;
-using MediatR;
+using Mediator;
 using ProgramStatus = ECER.Resources.Documents.Programs.ProgramStatus;
 
 namespace ECER.Managers.Registry;
@@ -18,7 +18,7 @@ public class ProgramHandlers(
     IRequestHandler<SubmitProgramCommand, SubmitProgramResult>,
     IRequestHandler<ChangeProgramCommand, string>
 {
-  public async Task<Contract.Programs.Program?> Handle(SaveDraftProgramCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Contract.Programs.Program?> Handle(SaveDraftProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -35,7 +35,7 @@ public class ProgramHandlers(
     return programMapper.MapProgram(program);
   }
 
-  public async Task<ProgramsQueryResults> Handle(ProgramsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<ProgramsQueryResults> Handle(ProgramsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -62,21 +62,21 @@ public class ProgramHandlers(
     return new ProgramsQueryResults(programMapper.MapPrograms(result.Programs ?? Array.Empty<Resources.Documents.Programs.Program>()), result.TotalProgramsCount);
   }
 
-  public async Task<string> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var programId = await programRepository.UpdateProgram(programMapper.MapProgram(request.Program), cancellationToken);
     return programId;
   }
 
-  public async Task<string> Handle(ChangeProgramCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(ChangeProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var programId = await programRepository.ChangeProgram(programMapper.MapProgram(request.Program), cancellationToken);
     return programId;
   }
 
-  public async Task<SubmitProgramResult> Handle(SubmitProgramCommand request, CancellationToken cancellationToken)
+  public async ValueTask<SubmitProgramResult> Handle(SubmitProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 

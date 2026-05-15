@@ -6,7 +6,7 @@ using ECER.Resources.Accounts.PspReps;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
 using ECER.Utilities.DataverseSdk.Model;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 
 using RepoPortalAccessStatus = ECER.Resources.Accounts.PspReps.PortalAccessStatus;
@@ -35,7 +35,7 @@ public class PspUserHandlers(
   /// Handles search psp program rep use case
   /// </summary>
   /// <returns>Query results</returns>
-  public async Task<PspRepQueryResults> Handle(SearchPspRepQuery request, CancellationToken cancellationToken)
+  public async ValueTask<PspRepQueryResults> Handle(SearchPspRepQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -55,7 +55,7 @@ public class PspUserHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns>the user id of the updated user</returns>
-  public async Task<string> Handle(UpdatePspRepProfileCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdatePspRepProfileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -74,7 +74,7 @@ public class PspUserHandlers(
   /// <summary>
   /// Handles deactivating a psp user use case
   /// </summary>
-  public async Task<string> Handle(DeactivatePspRepCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(DeactivatePspRepCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -94,7 +94,7 @@ public class PspUserHandlers(
   /// <summary>
   /// Handles reactivating a psp user use case
   /// </summary>
-  public async Task<string> Handle(ReactivatePspRepCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(ReactivatePspRepCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -118,7 +118,7 @@ public class PspUserHandlers(
   /// <summary>
   /// Handles setting a PSP user as the primary representative for their institution
   /// </summary>
-  public async Task<string> Handle(SetPrimaryPspRepCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(SetPrimaryPspRepCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -140,7 +140,7 @@ public class PspUserHandlers(
   /// Handles adding a new psp user use case
   /// </summary>
   /// <returns>the newly created user</returns>
-  public async Task<string> Handle(AddPspRepCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(AddPspRepCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -152,7 +152,7 @@ public class PspUserHandlers(
   /// <summary>
   /// Handles resending a psp user portal invite
   /// </summary>
-  public async Task<string> Handle(ResendPspRepInviteCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(ResendPspRepInviteCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -176,7 +176,7 @@ public class PspUserHandlers(
   /// Handles healing a PSP institution's missing BCeID Business GUID.
   /// If the institution has a matching business name but no GUID, saves the GUID.
   /// </summary>
-  public async Task<HealBceidBusinessIdResult> Handle(HealBceidBusinessIdCommand request, CancellationToken cancellationToken)
+  public async ValueTask<HealBceidBusinessIdResult> Handle(HealBceidBusinessIdCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -211,7 +211,7 @@ public class PspUserHandlers(
   /// Handles registering a psp user use case
   /// </summary>
   /// <returns>the user id of the newly created user</returns>
-  public async Task<RegisterPspUserResult> Handle(RegisterPspUserCommand request, CancellationToken cancellationToken)
+  public async ValueTask<RegisterPspUserResult> Handle(RegisterPspUserCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 

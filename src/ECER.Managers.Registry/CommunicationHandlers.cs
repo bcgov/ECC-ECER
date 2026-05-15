@@ -1,7 +1,7 @@
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Resources.Accounts.Communications;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry;
 
@@ -11,7 +11,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     IRequestHandler<MarkCommunicationAsSeenCommand, string>,
     IRequestHandler<SendMessageCommand, SendMessageResult>
 {
-  public async Task<CommunicationsStatusResults> Handle(Contract.Communications.UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
+  public async ValueTask<CommunicationsStatusResults> Handle(Contract.Communications.UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var unreadMessagesCount = await communicationRepository.QueryStatus(new Resources.Accounts.Communications.UserCommunicationsStatusQuery
@@ -23,7 +23,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     return new CommunicationsStatusResults(communicationsStatus!);
   }
 
-  public async Task<CommunicationsQueryResults> Handle(Contract.Communications.UserCommunicationQuery request, CancellationToken cancellationToken)
+  public async ValueTask<CommunicationsQueryResults> Handle(Contract.Communications.UserCommunicationQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(communicationRepository);
     ArgumentNullException.ThrowIfNull(communicationMapper);
@@ -50,7 +50,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
   /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public async Task<string> Handle(MarkCommunicationAsSeenCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(MarkCommunicationAsSeenCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -86,7 +86,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     return seenCommunicationId;
   }
 
-  public async Task<SendMessageResult> Handle(SendMessageCommand request, CancellationToken cancellationToken)
+  public async ValueTask<SendMessageResult> Handle(SendMessageCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var communication = communicationMapper.MapCommunication(request.communication);

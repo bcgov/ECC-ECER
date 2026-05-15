@@ -1,6 +1,6 @@
 using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;

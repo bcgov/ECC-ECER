@@ -1,6 +1,6 @@
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry.Contract.PostSecondaryInstitutes;
 

@@ -1,6 +1,6 @@
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Resources.Documents.MetadataResources;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Admin;
 
@@ -16,7 +16,7 @@ public class MetadataHandlers(
    IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>,
    IRequestHandler<Contract.Metadatas.DynamicsConfigQuery, DynamicsConfigQueryResults>
 {
-  public async Task<PostSecondaryInstitutionsQueryResults> Handle(Contract.Metadatas.PostSecondaryInstitutionsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<PostSecondaryInstitutionsQueryResults> Handle(Contract.Metadatas.PostSecondaryInstitutionsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -24,7 +24,7 @@ public class MetadataHandlers(
     return new PostSecondaryInstitutionsQueryResults(metadataMapper.MapPostSecondaryInstitutions(postSecondaryInstitutions));
   }
 
-  public async Task<CertificationComparisonQueryResults> Handle(Contract.Metadatas.CertificationComparisonQuery request, CancellationToken cancellationToken)
+  public async ValueTask<CertificationComparisonQueryResults> Handle(Contract.Metadatas.CertificationComparisonQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -48,7 +48,7 @@ public class MetadataHandlers(
     return new CertificationComparisonQueryResults(comparisonRecords!);
   }
 
-  public async Task<ProvincesQueryResults> Handle(Contract.Metadatas.ProvincesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<ProvincesQueryResults> Handle(Contract.Metadatas.ProvincesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -56,7 +56,7 @@ public class MetadataHandlers(
     return new ProvincesQueryResults(metadataMapper.MapProvinces(provinces));
   }
 
-  public async Task<AreaOfInstructionsQueryResults> Handle(Contract.Metadatas.AreaOfInstructionsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<AreaOfInstructionsQueryResults> Handle(Contract.Metadatas.AreaOfInstructionsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -64,7 +64,7 @@ public class MetadataHandlers(
     return new AreaOfInstructionsQueryResults(metadataMapper.MapAreaOfInstructions(instructions));
   }
 
-  public async Task<SystemMessagesQueryResults> Handle(Contract.Metadatas.SystemMessagesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<SystemMessagesQueryResults> Handle(Contract.Metadatas.SystemMessagesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -76,7 +76,7 @@ public class MetadataHandlers(
     return new SystemMessagesQueryResults(metadataMapper.MapSystemMessages(systemMessages));
   }
 
-  public async Task<DefaultContentsQueryResults> Handle(Contract.Metadatas.DefaultContentsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<DefaultContentsQueryResults> Handle(Contract.Metadatas.DefaultContentsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -85,7 +85,7 @@ public class MetadataHandlers(
     return new DefaultContentsQueryResults(metadataMapper.MapDefaultContents(defaultContents));
   }
 
-  public async Task<CountriesQueryResults> Handle(Contract.Metadatas.CountriesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<CountriesQueryResults> Handle(Contract.Metadatas.CountriesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -93,7 +93,7 @@ public class MetadataHandlers(
     return new CountriesQueryResults(metadataMapper.MapCountries(countries));
   }
 
-  public async Task<IdentificationTypesQueryResults> Handle(Contract.Metadatas.IdentificationTypesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<IdentificationTypesQueryResults> Handle(Contract.Metadatas.IdentificationTypesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -101,7 +101,7 @@ public class MetadataHandlers(
     return new IdentificationTypesQueryResults(metadataMapper.MapIdentificationTypes(identificationTypes));
   }
 
-  public async Task<DynamicsConfigQueryResults> Handle(Contract.Metadatas.DynamicsConfigQuery request, CancellationToken cancellationToken)
+  public async ValueTask<DynamicsConfigQueryResults> Handle(Contract.Metadatas.DynamicsConfigQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 

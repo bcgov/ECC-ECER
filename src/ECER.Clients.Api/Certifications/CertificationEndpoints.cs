@@ -1,6 +1,6 @@
 using ECER.Managers.Admin.Contract.Certifications;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ECER.Clients.Api.Certifications;

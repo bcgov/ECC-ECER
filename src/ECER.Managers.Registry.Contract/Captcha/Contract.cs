@@ -1,4 +1,4 @@
-﻿using MediatR;
+using Mediator;
 using System.Text.Json.Serialization;
 
 namespace ECER.Managers.Registry.Contract.Captcha;

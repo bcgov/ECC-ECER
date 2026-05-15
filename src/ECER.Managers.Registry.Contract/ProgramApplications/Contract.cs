@@ -1,5 +1,5 @@
 using ECER.Utilities.ObjectStorage.Providers;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry.Contract.ProgramApplications;
 

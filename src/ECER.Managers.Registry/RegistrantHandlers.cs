@@ -3,7 +3,7 @@ using ECER.Managers.Registry.UserRegistrationIdentityService;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Certifications;
 using ECER.Resources.Documents.MetadataResources;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECER.Managers.Registry;
@@ -26,7 +26,7 @@ public class RegistrantHandlers(
   /// Handles search registrants use case
   /// </summary>
   /// <returns>Query results</returns>
-  public async Task<RegistrantQueryResults> Handle(SearchRegistrantQuery request, CancellationToken cancellationToken)
+  public async ValueTask<RegistrantQueryResults> Handle(SearchRegistrantQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -52,7 +52,7 @@ public class RegistrantHandlers(
   /// </summary>
   /// <returns>the user id of the newly created user</returns>
   /// <exception cref="InvalidOperationException"></exception>
-  public async Task<string> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     IRegistrationIdentityService resolver = request.Identity.IdentityProvider switch
@@ -71,7 +71,7 @@ public class RegistrantHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<string> Handle(UpdateRegistrantProfileCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateRegistrantProfileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -94,7 +94,7 @@ public class RegistrantHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<string> Handle(UpdateRegistrantProfileIdentificationCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateRegistrantProfileIdentificationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 

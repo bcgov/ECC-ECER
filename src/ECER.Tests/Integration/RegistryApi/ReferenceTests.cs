@@ -1,9 +1,9 @@
-﻿using Alba;
+using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.References;
 using ECER.Managers.Admin.Contract.PortalInvitations;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;

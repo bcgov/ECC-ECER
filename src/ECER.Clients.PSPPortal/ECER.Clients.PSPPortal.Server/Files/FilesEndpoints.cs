@@ -2,7 +2,7 @@ using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
