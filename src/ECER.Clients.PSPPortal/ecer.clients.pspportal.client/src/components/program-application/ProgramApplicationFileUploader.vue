@@ -9,7 +9,7 @@
         <p>
           You can upload images, Microsoft Word documents, Microsoft Excel
           documents, and PDFs. Max file size accepted is 10MB. The maximum
-          number of files for each question is 25.
+          number of files for each question is {{ maxNumberOfFiles }}.
         </p>
         <p class="font-weight-bold">
           All attachments must be directly related to your request. Do not
@@ -58,7 +58,8 @@
             Attached files {{ selectedFiles.length }}/{{ maxNumberOfFiles }}
           </span>
           <span v-if="selectedFiles.length >= maxNumberOfFiles">
-            - No more files can be added. You can only add 25 files.
+            - No more files can be added. You can only add
+            {{ maxNumberOfFiles }} files.
           </span>
         </p>
       </div>
