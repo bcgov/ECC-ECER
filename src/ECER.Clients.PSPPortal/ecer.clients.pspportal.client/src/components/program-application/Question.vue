@@ -1,73 +1,79 @@
 <template>
-  <v-card class="px-5">
-    <v-card-title class="pl-0 pr-0">
-      <div ref="titleRow" class="d-flex align-center">
-        <span style="flex: 1; white-space: normal">{{ name }}</span>
-        <template v-if="rfaiRequired">
-          <v-tooltip
-            v-if="chipMode === 'icon'"
-            text="Additional information requested"
-            location="bottom"
+  <Card has-top-border top-border-size="medium" class="program-question-card">
+    <v-card-title class="pa-0 mb-3">
+      <div ref="titleRow" class="d-flex align-start ga-3">
+        <h3 class="flex-grow-1 multiline text-break">{{ name }}</h3>
+
+        <div
+          v-if="rfaiRequired || hasUnsavedChanges"
+          class="d-flex flex-column align-end ga-1 question-meta"
+        >
+          <template v-if="rfaiRequired">
+            <v-tooltip
+              v-if="chipMode === 'icon'"
+              text="Additional information requested"
+              location="bottom"
+            >
+              <template #activator="{ props }">
+                <v-icon v-bind="props" color="warning">
+                  mdi-alert-circle-outline
+                </v-icon>
+              </template>
+            </v-tooltip>
+            <v-chip
+              v-else
+              color="warning"
+              variant="flat"
+              size="small"
+              class="flex-shrink-0"
+            >
+              Additional information requested
+            </v-chip>
+          </template>
+          <span
+            v-if="hasUnsavedChanges"
+            class="small text-error"
+            data-testid="unsaved-changes-flag"
           >
-            <template #activator="{ props }">
-              <v-icon v-bind="props" color="warning">
-                mdi-alert-circle-outline
-              </v-icon>
-            </template>
-          </v-tooltip>
-          <v-chip
-            v-else
-            color="warning"
-            variant="flat"
-            size="small"
-            class="flex-shrink-0 ml-2"
-          >
+            Unsaved changes
+          </span>
+        </div>
+
+        <!-- Hidden measurement elements for RFAI chip responsive collapse.
+             Algorithm: shrink chip first (full -> icon), then wrap title. -->
+        <span
+          ref="nameMeasure"
+          aria-hidden="true"
+          class="position-absolute opacity-0 text-no-wrap"
+        >
+          {{ name }}
+        </span>
+        <span
+          ref="fullChipMeasure"
+          aria-hidden="true"
+          class="position-absolute opacity-0 pointer-events-none"
+        >
+          <v-chip color="warning" variant="flat" size="small">
             Additional information requested
           </v-chip>
-        </template>
+        </span>
+        <span
+          ref="iconChipMeasure"
+          aria-hidden="true"
+          class="position-absolute opacity-0 pointer-events-none"
+        >
+          <v-chip color="warning" variant="flat" size="small">
+            <v-icon>mdi-alert-circle-outline</v-icon>
+          </v-chip>
+        </span>
       </div>
-
-      <!-- Hidden measurement elements. These are to track 
-          card title's name and chip size to determine when to
-          shrink/wrap. First we shrink the chip then we
-          wrap the title
-      -->
-      <span
-        ref="nameMeasure"
-        aria-hidden="true"
-        style="
-          position: absolute;
-          visibility: hidden;
-          white-space: nowrap;
-          pointer-events: none;
-        "
-      >
-        {{ name }}
-      </span>
-      <span
-        ref="fullChipMeasure"
-        aria-hidden="true"
-        style="position: absolute; visibility: hidden; pointer-events: none"
-      >
-        <v-chip color="warning" variant="flat" size="small">
-          Additional information requested
-        </v-chip>
-      </span>
-      <span
-        ref="iconChipMeasure"
-        aria-hidden="true"
-        style="position: absolute; visibility: hidden; pointer-events: none"
-      >
-        <v-chip color="warning" variant="flat" size="small">
-          <v-icon>mdi-alert-circle-outline</v-icon>
-        </v-chip>
-      </span>
-
-      <v-divider />
     </v-card-title>
+
+    <v-divider class="mb-3" />
+
     <v-row no-gutters>
-      <v-col cols="12" class="pt-2">
-        <p class="font-weight-bold multiline">
+      <v-col cols="12">
+        <p class="multiline">
           {{ question }}
         </p>
       </v-col>
@@ -78,8 +84,8 @@
           variant="outlined"
           hide-details="auto"
           :rules="[Rules.maxLength(5000)]"
-          @update:model-value="onAnswerInput"
           :readonly="rfaiRequired ? !rfaiRequired : readOnly"
+          @update:model-value="onAnswerInput"
         />
       </v-col>
     </v-row>
@@ -98,10 +104,11 @@
         />
       </suspense>
     </v-row>
-  </v-card>
+  </Card>
 </template>
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+import Card from "@/components/Card.vue";
 import ProgramApplicationFileUploader from "@/components/program-application/ProgramApplicationFileUploader.vue";
 import type { FileItem } from "@/components/common/UploadFileItem.vue";
 import type { Components } from "@/types/openapi";
@@ -128,7 +135,7 @@ function toFileItem(info: Components.Schemas.FileInfo): FileItem {
 
 export default defineComponent({
   name: "Question",
-  components: { ProgramApplicationFileUploader },
+  components: { Card, ProgramApplicationFileUploader },
   props: {
     modelValue: {
       type: Object as PropType<QuestionModelValue>,
@@ -150,6 +157,10 @@ export default defineComponent({
       default: false,
     },
     readOnly: {
+      type: Boolean,
+      default: false,
+    },
+    hasUnsavedChanges: {
       type: Boolean,
       default: false,
     },
@@ -202,7 +213,7 @@ export default defineComponent({
       const available = titleRow.clientWidth;
       const textWidth = nameMeasure.offsetWidth;
       const fullChipWidth = fullChipMeasure.offsetWidth;
-      const gap = 8; // ml-2
+      const gap = 12; // ga-3 on parent flex row
 
       this.chipMode =
         textWidth + gap + fullChipWidth <= available ? "full" : "icon";

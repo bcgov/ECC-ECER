@@ -35,6 +35,7 @@
           :question="comp.question ?? ''"
           :rfai-required="comp.rfaiRequired ?? false"
           :read-only="isRFAI"
+          :has-unsaved-changes="!!dirtyByComponentId[comp.id ?? '']"
           :program-application-id="programApplicationId"
           :component-group-id="componentGroupId"
           :component-id="comp.id ?? ''"
@@ -84,7 +85,7 @@ import type { Components, ComponentGroupWithComponents } from "@/types/openapi";
 import Question from "@/components/program-application/Question.vue";
 import type { QuestionModelValue } from "@/components/program-application/Question.vue";
 import type { NextStepPayload } from "@/components/program-application/ProgramApplication.vue";
-import { cloneDeep, isEqual, mapValues, omit } from "lodash";
+import { cloneDeep, isEqual, omit } from "lodash";
 
 interface ComponentGroupWithComponentsFlat {
   id?: string | null;
@@ -132,19 +133,20 @@ export default defineComponent({
       return this.components.some((c) => c.rfaiRequired === true);
     },
     hasChanges(): boolean {
-      //we do not need to compare files for changes since those are automatically saved when uploaded
-      const componentsWithFormWithoutFiles = mapValues(
-        this.formByComponentId,
-        (value) => omit(value, ["files"]),
-      );
-      const originalComponentsWithFormWithoutFiles = mapValues(
-        this.originalFormByComponentId,
-        (value) => omit(value, ["files"]),
-      );
-      return !isEqual(
-        componentsWithFormWithoutFiles,
-        originalComponentsWithFormWithoutFiles,
-      );
+      // Derived from the per-component map so the page-level flag and the
+      // per-component flags always agree.
+      return Object.values(this.dirtyByComponentId).some(Boolean);
+    },
+    dirtyByComponentId(): Record<string, boolean> {
+      const result: Record<string, boolean> = {};
+      for (const id of Object.keys(this.formByComponentId)) {
+        const current = omit(this.formByComponentId[id] ?? {}, ["files"]);
+        const original = omit(this.originalFormByComponentId[id] ?? {}, [
+          "files",
+        ]);
+        result[id] = !isEqual(current, original);
+      }
+      return result;
     },
   },
   data() {
