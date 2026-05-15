@@ -93,7 +93,7 @@ internal sealed class PostSecondaryInstituteRepository(EcerContext context, IPos
 
     var newCampus = mapper.MapCampus(campus);
     newCampus.ecer_PostSecondaryInstituteCampusId = Guid.NewGuid();
-    newCampus.StatusCode = ecer_PostSecondaryInstituteCampus_StatusCode.Active;
+    newCampus.StatusCode = ecer_PostSecondaryInstituteCampus_StatusCode.Pending;
     newCampus.StateCode = ecer_postsecondaryinstitutecampus_statecode.Active;
     newCampus.ecer_postsecondaryinstitute = new Microsoft.Xrm.Sdk.EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institutionGuid);
 
