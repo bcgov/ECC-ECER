@@ -59,9 +59,9 @@
               responses later.
             </p>
             <p>
-              To apply to offer an early childhood education program at a new
+              To apply to offer early childhood education program at a new
               campus, an institution must already have a recognized basic or
-              poast-basic early childhood education program.
+              post-basic early childhood education program.
             </p>
 
             <v-row class="mt-4">
@@ -142,7 +142,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <p class="pb-3 font-weight-bold">Location</p>
+          <p class="pb-3 font-weight-bold">Campus</p>
           <p class="pb-3">Select where this program will be administered.</p>
 
           <v-radio-group
@@ -258,7 +258,7 @@ export default defineComponent({
     mapCertificationType(type: string) {
       switch (type) {
         case "Basic":
-          return "Early Childhood Educator";
+          return "Early Childhood Educator (Basic)";
         case "ITE":
           return "Infant and Toddler Educator (ITE)";
         case "SNE":

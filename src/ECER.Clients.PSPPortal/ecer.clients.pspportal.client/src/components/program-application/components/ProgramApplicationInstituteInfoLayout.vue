@@ -153,7 +153,7 @@
           </p>
           <br />
           <!-- prettier-ignore -->
-          <p>
+          <p class="font-weight-bold">
               Note: If the correct user is not listed here, please invite them
               to this portal under
               "<router-link
@@ -501,7 +501,6 @@
       accept-button-text="Save changes"
       cancel-button-text="Continue without saving"
       :loading="isSaving"
-      persistent
     >
       <template #confirmation-text>
         <p>You have made changes to this page that have not been saved.</p>
@@ -515,7 +514,6 @@
       accept-button-text="Leave page"
       cancel-button-text="Stay and fix errors"
       :loading="isSaving"
-      persistent
     >
       <template #confirmation-text>
         <p>
@@ -899,16 +897,20 @@ export default defineComponent({
       ).validate();
 
       //if form is invalid and user wants to leave we need to see if they want to try to fix their changes
-      if (!valid) {
+      if (!valid && this.hasChanges) {
         let dialogInvalidFormRef = this.$refs
           .confirmationDialogInvalidFormRef as InstanceType<
           typeof ConfirmationDialog
         >;
-        const confirmedLeaveWithoutSave = await dialogInvalidFormRef.open();
-        if (confirmedLeaveWithoutSave) {
+        const responseInvalidForm = await dialogInvalidFormRef.open();
+        if (responseInvalidForm === "accept") {
           dialogInvalidFormRef.close();
           return true;
-        } else if (!confirmedLeaveWithoutSave) {
+        } else if (
+          responseInvalidForm === "cancel" ||
+          responseInvalidForm === "exit" ||
+          responseInvalidForm === "clickOutside"
+        ) {
           dialogInvalidFormRef.close();
           return false;
         }
@@ -919,14 +921,20 @@ export default defineComponent({
         let dialogRef = this.$refs.confirmationDialogRef as InstanceType<
           typeof ConfirmationDialog
         >;
-        const confirmed = await dialogRef.open();
-        if (confirmed) {
+        const responseUnsavedChanges = await dialogRef.open();
+        if (responseUnsavedChanges === "accept") {
           await this.handleSave();
           dialogRef.close();
           return true;
-        } else if (!confirmed) {
+        } else if (responseUnsavedChanges === "cancel") {
           dialogRef.close();
           return true;
+        } else if (
+          responseUnsavedChanges === "exit" ||
+          responseUnsavedChanges === "clickOutside"
+        ) {
+          dialogRef.close();
+          return false;
         }
       } else {
         return true;

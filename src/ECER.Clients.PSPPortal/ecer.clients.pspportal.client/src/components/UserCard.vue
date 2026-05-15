@@ -111,6 +111,8 @@
       showDeactivateConfirmation = false;
     "
     @cancel="showDeactivateConfirmation = false"
+    @click-outside="showDeactivateConfirmation = false"
+    @exit="showDeactivateConfirmation = false"
   >
     <template #confirmation-text>
       <p>
@@ -137,6 +139,8 @@
       showCancelInvitationConfirmation = false;
     "
     @cancel="showCancelInvitationConfirmation = false"
+    @exit="showCancelInvitationConfirmation = false"
+    @click-outside="showCancelInvitationConfirmation = false"
   >
     <template #confirmation-text>
       <p>

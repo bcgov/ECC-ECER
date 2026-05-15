@@ -386,9 +386,9 @@ export default defineComponent({
   },
   async mounted() {
     this.isLoading = true;
+    this.users = (await getUsers()) ?? [];
     await this.fetchApplication();
     await this.loadComponents();
-    this.users = (await getUsers()) ?? [];
     this.isLoading = false;
   },
   methods: {

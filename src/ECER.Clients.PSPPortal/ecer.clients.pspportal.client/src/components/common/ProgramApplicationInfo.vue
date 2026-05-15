@@ -11,12 +11,13 @@
       <div class="d-flex flex-column ga-3">
         <p>
           Under the authority of the Community Care and Assisted Living Act and
-          the Child Care Licensing Regulation (CCLR), the director of the Early
+          the Child Care Licensing Regulation, the director of the Early
           Childhood Educator Registry (ECE Registry) sets standards for the
           certification of early childhood educators in British Columbia.
           Recognized early childhood education programs are listed in Schedule D
-          of the CCLR and have been evaluated and found to provide students with
-          the knowledge, skills, and abilities required to meet this standard.
+          of the Child Care Licensing Regulation and have been evaluated and
+          found to provide students with the knowledge, skills, and abilities
+          required to meet this standard.
         </p>
         <p>
           This application solicits information to assess early childhood
@@ -33,8 +34,8 @@
         </p>
         <div>
           <p>
-            To apply for a post-basic program (Infant and Toddler Educator [ITE]
-            and/or Special Needs Educator [SNE]), an institution must either:
+            To apply for a post-basic program (Infant and Toddler Educator
+            and/or Special Needs Educator), an institution must either:
           </p>
           <ul class="ml-10">
             <li>
@@ -66,25 +67,27 @@
     </v-col>
   </v-row>
 
-  <v-row>
+  <v-row v-if="institutionType === 'Private'">
     <v-col cols="12">
       <Callout title="Private institutions" type="warning">
+        <br />
         <p>
           Private institutions planning to offer early childhood education
           programs must first receive certification from the Ministry of
           Post-Secondary Education and Future Skills, Private Training
           Institutions Regulatory Unit.
         </p>
+        <br />
         <p>
           Once certification is received, the post-secondary institution may
           then apply to become a recognized early childhood education program.
-          Visit
+          Visit the
           <a
             href="http://www.privatetraininginstitutions.gov.bc.ca/institutions"
             class="text-primary text-decoration-underline"
             target="_blank"
           >
-            Private Training Institutions
+            Private Training Institutions Regulatory Unit
           </a>
           for more information.
         </p>
@@ -99,10 +102,6 @@
           <h3>To begin your application</h3>
           <ul class="ml-10">
             <li>Provide the requested institution and program information</li>
-            <li>
-              When you continue, the application will be saved for you to
-              complete
-            </li>
           </ul>
         </div>
         <div>
@@ -110,7 +109,7 @@
           <ul class="ml-10">
             <li>
               As your application will take some time to complete, you may save
-              and exit at any point in the form to resume editing later
+              and exit at any point to resume editing later
             </li>
             <li>You may complete the sections in any order</li>
             <li>
@@ -148,10 +147,6 @@
         <p>
           The ECE Registry can begin your assessment after you submit your
           completed application package.
-        </p>
-        <p>
-          A recognition evaluation meeting will be required during the
-          assessment to determine interim recognition and ongoing recognition.
         </p>
         <p>
           Two recognition evaluation meetings are required during the
@@ -202,13 +197,21 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import type { PropType } from "vue";
 import Callout from "@/components/common/Callout.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import type { PsiInstitutionType } from "@/types/openapi";
 
 export default defineComponent({
   name: "ProgramApplicationInformation",
   components: { Breadcrumb, ECEHeader, Callout, PageContainer },
+  props: {
+    institutionType: {
+      type: String as PropType<PsiInstitutionType | undefined>,
+      required: true,
+    },
+  },
 });
 </script>

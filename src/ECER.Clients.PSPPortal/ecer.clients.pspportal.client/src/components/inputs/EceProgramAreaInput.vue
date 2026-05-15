@@ -84,7 +84,7 @@
           href="https://www2.gov.bc.ca/assets/download/3C37875A5D1944DBB4224F0AEA481E74"
           target="_blank"
         >
-          Table 1, 2 or 3 of the Child Care Occupational Competencies.
+          BC Child Care Sector Occupational Competencies.
         </a>
       </p>
       <br />

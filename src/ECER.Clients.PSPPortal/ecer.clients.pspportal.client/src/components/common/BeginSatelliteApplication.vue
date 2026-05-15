@@ -59,18 +59,17 @@
               responses later.
             </p>
             <p>
-              To apply to offer an early childhood education program at a
-              satelitte location, an institution must already have a recognized
-              basic or post-basic early childhood education program.
+              To apply to offer early childhood education program at a satellite
+              location, an institution must already have a recognized basic or
+              post-basic early childhood education program.
             </p>
 
             <v-row>
               <v-col cols="12">
                 <p class="pb-3 font-weight-bold">Program Profile</p>
                 <p class="mb-3">
-                  Select the ECE Registry-recognized program for which you are
-                  requesting approval to expand delivery to online or hybrid
-                  formats.
+                  Select the Registry-recognized program for which you are
+                  requesting approval to offer at a satellite location.
                 </p>
               </v-col>
               <v-col cols="12" md="6">
@@ -118,7 +117,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <p class="pb-3">Delivery method(s)</p>
+          <p class="pb-3">Delivery method</p>
           <v-radio-group
             id="programConfirmationRadio"
             v-model="deliveryType"
@@ -138,7 +137,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <p class="pb-3">Location</p>
+          <p class="pb-3 font-weight-bold">Location</p>
           <p class="pb-3">Select where this program will be administered.</p>
           <v-radio-group
             id="campusRadio"
@@ -260,7 +259,7 @@ export default defineComponent({
     mapCertificationType(type: string) {
       switch (type) {
         case "Basic":
-          return "Early Childhood Educator";
+          return "Early Childhood Educator (Basic)";
         case "ITE":
           return "Infant and Toddler Educator (ITE)";
         case "SNE":

@@ -59,8 +59,8 @@
               responses later.
             </p>
             <p>
-              To apply to expand an early childhood education program delivery
-              to online or hybrid formats, an institution must already have a
+              To apply to expand early childhood education program delivery to
+              online or hybrid methods, an institution must already have a
               recognized basic or post-basic early childhood education program.
             </p>
 
@@ -229,7 +229,7 @@ export default defineComponent({
     mapCertificationType(type: string) {
       switch (type) {
         case "Basic":
-          return "Early Childhood Educator";
+          return "Early Childhood Educator (Basic)";
         case "ITE":
           return "Infant and Toddler Educator (ITE)";
         case "SNE":

@@ -61,7 +61,6 @@
     accept-button-text="Save changes"
     cancel-button-text="Continue without saving"
     :loading="saving"
-    persistent
   >
     <template #confirmation-text>
       <p>You have made changes to this page that have not been saved.</p>
@@ -235,14 +234,17 @@ export default defineComponent({
         let dialogRef = this.$refs.confirmationDialogRef as InstanceType<
           typeof ConfirmationDialog
         >;
-        const saveBeforeLeaving = await dialogRef.open();
-        if (saveBeforeLeaving) {
+        const response = await dialogRef.open();
+        if (response === "accept") {
           await this.handleSave();
           dialogRef.close();
           return true;
-        } else if (!saveBeforeLeaving) {
+        } else if (response === "cancel") {
           dialogRef.close();
           return true;
+        } else if (response === "exit" || response === "clickOutside") {
+          dialogRef.close();
+          return false;
         }
       }
       return true;
