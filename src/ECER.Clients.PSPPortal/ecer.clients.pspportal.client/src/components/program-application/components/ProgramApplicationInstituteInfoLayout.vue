@@ -153,7 +153,7 @@
           </p>
           <br />
           <!-- prettier-ignore -->
-          <p>
+          <p class="font-weight-bold">
               Note: If the correct user is not listed here, please invite them
               to this portal under
               "<router-link
