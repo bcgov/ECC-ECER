@@ -1,6 +1,6 @@
-﻿using ECER.Managers.Admin.Contract.Files;
+using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.ObjectStorage.Providers;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Admin.Contract.Certifications;
 

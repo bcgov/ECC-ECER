@@ -1,6 +1,6 @@
-﻿using ECER.Managers.Registry.Contract.Applications;
+using ECER.Managers.Registry.Contract.Applications;
 using ECER.Managers.Registry.Contract.Certifications;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry.Contract.PortalInvitations;
 

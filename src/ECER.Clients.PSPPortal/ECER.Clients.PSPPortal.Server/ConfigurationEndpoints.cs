@@ -2,7 +2,7 @@ using ECER.Clients.PSPPortal.Server.EducationInstitutions;
 using ECER.Clients.PSPPortal.Server.Programs;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 
 namespace ECER.Clients.PSPPortal.Server;
 

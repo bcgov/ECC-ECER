@@ -1,9 +1,9 @@
-﻿using ECER.Managers.Admin.Contract.Files;
+using ECER.Managers.Admin.Contract.Files;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Utilities.FileScanner;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Concurrent;
 
@@ -13,7 +13,7 @@ public class FileHandlers(IObjectStorageProviderResolver objectStorageProviderRe
   : IRequestHandler<SaveFileCommand, SaveFileCommandResponse>, IRequestHandler<DeleteFileCommand>, IRequestHandler<FileQuery, FileQueryResults>
 
 {
-  public async Task<SaveFileCommandResponse> Handle(SaveFileCommand request, CancellationToken cancellationToken)
+  public async ValueTask<SaveFileCommandResponse> Handle(SaveFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var saveFileResults = new ConcurrentBag<SaveFileResult>();
@@ -43,15 +43,16 @@ public class FileHandlers(IObjectStorageProviderResolver objectStorageProviderRe
     return new SaveFileCommandResponse(saveFileResults);
   }
 
-  public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Unit> Handle(DeleteFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var objectStorageProvider = objectStorageProviderResolver.resolve(request.Item.FileLocation.ecerWebApplicationType);
     var bucket = objectStorageProvider.BucketName;
     await objectStorageProvider.DeleteAsync(new S3Descriptor(bucket!, request.Item.FileLocation.Id, request.Item.FileLocation.Folder), cancellationToken);
+    return Unit.Value;
   }
 
-  public async Task<FileQueryResults> Handle(FileQuery request, CancellationToken cancellationToken)
+  public async ValueTask<FileQueryResults> Handle(FileQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(configuration);

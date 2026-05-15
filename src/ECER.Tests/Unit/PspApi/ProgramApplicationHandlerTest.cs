@@ -3,7 +3,7 @@ using ECER.Managers.Registry;
 using ECER.Resources.Documents.Courses;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.ProgramApplications;
-using MediatR;
+using Mediator;
 using Moq;
 using Shouldly;
 using ContractApplicationStatus = ECER.Managers.Registry.Contract.ProgramApplications.ApplicationStatus;
@@ -170,7 +170,7 @@ public class ProgramApplicationHandlerTest
   public async Task Handle_UpdateComponentGroupCommand_NullRequest_ThrowsArgumentNullException()
   {
     var handler = CreateHandler();
-    await Should.ThrowAsync<ArgumentNullException>(() => handler.Handle((UpdateComponentGroupCommand)null!, CancellationToken.None));
+    await Should.ThrowAsync<ArgumentNullException>(async () => await handler.Handle((UpdateComponentGroupCommand)null!, CancellationToken.None));
   }
 
   [Fact]

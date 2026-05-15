@@ -2,7 +2,7 @@ using ECER.Engines.Transformation;
 using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Documents.PortalInvitations;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry.PortalInvitations;
 
@@ -13,7 +13,7 @@ public class PortalInvitationHandlers(
   IEnumerable<IPortalInvitationVerificationHandler> verificationHandlers)
   : IRequestHandler<PortalInvitationVerificationQuery, PortalInvitationVerificationQueryResult>
 {
-  public async Task<PortalInvitationVerificationQueryResult> Handle(PortalInvitationVerificationQuery request, CancellationToken cancellationToken)
+  public async ValueTask<PortalInvitationVerificationQueryResult> Handle(PortalInvitationVerificationQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var response = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.VerificationToken))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");

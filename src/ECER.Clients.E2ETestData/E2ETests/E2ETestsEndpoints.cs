@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http.HttpResults;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 using ECER.Managers.E2ETest.Contract.E2ETestsContacts;
 using Microsoft.AspNetCore.Mvc;
 using ECER.Managers.Registry.Contract.Registrants;

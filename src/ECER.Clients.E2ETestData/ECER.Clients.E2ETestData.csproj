@@ -9,6 +9,11 @@
 
   <ItemGroup>
     <PackageReference Include="Bogus" />
+    <PackageReference Include="Mediator.Abstractions" />
+    <PackageReference Include="Mediator.SourceGenerator">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="MinimalApis.Extensions" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
@@ -19,7 +24,6 @@
     <ProjectReference Include="..\ECER.Managers.Registry.Contract\ECER.Managers.Registry.Contract.csproj" />
     <ProjectReference Include="..\ECER.Managers.Registry\ECER.Managers.Registry.csproj" />
     <ProjectReference Include="..\ECER.Utilities.Hosting\ECER.Utilities.Hosting.csproj" />
-  
-</ItemGroup>
+  </ItemGroup>
 
 </Project>

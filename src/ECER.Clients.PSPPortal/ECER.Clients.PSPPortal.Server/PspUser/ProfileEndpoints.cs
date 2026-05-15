@@ -3,7 +3,7 @@ using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Serilog;
 
@@ -147,7 +147,7 @@ public record PspUserProfile
 /// <summary>
 /// Role of the PSP user
 /// </summary>
-/// 
+///
 public enum PspUserRole
 {
   /// <summary>Primary (for email/communications</summary>

@@ -7,7 +7,7 @@ using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.ICRA;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
-using MediatR;
+using Mediator;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Managers.Registry;
@@ -44,7 +44,7 @@ public class ApplicationHandlers(
   /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public async Task<Contract.Applications.Application?> Handle(SaveDraftApplicationCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Contract.Applications.Application?> Handle(SaveDraftApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -90,7 +90,7 @@ public class ApplicationHandlers(
   /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public async Task<Contract.Applications.Application?> Handle(SaveApplicationTranscriptCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Contract.Applications.Application?> Handle(SaveApplicationTranscriptCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -117,7 +117,7 @@ public class ApplicationHandlers(
     return applicationMapper.MapApplication(freshApplications.SingleOrDefault());
   }
 
-  public async Task<string> Handle(CancelDraftApplicationCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(CancelDraftApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -142,7 +142,7 @@ public class ApplicationHandlers(
   /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public async Task<ApplicationSubmissionResult> Handle(SubmitApplicationCommand request, CancellationToken cancellationToken)
+  public async ValueTask<ApplicationSubmissionResult> Handle(SubmitApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -215,7 +215,7 @@ public class ApplicationHandlers(
   /// <param name="request">The query</param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<ApplicationsQueryResults> Handle(ApplicationsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<ApplicationsQueryResults> Handle(ApplicationsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -235,7 +235,7 @@ public class ApplicationHandlers(
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="InvalidCastException"></exception>
-  public async Task<ReferenceSubmissionResult> Handle(SubmitReferenceCommand request, CancellationToken cancellationToken)
+  public async ValueTask<ReferenceSubmissionResult> Handle(SubmitReferenceCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -306,7 +306,7 @@ public class ApplicationHandlers(
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="InvalidCastException"></exception>
-  public async Task<ReferenceSubmissionResult> Handle(Contract.Applications.OptOutReferenceRequest request, CancellationToken cancellationToken)
+  public async ValueTask<ReferenceSubmissionResult> Handle(Contract.Applications.OptOutReferenceRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -333,7 +333,7 @@ public class ApplicationHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<UpdateWorkExperienceReferenceResult> Handle(Contract.Applications.UpdateWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
+  public async ValueTask<UpdateWorkExperienceReferenceResult> Handle(Contract.Applications.UpdateWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -348,7 +348,7 @@ public class ApplicationHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<UpdateCharacterReferenceResult> Handle(Contract.Applications.UpdateCharacterReferenceCommand request, CancellationToken cancellationToken)
+  public async ValueTask<UpdateCharacterReferenceResult> Handle(Contract.Applications.UpdateCharacterReferenceCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -363,7 +363,7 @@ public class ApplicationHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<string> Handle(ResendCharacterReferenceInviteRequest request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(ResendCharacterReferenceInviteRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -388,7 +388,7 @@ public class ApplicationHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<string> Handle(ResendWorkExperienceReferenceInviteRequest request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(ResendWorkExperienceReferenceInviteRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -407,7 +407,7 @@ public class ApplicationHandlers(
     return await applicationRepository.ResendWorkExperienceReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
   }
 
-  public async Task<AddProfessionalDevelopmentResult> Handle(AddProfessionalDevelopmentCommand request, CancellationToken cancellationToken)
+  public async ValueTask<AddProfessionalDevelopmentResult> Handle(AddProfessionalDevelopmentCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 

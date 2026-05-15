@@ -1,4 +1,4 @@
-﻿using Alba;
+using Alba;
 using ECER.Clients.PSPPortal.Server.EducationInstitutions;
 using ECER.Clients.PSPPortal.Server.Users;
 using ECER.Clients.RegistryPortal.Server;
@@ -6,7 +6,7 @@ using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Admin.Contract.PortalInvitations;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Managers.Registry.Contract.PostSecondaryInstitutes;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;

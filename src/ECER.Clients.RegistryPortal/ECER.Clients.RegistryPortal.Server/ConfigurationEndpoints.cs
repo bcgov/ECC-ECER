@@ -1,7 +1,7 @@
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.Options;
 
 namespace ECER.Clients.RegistryPortal.Server;

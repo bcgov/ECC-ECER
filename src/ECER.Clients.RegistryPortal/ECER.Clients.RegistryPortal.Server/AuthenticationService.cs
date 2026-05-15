@@ -1,7 +1,7 @@
-﻿using ECER.Clients.RegistryPortal.Server.Shared;
+using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;

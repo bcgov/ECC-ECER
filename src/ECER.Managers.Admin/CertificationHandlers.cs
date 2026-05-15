@@ -3,7 +3,7 @@ using ECER.Managers.Admin.Contract.Files;
 using ECER.Resources.Documents.Certifications;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
-using MediatR;
+using Mediator;
 using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
@@ -15,7 +15,7 @@ public class CertificationHandlers(
   : IRequestHandler<GetCertificationsCommand, GetCertificationsCommandResponse>,
     IRequestHandler<GetCertificationFileCommand, FileQueryResults>
 {
-  public async Task<GetCertificationsCommandResponse> Handle(GetCertificationsCommand request, CancellationToken cancellationToken)
+  public async ValueTask<GetCertificationsCommandResponse> Handle(GetCertificationsCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -23,7 +23,7 @@ public class CertificationHandlers(
     return new GetCertificationsCommandResponse(certificationMapper.MapCertificationSummaries(certifications));
   }
 
-  public async Task<FileQueryResults> Handle(GetCertificationFileCommand request, CancellationToken cancellationToken)
+  public async ValueTask<FileQueryResults> Handle(GetCertificationFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 

@@ -1,7 +1,7 @@
-﻿using ECER.Managers.Registry.Contract.PspUsers;
+using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry.Contract.Registrants;
 

@@ -1,6 +1,6 @@
 using ECER.Managers.Registry.Contract.PostSecondaryInstitutes;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry;
 
@@ -16,7 +16,7 @@ public class PostSecondaryInstituteHandlers(
   /// Handles search post secondary institution by program representative use case
   /// </summary>
   /// <returns>Query results</returns>
-  public async Task<PostSecondaryInstitutionsQueryResults> Handle(SearchPostSecondaryInstitutionQuery request, CancellationToken cancellationToken)
+  public async ValueTask<PostSecondaryInstitutionsQueryResults> Handle(SearchPostSecondaryInstitutionQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -34,7 +34,7 @@ public class PostSecondaryInstituteHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<string> Handle(UpdatePostSecondaryInstitutionCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdatePostSecondaryInstitutionCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -68,7 +68,7 @@ public class PostSecondaryInstituteHandlers(
   /// <summary>
   /// Handles creating a new campus or satellite location for the institution of the given program representative
   /// </summary>
-  public async Task<string> Handle(CreateCampusCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(CreateCampusCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -86,7 +86,7 @@ public class PostSecondaryInstituteHandlers(
   /// <summary>
   /// Handles updating an existing campus - IsSatelliteOrTemporaryLocation is not changed
   /// </summary>
-  public async Task<UpdateCampusResult> Handle(UpdateCampusCommand request, CancellationToken cancellationToken)
+  public async ValueTask<UpdateCampusResult> Handle(UpdateCampusCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -107,7 +107,7 @@ public class PostSecondaryInstituteHandlers(
       return new UpdateCampusResult() { Error = UpdateCampusError.DuplicateCampusName };
     }
     var existingCampus = institution.Campuses?.SingleOrDefault(c => c.Id == request.Campus.Id);
-    if (existingCampus == null) 
+    if (existingCampus == null)
     {
       return new UpdateCampusResult() { Error = UpdateCampusError.InvalidCampus };
     }

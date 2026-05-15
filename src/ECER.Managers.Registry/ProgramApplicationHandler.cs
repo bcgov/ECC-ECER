@@ -5,7 +5,7 @@ using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Resources.Documents.Courses;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.ProgramApplications;
-using MediatR;
+using Mediator;
 using ApplicationFileInfo = ECER.Managers.Registry.Contract.ProgramApplications.ApplicationFileInfo;
 using ComponentGroupQuery = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupQuery;
 using ComponentGroupWithComponents = ECER.Managers.Registry.Contract.ProgramApplications.ComponentGroupWithComponents;
@@ -39,7 +39,7 @@ public class ProgramApplicationHandler(
     IRequestHandler<ProgramApplicationDocumentUrlsQuery, IEnumerable<ApplicationFileInfo>>,
     IRequestHandler<DeleteProgramApplicationFileCommand>
 {
-  public async Task<Contract.ProgramApplications.ProgramApplication?> Handle(CreateProgramApplicationCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Contract.ProgramApplications.ProgramApplication?> Handle(CreateProgramApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -56,13 +56,13 @@ public class ProgramApplicationHandler(
     return programApplicationMapper.MapProgramApplication(created);
   }
 
-  public async Task<string> Handle(UpdateProgramApplicationCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateProgramApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     return await programApplicationRepository.UpdateProgramApplication(programApplicationMapper.MapProgramApplication(request.ProgramApplication), cancellationToken);
   }
 
-  public async Task<ProgramApplicationQueryResults> Handle(ProgramApplicationQuery request, CancellationToken cancellationToken)
+  public async ValueTask<ProgramApplicationQueryResults> Handle(ProgramApplicationQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -83,7 +83,7 @@ public class ProgramApplicationHandler(
     return new ProgramApplicationQueryResults(programApplicationMapper.MapProgramApplications(result.Items), result.Count);
   }
 
-  public async Task<IEnumerable<NavigationMetadata>> Handle(ComponentGroupQuery request, CancellationToken cancellationToken)
+  public async ValueTask<IEnumerable<NavigationMetadata>> Handle(ComponentGroupQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var result = await programApplicationRepository.QueryComponentGroups(new Resources.Documents.ProgramApplications.ComponentGroupQuery
@@ -115,7 +115,7 @@ public class ProgramApplicationHandler(
     return mappedComponentResults;
   }
 
-  public async Task<IEnumerable<ComponentGroupWithComponents>> Handle(ComponentGroupWithComponentsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<IEnumerable<ComponentGroupWithComponents>> Handle(ComponentGroupWithComponentsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var query = new Resources.Documents.ProgramApplications.ComponentGroupWithComponentsQuery
@@ -127,13 +127,13 @@ public class ProgramApplicationHandler(
     return programApplicationMapper.MapComponentGroupsWithComponents(result);
   }
 
-  public async Task<string> Handle(UpdateComponentGroupCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateComponentGroupCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     return await programApplicationRepository.UpdateComponentGroup(programApplicationMapper.MapComponentGroupWithComponents(request.ComponentGroup), request.ProgramApplicationId, cancellationToken);
   }
 
-  public async Task<ApplicationFileInfo> Handle(UploadProgramApplicationFileCommand request, CancellationToken cancellationToken)
+  public async ValueTask<ApplicationFileInfo> Handle(UploadProgramApplicationFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -170,7 +170,7 @@ public class ProgramApplicationHandler(
     return programApplicationMapper.MapApplicationFileInfo(resourcesResult);
   }
 
-  public async Task<ApplicationFileInfo> Handle(ShareExistingDocumentCommand request, CancellationToken cancellationToken)
+  public async ValueTask<ApplicationFileInfo> Handle(ShareExistingDocumentCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var resourcesResult = await programApplicationRepository.CreateShareOnly(
@@ -182,21 +182,21 @@ public class ProgramApplicationHandler(
     return programApplicationMapper.MapApplicationFileInfo(resourcesResult);
   }
 
-  public async Task<IEnumerable<ApplicationFileInfo>> Handle(ProgramApplicationFilesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<IEnumerable<ApplicationFileInfo>> Handle(ProgramApplicationFilesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var resourcesResult = await programApplicationRepository.GetApplicationFiles(request.ProgramApplicationId, cancellationToken);
     return programApplicationMapper.MapApplicationFiles(resourcesResult);
   }
 
-  public async Task<IEnumerable<ApplicationFileInfo>> Handle(ProgramApplicationDocumentUrlsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<IEnumerable<ApplicationFileInfo>> Handle(ProgramApplicationDocumentUrlsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var resourcesResult = await programApplicationRepository.GetApplicationDocumentUrls(request.ProgramApplicationId, cancellationToken);
     return programApplicationMapper.MapApplicationFiles(resourcesResult);
   }
 
-  public async Task Handle(DeleteProgramApplicationFileCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Unit> Handle(DeleteProgramApplicationFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var details = await programApplicationRepository.GetShareDocumentUrlDetails(request.ShareDocumentId, cancellationToken);
@@ -212,9 +212,10 @@ public class ProgramApplicationHandler(
     }
 
     await programApplicationRepository.DeleteShareDocumentUrlById(request.ShareDocumentId, cancellationToken);
+    return Unit.Value;
   }
 
-  public async Task<ProgramApplicationSubmissionResult> Handle(SubmitProgramApplicationCommand request, CancellationToken cancellationToken)
+  public async ValueTask<ProgramApplicationSubmissionResult> Handle(SubmitProgramApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 

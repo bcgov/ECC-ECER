@@ -2,7 +2,7 @@ using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.PostSecondaryInstitutes;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 namespace ECER.Clients.PSPPortal.Server.EducationInstitutions;
@@ -63,7 +63,7 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
         var campus = mapper.MapUpdateCampusRequest(request);
         campus = campus with { Id = campusId };
         var result = await bus.Send(new UpdateCampusCommand(user.UserId, campus), ct);
-        
+
         if (result.Error == UpdateCampusError.InstitutionNotFound)
         {
           return TypedResults.BadRequest(new ProblemDetails() { Title = $"No institution found for program representative {user.UserId}" });
@@ -73,7 +73,7 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
         {
           return TypedResults.BadRequest(new ProblemDetails() { Title = $"This campus name already exists." });
         }
-        
+
         if (result.Error == UpdateCampusError.InvalidCampus)
         {
           return TypedResults.BadRequest(new ProblemDetails() { Title = $"Campus {request.Name} does not belong to the user's institution" });

@@ -1,6 +1,6 @@
 using Alba;
 using ECER.Managers.Registry.Contract.PspUsers;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
@@ -24,7 +24,7 @@ public class ProfileTests : PspPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    // Verify the institution now has the BCeID GUID by querying via MediatR
+    // Verify the institution now has the BCeID GUID by querying through the mediator
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var healResult = await bus.Send(new HealBceidBusinessIdCommand(
       Fixture.HealingTestPostSecondaryInstituteId,

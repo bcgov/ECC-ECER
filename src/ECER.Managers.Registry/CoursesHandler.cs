@@ -6,7 +6,7 @@ using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.ProgramApplications;
 using ECER.Resources.Documents.Programs;
 using ECER.Utilities.DataverseSdk.Model;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry;
 
@@ -23,7 +23,7 @@ public class CoursesHandler(
     IRequestHandler<DeleteCourseCommand, string>,
     IRequestHandler<GetCoursesCommand, IEnumerable<Contract.Shared.Course>>
 {
-  public async Task<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);
@@ -67,7 +67,7 @@ public class CoursesHandler(
     throw new InvalidOperationException("Operation not allowed");
   }
 
-  public async Task<SaveCourseCommandResult> Handle(SaveCourseCommand request, CancellationToken cancellationToken)
+  public async ValueTask<SaveCourseCommandResult> Handle(SaveCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.Course);
@@ -101,7 +101,7 @@ public class CoursesHandler(
     return new SaveCourseCommandResult { CourseId = courseId };
   }
 
-  public async Task<IEnumerable<Contract.Shared.Course>> Handle(GetCoursesCommand request, CancellationToken cancellationToken)
+  public async ValueTask<IEnumerable<Contract.Shared.Course>> Handle(GetCoursesCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -113,7 +113,7 @@ public class CoursesHandler(
     return coursesMapper.MapCourses(courses);
   }
 
-  public async Task<string> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(request.CourseId);

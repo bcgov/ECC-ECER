@@ -1,6 +1,6 @@
-﻿using ECER.Managers.Admin.Contract.PortalInvitations;
+using ECER.Managers.Admin.Contract.PortalInvitations;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ECER.Clients.Api.References;
