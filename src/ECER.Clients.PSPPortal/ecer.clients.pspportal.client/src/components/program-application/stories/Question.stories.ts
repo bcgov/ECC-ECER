@@ -67,3 +67,36 @@ export const LongName: Story = {
     hasUnsavedChanges: true,
   },
 };
+
+export const WithSelectableExistingFiles: Story = {
+  // Per-story decorator that overrides the meta decorator's empty store
+  // with fixtures so "Select a previously uploaded file" renders.
+  decorators: [
+    () => ({
+      setup() {
+        const store = useApplicationFilesStore();
+        store.filesByApplicationId = {
+          [FAKE_APP_ID]: [
+            {
+              documentUrlId: "doc-1",
+              shareDocumentUrlId: null,
+              fileName: "existing_resume.pdf",
+              fileSize: "120.5KB",
+              url: null,
+              extension: ".pdf",
+            },
+            {
+              documentUrlId: "doc-2",
+              shareDocumentUrlId: null,
+              fileName: "transcript_2024.pdf",
+              fileSize: "320.0KB",
+              url: null,
+              extension: ".pdf",
+            },
+          ],
+        };
+      },
+      template: "<story />",
+    }),
+  ],
+};
