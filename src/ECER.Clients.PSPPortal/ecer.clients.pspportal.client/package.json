@@ -50,7 +50,7 @@
     "@vitest/coverage-v8": "^4.0.18",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.7.0",
-    "@vue/tsconfig": "^0.8.1",
+    "@vue/tsconfig": "^0.9.1",
     "cypress": "^15.15.0",
     "eslint": "^9.39.4",
     "eslint-plugin-chai-friendly": "^1.2.0",
