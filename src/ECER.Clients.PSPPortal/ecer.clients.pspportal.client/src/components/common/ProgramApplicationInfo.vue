@@ -19,6 +19,7 @@
           found to provide students with the knowledge, skills, and abilities
           required to meet this standard.
         </p>
+        <!-- prettier-ignore -->
         <p>
           This application solicits information to assess early childhood
           education programs against the standards as established in regulation,
@@ -29,8 +30,7 @@
             target="_blank"
           >
             B.C. Child Care Sector Occupational Competencies
-          </a>
-          (CCSOC), and the Linking Competencies document.
+          </a>, and the Linking Competencies document.
         </p>
         <div>
           <p>
