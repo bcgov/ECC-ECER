@@ -74,9 +74,10 @@
       </v-col>
       <v-col cols="auto" class="align-self-end">
         <a
+          class="small-link-text"
           v-if="!isLoading"
           href="#"
-          @click.prevent="showDeactivateConfirmation = true"
+          @click.prevent="showCancelInvitationConfirmation = true"
         >
           Cancel invitation
         </a>
@@ -226,3 +227,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.small-link-text {
+  font-size: 0.9rem;
+}
+</style>
