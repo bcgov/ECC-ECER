@@ -65,7 +65,7 @@
     </v-col>
     <v-col>
       <p class="small font-weight-bold">
-        {{ programApplicationObject?.deliveryType }}
+        {{ mapDeliveryType(programApplicationObject?.deliveryType) }}
       </p>
     </v-col>
   </v-row>
@@ -168,6 +168,7 @@ import {
   mapDeliveryMethods,
   mapEnrollmentOptions,
   mapProgramType,
+  mapDeliveryType,
 } from "@/api/program-application";
 import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
@@ -230,6 +231,7 @@ export default defineComponent({
     },
   },
   methods: {
+    mapDeliveryType,
     showDeliverySection(): boolean {
       return this.programApplicationObject?.deliveryType !== "Inperson";
     },
