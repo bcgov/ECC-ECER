@@ -173,14 +173,6 @@
               :rules="[
                 Rules.required('Enter the start date'),
                 Rules.futureDateNotAllowedRule(),
-                Rules.conditionalWrapper(
-                  isDraftApplicationAssistant,
-                  Rules.dateRuleRange(
-                    applicationStore.draftApplication.createdOn!,
-                    5,
-                    'Start date must be within the last 5 years',
-                  ),
-                ),
               ]"
               :label="`Start date of ${isDraftApplicationAssistant ? 'course' : 'program'}`"
               maxlength="50"
@@ -198,9 +190,10 @@
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(startYear || ''),
                 Rules.conditionalWrapper(
-                  isDraftApplicationAssistant,
+                  isDraftApplicationAssistant &&
+                    !isDraftApplicationAssistantRenewal,
                   Rules.dateRuleRange(
-                    applicationStore.draftApplication.createdOn!,
+                    today,
                     5,
                     'End date must be within the last 5 years',
                   ),
