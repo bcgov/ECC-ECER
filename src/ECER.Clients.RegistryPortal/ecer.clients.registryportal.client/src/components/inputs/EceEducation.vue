@@ -190,10 +190,9 @@
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(startYear || ''),
                 Rules.conditionalWrapper(
-                  isDraftApplicationAssistant &&
-                    !isDraftApplicationAssistantRenewal,
+                  isDraftApplicationAssistant,
                   Rules.dateRuleRange(
-                    today,
+                    applicationStore.draftApplication.createdOn!,
                     5,
                     'End date must be within the last 5 years',
                   ),
