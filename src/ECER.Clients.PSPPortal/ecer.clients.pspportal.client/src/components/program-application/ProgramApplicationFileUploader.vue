@@ -295,10 +295,10 @@ export default defineComponent({
       if (this.selectedFiles.length + files.length > this.maxNumberOfFiles) {
         this.showErrorBanner = true;
         this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
-      }
-
-      for (const file of Array.from(files)) {
-        this.addFileToQueue(file);
+      } else {
+        for (const file of Array.from(files)) {
+          this.addFileToQueue(file);
+        }
       }
     },
     addFileToQueue(file: File) {
