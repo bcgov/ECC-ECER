@@ -33,7 +33,7 @@
             target="_blank"
           >
             B.C. Child Care Sector Occupational Competencies
-          </a> (CCSOC), and the Linking Competencies document.
+          </a>, and the Linking Competencies document.
         </p>
         <p>
           This application is for institutions offering recognized early
@@ -125,10 +125,6 @@
         <p>
           The ECE Registry can begin your assessment after you submit your
           completed application package.
-        </p>
-        <p>
-          A recognition evaluation meeting will be required during the
-          assessment to determine interim recognition and ongoing recognition.
         </p>
         <p>
           Two recognition evaluation meetings are required during the

@@ -32,7 +32,7 @@
           >
             B.C. Child Care Sector Occupational Competencies
           </a>
-          (CCSOC), and the Linking Competencies document.
+          , and the Linking Competencies document.
         </p>
 
         <p>
