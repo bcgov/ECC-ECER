@@ -200,7 +200,7 @@ export default defineComponent({
   async setup() {
     const alertStore = useAlertStore();
     const applicationFilesStore = useApplicationFilesStore();
-    const maxFileSizeInMB = 10;
+    const maxFileSizeInMB = 50;
     const maxFileSizeInBytes = maxFileSizeInMB * 1024 * 1024;
     return {
       alertStore,
@@ -295,10 +295,25 @@ export default defineComponent({
       if (this.selectedFiles.length + files.length > this.maxNumberOfFiles) {
         this.showErrorBanner = true;
         this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
-      } else {
-        for (const file of Array.from(files)) {
-          this.addFileToQueue(file);
-        }
+        return;
+      }
+      const filesUploadedSize = [...files].reduce(
+        (acc, file) => acc + file.size,
+        0,
+      );
+      const existingFilesSize = this.selectedFiles.reduce(
+        (acc, sf) =>
+          acc + (sf.file.size || Functions.parseHumanFileSize(sf.fileSize)),
+        0,
+      );
+      if (existingFilesSize + filesUploadedSize > this.maxFileSizeInBytes) {
+        this.showErrorBanner = true;
+        this.errorBannerMessage = `The total file size exceeds the maximum allowed. You have ${Functions.humanFileSize(Math.max(this.maxFileSizeInBytes - existingFilesSize, 0))} remaining.`;
+        return;
+      }
+
+      for (const file of Array.from(files)) {
+        this.addFileToQueue(file);
       }
     },
     addFileToQueue(file: File) {
@@ -314,18 +329,6 @@ export default defineComponent({
         storageFolder: "permanent",
       };
       this.selectedFiles.push(selectedFile);
-
-      if (this.selectedFiles.length > 1) {
-        const totalSize = this.selectedFiles.reduce(
-          (acc, sf) => acc + sf.file.size,
-          0,
-        );
-        if (totalSize > this.maxFileSizeInBytes) {
-          fileErrors.push(
-            `The total file size exceeds the maximum allowed. Upload a file that is ${Functions.humanFileSize(selectedFile.file.size - (totalSize - this.maxFileSizeInBytes))} or smaller.`,
-          );
-        }
-      }
 
       if (fileErrors.length === 0) {
         this.uploadFileWithProgress(selectedFile);
@@ -485,7 +488,8 @@ export default defineComponent({
     },
     triggerFileInput() {
       const totalSize = this.selectedFiles.reduce(
-        (acc, f) => acc + f.file.size,
+        (acc, f) =>
+          acc + (f.file.size || Functions.parseHumanFileSize(f.fileSize)),
         0,
       );
       if (totalSize > this.maxFileSizeInBytes) {
