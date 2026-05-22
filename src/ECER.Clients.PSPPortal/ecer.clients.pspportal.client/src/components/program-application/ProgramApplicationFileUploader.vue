@@ -6,12 +6,12 @@
           <v-icon size="large" icon="mdi-attachment" />
           Supporting documents
         </p>
-        <p>
+        <p class="small">
           You can upload images, Microsoft Word documents, Microsoft Excel
           documents, and PDFs. Max file size accepted is 10MB. The maximum
           number of files for each question is {{ maxNumberOfFiles }}.
         </p>
-        <p class="font-weight-bold">
+        <p class="small font-weight-bold">
           All attachments must be directly related to your request. Do not
           upload any personal or sensitive information (e.g., transcripts,
           resumes, CVs, etc.)
@@ -52,12 +52,12 @@
             />
           </v-col>
         </v-row>
-        <p v-if="selectedFiles.length > 0">
-          <span class="text-success font-weight-bold">
+        <p v-if="selectedFiles.length > 0" class="font-weight-bold">
+          <span :class="atMaxFiles ? '' : 'text-success'">
             <v-icon>mdi-file-check-outline</v-icon>
             Attached files {{ selectedFiles.length }}/{{ maxNumberOfFiles }}
           </span>
-          <span v-if="selectedFiles.length >= maxNumberOfFiles">
+          <span v-if="atMaxFiles">
             - No more files can be added. You can only add
             {{ maxNumberOfFiles }} files.
           </span>
@@ -76,7 +76,7 @@
         <p class="small">{{ errorBannerMessage }}</p>
       </Alert>
 
-      <v-list lines="two" class="flex-grow-1 message-list">
+      <v-list class="flex-grow-1 message-list">
         <v-divider
           v-if="selectedFiles.length > 0"
           class="border-opacity-100"
@@ -200,7 +200,7 @@ export default defineComponent({
   async setup() {
     const alertStore = useAlertStore();
     const applicationFilesStore = useApplicationFilesStore();
-    const maxFileSizeInMB = 10;
+    const maxFileSizeInMB = 50;
     const maxFileSizeInBytes = maxFileSizeInMB * 1024 * 1024;
     return {
       alertStore,
@@ -228,6 +228,9 @@ export default defineComponent({
       return this.availableFiles.filter(
         (f) => !attachedNames.has((f.fileName ?? "").toLowerCase()),
       );
+    },
+    atMaxFiles(): boolean {
+      return this.selectedFiles.length >= this.maxNumberOfFiles;
     },
     emptyFiles() {
       return this.selectedFiles.some((file) => file.file.size === 0);
@@ -295,6 +298,21 @@ export default defineComponent({
       if (this.selectedFiles.length + files.length > this.maxNumberOfFiles) {
         this.showErrorBanner = true;
         this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
+        return;
+      }
+      const filesUploadedSize = [...files].reduce(
+        (acc, file) => acc + file.size,
+        0,
+      );
+      const existingFilesSize = this.selectedFiles.reduce(
+        (acc, sf) =>
+          acc + (sf.file.size || Functions.parseHumanFileSize(sf.fileSize)),
+        0,
+      );
+      if (existingFilesSize + filesUploadedSize > this.maxFileSizeInBytes) {
+        this.showErrorBanner = true;
+        this.errorBannerMessage = `The total file size exceeds the maximum allowed. You have ${Functions.humanFileSize(Math.max(this.maxFileSizeInBytes - existingFilesSize, 0))} remaining.`;
+        return;
       }
 
       for (const file of Array.from(files)) {
@@ -314,18 +332,6 @@ export default defineComponent({
         storageFolder: "permanent",
       };
       this.selectedFiles.push(selectedFile);
-
-      if (this.selectedFiles.length > 1) {
-        const totalSize = this.selectedFiles.reduce(
-          (acc, sf) => acc + sf.file.size,
-          0,
-        );
-        if (totalSize > this.maxFileSizeInBytes) {
-          fileErrors.push(
-            `The total file size exceeds the maximum allowed. Upload a file that is ${Functions.humanFileSize(selectedFile.file.size - (totalSize - this.maxFileSizeInBytes))} or smaller.`,
-          );
-        }
-      }
 
       if (fileErrors.length === 0) {
         this.uploadFileWithProgress(selectedFile);
@@ -485,7 +491,8 @@ export default defineComponent({
     },
     triggerFileInput() {
       const totalSize = this.selectedFiles.reduce(
-        (acc, f) => acc + f.file.size,
+        (acc, f) =>
+          acc + (f.file.size || Functions.parseHumanFileSize(f.fileSize)),
         0,
       );
       if (totalSize > this.maxFileSizeInBytes) {

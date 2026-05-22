@@ -3,7 +3,7 @@
     <div class="d-flex flex-column h-100">
       <div class="flex-grow-1">
         <div class="d-flex align-start">
-          <h3 class="flex-grow-1 mr-2">{{ campus.generatedName }}</h3>
+          <h3 class="flex-grow-1 mr-2">{{ campus.name }}</h3>
           <v-chip
             :color="chipColour"
             variant="flat"

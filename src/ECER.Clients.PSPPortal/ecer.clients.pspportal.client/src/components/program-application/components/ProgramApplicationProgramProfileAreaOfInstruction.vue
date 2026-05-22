@@ -14,7 +14,7 @@
     <br />
     <h3>Adding a course</h3>
     <br />
-    <p>To add a course to your program profile</p>
+    <p>To add a course to your program profile:</p>
     <ul class="ml-10">
       <li>Select "Add course"</li>
       <li>Input the course number and course name</li>
