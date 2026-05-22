@@ -3,9 +3,9 @@
   <template v-else>
     <v-row v-if="componentGroup?.name || componentGroup?.instruction">
       <v-col cols="12" class="mb-4">
-        <h2 v-if="componentGroup?.name" class="text-h6">
+        <h1 v-if="componentGroup?.name">
           {{ componentGroup.name }}
-        </h2>
+        </h1>
         <p v-if="componentGroup?.instruction" class="multiline mt-2 mb-2">
           {{ componentGroup.instruction }}
         </p>
