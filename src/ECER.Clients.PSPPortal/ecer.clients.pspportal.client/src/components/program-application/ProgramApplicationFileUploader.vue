@@ -6,12 +6,12 @@
           <v-icon size="large" icon="mdi-attachment" />
           Supporting documents
         </p>
-        <p>
+        <p class="small">
           You can upload images, Microsoft Word documents, Microsoft Excel
           documents, and PDFs. Max file size accepted is 10MB. The maximum
           number of files for each question is {{ maxNumberOfFiles }}.
         </p>
-        <p class="font-weight-bold">
+        <p class="small font-weight-bold">
           All attachments must be directly related to your request. Do not
           upload any personal or sensitive information (e.g., transcripts,
           resumes, CVs, etc.)
@@ -52,12 +52,12 @@
             />
           </v-col>
         </v-row>
-        <p v-if="selectedFiles.length > 0">
-          <span class="text-success font-weight-bold">
+        <p v-if="selectedFiles.length > 0" class="font-weight-bold">
+          <span :class="atMaxFiles ? '' : 'text-success'">
             <v-icon>mdi-file-check-outline</v-icon>
             Attached files {{ selectedFiles.length }}/{{ maxNumberOfFiles }}
           </span>
-          <span v-if="selectedFiles.length >= maxNumberOfFiles">
+          <span v-if="atMaxFiles">
             - No more files can be added. You can only add
             {{ maxNumberOfFiles }} files.
           </span>
@@ -76,7 +76,7 @@
         <p class="small">{{ errorBannerMessage }}</p>
       </Alert>
 
-      <v-list lines="two" class="flex-grow-1 message-list">
+      <v-list class="flex-grow-1 message-list">
         <v-divider
           v-if="selectedFiles.length > 0"
           class="border-opacity-100"
@@ -228,6 +228,9 @@ export default defineComponent({
       return this.availableFiles.filter(
         (f) => !attachedNames.has((f.fileName ?? "").toLowerCase()),
       );
+    },
+    atMaxFiles(): boolean {
+      return this.selectedFiles.length >= this.maxNumberOfFiles;
     },
     emptyFiles() {
       return this.selectedFiles.some((file) => file.file.size === 0);
