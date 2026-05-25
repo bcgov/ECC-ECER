@@ -7,7 +7,7 @@ namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  private async Task UpdateTranscripts(ecer_Application application, List<ecer_Transcript> updatedEntities)
+  private async Task UpdateTranscripts(ecer_Application application, Contact applicant, List<ecer_Transcript> updatedEntities)
   {
     await Task.CompletedTask;
 
@@ -47,6 +47,7 @@ internal sealed partial class ApplicationRepository
       transcript.ecer_postsecondaryinstitutionid = institutionReference;
       context.AddObject(transcript);
       context.AddLink(application, ecer_Application.Fields.ecer_transcript_Applicationid, transcript);
+      context.AddLink(applicant, Contact.Fields.ecer_transcript_Applicantid_Contact, transcript);
     }
   }
 
@@ -129,8 +130,22 @@ internal sealed partial class ApplicationRepository
       var file = await objectStorageProvider.GetAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), ct);
       await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
-      var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == transcript.ecer_Applicantid.Id);
-      if (applicant == null) throw new InvalidOperationException($"Applicant '{transcript.ecer_Applicantid.Id}' not found");
+      var applicantId = transcript.ecer_Applicantid?.Id;
+      if (!applicantId.HasValue && transcript.ecer_Applicationid != null)
+      {
+        applicantId = context.ecer_ApplicationSet
+          .Where(a => a.ecer_ApplicationId == transcript.ecer_Applicationid.Id)
+          .Select(a => a.ecer_Applicantid.Id)
+          .SingleOrDefault();
+      }
+
+      if (!applicantId.HasValue || applicantId == Guid.Empty)
+      {
+        throw new InvalidOperationException($"Applicant for transcript '{transcript.Id}' not found");
+      }
+
+      var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == applicantId.Value);
+      if (applicant == null) throw new InvalidOperationException($"Applicant '{applicantId.Value}' not found");
 
       var documenturl = new bcgov_DocumentUrl()
       {

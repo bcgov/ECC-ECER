@@ -19,7 +19,7 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   [Fact]
   public async Task AddCourse_WhenTypeProgramProfile_ReturnsStatusBadRequest()
   {
-    var course = CreateCourse(101, "201");
+    var course = CreateCourse(Fixture.courseNumber, Fixture.courseNumber2);
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
@@ -31,7 +31,7 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   [Fact]
   public async Task AddCourse_WhenCourseNumberAlreadyExists_ReturnsStatusInvalidOperation()
   {
-    var course = CreateCourse(666, "201");
+    var course = CreateCourse(Fixture.testCourseForProgramApplicationNumber, Fixture.courseNumber2);
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
@@ -77,8 +77,8 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   [Fact]
   public async Task UpdateCourses_WhenCourseNumberAlreadyExists_ReturnsStatusInvalidOperation()
   {
-    var course = CreateCourse(101, "109");
-    var response = await Host.Scenario(_ =>
+    var course = CreateCourse(Fixture.courseNumber, Fixture.courseNumber3);
+    await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
       _.Put.Json(new UpdateCourseRequest(course, FunctionType.ProgramProfile, Fixture.programId))
@@ -90,7 +90,7 @@ public class CoursesTest : PspPortalWebAppScenarioBase
   [Fact]
   public async Task UpdateCourses_ReturnsStatusOk()
   {
-    var course = CreateCourse(101, "");
+    var course = CreateCourse(Fixture.courseNumber, "");
     var response = await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId);
@@ -113,8 +113,8 @@ public class CoursesTest : PspPortalWebAppScenarioBase
 
     var firstProfile = status.Programs!.FirstOrDefault().ShouldNotBeNull();
     firstProfile.Courses.ShouldNotBeNull();
-    var matchingCourse = firstProfile.Courses.Where(c => c.CourseNumber == "101").ToList();
-    matchingCourse.First().CourseNumber.ShouldBe("101");
+    var matchingCourse = firstProfile.Courses.Where(c => c.CourseNumber == Fixture.courseNumber).ToList();
+    matchingCourse.First().CourseNumber.ShouldBe(Fixture.courseNumber);
     matchingCourse.First().CourseTitle.ShouldBe("Course 101");
     matchingCourse.First().NewCourseNumber.ShouldBe(course.NewCourseNumber);
     matchingCourse.First().NewCourseTitle.ShouldBe("Course 102");
@@ -148,9 +148,9 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     firstProfile.Courses.ShouldNotBeNull();
     firstProfile.Courses.Count().ShouldNotBe(0);
 
-    var matchingCourse = firstProfile.Courses.Where(c => c.CourseNumber == "101").ToList();
+    var matchingCourse = firstProfile.Courses.Where(c => c.CourseNumber == Fixture.courseNumber).ToList();
     matchingCourse.ShouldNotBeNull();
-    matchingCourse.First().CourseNumber.ShouldBe("101");
+    matchingCourse.First().CourseNumber.ShouldBe(Fixture.courseNumber);
     matchingCourse.First().CourseTitle.ShouldBe("Course 101");
 
     matchingCourse.First().CourseAreaOfInstruction.ShouldNotBeNull();
@@ -223,14 +223,14 @@ public class CoursesTest : PspPortalWebAppScenarioBase
     });
   }
 
-  private Course CreateCourse(int courseNumber, string newNumber)
+  private Course CreateCourse(string courseNumber, string newNumber)
   {
     return new Course
     {
       CourseId = Fixture.courseId,
-      CourseNumber = courseNumber.ToString(),
+      CourseNumber = courseNumber,
       CourseTitle = "Course 101",
-      NewCourseNumber = !string.IsNullOrWhiteSpace(newNumber) ? newNumber : (courseNumber + 10).ToString(),
+      NewCourseNumber = !string.IsNullOrWhiteSpace(newNumber) ? newNumber : $"{courseNumber}_new",
       NewCourseTitle = "Course 102",
       ProgramType = ProgramTypes.SNE.ToString()
     };

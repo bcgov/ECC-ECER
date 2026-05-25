@@ -9,6 +9,30 @@ internal record S3StorageProviderSettings
 
 internal record ObjectStorageSettings
 {
-  public S3StorageProviderSettings Psp { get; set; } = null!;
-  public S3StorageProviderSettings Registry { get; set; } = null!;
+  public string? Url { get; set; }
+  public string? AccessKey { get; set; }
+  public string? SecretKey { get; set; }
+  public string? BucketName { get; set; }
+  public S3StorageProviderSettings? Psp { get; set; }
+  public S3StorageProviderSettings? Registry { get; set; }
+
+  public S3StorageProviderSettings? ResolveRegistrySettings()
+  {
+    if (Registry != null) return Registry;
+    if (string.IsNullOrWhiteSpace(Url) ||
+        string.IsNullOrWhiteSpace(AccessKey) ||
+        string.IsNullOrWhiteSpace(SecretKey) ||
+        string.IsNullOrWhiteSpace(BucketName))
+    {
+      return null;
+    }
+
+    return new S3StorageProviderSettings
+    {
+      Url = Url,
+      AccessKey = AccessKey,
+      SecretKey = SecretKey,
+      BucketName = BucketName,
+    };
+  }
 }

@@ -103,7 +103,7 @@ public class S3ObjectStorageTests(ITestOutputHelper testOutput) : IAsyncLifetime
     var services = new ServiceCollection();
     var configurer = new Configurer();
 #pragma warning disable CA2000 // Dispose objects before losing scope
-    var logger = new LoggerFactory().AddXUnit(testOutput).CreateLogger(typeof(Configurer));
+    var logger = new LoggerFactory().AddXUnit(testOutput).CreateLogger<Configurer>();
 #pragma warning restore CA2000 // Dispose objects before losing scope
 
     configurer.Configure(new ConfigurationContext(services, configuration, logger));

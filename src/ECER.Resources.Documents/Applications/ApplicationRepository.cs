@@ -100,7 +100,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await UpdateProfessionalDevelopments(ecerApplication, applicant, application.ApplicantId, application.ProfessionalDevelopments.ToList(), cancellationToken);
     await UpdateWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
-    await UpdateTranscripts(ecerApplication, ecerTranscripts);
+    await UpdateTranscripts(ecerApplication, applicant, ecerTranscripts);
 
     if (application.ApplicationType == ApplicationTypes.LabourMobility)
     {

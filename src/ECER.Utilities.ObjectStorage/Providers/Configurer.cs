@@ -14,42 +14,44 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
     var settings = GetSettings(configurationContext.Configuration);
+    var pspSettings = settings?.Psp;
+    var registrySettings = settings?.ResolveRegistrySettings();
 
-    if (settings != null && settings.Psp != null)
+    if (pspSettings != null)
     {
       configurationContext.logger.LogInformation("setting up PSP S3 connection");
       configurationContext.Services.AddKeyedSingleton<IAmazonS3>(EcerWebApplicationType.PSP, (_, _) =>
         new AmazonS3Client(
-          settings.Psp.AccessKey,
-          settings.Psp.SecretKey,
+          pspSettings.AccessKey,
+          pspSettings.SecretKey,
           new AmazonS3Config
           {
-            ServiceURL = settings.Psp.Url,
+            ServiceURL = pspSettings.Url,
             ForcePathStyle = true,
           }));
       configurationContext.Services.AddKeyedSingleton<IObjecStorageProvider, S3Provider>(EcerWebApplicationType.PSP, (sp, key) =>
       {
         var client = sp.GetRequiredKeyedService<IAmazonS3>(key);
-        return new S3Provider(client, settings.Psp.BucketName);
+        return new S3Provider(client, pspSettings.BucketName);
       });
     }
 
-    if (settings != null && settings.Registry != null)
+    if (registrySettings != null)
     {
       configurationContext.logger.LogInformation("setting up Registry S3 connection");
       configurationContext.Services.AddKeyedSingleton<IAmazonS3>(EcerWebApplicationType.Registry, (_, _) =>
         new AmazonS3Client(
-          settings.Registry.AccessKey,
-          settings.Registry.SecretKey,
+          registrySettings.AccessKey,
+          registrySettings.SecretKey,
           new AmazonS3Config
           {
-            ServiceURL = settings.Registry.Url,
+            ServiceURL = registrySettings.Url,
             ForcePathStyle = true,
           }));
       configurationContext.Services.AddKeyedSingleton<IObjecStorageProvider, S3Provider>(EcerWebApplicationType.Registry, (sp, key) =>
       {
         var client = sp.GetRequiredKeyedService<IAmazonS3>(key);
-        return new S3Provider(client, settings.Registry.BucketName);
+        return new S3Provider(client, registrySettings.BucketName);
       });
     }
 
@@ -60,14 +62,16 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
   public async Task Check([NotNull] CheckContext context, CancellationToken ct)
   {
     var settings = GetSettings(context.Configuration);
+    var pspSettings = settings?.Psp;
+    var registrySettings = settings?.ResolveRegistrySettings();
     
-    if (settings?.Psp != null)
+    if (pspSettings != null)
     {
       var pspClient = context.Services.GetRequiredKeyedService<IAmazonS3>(EcerWebApplicationType.PSP);
       await pspClient.ListBucketsAsync(ct);
     }
 
-    if (settings?.Registry != null)
+    if (registrySettings != null)
     {
       var registryClient = context.Services.GetRequiredKeyedService<IAmazonS3>(EcerWebApplicationType.Registry);
       await registryClient.ListBucketsAsync(ct);
