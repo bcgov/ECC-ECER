@@ -2,7 +2,7 @@ import EceIcraWorkExperienceContactPreview from "@/components/reference/inputs/i
 import EceIcraEligibilityWorkExperienceReferenceEvaluationPreview from "@/components/reference/inputs/icra-eligibility/EceIcraEligibilityWorkExperienceReferenceEvaluationPreview.vue";
 
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
-import EceRecaptcha from "@/components/inputs/EceRecaptcha.vue";
+import EceCaptchaTurnstile from "@/components/inputs/EceCaptchaTurnstile.vue";
 import * as Rules from "@/utils/formRules";
 
 import type { Form } from "@/types/form";
@@ -47,12 +47,12 @@ const previewForm: Form = {
         xl: 12,
       },
     },
-    recaptchaToken: {
-      id: "recaptchaToken",
-      component: EceRecaptcha,
+    captchaToken: {
+      id: "captchaToken",
+      component: EceCaptchaTurnstile,
       props: {
         rules: [Rules.required("Check to confirm you are not a robot")],
-        recaptchaElementId: "recaptchaSubmit",
+        captchaElementId: "captchaSubmit",
       },
       cols: {
         md: 12,

@@ -1,5 +1,5 @@
-﻿using ECER.Managers.Admin.Contract.Metadatas;
-using MediatR;
+using ECER.Managers.Admin.Contract.Metadatas;
+using Mediator;
 
 namespace ECER.Managers.Registry.Contract.Applications;
 

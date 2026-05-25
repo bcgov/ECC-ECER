@@ -1,32 +1,69 @@
-using AutoMapper;
-using ECER.Infrastructure.Common;
+using Riok.Mapperly.Abstractions;
+using ContractPspUsers = ECER.Managers.Registry.Contract.PspUsers;
 
 namespace ECER.Clients.PSPPortal.Server.Users;
 
-internal sealed class PspUserMapper : SecureProfile
+internal interface IPspUserMapper
 {
-  public PspUserMapper()
-  {
-    CreateMap<PspUserProfile, ECER.Managers.Registry.Contract.PspUsers.PspUserProfile>()
-      .ReverseMap()
-      .ValidateMemberList(MemberList.Destination);
+  PspUserProfile MapUserProfile(ContractPspUsers.PspUserProfile source);
+  ContractPspUsers.PspUserProfile MapUserProfile(PspUserProfile source);
+  IEnumerable<PspUserListItem> MapUserListItems(IEnumerable<ContractPspUsers.PspUser> source);
+}
 
-    CreateMap<ECER.Managers.Registry.Contract.PspUsers.PortalAccessStatus, PortalAccessStatus>();
-    CreateMap<ECER.Managers.Registry.Contract.PspUsers.PspUser, PspUserListItem>()
-      .ForMember(d => d.Profile, opts => opts.MapFrom(s => s.Profile))
-      .ForMember(d => d.PostSecondaryInstituteId, opts => opts.MapFrom(s => s.PostSecondaryInstituteId))
-      .ForMember(d => d.AccessToPortal, opts => opts.MapFrom(s => s.AccessToPortal))
-      .ValidateMemberList(MemberList.Destination);
-    
-    CreateMap<ECER.Managers.Registry.Contract.PspUsers.PspUserProfile, PspUserProfile>()
-      .ForMember(d => d.UnreadMessagesCount, opts => opts.Ignore())
-      .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.FirstName))
-      .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.PreferredName))
-      .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.Phone))
-      .ForMember(d => d.PhoneExtension, opts => opts.MapFrom(s => s.PhoneExtension))
-      .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.Phone))
-      .ForMember(d => d.Email, opts => opts.MapFrom(s => s.Email))
-      .ValidateMemberList(MemberList.Destination);
-  }
+[Mapper]
+internal partial class PspUserMapper : IPspUserMapper
+{
+  public PspUserProfile MapUserProfile(ContractPspUsers.PspUserProfile source) => new()
+  {
+    Id = source.Id,
+    FirstName = source.FirstName,
+    LastName = source.LastName,
+    PreferredName = source.PreferredName,
+    Phone = source.Phone,
+    PhoneExtension = source.PhoneExtension,
+    JobTitle = source.JobTitle,
+    Role = MapPspUserRole(source.Role),
+    UnreadMessagesCount = 0,
+    Email = source.Email,
+    HasAcceptedTermsOfUse = source.HasAcceptedTermsOfUse,
+  };
+
+  public ContractPspUsers.PspUserProfile MapUserProfile(PspUserProfile source) => new()
+  {
+    Id = source.Id,
+    FirstName = source.FirstName,
+    LastName = source.LastName,
+    PreferredName = source.PreferredName,
+    Phone = source.Phone,
+    PhoneExtension = source.PhoneExtension,
+    JobTitle = source.JobTitle,
+    Role = MapPspUserRole(source.Role),
+    Email = source.Email,
+    HasAcceptedTermsOfUse = source.HasAcceptedTermsOfUse,
+  };
+
+  public IEnumerable<PspUserListItem> MapUserListItems(IEnumerable<ContractPspUsers.PspUser> source) => source.Select(MapUserListItem).ToList();
+
+  private PspUserListItem MapUserListItem(ContractPspUsers.PspUser source) => new()
+  {
+    Id = source.Id,
+    Profile = MapUserProfile(source.Profile),
+    AccessToPortal = MapPortalAccessStatus(source.AccessToPortal),
+    PostSecondaryInstituteId = source.PostSecondaryInstituteId,
+  };
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PspUserRole MapPspUserRole(ContractPspUsers.PspUserRole source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractPspUsers.PspUserRole MapPspUserRole(PspUserRole source);
+
+  private PspUserRole? MapPspUserRole(ContractPspUsers.PspUserRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
+
+  private ContractPspUsers.PspUserRole? MapPspUserRole(PspUserRole? source) => source.HasValue ? MapPspUserRole(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial PortalAccessStatus MapPortalAccessStatus(ContractPspUsers.PortalAccessStatus source);
+
+  private PortalAccessStatus? MapPortalAccessStatus(ContractPspUsers.PortalAccessStatus? source) => source.HasValue ? MapPortalAccessStatus(source.Value) : null;
 }

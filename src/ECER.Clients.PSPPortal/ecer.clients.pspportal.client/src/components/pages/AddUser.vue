@@ -34,19 +34,19 @@
               <v-btn
                 rounded="lg"
                 color="primary"
-                :loading="loadingStore.isLoading('psp_user_add')"
-                @click="saveUser"
-              >
-                Send invitation
-              </v-btn>
-              <v-btn
-                rounded="lg"
-                color="primary"
                 variant="outlined"
                 :loading="loadingStore.isLoading('psp_user_add')"
                 @click="router.back()"
               >
                 Cancel
+              </v-btn>
+              <v-btn
+                rounded="lg"
+                color="primary"
+                :loading="loadingStore.isLoading('psp_user_add')"
+                @click="saveUser"
+              >
+                Send invitation
               </v-btn>
             </div>
           </v-col>

@@ -100,7 +100,7 @@ export const useConfigStore = defineStore("config", {
         getConfiguration(),
         getProvinceList(),
         getCountryList(),
-        getPostSecondaryInstitutionList(),
+        getPostSecondaryInstitutionList("Active"),
         getIdentificationTypes(),
         getSystemMessages(),
         getDefaultContent(),

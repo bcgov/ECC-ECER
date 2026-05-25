@@ -43,7 +43,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// PSP Site Visit Checklist
+	/// PSP REM Checklist
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_pspsitevisitchecklist")]
@@ -401,6 +401,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Recognition Evaluation Meeting
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_SiteVisitId
 		{

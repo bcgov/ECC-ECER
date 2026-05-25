@@ -31,4 +31,18 @@ public class ConfigurationTests : PspPortalWebAppScenarioBase
     instruction.MinimumHours.ShouldBe(Fixture.AreaOfInstructionMinimumHours);
     instruction.ProgramTypes.ShouldNotBeNull();
   }
+
+  [Fact]
+  public async Task GetSystemMessages_ReturnsSystemMessages()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Get.Url("/api/systemMessages");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var systemMessages = await response.ReadAsJsonAsync<SystemMessage[]>();
+    systemMessages.ShouldNotBeNull();
+  }
 }

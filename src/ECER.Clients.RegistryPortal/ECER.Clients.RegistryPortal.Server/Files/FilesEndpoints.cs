@@ -1,11 +1,10 @@
-﻿using AutoMapper;
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -36,11 +35,10 @@ public class FilesEndpoints : IRegisterEndpoints
       if (certificateQueryResult.Items == null || !certificateQueryResult.Items.Any()) return TypedResults.NotFound();
 
       var certificate = certificateQueryResult.Items.FirstOrDefault();
-      //Filter Certificate Files to get latest certificate where Tag1 is "Certificate"
       var certificateFile = certificate?.Files.Where(f => f.Tag1Name == "Certificate").OrderByDescending(f => f.CreatedOn).FirstOrDefault();
       if (certificateFile == null) return TypedResults.NotFound();
 
-      var results = await messageBus.Send(new FileQuery([new FileLocation(certificateFile.Id, certificateFile.Url ?? string.Empty)]), ct);
+      var results = await messageBus.Send(new FileQuery([new FileLocation(certificateFile.Id, certificateFile.Url ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry)]), ct);
       var file = results.Items.SingleOrDefault();
       if (file == null) return TypedResults.NotFound();
 
@@ -74,7 +72,7 @@ public class FilesEndpoints : IRegisterEndpoints
       var communicationFile = communication?.Documents.FirstOrDefault(d => d.Id == fileId);
       if (communicationFile == null) return TypedResults.NotFound();
 
-      var results = await messageBus.Send(new FileQuery([new FileLocation(communicationFile.Id, communicationFile.Url ?? string.Empty)]), ct);
+      var results = await messageBus.Send(new FileQuery([new FileLocation(communicationFile.Id, communicationFile.Url ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry)]), ct);
       var file = results.Items.SingleOrDefault();
       if (file == null) return TypedResults.NotFound();
 
@@ -84,7 +82,6 @@ public class FilesEndpoints : IRegisterEndpoints
       .RequireAuthorization("registry_user")
       .WithParameterValidation();
 
-    // This delete just works for temp folder...
     endpointRouteBuilder.MapDelete("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, NotFound>> (
       string fileId,
       IMediator messageBus,
@@ -92,7 +89,7 @@ public class FilesEndpoints : IRegisterEndpoints
       IOptions<UploaderSettings> uploaderOptions,
       CancellationToken ct) =>
   {
-    var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty)], TrackDownload: false), ct);
+    var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry)], TrackDownload: false), ct);
     var file = results.Items.SingleOrDefault();
     if (file == null) return TypedResults.NotFound();
     await messageBus.Send(new DeleteFileCommand(file), ct);
@@ -104,7 +101,7 @@ public class FilesEndpoints : IRegisterEndpoints
     .DisableAntiforgery();
 
     endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, BadRequest<ProblemDetails>, NotFound>> (string fileId,
-        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper, IOptions<UploaderSettings> uploaderOptions) =>
+        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IOptions<UploaderSettings> uploaderOptions) =>
     {
       if (!Guid.TryParse(fileId, out _))
       {
@@ -116,7 +113,6 @@ public class FilesEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails { Title = "No file uploaded or file is empty" });
       }
 
-      // Check if the file extension is allowed
       var fileExtension = Path.GetExtension(file.FileName)?.ToLowerInvariant();
       if (string.IsNullOrEmpty(fileExtension) || !uploaderOptions.Value.AllowedFileTypes.Contains(fileExtension))
       {
@@ -126,7 +122,7 @@ public class FilesEndpoints : IRegisterEndpoints
       var fileProperties = new FileProperties();
       var sanitizedFilename = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(file.FileName));
 
-      var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty), fileProperties, sanitizedFilename, file.ContentType, file.OpenReadStream())).ToList();
+      var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry), fileProperties, sanitizedFilename, file.ContentType, file.OpenReadStream())).ToList();
       if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Title = "No files were uploaded" });
       var response = await messageBus.Send(new SaveFileCommand(files), ct);
       var saveResult = response.Items.FirstOrDefault();

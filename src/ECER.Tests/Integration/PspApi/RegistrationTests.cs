@@ -2,7 +2,7 @@ using Alba;
 using ECER.Clients.PSPPortal.Server.Users;
 using ECER.Managers.Admin.Contract.PortalInvitations;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;

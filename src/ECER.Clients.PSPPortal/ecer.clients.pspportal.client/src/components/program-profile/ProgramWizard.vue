@@ -12,7 +12,7 @@
       </WizardHeader>
     </template>
     <template #stepperHeader>
-      <v-container v-show="showSteps">
+      <v-container v-show="showSteps" class="d-print-none">
         <v-stepper-header class="elevation-0">
           <template
             v-for="(step, index) in Object.values(wizardStore.steps)"
@@ -278,7 +278,7 @@ export default defineComponent({
       const draftApplicationResponse = await this.programStore.saveDraft();
       if (draftApplicationResponse?.program) {
         let message =
-          "Information saved. If you save and exit, you can resume your application later.";
+          "Information saved. If you save and exit, you can resume your program profile later.";
         if (exit)
           message = "Information saved. You can resume your application later.";
         this.alertStore.setSuccessAlert(message);

@@ -33,6 +33,7 @@
         </v-row>
         <v-row
           class="mb-4"
+          no-gutters
           v-for="[
             courseAreaOfInstructionId,
             courses,
@@ -92,6 +93,10 @@ import { useConfigStore } from "@/store/config";
 import { useProgramStore } from "@/store/program";
 
 import PreviewCard from "../common/PreviewCard.vue";
+import type {
+  AreaOfInstructionWithCourseHoursMap,
+  CourseAreaDetail,
+} from "@/types/helperFunctions";
 
 export default defineComponent({
   name: "EceAreaOfInstructionPreview",
@@ -158,7 +163,7 @@ export default defineComponent({
       | undefined {
       const unsortedMap =
         getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
-          this.programStore.draftProgram,
+          this.programStore.draftProgram?.courses,
           this.programType,
         );
 
@@ -187,7 +192,7 @@ export default defineComponent({
     },
     nonAllocatedCourses(): Components.Schemas.Course[] {
       return getNonAllocatedCoursesByType(
-        this.programStore.draftProgram,
+        this.programStore.draftProgram?.courses,
         this.programType,
       ).sort((a, b) => {
         if (a.courseNumber > b.courseNumber) {

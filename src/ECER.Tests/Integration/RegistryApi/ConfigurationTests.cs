@@ -101,12 +101,12 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task GetRecaptchaSiteKey_ReturnsSiteKey()
+  public async Task GetCaptchaSiteKey_ReturnsSiteKey()
   {
     var siteKeyResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Get.Url("/api/recaptchaSiteKey");
+      _.Get.Url("/api/captchaSiteKey");
       _.StatusCodeShouldBeOk();
     });
 
@@ -172,5 +172,31 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
 
     var config = await configResponse.ReadAsJsonAsync<ApplicationConfiguration>();
     Assert.True(config.ICRAFeatureEnabled);
+  }
+
+  [Fact]
+  public async Task GetPostSecondaryInstitutions_ByStatusActive_ReturnsOnlyActive()
+  {
+    // Baseline (no filter)
+    var allResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/postSecondaryInstitutionList");
+      _.StatusCodeShouldBeOk();
+    });
+    var all = await allResponse.ReadAsJsonAsync<PostSecondaryInstitution[]>();
+
+    // Filtered
+    var activeResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/postSecondaryInstitutionList?status=Active");
+      _.StatusCodeShouldBeOk();
+    });
+    var active = await activeResponse.ReadAsJsonAsync<PostSecondaryInstitution[]>();
+
+    all.ShouldNotBeNull();
+    active.ShouldNotBeNull();
+    active.Length.ShouldBeLessThanOrEqualTo(all.Length);
   }
 }

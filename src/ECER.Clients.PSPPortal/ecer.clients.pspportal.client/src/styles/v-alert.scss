@@ -16,4 +16,9 @@
   &.success {
     background-color: #{colors.$alert-success};
   }
+  &.warning {
+    .v-alert__content {
+      color: #{colors.$grey-dark};
+    }
+  }
 }

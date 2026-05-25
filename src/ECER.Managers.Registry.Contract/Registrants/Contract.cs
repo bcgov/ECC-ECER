@@ -1,6 +1,7 @@
-﻿using ECER.Managers.Registry.Contract.PspUsers;
+using ECER.Managers.Registry.Contract.PspUsers;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry.Contract.Registrants;
 
@@ -91,6 +92,7 @@ public record IdentityDocument(string Id)
   public string Extention { get; set; } = null!;
   public string Name { get; set; } = null!;
   public string Size { get; set; } = null!;
+  public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
 public record Address(

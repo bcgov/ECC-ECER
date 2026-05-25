@@ -1,4 +1,4 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -18,7 +18,6 @@ internal partial class ApplicationRepository
       }
     }
 
-    // Update Existing Character References
     foreach (var reference in updatedEntities.Where(d => d.ecer_CharacterReferenceId != null))
     {
       var oldReference = existingCharacterReferences.SingleOrDefault(t => t.ecer_CharacterReferenceId == reference.ecer_CharacterReferenceId);
@@ -47,8 +46,8 @@ internal partial class ApplicationRepository
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(referenceId));
 
-    mapper.Map(request, characterReference);
-    bool certificateProvinceIdIsGuid = Guid.TryParse(request.ReferenceContactInformation.CertificateProvinceId, out Guid certificateProvinceId);
+    mapper.ApplyCharacterReferenceSubmission(request, characterReference);
+    var certificateProvinceIdIsGuid = Guid.TryParse(request.ReferenceContactInformation.CertificateProvinceId, out var certificateProvinceId);
 
     if (certificateProvinceIdIsGuid)
     {
@@ -58,6 +57,7 @@ internal partial class ApplicationRepository
         context.AddLink(characterReference, ecer_CharacterReference.Fields.ecer_characterreference_RefCertifiedProvinceId, province);
       }
     }
+
     characterReference.StatusCode = ecer_CharacterReference_StatusCode.Submitted;
     context.UpdateObject(characterReference);
     context.SaveChanges();
@@ -69,7 +69,7 @@ internal partial class ApplicationRepository
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
 
-    mapper.Map(request, characterReference);
+    mapper.ApplyOptOutReference(request, characterReference);
     characterReference.ecer_WillProvideReference = ecer_YesNoNull.No;
     characterReference.StatusCode = ecer_CharacterReference_StatusCode.Rejected;
     characterReference.StateCode = ecer_characterreference_statecode.Inactive;
@@ -82,36 +82,31 @@ internal partial class ApplicationRepository
   {
     await Task.CompletedTask;
     var application = context.ecer_ApplicationSet.FirstOrDefault(
-      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_Applicantid.Id == Guid.Parse(userId)
-      );
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_Applicantid.Id == Guid.Parse(userId));
     if (application == null)
     {
       throw new InvalidOperationException($"Application '{applicationId}' not found");
     }
 
-    var ecerCharacterReference = mapper.Map<ecer_CharacterReference>(updatedReference);
+    var ecerCharacterReference = mapper.MapCharacterReference(updatedReference);
+    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId)).ToList();
 
-    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId));
-
-    bool RefIdIsGuid = Guid.TryParse(referenceId, out Guid referenceIdGuid);
-    if (RefIdIsGuid)
+    if (Guid.TryParse(referenceId, out var referenceIdGuid))
     {
       var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == referenceIdGuid);
-
-      // 1. Remove existing Character Reference and associated portal invitations
       if (oldReference != null)
       {
         if (oldReference.StatusCode == ecer_CharacterReference_StatusCode.Rejected || oldReference.StatusCode == ecer_CharacterReference_StatusCode.Submitted)
         {
           throw new InvalidOperationException($"Character reference '{oldReference.Id}' already responded cannot change to another one");
         }
+
         var invitations = context.ecer_PortalInvitationSet.Where(i => i.ecer_CharacterReferenceId.Id == referenceIdGuid).ToList();
-        
         foreach (var invitation in invitations)
         {
           context.DeleteObject(invitation);
         }
-        
+
         context.DeleteObject(oldReference);
       }
       else
@@ -119,8 +114,6 @@ internal partial class ApplicationRepository
         throw new InvalidOperationException($"Reference '{referenceIdGuid}' not found for application '{applicationId}'");
       }
     }
-
-    // 2. Add New Character Reference
 
     ecerCharacterReference.ecer_CharacterReferenceId = Guid.NewGuid();
     ecerCharacterReference.StatusCode = ecer_CharacterReference_StatusCode.ApplicationSubmitted;
@@ -148,7 +141,7 @@ internal partial class ApplicationRepository
       throw new InvalidOperationException($"Character reference '{request.ReferenceId}' already responded");
     }
 
-    mapper.Map(request, characterReference);
+    mapper.ApplyResendCharacterReferenceInvite(request, characterReference);
     characterReference.ecer_InviteAgain = true;
     context.UpdateObject(characterReference);
     context.SaveChanges();

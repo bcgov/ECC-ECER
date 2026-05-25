@@ -1,4 +1,3 @@
-using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk.Client;
@@ -8,9 +7,9 @@ namespace ECER.Resources.Documents.Programs;
 internal sealed class ProgramRepository : IProgramRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly IProgramRepositoryMapper mapper;
 
-  public ProgramRepository(EcerContext context, IMapper mapper)
+  public ProgramRepository(EcerContext context, IProgramRepositoryMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
@@ -32,14 +31,36 @@ internal sealed class ProgramRepository : IProgramRepository
 
     if (query.ByStatus != null && query.ByStatus.Any())
     {
-      var statuses = mapper.Map<IEnumerable<ecer_Program_StatusCode>>(query.ByStatus)!.ToList();
+      var statuses = mapper.MapProgramStatuses(query.ByStatus);
       programs = programs.WhereIn(item => item.StatusCode!.Value, statuses);
+    }
+
+    if (query.ByProgramProfileType != null)
+    {
+      var profileType = query.ByProgramProfileType.Value switch
+      {
+        ProgramProfileType.AnnualReview => ecer_ProgramProfileType.AnnualReview,
+        ProgramProfileType.ChangeRequest => ecer_ProgramProfileType.ChangeRequest,
+        _ => throw new ArgumentOutOfRangeException(nameof(query), query.ByProgramProfileType, null),
+      };
+      programs = programs.Where(p => p.ecer_Type == profileType);
     }
 
     if (query.ByFromProgramProfileId != null)
     {
       var fromProgramProfileId = Guid.Parse(query.ByFromProgramProfileId);
       programs = programs.Where(p => p.ecer_FromProgramProfileId.Id == fromProgramProfileId);
+    }
+
+    if (query.ByCampusId != null)
+    {
+      var campusId = Guid.Parse(query.ByCampusId);
+      var programIdsForCampus = context.ecer_ProgramCampusSet
+        .Where(c => c.ecer_CampusId.Id == campusId && c.ecer_ProgramProfileId != null)
+        .Select(c => c.ecer_ProgramProfileId.Id)
+        .ToList();
+      if (programIdsForCampus.Count == 0) return new ProgramResult { Programs = [], TotalProgramsCount = 0 };
+      programs = programs.WhereIn(p => p.ecer_ProgramId!.Value, programIdsForCampus);
     }
 
     int paginatedTotalProgramCount = 0;
@@ -83,7 +104,7 @@ internal sealed class ProgramRepository : IProgramRepository
 
     return new ProgramResult
     {
-      Programs = mapper.Map<IEnumerable<Program>>(results)!,
+      Programs = mapper.MapPrograms(results),
       TotalProgramsCount = query.PageNumber > 0 ? paginatedTotalProgramCount : results.Count,
     };
   }
@@ -101,7 +122,7 @@ internal sealed class ProgramRepository : IProgramRepository
     var institute = context.ecer_PostSecondaryInstituteSet.SingleOrDefault(i => i.ecer_PostSecondaryInstituteId == instituteId);
     if (institute == null) throw new InvalidOperationException($"Post secondary institute '{program.PostSecondaryInstituteId}' not found");
 
-    var ecerProgram = mapper.Map<ecer_Program>(program)!;
+    var ecerProgram = mapper.MapProgram(program);
     var defaultStatus = ecer_Program_StatusCode.RequiresReview;
 
     if (!ecerProgram.ecer_ProgramId.HasValue)
@@ -204,7 +225,7 @@ internal sealed class ProgramRepository : IProgramRepository
     context.UpdateObject(existingProgram);
     context.SaveChanges();
 
-    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileIdName == program.Name);
+    var newProgram = context.ecer_ProgramSet.SingleOrDefault(p => p.ecer_FromProgramProfileId.Id == Guid.Parse(program.Id!));
     if (newProgram == null) throw new InvalidOperationException($"New program for ecer_Program '{program.Id}' not found");
 
     var newProgramId = newProgram.ecer_ProgramId != null ? newProgram.ecer_ProgramId.ToString() : string.Empty;

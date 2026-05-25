@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 
-import { useUserStore } from "@/store/user"; // Adjust the path to your useUserStore file
+import { getMessagesStatus } from "@/api/message";
+import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
 
 export interface MessageState {
@@ -25,6 +26,20 @@ export const useMessageStore = defineStore("message", {
   actions: {
     messageById(id: string): Components.Schemas.Communication | undefined {
       return this.messages?.find((message) => message.id === id);
+    },
+    async refreshUnreadCount(): Promise<void> {
+      try {
+        const response = await getMessagesStatus();
+        const count = response.data?.status?.count ?? 0;
+        const userStore = useUserStore();
+        userStore.$patch((state) => {
+          if (state.userInfo) {
+            state.userInfo.unreadMessagesCount = count;
+          }
+        });
+      } catch {
+        // Swallow — keep last known count.
+      }
     },
   },
 });

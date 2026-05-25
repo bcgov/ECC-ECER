@@ -11,7 +11,7 @@
         <div>
           <router-link to="/">
             <img
-              src="../assets/bc-gov-logo.png"
+              src="../assets/bc-gov-logo.svg"
               width="155"
               class="logo"
               alt="B.C. Government Logo"

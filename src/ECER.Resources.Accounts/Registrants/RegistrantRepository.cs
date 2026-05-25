@@ -1,14 +1,12 @@
-﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.Registrants;
 
-internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, IObjecStorageProvider objectStorageProvider, IConfiguration configuration) : IRegistrantRepository
+internal sealed class RegistrantRepository(EcerContext context, IRegistrantRepositoryMapper mapper, IObjectStorageProviderResolver objectStorageProviderResolver) : IRegistrantRepository
 {
   public async Task<string> Create(Registrant registrant, CancellationToken ct)
   {
@@ -18,7 +16,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     if (contact == null)
     {
-      contact = mapper.Map<Contact>(registrant.Profile)!;
+      contact = mapper.MapUserProfile(registrant.Profile);
       contact.Id = Guid.NewGuid();
       contact.ecer_ClientID = null;
       context.AddObject(contact);
@@ -28,7 +26,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
       var oldClientId = contact.ecer_ClientID;
       var oldTempClientId = contact.ecer_TempClientID;
       context.Detach(contact);
-      contact = mapper.Map<Contact>(registrant.Profile)!;
+      contact = mapper.MapUserProfile(registrant.Profile);
       contact.Id = Guid.Parse(registrant.Id);
       contact.ecer_ClientID = oldClientId;
       contact.ecer_TempClientID = oldTempClientId;
@@ -89,7 +87,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
       }
     }
 
-    return mapper.Map<IEnumerable<Registrant>>(results)!.ToList();
+    return mapper.MapRegistrants(results);
   }
 
   public async Task Save(Registrant registrant, CancellationToken ct)
@@ -109,7 +107,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     context.Detach(contact);
     var clientId = contact.ecer_ClientID;
     var tempClientId = contact.ecer_TempClientID;
-    contact = mapper.Map<Contact>(registrant.Profile)!;
+    contact = mapper.MapUserProfile(registrant.Profile);
     contact.ContactId = contactId;
     contact.FirstName = firstname;
     contact.MiddleName = middlename;
@@ -122,7 +120,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     context.Attach(contact);
     context.UpdateObject(contact);
 
-    var ecerPreviousNames = mapper.Map<IEnumerable<ecer_PreviousName>>(registrant.Profile.PreviousNames)!;
+    var ecerPreviousNames = mapper.MapPreviousNames(registrant.Profile.PreviousNames);
     foreach (var previousName in ecerPreviousNames)
     {
       if (previousName.Id == Guid.Empty)
@@ -138,7 +136,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
         var existingPreviousName = context.ecer_PreviousNameSet.SingleOrDefault(c => c.Id == previousName.Id);
         if (existingPreviousName == null) throw new InvalidOperationException($"Previous name {previousName.Id} not found");
 
-        foreach (var document in previousName.ecer_documenturl_PreviousNameId)
+        foreach (var document in previousName.ecer_documenturl_PreviousNameId ?? Array.Empty<bcgov_DocumentUrl>())
         {
           if (document.Id == Guid.Empty)
           {
@@ -146,7 +144,8 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
           }
 
           var fileId = document.Id.ToString();
-          await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+          var objectStorageProvider = objectStorageProviderResolver.resolve(Enum.Parse<EcerWebApplicationType>(document.ecer_ApplicationName));
+          await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
           document.bcgov_Url = destinationFolder;
           document.StatusCode = bcgov_DocumentUrl_StatusCode.Active;
@@ -164,11 +163,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     context.SaveChanges();
     await Task.CompletedTask;
-    
   }
-
-  private static string GetBucketName(IConfiguration configuration) =>
-    configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 
   public async Task SaveIdentityIds(Registrant registrant, ProfileIdentification profileIdentification, CancellationToken ct)
   {
@@ -199,7 +194,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
   private async Task HandleFilesForIdentification(IEnumerable<IdentityDocument> inputList, Contact contact, string tagname, CancellationToken ct)
   {
     await Task.CompletedTask;
-    var list = mapper.Map<IEnumerable<bcgov_DocumentUrl>>(inputList);
+    var list = mapper.MapIdentityDocuments(inputList);
     var sourceFolder = "tempfolder";
     var destinationFolder = "ecer_contact/" + contact.ContactId;
     foreach (var document in list)
@@ -210,7 +205,8 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
       }
 
       var fileId = document.Id.ToString();
-      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(Enum.Parse<EcerWebApplicationType>(document.ecer_ApplicationName));
+      await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
       document.bcgov_Url = destinationFolder;
       document.StatusCode = bcgov_DocumentUrl_StatusCode.Active;

@@ -1,21 +1,22 @@
-using AutoMapper;
 using ECER.Managers.Registry.Contract.PostSecondaryInstitutes;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry;
 
 public class PostSecondaryInstituteHandlers(
-    IPostSecondaryInstituteRepository postSecondaryInstituteRepository, 
-    IMapper mapper)
+    IPostSecondaryInstituteRepository postSecondaryInstituteRepository,
+    IPostSecondaryInstituteMapper postSecondaryInstituteMapper)
   : IRequestHandler<SearchPostSecondaryInstitutionQuery, PostSecondaryInstitutionsQueryResults>,
-    IRequestHandler<UpdatePostSecondaryInstitutionCommand, string>
+    IRequestHandler<UpdatePostSecondaryInstitutionCommand, string>,
+    IRequestHandler<CreateCampusCommand, string>,
+    IRequestHandler<UpdateCampusCommand, UpdateCampusResult>
 {
   /// <summary>
   /// Handles search post secondary institution by program representative use case
   /// </summary>
   /// <returns>Query results</returns>
-  public async Task<PostSecondaryInstitutionsQueryResults> Handle(SearchPostSecondaryInstitutionQuery request, CancellationToken cancellationToken)
+  public async ValueTask<PostSecondaryInstitutionsQueryResults> Handle(SearchPostSecondaryInstitutionQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -24,7 +25,7 @@ public class PostSecondaryInstituteHandlers(
       ByProgramRepresentativeId = request.ByProgramRepresentativeId
     }, cancellationToken);
 
-    return new PostSecondaryInstitutionsQueryResults(mapper.Map<IEnumerable<Contract.PostSecondaryInstitutes.PostSecondaryInstitute>>(institute)!);
+    return new PostSecondaryInstitutionsQueryResults(postSecondaryInstituteMapper.MapPostSecondaryInstitutions(institute));
   }
 
   /// <summary>
@@ -33,7 +34,7 @@ public class PostSecondaryInstituteHandlers(
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<string> Handle(UpdatePostSecondaryInstitutionCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdatePostSecondaryInstitutionCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -43,10 +44,12 @@ public class PostSecondaryInstituteHandlers(
     }, cancellationToken)).SingleOrDefault();
 
     if (institution == null) throw new InvalidOperationException($"Institute {request.Institute.Id} wasn't found");
-    var institute = mapper.Map<Resources.Documents.PostSecondaryInstitutes.PostSecondaryInstitute>(request.Institute)!;
+    var institute = postSecondaryInstituteMapper.MapPostSecondaryInstitute(request.Institute);
     await postSecondaryInstituteRepository.Save(new Resources.Documents.PostSecondaryInstitutes.PostSecondaryInstitute {
       Id = request.Institute.Id,
-      Auspice = institute.Auspice,
+      InstitutionType = institute.InstitutionType,
+      PrivateAuspiceType = institute.PrivateAuspiceType,
+      PtiruInstitutionId = institute.PtiruInstitutionId,
       BceidBusinessId = institute.BceidBusinessId,
       BceidBusinessName = institute.BceidBusinessName,
       City = institute.City,
@@ -61,5 +64,57 @@ public class PostSecondaryInstituteHandlers(
 
     return request.Institute.Id;
   }
-}
 
+  /// <summary>
+  /// Handles creating a new campus or satellite location for the institution of the given program representative
+  /// </summary>
+  public async ValueTask<string> Handle(CreateCampusCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var institution = (await postSecondaryInstituteRepository.Query(new PostSecondaryInstituteQuery
+    {
+      ByProgramRepresentativeId = request.ProgramRepresentativeId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (institution == null) throw new InvalidOperationException($"No institution found for program representative {request.ProgramRepresentativeId}");
+
+    var campus = postSecondaryInstituteMapper.MapCampus(request.Campus) with { IsSatelliteOrTemporaryLocation = request.IsSatelliteOrTemporaryLocation };
+    return await postSecondaryInstituteRepository.CreateCampus(institution.Id, campus, cancellationToken, request.ProgramIds);
+  }
+
+  /// <summary>
+  /// Handles updating an existing campus - IsSatelliteOrTemporaryLocation is not changed
+  /// </summary>
+  public async ValueTask<UpdateCampusResult> Handle(UpdateCampusCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var institution = (await postSecondaryInstituteRepository.Query(new PostSecondaryInstituteQuery
+    {
+      ByProgramRepresentativeId = request.ProgramRepresentativeId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (institution == null)
+    {
+      return new UpdateCampusResult() { Error = UpdateCampusError.InstitutionNotFound };
+    }
+
+    var isNameDuplicate = institution.Campuses?.Any(c => c.Id != request.Campus.Id && c.Name == request.Campus.Name);
+
+    if (isNameDuplicate is true)
+    {
+      return new UpdateCampusResult() { Error = UpdateCampusError.DuplicateCampusName };
+    }
+    var existingCampus = institution.Campuses?.SingleOrDefault(c => c.Id == request.Campus.Id);
+    if (existingCampus == null)
+    {
+      return new UpdateCampusResult() { Error = UpdateCampusError.InvalidCampus };
+    }
+
+    var campusToUpdate = request.Campus with { IsSatelliteOrTemporaryLocation = existingCampus.IsSatelliteOrTemporaryLocation };
+    var campus = postSecondaryInstituteMapper.MapCampus(campusToUpdate);
+    await postSecondaryInstituteRepository.UpdateCampus(campus, cancellationToken);
+    return  new UpdateCampusResult() { CampusId = request.Campus.Id };
+  }
+}

@@ -1,4 +1,6 @@
-﻿namespace ECER.Resources.Accounts.Communications;
+﻿using ECER.Utilities.ObjectStorage.Providers;
+
+namespace ECER.Resources.Accounts.Communications;
 
 public interface ICommunicationRepository
 {
@@ -54,6 +56,7 @@ public record CommunicationDocument(string Id)
   public string? Extention { get; set; } = string.Empty;
   public string? Name { get; set; } = string.Empty;
   public string? Size { get; set; } = string.Empty;
+  public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
 public record CommunicationResult

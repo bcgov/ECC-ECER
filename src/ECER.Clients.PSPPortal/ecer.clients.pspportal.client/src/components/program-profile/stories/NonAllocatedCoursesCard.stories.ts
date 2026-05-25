@@ -16,6 +16,15 @@ const meta = {
       action: "edit",
       description: "Emitted when edit button is clicked",
     },
+    showDeleteButton: {
+      control: "boolean",
+      description:
+        "Whether to show the delete button for each course controlled by whether type is ProgramApplication or ProgramProfile",
+    },
+    loading: {
+      control: "boolean",
+      description: "Whether buttons are in a loading state",
+    },
   },
   args: {
     courses: [
@@ -74,6 +83,8 @@ export const Default: Story = {
         programType: "SNE",
       },
     ] as Components.Schemas.Course[],
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
@@ -87,12 +98,16 @@ export const SingleCourse: Story = {
         programType: "ITE",
       },
     ] as Components.Schemas.Course[],
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
 export const Empty: Story = {
   args: {
     courses: [] as Components.Schemas.Course[],
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
@@ -130,5 +145,7 @@ export const MultipleCourses: Story = {
         programType: "ITE",
       },
     ] as Components.Schemas.Course[],
+    loading: false,
+    showDeleteButton: false,
   },
 };

@@ -6,6 +6,8 @@
     :title="'You will be logged out soon'"
     @accept="oidcStore.logout"
     @cancel="showTimeoutDialog = false"
+    @click-outside="showTimeoutDialog = false"
+    @exit="showTimeoutDialog = false"
   >
     <template #confirmation-text>
       <p>

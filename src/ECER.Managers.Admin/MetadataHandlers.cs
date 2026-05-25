@@ -1,13 +1,12 @@
-﻿using AutoMapper;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Resources.Documents.MetadataResources;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Admin;
 
 public class MetadataHandlers(
    IMetadataResourceRepository metadataResourceRepository,
-   IMapper mapper) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
+   IMetadataMapper metadataMapper) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
    IRequestHandler<Contract.Metadatas.CountriesQuery, CountriesQueryResults>,
    IRequestHandler<Contract.Metadatas.AreaOfInstructionsQuery, AreaOfInstructionsQueryResults>,
    IRequestHandler<Contract.Metadatas.CertificationComparisonQuery, CertificationComparisonQueryResults>,
@@ -17,15 +16,15 @@ public class MetadataHandlers(
    IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>,
    IRequestHandler<Contract.Metadatas.DynamicsConfigQuery, DynamicsConfigQueryResults>
 {
-  public async Task<PostSecondaryInstitutionsQueryResults> Handle(Contract.Metadatas.PostSecondaryInstitutionsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<PostSecondaryInstitutionsQueryResults> Handle(Contract.Metadatas.PostSecondaryInstitutionsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var postSecondaryInstitutions = await metadataResourceRepository.QueryPostSecondaryInstitutions(mapper.Map<Resources.Documents.MetadataResources.PostSecondaryInstitutionsQuery>(request), cancellationToken);
-    return new PostSecondaryInstitutionsQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.PostSecondaryInstitution>>(postSecondaryInstitutions)!);
+    var postSecondaryInstitutions = await metadataResourceRepository.QueryPostSecondaryInstitutions(metadataMapper.MapPostSecondaryInstitutionsQuery(request), cancellationToken);
+    return new PostSecondaryInstitutionsQueryResults(metadataMapper.MapPostSecondaryInstitutions(postSecondaryInstitutions));
   }
 
-  public async Task<CertificationComparisonQueryResults> Handle(Contract.Metadatas.CertificationComparisonQuery request, CancellationToken cancellationToken)
+  public async ValueTask<CertificationComparisonQueryResults> Handle(Contract.Metadatas.CertificationComparisonQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -49,23 +48,23 @@ public class MetadataHandlers(
     return new CertificationComparisonQueryResults(comparisonRecords!);
   }
 
-  public async Task<ProvincesQueryResults> Handle(Contract.Metadatas.ProvincesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<ProvincesQueryResults> Handle(Contract.Metadatas.ProvincesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var provinces = await metadataResourceRepository.QueryProvinces(new Resources.Documents.MetadataResources.ProvincesQuery() { ById = request.ById }, cancellationToken);
-    return new ProvincesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.Province>>(provinces)!);
+    return new ProvincesQueryResults(metadataMapper.MapProvinces(provinces));
   }
 
-  public async Task<AreaOfInstructionsQueryResults> Handle(Contract.Metadatas.AreaOfInstructionsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<AreaOfInstructionsQueryResults> Handle(Contract.Metadatas.AreaOfInstructionsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var instructions = await metadataResourceRepository.QueryAreaOfInstructions(new Resources.Documents.MetadataResources.AreaOfInstructionsQuery() { ById = request.ById }, cancellationToken);
-    return new AreaOfInstructionsQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.AreaOfInstruction>>(instructions)!);
+    return new AreaOfInstructionsQueryResults(metadataMapper.MapAreaOfInstructions(instructions));
   }
 
-  public async Task<SystemMessagesQueryResults> Handle(Contract.Metadatas.SystemMessagesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<SystemMessagesQueryResults> Handle(Contract.Metadatas.SystemMessagesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -74,39 +73,39 @@ public class MetadataHandlers(
     // Return only active system messages
     systemMessages = systemMessages.Where(m => m.StartDate < DateTime.Now && m.EndDate > DateTime.Now).ToList();
 
-    return new SystemMessagesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.SystemMessage>>(systemMessages)!);
+    return new SystemMessagesQueryResults(metadataMapper.MapSystemMessages(systemMessages));
   }
 
-  public async Task<DefaultContentsQueryResults> Handle(Contract.Metadatas.DefaultContentsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<DefaultContentsQueryResults> Handle(Contract.Metadatas.DefaultContentsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var defaultContents = await metadataResourceRepository.QueryDefaultContents(new Resources.Documents.MetadataResources.DefaultContentsQuery(), cancellationToken);
 
-    return new DefaultContentsQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.DefaultContent>>(defaultContents)!);
+    return new DefaultContentsQueryResults(metadataMapper.MapDefaultContents(defaultContents));
   }
 
-  public async Task<CountriesQueryResults> Handle(Contract.Metadatas.CountriesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<CountriesQueryResults> Handle(Contract.Metadatas.CountriesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var countries = await metadataResourceRepository.QueryCountries(new Resources.Documents.MetadataResources.CountriesQuery() { ById = request.ById, ByCode = request.ByCode, ByName = request.ByName }, cancellationToken);
-    return new CountriesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.Country>>(countries)!);
+    return new CountriesQueryResults(metadataMapper.MapCountries(countries));
   }
 
-  public async Task<IdentificationTypesQueryResults> Handle(Contract.Metadatas.IdentificationTypesQuery request, CancellationToken cancellationToken)
+  public async ValueTask<IdentificationTypesQueryResults> Handle(Contract.Metadatas.IdentificationTypesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var identificationTypes = await metadataResourceRepository.QueryIdentificationTypes(new Resources.Documents.MetadataResources.IdentificationTypesQuery() { ById = request.ById, ForPrimary = request.ForPrimary, ForSecondary = request.ForSecondary }, cancellationToken);
-    return new IdentificationTypesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.IdentificationType>>(identificationTypes)!);
+    return new IdentificationTypesQueryResults(metadataMapper.MapIdentificationTypes(identificationTypes));
   }
 
-  public async Task<DynamicsConfigQueryResults> Handle(Contract.Metadatas.DynamicsConfigQuery request, CancellationToken cancellationToken)
+  public async ValueTask<DynamicsConfigQueryResults> Handle(Contract.Metadatas.DynamicsConfigQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var dynamicsConfig = await metadataResourceRepository.QueryDynamicsConfiguration(new Resources.Documents.MetadataResources.DynamicsConfigQuery() { }, cancellationToken);
-    return new DynamicsConfigQueryResults(mapper.Map<Contract.Metadatas.DynamicsConfig>(dynamicsConfig)!);
+    return new DynamicsConfigQueryResults(metadataMapper.MapDynamicsConfig(dynamicsConfig));
   }
 }

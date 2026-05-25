@@ -1,6 +1,6 @@
-﻿using ECER.Clients.PSPPortal.Server.Shared;
+using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;

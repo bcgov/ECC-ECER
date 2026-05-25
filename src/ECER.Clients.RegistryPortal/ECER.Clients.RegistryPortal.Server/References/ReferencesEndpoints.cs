@@ -1,35 +1,36 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
 using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.References;
 
 public class ReferencesEndpoints : IRegisterEndpoints
 {
+  private const string InvalidCaptchaTokenDetail = "Invalid captcha token";
+
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPost("/api/References/Character", async Task<Results<Ok, BadRequest<ProblemDetails>>> (CharacterReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/Character", async Task<Results<Ok, BadRequest<ProblemDetails>>> (CharacterReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails() { Detail = "Token is required" });
 
-      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken), ct);
+      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.CaptchaToken), ct);
 
-      if (!recaptchaResult.Success)
+      if (!captchaResult.Success)
       {
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid recaptcha token",
-          Extensions = { ["errors"] = recaptchaResult.ErrorCodes }
+          Detail = InvalidCaptchaTokenDetail,
+          Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);
       }
 
-      var mappedCharacterReferenceRequest = mapper.Map<Managers.Registry.Contract.Applications.CharacterReferenceSubmissionRequest>(request);
+      var mappedCharacterReferenceRequest = referencesMapper.MapCharacterReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
       {
         CharacterReferenceSubmissionRequest = mappedCharacterReferenceRequest
@@ -38,26 +39,28 @@ public class ReferencesEndpoints : IRegisterEndpoints
       {
         return TypedResults.BadRequest(new ProblemDetails() { Detail = result.ErrorMessage });
       }
+
       return TypedResults.Ok();
     }).WithOpenApi("Handles character reference submission", string.Empty, "character_reference_post").WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/References/WorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (WorkExperienceReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/WorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (WorkExperienceReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
-      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken), ct);
+      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.CaptchaToken), ct);
 
-      if (!recaptchaResult.Success)
+      if (!captchaResult.Success)
       {
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid recaptcha token",
-          Extensions = { ["errors"] = recaptchaResult.ErrorCodes }
+          Detail = InvalidCaptchaTokenDetail,
+          Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);
       }
-      var mappedWorkExperienceRequest = mapper.Map<Managers.Registry.Contract.Applications.WorkExperienceReferenceSubmissionRequest>(request);
+
+      var mappedWorkExperienceRequest = referencesMapper.MapWorkExperienceReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
       {
         WorkExperienceReferenceSubmissionRequest = mappedWorkExperienceRequest
@@ -66,50 +69,53 @@ public class ReferencesEndpoints : IRegisterEndpoints
       {
         return TypedResults.BadRequest(new ProblemDetails { Detail = result.ErrorMessage });
       }
+
       return TypedResults.Ok();
     }).WithOpenApi("Handles work experience reference submission", string.Empty, "workExperience_reference_post").WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/References/OptOut", async Task<Results<Ok, BadRequest<ProblemDetails>>> (OptOutReferenceRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/OptOut", async Task<Results<Ok, BadRequest<ProblemDetails>>> (OptOutReferenceRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
-      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken), ct);
+      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.CaptchaToken), ct);
 
-      if (!recaptchaResult.Success)
+      if (!captchaResult.Success)
       {
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid recaptcha token",
-          Extensions = { ["errors"] = recaptchaResult.ErrorCodes }
+          Detail = InvalidCaptchaTokenDetail,
+          Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);
       }
-      var result = await messageBus.Send(mapper.Map<Managers.Registry.Contract.Applications.OptOutReferenceRequest>(request), ct);
+
+      var result = await messageBus.Send(referencesMapper.MapOptOutReferenceRequest(request), ct);
       if (!result.IsSuccess)
       {
         return TypedResults.BadRequest(new ProblemDetails { Detail = result.ErrorMessage });
       }
+
       return TypedResults.Ok();
     }).WithOpenApi("Handles reference optout", string.Empty, "reference_optout").WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/References/ICRAWorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ICRAWorkExperienceReferenceSubmissionRequest request, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/ICRAWorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ICRAWorkExperienceReferenceSubmissionRequest request, IMediator messageBus, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
-      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken), ct);
-      if (!recaptchaResult.Success)
+      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.CaptchaToken), ct);
+      if (!captchaResult.Success)
       {
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid recaptcha token",
-          Extensions = { ["errors"] = recaptchaResult.ErrorCodes }
+          Detail = InvalidCaptchaTokenDetail,
+          Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);
       }
 
-      var mapped = mapper.Map<Managers.Registry.Contract.ICRA.ICRAWorkExperienceReferenceSubmissionRequest>(request);
+      var mapped = referencesMapper.MapIcraWorkExperienceReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
       {
         ICRAWorkExperienceReferenceSubmissionRequest = mapped
@@ -118,12 +124,13 @@ public class ReferencesEndpoints : IRegisterEndpoints
       {
         return TypedResults.BadRequest(new ProblemDetails { Detail = result.ErrorMessage });
       }
+
       return TypedResults.Ok();
     }).WithOpenApi("Handles ICRA work experience reference submission", string.Empty, "icra_workExperience_reference_post").WithParameterValidation();
   }
 }
 
-public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight, [Required] string RecaptchaToken);
+public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight, [Required] string CaptchaToken);
 public record ReferenceContactInformation([Required] string LastName, [Required] string Email, [Required] string PhoneNumber, string CertificateProvinceOther)
 {
   public string? FirstName { get; set; }
@@ -131,8 +138,9 @@ public record ReferenceContactInformation([Required] string LastName, [Required]
   public string? CertificateNumber { get; set; }
   public DateTime? DateOfBirth { get; set; }
 }
+
 public record CharacterReferenceEvaluation([Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, [Required] ReferenceKnownTime LengthOfAcquaintance, [Required] bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
-public record OptOutReferenceRequest(string Token, [Required] UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons, [Required] string RecaptchaToken);
+public record OptOutReferenceRequest(string Token, [Required] UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons, [Required] string CaptchaToken);
 
 public enum UnabletoProvideReferenceReasons
 {
@@ -143,7 +151,7 @@ public enum UnabletoProvideReferenceReasons
   Other
 }
 
-public record ICRAWorkExperienceReferenceSubmissionRequest([Required] string Token, [Required] string RecaptchaToken)
+public record ICRAWorkExperienceReferenceSubmissionRequest([Required] string Token, [Required] string CaptchaToken)
 {
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
@@ -159,7 +167,6 @@ public record ICRAWorkExperienceReferenceSubmissionRequest([Required] string Tok
   public ReferenceRelationship? ReferenceRelationship { get; set; }
   public bool WillProvideReference { get; set; }
   public DateTime? DateSigned { get; set; }
-
 }
 
 public record WorkExperienceReferenceDetails()
@@ -198,6 +205,7 @@ public record WorkExperienceReferenceDetails()
   [Required]
   public WorkExperienceTypes? WorkExperienceType { get; set; }
 }
+
 public record WorkExperienceReferenceCompetenciesAssessment()
 {
   [Required]
@@ -232,7 +240,8 @@ public record WorkExperienceReferenceCompetenciesAssessment()
   public LikertScale? FosteringPositiveRelationCoworker { get; set; }
   public string? FosteringPositiveRelationCoworkerReason { get; set; }
 }
-public record WorkExperienceReferenceSubmissionRequest([Required] string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, [RequiredWhenWorkExperienceType(WorkExperienceTypes.Is500Hours)] WorkExperienceReferenceCompetenciesAssessment? WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight, [Required] string RecaptchaToken)
+
+public record WorkExperienceReferenceSubmissionRequest([Required] string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, [RequiredWhenWorkExperienceType(WorkExperienceTypes.Is500Hours)] WorkExperienceReferenceCompetenciesAssessment? WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight, [Required] string CaptchaToken)
 {
   [Required]
   public WorkExperienceTypes? WorkExperienceType { get; set; }
@@ -289,7 +298,6 @@ public enum ReferenceKnownTime
   Morethan5years,
 }
 
-// custom required annotations based on WorkExperienceTypes
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
 public sealed class RequiredWhenWorkExperienceTypeAttribute : ValidationAttribute
 {
@@ -307,8 +315,8 @@ public sealed class RequiredWhenWorkExperienceTypeAttribute : ValidationAttribut
     var propertyName = validationContext.MemberName;
 
     var workExperienceReferenceType = validationContext.ObjectInstance.GetType()
-    .GetProperty("WorkExperienceType")?
-    .GetValue(validationContext.ObjectInstance);
+      .GetProperty("WorkExperienceType")?
+      .GetValue(validationContext.ObjectInstance);
 
     if (workExperienceReferenceType?.Equals(_workExperienceType) == true && value == null)
     {

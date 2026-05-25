@@ -60,7 +60,7 @@
 
     <!-- Pending invitations: Resend invitation button -->
     <v-row v-if="user.accessToPortal === 'Invited'">
-      <v-col cols="12" class="align-self-end">
+      <v-col cols="auto" class="align-self-end">
         <v-btn
           color="primary"
           size="small"
@@ -71,6 +71,16 @@
           <v-icon class="mr-2">mdi-email-arrow-right-outline</v-icon>
           Resend invitation
         </v-btn>
+      </v-col>
+      <v-col cols="auto" class="align-self-end">
+        <a
+          class="small-link-text"
+          v-if="!isLoading"
+          href="#"
+          @click.prevent="showCancelInvitationConfirmation = true"
+        >
+          Cancel invitation
+        </a>
       </v-col>
     </v-row>
 
@@ -102,6 +112,8 @@
       showDeactivateConfirmation = false;
     "
     @cancel="showDeactivateConfirmation = false"
+    @click-outside="showDeactivateConfirmation = false"
+    @exit="showDeactivateConfirmation = false"
   >
     <template #confirmation-text>
       <p>
@@ -112,6 +124,34 @@
       <p>
         If you decide to reactivate this user's account later, you can invite
         them to the portal again at that time.
+      </p>
+      <br />
+      <p><strong>Do you wish to continue?</strong></p>
+    </template>
+  </ConfirmationDialog>
+  <ConfirmationDialog
+    :show="showCancelInvitationConfirmation"
+    :loading="isLoading"
+    title="Cancel invitation"
+    accept-button-text="Cancel invitation"
+    cancel-button-text="Keep invitation"
+    @accept="
+      $emit('remove-access', user.id);
+      showCancelInvitationConfirmation = false;
+    "
+    @cancel="showCancelInvitationConfirmation = false"
+    @exit="showCancelInvitationConfirmation = false"
+    @click-outside="showCancelInvitationConfirmation = false"
+  >
+    <template #confirmation-text>
+      <p>
+        You are about to cancel the invitation to this portal for:
+        <strong>{{ displayName }}</strong>
+      </p>
+      <br />
+      <p>
+        This user will no longer be able to accept this invitation. You can
+        invite them to the portal again at a later time.
       </p>
       <br />
       <p><strong>Do you wish to continue?</strong></p>
@@ -148,6 +188,7 @@ export default defineComponent({
   data() {
     return {
       showDeactivateConfirmation: false,
+      showCancelInvitationConfirmation: false,
     };
   },
   emits: {
@@ -186,3 +227,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.small-link-text {
+  font-size: 0.9rem;
+}
+</style>

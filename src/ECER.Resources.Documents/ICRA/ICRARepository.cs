@@ -1,8 +1,6 @@
-﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.ICRA;
@@ -10,20 +8,18 @@ namespace ECER.Resources.Documents.ICRA;
 internal sealed partial class ICRARepository : IICRARepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
-  private readonly IObjecStorageProvider objectStorageProvider;
-  private readonly IConfiguration configuration;
+  private readonly IICRARepositoryMapper mapper;
+  private readonly IObjectStorageProviderResolver objectStorageProviderResolver;
 
   public ICRARepository(
        EcerContext context,
-       IObjecStorageProvider objectStorageProvider,
-       IMapper mapper,
-       IConfiguration configuration)
+       IObjectStorageProviderResolver objectStorageProviderResolver,
+       IICRARepositoryMapper mapper
+       )
   {
     this.context = context;
     this.mapper = mapper;
-    this.objectStorageProvider = objectStorageProvider;
-    this.configuration = configuration;
+    this.objectStorageProviderResolver = objectStorageProviderResolver;
   }
 
   public async Task<IEnumerable<ICRAEligibility>> Query(ICRAQuery query, CancellationToken cancellationToken)
@@ -34,7 +30,7 @@ internal sealed partial class ICRARepository : IICRARepository
 
     if (query.ByStatus != null && query.ByStatus.Any())
     {
-      var statuses = mapper.Map<IEnumerable<ecer_ICRAEligibilityAssessment_StatusCode>>(query.ByStatus)!.ToList();
+      var statuses = mapper.MapIcraStatuses(query.ByStatus);
       icras = icras.WhereIn(a => a.StatusCode!.Value, statuses);
     }
 
@@ -52,7 +48,7 @@ internal sealed partial class ICRARepository : IICRARepository
       .IncludeNested(a => a.ecer_internationalcertification_CountryId)
       .Execute();
 
-    return mapper.Map<IEnumerable<ICRAEligibility>>(results)!.ToList();
+    return mapper.MapIcraEligibilities(results).ToList();
   }
 
   public async Task<string> Save(ICRAEligibility iCRAEligibility, CancellationToken cancellationToken)
@@ -62,11 +58,11 @@ internal sealed partial class ICRARepository : IICRARepository
     var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(iCRAEligibility.ApplicantId));
     if (applicant == null) throw new InvalidOperationException($"Applicant '{iCRAEligibility.ApplicantId}' not found");
 
-    var icraEligibility = mapper.Map<ecer_ICRAEligibilityAssessment>(iCRAEligibility)!;
+    var icraEligibility = mapper.MapIcraEligibility(iCRAEligibility);
 
     if (iCRAEligibility.Origin != null)
     {
-      icraEligibility.ecer_Origin = mapper.Map<ecer_Origin>(iCRAEligibility.Origin);
+      icraEligibility.ecer_Origin = mapper.MapOrigin(iCRAEligibility.Origin);
     }
 
     if (!icraEligibility.ecer_ICRAEligibilityAssessmentId.HasValue)
@@ -92,7 +88,7 @@ internal sealed partial class ICRARepository : IICRARepository
     // Update international certifications and their files
     await UpdateInternationalCertifications(icraEligibility, applicant, iCRAEligibility.ApplicantId, iCRAEligibility.InternationalCertifications.ToList(), cancellationToken);
     // Update employment references
-    await UpdateEmploymentReferences(icraEligibility, applicant, mapper.Map<List<ecer_WorkExperienceRef>>(iCRAEligibility.EmploymentReferences)!, cancellationToken);
+    await UpdateEmploymentReferences(icraEligibility, applicant, mapper.MapEmploymentReferences(iCRAEligibility.EmploymentReferences), cancellationToken);
     context.SaveChanges();
     return icraEligibility.ecer_ICRAEligibilityAssessmentId!.Value.ToString();
   }
@@ -115,7 +111,7 @@ internal sealed partial class ICRARepository : IICRARepository
 
     var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(referenceId));
 
-    mapper.Map(request, workExperienceReference);
+    mapper.ApplyEmploymentReferenceSubmission(request, workExperienceReference);
 
     if (!string.IsNullOrWhiteSpace(request.CountryId) && Guid.TryParse(request.CountryId, out var countryGuid))
     {

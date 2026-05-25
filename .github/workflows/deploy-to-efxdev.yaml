@@ -15,7 +15,7 @@ on:
     inputs:
       version:
         description: "Version ex. master, release-1.0.0 or release-1.0.1 .etc"
-        default: "master"
+        default: "release-master"
         required: true
 
 jobs:

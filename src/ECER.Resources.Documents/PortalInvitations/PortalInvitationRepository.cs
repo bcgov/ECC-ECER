@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.PortalInvitations;
@@ -6,9 +5,9 @@ namespace ECER.Resources.Documents.PortalInvitations;
 internal class PortalInvitationRepository : IPortalInvitationRepository
 {
   private readonly EcerContext context;
-  private readonly IMapper mapper;
+  private readonly IPortalInvitationRepositoryMapper mapper;
 
-  public PortalInvitationRepository(EcerContext context, IMapper mapper)
+  public PortalInvitationRepository(EcerContext context, IPortalInvitationRepositoryMapper mapper)
   {
     this.context = context;
     this.mapper = mapper;
@@ -22,11 +21,11 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
     if (portalInvitation == null)
       throw new NotSupportedException($"PortalInvitation not found: {query.portalInvitationId}");
 
-    var result = mapper.Map<PortalInvitation>(portalInvitation);
+    var result = mapper.MapPortalInvitation(portalInvitation);
 
     if (portalInvitation.ecer_Type == ecer_PortalInvitationTypes.PSIProgramRepresentative)
     {
-      var pspRep = context.ecer_ECEProgramRepresentativeSet.Single(pr => pr.ecer_ECEProgramRepresentativeId == portalInvitation!.ecer_psiprogramrepresentativeid.Id);
+      var pspRep = context.ecer_ECEProgramRepresentativeSet.Single(pr => pr.ecer_ECEProgramRepresentativeId == portalInvitation.ecer_psiprogramrepresentativeid.Id);
       var institute = context.ecer_PostSecondaryInstituteSet.Single(psi => psi.ecer_PostSecondaryInstituteId == pspRep.ecer_PostSecondaryInstitute.Id);
       result.PostSecondaryInstitutionName = institute.ecer_Name;
       if (institute.ecer_BusinessBCeID != null)
@@ -35,7 +34,8 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
         result.BceidBusinessName = institute.ecer_BCeIDBusinessName;
       }
     }
-    return result!;
+
+    return result;
   }
 
   public async Task Complete(CompletePortalInvitationCommand command, CancellationToken ct)

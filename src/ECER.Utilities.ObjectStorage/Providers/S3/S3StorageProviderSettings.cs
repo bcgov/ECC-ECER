@@ -6,3 +6,9 @@ internal record S3StorageProviderSettings
   public string SecretKey { get; set; } = null!;
   public string BucketName { get; set; } = null!;
 }
+
+internal record ObjectStorageSettings
+{
+  public S3StorageProviderSettings Psp { get; set; } = null!;
+  public S3StorageProviderSettings Registry { get; set; } = null!;
+}

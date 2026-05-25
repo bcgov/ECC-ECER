@@ -326,8 +326,8 @@ export const useWizardStore = defineStore("wizard", {
             .characterReferenceEvaluation.id]:
             {} as Components.Schemas.CharacterReferenceEvaluation,
         }),
-        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
-          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        ...(wizard?.steps?.review?.form?.inputs?.captchaToken?.id && {
+          [wizard.steps.review.form.inputs.captchaToken.id]: "",
         }),
       });
     },
@@ -371,8 +371,8 @@ export const useWizardStore = defineStore("wizard", {
           [wizard.steps.assessment.form.inputs.workExperienceAssessment.id]:
             {} as Components.Schemas.WorkExperienceReferenceCompetenciesAssessment,
         }),
-        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
-          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        ...(wizard?.steps?.review?.form?.inputs?.captchaToken?.id && {
+          [wizard.steps.review.form.inputs.captchaToken.id]: "",
         }),
       });
     },
@@ -412,8 +412,8 @@ export const useWizardStore = defineStore("wizard", {
             .workExperience400HoursEvaluation.id]:
             {} as Components.Schemas.WorkExperienceReferenceDetails,
         }),
-        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
-          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        ...(wizard?.steps?.review?.form?.inputs?.captchaToken?.id && {
+          [wizard.steps.review.form.inputs.captchaToken.id]: "",
         }),
       });
     },
@@ -446,8 +446,8 @@ export const useWizardStore = defineStore("wizard", {
           [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight
             .id]: false,
         }),
-        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
-          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        ...(wizard?.steps?.review?.form?.inputs?.captchaToken?.id && {
+          [wizard.steps.review.form.inputs.captchaToken.id]: "",
         }),
       });
     },
@@ -481,8 +481,8 @@ export const useWizardStore = defineStore("wizard", {
           [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight
             .id]: false,
         }),
-        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
-          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        ...(wizard?.steps?.review?.form?.inputs?.captchaToken?.id && {
+          [wizard.steps.review.form.inputs.captchaToken.id]: "",
         }),
       });
     },

@@ -1,9 +1,8 @@
-using AutoMapper;
 using ECER.Engines.Validation.Programs;
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.Programs;
-using MediatR;
+using Mediator;
 using ProgramStatus = ECER.Resources.Documents.Programs.ProgramStatus;
 
 namespace ECER.Managers.Registry;
@@ -11,7 +10,7 @@ namespace ECER.Managers.Registry;
 public class ProgramHandlers(
     IProgramRepository programRepository,
     IMetadataResourceRepository metadataResourceRepository,
-    IMapper mapper,
+    IProgramMapper programMapper,
     IProgramValidationEngineResolver validationResolver)
   : IRequestHandler<SaveDraftProgramCommand, Contract.Programs.Program?>,
     IRequestHandler<ProgramsQuery, ProgramsQueryResults>,
@@ -19,11 +18,11 @@ public class ProgramHandlers(
     IRequestHandler<SubmitProgramCommand, SubmitProgramResult>,
     IRequestHandler<ChangeProgramCommand, string>
 {
-  public async Task<Contract.Programs.Program?> Handle(SaveDraftProgramCommand request, CancellationToken cancellationToken)
+  public async ValueTask<Contract.Programs.Program?> Handle(SaveDraftProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var programId = await programRepository.Save(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
+    var programId = await programRepository.Save(programMapper.MapProgram(request.Program), cancellationToken);
 
     var result = (await programRepository.Query(new ProgramQuery
     {
@@ -33,15 +32,19 @@ public class ProgramHandlers(
 
     var program = result.Programs?.SingleOrDefault();
 
-    return mapper.Map<Contract.Programs.Program>(program);
+    return programMapper.MapProgram(program);
   }
 
-  public async Task<ProgramsQueryResults> Handle(ProgramsQuery request, CancellationToken cancellationToken)
+  public async ValueTask<ProgramsQueryResults> Handle(ProgramsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var statusFilter = request.ByStatus != null
-      ? mapper.Map<IEnumerable<Resources.Documents.Programs.ProgramStatus>>(request.ByStatus)
+      ? programMapper.MapProgramStatuses(request.ByStatus)
+      : null;
+
+    Resources.Documents.Programs.ProgramProfileType? profileTypeFilter = request.ByProgramProfileType.HasValue
+      ? programMapper.MapProgramProfileType(request.ByProgramProfileType.Value)
       : null;
 
     var result = await programRepository.Query(new ProgramQuery
@@ -49,29 +52,31 @@ public class ProgramHandlers(
       ById = request.ById,
       ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
       ByStatus = statusFilter,
+      ByProgramProfileType = profileTypeFilter,
       ByFromProgramProfileId = request.ByFromProgramProfileId,
+      ByCampusId = request.ByCampusId,
       PageNumber = request.PageNumber,
       PageSize = request.PageSize,
     }, cancellationToken);
 
-    return new ProgramsQueryResults(mapper.Map<IEnumerable<Contract.Programs.Program>>(result.Programs), result.TotalProgramsCount);
+    return new ProgramsQueryResults(programMapper.MapPrograms(result.Programs ?? Array.Empty<Resources.Documents.Programs.Program>()), result.TotalProgramsCount);
   }
 
-  public async Task<string> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var programId = await programRepository.UpdateProgram(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
+    var programId = await programRepository.UpdateProgram(programMapper.MapProgram(request.Program), cancellationToken);
     return programId;
   }
 
-  public async Task<string> Handle(ChangeProgramCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(ChangeProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var programId = await programRepository.ChangeProgram(mapper.Map<Resources.Documents.Programs.Program>(request.Program)!, cancellationToken);
+    var programId = await programRepository.ChangeProgram(programMapper.MapProgram(request.Program), cancellationToken);
     return programId;
   }
 
-  public async Task<SubmitProgramResult> Handle(SubmitProgramCommand request, CancellationToken cancellationToken)
+  public async ValueTask<SubmitProgramResult> Handle(SubmitProgramCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -86,7 +91,7 @@ public class ProgramHandlers(
       return new SubmitProgramResult { ProgramId = null, Error = ProgramSubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "Draft program profile does not exist" } };
     }
 
-    var draftProgram = mapper.Map<Contract.Programs.Program>(programResult.Programs!.First());
+    var draftProgram = programMapper.MapProgram(programResult.Programs!.First())!;
     var instructions = await metadataResourceRepository.QueryAreaOfInstructions(new AreaOfInstructionsQuery() { ById = null }, cancellationToken);
 
     var validationEngine = validationResolver?.resolve(draftProgram.ProgramProfileType);

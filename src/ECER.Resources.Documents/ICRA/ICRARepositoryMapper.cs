@@ -1,125 +1,206 @@
-﻿using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
+using ApplicationFileInfo = ECER.Resources.Documents.Applications.FileInfo;
+using ECER.Resources.Documents.Applications;
 using ECER.Utilities.DataverseSdk.Model;
-using Microsoft.Xrm.Sdk;
+using Riok.Mapperly.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Resources.Documents.ICRA;
 
-internal class ICRARepositoryMapper : SecureProfile
+[SuppressMessage("Naming", "S101:Types should be named in PascalCase", Justification = "ICRA is a domain acronym used consistently throughout the solution.")]
+internal interface IICRARepositoryMapper
 {
-  public ICRARepositoryMapper()
+  ecer_ICRAEligibilityAssessment MapIcraEligibility(ICRAEligibility source);
+  List<ecer_ICRAEligibilityAssessment_StatusCode> MapIcraStatuses(IEnumerable<ICRAStatus> source);
+  List<ICRAEligibility> MapIcraEligibilities(IEnumerable<ecer_ICRAEligibilityAssessment> source);
+  ecer_Origin? MapOrigin(IcraEligibilityOrigin? source);
+  List<ecer_WorkExperienceRef> MapEmploymentReferences(IEnumerable<EmploymentReference> source);
+  EmploymentReference MapEmploymentReference(ecer_WorkExperienceRef source);
+  ecer_WorkExperienceRef MapEmploymentReference(EmploymentReference source);
+  ecer_InternationalCertification MapInternationalCertification(InternationalCertification source);
+  void ApplyEmploymentReferenceSubmission(ICRAWorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination);
+}
+
+[Mapper]
+internal partial class IcraRepositoryMapper : IICRARepositoryMapper
+{
+  public ecer_ICRAEligibilityAssessment MapIcraEligibility(ICRAEligibility source) => new()
   {
-    CreateMap<ICRAEligibility, ecer_ICRAEligibilityAssessment>(MemberList.Source)
-      .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.InternationalCertifications, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.EmploymentReferences, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Origin, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.AddAdditionalEmploymentExperienceReferences, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_ICRAEligibilityAssessmentId, opts => opts.MapFrom(s => s.Id))
-      .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.PortalStage))
-      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-      .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.SignedDate))
-      .ForMember(d => d.ecer_ApplicantUnderstandAgreesApplication, opts => opts.MapFrom(s => s.UnderstandAgreesApplication))
-      .ForMember(d => d.ecer_ApplicantsFullLegalName, opts => opts.MapFrom(s => s.FullLegalName))
-      .ForMember(d => d.ecer_Origin, opts => opts.MapFrom(s => s.Origin))
-      .ReverseMap()
-      .ForMember(d => d.ApplicantId, opts => opts.MapFrom(s => s.ecer_icraeligibilityassessment_ApplicantId.Id))
-      .ForMember(d => d.InternationalCertifications, opts => opts.MapFrom(s => s.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment))
-      .ForMember(d => d.EmploymentReferences, opts => opts.MapFrom(s => s.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment))
-      .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn))
-      .ForMember(d => d.Status, o => o.MapFrom(s => s.StatusCode))
-      .ForMember(d => d.AddAdditionalEmploymentExperienceReferences, o => o.MapFrom(s => s.ecer_AddAdditionalEmploymentExperienceReferences));
+    ecer_ICRAEligibilityAssessmentId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    ecer_PortalStage = source.PortalStage,
+    StatusCode = MapIcraStatus(source.Status),
+    ecer_DateSigned = source.SignedDate,
+    ecer_ApplicantUnderstandAgreesApplication = source.UnderstandAgreesApplication,
+    ecer_ApplicantsFullLegalName = source.FullLegalName,
+    ecer_Origin = MapOrigin(source.Origin),
+  };
 
-    CreateMap<InternationalCertification, ecer_InternationalCertification>(MemberList.Source)
-      .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_OtherFirstName, opts => opts.MapFrom(s => s.OtherFirstName))
-      .ForMember(d => d.ecer_OtherMiddleName, opts => opts.MapFrom(s => s.OtherMiddleName))
-      .ForMember(d => d.ecer_OtherLastName, opts => opts.MapFrom(s => s.OtherLastName))
-      .ForMember(d => d.ecer_CertificateHasOtherName, opts => opts.MapFrom(s => s.HasOtherName))
-      .ForMember(d => d.ecer_AuthorityName, opts => opts.MapFrom(s => s.NameOfRegulatoryAuthority))
-      .ForMember(d => d.ecer_AuthorityEmail, opts => opts.MapFrom(s => s.EmailOfRegulatoryAuthority))
-      .ForMember(d => d.ecer_AuthorityPhone, opts => opts.MapFrom(s => s.PhoneOfRegulatoryAuthority))
-      .ForMember(d => d.ecer_AuthorityWebsite, opts => opts.MapFrom(s => s.WebsiteOfRegulatoryAuthority))
-      .ForMember(d => d.ecer_CertificateValidationTool, opts => opts.MapFrom(s => s.OnlineCertificateValidationToolOfRegulatoryAuthority))
-      .ForMember(d => d.ecer_CertificationStatus, opts => opts.MapFrom(s => s.CertificateStatus))
-      .ForMember(d => d.ecer_CertificateTitle, opts => opts.MapFrom(s => s.CertificateTitle))
-      .ForMember(d => d.ecer_IssueDate, opts => opts.MapFrom(s => s.IssueDate))
-      .ForMember(d => d.ecer_Expirydate, opts => opts.MapFrom(s => s.ExpiryDate));
+  public List<ecer_ICRAEligibilityAssessment_StatusCode> MapIcraStatuses(IEnumerable<ICRAStatus> source) => source.Select(MapIcraStatus).ToList();
 
-    CreateMap<ecer_InternationalCertification, InternationalCertification>(MemberList.Destination)
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_InternationalCertificationId))
-      .ForMember(d => d.OtherFirstName, opts => opts.MapFrom(s => s.ecer_OtherFirstName))
-      .ForMember(d => d.OtherMiddleName, opts => opts.MapFrom(s => s.ecer_OtherMiddleName))
-      .ForMember(d => d.OtherLastName, opts => opts.MapFrom(s => s.ecer_OtherLastName))
-      .ForMember(d => d.HasOtherName, opts => opts.MapFrom(s => s.ecer_CertificateHasOtherName))
-      .ForMember(d => d.CountryId, opts => opts.MapFrom(s => s.ecer_CountryId != null ? s.ecer_CountryId.Id.ToString() : null))
-      .ForMember(d => d.NameOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityName))
-      .ForMember(d => d.EmailOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityEmail))
-      .ForMember(d => d.PhoneOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityPhone))
-      .ForMember(d => d.WebsiteOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityWebsite))
-      .ForMember(d => d.OnlineCertificateValidationToolOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_CertificateValidationTool))
-      .ForMember(d => d.CertificateStatus, opts => opts.MapFrom(s => s.ecer_CertificationStatus))
-      .ForMember(d => d.CertificateTitle, opts => opts.MapFrom(s => s.ecer_CertificateTitle))
-      .ForMember(d => d.IssueDate, opts => opts.MapFrom(s => s.ecer_IssueDate))
-      .ForMember(d => d.ExpiryDate, opts => opts.MapFrom(s => s.ecer_Expirydate))
-      .ForMember(d => d.NewFiles, opts => opts.Ignore())
-      .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
-      .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_internationalcertificationid.ToList()))
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode));
+  public List<ICRAEligibility> MapIcraEligibilities(IEnumerable<ecer_ICRAEligibilityAssessment> source) => source.Select(MapIcraEligibility).ToList();
 
-    CreateMap<ecer_ICRAEligibilityAssessment_StatusCode, ICRAStatus>()
-      .ConvertUsingEnumMapping(o => o.MapByName(true));
+  public ecer_Origin? MapOrigin(IcraEligibilityOrigin? source) => source.HasValue ? MapOrigin(source.Value) : null;
 
-    CreateMap<ICRAStatus, ecer_ICRAEligibilityAssessment_StatusCode>()
-        .ConvertUsingEnumMapping(o => o.MapByName(true));
+  public List<ecer_WorkExperienceRef> MapEmploymentReferences(IEnumerable<EmploymentReference> source) => source.Select(MapEmploymentReference).ToList();
 
-    CreateMap<EmploymentReference, ecer_WorkExperienceRef>(MemberList.Source)
-      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id) ? null : s.Id))
-      .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
-      .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
-      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-      .ForMember(d => d.ecer_Type, opts => opts.MapFrom(s => s.Type));
+  public EmploymentReference MapEmploymentReference(ecer_WorkExperienceRef source) => new()
+  {
+    Id = source.ecer_WorkExperienceRefId?.ToString(),
+    FirstName = source.ecer_FirstName,
+    LastName = source.ecer_LastName,
+    EmailAddress = source.ecer_EmailAddress,
+    PhoneNumber = source.ecer_PhoneNumber,
+    Status = source.StatusCode.HasValue ? MapEmploymentReferenceStatus(source.StatusCode.Value) : null,
+    Type = source.ecer_Type.HasValue ? MapWorkExperienceType(source.ecer_Type.Value) : WorkExperienceTypesIcra.ICRA,
+    WillProvideReference = source.ecer_WillProvideReference.HasValue ? source.ecer_WillProvideReference == ecer_YesNoNull.Yes : null,
+  };
 
-    CreateMap<ecer_WorkExperienceRef, EmploymentReference>(MemberList.Destination)
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
-      .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.ecer_FirstName))
-      .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
-      .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
-      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-      .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_Type))
-      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.ecer_WillProvideReference.HasValue ? s.ecer_WillProvideReference.Equals(ecer_YesNoNull.Yes) : default(bool?)));
+  public ecer_WorkExperienceRef MapEmploymentReference(EmploymentReference source) => new()
+  {
+    ecer_WorkExperienceRefId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    ecer_FirstName = source.FirstName,
+    ecer_LastName = source.LastName,
+    ecer_EmailAddress = source.EmailAddress,
+    ecer_PhoneNumber = source.PhoneNumber,
+    ecer_Type = MapWorkExperienceType(source.Type),
+  };
 
-    CreateMap<ICRAWorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
-      .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.WorkedWithChildren, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_referencefirstname, opts => opts.MapFrom(s => s.FirstName))
-      .ForMember(d => d.ecer_referencelastname, opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.ecer_referenceemailaddress, opts => opts.MapFrom(s => s.EmailAddress))
-      .ForMember(d => d.ecer_ReferencePhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-      .ForMember(d => d.ecer_NameofEmployer, opts => opts.MapFrom(s => s.EmployerName))
-      .ForMember(d => d.ecer_Role, opts => opts.MapFrom(s => s.PositionTitle))
-      .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
-      .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
-      .ForMember(d => d.ecer_Applicantworkchildren, opts => opts.MapFrom(s => s.WorkedWithChildren.HasValue ? (s.WorkedWithChildren.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No) : (ecer_YesNoNull?)null))
-      .ForMember(d => d.ecer_ChildcareAgeRangeNew, opts => opts.MapFrom(s => s.ChildcareAgeRanges))
-      .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.ReferenceRelationship))
-      .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-      .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
+  public ecer_InternationalCertification MapInternationalCertification(InternationalCertification source) => new()
+  {
+    ecer_InternationalCertificationId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    ecer_OtherFirstName = source.OtherFirstName,
+    ecer_OtherMiddleName = source.OtherMiddleName,
+    ecer_OtherLastName = source.OtherLastName,
+    ecer_CertificateHasOtherName = source.HasOtherName,
+    ecer_AuthorityName = source.NameOfRegulatoryAuthority,
+    ecer_AuthorityEmail = source.EmailOfRegulatoryAuthority,
+    ecer_AuthorityPhone = source.PhoneOfRegulatoryAuthority,
+    ecer_AuthorityWebsite = source.WebsiteOfRegulatoryAuthority,
+    ecer_CertificateValidationTool = source.OnlineCertificateValidationToolOfRegulatoryAuthority,
+    ecer_CertificationStatus = MapCertificateStatus(source.CertificateStatus),
+    ecer_CertificateTitle = source.CertificateTitle,
+    ecer_IssueDate = source.IssueDate,
+    ecer_Expirydate = source.ExpiryDate,
+  };
+
+  public void ApplyEmploymentReferenceSubmission(ICRAWorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination)
+  {
+    destination.ecer_referencefirstname = source.FirstName;
+    destination.ecer_referencelastname = source.LastName;
+    destination.ecer_referenceemailaddress = source.EmailAddress;
+    destination.ecer_ReferencePhoneNumber = source.PhoneNumber;
+    destination.ecer_NameofEmployer = source.EmployerName;
+    destination.ecer_Role = source.PositionTitle;
+    destination.ecer_StartDate = source.StartDate;
+    destination.ecer_EndDate = source.EndDate;
+    destination.ecer_Applicantworkchildren = MapWorkedWithChildren(source.WorkedWithChildren);
+    destination.ecer_ChildcareAgeRangeNew = source.ChildcareAgeRanges?.Select(MapChildcareAgeRange).ToList();
+    destination.ecer_RelationshiptoApplicant = MapReferenceRelationship(source.ReferenceRelationship);
+    destination.ecer_WillProvideReference = source.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+    destination.ecer_DateSigned = source.DateSigned;
   }
 
-  public static string IdOrEmpty(EntityReference? reference) =>
-      reference != null && reference.Id != Guid.Empty
-          ? reference.Id.ToString()
-          : string.Empty;
+  private ICRAEligibility MapIcraEligibility(ecer_ICRAEligibilityAssessment source) => new()
+  {
+    Id = source.ecer_ICRAEligibilityAssessmentId?.ToString(),
+    PortalStage = source.ecer_PortalStage,
+    ApplicantId = source.ecer_icraeligibilityassessment_ApplicantId?.Id.ToString() ?? source.ecer_ApplicantId?.Id.ToString() ?? string.Empty,
+    SignedDate = source.ecer_DateSigned,
+    CreatedOn = source.CreatedOn,
+    Status = source.StatusCode.HasValue ? MapIcraStatus(source.StatusCode.Value) : default,
+    Origin = source.ecer_Origin.HasValue ? MapOrigin(source.ecer_Origin.Value) : null,
+    FullLegalName = source.ecer_ApplicantsFullLegalName ?? string.Empty,
+    UnderstandAgreesApplication = source.ecer_ApplicantUnderstandAgreesApplication.GetValueOrDefault(),
+    InternationalCertifications = (source.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment ?? Array.Empty<ecer_InternationalCertification>())
+      .Select(MapInternationalCertification)
+      .ToList(),
+    EmploymentReferences = (source.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment ?? Array.Empty<ecer_WorkExperienceRef>())
+      .Select(MapEmploymentReference)
+      .ToList(),
+    AddAdditionalEmploymentExperienceReferences = source.ecer_AddAdditionalEmploymentExperienceReferences.GetValueOrDefault(),
+  };
+
+  private InternationalCertification MapInternationalCertification(ecer_InternationalCertification source) => new()
+  {
+    Id = source.ecer_InternationalCertificationId?.ToString(),
+    OtherFirstName = source.ecer_OtherFirstName,
+    OtherMiddleName = source.ecer_OtherMiddleName,
+    OtherLastName = source.ecer_OtherLastName,
+    HasOtherName = source.ecer_CertificateHasOtherName.GetValueOrDefault(),
+    CountryId = source.ecer_CountryId?.Id.ToString(),
+    NameOfRegulatoryAuthority = source.ecer_AuthorityName,
+    EmailOfRegulatoryAuthority = source.ecer_AuthorityEmail,
+    PhoneOfRegulatoryAuthority = source.ecer_AuthorityPhone,
+    WebsiteOfRegulatoryAuthority = source.ecer_AuthorityWebsite,
+    OnlineCertificateValidationToolOfRegulatoryAuthority = source.ecer_CertificateValidationTool,
+    CertificateStatus = source.ecer_CertificationStatus.HasValue ? MapCertificateStatus(source.ecer_CertificationStatus.Value) : default,
+    CertificateTitle = source.ecer_CertificateTitle,
+    IssueDate = source.ecer_IssueDate,
+    ExpiryDate = source.ecer_Expirydate,
+    Files = (source.ecer_bcgov_documenturl_internationalcertificationid ?? Array.Empty<bcgov_DocumentUrl>())
+      .Select(MapFileInfo)
+      .ToList(),
+    Status = source.StatusCode.HasValue ? MapInternationalCertificationStatus(source.StatusCode.Value) : default,
+  };
+
+  private static ApplicationFileInfo MapFileInfo(bcgov_DocumentUrl source) => new(source.bcgov_DocumentUrlId?.ToString() ?? string.Empty)
+  {
+    Name = source.bcgov_FileName,
+    Size = source.bcgov_FileSize,
+    Url = source.bcgov_Url,
+    Extention = source.bcgov_FileExtension,
+  };
+
+  private static ecer_YesNoNull? MapWorkedWithChildren(bool? workedWithChildren)
+  {
+    if (!workedWithChildren.HasValue)
+    {
+      return null;
+    }
+
+    return workedWithChildren.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+  }
+
+  private ecer_ReferenceRelationships? MapReferenceRelationship(ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ReferenceRelationships MapReferenceRelationship(ReferenceRelationship source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ICRAEligibilityAssessment_StatusCode MapIcraStatus(ICRAStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ICRAStatus MapIcraStatus(ecer_ICRAEligibilityAssessment_StatusCode source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_Origin MapOrigin(IcraEligibilityOrigin source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial IcraEligibilityOrigin MapOrigin(ecer_Origin source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_CertificationStatus MapCertificateStatus(CertificateStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CertificateStatus MapCertificateStatus(ecer_CertificationStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial InternationalCertificationStatus MapInternationalCertificationStatus(ecer_InternationalCertification_StatusCode source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial WorkExperienceRefStage MapEmploymentReferenceStatus(ecer_WorkExperienceRef_StatusCode source);
+
+  private static ecer_WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypesIcra source)
+  {
+    _ = source;
+    return ecer_WorkExperienceTypes.ICRA;
+  }
+
+  private static WorkExperienceTypesIcra MapWorkExperienceType(ecer_WorkExperienceTypes source)
+  {
+    _ = source;
+    return WorkExperienceTypesIcra.ICRA;
+  }
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ChildcareAgeRange MapChildcareAgeRange(ChildcareAgeRanges source);
 }

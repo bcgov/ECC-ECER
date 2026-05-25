@@ -36,6 +36,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Approved = 621870014,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Archived = 621870013,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Denied = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -51,22 +57,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 		OnGoingRecognition = 621870008,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PendingDecision = 621870004,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PendingReview = 1,
+		RefusetoApprove = 621870012,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ReviewAnalysis = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		RFAI = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SiteVisitRequired = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Submitted = 621870009,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Withdrawn = 621870011,
 	}
 	
 	/// <summary>
@@ -91,6 +91,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_AdministrationComponentGroupId = "ecer_administrationcomponentgroupid";
+			public const string ecer_AdministrationComponentGroupIdName = "ecer_administrationcomponentgroupidname";
+			public const string ecer_AdministrationComponentId = "ecer_administrationcomponentid";
+			public const string ecer_AdministrationComponentIdName = "ecer_administrationcomponentidname";
+			public const string ecer_AdministrationEntryProgress = "ecer_administrationentryprogress";
+			public const string ecer_administrationentryprogressName = "ecer_administrationentryprogressname";
+			public const string ecer_AdmissionOptions = "ecer_admissionoptions";
+			public const string ecer_admissionoptionsName = "ecer_admissionoptionsname";
 			public const string ecer_AgreeNotifyofChanges = "ecer_agreenotifyofchanges";
 			public const string ecer_agreenotifyofchangesName = "ecer_agreenotifyofchangesname";
 			public const string ecer_AllComponentInformationReceived = "ecer_allcomponentinformationreceived";
@@ -105,7 +113,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_applicationconsultongoingName = "ecer_applicationconsultongoingname";
 			public const string ecer_ApplicationType = "ecer_applicationtype";
 			public const string ecer_applicationtypeName = "ecer_applicationtypename";
+			public const string ecer_Approvaldate = "ecer_approvaldate";
+			public const string ecer_ApprovalLetterSent = "ecer_approvallettersent";
+			public const string ecer_approvallettersentName = "ecer_approvallettersentname";
 			public const string ecer_articulationagreements = "ecer_articulationagreements";
+			public const string ecer_BasicEntryProgress = "ecer_basicentryprogress";
+			public const string ecer_basicentryprogressName = "ecer_basicentryprogressname";
 			public const string ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_CampusId = "ecer_campusid";
 			public const string ecer_CampusIdName = "ecer_campusidname";
@@ -123,6 +136,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_componentrfairequiredName = "ecer_componentrfairequiredname";
 			public const string ecer_componentrfaisent = "ecer_componentrfaisent";
 			public const string ecer_componentrfaisentName = "ecer_componentrfaisentname";
+			public const string ecer_ComponentsGenerationCompleted = "ecer_componentsgenerationcompleted";
+			public const string ecer_componentsgenerationcompletedName = "ecer_componentsgenerationcompletedname";
 			public const string ecer_ComponentsRequirementsMet = "ecer_componentsrequirementsmet";
 			public const string ecer_componentsrequirementsmetName = "ecer_componentsrequirementsmetname";
 			public const string ecer_conflictresolution = "ecer_conflictresolution";
@@ -130,7 +145,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_courseoutlines = "ecer_courseoutlines";
 			public const string ecer_coursesaddedtoprogramapplication = "ecer_coursesaddedtoprogramapplication";
 			public const string ecer_coursesaddedtoprogramapplicationName = "ecer_coursesaddedtoprogramapplicationname";
+			public const string ecer_CurriculumDesignComponentGroupId = "ecer_curriculumdesigncomponentgroupid";
+			public const string ecer_CurriculumDesignComponentGroupIdName = "ecer_curriculumdesigncomponentgroupidname";
+			public const string ecer_CurriculumDesignComponentId = "ecer_curriculumdesigncomponentid";
+			public const string ecer_CurriculumDesignComponentIdName = "ecer_curriculumdesigncomponentidname";
+			public const string ecer_CurriculumDesignEntryProgress = "ecer_curriculumdesignentryprogress";
+			public const string ecer_curriculumdesignentryprogressName = "ecer_curriculumdesignentryprogressname";
 			public const string ecer_DateOfApplication = "ecer_dateofapplication";
+			public const string ecer_DateofApplicationLD = "ecer_dateofapplicationld";
+			public const string ecer_DateofApplicationShort = "ecer_dateofapplicationshort";
+			public const string ecer_DateofinterimREM = "ecer_dateofinterimrem";
+			public const string ecer_DateofinterimREMLD = "ecer_dateofinterimremld";
+			public const string ecer_DateofongoingREM = "ecer_dateofongoingrem";
+			public const string ecer_DeclarationStatements = "ecer_declarationstatements";
+			public const string ecer_Deliverymethodforpracticuminstructor = "ecer_deliverymethodforpracticuminstructor";
+			public const string ecer_deliverymethodforpracticuminstructorName = "ecer_deliverymethodforpracticuminstructorname";
 			public const string ecer_DeliveryType = "ecer_deliverytype";
 			public const string ecer_deliverytypeName = "ecer_deliverytypename";
 			public const string ecer_demonstration = "ecer_demonstration";
@@ -140,7 +169,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_detailsofevaluationtools = "ecer_detailsofevaluationtools";
 			public const string ecer_documentdateofapplicationtext = "ecer_documentdateofapplicationtext";
 			public const string ecer_documentInterimrecognitionexpirydatetext = "ecer_documentinterimrecognitionexpirydatetext";
-			public const string ecer_documentInterimrecognitionextendeduntil = "ecer_documentinterimrecognitionextendeduntil";
+			public const string ecer_documentongoingrecognitionexpirydatetext = "ecer_documentongoingrecognitionexpirydatetext";
 			public const string ecer_ecer_post_program_app_communication = "ecer_ecer_post_program_app_communication";
 			public const string ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId = "ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId";
 			public const string ecer_examplesofstudentrecords = "ecer_examplesofstudentrecords";
@@ -148,11 +177,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_extensiontointerimrecognitionstatusName = "ecer_extensiontointerimrecognitionstatusname";
 			public const string ecer_facilitydescription = "ecer_facilitydescription";
 			public const string ecer_feedbackprocess = "ecer_feedbackprocess";
+			public const string ecer_FromProgramProfileId = "ecer_fromprogramprofileid";
+			public const string ecer_FromProgramProfileIdName = "ecer_fromprogramprofileidname";
+			public const string ecer_GenerateComponents = "ecer_generatecomponents";
+			public const string ecer_generatecomponentsName = "ecer_generatecomponentsname";
 			public const string ecer_guidelines = "ecer_guidelines";
 			public const string ecer_GuidingPoliciesandProceduresRequirementMet = "ecer_guidingpoliciesandproceduresrequirementmet";
 			public const string ecer_guidingpoliciesandproceduresrequirementmetName = "ecer_guidingpoliciesandproceduresrequirementmetname";
 			public const string ecer_ID = "ecer_id";
 			public const string ecer_informationrequiredguildingpolicytxt = "ecer_informationrequiredguildingpolicytxt";
+			public const string ecer_InpersonHoursPercentage = "ecer_inpersonhourspercentage";
+			public const string ecer_InstitutionProgramInformationEntryProgress = "ecer_institutionprograminformationentryprogress";
+			public const string ecer_institutionprograminformationentryprogressName = "ecer_institutionprograminformationentryprogressname";
 			public const string ecer_interimdecisionletterreadyforreview = "ecer_interimdecisionletterreadyforreview";
 			public const string ecer_interimdecisionletterreadyforreviewName = "ecer_interimdecisionletterreadyforreviewname";
 			public const string ecer_interimdecisionletterreviewcomplete = "ecer_interimdecisionletterreviewcomplete";
@@ -161,15 +197,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_interimdecisionlettersentName = "ecer_interimdecisionlettersentname";
 			public const string ecer_InterimRecognitionDate = "ecer_interimrecognitiondate";
 			public const string ecer_InterimRecognitionExpiryDate = "ecer_interimrecognitionexpirydate";
+			public const string ecer_InterimRecognitionExpiryDateLD = "ecer_interimrecognitionexpirydateld";
 			public const string ecer_interimrecognitionextendeduntil = "ecer_interimrecognitionextendeduntil";
+			public const string ecer_InterimRecognitionExtendedUntilLD = "ecer_interimrecognitionextendeduntilld";
+			public const string ecer_InterimRecognitionExtendedUntilShort = "ecer_interimrecognitionextendeduntilshort";
 			public const string ecer_interimrecognitionextensionlettersent = "ecer_interimrecognitionextensionlettersent";
 			public const string ecer_interimrecognitionextensionlettersentName = "ecer_interimrecognitionextensionlettersentname";
 			public const string ecer_interimrecognitionextensionreadyforreview = "ecer_interimrecognitionextensionreadyforreview";
 			public const string ecer_interimrecognitionextensionreadyforreviewName = "ecer_interimrecognitionextensionreadyforreviewname";
 			public const string ecer_InterimRecognized = "ecer_interimrecognized";
 			public const string ecer_interimrecognizedName = "ecer_interimrecognizedname";
+			public const string ecer_ITEEntryProgress = "ecer_iteentryprogress";
+			public const string ecer_iteentryprogressName = "ecer_iteentryprogressname";
 			public const string ecer_jobdescriptions = "ecer_jobdescriptions";
+			public const string ecer_MaximumStudentEnrollmentperCourse = "ecer_maximumstudentenrollmentpercourse";
 			public const string ecer_minimumqualifications = "ecer_minimumqualifications";
+			public const string ecer_MinimumStudentEnrollmentperCourse = "ecer_minimumstudentenrollmentpercourse";
+			public const string ecer_ModifiedbyProgramRepresentative = "ecer_modifiedbyprogramrepresentative";
+			public const string ecer_ModifiedbyProgramRepresentativeName = "ecer_modifiedbyprogramrepresentativename";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_OnGoingAnalysisComplete = "ecer_ongoinganalysiscomplete";
 			public const string ecer_ongoinganalysiscompleteName = "ecer_ongoinganalysiscompletename";
@@ -180,11 +225,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_OngoingRecognitionDate = "ecer_ongoingrecognitiondate";
 			public const string ecer_OnGoingRecognized = "ecer_ongoingrecognized";
 			public const string ecer_ongoingrecognizedName = "ecer_ongoingrecognizedname";
+			public const string ecer_OnlineDeliveryHoursPercentage = "ecer_onlinedeliveryhourspercentage";
+			public const string ecer_Onlinemethodsofinstruction = "ecer_onlinemethodsofinstruction";
+			public const string ecer_onlinemethodsofinstructionName = "ecer_onlinemethodsofinstructionname";
 			public const string ecer_opportunitiesfordiscussion = "ecer_opportunitiesfordiscussion";
 			public const string ecer_opportunitiesforongoingstudent = "ecer_opportunitiesforongoingstudent";
 			public const string ecer_orientationplan = "ecer_orientationplan";
 			public const string ecer_Origin = "ecer_origin";
 			public const string ecer_originName = "ecer_originname";
+			public const string ecer_OtherAdmissionOptions = "ecer_otheradmissionoptions";
 			public const string ecer_personnelpolicies = "ecer_personnelpolicies";
 			public const string ecer_planforcoconstructed = "ecer_planforcoconstructed";
 			public const string ecer_planformeasuringinstructionalhours = "ecer_planformeasuringinstructionalhours";
@@ -194,34 +243,78 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostSecondaryInstituteName = "ecer_postsecondaryinstitutename";
 			public const string ecer_PostSecondaryInstituteProgramApplica = "ecer_PostSecondaryInstituteProgramApplica";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_ = "ecer_postsecondaryinstituteprogramapplicaiton_";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId = "ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentId = "ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentGroupId = "ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentGroupId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentId = "ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program = "ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ecer_eceprogramrepres = "ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ecer_eceprogramrepres";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentGroupId = "ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentGroupId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentId = "ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId = "ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentId = "ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId = "ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentId = "ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentId";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact = "ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ = "ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature = "ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId = "ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId";
 			public const string ecer_PostSecondaryInstituteProgramApplicaitonId = "ecer_postsecondaryinstituteprogramapplicaitonid";
 			public const string Id = "ecer_postsecondaryinstituteprogramapplicaitonid";
 			public const string ecer_postsecondaryinstitutesitevisit_ProgramAp = "ecer_postsecondaryinstitutesitevisit_ProgramAp";
+			public const string ecer_PracticumComponentGroupId = "ecer_practicumcomponentgroupid";
+			public const string ecer_PracticumComponentGroupIdName = "ecer_practicumcomponentgroupidname";
+			public const string ecer_PracticumComponentId = "ecer_practicumcomponentid";
+			public const string ecer_PracticumComponentIdName = "ecer_practicumcomponentidname";
+			public const string ecer_PracticumEntryProgress = "ecer_practicumentryprogress";
+			public const string ecer_practicumentryprogressName = "ecer_practicumentryprogressname";
 			public const string ecer_practicumhandbook = "ecer_practicumhandbook";
 			public const string ecer_practicumrequirementsoutline = "ecer_practicumrequirementsoutline";
 			public const string ecer_proceduredescription = "ecer_proceduredescription";
 			public const string ecer_processforacademicevaluation = "ecer_processforacademicevaluation";
+			public const string ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_ProgramAnalyst = "ecer_programanalyst";
 			public const string ecer_ProgramAnalystName = "ecer_programanalystname";
 			public const string ecer_ProgramAnalystYomiName = "ecer_programanalystyominame";
 			public const string ecer_programapplicationcomponent_ProgramApplication = "ecer_programapplicationcomponent_ProgramApplication";
 			public const string ecer_programapplicationcomponentgroup_ProgramApplication = "ecer_programapplicationcomponentgroup_ProgramApplication";
 			public const string ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton";
+			public const string ecer_programapplicationlog_ProgramApplication_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_programapplicationlog_ProgramApplication_ecer_postsecondaryinstituteprogramapplicaiton";
+			public const string ecer_ProgramCampusEndDate = "ecer_programcampusenddate";
+			public const string ecer_ProgramCampusEndDateLD = "ecer_programcampusenddateld";
+			public const string ecer_ProgramCampusStartDate = "ecer_programcampusstartdate";
+			public const string ecer_ProgramCampusStartDateLD = "ecer_programcampusstartdateld";
 			public const string ecer_ProgramContent = "ecer_programcontent";
 			public const string ecer_ProgramCoordinator = "ecer_programcoordinator";
 			public const string ecer_ProgramCoordinatorName = "ecer_programcoordinatorname";
 			public const string ecer_ProgramCoordinatorYomiName = "ecer_programcoordinatoryominame";
+			public const string ecer_ProgramEnrollment = "ecer_programenrollment";
+			public const string ecer_programenrollmentName = "ecer_programenrollmentname";
 			public const string ecer_ProgramInformation = "ecer_programinformation";
+			public const string ecer_ProgramInstructionComponentGroupId = "ecer_programinstructioncomponentgroupid";
+			public const string ecer_ProgramInstructionComponentGroupIdName = "ecer_programinstructioncomponentgroupidname";
+			public const string ecer_ProgramInstructionComponentId = "ecer_programinstructioncomponentid";
+			public const string ecer_ProgramInstructionComponentIdName = "ecer_programinstructioncomponentidname";
+			public const string ecer_ProgramInstructionEntryProgress = "ecer_programinstructionentryprogress";
+			public const string ecer_programinstructionentryprogressName = "ecer_programinstructionentryprogressname";
+			public const string ecer_ProgramIntentComponentGroupId = "ecer_programintentcomponentgroupid";
+			public const string ecer_ProgramIntentComponentGroupIdName = "ecer_programintentcomponentgroupidname";
+			public const string ecer_ProgramIntentComponentId = "ecer_programintentcomponentid";
+			public const string ecer_ProgramIntentComponentIdName = "ecer_programintentcomponentidname";
+			public const string ecer_ProgramIntentEntryProgress = "ecer_programintententryprogress";
+			public const string ecer_programintententryprogressName = "ecer_programintententryprogressname";
 			public const string ecer_programlocation = "ecer_programlocation";
 			public const string ecer_programobjectives = "ecer_programobjectives";
 			public const string ecer_programProfilesprovided = "ecer_programprofilesprovided";
+			public const string ecer_ProgramRepModifiedDate = "ecer_programrepmodifieddate";
+			public const string ecer_ProgramRepModifiedDateLD = "ecer_programrepmodifieddateld";
 			public const string ecer_ProgramRepresentative = "ecer_programrepresentative";
 			public const string ecer_ProgramRepresentativeName = "ecer_programrepresentativename";
 			public const string ecer_ProgramRepresentativeYomiName = "ecer_programrepresentativeyominame";
 			public const string ecer_ProgramReviewDescription = "ecer_programreviewdescription";
+			public const string ecer_ProgramType = "ecer_programtype";
+			public const string ecer_programtypeName = "ecer_programtypename";
+			public const string ecer_ProjectedLength = "ecer_projectedlength";
 			public const string ecer_ProjectedNumberOfFullTimeStudents = "ecer_projectednumberoffulltimestudents";
 			public const string ecer_ProjectedNumberofOccasionalStudents = "ecer_projectednumberofoccasionalstudents";
 			public const string ecer_ProjectedNumberofPartTimeStudents = "ecer_projectednumberofparttimestudents";
@@ -297,6 +390,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_rfaisentongoingName = "ecer_rfaisentongoingname";
 			public const string ecer_RoutetoProgramCoordinatorTeam = "ecer_routetoprogramcoordinatorteam";
 			public const string ecer_routetoprogramcoordinatorteamName = "ecer_routetoprogramcoordinatorteamname";
+			public const string ecer_sharedocumenturl_ProgramApplicationId = "ecer_sharedocumenturl_ProgramApplicationId";
 			public const string ecer_SignatureImage = "ecer_signatureimage";
 			public const string ecer_SignatureImage_Timestamp = "ecer_signatureimage_timestamp";
 			public const string ecer_SignatureImage_URL = "ecer_signatureimage_url";
@@ -323,10 +417,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_sitevisitscheduledName = "ecer_sitevisitscheduledname";
 			public const string ecer_SiteVisitScheduledOnGoing = "ecer_sitevisitscheduledongoing";
 			public const string ecer_sitevisitscheduledongoingName = "ecer_sitevisitscheduledongoingname";
+			public const string ecer_SNEEntryProgress = "ecer_sneentryprogress";
+			public const string ecer_sneentryprogressName = "ecer_sneentryprogressname";
 			public const string ecer_standardsforplanning = "ecer_standardsforplanning";
 			public const string ecer_statementofpurposedescription = "ecer_statementofpurposedescription";
 			public const string ecer_statementofqualifications = "ecer_statementofqualifications";
 			public const string ecer_statementofstandards = "ecer_statementofstandards";
+			public const string ecer_statusreasondetail = "ecer_statusreasondetail";
+			public const string ecer_statusreasondetailName = "ecer_statusreasondetailname";
+			public const string ecer_SubmittedByProgramRepresentativeId = "ecer_submittedbyprogramrepresentativeid";
+			public const string ecer_SubmittedByProgramRepresentativeIdName = "ecer_submittedbyprogramrepresentativeidname";
 			public const string ecer_SupportingEvidenceAccess = "ecer_supportingevidenceaccess";
 			public const string ecer_SupportingEvidenceAdministration = "ecer_supportingevidenceadministration";
 			public const string ecer_SupportingEvidenceAdmissionCriteria = "ecer_supportingevidenceadmissioncriteria";
@@ -513,6 +613,134 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_administrationcomponentgroupid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_AdministrationComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_administrationcomponentgroupid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_administrationcomponentgroupid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_administrationcomponentgroupidname")]
+		public string ecer_AdministrationComponentGroupIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_administrationcomponentgroupid"))
+				{
+					return this.FormattedValues["ecer_administrationcomponentgroupid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_administrationcomponentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_AdministrationComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_administrationcomponentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_administrationcomponentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_administrationcomponentidname")]
+		public string ecer_AdministrationComponentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_administrationcomponentid"))
+				{
+					return this.FormattedValues["ecer_administrationcomponentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_administrationentryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_AdministrationEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_administrationentryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_administrationentryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_administrationentryprogressname")]
+		public string ecer_administrationentryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_administrationentryprogress"))
+				{
+					return this.FormattedValues["ecer_administrationentryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_admissionoptions")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSPAdmissionOptions> ecer_AdmissionOptions
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSPAdmissionOptions>(this, "ecer_admissionoptions");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_admissionoptions", EntityOptionSetEnum.GetMultiEnum(this, "ecer_admissionoptions", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_admissionoptionsname")]
+		public string ecer_admissionoptionsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_admissionoptions"))
+				{
+					return this.FormattedValues["ecer_admissionoptions"];
 				}
 				else
 				{
@@ -748,6 +976,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_approvaldate")]
+		public System.Nullable<System.DateTime> ecer_Approvaldate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_approvaldate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_approvaldate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_approvallettersent")]
+		public System.Nullable<bool> ecer_ApprovalLetterSent
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_approvallettersent");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_approvallettersent", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_approvallettersentname")]
+		public string ecer_approvallettersentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_approvallettersent"))
+				{
+					return this.FormattedValues["ecer_approvallettersent"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Articulation agreements with other institutions.
 		/// </summary>
@@ -763,6 +1038,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_articulationagreements", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_basicentryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_BasicEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_basicentryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_basicentryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_basicentryprogressname")]
+		public string ecer_basicentryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_basicentryprogress"))
+				{
+					return this.FormattedValues["ecer_basicentryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1012,6 +1319,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentsgenerationcompleted")]
+		public System.Nullable<bool> ecer_ComponentsGenerationCompleted
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_componentsgenerationcompleted");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_componentsgenerationcompleted", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentsgenerationcompletedname")]
+		public string ecer_componentsgenerationcompletedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_componentsgenerationcompleted"))
+				{
+					return this.FormattedValues["ecer_componentsgenerationcompleted"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentsrequirementsmet")]
 		public System.Nullable<bool> ecer_ComponentsRequirementsMet
 		{
@@ -1112,6 +1451,102 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumdesigncomponentgroupid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CurriculumDesignComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_curriculumdesigncomponentgroupid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_curriculumdesigncomponentgroupid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumdesigncomponentgroupidname")]
+		public string ecer_CurriculumDesignComponentGroupIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_curriculumdesigncomponentgroupid"))
+				{
+					return this.FormattedValues["ecer_curriculumdesigncomponentgroupid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumdesigncomponentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CurriculumDesignComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_curriculumdesigncomponentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_curriculumdesigncomponentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumdesigncomponentidname")]
+		public string ecer_CurriculumDesignComponentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_curriculumdesigncomponentid"))
+				{
+					return this.FormattedValues["ecer_curriculumdesigncomponentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumdesignentryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_CurriculumDesignEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_curriculumdesignentryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_curriculumdesignentryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumdesignentryprogressname")]
+		public string ecer_curriculumdesignentryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_curriculumdesignentryprogress"))
+				{
+					return this.FormattedValues["ecer_curriculumdesignentryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofapplication")]
 		public System.Nullable<System.DateTime> ecer_DateOfApplication
 		{
@@ -1124,6 +1559,128 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_dateofapplication", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofapplicationld")]
+		public string ecer_DateofApplicationLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_dateofapplicationld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateofapplicationld", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofapplicationshort")]
+		public System.Nullable<System.DateTime> ecer_DateofApplicationShort
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_dateofapplicationshort");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateofapplicationshort", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofinterimrem")]
+		public System.Nullable<System.DateTime> ecer_DateofinterimREM
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_dateofinterimrem");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateofinterimrem", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofinterimremld")]
+		public string ecer_DateofinterimREMLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_dateofinterimremld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateofinterimremld", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofongoingrem")]
+		public System.Nullable<System.DateTime> ecer_DateofongoingREM
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_dateofongoingrem");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateofongoingrem", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_declarationstatements")]
+		public string ecer_DeclarationStatements
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_declarationstatements");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_declarationstatements", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_deliverymethodforpracticuminstructor")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSPDeliveryMethodforInstructor> ecer_Deliverymethodforpracticuminstructor
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSPDeliveryMethodforInstructor>(this, "ecer_deliverymethodforpracticuminstructor");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_deliverymethodforpracticuminstructor", EntityOptionSetEnum.GetMultiEnum(this, "ecer_deliverymethodforpracticuminstructor", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_deliverymethodforpracticuminstructorname")]
+		public string ecer_deliverymethodforpracticuminstructorName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_deliverymethodforpracticuminstructor"))
+				{
+					return this.FormattedValues["ecer_deliverymethodforpracticuminstructor"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1279,18 +1836,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentinterimrecognitionextendeduntil")]
-		public string ecer_documentInterimrecognitionextendeduntil
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentongoingrecognitionexpirydatetext")]
+		public string ecer_documentongoingrecognitionexpirydatetext
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_documentinterimrecognitionextendeduntil");
+				return this.GetAttributeValue<string>("ecer_documentongoingrecognitionexpirydatetext");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_documentinterimrecognitionextendeduntil", value);
+				this.SetAttributeValue("ecer_documentongoingrecognitionexpirydatetext", value);
 			}
 		}
 		
@@ -1380,6 +1937,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromprogramprofileid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_FromProgramProfileId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_fromprogramprofileid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_fromprogramprofileid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromprogramprofileidname")]
+		public string ecer_FromProgramProfileIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_fromprogramprofileid"))
+				{
+					return this.FormattedValues["ecer_fromprogramprofileid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecomponents")]
+		public System.Nullable<bool> ecer_GenerateComponents
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_generatecomponents");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generatecomponents", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecomponentsname")]
+		public string ecer_generatecomponentsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generatecomponents"))
+				{
+					return this.FormattedValues["ecer_generatecomponents"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Guidelines on how plagiarism will be monitored and addressed, supporting academic integrity policies.
 		/// </summary>
@@ -1457,6 +2078,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_informationrequiredguildingpolicytxt", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_inpersonhourspercentage")]
+		public System.Nullable<decimal> ecer_InpersonHoursPercentage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_inpersonhourspercentage");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_inpersonhourspercentage", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_institutionprograminformationentryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_InstitutionProgramInformationEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_institutionprograminformationentryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_institutionprograminformationentryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_institutionprograminformationentryprogressname")]
+		public string ecer_institutionprograminformationentryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_institutionprograminformationentryprogress"))
+				{
+					return this.FormattedValues["ecer_institutionprograminformationentryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1586,6 +2254,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionexpirydateld")]
+		public string ecer_InterimRecognitionExpiryDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_interimrecognitionexpirydateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_interimrecognitionexpirydateld", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextendeduntil")]
 		public System.Nullable<System.DateTime> ecer_interimrecognitionextendeduntil
 		{
@@ -1598,6 +2281,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_interimrecognitionextendeduntil", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextendeduntilld")]
+		public string ecer_InterimRecognitionExtendedUntilLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_interimrecognitionextendeduntilld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_interimrecognitionextendeduntilld", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextendeduntilshort")]
+		public System.Nullable<System.DateTime> ecer_InterimRecognitionExtendedUntilShort
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_interimrecognitionextendeduntilshort");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_interimrecognitionextendeduntilshort", value);
 			}
 		}
 		
@@ -1697,6 +2410,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iteentryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_ITEEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_iteentryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_iteentryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iteentryprogressname")]
+		public string ecer_iteentryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_iteentryprogress"))
+				{
+					return this.FormattedValues["ecer_iteentryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Job descriptions outlining roles and responsibilities for all instructors including practicum supervisors, and those administrative personnel involved in the development or delivery of the ECE program.
 		/// </summary>
@@ -1715,6 +2460,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_maximumstudentenrollmentpercourse")]
+		public System.Nullable<int> ecer_MaximumStudentEnrollmentperCourse
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_maximumstudentenrollmentpercourse");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_maximumstudentenrollmentpercourse", value);
+			}
+		}
+		
 		/// <summary>
 		/// Minimum qualifications for practicum supervisors. Process for the selection, evaluation, and arrangement of appropriate practicum placements and supporting sample site evaluation tools.
 		/// </summary>
@@ -1730,6 +2490,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_minimumqualifications", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_minimumstudentenrollmentpercourse")]
+		public System.Nullable<int> ecer_MinimumStudentEnrollmentperCourse
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_minimumstudentenrollmentpercourse");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_minimumstudentenrollmentpercourse", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_modifiedbyprogramrepresentative")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ModifiedbyProgramRepresentative
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_modifiedbyprogramrepresentative");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_modifiedbyprogramrepresentative", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_modifiedbyprogramrepresentativename")]
+		public string ecer_ModifiedbyProgramRepresentativeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_modifiedbyprogramrepresentative"))
+				{
+					return this.FormattedValues["ecer_modifiedbyprogramrepresentative"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1891,6 +2698,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_onlinedeliveryhourspercentage")]
+		public System.Nullable<decimal> ecer_OnlineDeliveryHoursPercentage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_onlinedeliveryhourspercentage");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_onlinedeliveryhourspercentage", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_onlinemethodsofinstruction")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSPMethodofInstruction> ecer_Onlinemethodsofinstruction
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSPMethodofInstruction>(this, "ecer_onlinemethodsofinstruction");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_onlinemethodsofinstruction", EntityOptionSetEnum.GetMultiEnum(this, "ecer_onlinemethodsofinstruction", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_onlinemethodsofinstructionname")]
+		public string ecer_onlinemethodsofinstructionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_onlinemethodsofinstruction"))
+				{
+					return this.FormattedValues["ecer_onlinemethodsofinstruction"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Opportunities for discussion between students (for example, break-out rooms, large and/or small groups, chat rooms, posts, and replies).
 		/// </summary>
@@ -1974,6 +2828,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_otheradmissionoptions")]
+		public string ecer_OtherAdmissionOptions
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_otheradmissionoptions");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_otheradmissionoptions", value);
 			}
 		}
 		
@@ -2140,6 +3009,102 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_practicumcomponentgroupid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PracticumComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_practicumcomponentgroupid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_practicumcomponentgroupid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_practicumcomponentgroupidname")]
+		public string ecer_PracticumComponentGroupIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_practicumcomponentgroupid"))
+				{
+					return this.FormattedValues["ecer_practicumcomponentgroupid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_practicumcomponentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PracticumComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_practicumcomponentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_practicumcomponentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_practicumcomponentidname")]
+		public string ecer_PracticumComponentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_practicumcomponentid"))
+				{
+					return this.FormattedValues["ecer_practicumcomponentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_practicumentryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_PracticumEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_practicumentryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_practicumentryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_practicumentryprogressname")]
+		public string ecer_practicumentryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_practicumentryprogress"))
+				{
+					return this.FormattedValues["ecer_practicumentryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Supporting practicum handbook for students and/or practicum mentors.
 		/// </summary>
@@ -2261,6 +3226,66 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programcampusenddate")]
+		public System.Nullable<System.DateTime> ecer_ProgramCampusEndDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_programcampusenddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programcampusenddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programcampusenddateld")]
+		public string ecer_ProgramCampusEndDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_programcampusenddateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programcampusenddateld", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programcampusstartdate")]
+		public System.Nullable<System.DateTime> ecer_ProgramCampusStartDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_programcampusstartdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programcampusstartdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programcampusstartdateld")]
+		public string ecer_ProgramCampusStartDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_programcampusstartdateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programcampusstartdateld", value);
+			}
+		}
+		
 		/// <summary>
 		/// Program content and emphasis reflects specified philosophy and objectives, is organized to promote integrated learning opportunities, and stresses the link between theory and practice.
 		/// </summary>
@@ -2328,6 +3353,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programenrollment")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_WorkHoursType> ecer_ProgramEnrollment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_WorkHoursType>(this, "ecer_programenrollment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programenrollment", EntityOptionSetEnum.GetMultiEnum(this, "ecer_programenrollment", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programenrollmentname")]
+		public string ecer_programenrollmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programenrollment"))
+				{
+					return this.FormattedValues["ecer_programenrollment"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Program information must be available publicly through a number of sources (for example, brochure, online, planned information sessions) and has an accessible contact person to answer program questions.
 		/// </summary>
@@ -2343,6 +3400,198 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_programinformation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programinstructioncomponentgroupid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramInstructionComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programinstructioncomponentgroupid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programinstructioncomponentgroupid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programinstructioncomponentgroupidname")]
+		public string ecer_ProgramInstructionComponentGroupIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programinstructioncomponentgroupid"))
+				{
+					return this.FormattedValues["ecer_programinstructioncomponentgroupid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programinstructioncomponentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramInstructionComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programinstructioncomponentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programinstructioncomponentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programinstructioncomponentidname")]
+		public string ecer_ProgramInstructionComponentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programinstructioncomponentid"))
+				{
+					return this.FormattedValues["ecer_programinstructioncomponentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programinstructionentryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_ProgramInstructionEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_programinstructionentryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programinstructionentryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programinstructionentryprogressname")]
+		public string ecer_programinstructionentryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programinstructionentryprogress"))
+				{
+					return this.FormattedValues["ecer_programinstructionentryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintentcomponentgroupid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramIntentComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programintentcomponentgroupid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programintentcomponentgroupid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintentcomponentgroupidname")]
+		public string ecer_ProgramIntentComponentGroupIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programintentcomponentgroupid"))
+				{
+					return this.FormattedValues["ecer_programintentcomponentgroupid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintentcomponentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramIntentComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programintentcomponentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programintentcomponentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintentcomponentidname")]
+		public string ecer_ProgramIntentComponentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programintentcomponentid"))
+				{
+					return this.FormattedValues["ecer_programintentcomponentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintententryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_ProgramIntentEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_programintententryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programintententryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintententryprogressname")]
+		public string ecer_programintententryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programintententryprogress"))
+				{
+					return this.FormattedValues["ecer_programintententryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2397,6 +3646,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_programprofilesprovided", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programrepmodifieddate")]
+		public System.Nullable<System.DateTime> ecer_ProgramRepModifiedDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_programrepmodifieddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programrepmodifieddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programrepmodifieddateld")]
+		public string ecer_ProgramRepModifiedDateLD
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_programrepmodifieddateld");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programrepmodifieddateld", value);
 			}
 		}
 		
@@ -2464,6 +3743,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_programreviewdescription", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programtype")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSIProgramType> ecer_ProgramType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSIProgramType>(this, "ecer_programtype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programtype", EntityOptionSetEnum.GetMultiEnum(this, "ecer_programtype", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programtypename")]
+		public string ecer_programtypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programtype"))
+				{
+					return this.FormattedValues["ecer_programtype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_projectedlength")]
+		public System.Nullable<decimal> ecer_ProjectedLength
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_projectedlength");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_projectedlength", value);
 			}
 		}
 		
@@ -3746,6 +5072,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Old Site Visit Requirements Met?
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitrequirementsmet")]
 		public System.Nullable<bool> ecer_SiteVisitRequirementsMet
 		{
@@ -3810,6 +5139,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Old Site Visit Requirements Met (On-Going)?
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitrequirementsmetongoing")]
 		public System.Nullable<bool> ecer_SiteVisitRequirementsMetOnGoing
 		{
@@ -4034,6 +5366,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sneentryprogress")]
+		public virtual ecer_PSPComponentProgress? ecer_SNEEntryProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPComponentProgress?)(EntityOptionSetEnum.GetEnum(this, "ecer_sneentryprogress")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_sneentryprogress", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sneentryprogressname")]
+		public string ecer_sneentryprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_sneentryprogress"))
+				{
+					return this.FormattedValues["ecer_sneentryprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Standards for planning, preparing, and presenting learning activities that incorporate a wide range of educational strategies that address the diverse needs of adult learners and accommodate personalized, individual attention when needed. Include examples of how program content, instructional methods and materials emphasize a positive regard for diversity (for example, in culture, language, unique regional issues, student experience from multiple locations).
 		/// </summary>
@@ -4103,6 +5467,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_statementofstandards", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_statusreasondetail")]
+		public virtual ecer_Statusreasondetail? ecer_statusreasondetail
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_Statusreasondetail?)(EntityOptionSetEnum.GetEnum(this, "ecer_statusreasondetail")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_statusreasondetail", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_statusreasondetailname")]
+		public string ecer_statusreasondetailName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_statusreasondetail"))
+				{
+					return this.FormattedValues["ecer_statusreasondetail"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_submittedbyprogramrepresentativeid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_SubmittedByProgramRepresentativeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_submittedbyprogramrepresentativeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_submittedbyprogramrepresentativeid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_submittedbyprogramrepresentativeidname")]
+		public string ecer_SubmittedByProgramRepresentativeIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_submittedbyprogramrepresentativeid"))
+				{
+					return this.FormattedValues["ecer_submittedbyprogramrepresentativeid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4889,6 +6317,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Program> ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_OriginalApplication_ecer_postsecondaryinstituteprogramapplicaiton", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_programapplicationcomponent_ProgramApplication
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationcomponent_ProgramApplication")]
@@ -4939,6 +6385,45 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramCampus>("ecer_ProgramApplicationId_ecer_postsecondaryinstituteprogramapplicaiton", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_programapplicationlog_ProgramApplication_ecer_postsecondaryinstituteprogramapplicaiton
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationlog_ProgramApplication_ecer_postsecondaryinstituteprograma" +
+			"pplicaiton")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog> ecer_programapplicationlog_ProgramApplication_ecer_postsecondaryinstituteprogramapplicaiton
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog>("ecer_programapplicationlog_ProgramApplication_ecer_postsecondaryinstituteprograma" +
+						"pplicaiton", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationLog>("ecer_programapplicationlog_ProgramApplication_ecer_postsecondaryinstituteprograma" +
+						"pplicaiton", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_sharedocumenturl_ProgramApplicationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_sharedocumenturl_ProgramApplicationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL> ecer_sharedocumenturl_ProgramApplicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL>("ecer_sharedocumenturl_ProgramApplicationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ShareDocumentURL>("ecer_sharedocumenturl_ProgramApplicationId", null, value);
 			}
 		}
 		
@@ -5002,6 +6487,237 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_administrationcomponentgroupid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentGroupId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_administrationcomponentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_AdministrationComponentId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumdesigncomponentgroupid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentGroupId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentGroupId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumdesigncomponentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_CurriculumDesignComponentId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromprogramprofileid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Program ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_postsecondaryinstituteprogramapplicaiton_FromProgramProfileId_ecer_program", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ecer_eceprogramrepres
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_modifiedbyprogramrepresentative")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ece" +
+			"r_eceprogramrepres")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ecer_eceprogramrepres
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ece" +
+						"r_eceprogramrepres", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_postsecondaryinstituteprogramapplicaiton_ModifiedbyProgramRepresentative_ece" +
+						"r_eceprogramrepres", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_practicumcomponentgroupid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentGroupId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentGroupId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_practicumcomponentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_PracticumComponentId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programinstructioncomponentgroupid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentGroupId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programinstructioncomponentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramInstructionComponentId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintentcomponentgroupid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentGroupIdId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programintentcomponentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramIntentComponentId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programrepresentative")]
@@ -5058,6 +6774,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Signature>("ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_submittedbyprogramrepresentativeid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_postsecondaryinstituteprogramapplicaiton_SubmittedByProgramRepresentativeId", null, value);
 			}
 		}
 		

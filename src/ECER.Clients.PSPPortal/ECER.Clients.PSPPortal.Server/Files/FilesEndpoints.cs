@@ -1,10 +1,8 @@
-﻿using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
-using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -38,7 +36,7 @@ public class FilesEndpoints : IRegisterEndpoints
       var communicationFile = communication?.Documents.FirstOrDefault(d => d.Id == fileId);
       if (communicationFile == null) return TypedResults.NotFound();
 
-      var results = await messageBus.Send(new FileQuery([new FileLocation(communicationFile.Id, communicationFile.Url ?? string.Empty)]), ct);
+      var results = await messageBus.Send(new FileQuery([new FileLocation(communicationFile.Id, communicationFile.Url ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.PSP)]), ct);
       var file = results.Items.SingleOrDefault();
       if (file == null) return TypedResults.NotFound();
 
@@ -56,7 +54,7 @@ public class FilesEndpoints : IRegisterEndpoints
       IOptions<UploaderSettings> uploaderOptions,
       CancellationToken ct) =>
   {
-    var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty)], TrackDownload: false), ct);
+    var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.PSP)], TrackDownload: false), ct);
     var file = results.Items.SingleOrDefault();
     if (file == null) return TypedResults.NotFound();
     await messageBus.Send(new DeleteFileCommand(file), ct);
@@ -68,7 +66,7 @@ public class FilesEndpoints : IRegisterEndpoints
     .DisableAntiforgery();
 
     endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, BadRequest<ProblemDetails>, NotFound>> (string fileId,
-        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper, IOptions<UploaderSettings> uploaderOptions) =>
+        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IOptions<UploaderSettings> uploaderOptions) =>
     {
       if (!Guid.TryParse(fileId, out _))
       {
@@ -90,7 +88,7 @@ public class FilesEndpoints : IRegisterEndpoints
       var fileProperties = new FileProperties();
       var sanitizedFilename = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(file.FileName));
 
-      var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty), fileProperties, sanitizedFilename, file.ContentType, file.OpenReadStream())).ToList();
+      var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty, Utilities.ObjectStorage.Providers.EcerWebApplicationType.PSP), fileProperties, sanitizedFilename, file.ContentType, file.OpenReadStream())).ToList();
       if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Title = "No files were uploaded" });
       var response = await messageBus.Send(new SaveFileCommand(files), ct);
       var saveResult = response.Items.FirstOrDefault();
