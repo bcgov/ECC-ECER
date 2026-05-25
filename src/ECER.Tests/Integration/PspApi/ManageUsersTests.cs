@@ -65,6 +65,15 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     var rep = (await repo.Query(new PspRepQuery { ById = Fixture.SecondaryPspUserId }, CancellationToken.None)).Single();
 
     rep.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Disabled);
+    rep.Profile.HasAcceptedTermsOfUse.ShouldBe(false);
+
+    using var scope = Fixture.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<EcerContext>();
+    var authentications = context.ecer_AuthenticationSet
+      .Where(authentication => authentication.ecer_eceprogramrepresentative != null
+        && authentication.ecer_eceprogramrepresentative.Id == Guid.Parse(Fixture.SecondaryPspUserId))
+      .ToList();
+    authentications.Count.ShouldBe(0);
   }
 
   [Fact]

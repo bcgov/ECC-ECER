@@ -1,10 +1,9 @@
-﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Managers.Registry.UserRegistrationIdentityService;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Certifications;
 using ECER.Resources.Documents.MetadataResources;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECER.Managers.Registry;
@@ -12,7 +11,12 @@ namespace ECER.Managers.Registry;
 /// <summary>
 /// User Manager
 /// </summary>
-public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMetadataResourceRepository metadataResourceRepository, IMapper mapper, IServiceProvider serviceProvider)
+public class RegistrantHandlers(
+  IRegistrantRepository registrantRepository,
+  ICertificationRepository certificationRepository,
+  IMetadataResourceRepository metadataResourceRepository,
+  IRegistrantMapper registrantMapper,
+  IServiceProvider serviceProvider)
   : IRequestHandler<SearchRegistrantQuery, RegistrantQueryResults>,
     IRequestHandler<RegisterNewUserCommand, string>,
     IRequestHandler<UpdateRegistrantProfileCommand, string>,
@@ -22,7 +26,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
   /// Handles search registrants use case
   /// </summary>
   /// <returns>Query results</returns>
-  public async Task<RegistrantQueryResults> Handle(SearchRegistrantQuery request, CancellationToken cancellationToken)
+  public async ValueTask<RegistrantQueryResults> Handle(SearchRegistrantQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -40,7 +44,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
       registrant.Profile.IsRegistrant = certifications.Any();
     }
 
-    return new RegistrantQueryResults(mapper.Map<IEnumerable<Contract.Registrants.Registrant>>(registrants)!);
+    return new RegistrantQueryResults(registrantMapper.MapRegistrants(registrants));
   }
 
   /// <summary>
@@ -48,7 +52,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
   /// </summary>
   /// <returns>the user id of the newly created user</returns>
   /// <exception cref="InvalidOperationException"></exception>
-  public async Task<string> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     IRegistrationIdentityService resolver = request.Identity.IdentityProvider switch
@@ -67,7 +71,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<string> Handle(UpdateRegistrantProfileCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateRegistrantProfileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -77,7 +81,8 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
     }, cancellationToken)).SingleOrDefault();
 
     if (registrant == null) throw new InvalidOperationException($"Registrant {request.Registrant.UserId} wasn't found");
-    var profile = mapper.Map<Resources.Accounts.Registrants.UserProfile>(request.Registrant.Profile)!;
+
+    var profile = registrantMapper.MapUserProfile(request.Registrant.Profile);
     await registrantRepository.Save(new Resources.Accounts.Registrants.Registrant { Id = request.Registrant.UserId, Profile = profile }, cancellationToken);
 
     return request.Registrant.UserId;
@@ -89,7 +94,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public async Task<string> Handle(UpdateRegistrantProfileIdentificationCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(UpdateRegistrantProfileIdentificationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -112,12 +117,12 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
     }, cancellationToken)).SingleOrDefault();
     if (secondaryIdOption == null) throw new InvalidOperationException($"SecondaryIdOption {request.Identification.SecondaryIdTypeObjectId} wasn't found");
 
-    var profileIdentification = new Resources.Accounts.Registrants.ProfileIdentification()
+    var profileIdentification = new Resources.Accounts.Registrants.ProfileIdentification
     {
       PrimaryIdTypeObjectId = primaryIdOption.Id,
       SecondaryIdTypeObjectId = secondaryIdOption.Id,
-      PrimaryIds = mapper.Map<IEnumerable<Resources.Accounts.Registrants.IdentityDocument>>(request.Identification.PrimaryIds),
-      SecondaryIds = mapper.Map<IEnumerable<Resources.Accounts.Registrants.IdentityDocument>>(request.Identification.SecondaryIds)
+      PrimaryIds = registrantMapper.MapIdentityDocuments(request.Identification.PrimaryIds),
+      SecondaryIds = registrantMapper.MapIdentityDocuments(request.Identification.SecondaryIds)
     };
     await registrantRepository.SaveIdentityIds(registrant, profileIdentification, cancellationToken);
 

@@ -26,14 +26,18 @@ internal class Program
 
     try
     {
-      builder.Services.AddMediatR(opts =>
-            {
-              opts.RegisterServicesFromAssemblies(assemblies);
-            });
-      builder.Services.AddAutoMapper(cfg =>
+      builder.Services.AddMediator(opts =>
       {
-        cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
-      }, assemblies);
+        opts.ServiceLifetime = ServiceLifetime.Transient;
+        opts.GenerateTypesAsInternal = true;
+        opts.Assemblies =
+        [
+          typeof(ECER.Managers.Admin.Contract.Certifications.GetCertificationsCommand),
+          typeof(ECER.Managers.Admin.CertificationHandlers),
+          typeof(ECER.Managers.Registry.Contract.Applications.SaveDraftApplicationCommand),
+          typeof(ECER.Managers.Registry.ApplicationHandlers)
+        ];
+      });
 
       builder.Services.AddEndpointsApiExplorer();
       builder.Services.AddSwaggerGen(opts =>
@@ -63,7 +67,7 @@ internal class Program
       builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<PaginationSettings>(builder.Configuration.GetSection("Pagination"));
       builder.Services.Configure<UploaderSettings>(builder.Configuration.GetSection("Uploader"));
-      builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("Recaptcha"));
+      builder.Services.Configure<CaptchaSettings>(builder.Configuration.GetSection("Captcha"));
       builder.Services.Configure<ClaimCacheSettings>(builder.Configuration.GetSection("Claims"));
 
       builder.Services

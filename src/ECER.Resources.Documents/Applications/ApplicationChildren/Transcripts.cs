@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -35,27 +36,17 @@ internal sealed partial class ApplicationRepository
     {
       transcript.ecer_TranscriptId = Guid.NewGuid();
       transcript.StatusCode = ecer_Transcript_StatusCode.Draft;
-      var country = transcript.ecer_transcript_InstituteCountryId == null ? null : context.ecer_CountrySet.SingleOrDefault(c => c.ecer_CountryId == transcript.ecer_transcript_InstituteCountryId!.ecer_CountryId);
-      var province = transcript.ecer_transcript_ProvinceId == null ? null : context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == transcript.ecer_transcript_ProvinceId!.ecer_ProvinceId);
-      var institution = transcript.ecer_transcript_postsecondaryinstitutionid == null ? null : context.ecer_PostSecondaryInstituteSet.SingleOrDefault(p => p.ecer_PostSecondaryInstituteId == transcript.ecer_transcript_postsecondaryinstitutionid!.ecer_PostSecondaryInstituteId);
+      var countryReference = transcript.ecer_transcript_InstituteCountryId?.ToEntityReference();
+      var provinceReference = transcript.ecer_transcript_ProvinceId?.ToEntityReference();
+      var institutionReference = transcript.ecer_transcript_postsecondaryinstitutionid?.ToEntityReference();
       transcript.ecer_transcript_InstituteCountryId = null;
       transcript.ecer_transcript_ProvinceId = null;
       transcript.ecer_transcript_postsecondaryinstitutionid = null;
+      transcript.ecer_InstituteCountryId = countryReference;
+      transcript.ecer_ProvinceId = provinceReference;
+      transcript.ecer_postsecondaryinstitutionid = institutionReference;
       context.AddObject(transcript);
       context.AddLink(application, ecer_Application.Fields.ecer_transcript_Applicationid, transcript);
-
-      if (country != null)
-      {
-        context.AddLink(country, ecer_Country.Fields.ecer_transcript_InstituteCountryId, transcript);
-      }
-      if (province != null)
-      {
-        context.AddLink(province, ecer_Province.Fields.ecer_transcript_ProvinceId, transcript);
-      }
-      if (institution != null)
-      {
-        context.AddLink(institution, ecer_PostSecondaryInstitute.Fields.ecer_transcript_postsecondaryinstitutionid, transcript);
-      }
     }
   }
 
@@ -65,7 +56,6 @@ internal sealed partial class ApplicationRepository
     var transcript = context.ecer_TranscriptSet.SingleOrDefault(
       d => d.ecer_TranscriptId == Guid.Parse(transcriptDocuments.TranscriptId) && d.ecer_Applicationid.Id == Guid.Parse(transcriptDocuments.ApplicationId));
     if (transcript == null) throw new InvalidOperationException($"Application '{transcriptDocuments.ApplicationId}' not found or Transcript '{transcriptDocuments.TranscriptId}' not found");
-
 
     if (transcriptDocuments.CourseOutlineOptions != null)
     {
@@ -116,7 +106,6 @@ internal sealed partial class ApplicationRepository
         transcript.ecer_ihavesubmittedanapplicationtobcits = false;
         transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = true;
       }
-
     }
 
     await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, "Course Outline", cancellationToken);
@@ -136,8 +125,9 @@ internal sealed partial class ApplicationRepository
     {
       var sourceFolder = "tempfolder";
       var destinationFolder = "ecer_transcript/" + transcript.Id;
-      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
-      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), ct);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
       var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == transcript.ecer_Applicantid.Id);
       if (applicant == null) throw new InvalidOperationException($"Applicant '{transcript.ecer_Applicantid.Id}' not found");
@@ -150,7 +140,8 @@ internal sealed partial class ApplicationRepository
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
         StateCode = bcgov_documenturl_statecode.Active,
-        ecer_Tag1 = tagName
+        ecer_Tag1 = tagName,
+        ecer_ApplicationName = EcerWebApplicationType.Registry.ToString()
       };
 
       context.AddObject(documenturl);

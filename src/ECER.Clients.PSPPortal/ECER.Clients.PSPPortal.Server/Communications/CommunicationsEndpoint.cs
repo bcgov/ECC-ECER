@@ -1,10 +1,10 @@
-using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -17,7 +17,7 @@ public class CommunicationsEndpoint : IRegisterEndpoints
   {
     endpointRouteBuilder.MapGet("/api/messages/{parentId?}",
         async Task<Results<Ok<GetMessagesResponse>, BadRequest<ProblemDetails>, NotFound>> (string? parentId, string? byId, HttpContext httpContext,
-          IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
+          IMediator messageBus, ICommunicationMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
       {
         var userContext = httpContext.User.GetUserContext()!;
         // Get users institute
@@ -47,14 +47,14 @@ public class CommunicationsEndpoint : IRegisterEndpoints
         };
         var results = await messageBus.Send<CommunicationsQueryResults>(query, ct);
 
-        return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), TotalMessagesCount = results.TotalMessagesCount });
+        return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.MapCommunications(results.Items), TotalMessagesCount = results.TotalMessagesCount });
       })
       .WithOpenApi("Paginated endpoint to get all user messages", string.Empty, "message_get")
       .RequireAuthorization("psp_user");
 
     endpointRouteBuilder.MapPost("/api/messages",
         async Task<Results<Ok<SendMessageResponse>, BadRequest<ProblemDetails>, NotFound>> (SendMessageRequest request, HttpContext httpContext,
-          CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+          CancellationToken ct, IMediator messageBus, ICommunicationMapper mapper) =>
       {
         var userContext = httpContext.User.GetUserContext()!;
 
@@ -67,7 +67,7 @@ public class CommunicationsEndpoint : IRegisterEndpoints
           }
         }
 
-        var mappedCommunication = mapper.Map<Managers.Registry.Contract.Communications.Communication>(request.Communication);
+        var mappedCommunication = mapper.MapCommunication(request.Communication);
         mappedCommunication.IsPspUser = true;
         var cmd = new SendMessageCommand(mappedCommunication, userContext.UserId);
         var result = await messageBus.Send(cmd, ct);
@@ -201,6 +201,7 @@ public record CommunicationDocument(string Id)
   public string Extention { get; set; } = null!;
   public string Name { get; set; } = null!;
   public string Size { get; set; } = null!;
+  public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
 public enum InitiatedFrom

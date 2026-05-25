@@ -1,15 +1,7 @@
 <template>
   <v-row>
-    <v-col cols="12" v-for="systemMessage in configStore.systemMessages">
-      <Alert
-        v-if="
-          systemMessage.portalTags &&
-          systemMessage.portalTags.includes('REFERENCES')
-        "
-        title="Alert"
-      >
-        {{ systemMessage.message ? systemMessage.message : "" }}
-      </Alert>
+    <v-col cols="12">
+      <SystemBanner pageTag="REFERENCES" />
     </v-col>
     <v-col cols="12" md="12" lg="12" xl="12">
       <v-row no-gutters>
@@ -143,21 +135,19 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
 import * as Rules from "@/utils/formRules";
-import Alert from "@/components/Alert.vue";
+import SystemBanner from "@/components/SystemBanner.vue";
 import { cleanPreferredName } from "@/utils/functions";
 export default defineComponent({
   name: "EceIcraEligibilityReferenceDeclaration",
-  components: { Alert },
+  components: { SystemBanner },
   emits: {
     "update:model-value": (_willProvideReference: boolean) => true,
   },
   setup: () => {
     const wizardStore = useWizardStore();
-    const configStore = useConfigStore();
-    return { wizardStore, configStore };
+    return { wizardStore };
   },
   data() {
     return {

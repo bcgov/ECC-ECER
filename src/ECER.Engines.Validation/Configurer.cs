@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using ECER.Engines.Validation.Applications;
 using ECER.Engines.Validation.ICRA;
+using ECER.Engines.Validation.ProgramApplications;
 using ECER.Engines.Validation.Programs;
 using ECER.Infrastructure.Common;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,5 +32,11 @@ public class Configurer : IConfigureComponents
     {
       return provider.GetRequiredService<NewProgramSubmissionValidationEngine>();
     });
+
+    // Program Application
+    configurationContext.Services.AddTransient<IProgramApplicationValidationEngine, ProgramApplicationSubmissionValidationEngine>();
+
+    // Course progress
+    configurationContext.Services.AddTransient<ICourseProgressEvaluator, CourseProgressEvaluator>();
   }
 }

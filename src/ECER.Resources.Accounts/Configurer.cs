@@ -12,6 +12,9 @@ public class Configurer : IConfigureComponents
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
+    configurationContext.Services.AddTransient<IRegistrantRepositoryMapper, RegistrantRepositoryMapper>();
+    configurationContext.Services.AddTransient<ICommunicationRepositoryMapper, CommunicationRepositoryMapper>();
+    configurationContext.Services.AddTransient<IPspRepRepositoryMapper, PspRepRepositoryMapper>();
     configurationContext.Services.AddTransient<IRegistrantRepository, RegistrantRepository>();
     configurationContext.Services.AddTransient<ICommunicationRepository, CommunicationRepository>();
     configurationContext.Services.AddTransient<IPspRepRepository, PspRepRepository>();

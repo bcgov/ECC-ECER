@@ -1,7 +1,6 @@
-﻿using AutoMapper;
 using ECER.Managers.Admin.Contract.Certifications;
 using ECER.Utilities.Hosting;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ECER.Clients.Api.Certifications;
@@ -12,13 +11,13 @@ public class CertificationEndpoints : IRegisterEndpoints
   {
     endpointRouteBuilder.MapGet("/api/certifications/files/{id?}", async Task<Results<Ok<IEnumerable<CertificationSummary>>, BadRequest<string>>> (
       string? id,
-      IMapper mapper,
+      ICertificationMapper mapper,
       IMediator messageBus,
       HttpContext ctx,
       CancellationToken ct) =>
     {
       var results = await messageBus.Send<GetCertificationsCommandResponse>(new GetCertificationsCommand(id), ct);
-      var items = mapper.Map<IEnumerable<CertificationSummary>>(results.Items);
+      var items = mapper.MapCertificationSummaries(results.Items);
       return TypedResults.Ok(items);
     })
     .WithOpenApi("Returns certification summaries", string.Empty, "certification_get")
@@ -27,12 +26,11 @@ public class CertificationEndpoints : IRegisterEndpoints
 
     endpointRouteBuilder.MapGet("/api/certifications/file/download/{id}", async Task<Results<FileStreamHttpResult, BadRequest<string>, NotFound>> (
       string id,
-      IMapper mapper,
       IMediator messageBus,
       HttpContext ctx,
       CancellationToken ct) =>
      {
-       var certificationFiles = await messageBus.Send(new GetCertificationFileCommand(id), ct);
+       var certificationFiles = await messageBus.Send(new GetCertificationFileCommand(id, Utilities.ObjectStorage.Providers.EcerWebApplicationType.Registry), ct);
 
        var file = certificationFiles.Items.SingleOrDefault();
        if (file == null) return TypedResults.NotFound();

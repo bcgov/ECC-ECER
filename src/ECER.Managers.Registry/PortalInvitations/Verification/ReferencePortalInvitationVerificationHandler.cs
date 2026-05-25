@@ -1,9 +1,8 @@
-using AutoMapper;
 using ECER.Managers.Registry.Contract.PortalInvitations;
+using ECER.Managers.Registry.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.Certifications;
-using Serilog;
 
 namespace ECER.Managers.Registry;
 
@@ -11,7 +10,8 @@ public class ReferencePortalInvitationVerificationHandler(
   IRegistrantRepository registrantRepository,
   ICertificationRepository certificationRepository,
   IApplicationRepository applicationRepository,
-  IMapper mapper, ILogger logger)
+  ICertificationMapper certificationMapper,
+  IPortalInvitationMapper portalInvitationMapper)
   : IPortalInvitationVerificationHandler
 {
   public bool CanHandle(InviteType? inviteType)
@@ -22,75 +22,91 @@ public class ReferencePortalInvitationVerificationHandler(
 
   public async Task<PortalInvitationVerificationQueryResult> Verify(PortalInvitation portalInvitation, CancellationToken cancellationToken)
   {
-    var emptyGuidString = Guid.Empty.ToString();
-    logger.Debug("Portal invitation verifying {PortalInvitation}", portalInvitation);
-    if (portalInvitation == null || 
-      (portalInvitation.WorkexperienceReferenceId == emptyGuidString && portalInvitation.CharacterReferenceId == emptyGuidString) || 
-      (portalInvitation.WorkexperienceReferenceId == null && portalInvitation.CharacterReferenceId == null))
+    if (HasMissingReference(portalInvitation))
     {
-      logger.Debug("Reference not found");
       return PortalInvitationVerificationQueryResult.Failure("Reference not found");
     }
 
-    var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
+    var registrantResult = await registrantRepository.Query(new RegistrantQuery { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
     var applicant = registrantResult.SingleOrDefault();
     if (applicant == null)
     {
-      logger.Debug("Applicant not found");
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
 
-    var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
+    var applications = await applicationRepository.Query(new ApplicationQuery { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();
     if (application == null)
     {
-      logger.Debug("Application not found");
       return PortalInvitationVerificationQueryResult.Failure("Application not found");
     }
 
-    var certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id, ById = !string.IsNullOrEmpty(application.FromCertificate?.ToString()) ? application.FromCertificate.ToString() : null });
+    var failureMessage = GetFailureMessage(portalInvitation.StatusCode);
+    if (failureMessage != null)
+    {
+      return PortalInvitationVerificationQueryResult.Failure(failureMessage);
+    }
+
+    var certifications = await certificationRepository.Query(new UserCertificationQuery
+    {
+      ByApplicantId = applicant.Id,
+      ById = !string.IsNullOrEmpty(application.FromCertificate?.ToString()) ? application.FromCertificate.ToString() : null
+    });
+
+    var result = portalInvitation;
+    ApplyWorkExperienceReferenceDetails(result, application, portalInvitation);
+
     var fromCertificate = certifications.FirstOrDefault();
-
-    var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
-
-    switch (result.StatusCode)
+    if (fromCertificate is not null)
     {
-      case Contract.PortalInvitations.PortalInvitationStatusCode.Completed:
-        return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
-
-      case Contract.PortalInvitations.PortalInvitationStatusCode.Expired:
-        return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
-
-      case Contract.PortalInvitations.PortalInvitationStatusCode.Cancelled:
-        return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
-
-      case Contract.PortalInvitations.PortalInvitationStatusCode.Failed:
-        return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
+      result.FromCertificate = certificationMapper.MapCertification(fromCertificate);
     }
 
-    if (result.InviteType == Contract.PortalInvitations.InviteType.WorkExperienceReferenceforApplication)
-    {
-      var workExRef = application.WorkExperienceReferences.SingleOrDefault(work => work.Id == portalInvitation.WorkexperienceReferenceId);
-      if (workExRef != null)
-      {
-        result.WorkExperienceReferenceHours = workExRef.Hours;
-        if (workExRef.Type != null)
-        {
-          result.WorkExperienceType = mapper.Map<Contract.Applications.WorkExperienceTypes>(workExRef.Type);
-        }
-      }
-    }
-
-    if (fromCertificate != null)
-    {
-      result.FromCertificate = mapper.Map<Contract.Certifications.Certification>(fromCertificate);
-    }
-
-    result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
+    result.CertificationTypes = portalInvitationMapper.MapCertificationTypes(application.CertificationTypes);
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
     result.ApplicationSubmittedOn = application.SubmittedOn;
 
     return PortalInvitationVerificationQueryResult.Success(result);
+  }
+
+  private static bool HasMissingReference(PortalInvitation? portalInvitation)
+  {
+    var emptyGuidString = Guid.Empty.ToString();
+    var missingWorkExperienceReference = string.IsNullOrEmpty(portalInvitation?.WorkexperienceReferenceId)
+      || portalInvitation.WorkexperienceReferenceId == emptyGuidString;
+    var missingCharacterReference = string.IsNullOrEmpty(portalInvitation?.CharacterReferenceId)
+      || portalInvitation.CharacterReferenceId == emptyGuidString;
+
+    return portalInvitation == null || (missingWorkExperienceReference && missingCharacterReference);
+  }
+
+  private static string? GetFailureMessage(Contract.PortalInvitations.PortalInvitationStatusCode? statusCode) => statusCode switch
+  {
+    Contract.PortalInvitations.PortalInvitationStatusCode.Completed => "Reference has already been submitted.",
+    Contract.PortalInvitations.PortalInvitationStatusCode.Expired => "Reference has expired.",
+    Contract.PortalInvitations.PortalInvitationStatusCode.Cancelled => "Reference has been cancelled.",
+    Contract.PortalInvitations.PortalInvitationStatusCode.Failed => "Reference has failed.",
+    _ => null,
+  };
+
+  private void ApplyWorkExperienceReferenceDetails(PortalInvitation result, Application application, PortalInvitation portalInvitation)
+  {
+    if (result.InviteType != Contract.PortalInvitations.InviteType.WorkExperienceReferenceforApplication)
+    {
+      return;
+    }
+
+    var workExRef = application.WorkExperienceReferences.SingleOrDefault(work => work.Id == portalInvitation.WorkexperienceReferenceId);
+    if (workExRef == null)
+    {
+      return;
+    }
+
+    result.WorkExperienceReferenceHours = workExRef.Hours;
+    if (workExRef.Type != null)
+    {
+      result.WorkExperienceType = portalInvitationMapper.MapWorkExperienceType(workExRef.Type);
+    }
   }
 }

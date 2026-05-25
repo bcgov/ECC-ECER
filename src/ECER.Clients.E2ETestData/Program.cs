@@ -1,14 +1,13 @@
+using ECER.Clients.E2ETestData.Authentication;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using ECER.Clients.E2ETestData.Authentication;
-using ECER.Infrastructure.Common;
 
 namespace ECER.Clients.E2ETestData;
-
 
 internal class Program
 {
@@ -23,11 +22,18 @@ internal class Program
 
     try
     {
-      builder.Services.AddMediatR(opts => opts.RegisterServicesFromAssemblies(assemblies));
-      builder.Services.AddAutoMapper(cfg =>
+      builder.Services.AddMediator(opts =>
       {
-        cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
-      }, assemblies);
+        opts.ServiceLifetime = ServiceLifetime.Transient;
+        opts.GenerateTypesAsInternal = true;
+        opts.Assemblies =
+        [
+          typeof(ECER.Managers.E2ETest.Contract.E2ETestsContacts.E2ETestsDeleteContactApplicationsCommand),
+          typeof(ECER.Managers.E2ETest.E2ETestsContactHandlers),
+          typeof(ECER.Managers.Registry.Contract.Applications.SaveDraftApplicationCommand),
+          typeof(ECER.Managers.Registry.ApplicationHandlers)
+        ];
+      });
 
       // Configure Swagger/OpenAPI with API Key authentication definition
       builder.Services.AddEndpointsApiExplorer();

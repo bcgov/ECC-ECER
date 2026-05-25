@@ -1,18 +1,17 @@
-﻿using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Resources.Accounts.Communications;
-using MediatR;
+using Mediator;
 
 namespace ECER.Managers.Registry;
 
-public class CommunicationHandlers(ICommunicationRepository communicationRepository, IMapper mapper)
+public class CommunicationHandlers(ICommunicationRepository communicationRepository, ICommunicationMapper communicationMapper)
   : IRequestHandler<Contract.Communications.UserCommunicationsStatusQuery, CommunicationsStatusResults>,
     IRequestHandler<Contract.Communications.UserCommunicationQuery, CommunicationsQueryResults>,
     IRequestHandler<MarkCommunicationAsSeenCommand, string>,
     IRequestHandler<SendMessageCommand, SendMessageResult>
 {
-  public async Task<CommunicationsStatusResults> Handle(Contract.Communications.UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
+  public async ValueTask<CommunicationsStatusResults> Handle(Contract.Communications.UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     var unreadMessagesCount = await communicationRepository.QueryStatus(new Resources.Accounts.Communications.UserCommunicationsStatusQuery
@@ -24,10 +23,10 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     return new CommunicationsStatusResults(communicationsStatus!);
   }
 
-  public async Task<CommunicationsQueryResults> Handle(Contract.Communications.UserCommunicationQuery request, CancellationToken cancellationToken)
+  public async ValueTask<CommunicationsQueryResults> Handle(Contract.Communications.UserCommunicationQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(communicationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(communicationMapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var communication = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
@@ -38,10 +37,10 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
       PageNumber = request.PageNumber,
       PageSize = request.PageSize,
-      ByPostSecondaryInstituteId =  request.ByPostSecondaryInstituteId,
+      ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId,
     });
 
-    return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communication.Communications)!)
+    return new CommunicationsQueryResults(communicationMapper.MapCommunications(communication.Communications ?? Array.Empty<Resources.Accounts.Communications.Communication>()))
     { TotalMessagesCount = communication.TotalMessagesCount };
   }
 
@@ -51,7 +50,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
   /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public async Task<string> Handle(MarkCommunicationAsSeenCommand request, CancellationToken cancellationToken)
+  public async ValueTask<string> Handle(MarkCommunicationAsSeenCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -62,7 +61,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     };
 
     var communications = await communicationRepository.Query(
-      request.IsPspUser == true ? 
+      request.IsPspUser == true ?
         new Resources.Accounts.Communications.UserCommunicationQuery
         {
           ById = request.CommunicationId,
@@ -87,11 +86,11 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     return seenCommunicationId;
   }
 
-  public async Task<SendMessageResult> Handle(SendMessageCommand request, CancellationToken cancellationToken)
+  public async ValueTask<SendMessageResult> Handle(SendMessageCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var Communication = mapper.Map<Resources.Accounts.Communications.Communication>(request.communication);
-    var CommunicationId = await communicationRepository.SendMessage(Communication, request.userId, cancellationToken);
-    return new SendMessageResult() { CommunicationId = CommunicationId, IsSuccess = true };
+    var communication = communicationMapper.MapCommunication(request.communication);
+    var communicationId = await communicationRepository.SendMessage(communication, request.userId, cancellationToken);
+    return new SendMessageResult() { CommunicationId = communicationId, IsSuccess = true };
   }
 }

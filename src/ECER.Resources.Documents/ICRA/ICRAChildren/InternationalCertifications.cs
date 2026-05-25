@@ -1,6 +1,6 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.ICRA;
@@ -26,14 +26,14 @@ internal sealed partial class ICRARepository
     foreach (var InternationalCertification in updatedEntities.Where(d => !string.IsNullOrEmpty(d.Id)))
     {
       var oldInternationalCertification = existingInternationalCertifications.SingleOrDefault(t => t.Id.ToString() == InternationalCertification.Id);
-      var ecerInternationalCertification = mapper.Map<ecer_InternationalCertification>(InternationalCertification)!;
+      var ecerInternationalCertification = mapper.MapInternationalCertification(InternationalCertification);
 
       if (oldInternationalCertification != null)
       {
         context.Detach(oldInternationalCertification);
         ecerInternationalCertification.StatusCode = oldInternationalCertification.StatusCode;
       }
-  
+
       context.Attach(ecerInternationalCertification);
       context.UpdateObject(ecerInternationalCertification);
       if (InternationalCertification.CountryId != null)
@@ -51,7 +51,7 @@ internal sealed partial class ICRARepository
     {
       var newId = Guid.NewGuid();
       InternationalCertification.Id = newId.ToString();
-      var ecerInternationalCertification = mapper.Map<ecer_InternationalCertification>(InternationalCertification)!;
+      var ecerInternationalCertification = mapper.MapInternationalCertification(InternationalCertification);
       // no draft status handling required here beyond default mapping
 
       ecerInternationalCertification.ecer_InternationalCertificationId = newId;
@@ -100,7 +100,8 @@ internal sealed partial class ICRARepository
       throw new InvalidOperationException($"File with ID '{fileId}' not found");
     }
     var folder = "ecer_InternationalCertification/" + InternationalCertificationId;
-    await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+    var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+    await objectStorageProvider.DeleteAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, folder), ct);
     context.DeleteObject(file);
   }
 
@@ -134,7 +135,8 @@ internal sealed partial class ICRARepository
       }
       var fileId = items[1];
       var folder = items[0];
-      await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+      await objectStorageProvider.DeleteAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, folder), ct);
       context.DeleteObject(files[i]);
     }
   }
@@ -152,8 +154,9 @@ internal sealed partial class ICRARepository
 
       var sourceFolder = "tempfolder";
       var destinationFolder = "ecer_InternationalCertification/" + InternationalCertification.Id;
-      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
-      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+      var objectStorageProvider = objectStorageProviderResolver.resolve(EcerWebApplicationType.Registry);
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), ct);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(objectStorageProvider.BucketName, fileId, sourceFolder), new S3Descriptor(objectStorageProvider.BucketName, fileId, destinationFolder), ct);
 
       var documenturl = new bcgov_DocumentUrl()
       {
@@ -162,7 +165,8 @@ internal sealed partial class ICRARepository
         bcgov_DocumentUrlId = Guid.Parse(fileId),
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
-        StateCode = bcgov_documenturl_statecode.Active
+        StateCode = bcgov_documenturl_statecode.Active,
+        ecer_ApplicationName = EcerWebApplicationType.Registry.ToString()
       };
 
       context.AddObject(documenturl);
@@ -170,7 +174,4 @@ internal sealed partial class ICRARepository
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_internationalcertificationid, InternationalCertification);
     }
   }
-
-  private static string GetBucketName(IConfiguration configuration) =>
-  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

@@ -1,5 +1,10 @@
 import { getClient } from "@/api/client";
-import type { EducationInstitution } from "@/types/openapi";
+import type {
+  CreateCampusRequest,
+  EducationInstitution,
+  ProblemDetails,
+  UpdateCampusRequest,
+} from "@/types/openapi";
 import ApiResultHandler from "@/utils/apiResultHandler";
 const apiResultHandler = new ApiResultHandler();
 
@@ -27,4 +32,33 @@ const updateEducationInstitution = async (
   return response != null;
 };
 
-export { getEducationInstitution, updateEducationInstitution };
+const createCampus = async (
+  campus: CreateCampusRequest,
+): Promise<string | null> => {
+  const client = await getClient();
+  const response = await apiResultHandler.execute({
+    request: client.campus_post({}, campus),
+    key: "campus_post",
+  });
+  return response?.data ?? null;
+};
+
+const updateCampus = async (
+  campusId: string,
+  campus: UpdateCampusRequest,
+): Promise<ProblemDetails | null> => {
+  const client = await getClient();
+  const response = await apiResultHandler.execute({
+    request: client.campus_put({ campusId }, campus),
+    key: "campus_put",
+    suppressErrorToast: true,
+  });
+  return response;
+};
+
+export {
+  getEducationInstitution,
+  updateEducationInstitution,
+  createCampus,
+  updateCampus,
+};

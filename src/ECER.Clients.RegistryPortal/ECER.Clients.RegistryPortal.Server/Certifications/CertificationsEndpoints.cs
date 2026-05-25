@@ -1,8 +1,7 @@
-﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +11,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/certifications/{id?}", async Task<Results<Ok<IEnumerable<Certification>>, BadRequest<ProblemDetails>>> (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/certifications/{id?}", async Task<Results<Ok<IEnumerable<Certification>>, BadRequest<ProblemDetails>>> (string? id, HttpContext httpContext, IMediator messageBus, ICertificationMapper certificationMapper, CancellationToken ct) =>
     {
       var userId = httpContext.User.GetUserContext()?.UserId;
       if (string.IsNullOrEmpty(id))
@@ -21,8 +20,8 @@ public class CertificationsEndpoints : IRegisterEndpoints
       }
       else
       {
-        bool IdIsNotGuid = !Guid.TryParse(id, out _); 
-        if (IdIsNotGuid) 
+        bool IdIsNotGuid = !Guid.TryParse(id, out _);
+        if (IdIsNotGuid)
         {
           var problemDetails = new ProblemDetails
           {
@@ -40,13 +39,13 @@ public class CertificationsEndpoints : IRegisterEndpoints
         ByApplicantId = userId,
       };
       var results = await messageBus.Send<CertificationsQueryResults>(query, ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<Certification>>(results.Items));
+      return TypedResults.Ok(certificationMapper.MapCertifications(results.Items));
     })
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
     .RequireAuthorization()
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapPut("/api/certifications/RequestPdf/{id?}", async Task<Results<Ok<string>, BadRequest<ProblemDetails>>> (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPut("/api/certifications/RequestPdf/{id?}", async Task<Results<Ok<string>, BadRequest<ProblemDetails>>> (string? id, HttpContext httpContext, IMediator messageBus, CancellationToken ct) =>
     {
       var userId = httpContext.User.GetUserContext()?.UserId;
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
@@ -70,17 +69,17 @@ public class CertificationsEndpoints : IRegisterEndpoints
     .RequireAuthorization()
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/certifications/lookup", async Task<Results<Ok<IEnumerable<CertificationLookupResponse>>, BadRequest<ProblemDetails>, NotFound>> (CertificationLookupRequest request, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/certifications/lookup", async Task<Results<Ok<IEnumerable<CertificationLookupResponse>>, BadRequest<ProblemDetails>, NotFound>> (CertificationLookupRequest request, HttpContext httpContext, CancellationToken ct, IMediator messageBus, ICertificationMapper certificationMapper) =>
     {
-      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken), ct);
+      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.captchaToken), ct);
 
-      if (!recaptchaResult.Success)
+      if (!captchaResult.Success)
       {
         var problemDetails = new ProblemDetails
         {
           Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid recaptcha token",
-          Extensions = { ["errors"] = recaptchaResult.ErrorCodes }
+          Detail = "Invalid captcha token",
+          Extensions = { ["errors"] = captchaResult.ErrorCodes }
         };
         return TypedResults.BadRequest(problemDetails);
       }
@@ -94,7 +93,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
         PageSize = request.PageSize
       };
       var results = await messageBus.Send(query, ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<CertificationLookupResponse>>(results.Items));
+      return TypedResults.Ok(certificationMapper.MapLookupResponses(results.Items));
     })
      .WithOpenApi("Handles certifications lookup queries", string.Empty, "certifications_lookup_post")
      .WithParameterValidation();
@@ -131,7 +130,7 @@ public record CertificationLookupResponse(string Id)
   public IEnumerable<CertificateCondition> CertificateConditions { get; set; } = Array.Empty<CertificateCondition>();
 }
 
-public record CertificationLookupRequest(string RecaptchaToken)
+public record CertificationLookupRequest(string captchaToken)
 {
   public string? FirstName { get; set; }
   public string? LastName { get; set; }

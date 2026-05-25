@@ -37,6 +37,8 @@
       cancel-button-text="Continue editing"
       @accept="goToDashboard"
       @cancel="toggleSaveExitConfirmation"
+      @click-outside="toggleSaveExitConfirmation"
+      @exit="toggleSaveExitConfirmation"
     >
       <template #confirmation-text>
         <p class="pb-3">

@@ -1,207 +1,488 @@
-﻿using AutoMapper;
-using System.Diagnostics.Contracts;
-using ECER.Infrastructure.Common;
+using Riok.Mapperly.Abstractions;
+using ContractApplications = ECER.Managers.Registry.Contract.Applications;
+using ContractMetadatas = ECER.Managers.Admin.Contract.Metadatas;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
-public class ApplicationMapper : SecureProfile
+internal interface IApplicationMapper
 {
-  public ApplicationMapper()
+  ContractApplications.Application MapDraftApplication(DraftApplication source, string registrantId);
+  Application MapApplication(ContractApplications.Application source);
+  IEnumerable<Application> MapApplications(IEnumerable<ContractApplications.Application> source);
+  SubmittedApplicationStatus MapSubmittedApplicationStatus(ContractApplications.Application source);
+  ContractApplications.WorkExperienceReference MapWorkExperienceReference(WorkExperienceReference source);
+  ContractApplications.CharacterReference MapCharacterReference(CharacterReference source);
+  ContractApplications.ProfessionalDevelopment MapProfessionalDevelopment(ProfessionalDevelopment source);
+  ContractApplications.TranscriptDocuments MapTranscriptDocuments(TranscriptDocuments source, string registrantId);
+}
+
+[Mapper]
+internal partial class ApplicationMapper : IApplicationMapper
+{
+  public ContractApplications.Application MapDraftApplication(DraftApplication source, string registrantId) => new(
+    source.Id,
+    registrantId,
+    ContractApplications.ApplicationStatus.Draft)
   {
-    CreateMap<WorkExperienceReference, Managers.Registry.Contract.Applications.WorkExperienceReference>()
-      .ForMember(d => d.Status, opts => opts.Ignore())
-      .ForMember(d => d.WillProvideReference, opts => opts.Ignore())
-      .ForMember(d => d.TotalNumberofHoursApproved, opts => opts.Ignore())
-      .ForMember(d => d.TotalNumberofHoursObserved, opts => opts.Ignore())
-      .ReverseMap();
+    SignedDate = source.SignedDate,
+    CertificationTypes = source.CertificationTypes.Select(MapCertificationType).ToList(),
+    Transcripts = source.Transcripts.Select(MapTranscript).ToList(),
+    WorkExperienceReferences = source.WorkExperienceReferences.Select(MapWorkExperienceReference).ToList(),
+    CharacterReferences = source.CharacterReferences.Select(MapCharacterReference).ToList(),
+    ProfessionalDevelopments = source.ProfessionalDevelopments.Select(MapProfessionalDevelopment).ToList(),
+    Stage = source.Stage,
+    FromCertificate = source.FromCertificate,
+    ApplicationType = MapApplicationType(source.ApplicationType),
+    EducationOrigin = MapEducationOrigin(source.EducationOrigin),
+    EducationRecognition = MapEducationRecognition(source.EducationRecognition),
+    OneYearRenewalExplanationChoice = MapOneYearRenewalExplanation(source.OneYearRenewalExplanationChoice),
+    FiveYearRenewalExplanationChoice = MapFiveYearRenewalExplanation(source.FiveYearRenewalExplanationChoice),
+    RenewalExplanationOther = source.RenewalExplanationOther,
+    LabourMobilityCertificateInformation = MapCertificateInformation(source.LabourMobilityCertificateInformation),
+  };
 
-    CreateMap<ProfessionalDevelopment, Managers.Registry.Contract.Applications.ProfessionalDevelopment>()
-     .ForMember(d => d.Status, opts => opts.Ignore())
-     .ForCtorParam(nameof(Managers.Registry.Contract.Applications.ProfessionalDevelopment.Id),
-              opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
-     .ForMember(d => d.NumberOfHours,
-              opt => opt.MapFrom(src => src.NumberOfHours))
-     .ReverseMap();
-    CreateMap<FileInfo, Managers.Registry.Contract.Applications.FileInfo>().ReverseMap();
-    CreateMap<TranscriptDocuments, Managers.Registry.Contract.Applications.TranscriptDocuments>().ForMember(d => d.RegistrantId, opts => opts.Ignore());
-    CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
-      .ForMember(d => d.Status, opts => opts.Ignore())
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.Id),
-               opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EducationalInstitutionName),
-               opt => opt.MapFrom(src => src.EducationalInstitutionName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.ProgramName),
-               opt => opt.MapFrom(src => src.ProgramName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentFirstName),
-               opt => opt.MapFrom(src => src.StudentFirstName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentLastName),
-               opt => opt.MapFrom(src => src.StudentLastName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentNumber),
-               opt => opt.MapFrom(src => src.StudentNumber))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StartDate),
-               opt => opt.MapFrom(src => src.StartDate))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EndDate),
-               opt => opt.MapFrom(src => src.EndDate))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsECEAssistant),
-               opt => opt.MapFrom(src => src.IsECEAssistant))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsNameUnverified),
-         opt => opt.MapFrom(src => src.IsNameUnverified))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EducationRecognition),
-               opt => opt.MapFrom(src => src.EducationRecognition))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EducationOrigin),
-         opt => opt.MapFrom(src => src.EducationOrigin))
-      .ForMember(d => d.CampusLocation,
-             opts => opts.MapFrom(src => src.CampusLocation))
-      .ForMember(d=>d.TranscriptStatusOption,
-             opt => opt.MapFrom(src => src.TranscriptStatusOption))
-      .ForMember(d => d.StudentMiddleName,
-       opts => opts.MapFrom(src => src.StudentMiddleName))
-       .ForMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.Ignore())
-       .ForMember(d => d.ProgramConfirmationReceivedByRegistry, opts => opts.Ignore())
-       .ForMember(d => d.TranscriptReceivedByRegistry, opts => opts.Ignore())
-       .ForMember(d => d.ComprehensiveReportReceivedByRegistry, opts => opts.Ignore())
-       .ForMember(d => d.CourseOutlineFiles, opts => opts.Ignore())
-       .ForMember(d => d.ProgramConfirmationFiles, opts => opts.Ignore())
-       .ForMember(d => d.CourseOutlineOptions, opts => opts.Ignore())
-       .ForMember(d => d.ComprehensiveReportOptions, opts => opts.Ignore())
-       .ForMember(d => d.ProgramConfirmationOptions, opts => opts.Ignore())
-      .ReverseMap();
+  public IEnumerable<Application> MapApplications(IEnumerable<ContractApplications.Application> source) => source.Select(MapApplication).ToList();
 
-    CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
-      .ForMember(d => d.Status, opts => opts.Ignore())
-      .ForMember(d => d.WillProvideReference, opts => opts.Ignore())
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.FirstName),
-        opt => opt.MapFrom(src => src.FirstName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.LastName),
-        opt => opt.MapFrom(src => src.LastName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.EmailAddress),
-        opt => opt.MapFrom(src => src.EmailAddress))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.PhoneNumber),
-        opt => opt.MapFrom(src => src.PhoneNumber))
-      .ForMember(d => d.Id,
-        opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
-      .ReverseMap();
+  public Application MapApplication(ContractApplications.Application source) => new()
+  {
+    Id = source.Id!,
+    CreatedOn = source.CreatedOn.GetValueOrDefault(),
+    SubmittedOn = source.SubmittedOn,
+    SignedDate = source.SignedDate,
+    CertificationTypes = source.CertificationTypes.Select(MapCertificationType).ToList(),
+    Transcripts = source.Transcripts.Select(MapTranscript).ToList(),
+    WorkExperienceReferences = source.WorkExperienceReferences.Select(MapWorkExperienceReference).ToList(),
+    CharacterReferences = source.CharacterReferences.Select(MapCharacterReference).ToList(),
+    ProfessionalDevelopments = source.ProfessionalDevelopments.Select(MapProfessionalDevelopment).ToList(),
+    Status = MapApplicationStatus(source.Status),
+    Stage = source.Stage,
+    ApplicationType = MapApplicationType(source.ApplicationType),
+    EducationOrigin = MapEducationOrigin(source.EducationOrigin),
+    EducationRecognition = MapEducationRecognition(source.EducationRecognition),
+    OneYearRenewalExplanationChoice = MapOneYearRenewalExplanation(source.OneYearRenewalExplanationChoice),
+    FiveYearRenewalExplanationChoice = MapFiveYearRenewalExplanation(source.FiveYearRenewalExplanationChoice),
+    RenewalExplanationOther = source.RenewalExplanationOther,
+    FromCertificate = source.FromCertificate,
+    Origin = MapApplicationOrigin(source.Origin),
+    LabourMobilityCertificateInformation = MapCertificateInformation(source.LabourMobilityCertificateInformation),
+  };
 
-    CreateMap<DraftApplication, Managers.Registry.Contract.Applications.Application>()
-      .ForMember(d => d.RegistrantId, opts => opts.Ignore())
-      .ForMember(d => d.CreatedOn, opts => opts.Ignore())
-      .ForMember(d => d.SubmittedOn, opts => opts.Ignore())
-      .ForMember(d => d.SubStatus, opts => opts.Ignore())
-      .ForMember(d => d.ReadyForAssessmentDate, opts => opts.Ignore())
-      .ForMember(d => d.AddMoreCharacterReference, opts => opts.Ignore())
-      .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.Ignore())
-      .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.Ignore())
-      .ForMember(d => d.Origin, opts => opts.Ignore())
-      .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
-      .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
-      .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ProfessionalDevelopments))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Id), opts => opts.MapFrom(s => s.Id))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.RegistrantId), opts => opts.MapFrom((_, ctx) => ctx.Items["registrantId"]))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Status), opts => opts.MapFrom(_ => Managers.Registry.Contract.Applications.ApplicationStatus.Draft))
-      .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
-      .ForMember(d => d.OneYearRenewalExplanationChoice, opts => opts.MapFrom(s => s.OneYearRenewalExplanationChoice))
-      .ForMember(d => d.FiveYearRenewalExplanationChoice, opts => opts.MapFrom(s => s.FiveYearRenewalExplanationChoice))
-      .ForMember(d => d.RenewalExplanationOther, opts => opts.MapFrom(s => s.RenewalExplanationOther))
-      .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.SignedDate))
-      .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
-      .ForMember(d => d.FromCertificate, opts => opts.MapFrom(s => s.FromCertificate))
-      ;
-    CreateMap<Managers.Registry.Contract.Applications.CertificateInformation, CertificateInformation>().ReverseMap();
-    CreateMap<Managers.Registry.Contract.Applications.Application, Application>();
-    CreateMap<Managers.Registry.Contract.Applications.FileInfo, FileInfo>().ReverseMap();
+  public SubmittedApplicationStatus MapSubmittedApplicationStatus(ContractApplications.Application source) => new(
+    source.Id!,
+    source.SubmittedOn.GetValueOrDefault(),
+    MapApplicationStatus(source.Status),
+    MapApplicationStatusReasonDetail(source.SubStatus))
+  {
+    CertificationTypes = source.CertificationTypes.Select(MapCertificationType).ToList(),
+    ReadyForAssessmentDate = source.ReadyForAssessmentDate,
+    TranscriptsStatus = source.Transcripts.Select(MapTranscriptStatus).ToList(),
+    WorkExperienceReferencesStatus = source.WorkExperienceReferences.Select(MapWorkExperienceReferenceStatus).ToList(),
+    CharacterReferencesStatus = source.CharacterReferences.Select(MapCharacterReferenceStatus).ToList(),
+    ProfessionalDevelopmentsStatus = source.ProfessionalDevelopments.Select(MapProfessionalDevelopmentSummary).ToList(),
+    AddMoreCharacterReference = source.AddMoreCharacterReference,
+    AddMoreWorkExperienceReference = source.AddMoreWorkExperienceReference,
+    AddMoreProfessionalDevelopment = source.AddMoreProfessionalDevelopment,
+    FromCertificate = source.FromCertificate,
+    ApplicationType = MapApplicationType(source.ApplicationType),
+  };
 
-    CreateMap<Managers.Registry.Contract.Applications.Application, SubmittedApplicationStatus>()
-      .ForCtorParam(nameof(SubmittedApplicationStatus.Id),
-        opt => opt.MapFrom(s => s.Id))
-      .ForCtorParam(nameof(SubmittedApplicationStatus.SubmittedOn),
-        opt => opt.MapFrom(s => s.SubmittedOn))
-      .ForCtorParam(nameof(SubmittedApplicationStatus.Status),
-        opt => opt.MapFrom(s => s.Status))
-      .ForCtorParam(nameof(SubmittedApplicationStatus.SubStatus),
-        opt => opt.MapFrom(s => s.SubStatus))
-      .ForMember(d => d.CertificationTypes, opts => opts.MapFrom(s => s.CertificationTypes))
-      .ForMember(d => d.ReadyForAssessmentDate, opts => opts.MapFrom(s => s.ReadyForAssessmentDate))
-      .ForMember(d => d.TranscriptsStatus, opts => opts.MapFrom(s => s.Transcripts))
-      .ForMember(d => d.WorkExperienceReferencesStatus, opts => opts.MapFrom(s => s.WorkExperienceReferences))
-      .ForMember(d => d.CharacterReferencesStatus, opts => opts.MapFrom(s => s.CharacterReferences))
-      .ForMember(d => d.ProfessionalDevelopmentsStatus, opts => opts.MapFrom(s => s.ProfessionalDevelopments))
-      .ForMember(d => d.AddMoreCharacterReference, opts => opts.MapFrom(s => s.AddMoreCharacterReference))
-      .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.AddMoreWorkExperienceReference))
-      .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.AddMoreProfessionalDevelopment))
-      .ForMember(d => d.FromCertificate, opts => opts.MapFrom(s => s.FromCertificate))
-      .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => s.ApplicationType));
+  public ContractApplications.WorkExperienceReference MapWorkExperienceReference(WorkExperienceReference source) => new(
+    source.FirstName,
+    source.LastName,
+    source.EmailAddress,
+    source.Hours)
+  {
+    Id = source.Id,
+    PhoneNumber = source.PhoneNumber,
+    Type = MapWorkExperienceType(source.Type),
+  };
 
-    CreateMap<Managers.Registry.Contract.Applications.CharacterReference, CharacterReferenceStatus>()
-      .ForCtorParam(nameof(CharacterReferenceStatus.FirstName),
-        opt => opt.MapFrom(src => src.FirstName))
-      .ForCtorParam(nameof(CharacterReferenceStatus.LastName),
-        opt => opt.MapFrom(src => src.LastName))
-      .ForCtorParam(nameof(CharacterReferenceStatus.EmailAddress),
-        opt => opt.MapFrom(src => src.EmailAddress))
-      .ForCtorParam(nameof(CharacterReferenceStatus.Id),
-        opt => opt.MapFrom(src => src.Id))
-      .ForCtorParam(nameof(CharacterReferenceStatus.Status),
-        opt => opt.MapFrom(src => src.Status))
-      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference));
+  public ContractApplications.CharacterReference MapCharacterReference(CharacterReference source) => new(
+    source.FirstName,
+    source.LastName,
+    source.PhoneNumber,
+    source.EmailAddress)
+  {
+    Id = source.Id,
+  };
 
-    CreateMap<Managers.Registry.Contract.Applications.WorkExperienceReference, WorkExperienceReferenceStatus>()
-      .ForCtorParam(nameof(WorkExperienceReferenceStatus.FirstName),
-        opt => opt.MapFrom(src => src.FirstName))
-      .ForCtorParam(nameof(WorkExperienceReferenceStatus.LastName),
-        opt => opt.MapFrom(src => src.LastName))
-      .ForCtorParam(nameof(WorkExperienceReferenceStatus.EmailAddress),
-        opt => opt.MapFrom(src => src.EmailAddress))
-      .ForCtorParam(nameof(WorkExperienceReferenceStatus.Id),
-        opt => opt.MapFrom(src => src.Id))
-      .ForCtorParam(nameof(WorkExperienceReferenceStatus.Status),
-        opt => opt.MapFrom(src => src.Status))
-      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-      .ForMember(d => d.TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours))
-      .ForMember(d => d.TotalNumberofHoursApproved, opts => opts.MapFrom(s => s.TotalNumberofHoursApproved))
-      .ForMember(d => d.TotalNumberofHoursObserved, opts => opts.MapFrom(s => s.TotalNumberofHoursObserved))
-      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference))
-      .ForMember(d => d.Type, opts => opts.MapFrom(s => s.Type));
+  public ContractApplications.ProfessionalDevelopment MapProfessionalDevelopment(ProfessionalDevelopment source) => new(
+    string.IsNullOrEmpty(source.Id) ? null : source.Id,
+    source.CourseName,
+    source.OrganizationName,
+    source.StartDate,
+    source.EndDate)
+  {
+    CourseorWorkshopLink = source.CourseorWorkshopLink,
+    OrganizationContactInformation = source.OrganizationContactInformation,
+    OrganizationEmailAddress = source.OrganizationEmailAddress,
+    InstructorName = source.InstructorName,
+    NumberOfHours = source.NumberOfHours,
+    DeletedFiles = source.DeletedFiles.ToList(),
+    NewFiles = source.NewFiles.ToList(),
+    Files = source.Files.Select(MapFileInfo).ToList(),
+  };
 
-    CreateMap<Managers.Registry.Contract.Applications.Transcript, TranscriptStatus>()
-      .ForCtorParam(nameof(TranscriptStatus.Id),
-        opt => opt.MapFrom(src => src.Id))
-      .ForCtorParam(nameof(TranscriptStatus.EducationalInstitutionName),
-        opt => opt.MapFrom(src => src.EducationalInstitutionName))
-      .ForCtorParam(nameof(TranscriptStatus.Status),
-        opt => opt.MapFrom(src => src.Status))
-      .ForCtorParam(nameof(TranscriptStatus.programName),
-        opt => opt.MapFrom(src => src.ProgramName))
-      .ForMember(src => src.TranscriptReceivedByRegistry,
-        opt => opt.MapFrom(src => src.TranscriptReceivedByRegistry))
-      .ForMember(src => src.ComprehensiveReportReceivedByRegistry,
-        opt => opt.MapFrom(src => src.ComprehensiveReportReceivedByRegistry))
-      .ForMember(src => src.CourseOutlineReceivedByRegistry,
-        opt => opt.MapFrom(src => src.CourseOutlineReceivedByRegistry))
-      .ForMember(src => src.ProgramConfirmationReceivedByRegistry,
-        opt => opt.MapFrom(src => src.ProgramConfirmationReceivedByRegistry))
-      .ForMember(src => src.CourseOutlineFiles,
-        opt => opt.MapFrom(src => src.CourseOutlineFiles))
-      .ForMember(src => src.ProgramConfirmationFiles,
-        opt => opt.MapFrom(src => src.ProgramConfirmationFiles))
-       .ForMember(src => src.ComprehensiveReportOptions,
-        opt => opt.MapFrom(src => src.ComprehensiveReportOptions))
-      .ForMember(src => src.CourseOutlineOptions,
-        opt => opt.MapFrom(src => src.CourseOutlineOptions))
-      .ForMember(src => src.Country,
-        opt => opt.MapFrom(src => src.Country))
-      .ForMember(src => src.EducationRecognition,
-        opt => opt.MapFrom(src => src.EducationRecognition))
-      .ForMember(src => src.ProgramConfirmationOptions,
-        opt => opt.MapFrom(src => src.ProgramConfirmationOptions));
+  public ContractApplications.TranscriptDocuments MapTranscriptDocuments(TranscriptDocuments source, string registrantId) => new(source.ApplicationId, source.TranscriptId)
+  {
+    NewCourseOutlineFiles = source.NewCourseOutlineFiles.ToList(),
+    NewProgramConfirmationFiles = source.NewProgramConfirmationFiles.ToList(),
+    CourseOutlineOptions = MapCourseOutlineOptions(source.CourseOutlineOptions),
+    ComprehensiveReportOptions = MapComprehensiveReportOptions(source.ComprehensiveReportOptions),
+    ProgramConfirmationOptions = MapProgramConfirmationOptions(source.ProgramConfirmationOptions),
+    RegistrantId = registrantId,
+  };
 
-    CreateMap<Managers.Registry.Contract.Applications.ProfessionalDevelopment, ProfessionalDevelopmentStatus>()
-      .ForCtorParam(nameof(ProfessionalDevelopmentStatus.Id),
-        opt => opt.MapFrom(src => src.Id))
-      .ForCtorParam(nameof(ProfessionalDevelopmentStatus.CourseName),
-        opt => opt.MapFrom(src => src.CourseName))
-      .ForCtorParam(nameof(ProfessionalDevelopmentStatus.NumberOfHours),
-        opt => opt.MapFrom(src => src.NumberOfHours))
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status));
+  private Transcript MapTranscript(ContractApplications.Transcript source) => new(
+    source.EducationalInstitutionName,
+    source.ProgramName!,
+    source.StudentLastName,
+    source.StartDate,
+    source.EndDate,
+    source.IsNameUnverified,
+    MapEducationRecognition(source.EducationRecognition),
+    MapEducationOrigin(source.EducationOrigin))
+  {
+    Id = source.Id,
+    CampusLocation = source.CampusLocation,
+    StudentFirstName = source.StudentFirstName,
+    StudentMiddleName = source.StudentMiddleName,
+    StudentNumber = source.StudentNumber,
+    IsECEAssistant = source.IsECEAssistant,
+    TranscriptStatusOption = MapTranscriptStatusOption(source.TranscriptStatusOption),
+    Country = source.Country == null ? null : MapCountry(source.Country),
+    Province = source.Province == null ? null : MapProvince(source.Province),
+    PostSecondaryInstitution = source.PostSecondaryInstitution == null ? null : MapPostSecondaryInstitution(source.PostSecondaryInstitution),
+  };
+
+  private ContractApplications.Transcript MapTranscript(Transcript source) => new(
+    string.IsNullOrEmpty(source.Id) ? null : source.Id,
+    source.EducationalInstitutionName,
+    source.ProgramName,
+    source.StudentNumber,
+    source.StartDate,
+    source.EndDate,
+    source.IsECEAssistant,
+    source.StudentFirstName,
+    source.StudentLastName,
+    source.IsNameUnverified,
+    MapEducationRecognition(source.EducationRecognition),
+    MapEducationOrigin(source.EducationOrigin))
+  {
+    CampusLocation = source.CampusLocation,
+    StudentMiddleName = source.StudentMiddleName,
+    Country = source.Country == null ? null : MapCountry(source.Country),
+    Province = source.Province == null ? null : MapProvince(source.Province),
+    PostSecondaryInstitution = source.PostSecondaryInstitution == null ? null : MapPostSecondaryInstitution(source.PostSecondaryInstitution),
+    TranscriptStatusOption = MapTranscriptStatusOption(source.TranscriptStatusOption),
+  };
+
+  private ProfessionalDevelopment MapProfessionalDevelopment(ContractApplications.ProfessionalDevelopment source) => new(
+    source.CourseName!,
+    source.OrganizationName!,
+    source.StartDate,
+    source.EndDate,
+    source.NumberOfHours.GetValueOrDefault())
+  {
+    Id = source.Id,
+    OrganizationContactInformation = source.OrganizationContactInformation,
+    OrganizationEmailAddress = source.OrganizationEmailAddress,
+    InstructorName = source.InstructorName,
+    CourseorWorkshopLink = source.CourseorWorkshopLink,
+    Status = MapProfessionalDevelopmentStatus(source.Status),
+    DeletedFiles = source.DeletedFiles.ToList(),
+    NewFiles = source.NewFiles.ToList(),
+    Files = source.Files.Select(MapFileInfo).ToList(),
+  };
+
+  private WorkExperienceReference MapWorkExperienceReference(ContractApplications.WorkExperienceReference source) => new(
+    source.LastName!,
+    source.EmailAddress!,
+    source.Hours.GetValueOrDefault())
+  {
+    FirstName = source.FirstName,
+    Id = source.Id,
+    PhoneNumber = source.PhoneNumber,
+    Type = MapWorkExperienceType(source.Type),
+  };
+
+  private CharacterReference MapCharacterReference(ContractApplications.CharacterReference source) => new(
+    source.LastName!,
+    source.PhoneNumber,
+    source.EmailAddress!)
+  {
+    FirstName = source.FirstName,
+    Id = source.Id,
+  };
+
+  private TranscriptStatus MapTranscriptStatus(ContractApplications.Transcript source) => new(
+    source.Id!,
+    MapTranscriptStage(source.Status.GetValueOrDefault()),
+    source.EducationalInstitutionName!,
+    source.ProgramName!)
+  {
+    TranscriptReceivedByRegistry = source.TranscriptReceivedByRegistry,
+    ComprehensiveReportReceivedByRegistry = source.ComprehensiveReportReceivedByRegistry,
+    CourseOutlineReceivedByRegistry = source.CourseOutlineReceivedByRegistry,
+    ProgramConfirmationReceivedByRegistry = source.ProgramConfirmationReceivedByRegistry,
+    CourseOutlineFiles = source.CourseOutlineFiles.Select(MapFileInfo).ToList(),
+    ProgramConfirmationFiles = source.ProgramConfirmationFiles.Select(MapFileInfo).ToList(),
+    ComprehensiveReportOptions = MapComprehensiveReportOptions(source.ComprehensiveReportOptions),
+    CourseOutlineOptions = MapCourseOutlineOptions(source.CourseOutlineOptions),
+    Country = source.Country == null ? null : MapCountry(source.Country),
+    EducationRecognition = MapEducationRecognition(source.EducationRecognition),
+    ProgramConfirmationOptions = MapProgramConfirmationOptions(source.ProgramConfirmationOptions),
+  };
+
+  private WorkExperienceReferenceStatus MapWorkExperienceReferenceStatus(ContractApplications.WorkExperienceReference source) => new(
+    source.Id!,
+    MapWorkExperienceRefStage(source.Status.GetValueOrDefault()),
+    source.FirstName!,
+    source.LastName!,
+    source.EmailAddress!)
+  {
+    PhoneNumber = source.PhoneNumber,
+    TotalNumberofHoursAnticipated = source.Hours,
+    TotalNumberofHoursApproved = source.TotalNumberofHoursApproved,
+    TotalNumberofHoursObserved = source.TotalNumberofHoursObserved,
+    WillProvideReference = source.WillProvideReference,
+    Type = MapWorkExperienceType(source.Type),
+  };
+
+  private CharacterReferenceStatus MapCharacterReferenceStatus(ContractApplications.CharacterReference source) => new(
+    source.Id!,
+    MapCharacterReferenceStage(source.Status.GetValueOrDefault()),
+    source.FirstName!,
+    source.LastName!,
+    source.EmailAddress!)
+  {
+    PhoneNumber = source.PhoneNumber,
+    WillProvideReference = source.WillProvideReference,
+  };
+
+  private ProfessionalDevelopmentStatus MapProfessionalDevelopmentSummary(ContractApplications.ProfessionalDevelopment source) => new(
+    source.Id!,
+    source.CourseName!,
+    source.NumberOfHours.GetValueOrDefault())
+  {
+    Status = MapProfessionalDevelopmentStatus(source.Status),
+  };
+
+  private static FileInfo MapFileInfo(ContractApplications.FileInfo source) => new(source.Id)
+  {
+    Url = source.Url,
+    Extention = source.Extention,
+    Name = source.Name,
+    Size = source.Size,
+  };
+
+  private static ContractApplications.FileInfo MapFileInfo(FileInfo source) => new(source.Id)
+  {
+    Url = source.Url,
+    Extention = source.Extention,
+    Name = source.Name,
+    Size = source.Size,
+  };
+
+  private CertificateInformation? MapCertificateInformation(ContractApplications.CertificateInformation? source)
+  {
+    if (source == null)
+    {
+      return null;
+    }
+
+    return new CertificateInformation
+    {
+      CertificateComparisonId = source.CertificateComparisonId,
+      LabourMobilityProvince = MapNullableProvince(source.LabourMobilityProvince),
+      CurrentCertificationNumber = source.CurrentCertificationNumber,
+      ExistingCertificationType = source.ExistingCertificationType,
+      LegalFirstName = source.LegalFirstName,
+      LegalMiddleName = source.LegalMiddleName,
+      LegalLastName = source.LegalLastName,
+      HasOtherName = source.HasOtherName,
+    };
   }
+
+  private ContractApplications.CertificateInformation? MapCertificateInformation(CertificateInformation? source)
+  {
+    if (source == null)
+    {
+      return null;
+    }
+
+    return new ContractApplications.CertificateInformation
+    {
+      CertificateComparisonId = source.CertificateComparisonId,
+      LabourMobilityProvince = MapNullableProvince(source.LabourMobilityProvince),
+      CurrentCertificationNumber = source.CurrentCertificationNumber,
+      ExistingCertificationType = source.ExistingCertificationType,
+      LegalFirstName = source.LegalFirstName,
+      LegalMiddleName = source.LegalMiddleName,
+      LegalLastName = source.LegalLastName,
+      HasOtherName = source.HasOtherName,
+    };
+  }
+
+  private partial Country MapCountry(ContractMetadatas.Country source);
+
+  private partial ContractMetadatas.Country MapCountry(Country source);
+
+  private partial Province MapProvince(ContractMetadatas.Province source);
+
+  private partial ContractMetadatas.Province MapProvince(Province source);
+
+  private Province? MapNullableProvince(ContractMetadatas.Province? source) => source == null ? null : MapProvince(source);
+
+  private ContractMetadatas.Province? MapNullableProvince(Province? source) => source == null ? null : MapProvince(source);
+
+  private partial PostSecondaryInstitution MapPostSecondaryInstitution(ContractMetadatas.PostSecondaryInstitution source);
+
+  private partial ContractMetadatas.PostSecondaryInstitution MapPostSecondaryInstitution(PostSecondaryInstitution source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CertificationType MapCertificationType(ContractApplications.CertificationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.CertificationType MapCertificationType(CertificationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationStatus MapApplicationStatus(ContractApplications.ApplicationStatus source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationStatusReasonDetail MapApplicationStatusReasonDetail(ContractApplications.ApplicationStatusReasonDetail source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationTypes MapApplicationType(ContractApplications.ApplicationTypes source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.ApplicationTypes MapApplicationType(ApplicationTypes source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial EducationOrigin MapEducationOrigin(ContractApplications.EducationOrigin source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.EducationOrigin MapEducationOrigin(EducationOrigin source);
+
+  private EducationOrigin? MapEducationOrigin(ContractApplications.EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
+
+  private ContractApplications.EducationOrigin? MapEducationOrigin(EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial EducationRecognition MapEducationRecognition(ContractApplications.EducationRecognition source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.EducationRecognition MapEducationRecognition(EducationRecognition source);
+
+  private EducationRecognition? MapEducationRecognition(ContractApplications.EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
+
+  private ContractApplications.EducationRecognition? MapEducationRecognition(EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial OneYearRenewalexplanations MapOneYearRenewalExplanation(ContractApplications.OneYearRenewalexplanations source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.OneYearRenewalexplanations MapOneYearRenewalExplanation(OneYearRenewalexplanations source);
+
+  private OneYearRenewalexplanations? MapOneYearRenewalExplanation(ContractApplications.OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
+
+  private ContractApplications.OneYearRenewalexplanations? MapOneYearRenewalExplanation(OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial FiveYearRenewalExplanations MapFiveYearRenewalExplanation(ContractApplications.FiveYearRenewalExplanations source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.FiveYearRenewalExplanations MapFiveYearRenewalExplanation(FiveYearRenewalExplanations source);
+
+  private FiveYearRenewalExplanations? MapFiveYearRenewalExplanation(ContractApplications.FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
+
+  private ContractApplications.FiveYearRenewalExplanations? MapFiveYearRenewalExplanation(FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationOrigin MapApplicationOrigin(ContractApplications.ApplicationOrigin source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.ApplicationOrigin MapApplicationOrigin(ApplicationOrigin source);
+
+  private ApplicationOrigin? MapApplicationOrigin(ContractApplications.ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
+
+  private ContractApplications.ApplicationOrigin? MapApplicationOrigin(ApplicationOrigin? source) => source.HasValue ? MapApplicationOrigin(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial TranscriptStage MapTranscriptStage(ContractApplications.TranscriptStage source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ProfessionalDevelopmentStatusCode MapProfessionalDevelopmentStatus(ContractApplications.ProfessionalDevelopmentStatusCode source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.ProfessionalDevelopmentStatusCode MapProfessionalDevelopmentStatus(ProfessionalDevelopmentStatusCode source);
+
+  private ProfessionalDevelopmentStatusCode? MapProfessionalDevelopmentStatus(ContractApplications.ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CharacterReferenceStage MapCharacterReferenceStage(ContractApplications.CharacterReferenceStage source);
+
+  private static WorkExperienceRefStage MapWorkExperienceRefStage(ContractApplications.WorkExperienceRefStage source) => source switch
+  {
+    ContractApplications.WorkExperienceRefStage.ApplicationSubmitted => WorkExperienceRefStage.ApplicationSubmitted,
+    ContractApplications.WorkExperienceRefStage.Approved => WorkExperienceRefStage.Approved,
+    ContractApplications.WorkExperienceRefStage.Draft => WorkExperienceRefStage.Draft,
+    ContractApplications.WorkExperienceRefStage.InProgress => WorkExperienceRefStage.InProgress,
+    ContractApplications.WorkExperienceRefStage.Rejected => WorkExperienceRefStage.Rejected,
+    ContractApplications.WorkExperienceRefStage.Submitted => WorkExperienceRefStage.Submitted,
+    ContractApplications.WorkExperienceRefStage.UnderReview => WorkExperienceRefStage.UnderReview,
+    ContractApplications.WorkExperienceRefStage.WaitingforResponse => WorkExperienceRefStage.WaitingforResponse,
+    ContractApplications.WorkExperienceRefStage.ICRAEligibilitySubmitted => WorkExperienceRefStage.ICRAEligibilitySubmitted,
+    _ => throw new ArgumentOutOfRangeException(nameof(source), source, null)
+  };
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial WorkExperienceTypes MapWorkExperienceType(ContractApplications.WorkExperienceTypes source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypes source);
+
+  private WorkExperienceTypes? MapWorkExperienceType(ContractApplications.WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+
+  private ContractApplications.WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CourseOutlineOptions MapCourseOutlineOptions(ContractApplications.CourseOutlineOptions source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.CourseOutlineOptions MapCourseOutlineOptions(CourseOutlineOptions source);
+
+  private CourseOutlineOptions? MapCourseOutlineOptions(ContractApplications.CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
+
+  private ContractApplications.CourseOutlineOptions? MapCourseOutlineOptions(CourseOutlineOptions? source) => source.HasValue ? MapCourseOutlineOptions(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ComprehensiveReportOptions MapComprehensiveReportOptions(ContractApplications.ComprehensiveReportOptions source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.ComprehensiveReportOptions MapComprehensiveReportOptions(ComprehensiveReportOptions source);
+
+  private ComprehensiveReportOptions? MapComprehensiveReportOptions(ContractApplications.ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
+
+  private ContractApplications.ComprehensiveReportOptions? MapComprehensiveReportOptions(ComprehensiveReportOptions? source) => source.HasValue ? MapComprehensiveReportOptions(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ProgramConfirmationOptions MapProgramConfirmationOptions(ContractApplications.ProgramConfirmationOptions source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.ProgramConfirmationOptions MapProgramConfirmationOptions(ProgramConfirmationOptions source);
+
+  private ProgramConfirmationOptions? MapProgramConfirmationOptions(ContractApplications.ProgramConfirmationOptions? source) => source.HasValue ? MapProgramConfirmationOptions(source.Value) : null;
+
+  private ContractApplications.ProgramConfirmationOptions? MapProgramConfirmationOptions(ProgramConfirmationOptions? source) => source.HasValue ? MapProgramConfirmationOptions(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial TranscriptStatusOptions MapTranscriptStatusOption(ContractApplications.TranscriptStatusOptions source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.TranscriptStatusOptions MapTranscriptStatusOption(TranscriptStatusOptions source);
+
+  private TranscriptStatusOptions? MapTranscriptStatusOption(ContractApplications.TranscriptStatusOptions? source) => source.HasValue ? MapTranscriptStatusOption(source.Value) : null;
+
+  private ContractApplications.TranscriptStatusOptions? MapTranscriptStatusOption(TranscriptStatusOptions? source) => source.HasValue ? MapTranscriptStatusOption(source.Value) : null;
 }

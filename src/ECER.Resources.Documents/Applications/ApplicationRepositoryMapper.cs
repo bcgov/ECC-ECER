@@ -1,522 +1,899 @@
-﻿using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.MetadataResources;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Documents.Applications;
 
-internal class ApplicationRepositoryMapper : SecureProfile
+internal interface IApplicationRepositoryMapper
 {
-  public ApplicationRepositoryMapper()
+  List<Application> MapApplications(IEnumerable<ecer_Application> source);
+  List<ecer_Application_StatusCode> MapApplicationStatuses(IEnumerable<ApplicationStatus> source);
+  ecer_Application MapApplication(Application source);
+  ecer_Origin? MapOrigin(ApplicationOrigin? source);
+  List<ecer_Transcript> MapTranscripts(IEnumerable<Transcript> source);
+  ecer_ProfessionalDevelopment MapProfessionalDevelopment(ProfessionalDevelopment source);
+  List<ecer_WorkExperienceRef> MapWorkExperienceReferences(IEnumerable<WorkExperienceReference> source);
+  WorkExperienceReference? MapWorkExperienceReference(ecer_WorkExperienceRef? source);
+  ecer_WorkExperienceRef MapWorkExperienceReference(WorkExperienceReference source);
+  List<ecer_CharacterReference> MapCharacterReferences(IEnumerable<CharacterReference> source);
+  ecer_CharacterReference MapCharacterReference(CharacterReference source);
+  void ApplyCharacterReferenceSubmission(CharacterReferenceSubmissionRequest source, ecer_CharacterReference destination);
+  void ApplyWorkExperienceReferenceSubmission(WorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination);
+  void ApplyIcraWorkExperienceReferenceSubmission(IcraWorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination);
+  void ApplyOptOutReference(OptOutReferenceRequest source, ecer_CharacterReference destination);
+  void ApplyOptOutReference(OptOutReferenceRequest source, ecer_WorkExperienceRef destination);
+  void ApplyResendCharacterReferenceInvite(ResendReferenceInviteRequest source, ecer_CharacterReference destination);
+}
+
+[Mapper]
+internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMapper
+{
+  public List<Application> MapApplications(IEnumerable<ecer_Application> source) => source.Select(MapApplication).ToList();
+
+  public List<ecer_Application_StatusCode> MapApplicationStatuses(IEnumerable<ApplicationStatus> source) => source.Select(MapApplicationStatus).ToList();
+
+  public ecer_Application MapApplication(Application source) => new()
   {
-    CreateMap<Application, ecer_Application>(MemberList.Source)
-       .ForSourceMember(s => s.LabourMobilityCertificateInformation, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.FromCertificate, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.SubmittedOn, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.Transcripts, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.ProfessionalDevelopments, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.WorkExperienceReferences, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.CharacterReferences, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.SubStatus, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.ReadyForAssessmentDate, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.AddMoreCharacterReference, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.AddMoreWorkExperienceReference, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.AddMoreProfessionalDevelopment, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.Origin, opts => opts.DoNotValidate())
-       .ForMember(d => d.ecer_ApplicationId, opts => opts.MapFrom(s => s.Id))
-       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-       .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.EceAssistant)))
-       .ForMember(d => d.ecer_isECE1YR, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.OneYear)))
-       .ForMember(d => d.ecer_isECE5YR, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.FiveYears)))
-       .ForMember(d => d.ecer_isITE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Ite)))
-       .ForMember(d => d.ecer_isSNE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Sne)))
-       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.SignedDate))
-       .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.Stage))
-       .ForMember(d => d.ecer_Type, opts => opts.MapFrom(s => s.ApplicationType))
-       .ForMember(d => d.ecer_EducationOrigin, opts => opts.MapFrom(s => s.EducationOrigin))
-       .ForMember(d => d.ecer_EducationRecognition, opts => opts.MapFrom(s => s.EducationRecognition))
-       .ForMember(d => d.ecer_1YRExplanationChoice, opts => opts.MapFrom(s => s.OneYearRenewalExplanationChoice))
-       .ForMember(d => d.ecer_5YRExplanationChoice, opts => opts.MapFrom(s => s.FiveYearRenewalExplanationChoice))
-       .ForMember(d => d.ecer_RenewalExplanationOther, opts => opts.MapFrom(s => s.RenewalExplanationOther))
-       .ForMember(d => d.ecer_CurrentCertificationNumber, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null) ? s.LabourMobilityCertificateInformation.CurrentCertificationNumber : string.Empty))
-       .ForMember(d => d.ecer_lmcerthasothername, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null && s.LabourMobilityCertificateInformation.HasOtherName == true) ? true : false))
-       .ForMember(d => d.ecer_LegalFirstName, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null) ? s.LabourMobilityCertificateInformation.LegalFirstName : string.Empty))
-       .ForMember(d => d.ecer_LegalMiddleName, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null) ? s.LabourMobilityCertificateInformation.LegalMiddleName : string.Empty))
-       .ForMember(d => d.ecer_LegalLastName, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null) ? s.LabourMobilityCertificateInformation.LegalLastName : string.Empty))
-       .ReverseMap()
-       .ValidateMemberList(MemberList.Destination)
-       .ForCtorParam(nameof(Application.Id), opts => opts.MapFrom(s => s.ecer_ApplicationId!.ToString()))
-       .ForCtorParam(nameof(Application.ApplicantId), opts => opts.MapFrom(s => s.ecer_Applicantid.Id.ToString()))
-       .ForCtorParam(nameof(Application.CertificationTypes), opts => opts.MapFrom(s => s))
-       .ForMember(d => d.FromCertificate, opts => opts.MapFrom(s => IdOrEmpty(s.ecer_FromCertificateId)))
-       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-       .ForMember(d => d.SubStatus, opts => opts.MapFrom(s => s.ecer_StatusReasonDetail))
-       .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
-       .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
-       .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.ecer_transcript_Applicationid))
-       .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ecer_ecer_professionaldevelopment_Applicationi))
-       .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.ecer_workexperienceref_Applicationid_ecer))
-       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.ecer_characterreference_Applicationid))
-       .ForMember(d => d.ReadyForAssessmentDate, opts => opts.MapFrom(s => s.ecer_ReadyforAssessmentDate))
-       .ForMember(d => d.AddMoreCharacterReference, opts => opts.MapFrom(s => s.ecer_AddMoreCharacterReference))
-       .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.ecer_AddMoreWorkExperienceReference))
-       .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.ecer_AddMoreProfessionalDevelopment))
-       .ForMember(d => d.Origin, opts => opts.MapFrom(s => s.ecer_Origin))
-       .ForMember(d => d.LabourMobilityCertificateInformation, o => o.MapFrom(s => s))
-       .ForMember(d => d.Stage, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.ecer_PortalStage) ? "ContactInformation" : s.ecer_PortalStage));
+    ecer_ApplicationId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    StatusCode = MapApplicationStatus(source.Status),
+    ecer_IsECEAssistant = source.CertificationTypes.Contains(CertificationType.EceAssistant),
+    ecer_isECE1YR = source.CertificationTypes.Contains(CertificationType.OneYear),
+    ecer_isECE5YR = source.CertificationTypes.Contains(CertificationType.FiveYears),
+    ecer_isITE = source.CertificationTypes.Contains(CertificationType.Ite),
+    ecer_isSNE = source.CertificationTypes.Contains(CertificationType.Sne),
+    ecer_DateSigned = source.SignedDate,
+    ecer_PortalStage = source.Stage,
+    ecer_Type = MapApplicationType(source.ApplicationType),
+    ecer_EducationOrigin = MapEducationOrigin(source.EducationOrigin),
+    ecer_EducationRecognition = MapEducationRecognition(source.EducationRecognition),
+    ecer_1YRExplanationChoice = MapOneYearRenewalExplanation(source.OneYearRenewalExplanationChoice),
+    ecer_5YRExplanationChoice = MapFiveYearRenewalExplanation(source.FiveYearRenewalExplanationChoice),
+    ecer_RenewalExplanationOther = source.RenewalExplanationOther,
+    ecer_CurrentCertificationNumber = source.LabourMobilityCertificateInformation?.CurrentCertificationNumber ?? string.Empty,
+    ecer_lmcerthasothername = source.LabourMobilityCertificateInformation?.HasOtherName == true,
+    ecer_LegalFirstName = source.LabourMobilityCertificateInformation?.LegalFirstName ?? string.Empty,
+    ecer_LegalMiddleName = source.LabourMobilityCertificateInformation?.LegalMiddleName ?? string.Empty,
+    ecer_LegalLastName = source.LabourMobilityCertificateInformation?.LegalLastName ?? string.Empty,
+  };
 
-    CreateMap<ecer_Application, CertificateInformation>()
-    .ForMember(d => d.CertificateComparisonId,
-        o => o.MapFrom(s =>
-            s.ecer_application_certificationcomparisonid.ecer_certificationcomparisonId.ToString()
-            ?? string.Empty))
-    .ForMember(d => d.ExistingCertificationType,
-        o => o.MapFrom(s =>
-            s.ecer_application_certificationcomparisonid.ecer_transferringcertificateName
-            ?? string.Empty))
-    .ForMember(d => d.CurrentCertificationNumber, o => o.MapFrom(s => s.ecer_CurrentCertificationNumber))
-    .ForMember(d => d.HasOtherName, o => o.MapFrom(s => s.ecer_lmcerthasothername))
-    .ForMember(d => d.LegalFirstName, o => o.MapFrom(s => s.ecer_LegalFirstName))
-    .ForMember(d => d.LegalMiddleName, o => o.MapFrom(s => s.ecer_LegalMiddleName))
-    .ForMember(d => d.LegalLastName, o => o.MapFrom(s => s.ecer_LegalLastName))
-    .ForMember(d => d.LabourMobilityProvince, o => o.MapFrom(s => s.ecer_application_lmprovinceid));
+  public ecer_Origin? MapOrigin(ApplicationOrigin? source) => source.HasValue ? MapOrigin(source.Value) : null;
 
-    CreateMap<ecer_Application, IEnumerable<CertificationType>>()
-        .ConstructUsing((s, _) =>
-        {
-          var types = new List<CertificationType>();
-          if (s.ecer_IsECEAssistant.GetValueOrDefault()) types.Add(CertificationType.EceAssistant);
-          if (s.ecer_isECE1YR.GetValueOrDefault()) types.Add(CertificationType.OneYear);
-          if (s.ecer_isECE5YR.GetValueOrDefault()) types.Add(CertificationType.FiveYears);
-          if (s.ecer_isITE.GetValueOrDefault()) types.Add(CertificationType.Ite);
-          if (s.ecer_isSNE.GetValueOrDefault()) types.Add(CertificationType.Sne);
-          return types;
-        });
+  public List<ecer_Transcript> MapTranscripts(IEnumerable<Transcript> source) => source.Select(MapTranscript).ToList();
 
-    CreateMap<ApplicationOrigin, ecer_Origin>()
-        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-        .ReverseMap();
+  public ecer_ProfessionalDevelopment MapProfessionalDevelopment(ProfessionalDevelopment source) => new()
+  {
+    ecer_ProfessionalDevelopmentId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    ecer_StartDate = source.StartDate,
+    ecer_EndDate = source.EndDate,
+    ecer_CourseName = source.CourseName,
+    ecer_CourseorWorkshopLink = source.CourseorWorkshopLink,
+    ecer_OrganizationName = source.OrganizationName,
+    ecer_HostOrganizationContactInformation = source.OrganizationContactInformation,
+    ecer_OrganizationEmailAddress = source.OrganizationEmailAddress,
+    ecer_InstructorName = source.InstructorName,
+    ecer_TotalAnticipatedHours = MapDecimal(source.NumberOfHours),
+    StatusCode = MapProfessionalDevelopmentStatus(source.Status),
+  };
 
-    CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
-        .ConvertUsing(status =>
-            status == ApplicationStatus.Draft ? ecer_Application_StatusCode.Draft :
-            status == ApplicationStatus.Submitted ? ecer_Application_StatusCode.Submitted :
-            status == ApplicationStatus.Complete ? ecer_Application_StatusCode.Complete :
-            status == ApplicationStatus.Closed ? ecer_Application_StatusCode.Closed :
-            status == ApplicationStatus.Reconsideration ? ecer_Application_StatusCode.Reconsideration :
-            status == ApplicationStatus.Escalated ? ecer_Application_StatusCode.Escalated :
-            status == ApplicationStatus.Decision ? ecer_Application_StatusCode.Decision :
-            status == ApplicationStatus.Cancelled ? ecer_Application_StatusCode.Withdrawn :
-            status == ApplicationStatus.Pending ? ecer_Application_StatusCode.Pending :
-            status == ApplicationStatus.Ready ? ecer_Application_StatusCode.Ready :
-            status == ApplicationStatus.InProgress ? ecer_Application_StatusCode.InProgress :
-            status == ApplicationStatus.PendingQueue ? ecer_Application_StatusCode.PendingQueue :
-            status == ApplicationStatus.PendingPSPConsultationNeeded ? ecer_Application_StatusCode.PendingPSPConsultationNeeded :
-            status == ApplicationStatus.ReconsiderationDecision ? ecer_Application_StatusCode.ReconsiderationDecision :
-            status == ApplicationStatus.AppealDecision ? ecer_Application_StatusCode.AppealDecision :
-            status == ApplicationStatus.NotSubmitted ? ecer_Application_StatusCode.NotSubmitted :
-            ecer_Application_StatusCode.Draft);
+  public List<ecer_WorkExperienceRef> MapWorkExperienceReferences(IEnumerable<WorkExperienceReference> source) => source.Select(MapWorkExperienceReference).ToList();
 
+  public WorkExperienceReference? MapWorkExperienceReference(ecer_WorkExperienceRef? source) => source == null ? null : MapWorkExperienceReferenceCore(source);
 
-    CreateMap<ecer_Application_StatusCode, ApplicationStatus>()
-        .ConvertUsing(status =>
-            status == ecer_Application_StatusCode.Draft ? ApplicationStatus.Draft :
-            status == ecer_Application_StatusCode.Submitted ? ApplicationStatus.Submitted :
-            status == ecer_Application_StatusCode.Complete ? ApplicationStatus.Complete :
-            status == ecer_Application_StatusCode.Closed ? ApplicationStatus.Closed :
-            status == ecer_Application_StatusCode.Reconsideration ? ApplicationStatus.Reconsideration :
-            status == ecer_Application_StatusCode.Escalated ? ApplicationStatus.Escalated :
-            status == ecer_Application_StatusCode.Decision ? ApplicationStatus.Decision :
-            status == ecer_Application_StatusCode.Withdrawn ? ApplicationStatus.Cancelled :
-            status == ecer_Application_StatusCode.Pending ? ApplicationStatus.Pending :
-            status == ecer_Application_StatusCode.Ready ? ApplicationStatus.Ready :
-            status == ecer_Application_StatusCode.InProgress ? ApplicationStatus.InProgress :
-            status == ecer_Application_StatusCode.PendingQueue ? ApplicationStatus.PendingQueue :
-            status == ecer_Application_StatusCode.PendingPSPConsultationNeeded ? ApplicationStatus.PendingPSPConsultationNeeded :
-            status == ecer_Application_StatusCode.ReconsiderationDecision ? ApplicationStatus.ReconsiderationDecision :
-            status == ecer_Application_StatusCode.AppealDecision ? ApplicationStatus.AppealDecision :
-            status == ecer_Application_StatusCode.NotSubmitted ? ApplicationStatus.NotSubmitted :
-            ApplicationStatus.Draft);
+  public ecer_WorkExperienceRef MapWorkExperienceReference(WorkExperienceReference source) => new()
+  {
+    ecer_WorkExperienceRefId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    ecer_FirstName = source.FirstName,
+    ecer_LastName = source.LastName,
+    ecer_EmailAddress = source.EmailAddress,
+    ecer_PhoneNumber = source.PhoneNumber,
+    ecer_TotalNumberofHoursAnticipated = MapDecimal(source.Hours),
+    StatusCode = MapWorkExperienceReferenceStage(source.Status),
+    ecer_Type = MapWorkExperienceType(source.Type),
+  };
 
+  public List<ecer_CharacterReference> MapCharacterReferences(IEnumerable<CharacterReference> source) => source.Select(MapCharacterReference).ToList();
 
-    CreateMap<ApplicationStatusReasonDetail, ecer_ApplicationStatusReasonDetail>()
-        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-        .ReverseMap();
+  public ecer_CharacterReference MapCharacterReference(CharacterReference source) => new()
+  {
+    ecer_CharacterReferenceId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    ecer_FirstName = source.FirstName,
+    ecer_LastName = source.LastName,
+    ecer_EmailAddress = source.EmailAddress,
+    ecer_PhoneNumber = source.PhoneNumber,
+    StatusCode = MapCharacterReferenceStage(source.Status),
+  };
 
-    CreateMap<OneYearRenewalexplanations, ecer_yrrenewalexplanations>()
-        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-        .ReverseMap();
-
-    CreateMap<ApplicationTypes, ecer_ApplicationTypes>()
-        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-        .ReverseMap();
-
-    CreateMap<EducationOrigin, ecer_EducationOrigin>()
-         .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-         .ReverseMap();
-
-    CreateMap<EducationRecognition, ecer_EducationRecognition>()
-        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-        .ReverseMap();
-
-    CreateMap<Transcript, ecer_Transcript>(MemberList.Source)
-           .ForSourceMember(s => s.StartDate, opts => opts.DoNotValidate())
-           .ForSourceMember(s => s.EndDate, opts => opts.DoNotValidate())
-           .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
-           .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
-           .ForMember(d => d.ecer_ProgramCourseName, opts => opts.MapFrom(s => s.ProgramName))
-           .ForMember(d => d.ecer_CampusLocation, opts => opts.MapFrom(s => s.CampusLocation))
-           .ForMember(d => d.ecer_StudentFirstName, opts => opts.MapFrom(s => s.StudentFirstName))
-           .ForMember(d => d.ecer_StudentMiddleName, opts => opts.MapFrom(s => s.StudentMiddleName))
-           .ForMember(d => d.ecer_StudentLastName, opts => opts.MapFrom(s => s.StudentLastName))
-           .ForMember(d => d.ecer_StudentNumber, opts => opts.MapFrom(s => s.StudentNumber))
-           .ForMember(d => d.ecer_EducationInstitutionFullName, opts => opts.MapFrom(s => s.EducationalInstitutionName))
-           .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id))
-           .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.IsECEAssistant))
-           //next 3 lines converts enum TranscriptStatusOption to the 3 boolean fields within dynamics
-           .ForMember(d => d.ecer_DoesECERegistryHaveTranscript, opts => opts.MapFrom(s => s.TranscriptStatusOption == TranscriptStatusOptions.RegistryHasTranscript))
-           .ForMember(d => d.ecer_IsOfficialTranscriptRequested, opts => opts.MapFrom(s => s.TranscriptStatusOption == TranscriptStatusOptions.OfficialTranscriptRequested))
-           .ForMember(d => d.ecer_mytranscriptwillrequireenglishtranslation, opts => opts.MapFrom(s => s.TranscriptStatusOption == TranscriptStatusOptions.TranscriptWillRequireEnglishTranslation))
-           .ForMember(d => d.ecer_IsNameUnverified, opts => opts.MapFrom(s => s.IsNameUnverified))
-           .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-           .ForMember(d => d.ecer_EducationRecognition, opts => opts.MapFrom(s => s.EducationRecognition))
-           .ForMember(d => d.ecer_EducationOrigin, opts => opts.MapFrom(s => s.EducationOrigin))
-           .ForMember(d => d.ecer_transcript_InstituteCountryId, opts => opts.MapFrom(s => s.Country))
-           .ForMember(d => d.ecer_transcript_ProvinceId, opts => opts.MapFrom(s => s.Province))
-           .ForMember(d => d.ecer_transcript_postsecondaryinstitutionid, opts => opts.MapFrom(s => s.PostSecondaryInstitution))
-           .ForSourceMember(d => d.TranscriptStatusOption, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.ProgramConfirmationReceivedByRegistry, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.TranscriptReceivedByRegistry, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.ComprehensiveReportReceivedByRegistry, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.CourseOutlineFiles, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.ProgramConfirmationFiles, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.CourseOutlineOptions, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.ComprehensiveReportOptions, opts => opts.DoNotValidate())
-           .ForSourceMember(d => d.ProgramConfirmationOptions, opts => opts.DoNotValidate());
-
-    CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
-      .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
-      .ForCtorParam(nameof(Transcript.EducationalInstitutionName), opt => opt.MapFrom(src => src.ecer_EducationInstitutionFullName))
-      .ForCtorParam(nameof(Transcript.ProgramName), opt => opt.MapFrom(src => src.ecer_ProgramCourseName))
-      .ForCtorParam(nameof(Transcript.StudentNumber), opt => opt.MapFrom(src => src.ecer_StudentNumber))
-      .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
-      .ForCtorParam(nameof(Transcript.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
-      .ForCtorParam(nameof(Transcript.IsECEAssistant), opt => opt.MapFrom(src => src.ecer_IsECEAssistant))
-      .ForCtorParam(nameof(Transcript.StudentFirstName), opt => opt.MapFrom(src => src.ecer_StudentFirstName))
-      .ForCtorParam(nameof(Transcript.StudentLastName), opt => opt.MapFrom(src => src.ecer_StudentLastName))
-      .ForCtorParam(nameof(Transcript.IsNameUnverified), opt => opt.MapFrom(src => src.ecer_IsNameUnverified))
-      .ForCtorParam(nameof(Transcript.EducationRecognition), opt => opt.MapFrom(src => src.ecer_EducationRecognition))
-      .ForCtorParam(nameof(Transcript.EducationOrigin), opt => opt.MapFrom(src => src.ecer_EducationOrigin))
-      .ForMember(d => d.TranscriptStatusOption, opt => opt.MapFrom(src => GetTranscriptStatusOption(src)))
-      .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
-      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-      .ForMember(d => d.StudentMiddleName, opts => opts.MapFrom(s => s.ecer_StudentMiddleName))
-      .ForMember(d => d.Country, opts => opts.MapFrom(src =>
-        src.ecer_InstituteCountryId != null
-        ? new Country(src.ecer_InstituteCountryId.Id.ToString(), src.ecer_InstituteCountryIdName, string.Empty, false)
-        : null))
-      .ForMember(d => d.Province, opts => opts.MapFrom(src =>
-        src.ecer_ProvinceId != null
-        ? new Province(src.ecer_ProvinceId.Id.ToString(), src.ecer_ProvinceIdName, string.Empty)
-        : null))
-      .ForMember(d => d.PostSecondaryInstitution, opts => opts.MapFrom(src =>
-        src.ecer_postsecondaryinstitutionid != null
-        ? new PostSecondaryInstitution(src.ecer_postsecondaryinstitutionid.Id.ToString(), src.ecer_postsecondaryinstitutionidName, string.Empty)
-        : null))
-      .ForMember(d => d.TranscriptReceivedByRegistry, opts => opts.MapFrom(s => s.ecer_TranscriptReceived))
-      .ForMember(d => d.ComprehensiveReportReceivedByRegistry, opts => opts.MapFrom(s => s.ecer_ComprehensiveEvaluationReportReceived))
-      .ForMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.MapFrom(s => s.ecer_CourseOutlineReceived))
-      .ForMember(d => d.ProgramConfirmationReceivedByRegistry, opts => opts.MapFrom(s => s.ecer_ProgramConfirmationFormReceived))
-      .ForMember(d => d.ProgramConfirmationFiles, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_TranscriptId.Where(i => i.ecer_Tag1 == "Program Confirmation Form").ToList()))
-      .ForMember(d => d.CourseOutlineFiles, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_TranscriptId.Where(i => i.ecer_Tag1 == "Course Outline").ToList()))
-      .ForMember(d => d.CourseOutlineOptions, opts => opts.MapFrom(src =>
-        src.ecer_Ihavemycourseoutlinessyllabiandwillupload == true ? CourseOutlineOptions.UploadNow :
-        src.ecer_isECEregistryalreadyhasmycourseoutline == true ? CourseOutlineOptions.RegistryAlreadyHas : (CourseOutlineOptions?)null))
-      .ForMember(d => d.ProgramConfirmationOptions, opts => opts.MapFrom(src =>
-        src.ecer_IhavemyProgramConfirmationandwillupload == true ? ProgramConfirmationOptions.UploadNow :
-        src.ecer_isECEregistryhasprogramconfirmation == true ? ProgramConfirmationOptions.RegistryAlreadyHas : (ProgramConfirmationOptions?)null))
-      .ForMember(d => d.ComprehensiveReportOptions, opts => opts.MapFrom(src =>
-        src.ecer_ECERegistryalreadyhasmyComprehensiveReport == true ? ComprehensiveReportOptions.RegistryAlreadyHas :
-        src.ecer_iwishtoapplyforafeewaiver == true ? ComprehensiveReportOptions.FeeWaiver :
-        src.ecer_ihavesubmittedanapplicationtobcits == true ? ComprehensiveReportOptions.InternationalCredentialEvaluationService : (ComprehensiveReportOptions?)null))
-      .ValidateMemberList(MemberList.Destination);
-
-    CreateMap<ProfessionalDevelopment, ecer_ProfessionalDevelopment>(MemberList.Source)
-       .ForSourceMember(s => s.StartDate, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.EndDate, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
-       .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
-       .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
-       .ForMember(d => d.ecer_CourseName, opts => opts.MapFrom(s => s.CourseName))
-       .ForMember(d => d.ecer_CourseorWorkshopLink, opts => opts.MapFrom(s => s.CourseorWorkshopLink))
-       .ForMember(d => d.ecer_OrganizationName, opts => opts.MapFrom(s => s.OrganizationName))
-       .ForMember(d => d.ecer_HostOrganizationContactInformation, opts => opts.MapFrom(s => s.OrganizationContactInformation))
-       .ForMember(d => d.ecer_OrganizationEmailAddress, opts => opts.MapFrom(s => s.OrganizationEmailAddress))
-       .ForMember(d => d.ecer_InstructorName, opts => opts.MapFrom(s => s.InstructorName))
-       .ForMember(d => d.ecer_TotalAnticipatedHours, opts => opts.MapFrom(s => s.NumberOfHours))
-       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
-
-    CreateMap<ecer_ProfessionalDevelopment, ProfessionalDevelopment>(MemberList.Source)
-       .ForCtorParam(nameof(ProfessionalDevelopment.Id), opt => opt.MapFrom(src => src.ecer_ProfessionalDevelopmentId))
-       .ForCtorParam(nameof(ProfessionalDevelopment.CourseName), opt => opt.MapFrom(src => src.ecer_CourseName))
-       .ForCtorParam(nameof(ProfessionalDevelopment.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
-       .ForCtorParam(nameof(ProfessionalDevelopment.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
-       .ForCtorParam(nameof(ProfessionalDevelopment.OrganizationName), opt => opt.MapFrom(src => src.ecer_OrganizationName))
-       .ForMember(d => d.OrganizationContactInformation, opts => opts.MapFrom(s => s.ecer_HostOrganizationContactInformation))
-       .ForMember(d => d.OrganizationEmailAddress, opts => opts.MapFrom(s => s.ecer_OrganizationEmailAddress))
-       .ForMember(d => d.InstructorName, opts => opts.MapFrom(s => s.ecer_InstructorName))
-       .ForMember(d => d.NumberOfHours, opts => opts.MapFrom(s => s.ecer_TotalAnticipatedHours))
-       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-       .ForMember(d => d.CourseorWorkshopLink, opts => opts.MapFrom(s => s.ecer_CourseorWorkshopLink))
-       .ForMember(d => d.NewFiles, opts => opts.Ignore())
-       .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
-       .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.ToList()))
-       .ValidateMemberList(MemberList.Destination);
-
-    CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
-       .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.TotalNumberofHoursApproved, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.TotalNumberofHoursObserved, opts => opts.DoNotValidate())
-       .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => s.Id))
-       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
-       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
-       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
-       .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-       .ForMember(d => d.ecer_TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours))
-       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-       .ForMember(d => d.ecer_Type, opts => opts.MapFrom(s => s.Type));
-
-    CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
-       .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
-       .ForCtorParam(nameof(WorkExperienceReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
-       .ForCtorParam(nameof(WorkExperienceReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
-       .ForCtorParam(nameof(WorkExperienceReference.Hours), opt => opt.MapFrom(src => src.ecer_TotalNumberofHoursAnticipated))
-       .ForMember(d => d.TotalNumberofHoursApproved, opts => opts.MapFrom(s => s.ecer_TotalNumberofHoursApproved))
-       .ForMember(d => d.TotalNumberofHoursObserved, opts => opts.MapFrom(s => s.ecer_TotalNumberofHoursObserved))
-       .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.ecer_WillProvideReference.HasValue ? s.ecer_WillProvideReference.Equals(ecer_YesNoNull.Yes) : default(bool?)))
-       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
-       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
-       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-       .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_Type))
-       .ValidateMemberList(MemberList.Destination);
-
-    CreateMap<WorkExperienceTypes, ecer_WorkExperienceTypes>()
-        .ConvertUsing(src =>
-            src == WorkExperienceTypes.Is500Hours ? ecer_WorkExperienceTypes._500Hours :
-            src == WorkExperienceTypes.ICRA ? ecer_WorkExperienceTypes.ICRA :
-            ecer_WorkExperienceTypes._400Hours
-        );
-
-    CreateMap<ecer_WorkExperienceTypes, WorkExperienceTypes>()
-        .ConvertUsing(src =>
-            src == ecer_WorkExperienceTypes._500Hours ? WorkExperienceTypes.Is500Hours :
-            src == ecer_WorkExperienceTypes.ICRA ? WorkExperienceTypes.ICRA :
-            WorkExperienceTypes.Is400Hours
-        );
-
-    CreateMap<bcgov_DocumentUrl, FileInfo>(MemberList.Destination)
-          .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
-          .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
-          .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
-          .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
-          .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension));
-
-    CreateMap<CharacterReference, ecer_CharacterReference>(MemberList.Source)
-          .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
-          .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
-          .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
-          .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
-          .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-          .ForMember(d => d.ecer_CharacterReferenceId, opts => opts.MapFrom(s => s.Id))
-          .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
-
-    CreateMap<ecer_CharacterReference, CharacterReference>(MemberList.Source)
-          .ForCtorParam(nameof(CharacterReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
-          .ForCtorParam(nameof(CharacterReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
-          .ForCtorParam(nameof(CharacterReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
-          .ForCtorParam(nameof(CharacterReference.PhoneNumber), opt => opt.MapFrom(src => src.ecer_PhoneNumber))
-          .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.ecer_WillProvideReference.HasValue ? s.ecer_WillProvideReference.Equals(ecer_YesNoNull.Yes) : default(bool?)))
-          .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
-          .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-          .ValidateMemberList(MemberList.Destination);
-
-    CreateMap<CharacterReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
-      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ReferenceContactInformation, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ReferenceEvaluation, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ConfirmProvidedInformationIsRight, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_referencefirstname, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
-      .ForMember(d => d.ecer_referencelastname, opts => opts.MapFrom(s => s.ReferenceContactInformation.LastName))
-      .ForMember(d => d.ecer_referencephonenumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.PhoneNumber))
-      .ForMember(d => d.ecer_referenceemailaddress, opts => opts.MapFrom(s => s.ReferenceContactInformation.Email))
-      .ForMember(d => d.ecer_ReferenceCertifiedProvince, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateProvinceOther))
-      .ForMember(d => d.ecer_ReferenceCertificationNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateNumber))
-      .ForMember(d => d.ecer_HaveObservedApplicantwithChildren, opts => opts.MapFrom(s => s.ReferenceEvaluation.WorkedWithChildren ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-      .ForMember(d => d.ecer_KnownApplicantTimeChoice, opts => opts.MapFrom(s => s.ReferenceEvaluation.LengthOfAcquaintance))
-      .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.ReferenceEvaluation.ReferenceRelationship))
-      .ForMember(d => d.ecer_RelationshipwithApplicantOther, opts => opts.MapFrom(s => s.ReferenceEvaluation.ReferenceRelationshipOther))
-      .ForMember(d => d.ecer_ApplicantSituationDescription, opts => opts.MapFrom(s => s.ReferenceEvaluation.ChildInteractionObservations))
-      .ForMember(d => d.ecer_ApplicantSuitableReason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantTemperamentAssessment))
-      .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-      .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
-
-    CreateMap<WorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
-      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ReferenceContactInformation, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.WorkExperienceReferenceDetails, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.WorkExperienceReferenceCompetenciesAssessment, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ConfirmProvidedInformationIsRight, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_referencefirstname, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
-      .ForMember(d => d.ecer_referencelastname, opts => opts.MapFrom(s => s.ReferenceContactInformation.LastName))
-      .ForMember(d => d.ecer_ReferencePhoneNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.PhoneNumber))
-      .ForMember(d => d.ecer_referenceemailaddress, opts => opts.MapFrom(s => s.ReferenceContactInformation.Email))
-      .ForMember(d => d.ecer_ReferenceECECertifiedProvince, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateProvinceOther))
-      .ForMember(d => d.ecer_ReferenceECECertificationNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateNumber))
-      .ForMember(d => d.ecer_ReferenceBirthDate, opts => opts.MapFrom(s => s.ReferenceContactInformation.DateOfBirth))
-      .ForMember(d => d.ecer_TotalNumberofHoursObserved, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.Hours))
-      .ForMember(d => d.ecer_WorkHoursType, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.WorkHoursType))
-      .ForMember(d => d.ecer_ChildCareProgramName, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramName))
-      .ForMember(d => d.ecer_TypeofChildrenProgram, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramType))
-      .ForMember(d => d.ecer_OtherChildProgramType, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramTypeOther))
-      .ForMember(d => d.ecer_Role, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.Role))
-      .ForMember(d => d.ecer_AgeofChildrenCaredFor, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.AgeofChildrenCaredFor))
-      .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.StartDate))
-      .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.EndDate))
-      .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ReferenceRelationship))
-      .ForMember(d => d.ecer_RelationshiptoApplicantOther, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ReferenceRelationshipOther))
-      .ForMember(d => d.ecer_AdditionalComments, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.AdditionalComments))
-      .ForMember(d => d.ecer_CompetenceChildDevelopment, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopment))
-      .ForMember(d => d.ecer_CompetenceChildDevelopmentReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopmentReason))
-      .ForMember(d => d.ecer_CompetenceChildGuidance, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildGuidance))
-      .ForMember(d => d.ecer_CompetenceChildGuidanceReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildGuidanceReason))
-      .ForMember(d => d.ecer_CompetenceHealthSafetyandNutrition, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutrition))
-      .ForMember(d => d.ecer_CompetenceHealthSafetyandNutritionReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutritionReason))
-      .ForMember(d => d.ecer_CompetenceDevelopanECECurriculum, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculum))
-      .ForMember(d => d.ecer_CompetenceDevelopanECECurriculumReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculumReason))
-      .ForMember(d => d.ecer_CompetenceImplementanECECurriculum, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculum))
-      .ForMember(d => d.ecer_CompetenceImplementECECurriculumReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculumReason))
-      .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationChild, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChild))
-      .ForMember(d => d.ecer_CompetenceFosteringRelationChildReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChildReason))
-      .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationFamily, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamily))
-      .ForMember(d => d.ecer_CompetenceFosteringRelationFamilyReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamilyReason))
-      .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationCoworker, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker))
-      .ForMember(d => d.ecer_CompetenceFosteringRelationCoworkerReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason))
-      .ForMember(d => d.ecer_ChildcareAgeRangeNew, opts => { opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildcareAgeRanges); opts.Condition((src, dest, srcMember) => srcMember != null && srcMember.Any()); })
-      .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-      .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned))
-      .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember, ctx) => srcMember != null));
-
-    CreateMap<IcraWorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
-   .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
-   .ForSourceMember(s => s.ReferenceContactInformation, opts => opts.DoNotValidate())
-   .ForSourceMember(s => s.WorkExperienceReferenceCompetenciesAssessment, opts => opts.DoNotValidate())
-   .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
-   .ForSourceMember(s => s.ConfirmProvidedInformationIsRight, opts => opts.DoNotValidate())
-   .ForMember(d => d.ecer_referencefirstname, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
-   .ForMember(d => d.ecer_referencelastname, opts => opts.MapFrom(s => s.ReferenceContactInformation.LastName))
-   .ForMember(d => d.ecer_ReferencePhoneNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.PhoneNumber))
-   .ForMember(d => d.ecer_referenceemailaddress, opts => opts.MapFrom(s => s.ReferenceContactInformation.Email))
-   .ForMember(d => d.ecer_CompetenceChildDevelopment, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopment))
-   .ForMember(d => d.ecer_CompetenceChildDevelopmentReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopmentReason))
-   .ForMember(d => d.ecer_CompetenceChildGuidance, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildGuidance))
-   .ForMember(d => d.ecer_CompetenceChildGuidanceReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildGuidanceReason))
-   .ForMember(d => d.ecer_CompetenceHealthSafetyandNutrition, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutrition))
-   .ForMember(d => d.ecer_CompetenceHealthSafetyandNutritionReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutritionReason))
-   .ForMember(d => d.ecer_CompetenceDevelopanECECurriculum, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculum))
-   .ForMember(d => d.ecer_CompetenceDevelopanECECurriculumReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculumReason))
-   .ForMember(d => d.ecer_CompetenceImplementanECECurriculum, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculum))
-   .ForMember(d => d.ecer_CompetenceImplementECECurriculumReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculumReason))
-   .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationChild, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChild))
-   .ForMember(d => d.ecer_CompetenceFosteringRelationChildReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChildReason))
-   .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationFamily, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamily))
-   .ForMember(d => d.ecer_CompetenceFosteringRelationFamilyReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamilyReason))
-   .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationCoworker, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker))
-   .ForMember(d => d.ecer_CompetenceFosteringRelationCoworkerReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason))
-   .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-   .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
-
-    CreateMap<ecer_Transcript_StatusCode, TranscriptStage>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<ecer_ProfessionalDevelopment_StatusCode, ProfessionalDevelopmentStatusCode>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<ecer_CharacterReference_StatusCode, CharacterReferenceStage>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<ecer_WorkExperienceRef_StatusCode, WorkExperienceRefStage>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<UnabletoProvideReferenceReasons, ecer_UnabletoProvideReferenceReasons>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<LikertScale, ecer_likertscales>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<ReferenceRelationship, ecer_ReferenceRelationships>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<ChildrenProgramType, ecer_ChildrenProgramTypes>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<WorkHoursType, ecer_WorkHoursType>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<ChildcareAgeRanges, ecer_ChildcareAgeRange>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<ReferenceKnownTime, ecer_ReferenceKnownTime>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-
-    CreateMap<OptOutReferenceRequest, ecer_CharacterReference>(MemberList.Source)
-      .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));
-
-    CreateMap<OptOutReferenceRequest, ecer_WorkExperienceRef>(MemberList.Source)
-      .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));
+  public void ApplyCharacterReferenceSubmission(CharacterReferenceSubmissionRequest source, ecer_CharacterReference destination)
+  {
+    destination.ecer_referencefirstname = source.ReferenceContactInformation.FirstName;
+    destination.ecer_referencelastname = source.ReferenceContactInformation.LastName;
+    destination.ecer_referencephonenumber = source.ReferenceContactInformation.PhoneNumber;
+    destination.ecer_referenceemailaddress = source.ReferenceContactInformation.Email;
+    destination.ecer_ReferenceCertifiedProvince = source.ReferenceContactInformation.CertificateProvinceOther;
+    destination.ecer_ReferenceCertificationNumber = source.ReferenceContactInformation.CertificateNumber;
+    destination.ecer_HaveObservedApplicantwithChildren = source.ReferenceEvaluation.WorkedWithChildren ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+    destination.ecer_KnownApplicantTimeChoice = MapReferenceKnownTime(source.ReferenceEvaluation.LengthOfAcquaintance);
+    destination.ecer_RelationshiptoApplicant = MapReferenceRelationship(source.ReferenceEvaluation.ReferenceRelationship);
+    destination.ecer_RelationshipwithApplicantOther = source.ReferenceEvaluation.ReferenceRelationshipOther;
+    destination.ecer_ApplicantSituationDescription = source.ReferenceEvaluation.ChildInteractionObservations;
+    destination.ecer_ApplicantSuitableReason = source.ReferenceEvaluation.ApplicantTemperamentAssessment;
+    destination.ecer_WillProvideReference = source.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+    destination.ecer_DateSigned = source.DateSigned;
   }
 
-  private static TranscriptStatusOptions? GetTranscriptStatusOption(ecer_Transcript src)
+  public void ApplyWorkExperienceReferenceSubmission(WorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination)
   {
-    if (src.ecer_DoesECERegistryHaveTranscript == true)
+    ApplyReferenceContactInformation(source.ReferenceContactInformation, destination);
+    ApplyWorkExperienceReferenceDetails(source.WorkExperienceReferenceDetails, destination);
+    ApplyWorkExperienceCompetenciesAssessment(source.WorkExperienceReferenceCompetenciesAssessment, destination);
+
+    if (source.WorkExperienceReferenceDetails.ChildcareAgeRanges != null && source.WorkExperienceReferenceDetails.ChildcareAgeRanges.Any())
+    {
+      destination.ecer_ChildcareAgeRangeNew = source.WorkExperienceReferenceDetails.ChildcareAgeRanges.Select(MapChildcareAgeRange).ToList();
+    }
+
+    destination.ecer_WillProvideReference = source.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+    destination.ecer_DateSigned = source.DateSigned;
+  }
+
+  private static void ApplyReferenceContactInformation(ReferenceContactInformation source, ecer_WorkExperienceRef destination)
+  {
+    destination.ecer_referencefirstname = source.FirstName;
+    destination.ecer_referencelastname = source.LastName;
+    destination.ecer_ReferencePhoneNumber = source.PhoneNumber;
+    destination.ecer_referenceemailaddress = source.Email;
+    destination.ecer_ReferenceECECertifiedProvince = source.CertificateProvinceOther;
+
+    if (source.CertificateNumber != null)
+    {
+      destination.ecer_ReferenceECECertificationNumber = source.CertificateNumber;
+    }
+
+    if (source.DateOfBirth.HasValue)
+    {
+      destination.ecer_ReferenceBirthDate = source.DateOfBirth;
+    }
+  }
+
+  private void ApplyWorkExperienceReferenceDetails(WorkExperienceReferenceDetails source, ecer_WorkExperienceRef destination)
+  {
+    if (source.Hours.HasValue)
+    {
+      destination.ecer_TotalNumberofHoursObserved = Convert.ToDecimal(source.Hours.Value);
+    }
+
+    if (source.WorkHoursType.HasValue)
+    {
+      destination.ecer_WorkHoursType = MapWorkHoursType(source.WorkHoursType.Value);
+    }
+
+    if (source.ChildrenProgramName != null)
+    {
+      destination.ecer_ChildCareProgramName = source.ChildrenProgramName;
+    }
+
+    if (source.ChildrenProgramType.HasValue)
+    {
+      destination.ecer_TypeofChildrenProgram = MapChildrenProgramType(source.ChildrenProgramType.Value);
+    }
+
+    if (source.ChildrenProgramTypeOther != null)
+    {
+      destination.ecer_OtherChildProgramType = source.ChildrenProgramTypeOther;
+    }
+
+    if (source.Role != null)
+    {
+      destination.ecer_Role = source.Role;
+    }
+
+    if (source.AgeofChildrenCaredFor != null)
+    {
+      destination.ecer_AgeofChildrenCaredFor = source.AgeofChildrenCaredFor;
+    }
+
+    if (source.StartDate.HasValue)
+    {
+      destination.ecer_StartDate = source.StartDate;
+    }
+
+    if (source.EndDate.HasValue)
+    {
+      destination.ecer_EndDate = source.EndDate;
+    }
+
+    if (source.ReferenceRelationship.HasValue)
+    {
+      destination.ecer_RelationshiptoApplicant = MapReferenceRelationship(source.ReferenceRelationship.Value);
+    }
+
+    if (source.ReferenceRelationshipOther != null)
+    {
+      destination.ecer_RelationshiptoApplicantOther = source.ReferenceRelationshipOther;
+    }
+
+    if (source.AdditionalComments != null)
+    {
+      destination.ecer_AdditionalComments = source.AdditionalComments;
+    }
+  }
+
+  private void ApplyWorkExperienceCompetenciesAssessment(WorkExperienceReferenceCompetenciesAssessment source, ecer_WorkExperienceRef destination)
+  {
+    ApplyCoreCompetenciesAssessment(source, destination);
+    ApplyRelationshipCompetenciesAssessment(source, destination);
+  }
+
+  private void ApplyCoreCompetenciesAssessment(WorkExperienceReferenceCompetenciesAssessment source, ecer_WorkExperienceRef destination)
+  {
+    if (source.ChildDevelopment.HasValue)
+    {
+      destination.ecer_CompetenceChildDevelopment = MapLikertScale(source.ChildDevelopment.Value);
+    }
+
+    if (source.ChildDevelopmentReason != null)
+    {
+      destination.ecer_CompetenceChildDevelopmentReason = source.ChildDevelopmentReason;
+    }
+
+    if (source.ChildGuidance.HasValue)
+    {
+      destination.ecer_CompetenceChildGuidance = MapLikertScale(source.ChildGuidance.Value);
+    }
+
+    if (source.ChildGuidanceReason != null)
+    {
+      destination.ecer_CompetenceChildGuidanceReason = source.ChildGuidanceReason;
+    }
+
+    if (source.HealthSafetyAndNutrition.HasValue)
+    {
+      destination.ecer_CompetenceHealthSafetyandNutrition = MapLikertScale(source.HealthSafetyAndNutrition.Value);
+    }
+
+    if (source.HealthSafetyAndNutritionReason != null)
+    {
+      destination.ecer_CompetenceHealthSafetyandNutritionReason = source.HealthSafetyAndNutritionReason;
+    }
+
+    if (source.DevelopAnEceCurriculum.HasValue)
+    {
+      destination.ecer_CompetenceDevelopanECECurriculum = MapLikertScale(source.DevelopAnEceCurriculum.Value);
+    }
+
+    if (source.DevelopAnEceCurriculumReason != null)
+    {
+      destination.ecer_CompetenceDevelopanECECurriculumReason = source.DevelopAnEceCurriculumReason;
+    }
+
+    if (source.ImplementAnEceCurriculum.HasValue)
+    {
+      destination.ecer_CompetenceImplementanECECurriculum = MapLikertScale(source.ImplementAnEceCurriculum.Value);
+    }
+
+    if (source.ImplementAnEceCurriculumReason != null)
+    {
+      destination.ecer_CompetenceImplementECECurriculumReason = source.ImplementAnEceCurriculumReason;
+    }
+  }
+
+  private void ApplyRelationshipCompetenciesAssessment(WorkExperienceReferenceCompetenciesAssessment source, ecer_WorkExperienceRef destination)
+  {
+    if (source.FosteringPositiveRelationChild.HasValue)
+    {
+      destination.ecer_CompetenceFosteringPositiveRelationChild = MapLikertScale(source.FosteringPositiveRelationChild.Value);
+    }
+
+    if (source.FosteringPositiveRelationChildReason != null)
+    {
+      destination.ecer_CompetenceFosteringRelationChildReason = source.FosteringPositiveRelationChildReason;
+    }
+
+    if (source.FosteringPositiveRelationFamily.HasValue)
+    {
+      destination.ecer_CompetenceFosteringPositiveRelationFamily = MapLikertScale(source.FosteringPositiveRelationFamily.Value);
+    }
+
+    if (source.FosteringPositiveRelationFamilyReason != null)
+    {
+      destination.ecer_CompetenceFosteringRelationFamilyReason = source.FosteringPositiveRelationFamilyReason;
+    }
+
+    if (source.FosteringPositiveRelationCoworker.HasValue)
+    {
+      destination.ecer_CompetenceFosteringPositiveRelationCoworker = MapLikertScale(source.FosteringPositiveRelationCoworker.Value);
+    }
+
+    if (source.FosteringPositiveRelationCoworkerReason != null)
+    {
+      destination.ecer_CompetenceFosteringRelationCoworkerReason = source.FosteringPositiveRelationCoworkerReason;
+    }
+  }
+
+  public void ApplyIcraWorkExperienceReferenceSubmission(IcraWorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination)
+  {
+    destination.ecer_referencefirstname = source.ReferenceContactInformation.FirstName;
+    destination.ecer_referencelastname = source.ReferenceContactInformation.LastName;
+    destination.ecer_ReferencePhoneNumber = source.ReferenceContactInformation.PhoneNumber;
+    destination.ecer_referenceemailaddress = source.ReferenceContactInformation.Email;
+    destination.ecer_CompetenceChildDevelopment = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopment);
+    destination.ecer_CompetenceChildDevelopmentReason = source.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopmentReason;
+    destination.ecer_CompetenceChildGuidance = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.ChildGuidance);
+    destination.ecer_CompetenceChildGuidanceReason = source.WorkExperienceReferenceCompetenciesAssessment.ChildGuidanceReason;
+    destination.ecer_CompetenceHealthSafetyandNutrition = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutrition);
+    destination.ecer_CompetenceHealthSafetyandNutritionReason = source.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutritionReason;
+    destination.ecer_CompetenceDevelopanECECurriculum = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculum);
+    destination.ecer_CompetenceDevelopanECECurriculumReason = source.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculumReason;
+    destination.ecer_CompetenceImplementanECECurriculum = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculum);
+    destination.ecer_CompetenceImplementECECurriculumReason = source.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculumReason;
+    destination.ecer_CompetenceFosteringPositiveRelationChild = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChild);
+    destination.ecer_CompetenceFosteringRelationChildReason = source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChildReason;
+    destination.ecer_CompetenceFosteringPositiveRelationFamily = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamily);
+    destination.ecer_CompetenceFosteringRelationFamilyReason = source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamilyReason;
+    destination.ecer_CompetenceFosteringPositiveRelationCoworker = MapLikertScale(source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker);
+    destination.ecer_CompetenceFosteringRelationCoworkerReason = source.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason;
+    destination.ecer_WillProvideReference = source.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No;
+    destination.ecer_DateSigned = source.DateSigned;
+  }
+
+  public void ApplyOptOutReference(OptOutReferenceRequest source, ecer_CharacterReference destination)
+  {
+    destination.ecer_UnabletoProvideReferenceReason = MapUnableToProvideReferenceReason(source.UnabletoProvideReferenceReasons);
+  }
+
+  public void ApplyOptOutReference(OptOutReferenceRequest source, ecer_WorkExperienceRef destination)
+  {
+    destination.ecer_UnabletoProvideReferenceReason = MapUnableToProvideReferenceReason(source.UnabletoProvideReferenceReasons);
+  }
+
+  public void ApplyResendCharacterReferenceInvite(ResendReferenceInviteRequest source, ecer_CharacterReference destination)
+  {
+    _ = source;
+    _ = destination;
+  }
+
+  private Application MapApplication(ecer_Application source) => new(
+    source.ecer_ApplicationId?.ToString(),
+    source.ecer_Applicantid?.Id.ToString() ?? string.Empty,
+    GetCertificationTypes(source))
+  {
+    Status = source.StatusCode.HasValue ? MapApplicationStatus(source.StatusCode.Value) : ApplicationStatus.Draft,
+    SubStatus = source.ecer_StatusReasonDetail.HasValue ? MapApplicationStatusReasonDetail(source.ecer_StatusReasonDetail.Value) : default,
+    CreatedOn = source.CreatedOn.GetValueOrDefault(),
+    SignedDate = source.ecer_DateSigned,
+    SubmittedOn = source.ecer_DateSubmitted,
+    Transcripts = (source.ecer_transcript_Applicationid ?? Array.Empty<ecer_Transcript>()).Select(MapTranscript).ToList(),
+    ProfessionalDevelopments = (source.ecer_ecer_professionaldevelopment_Applicationi ?? Array.Empty<ecer_ProfessionalDevelopment>()).Select(MapProfessionalDevelopment).ToList(),
+    WorkExperienceReferences = (source.ecer_workexperienceref_Applicationid_ecer ?? Array.Empty<ecer_WorkExperienceRef>()).Select(MapWorkExperienceReferenceCore).ToList(),
+    CharacterReferences = (source.ecer_characterreference_Applicationid ?? Array.Empty<ecer_CharacterReference>()).Select(MapCharacterReference).ToList(),
+    ReadyForAssessmentDate = source.ecer_ReadyforAssessmentDate,
+    AddMoreCharacterReference = source.ecer_AddMoreCharacterReference,
+    AddMoreWorkExperienceReference = source.ecer_AddMoreWorkExperienceReference,
+    AddMoreProfessionalDevelopment = source.ecer_AddMoreProfessionalDevelopment,
+    Origin = source.ecer_Origin.HasValue ? MapOrigin(source.ecer_Origin.Value) : null,
+    LabourMobilityCertificateInformation = MapCertificateInformation(source),
+    Stage = string.IsNullOrEmpty(source.ecer_PortalStage) ? "ContactInformation" : source.ecer_PortalStage,
+    FromCertificate = IdOrEmpty(source.ecer_FromCertificateId),
+    ApplicationType = source.ecer_Type.HasValue ? MapApplicationType(source.ecer_Type.Value) : default,
+    EducationOrigin = source.ecer_EducationOrigin.HasValue ? MapEducationOrigin(source.ecer_EducationOrigin.Value) : null,
+    EducationRecognition = source.ecer_EducationRecognition.HasValue ? MapEducationRecognition(source.ecer_EducationRecognition.Value) : null,
+    OneYearRenewalExplanationChoice = source.ecer_1YRExplanationChoice.HasValue ? MapOneYearRenewalExplanation(source.ecer_1YRExplanationChoice.Value) : null,
+    FiveYearRenewalExplanationChoice = source.ecer_5YRExplanationChoice.HasValue ? MapFiveYearRenewalExplanation(source.ecer_5YRExplanationChoice.Value) : null,
+    RenewalExplanationOther = source.ecer_RenewalExplanationOther,
+  };
+
+  private static List<CertificationType> GetCertificationTypes(ecer_Application source)
+  {
+    var types = new List<CertificationType>();
+    if (source.ecer_IsECEAssistant.GetValueOrDefault()) types.Add(CertificationType.EceAssistant);
+    if (source.ecer_isECE1YR.GetValueOrDefault()) types.Add(CertificationType.OneYear);
+    if (source.ecer_isECE5YR.GetValueOrDefault()) types.Add(CertificationType.FiveYears);
+    if (source.ecer_isITE.GetValueOrDefault()) types.Add(CertificationType.Ite);
+    if (source.ecer_isSNE.GetValueOrDefault()) types.Add(CertificationType.Sne);
+    return types;
+  }
+
+  private CertificateInformation MapCertificateInformation(ecer_Application source) => new()
+  {
+    CertificateComparisonId = source.ecer_application_certificationcomparisonid?.ecer_certificationcomparisonId?.ToString() ?? string.Empty,
+    ExistingCertificationType = source.ecer_application_certificationcomparisonid?.ecer_transferringcertificateName ?? string.Empty,
+    CurrentCertificationNumber = source.ecer_CurrentCertificationNumber,
+    HasOtherName = source.ecer_lmcerthasothername,
+    LegalFirstName = source.ecer_LegalFirstName,
+    LegalMiddleName = source.ecer_LegalMiddleName,
+    LegalLastName = source.ecer_LegalLastName,
+    LabourMobilityProvince = source.ecer_application_lmprovinceid != null ? MapProvince(source.ecer_application_lmprovinceid) : null,
+  };
+
+  private ecer_Transcript MapTranscript(Transcript source) => new()
+  {
+    ecer_TranscriptId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
+    ecer_StartDate = source.StartDate,
+    ecer_EndDate = source.EndDate,
+    ecer_ProgramCourseName = source.ProgramName,
+    ecer_CampusLocation = source.CampusLocation,
+    ecer_StudentFirstName = source.StudentFirstName,
+    ecer_StudentMiddleName = source.StudentMiddleName,
+    ecer_StudentLastName = source.StudentLastName,
+    ecer_StudentNumber = source.StudentNumber,
+    ecer_EducationInstitutionFullName = source.EducationalInstitutionName,
+    ecer_IsECEAssistant = source.IsECEAssistant,
+    //next 3 lines converts enum TranscriptStatusOption to the 3 boolean fields within dynamics
+    ecer_DoesECERegistryHaveTranscript = source.TranscriptStatusOption == TranscriptStatusOptions.RegistryHasTranscript,
+    ecer_IsOfficialTranscriptRequested = source.TranscriptStatusOption == TranscriptStatusOptions.OfficialTranscriptRequested,
+    ecer_mytranscriptwillrequireenglishtranslation = source.TranscriptStatusOption == TranscriptStatusOptions.TranscriptWillRequireEnglishTranslation,
+    ecer_IsNameUnverified = source.IsNameUnverified,
+    StatusCode = MapTranscriptStage(source.Status),
+    ecer_EducationRecognition = MapEducationRecognition(source.EducationRecognition),
+    ecer_EducationOrigin = MapEducationOrigin(source.EducationOrigin),
+    ecer_transcript_InstituteCountryId = MapCountry(source.Country),
+    ecer_transcript_ProvinceId = MapTranscriptProvince(source.Province),
+    ecer_transcript_postsecondaryinstitutionid = MapPostSecondaryInstitution(source.PostSecondaryInstitution),
+  };
+
+  private Transcript MapTranscript(ecer_Transcript source)
+  {
+    var country = MapTranscriptCountry(source);
+    var province = GetTranscriptProvince(source);
+    var provinceId = province?.ProvinceId ?? string.Empty;
+
+    return new Transcript(
+      source.ecer_TranscriptId?.ToString(),
+      source.ecer_EducationInstitutionFullName,
+      source.ecer_ProgramCourseName,
+      source.ecer_StudentNumber,
+      source.ecer_StartDate.GetValueOrDefault(),
+      source.ecer_EndDate.GetValueOrDefault(),
+      source.ecer_IsECEAssistant.GetValueOrDefault(),
+      source.ecer_StudentFirstName ?? string.Empty,
+      source.ecer_StudentLastName ?? string.Empty,
+      source.ecer_IsNameUnverified.GetValueOrDefault(),
+      source.ecer_EducationRecognition.HasValue ? MapEducationRecognition(source.ecer_EducationRecognition.Value) : default,
+      source.ecer_EducationOrigin.HasValue ? MapEducationOrigin(source.ecer_EducationOrigin.Value) : default)
+    {
+      TranscriptStatusOption = GetTranscriptStatusOption(source),
+      CampusLocation = source.ecer_CampusLocation,
+      Status = source.StatusCode.HasValue ? MapTranscriptStage(source.StatusCode.Value) : null,
+      StudentMiddleName = source.ecer_StudentMiddleName,
+      Country = country,
+      Province = province,
+      PostSecondaryInstitution = MapTranscriptPostSecondaryInstitution(source, provinceId),
+      TranscriptReceivedByRegistry = source.ecer_TranscriptReceived,
+      ComprehensiveReportReceivedByRegistry = source.ecer_ComprehensiveEvaluationReportReceived,
+      CourseOutlineReceivedByRegistry = source.ecer_CourseOutlineReceived,
+      ProgramConfirmationReceivedByRegistry = source.ecer_ProgramConfirmationFormReceived,
+      ProgramConfirmationFiles = (source.ecer_bcgov_documenturl_TranscriptId ?? Array.Empty<bcgov_DocumentUrl>())
+        .Where(file => file.ecer_Tag1 == "Program Confirmation Form")
+        .Select(MapFileInfo)
+        .ToList(),
+      CourseOutlineFiles = (source.ecer_bcgov_documenturl_TranscriptId ?? Array.Empty<bcgov_DocumentUrl>())
+        .Where(file => file.ecer_Tag1 == "Course Outline")
+        .Select(MapFileInfo)
+        .ToList(),
+      CourseOutlineOptions = GetCourseOutlineOptions(source),
+      ProgramConfirmationOptions = GetProgramConfirmationOptions(source),
+      ComprehensiveReportOptions = GetComprehensiveReportOptions(source),
+    };
+  }
+
+  private ProfessionalDevelopment MapProfessionalDevelopment(ecer_ProfessionalDevelopment source) => new(
+    source.ecer_ProfessionalDevelopmentId?.ToString(),
+    source.ecer_CourseName,
+    source.ecer_OrganizationName,
+    source.ecer_StartDate.GetValueOrDefault(),
+    source.ecer_EndDate.GetValueOrDefault())
+  {
+    OrganizationContactInformation = source.ecer_HostOrganizationContactInformation,
+    OrganizationEmailAddress = source.ecer_OrganizationEmailAddress,
+    InstructorName = source.ecer_InstructorName,
+    NumberOfHours = MapDouble(source.ecer_TotalAnticipatedHours),
+    Status = source.StatusCode.HasValue ? MapProfessionalDevelopmentStatus(source.StatusCode.Value) : null,
+    CourseorWorkshopLink = source.ecer_CourseorWorkshopLink,
+    Files = (source.ecer_bcgov_documenturl_ProfessionalDevelopmentId ?? Array.Empty<bcgov_DocumentUrl>()).Select(MapFileInfo).ToList(),
+  };
+
+  private WorkExperienceReference MapWorkExperienceReferenceCore(ecer_WorkExperienceRef source) => new(
+    source.ecer_FirstName,
+    source.ecer_LastName,
+    source.ecer_EmailAddress,
+    MapInt(source.ecer_TotalNumberofHoursAnticipated))
+  {
+    TotalNumberofHoursApproved = MapInt(source.ecer_TotalNumberofHoursApproved),
+    TotalNumberofHoursObserved = MapInt(source.ecer_TotalNumberofHoursObserved),
+    WillProvideReference = source.ecer_WillProvideReference.HasValue ? source.ecer_WillProvideReference == ecer_YesNoNull.Yes : null,
+    PhoneNumber = source.ecer_PhoneNumber,
+    Id = source.ecer_WorkExperienceRefId?.ToString(),
+    Status = source.StatusCode.HasValue ? MapWorkExperienceReferenceStage(source.StatusCode.Value) : null,
+    Type = source.ecer_Type.HasValue ? MapWorkExperienceType(source.ecer_Type.Value) : null,
+  };
+
+  private CharacterReference MapCharacterReference(ecer_CharacterReference source) => new(
+    source.ecer_FirstName,
+    source.ecer_LastName,
+    source.ecer_PhoneNumber,
+    source.ecer_EmailAddress)
+  {
+    WillProvideReference = source.ecer_WillProvideReference.HasValue ? source.ecer_WillProvideReference == ecer_YesNoNull.Yes : null,
+    Id = source.ecer_CharacterReferenceId?.ToString(),
+    Status = source.StatusCode.HasValue ? MapCharacterReferenceStage(source.StatusCode.Value) : null,
+  };
+
+  private static FileInfo MapFileInfo(bcgov_DocumentUrl source) => new(source.bcgov_DocumentUrlId?.ToString() ?? string.Empty)
+  {
+    Name = source.bcgov_FileName,
+    Size = source.bcgov_FileSize,
+    Url = source.bcgov_Url,
+    Extention = source.bcgov_FileExtension,
+  };
+
+  private static ecer_Country? MapCountry(Country? source)
+  {
+    if (source == null || string.IsNullOrWhiteSpace(source.CountryId))
+    {
+      return null;
+    }
+
+    return new ecer_Country(Guid.Parse(source.CountryId));
+  }
+
+  private static Country MapCountry(ecer_Country source) => new(
+    source.ecer_CountryId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    source.ecer_ShortName ?? string.Empty,
+    source.ecer_EligibleforICRA.GetValueOrDefault());
+
+  private static Province MapProvince(ecer_Province source) => new(
+    source.ecer_ProvinceId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    source.ecer_Abbreviation ?? string.Empty);
+
+  private static ecer_Province? MapTranscriptProvince(Province? source)
+  {
+    if (source == null || string.IsNullOrWhiteSpace(source.ProvinceId))
+    {
+      return null;
+    }
+
+    return new ecer_Province(Guid.Parse(source.ProvinceId));
+  }
+
+  private static ecer_PostSecondaryInstitute? MapPostSecondaryInstitution(PostSecondaryInstitution? source)
+  {
+    if (source == null || string.IsNullOrWhiteSpace(source.Id))
+    {
+      return null;
+    }
+
+    return new ecer_PostSecondaryInstitute(Guid.Parse(source.Id));
+  }
+
+  private static PostSecondaryInstitution MapPostSecondaryInstitution(ecer_PostSecondaryInstitute source, string provinceId) => new(
+    source.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty,
+    source.ecer_Name ?? string.Empty,
+    provinceId);
+
+  private static Country? MapTranscriptCountry(ecer_Transcript source)
+  {
+    if (source.ecer_transcript_InstituteCountryId != null)
+    {
+      return MapCountry(source.ecer_transcript_InstituteCountryId);
+    }
+
+    if (source.ecer_InstituteCountryId == null)
+    {
+      return null;
+    }
+
+    return new Country(source.ecer_InstituteCountryId.Id.ToString(), source.ecer_InstituteCountryIdName, string.Empty, false);
+  }
+
+  private static Province? GetTranscriptProvince(ecer_Transcript source)
+  {
+    if (source.ecer_transcript_ProvinceId != null)
+    {
+      return MapProvince(source.ecer_transcript_ProvinceId);
+    }
+
+    if (source.ecer_ProvinceId == null)
+    {
+      return null;
+    }
+
+    return new Province(source.ecer_ProvinceId.Id.ToString(), source.ecer_ProvinceIdName, string.Empty);
+  }
+
+  private static PostSecondaryInstitution? MapTranscriptPostSecondaryInstitution(ecer_Transcript source, string provinceId)
+  {
+    if (source.ecer_transcript_postsecondaryinstitutionid != null)
+    {
+      return MapPostSecondaryInstitution(source.ecer_transcript_postsecondaryinstitutionid, provinceId);
+    }
+
+    if (source.ecer_postsecondaryinstitutionid == null)
+    {
+      return null;
+    }
+
+    return new PostSecondaryInstitution(source.ecer_postsecondaryinstitutionid.Id.ToString(), source.ecer_postsecondaryinstitutionidName, provinceId);
+  }
+
+  private static TranscriptStatusOptions? GetTranscriptStatusOption(ecer_Transcript source)
+  {
+    if (source.ecer_DoesECERegistryHaveTranscript == true)
     {
       return TranscriptStatusOptions.RegistryHasTranscript;
     }
-    if (src.ecer_IsOfficialTranscriptRequested == true)
+
+    if (source.ecer_IsOfficialTranscriptRequested == true)
     {
       return TranscriptStatusOptions.OfficialTranscriptRequested;
     }
-    if (src.ecer_mytranscriptwillrequireenglishtranslation == true)
+
+    if (source.ecer_mytranscriptwillrequireenglishtranslation == true)
     {
       return TranscriptStatusOptions.TranscriptWillRequireEnglishTranslation;
     }
+
     return null;
   }
 
+  private static CourseOutlineOptions? GetCourseOutlineOptions(ecer_Transcript source)
+  {
+    if (source.ecer_Ihavemycourseoutlinessyllabiandwillupload == true)
+    {
+      return CourseOutlineOptions.UploadNow;
+    }
+
+    if (source.ecer_isECEregistryalreadyhasmycourseoutline == true)
+    {
+      return CourseOutlineOptions.RegistryAlreadyHas;
+    }
+
+    return null;
+  }
+
+  private static ProgramConfirmationOptions? GetProgramConfirmationOptions(ecer_Transcript source)
+  {
+    if (source.ecer_IhavemyProgramConfirmationandwillupload == true)
+    {
+      return ProgramConfirmationOptions.UploadNow;
+    }
+
+    if (source.ecer_isECEregistryhasprogramconfirmation == true)
+    {
+      return ProgramConfirmationOptions.RegistryAlreadyHas;
+    }
+
+    return null;
+  }
+
+  private static ComprehensiveReportOptions? GetComprehensiveReportOptions(ecer_Transcript source)
+  {
+    if (source.ecer_ECERegistryalreadyhasmyComprehensiveReport == true)
+    {
+      return ComprehensiveReportOptions.RegistryAlreadyHas;
+    }
+
+    if (source.ecer_iwishtoapplyforafeewaiver == true)
+    {
+      return ComprehensiveReportOptions.FeeWaiver;
+    }
+
+    if (source.ecer_ihavesubmittedanapplicationtobcits == true)
+    {
+      return ComprehensiveReportOptions.InternationalCredentialEvaluationService;
+    }
+
+    return null;
+  }
+
+  private static decimal? MapDecimal(double? source) => source.HasValue ? Convert.ToDecimal(source.Value) : null;
+
+  private static decimal? MapDecimal(int? source) => source.HasValue ? Convert.ToDecimal(source.Value) : null;
+
+  private static double? MapDouble(decimal? source) => source.HasValue ? Convert.ToDouble(source.Value) : null;
+
+  private static int? MapInt(decimal? source) => source.HasValue ? Convert.ToInt32(source.Value) : null;
+
   public static string IdOrEmpty(EntityReference? reference) =>
-      reference != null && reference.Id != Guid.Empty
-          ? reference.Id.ToString()
-          : string.Empty;
+    reference != null && reference.Id != Guid.Empty
+      ? reference.Id.ToString()
+      : string.Empty;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_Origin MapOrigin(ApplicationOrigin source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationOrigin MapOrigin(ecer_Origin source);
+
+  private static ecer_Application_StatusCode MapApplicationStatus(ApplicationStatus source) => source switch
+  {
+    ApplicationStatus.Draft => ecer_Application_StatusCode.Draft,
+    ApplicationStatus.Submitted => ecer_Application_StatusCode.Submitted,
+    ApplicationStatus.Complete => ecer_Application_StatusCode.Complete,
+    ApplicationStatus.Closed => ecer_Application_StatusCode.Closed,
+    ApplicationStatus.Reconsideration => ecer_Application_StatusCode.Reconsideration,
+    ApplicationStatus.Escalated => ecer_Application_StatusCode.Escalated,
+    ApplicationStatus.Decision => ecer_Application_StatusCode.Decision,
+    ApplicationStatus.Cancelled => ecer_Application_StatusCode.Withdrawn,
+    ApplicationStatus.Pending => ecer_Application_StatusCode.Pending,
+    ApplicationStatus.Ready => ecer_Application_StatusCode.Ready,
+    ApplicationStatus.InProgress => ecer_Application_StatusCode.InProgress,
+    ApplicationStatus.PendingQueue => ecer_Application_StatusCode.PendingQueue,
+    ApplicationStatus.PendingPSPConsultationNeeded => ecer_Application_StatusCode.PendingPSPConsultationNeeded,
+    ApplicationStatus.ReconsiderationDecision => ecer_Application_StatusCode.ReconsiderationDecision,
+    ApplicationStatus.AppealDecision => ecer_Application_StatusCode.AppealDecision,
+    ApplicationStatus.NotSubmitted => ecer_Application_StatusCode.NotSubmitted,
+    _ => ecer_Application_StatusCode.Draft,
+  };
+
+  private static ApplicationStatus MapApplicationStatus(ecer_Application_StatusCode source) => source switch
+  {
+    ecer_Application_StatusCode.Draft => ApplicationStatus.Draft,
+    ecer_Application_StatusCode.Submitted => ApplicationStatus.Submitted,
+    ecer_Application_StatusCode.Complete => ApplicationStatus.Complete,
+    ecer_Application_StatusCode.Closed => ApplicationStatus.Closed,
+    ecer_Application_StatusCode.Reconsideration => ApplicationStatus.Reconsideration,
+    ecer_Application_StatusCode.Escalated => ApplicationStatus.Escalated,
+    ecer_Application_StatusCode.Decision => ApplicationStatus.Decision,
+    ecer_Application_StatusCode.Withdrawn => ApplicationStatus.Cancelled,
+    ecer_Application_StatusCode.Pending => ApplicationStatus.Pending,
+    ecer_Application_StatusCode.Ready => ApplicationStatus.Ready,
+    ecer_Application_StatusCode.InProgress => ApplicationStatus.InProgress,
+    ecer_Application_StatusCode.PendingQueue => ApplicationStatus.PendingQueue,
+    ecer_Application_StatusCode.PendingPSPConsultationNeeded => ApplicationStatus.PendingPSPConsultationNeeded,
+    ecer_Application_StatusCode.ReconsiderationDecision => ApplicationStatus.ReconsiderationDecision,
+    ecer_Application_StatusCode.AppealDecision => ApplicationStatus.AppealDecision,
+    ecer_Application_StatusCode.NotSubmitted => ApplicationStatus.NotSubmitted,
+    _ => ApplicationStatus.Draft,
+  };
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ApplicationStatusReasonDetail MapApplicationStatusReasonDetail(ApplicationStatusReasonDetail source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationStatusReasonDetail MapApplicationStatusReasonDetail(ecer_ApplicationStatusReasonDetail source);
+
+  private ecer_ApplicationStatusReasonDetail? MapApplicationStatusReasonDetail(ApplicationStatusReasonDetail? source) => source.HasValue ? MapApplicationStatusReasonDetail(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_yrrenewalexplanations MapOneYearRenewalExplanation(OneYearRenewalexplanations source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial OneYearRenewalexplanations MapOneYearRenewalExplanation(ecer_yrrenewalexplanations source);
+
+  private ecer_yrrenewalexplanations? MapOneYearRenewalExplanation(OneYearRenewalexplanations? source) => source.HasValue ? MapOneYearRenewalExplanation(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_fiveyrrenewalexplanations MapFiveYearRenewalExplanation(FiveYearRenewalExplanations source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial FiveYearRenewalExplanations MapFiveYearRenewalExplanation(ecer_fiveyrrenewalexplanations source);
+
+  private ecer_fiveyrrenewalexplanations? MapFiveYearRenewalExplanation(FiveYearRenewalExplanations? source) => source.HasValue ? MapFiveYearRenewalExplanation(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ApplicationTypes MapApplicationType(ApplicationTypes source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationTypes MapApplicationType(ecer_ApplicationTypes source);
+
+  private ecer_ApplicationTypes? MapApplicationType(ApplicationTypes? source) => source.HasValue ? MapApplicationType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_EducationOrigin MapEducationOrigin(EducationOrigin source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial EducationOrigin MapEducationOrigin(ecer_EducationOrigin source);
+
+  private ecer_EducationOrigin? MapEducationOrigin(EducationOrigin? source) => source.HasValue ? MapEducationOrigin(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_EducationRecognition MapEducationRecognition(EducationRecognition source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial EducationRecognition MapEducationRecognition(ecer_EducationRecognition source);
+
+  private ecer_EducationRecognition? MapEducationRecognition(EducationRecognition? source) => source.HasValue ? MapEducationRecognition(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_Transcript_StatusCode MapTranscriptStage(TranscriptStage source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial TranscriptStage MapTranscriptStage(ecer_Transcript_StatusCode source);
+
+  private ecer_Transcript_StatusCode? MapTranscriptStage(TranscriptStage? source) => source.HasValue ? MapTranscriptStage(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ProfessionalDevelopment_StatusCode MapProfessionalDevelopmentStatus(ProfessionalDevelopmentStatusCode source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ProfessionalDevelopmentStatusCode MapProfessionalDevelopmentStatus(ecer_ProfessionalDevelopment_StatusCode source);
+
+  private ecer_ProfessionalDevelopment_StatusCode? MapProfessionalDevelopmentStatus(ProfessionalDevelopmentStatusCode? source) => source.HasValue ? MapProfessionalDevelopmentStatus(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_CharacterReference_StatusCode MapCharacterReferenceStage(CharacterReferenceStage source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CharacterReferenceStage MapCharacterReferenceStage(ecer_CharacterReference_StatusCode source);
+
+  private ecer_CharacterReference_StatusCode? MapCharacterReferenceStage(CharacterReferenceStage? source) => source.HasValue ? MapCharacterReferenceStage(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_WorkExperienceRef_StatusCode MapWorkExperienceReferenceStage(WorkExperienceRefStage source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial WorkExperienceRefStage MapWorkExperienceReferenceStage(ecer_WorkExperienceRef_StatusCode source);
+
+  private ecer_WorkExperienceRef_StatusCode? MapWorkExperienceReferenceStage(WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_UnabletoProvideReferenceReasons MapUnableToProvideReferenceReason(UnabletoProvideReferenceReasons source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial UnabletoProvideReferenceReasons MapUnableToProvideReferenceReason(ecer_UnabletoProvideReferenceReasons source);
+
+  private ecer_UnabletoProvideReferenceReasons? MapUnableToProvideReferenceReason(UnabletoProvideReferenceReasons? source) => source.HasValue ? MapUnableToProvideReferenceReason(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_likertscales MapLikertScale(LikertScale source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial LikertScale MapLikertScale(ecer_likertscales source);
+
+  private ecer_likertscales? MapLikertScale(LikertScale? source) => source.HasValue ? MapLikertScale(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ReferenceRelationships MapReferenceRelationship(ReferenceRelationship source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ReferenceRelationship MapReferenceRelationship(ecer_ReferenceRelationships source);
+
+  private ecer_ReferenceRelationships? MapReferenceRelationship(ReferenceRelationship? source) => source.HasValue ? MapReferenceRelationship(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ChildrenProgramTypes MapChildrenProgramType(ChildrenProgramType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ChildrenProgramType MapChildrenProgramType(ecer_ChildrenProgramTypes source);
+
+  private ecer_ChildrenProgramTypes? MapChildrenProgramType(ChildrenProgramType? source) => source.HasValue ? MapChildrenProgramType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_WorkHoursType MapWorkHoursType(WorkHoursType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial WorkHoursType MapWorkHoursType(ecer_WorkHoursType source);
+
+  private ecer_WorkHoursType? MapWorkHoursType(WorkHoursType? source) => source.HasValue ? MapWorkHoursType(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ChildcareAgeRange MapChildcareAgeRange(ChildcareAgeRanges source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ChildcareAgeRanges MapChildcareAgeRange(ecer_ChildcareAgeRange source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ecer_ReferenceKnownTime MapReferenceKnownTime(ReferenceKnownTime source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ReferenceKnownTime MapReferenceKnownTime(ecer_ReferenceKnownTime source);
+
+  private static ecer_WorkExperienceTypes? MapWorkExperienceType(WorkExperienceTypes? source) => source.HasValue ? MapWorkExperienceType(source.Value) : null;
+
+  private static ecer_WorkExperienceTypes MapWorkExperienceType(WorkExperienceTypes source) => source switch
+  {
+    WorkExperienceTypes.Is500Hours => ecer_WorkExperienceTypes._500Hours,
+    WorkExperienceTypes.ICRA => ecer_WorkExperienceTypes.ICRA,
+    _ => ecer_WorkExperienceTypes._400Hours,
+  };
+
+  private static WorkExperienceTypes MapWorkExperienceType(ecer_WorkExperienceTypes source) => source switch
+  {
+    ecer_WorkExperienceTypes._500Hours => WorkExperienceTypes.Is500Hours,
+    ecer_WorkExperienceTypes.ICRA => WorkExperienceTypes.ICRA,
+    _ => WorkExperienceTypes.Is400Hours,
+  };
 }

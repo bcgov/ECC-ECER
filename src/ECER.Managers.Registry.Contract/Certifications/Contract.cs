@@ -1,11 +1,11 @@
-﻿using ECER.Managers.Registry.Contract.Applications;
-using MediatR;
+using ECER.Managers.Registry.Contract.Applications;
+using Mediator;
 
 namespace ECER.Managers.Registry.Contract.Certifications;
 
 public record RequestCertificationPdfCommand(string certificationId, string userId) : IRequest<CertificationRequestPdfResult>;
 
-public record UserCertificationQueryBase : IRequest<CertificationsQueryResults>
+public abstract record UserCertificationQueryBase : IRequest<CertificationsQueryResults>
 {
   public string? ById { get; set; }
   public string? ByApplicantId { get; set; }

@@ -1,8 +1,8 @@
 ﻿using Alba;
-using AutoMapper;
 using Bogus;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.MetadataResources;
+using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Net.Http.Headers;
@@ -21,12 +21,10 @@ namespace ECER.Tests.Integration.Resources.Applications;
 public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 {
   private readonly IApplicationRepository repository;
-  private readonly IMapper mapper;
 
   public ApplicationRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
     repository = Fixture.Services.GetRequiredService<IApplicationRepository>();
-    mapper = Fixture.Services.GetRequiredService<IMapper>();
   }
 
   [Fact]
@@ -152,6 +150,47 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
     var savedApplication = query.ShouldHaveSingleItem();
     savedApplication.Transcripts.Count().ShouldBe(transcripts.Count);
+  }
+
+  [Fact]
+  public async Task SaveDraftApplication_WithTranscripts_PreservesLocationMetadata()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var transcript = CreateTranscript();
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      Transcripts = [transcript]
+    };
+
+    var applicationId = await repository.SaveApplication(application, CancellationToken.None);
+    var context = Fixture.Services.GetRequiredService<EcerContext>();
+    var savedTranscriptEntity = context.ecer_TranscriptSet.Single(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId));
+
+    savedTranscriptEntity.ecer_InstituteCountryId.ShouldNotBeNull();
+    savedTranscriptEntity.ecer_InstituteCountryId.Id.ToString().ShouldBe(transcript.Country!.CountryId);
+    savedTranscriptEntity.ecer_ProvinceId.ShouldNotBeNull();
+    savedTranscriptEntity.ecer_ProvinceId.Id.ToString().ShouldBe(transcript.Province!.ProvinceId);
+    savedTranscriptEntity.ecer_postsecondaryinstitutionid.ShouldNotBeNull();
+    savedTranscriptEntity.ecer_postsecondaryinstitutionid.Id.ToString().ShouldBe(transcript.PostSecondaryInstitution!.Id);
+
+    var savedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
+    var savedTranscript = savedApplication.Transcripts.ShouldHaveSingleItem();
+
+    savedTranscript.Country.ShouldNotBeNull();
+    savedTranscript.Country.CountryId.ShouldBe(transcript.Country!.CountryId);
+    savedTranscript.Country.CountryName.ShouldBe(transcript.Country.CountryName);
+    savedTranscript.Country.CountryCode.ShouldBe(transcript.Country.CountryCode);
+    savedTranscript.Country.IsICRA.ShouldBe(transcript.Country.IsICRA);
+
+    savedTranscript.Province.ShouldNotBeNull();
+    savedTranscript.Province.ProvinceId.ShouldBe(transcript.Province!.ProvinceId);
+    savedTranscript.Province.ProvinceName.ShouldBe(transcript.Province.ProvinceName);
+    savedTranscript.Province.ProvinceCode.ShouldBe(transcript.Province.ProvinceCode);
+
+    savedTranscript.PostSecondaryInstitution.ShouldNotBeNull();
+    savedTranscript.PostSecondaryInstitution.Id.ShouldBe(transcript.PostSecondaryInstitution!.Id);
+    savedTranscript.PostSecondaryInstitution.Name.ShouldBe(transcript.PostSecondaryInstitution.Name);
+    savedTranscript.PostSecondaryInstitution.ProvinceId.ShouldBe(transcript.PostSecondaryInstitution.ProvinceId);
   }
 
   [Fact]
@@ -609,9 +648,19 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     {
       CampusLocation = faker.Address.City(),
       Status = TranscriptStage.Draft,
-      Country = mapper.Map<Country>(Fixture.Country),
-      Province = mapper.Map<Province>(Fixture.Province),
-      PostSecondaryInstitution = mapper.Map<PostSecondaryInstitution>(Fixture.PostSecondaryInstitution),
+      Country = new Country(
+        Fixture.Country.ecer_CountryId?.ToString() ?? string.Empty,
+        Fixture.Country.ecer_Name ?? string.Empty,
+        Fixture.Country.ecer_ShortName ?? string.Empty,
+        Fixture.Country.ecer_EligibleforICRA.GetValueOrDefault()),
+      Province = new Province(
+        Fixture.Province.ecer_ProvinceId?.ToString() ?? string.Empty,
+        Fixture.Province.ecer_Name ?? string.Empty,
+        Fixture.Province.ecer_Abbreviation ?? string.Empty),
+      PostSecondaryInstitution = new PostSecondaryInstitution(
+        Fixture.PostSecondaryInstitution.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty,
+        Fixture.PostSecondaryInstitution.ecer_Name ?? string.Empty,
+        Fixture.Province.ecer_ProvinceId?.ToString() ?? string.Empty),
       TranscriptStatusOption = TranscriptStatusOptions.OfficialTranscriptRequested,
     };
     return transcript;

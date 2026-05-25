@@ -1,15 +1,14 @@
-using AutoMapper;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
+using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.ComponentModel.DataAnnotations;
 using ContractProgram = ECER.Managers.Registry.Contract.Programs.Program;
 using ContractProgramProfileType = ECER.Managers.Registry.Contract.Programs.ProgramProfileType;
 using ContractProgramsQuery = ECER.Managers.Registry.Contract.Programs.ProgramsQuery;
@@ -26,18 +25,15 @@ public class ProgramsEndpoints : IRegisterEndpoints
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     const string PolicyNames = "psp_user";
-    endpointRouteBuilder.MapPut("/api/draftprograms/{id?}", async Task<Results<Ok<DraftProgramResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftprograms/{id?}", async Task<Results<Ok<DraftProgramResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IProgramMapper mapper) =>
     {
-      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
-      bool ProgramIdIsNotGuid = !Guid.TryParse(request.Program.Id, out _); if (ProgramIdIsNotGuid && request.Program.Id != null) { request.Program.Id = null; }
-
       if (request.Program.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
       var userContext = ctx.User.GetUserContext()!;
       var programRep = (await messageBus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = userContext.Identity }, ct)).Items.SingleOrDefault();
       if (programRep == null || string.IsNullOrWhiteSpace(programRep.PostSecondaryInstituteId)) return TypedResults.NotFound();
 
-      var draftProgram = mapper.Map<ContractProgram>(request.Program)
+      var draftProgram = mapper.MapProgram(request.Program)
         with
       { PostSecondaryInstituteId = programRep.PostSecondaryInstituteId, Status = ContractProgramStatus.Draft };
 
@@ -54,20 +50,19 @@ public class ProgramsEndpoints : IRegisterEndpoints
       }
 
       var program = await messageBus.Send(new SaveDraftProgramCommand(draftProgram), ct);
-      var mappedProgram = mapper.Map<Program>(program);
-      if (mappedProgram == null) return TypedResults.NotFound();
+      if (program == null) return TypedResults.NotFound();
 
+      var mappedProgram = mapper.MapProgram(program);
       return TypedResults.Ok(new DraftProgramResponse(mappedProgram));
     })
     .WithOpenApi("Save a draft program for the current user", string.Empty, "draftprogram_put")
     .RequireAuthorization(PolicyNames)
+    .AddGuidValidation("id", false)
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, string? fromProgramId,
-      HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
+    endpointRouteBuilder.MapGet("/api/programs/{id?}", async Task<Results<Ok<GetProgramsResponse>, NotFound>> (string? id, ProgramStatus[]? byStatus, ProgramProfileType? byProgramProfileType, string? fromProgramId, string? campusId,
+      HttpContext ctx, IMediator messageBus, IProgramMapper mapper, CancellationToken ct, IOptions<PaginationSettings> paginationOptions) =>
     {
-      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
-
       // Get pagination parameters from the query string with default values
       var pageNumber = int.TryParse(ctx.Request.Query[paginationOptions.Value.PageProperty], out var page) && page > 0 ? page : paginationOptions.Value.DefaultPageNumber;
       var pageSize = int.TryParse(ctx.Request.Query[paginationOptions.Value.PageSizeProperty], out var size) ? size : paginationOptions.Value.DefaultPageSize;
@@ -85,23 +80,25 @@ public class ProgramsEndpoints : IRegisterEndpoints
         ById = id,
         ByPostSecondaryInstituteId = programRep.PostSecondaryInstituteId,
         ByStatus = statusFilter,
+        ByProgramProfileType = byProgramProfileType.HasValue
+          ? mapper.MapProgramProfileType(byProgramProfileType.Value)
+          : null,
         ByFromProgramProfileId = fromProgramId,
+        ByCampusId = campusId,
         PageNumber = pageNumber,
         PageSize = pageSize
       }, ct);
 
-      return TypedResults.Ok(new GetProgramsResponse() { Programs = mapper.Map<IEnumerable<Program>>(results.Items), TotalProgramsCount = results.TotalProgramsCount });
+      return TypedResults.Ok(new GetProgramsResponse() { Programs = mapper.MapPrograms(results.Items), TotalProgramsCount = results.TotalProgramsCount });
     })
     .WithOpenApi("Handles program queries", string.Empty, "program_get")
     .RequireAuthorization(PolicyNames)
+    .AddGuidValidation("id", false)
+    .AddGuidValidationQueryParams(["campusId"], isRequired: false)
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/program/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IProgramMapper mapper) =>
       {
-        if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
-        bool IdIsNotGuid = !Guid.TryParse(id, out _);
-        if (IdIsNotGuid) return TypedResults.BadRequest("invalid program profile id");
-
         if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
         var userContext = ctx.User.GetUserContext()!;
@@ -121,19 +118,17 @@ public class ProgramsEndpoints : IRegisterEndpoints
             && existing.Items.First().ProgramProfileType != ContractProgramProfileType.ChangeRequest)
           return TypedResults.BadRequest("update not allowed on a draft program");
 
-        var programId = await messageBus.Send(new UpdateProgramCommand(mapper.Map<ContractProgram>(request)), ct);
+        var programId = await messageBus.Send(new UpdateProgramCommand(mapper.MapProgram(request)), ct);
         return TypedResults.Ok(programId);
       })
       .WithOpenApi("Update program profile", string.Empty, "program_put")
       .RequireAuthorization(PolicyNames)
+      .AddGuidValidation("id")
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/programs", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (SubmitProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/programs", async Task<Results<Ok<string>, BadRequest<ProblemDetails>, NotFound>> (SubmitProgramRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
       {
         var userId = ctx.User.GetUserContext()!.UserId;
-        bool IdIsNotGuid = !Guid.TryParse(request.ProgramId, out _);
-
-        if (IdIsNotGuid) return TypedResults.BadRequest(new ProblemDetails() { Title = "Invalid program profile id" });
 
         var result = await messageBus.Send(new SubmitProgramCommand(request.ProgramId, userId), ct);
         if (result.Error == ProgramSubmissionError.DraftApplicationNotFound)
@@ -158,12 +153,8 @@ public class ProgramsEndpoints : IRegisterEndpoints
       .RequireAuthorization(PolicyNames)
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPut("/api/changeprogram/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/changeprogram/{id}", async Task<Results<Ok<string>, BadRequest<string>, NotFound>> (string id, Program request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IProgramMapper mapper) =>
     {
-      if (string.IsNullOrWhiteSpace(id)) return TypedResults.BadRequest("program profile id cannot be null or whitespace");
-      bool IdIsNotGuid = !Guid.TryParse(id, out _);
-      if (IdIsNotGuid) return TypedResults.BadRequest("invalid program profile id");
-
       if (request.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
       var userContext = ctx.User.GetUserContext()!;
@@ -184,11 +175,12 @@ public class ProgramsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest("update must be on an approved change request program");
       }
 
-      var programId = await messageBus.Send(new ChangeProgramCommand(mapper.Map<ContractProgram>(request)), ct);
+      var programId = await messageBus.Send(new ChangeProgramCommand(mapper.MapProgram(request)), ct);
       return TypedResults.Ok(programId);
     })
   .WithOpenApi("Initiate program profile change", string.Empty, "changeprogram_put")
   .RequireAuthorization(PolicyNames)
+  .AddGuidValidation("id")
   .WithParameterValidation();
   }
 }
@@ -197,10 +189,11 @@ public record SaveDraftProgramRequest(Program Program);
 
 public record DraftProgramResponse(Program Program);
 
-public record SubmitProgramRequest(string ProgramId);
+public record SubmitProgramRequest([ValidGuid] string ProgramId);
 
 public record Program
 {
+  [ValidGuid]
   public string? Id { get; set; }
 
   public string? PortalStage { get; set; }
@@ -246,7 +239,8 @@ public enum ProgramTypes
 public enum ProgramProfileType
 {
   ChangeRequest,
-  AnnualReview
+  AnnualReview,
+  New
 }
 
 public record GetProgramsResponse

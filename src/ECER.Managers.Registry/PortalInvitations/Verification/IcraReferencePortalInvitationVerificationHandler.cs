@@ -1,14 +1,10 @@
-using AutoMapper;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
-using Serilog;
 
 namespace ECER.Managers.Registry;
 
 public class IcraReferencePortalInvitationVerificationHandler(
-  IRegistrantRepository registrantRepository,
-  IMapper mapper,
-  ILogger logger)
+  IRegistrantRepository registrantRepository)
   : IPortalInvitationVerificationHandler
 {
   public bool CanHandle(InviteType? inviteType)
@@ -19,39 +15,32 @@ public class IcraReferencePortalInvitationVerificationHandler(
   public async Task<PortalInvitationVerificationQueryResult> Verify(PortalInvitation portalInvitation, CancellationToken cancellationToken)
   {
     var emptyGuidString = Guid.Empty.ToString();
-    logger.Debug("Portal invitation verifying {PortalInvitation}", portalInvitation);
     if (portalInvitation == null || portalInvitation.WorkexperienceReferenceId == emptyGuidString || portalInvitation.WorkexperienceReferenceId == null)
     {
-      logger.Debug("Reference not found");
       return PortalInvitationVerificationQueryResult.Failure("Reference not found");
     }
 
-    var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
+    var registrantResult = await registrantRepository.Query(new RegistrantQuery { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
     var applicant = registrantResult.SingleOrDefault();
     if (applicant == null)
     {
-      logger.Debug("Applicant not found");
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
 
-    var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
+    var result = portalInvitation;
 
     switch (result.StatusCode)
     {
       case Contract.PortalInvitations.PortalInvitationStatusCode.Completed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
-
       case Contract.PortalInvitations.PortalInvitationStatusCode.Expired:
         return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
-
       case Contract.PortalInvitations.PortalInvitationStatusCode.Cancelled:
         return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
-
       case Contract.PortalInvitations.PortalInvitationStatusCode.Failed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }
 
-    // For ICRA references there is no ApplicationId; do not attempt to load application or certification data
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
 

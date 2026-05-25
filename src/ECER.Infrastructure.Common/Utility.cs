@@ -21,4 +21,11 @@ public static class Utility
     // Return the middle name(s) or empty if there's no middle name
     return remainingNames.Length > 0 ? remainingNames : string.Empty;
   }
+  
+  public static void ThrowIfNullOrEmpty<T>(IEnumerable<T> collection, string paramName)
+  {
+    ArgumentNullException.ThrowIfNull(collection, paramName);
+    if (!collection.Any())
+      throw new ArgumentException("Collection cannot be empty.", paramName);
+  }
 }

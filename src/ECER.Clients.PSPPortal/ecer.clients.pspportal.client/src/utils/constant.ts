@@ -58,3 +58,12 @@ export const EARLIEST_PROFILE_YEAR = 2023;
 
 // Minimum total course hours required for ITE and SNE program types
 export const MIN_HOURS_ITE_SNE = 450;
+
+export enum ProgramApplicationType {
+  AddOnlineorHybridDeliveryMethod = "AddOnlineorHybridDeliveryMethod",
+  CurriculumRevisionsatRecognizedInstitution = "CurriculumRevisionsatRecognizedInstitution",
+  NewBasicECEPostBasicProgram = "NewBasicECEPostBasicProgram",
+  NewCampusatRecognizedPrivateInstitution = "NewCampusatRecognizedPrivateInstitution",
+  SatelliteProgram = "SatelliteProgram",
+  WorkIntegratedLearningProgram = "WorkIntegratedLearningProgram",
+}

@@ -14,7 +14,9 @@
         clearable
         hide-details="auto"
         v-bind="$attrs"
-        @update:model-value="(value: Auspice) => auspiceChanged(value)"
+        @update:model-value="
+          (value: PsiInstitutionType) => auspiceChanged(value)
+        "
       ></v-autocomplete>
     </v-col>
   </v-row>
@@ -25,19 +27,19 @@ import { defineComponent, type PropType } from "vue";
 import * as Rules from "@/utils/formRules";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useConfigStore } from "@/store/config";
-import type { Auspice, Components } from "@/types/openapi";
+import type { PsiInstitutionType, Components } from "@/types/openapi";
 
 export default defineComponent({
-  name: "EceAuspice",
+  name: "EcePsiInstitutionType",
   components: { EceTextField },
   props: {
     modelValue: {
-      type: Object as PropType<Components.Schemas.Auspice>,
+      type: Object as PropType<Components.Schemas.PsiInstitutionType>,
       required: true,
     },
   },
   emits: {
-    "update:model-value": (_auspice: Auspice) => true,
+    "update:model-value": (_auspice: PsiInstitutionType) => true,
   },
   setup() {
     const configStore = useConfigStore();
@@ -51,7 +53,7 @@ export default defineComponent({
   },
 
   computed: {
-    getAuspiceList() {
+    getPsiInstitutionTypeList() {
       return this.auspiceList;
     },
   },
@@ -67,7 +69,7 @@ export default defineComponent({
     }
   },
   methods: {
-    auspiceChanged(value: Auspice) {
+    auspiceChanged(value: PsiInstitutionType) {
       this.$emit("update:model-value", value);
     },
   },

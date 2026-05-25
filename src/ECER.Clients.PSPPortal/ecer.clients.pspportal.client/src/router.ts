@@ -74,6 +74,41 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/education-institution/:institutionId",
+      component: () => import("./components/pages/EducationInstitution.vue"),
+      name: "education-institution",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/education-institution/:institutionId/campus/add",
+      component: () => import("./components/pages/AddCampus.vue"),
+      name: "add-campus",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/education-institution/:institutionId/campus/:campusId",
+      component: () => import("./components/pages/Campus.vue"),
+      name: "campus",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/education-institution/:institutionId/campus/:campusId/edit",
+      component: () => import("./components/pages/EditCampus.vue"),
+      name: "edit-campus",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/education-institution/:institutionId/satellite-location/add",
+      component: () => import("./components/pages/AddSatelliteLocation.vue"),
+      name: "add-satellite-location",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/program/:programId",
       component: () => import("./components/pages/Program.vue"),
       name: "programDetail",
@@ -84,6 +119,14 @@ const router = createRouter({
       path: "/program/submitted/:programProfileId",
       component: () => import("./components/pages/Submitted.vue"),
       name: "programSubmitted",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
+    {
+      path: "/program-application-info/:applicationType/:campusId?",
+      component: () =>
+        import("./components/pages/ProgramApplicationInfoContainer.vue"),
+      name: "programApplicationInfo",
       meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
@@ -103,6 +146,13 @@ const router = createRouter({
       path: "/program/:programId/initiate-update",
       component: () => import("./components/pages/InitiateProgramUpdate.vue"),
       name: "initiate-program-update",
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/program-application-begin/:applicationType/:campusId?",
+      component: () => import("./components/pages/BeginProgramApplication.vue"),
+      name: "program-application-begin",
       meta: { requiresAuth: true },
       props: true,
     },
@@ -164,10 +214,90 @@ const router = createRouter({
       name: "not-found",
       component: () => import("./components/pages/PageNotFound.vue"),
     },
+    {
+      path: "/program-applications",
+      component: () =>
+        import("./components/program-application/ProgramApplications.vue"),
+      name: "program-applications",
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/program-application/:programApplicationId",
+      component: () =>
+        import("./components/pages/ProgramApplicationContainer.vue"),
+      name: "programApplication",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+      children: [
+        {
+          path: "component/:componentGroupId",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationComponent.vue"),
+          name: "program-application-component",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/info",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationInformation.vue"),
+          name: "program-application-component-info",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/institute-info",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationInstituteInfo.vue"),
+          name: "program-application-institute-info",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/program-profile/:programType",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationProgramProfileAreaOfInstruction.vue"),
+          name: "program-application-program-profile-area-of-instruction",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/review-responses",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationReviewResponses.vue"),
+          name: "program-application-review-response",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/program-profile/review-courses",
+          component: () =>
+            import("./components/program-application/components/ProgramApplicationProgramProfileAreaOfInstructionReview.vue"),
+          name: "program-application-program-profile-area-of-instruction-review",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+        {
+          path: "component/submit",
+          component: () =>
+            import("./components/program-application/components/SubmitApplication.vue"),
+          name: "submit-application",
+          meta: { requiresAuth: true, requiresVerification: true },
+          props: true,
+        },
+      ],
+    },
+    {
+      path: "/program-application/:programApplicationId/submitted",
+      component: () => import("./components/pages/ApplicationSubmitted.vue"),
+      name: "application-submitted",
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
   ],
 });
 
-// Gaurd for authenticated routes
+// Guard for authenticated routes
 router.beforeEach(async (to, _, next) => {
   const oidcStore = useOidcStore();
   const userStore = useUserStore();

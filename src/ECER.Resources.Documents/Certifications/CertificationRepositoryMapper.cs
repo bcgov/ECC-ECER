@@ -1,73 +1,100 @@
-﻿using AutoMapper;
-using AutoMapper.Extensions.EnumMapping;
-using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
+using Riok.Mapperly.Abstractions;
 
 namespace ECER.Resources.Documents.Certifications;
 
-internal class CertificationRepositoryMapper : SecureProfile
+internal interface ICertificationRepositoryMapper
 {
-  public CertificationRepositoryMapper()
+  List<Certification> MapCertifications(IEnumerable<ecer_Certificate> source);
+  List<CertificationSummary> MapCertificationSummaries(IEnumerable<ecer_CertificateSummary> source);
+}
+
+[Mapper]
+internal partial class CertificationRepositoryMapper : ICertificationRepositoryMapper
+{
+  public List<Certification> MapCertifications(IEnumerable<ecer_Certificate> source) => source.Select(MapCertification).ToList();
+
+  public List<CertificationSummary> MapCertificationSummaries(IEnumerable<ecer_CertificateSummary> source) => source.Select(MapCertificationSummary).ToList();
+
+  private Certification MapCertification(ecer_Certificate source) => new(source.ecer_CertificateId?.ToString() ?? string.Empty)
   {
-    CreateMap<ecer_Certificate, Certification>(MemberList.Destination)
-     .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CertificateId))
-     .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_RegistrantidName))
-     .ForMember(d => d.Number, opts => opts.MapFrom(s => s.ecer_CertificateNumber))
-     .ForMember(d => d.RegistrantId, opts => opts.MapFrom(s => s.ecer_Registrantid.Id))
-     .ForMember(d => d.ExpiryDate, opts => opts.MapFrom(s => s.ecer_ExpiryDate))
-     .ForMember(d => d.EffectiveDate, opts => opts.MapFrom(s => s.ecer_EffectiveDate))
-     .ForMember(d => d.Date, opts => opts.MapFrom(s => s.ecer_Date))
-     .ForMember(d => d.CertificatePDFGeneration, opts => opts.MapFrom(s => s.ecer_HasCertificatePDF))
-     .ForMember(d => d.PrintDate, opts => opts.MapFrom(s => s.ecer_PrintedDate))
-     .ForMember(d => d.HasConditions, opts => opts.MapFrom(s => s.ecer_HasConditions))
-     .ForMember(d => d.LevelName, opts => opts.MapFrom(s => s.ecer_CertificateLevel))
-     .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
-     .ForMember(d => d.IneligibleReference, opts => opts.MapFrom(s => s.ecer_IneligibleReference))
-     .ForMember(d => d.Levels, opts => opts.MapFrom(s => s.ecer_certifiedlevel_CertificateId))
-     .ForMember(d => d.Files, opts => opts.MapFrom(s => s.ecer_documenturl_CertificateId))
-     .ForMember(d => d.CertificateConditions, opts => opts.MapFrom(s => s.ecer_certificate_Registrantid.ecer_certificateconditions_Registrantid.Where(cc => cc.StatusCode == ecer_CertificateConditions_StatusCode.Active)))
-     .ForMember(d => d.BaseCertificateTypeId, opts => opts.MapFrom(s => s.ecer_BaseCertificateTypeID));
+    Name = source.ecer_RegistrantidName,
+    Number = source.ecer_CertificateNumber,
+    RegistrantId = source.ecer_Registrantid?.Id.ToString(),
+    ExpiryDate = source.ecer_ExpiryDate,
+    EffectiveDate = source.ecer_EffectiveDate,
+    Date = source.ecer_Date,
+    PrintDate = source.ecer_PrintedDate,
+    HasConditions = source.ecer_HasConditions,
+    LevelName = source.ecer_CertificateLevel,
+    BaseCertificateTypeId = MapBaseCertificateTypeId(source.ecer_BaseCertificateTypeID),
+    StatusCode = MapCertificateStatusCode(source.StatusCode),
+    CertificatePDFGeneration = MapCertificatePdfGeneration(source.ecer_HasCertificatePDF),
+    IneligibleReference = MapYesNoNull(source.ecer_IneligibleReference),
+    Levels = (source.ecer_certifiedlevel_CertificateId ?? Array.Empty<ecer_CertifiedLevel>()).Select(MapCertificationLevel).ToList(),
+    Files = (source.ecer_documenturl_CertificateId ?? Array.Empty<bcgov_DocumentUrl>()).Select(MapCertificationFile).ToList(),
+    CertificateConditions = (source.ecer_certificate_Registrantid?.ecer_certificateconditions_Registrantid ?? Array.Empty<ecer_CertificateConditions>())
+      .Where(condition => condition.StatusCode == ecer_CertificateConditions_StatusCode.Active)
+      .Select(MapCertificateCondition)
+      .ToList(),
+  };
 
-    CreateMap<ecer_CertificateConditions, CertificateCondition>(MemberList.Destination)
-    .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
-    .ForMember(d => d.CertificateId, opts => opts.MapFrom(s => s.ecer_CertificateId != null ? s.ecer_CertificateId.Id : (Guid?)null))
-    .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
-    .ForMember(d => d.Details, opts => opts.MapFrom(s => s.ecer_Details))
-    .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_StartDate))
-    .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
-    .ForMember(d => d.DisplayOrder, opts => opts.MapFrom(s => s.ecer_DisplayOrder));
+  private CertificateCondition MapCertificateCondition(ecer_CertificateConditions source) => new()
+  {
+    Id = source.Id.ToString(),
+    CertificateId = source.ecer_CertificateId?.Id.ToString(),
+    Name = source.ecer_Name,
+    Details = source.ecer_Details,
+    StartDate = source.ecer_StartDate.GetValueOrDefault(),
+    EndDate = source.ecer_EndDate.GetValueOrDefault(),
+    DisplayOrder = source.ecer_DisplayOrder.GetValueOrDefault(),
+  };
 
-    CreateMap<ecer_CertifiedLevel, CertificationLevel>(MemberList.Destination)
-    .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CertifiedLevelId))
-    .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_CertificateTypeIdName));
+  private CertificationLevel MapCertificationLevel(ecer_CertifiedLevel source) => new(source.ecer_CertifiedLevelId?.ToString() ?? string.Empty)
+  {
+    Type = source.ecer_CertificateTypeIdName,
+  };
 
-    CreateMap<bcgov_DocumentUrl, CertificationFile>(MemberList.Destination)
-    .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
-    .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
-    .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension))
-    .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
-    .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
-    .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn))
-    .ForMember(d => d.Tag1Name, opts => opts.MapFrom(s => s.bcgov_Tag1IdName));
+  private CertificationFile MapCertificationFile(bcgov_DocumentUrl source) => new(source.bcgov_DocumentUrlId?.ToString() ?? string.Empty)
+  {
+    Url = source.bcgov_Url,
+    Extention = source.bcgov_FileExtension,
+    Size = source.bcgov_FileSize,
+    Name = source.bcgov_FileName,
+    CreatedOn = source.CreatedOn,
+    Tag1Name = source.bcgov_Tag1IdName,
+  };
 
-    CreateMap<CertificateStatusCode, ecer_Certificate_StatusCode>()
-    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-    .ReverseMap();
+  private CertificationSummary MapCertificationSummary(ecer_CertificateSummary source)
+  {
+    var latestFile = source.ecer_bcgov_documenturl_CertificateSummaryId?
+      .OrderByDescending(file => file.CreatedOn)
+      .FirstOrDefault();
 
-    CreateMap<CertificatePDFGeneration, ecer_CertificatePDFGeneration>()
-    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-    .ReverseMap();
-
-    CreateMap<YesNoNull, ecer_YesNoNull>()
-    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-    .ReverseMap();
-
-    CreateMap<ecer_CertificateSummary, CertificationSummary>()
-    .ForCtorParam(nameof(CertificationSummary.Id), opt => opt.MapFrom(src => src.ecer_CertificateSummaryId))
-    .ForMember(dest => dest.FileName, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_FileName : null))
-    .ForMember(dest => dest.FilePath, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_Url : null))
-    .ForMember(dest => dest.FileExtention, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_FileExtension : null))
-    .ForMember(dest => dest.FileId, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_DocumentUrlId : null))
-    .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().CreatedOn : null));
+    return new CertificationSummary(source.ecer_CertificateSummaryId?.ToString() ?? string.Empty)
+    {
+      FileName = latestFile?.bcgov_FileName,
+      FilePath = latestFile?.bcgov_Url,
+      FileExtention = latestFile?.bcgov_FileExtension,
+      FileId = latestFile?.bcgov_DocumentUrlId.ToString(),
+      CreatedOn = latestFile?.CreatedOn,
+    };
   }
+
+  private static int? MapBaseCertificateTypeId(string? source) => int.TryParse(source, out var parsed) ? parsed : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CertificateStatusCode MapCertificateStatusCode(ecer_Certificate_StatusCode source);
+
+  private CertificateStatusCode? MapCertificateStatusCode(ecer_Certificate_StatusCode? source) => source.HasValue ? MapCertificateStatusCode(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial CertificatePDFGeneration MapCertificatePdfGeneration(ecer_CertificatePDFGeneration source);
+
+  private CertificatePDFGeneration? MapCertificatePdfGeneration(ecer_CertificatePDFGeneration? source) => source.HasValue ? MapCertificatePdfGeneration(source.Value) : null;
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial YesNoNull MapYesNoNull(ecer_YesNoNull source);
+
+  private YesNoNull? MapYesNoNull(ecer_YesNoNull? source) => source.HasValue ? MapYesNoNull(source.Value) : null;
 }

@@ -5,6 +5,7 @@ import {
   getProvinceList,
   getCountryList,
   getAreaOfInstructionList,
+  getSystemMessages,
 } from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
 import type { Components } from "@/types/openapi";
@@ -15,6 +16,7 @@ export interface UserState {
   provinceList: Components.Schemas.Province[];
   countryList: Components.Schemas.Country[];
   areaOfInstructionList: Components.Schemas.AreaOfInstruction[];
+  systemMessages: Components.Schemas.SystemMessage[];
 }
 
 export const useConfigStore = defineStore("config", {
@@ -26,6 +28,7 @@ export const useConfigStore = defineStore("config", {
     provinceList: [] as Components.Schemas.Province[],
     countryList: [] as Components.Schemas.Country[],
     areaOfInstructionList: [] as Components.Schemas.AreaOfInstruction[],
+    systemMessages: [] as Components.Schemas.SystemMessage[],
   }),
   getters: {
     kcOidcConfiguration: (state): UserManagerSettings => {
@@ -78,13 +81,19 @@ export const useConfigStore = defineStore("config", {
     async initialize(): Promise<
       Components.Schemas.ApplicationConfiguration | null | undefined
     > {
-      const [configuration, provinceList, countryList, areaOfInstructionList] =
-        await Promise.all([
-          getConfiguration(),
-          getProvinceList(),
-          getCountryList(),
-          getAreaOfInstructionList(),
-        ]);
+      const [
+        configuration,
+        provinceList,
+        countryList,
+        areaOfInstructionList,
+        systemMessages,
+      ] = await Promise.all([
+        getConfiguration(),
+        getProvinceList(),
+        getCountryList(),
+        getAreaOfInstructionList(),
+        getSystemMessages(),
+      ]);
 
       if (configuration !== null && configuration !== undefined) {
         this.applicationConfiguration = configuration;
@@ -103,7 +112,17 @@ export const useConfigStore = defineStore("config", {
         areaOfInstructionList !== null &&
         areaOfInstructionList !== undefined
       ) {
-        this.areaOfInstructionList = areaOfInstructionList;
+        this.areaOfInstructionList = areaOfInstructionList.sort((a, b) => {
+          if (a.displayOrder === null || a.displayOrder === undefined) return 1;
+          if (b.displayOrder === null || b.displayOrder === undefined)
+            return -1;
+          return a.displayOrder.localeCompare(b.displayOrder, undefined, {
+            numeric: true,
+          });
+        });
+      }
+      if (systemMessages !== null && systemMessages !== undefined) {
+        this.systemMessages = systemMessages;
       }
       return configuration;
     },

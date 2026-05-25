@@ -71,6 +71,7 @@
         :model-value="userFiles"
         :hide-details="'auto'"
         :rules="[
+          !emptyFiles,
           !fileErrors,
           !tooManyFiles,
           !filesInProgress,
@@ -180,6 +181,9 @@ export default defineComponent({
     };
   },
   computed: {
+    emptyFiles() {
+      return this.selectedFiles.some((file) => file.file.size === 0);
+    },
     fileErrors() {
       return this.selectedFiles.some((file) => file.fileErrors.length !== 0);
     },
@@ -249,6 +253,11 @@ export default defineComponent({
               `This file is too big. Only files ${this.maxFileSizeInMB}MB or smaller are accepted.`,
             );
           }
+          if (file.size === 0) {
+            fileErrors.push(
+              "This file is empty. Please upload a file with content.",
+            );
+          }
           if (!allowedFileTypes.includes(file.type)) {
             fileErrors.push(
               "This type of file is not accepted. The following file types are accepted: .txt, .pdf, .doc, .docx, .rtf, .xls, .xlsx, .jpg/jpeg, .gif, .png, .bmp, .tiff, .x-tiff",
@@ -264,7 +273,7 @@ export default defineComponent({
           const fileId = uuidv4(); // Generate a unique file ID using uuid
           const selectedFile: FileItem = {
             file,
-            fileSize: file.size,
+            fileSize: Functions.humanFileSize(file.size),
             fileName: file.name,
             progress: 0,
             fileId,

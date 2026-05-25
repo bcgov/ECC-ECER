@@ -65,6 +65,15 @@ const meta = {
       action: "edit",
       description: "Emitted when edit button is clicked",
     },
+    showDeleteButton: {
+      control: "boolean",
+      description:
+        "Whether to show the delete button for each course controlled by whether type is ProgramApplication or ProgramProfile",
+    },
+    loading: {
+      control: "boolean",
+      description: "Whether buttons are in a loading state",
+    },
   },
   args: {
     courseAreaOfInstructions: [
@@ -129,6 +138,8 @@ export const Default: Story = {
         courseNumber: "PSY 201",
       },
     ] as CourseAreaOfInstructionWithCourse[],
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
@@ -170,6 +181,8 @@ export const MultipleAreas: Story = {
       "area-2":
         "Child guidance is included in Program Development, Curriculum and Foundations. There is no set minimum required hours specifically for Child Guidance.",
     },
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
@@ -191,6 +204,8 @@ export const ProgressComplete: Story = {
         courseNumber: "ECE 201",
       },
     ] as CourseAreaOfInstructionWithCourse[],
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
@@ -212,6 +227,8 @@ export const ProgressOver100Percent: Story = {
         courseNumber: "ECE 201",
       },
     ] as CourseAreaOfInstructionWithCourse[],
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
@@ -226,6 +243,8 @@ export const ProgressLow: Story = {
         courseNumber: "ECE 101",
       },
     ] as CourseAreaOfInstructionWithCourse[],
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
@@ -261,6 +280,8 @@ export const MultipleCourses: Story = {
         courseNumber: "ECE 304",
       },
     ] as CourseAreaOfInstructionWithCourse[],
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
@@ -283,11 +304,15 @@ export const WithoutProgressBar: Story = {
       },
     ] as CourseAreaOfInstructionWithCourse[],
     showProgressBar: false,
+    loading: false,
+    showDeleteButton: false,
   },
 };
 
 export const Empty: Story = {
   args: {
     courseAreaOfInstructions: [] as CourseAreaOfInstructionWithCourse[],
+    loading: false,
+    showDeleteButton: false,
   },
 };

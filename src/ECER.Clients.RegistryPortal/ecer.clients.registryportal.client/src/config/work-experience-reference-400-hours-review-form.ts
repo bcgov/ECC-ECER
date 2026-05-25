@@ -1,5 +1,5 @@
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
-import EceRecaptcha from "@/components/inputs/EceRecaptcha.vue";
+import EceCaptchaTurnstile from "@/components/inputs/EceCaptchaTurnstile.vue";
 import EceReferenceContactPreview from "@/components/reference/inputs/EceReferenceContactPreview.vue";
 import EceWorkExperienceReference400HoursEvaluationPreview from "@/components/reference/inputs/EceWorkExperienceReference400HoursEvaluationPreview.vue";
 import type { Form } from "@/types/form";
@@ -42,12 +42,12 @@ const workExperience400HoursReviewForm: Form = {
         xl: 12,
       },
     },
-    recaptchaToken: {
-      id: "recaptchaToken",
-      component: EceRecaptcha,
+    captchaToken: {
+      id: "captchaToken",
+      component: EceCaptchaTurnstile,
       props: {
         rules: [Rules.required("Check to confirm you are not a robot")],
-        recaptchaElementId: "recaptchaSubmit",
+        captchaElementId: "captchaSubmit",
       },
       cols: {
         md: 12,

@@ -1,3 +1,5 @@
+import type { ApplicationType } from "./openapi";
+
 /*******
 Start these types are used when we want to take our courses and group them by areaOfInstruction with getPackageDetails
 *******/
@@ -13,3 +15,31 @@ type AreaOfInstructionWithCourseHoursMap = Map<string, CourseAreaDetail[]>;
 /*******
 End these types are used when we want to take our courses and group them by areaOfInstruction with getPackageDetails
 *******/
+
+interface ComponentGroupNavigation {
+  id: string;
+  name: string;
+  status: string;
+  categoryName: string;
+  displayOrder: number;
+  statusIcon: string;
+  navigationRoute: string;
+  navigationType: string;
+  rfaiRequired: boolean;
+}
+
+type ComponentGroupNavigationMap = Map<string, ComponentGroupNavigation[]>;
+
+interface ProgramApplicationContact {
+  id: string | null | undefined;
+  name: string;
+}
+
+interface CreateApplication {
+  programName: string;
+  provincialCertificationTypeValues: string[];
+  deliveryType: string;
+  programProfileId?: string;
+  campusId?: string;
+  applicationType: ApplicationType;
+}
