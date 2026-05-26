@@ -23,6 +23,7 @@ public abstract class PspPortalWebAppScenarioBase : WebAppScenarioBase
 
 public class PspPortalWebAppFixture : WebAppFixtureBase
 {
+  private readonly string dataScope = Guid.NewGuid().ToString("N")[..8];
   private IServiceScope serviceScope = null!;
   private ecer_PostSecondaryInstitute testPostSecondaryInstitute = null!;
   private ecer_ECEProgramRepresentative testProgramRepresentative = null!;
@@ -75,6 +76,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public const string HealingTestBceidBusinessName = "Healing Test Business";
   public const string HealingTestBceidBusinessId = "heal1234-e5f6-7890-abcd-ef1234567890";
 
+  private string ScopedName(string value) => $"{value}_{dataScope}";
+  private string ScopedCourseCode(string value) => $"{value}{dataScope[..3]}";
+
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedPspUserIdentity => testPspIdentity;
   public string AuthenticatedPspUserId => testProgramRepresentative.Id.ToString();
@@ -96,6 +100,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string programIdWithTotals => testProgram2.Id.ToString();
   public string courseId => testCourse.Id.ToString();
   public string courseId2 => testCourse2.Id.ToString();
+  public string courseNumber => testCourse.ecer_Code ?? string.Empty;
+  public string courseNumber2 => testCourse2.ecer_Code ?? string.Empty;
 
   public string programApplicationId => programApplication.Id.ToString();
   public string draftProgramApplicationId => draftProgramApplication.Id.ToString();
@@ -104,10 +110,12 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public string componentTestComponentGroupId => componentTestComponentGroup.Id.ToString();
   public string componentTestComponentId => componentTestComponent.Id.ToString();
   public string courseId3 => testCourse3.Id.ToString();
+  public string courseNumber3 => testCourse3.ecer_Code ?? string.Empty;
   public string CampusId => testCampus.Id.ToString();
   public string campusProgramApplicationId => campusProgramApplication.Id.ToString();
   public string campusProgramId => campusProgram.Id.ToString();
   public string testCourseForProgramApplicationId => testCourseForProgramApplication.Id.ToString();
+  public string testCourseForProgramApplicationNumber => testCourseForProgramApplication.ecer_Code ?? string.Empty;
 
   public string AreaOfInstructionId => testAreaOfInstruction.ecer_ProvincialRequirementId?.ToString() ?? string.Empty;
   public string AreaOfInstructionName => testAreaOfInstruction.ecer_Name ?? string.Empty;
@@ -148,54 +156,54 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   {
     await Task.CompletedTask;
 
-    testPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context);
+    testPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, ScopedName("Test_psp_institute"));
     testProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute);
     testPspIdentity = GetOrAddProgramRepresentativeIdentity(context, testProgramRepresentative);
     secondaryProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_secondary", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
     tertiaryProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_tertiary", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     inactiveProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_inactive", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Disabled);
     inactiveProgramRepresentativeDoesNotChange = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_inactive_does_not_change", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Disabled);
-    otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, $"Test_psp_institute_other");
+    otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, ScopedName("Test_psp_institute_other"));
     otherInstituteRepresentative = GetOrAddProgramRepresentative(context, otherPostSecondaryInstitute, $"{TestRunId}psp_rep_other", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     invitedPspUserToReinvite = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_reinvite", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
     testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
     testAreaOfInstruction = GetOrAddAreaOfInstruction(context);
 
-    testCommunication1 = GetOrAddCommunication(context, "comm1", null);
+    testCommunication1 = GetOrAddCommunication(context, ScopedName("comm1"), null);
 
-    approvedProgram = GetOrAddProgram("autotest_psp_program_approved", context, testPostSecondaryInstitute, false, false, "Annual3", "Approved", statusCode: ecer_Program_StatusCode.RegistryReviewComplete);
-    testProgram1 = GetOrAddProgram("autotest_psp_program_test_program_1", context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
-    testProgram2 = GetOrAddProgram("autotest_psp_program_test_program_2", context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
-    changeRequestFromProfile = GetOrAddProgram("autotest_psp_program_change_request_from_profile", context, testPostSecondaryInstitute, false, false, "CRFromProfile", "ChangeRequestInProgress", statusCode: ecer_Program_StatusCode.ChangeRequestInProgress);
-    changeRequestProgram = GetOrAddProgram("autotest_psp_program_change_request_program", context, testPostSecondaryInstitute, false, true, "CR", "Draft", fromProfile: changeRequestFromProfile);
-    submitDraftProgram = GetOrAddProgram("autotest_psp_program_submit_draft", context, testPostSecondaryInstitute, false, false, "Annual3", "Draft");
-    testCourse = GetOrAddCourse(context, testProgram1, "101", testPostSecondaryInstitute);
-    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201", testPostSecondaryInstitute);
-    testCourse3 = GetOrAddCourse(context, testProgram1, "109", testPostSecondaryInstitute);
+    approvedProgram = GetOrAddProgram(ScopedName("autotest_psp_program_approved"), context, testPostSecondaryInstitute, false, false, "Annual3", "Approved", statusCode: ecer_Program_StatusCode.RegistryReviewComplete);
+    testProgram1 = GetOrAddProgram(ScopedName("autotest_psp_program_test_program_1"), context, testPostSecondaryInstitute, false, false, "Annual1", "Draft");
+    testProgram2 = GetOrAddProgram(ScopedName("autotest_psp_program_test_program_2"), context, testPostSecondaryInstitute, true, false, "Annual2", "Draft");
+    changeRequestFromProfile = GetOrAddProgram(ScopedName("autotest_psp_program_change_request_from_profile"), context, testPostSecondaryInstitute, false, false, "CRFromProfile", "ChangeRequestInProgress", statusCode: ecer_Program_StatusCode.ChangeRequestInProgress);
+    changeRequestProgram = GetOrAddProgram(ScopedName("autotest_psp_program_change_request_program"), context, testPostSecondaryInstitute, false, true, "CR", "Draft", fromProfile: changeRequestFromProfile);
+    submitDraftProgram = GetOrAddProgram(ScopedName("autotest_psp_program_submit_draft"), context, testPostSecondaryInstitute, false, false, "Annual3", "Draft");
+    testCourse = GetOrAddCourse(context, testProgram1, ScopedCourseCode("101"), testPostSecondaryInstitute);
+    testCourse2 = GetOrAddCourse(context, submitDraftProgram, ScopedCourseCode("201"), testPostSecondaryInstitute);
+    testCourse3 = GetOrAddCourse(context, testProgram1, ScopedCourseCode("109"), testPostSecondaryInstitute);
 
     programApplication =
-      GetOrAddProgramApplication("Test_psp_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Submitted, ecer_Statusreasondetail.RFAIrequested);
+      GetOrAddProgramApplication(ScopedName("Test_psp_program_application"), context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Submitted, ecer_Statusreasondetail.RFAIrequested);
     draftProgramApplication =
-      GetOrAddProgramApplication("Test_psp_program_application_withdraw", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
+      GetOrAddProgramApplication(ScopedName("Test_psp_program_application_withdraw"), context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
 
-    testCourseForProgramApplication = GetOrAddCourse(context, programApplication, "666", testPostSecondaryInstitute);
+    testCourseForProgramApplication = GetOrAddCourse(context, programApplication, ScopedCourseCode("666"), testPostSecondaryInstitute);
 
-    testCourse2 = GetOrAddCourse(context, submitDraftProgram, "201", testPostSecondaryInstitute);
-    testCourse3 = GetOrAddCourse(context, testProgram1, "109", testPostSecondaryInstitute);
+    testCourse2 = GetOrAddCourse(context, submitDraftProgram, ScopedCourseCode("201"), testPostSecondaryInstitute);
+    testCourse3 = GetOrAddCourse(context, testProgram1, ScopedCourseCode("109"), testPostSecondaryInstitute);
 
     componentTestProgramApplication =
-      GetOrAddProgramApplication("Test_psp_program_application_components", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
+      GetOrAddProgramApplication(ScopedName("Test_psp_program_application_components"), context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
     (componentTestComponentGroup, componentTestComponent) = GetOrAddComponentGroupWithComponent(context, componentTestProgramApplication);
 
     draftProgramApplication2 =
-      GetOrAddProgramApplication("Test_psp_program_application_update", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
+      GetOrAddProgramApplication(ScopedName("Test_psp_program_application_update"), context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
 
-    testCampus = GetOrAddCampus(context, testPostSecondaryInstitute);
+    testCampus = GetOrAddCampus(context, testPostSecondaryInstitute, ScopedName("Test_psp_campus"));
     campusProgramApplication =
-      GetOrAddProgramApplication("Test_psp_campus_program_application", context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
-    campusProgram = GetOrAddProgram("autotest_psp_program_with_campus", context, testPostSecondaryInstitute, false, false, "Campus", "Draft");
+      GetOrAddProgramApplication(ScopedName("Test_psp_campus_program_application"), context, testPostSecondaryInstitute, ecer_PSIApplicationType.NewBasicECEPostBasicProgram, ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode.Draft);
+    campusProgram = GetOrAddProgram(ScopedName("autotest_psp_program_with_campus"), context, testPostSecondaryInstitute, false, false, "Campus", "Draft");
 
-    registrationTestInstitute = GetOrAddPostSecondaryInstituteWithoutBceid(context);
+    registrationTestInstitute = GetOrAddPostSecondaryInstituteWithoutBceid(context, ScopedName("Test_psp_registration_institute"));
     registrationTestProgramRep = GetOrAddProgramRepresentative(context, registrationTestInstitute, $"{TestRunId}psp_reg_test_rep", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
     registrationTestPortalInvitation = GetOrAddPortalInvitation_PspProgramRepresentative(context, registrationTestProgramRep, $"{TestRunId}psp_reg_test_invite");
     registrationTestUserIdentity = new UserIdentity($"{TestRunId}reg_test_user", "bceidbusiness");
@@ -203,7 +211,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     registrationSuccessPortalInvitation = GetOrAddPortalInvitation_PspProgramRepresentative(context, registrationSuccessRep, $"{TestRunId}psp_reg_success_invite");
 
     // Healing test data: institution with business name but no GUID, with a registered (active) user
-    healingTestInstitute = GetOrAddPostSecondaryInstituteWithoutBceid(context, "Test_psp_healing_institute", HealingTestBceidBusinessName);
+    healingTestInstitute = GetOrAddPostSecondaryInstituteWithoutBceid(context, ScopedName("Test_psp_healing_institute"), HealingTestBceidBusinessName);
     healingTestProgramRep = GetOrAddProgramRepresentative(context, healingTestInstitute, $"{TestRunId}psp_healing_rep", ecer_RepresentativeRole.Primary, ecer_AccessToPortal.Active);
 
     context.SaveChanges();
@@ -479,7 +487,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         ecer_PhoneNumber = "5555555555",
         ecer_PhoneExtension = "123",
         ecer_Role = "Program Representative",
-        ecer_RepresentativeRole = ecer_RepresentativeRole.Primary,
+        ecer_RepresentativeRole = role,
         ecer_AccessToPortal = access,
         ecer_HasAcceptedTermsofUse = access == ecer_AccessToPortal.Active, //we need to set this to false so dynamics doesn't set the user back to active
         StateCode = ecer_eceprogramrepresentative_statecode.Active,
@@ -488,18 +496,21 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       };
       context.AddObject(representative);
       context.AddLink(representative, new Relationship(ecer_ECEProgramRepresentative.Fields.ecer_eceprogramrepresentative_PostSecondaryIns), institute);
+      return representative;
     }
 
     representative.ecer_RepresentativeRole = role;
     representative.ecer_AccessToPortal = access;
+    representative.ecer_HasAcceptedTermsofUse = access == ecer_AccessToPortal.Active;
     context.UpdateObject(representative);
     return representative;
   }
 
   private (ecer_ProgramApplicationComponentGroup group, ecer_ProgramApplicationComponent component) GetOrAddComponentGroupWithComponent(EcerContext context, ecer_PostSecondaryInstituteProgramApplicaiton application)
   {
-    var groupName = $"Test_component_group_{application.ecer_Name}";
-    var componentName = $"Test_component_{application.ecer_Name}";
+    var suffix = application.ecer_PostSecondaryInstituteProgramApplicaitonId?.ToString("N")[..8] ?? Guid.NewGuid().ToString("N")[..8];
+    var groupName = $"tcg_{suffix}";
+    var componentName = $"tc_{suffix}";
     var group = context.ecer_ProgramApplicationComponentGroupSet.FirstOrDefault(g => g.ecer_GroupName == groupName);
     if (group != null)
     {
@@ -561,9 +572,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return identity;
   }
 
-  private ecer_PostSecondaryInstituteCampus GetOrAddCampus(EcerContext context, ecer_PostSecondaryInstitute institute)
+  private ecer_PostSecondaryInstituteCampus GetOrAddCampus(EcerContext context, ecer_PostSecondaryInstitute institute, string campusName)
   {
-    var campusName = "Test_psp_campus";
     var campus = context.ecer_PostSecondaryInstituteCampusSet.FirstOrDefault(c => c.ecer_Name == campusName);
     if (campus == null)
     {

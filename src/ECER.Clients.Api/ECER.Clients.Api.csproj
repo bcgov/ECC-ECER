@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <UserSecretsId>72521aca-c8b0-44d9-be80-c1724e5217e5</UserSecretsId>
+    <NoWarn>$(NoWarn);CA1515</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

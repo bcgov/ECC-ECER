@@ -42,7 +42,26 @@ internal sealed partial class UnitTestRepository : IUnitTestRepository
     var pspRep = ((IEnumerable<ecer_ECEProgramRepresentative>)context.ecer_ECEProgramRepresentativeSet)
       .FirstOrDefault(d => d.ecer_ECEProgramRepresentativeId == Guid.Parse(pspRepId) && d.ecer_EmailAddress.Contains("TEST", StringComparison.OrdinalIgnoreCase));
     if (pspRep == null) throw new InvalidOperationException($"PSP Program Rep '{pspRepId}' not found or user is not a test account");
-    context.DeleteObject(pspRep);
-    context.SaveChanges();
+
+    try
+    {
+      context.DeleteObject(pspRep);
+      context.SaveChanges();
+    }
+    catch (Microsoft.Xrm.Sdk.SaveChangesException)
+    {
+      // Some Dataverse plugins block representative deletion. Fall back to disabling the test rep so reruns stay isolated.
+      context.Detach(pspRep);
+      var existing = context.ecer_ECEProgramRepresentativeSet.FirstOrDefault(d => d.ecer_ECEProgramRepresentativeId == Guid.Parse(pspRepId));
+      if (existing == null)
+      {
+        return;
+      }
+
+      existing.ecer_AccessToPortal = ecer_AccessToPortal.Disabled;
+      existing.ecer_HasAcceptedTermsofUse = false;
+      context.UpdateObject(existing);
+      context.SaveChanges();
+    }
   }
 }

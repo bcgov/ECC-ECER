@@ -304,25 +304,33 @@ internal partial class ApplicationMapper : IApplicationMapper
     WorkExperienceType = MapWorkExperienceType(source.WorkExperienceType),
   };
 
-  private ResourceApplications.WorkExperienceReferenceCompetenciesAssessment MapWorkExperienceReferenceCompetenciesAssessment(ContractApplications.WorkExperienceReferenceCompetenciesAssessment source) => new()
+  private ResourceApplications.WorkExperienceReferenceCompetenciesAssessment MapWorkExperienceReferenceCompetenciesAssessment(ContractApplications.WorkExperienceReferenceCompetenciesAssessment? source)
   {
-    ChildDevelopment = MapLikertScale(source.ChildDevelopment),
-    ChildDevelopmentReason = source.ChildDevelopmentReason,
-    ChildGuidance = MapLikertScale(source.ChildGuidance),
-    ChildGuidanceReason = source.ChildGuidanceReason,
-    HealthSafetyAndNutrition = MapLikertScale(source.HealthSafetyAndNutrition),
-    HealthSafetyAndNutritionReason = source.HealthSafetyAndNutritionReason,
-    DevelopAnEceCurriculum = MapLikertScale(source.DevelopAnEceCurriculum),
-    DevelopAnEceCurriculumReason = source.DevelopAnEceCurriculumReason,
-    ImplementAnEceCurriculum = MapLikertScale(source.ImplementAnEceCurriculum),
-    ImplementAnEceCurriculumReason = source.ImplementAnEceCurriculumReason,
-    FosteringPositiveRelationChild = MapLikertScale(source.FosteringPositiveRelationChild),
-    FosteringPositiveRelationChildReason = source.FosteringPositiveRelationChildReason,
-    FosteringPositiveRelationFamily = MapLikertScale(source.FosteringPositiveRelationFamily),
-    FosteringPositiveRelationFamilyReason = source.FosteringPositiveRelationFamilyReason,
-    FosteringPositiveRelationCoworker = MapLikertScale(source.FosteringPositiveRelationCoworker),
-    FosteringPositiveRelationCoworkerReason = source.FosteringPositiveRelationCoworkerReason,
-  };
+    if (source == null)
+    {
+      return new ResourceApplications.WorkExperienceReferenceCompetenciesAssessment();
+    }
+
+    return new ResourceApplications.WorkExperienceReferenceCompetenciesAssessment()
+    {
+      ChildDevelopment = MapLikertScale(source.ChildDevelopment),
+      ChildDevelopmentReason = source.ChildDevelopmentReason,
+      ChildGuidance = MapLikertScale(source.ChildGuidance),
+      ChildGuidanceReason = source.ChildGuidanceReason,
+      HealthSafetyAndNutrition = MapLikertScale(source.HealthSafetyAndNutrition),
+      HealthSafetyAndNutritionReason = source.HealthSafetyAndNutritionReason,
+      DevelopAnEceCurriculum = MapLikertScale(source.DevelopAnEceCurriculum),
+      DevelopAnEceCurriculumReason = source.DevelopAnEceCurriculumReason,
+      ImplementAnEceCurriculum = MapLikertScale(source.ImplementAnEceCurriculum),
+      ImplementAnEceCurriculumReason = source.ImplementAnEceCurriculumReason,
+      FosteringPositiveRelationChild = MapLikertScale(source.FosteringPositiveRelationChild),
+      FosteringPositiveRelationChildReason = source.FosteringPositiveRelationChildReason,
+      FosteringPositiveRelationFamily = MapLikertScale(source.FosteringPositiveRelationFamily),
+      FosteringPositiveRelationFamilyReason = source.FosteringPositiveRelationFamilyReason,
+      FosteringPositiveRelationCoworker = MapLikertScale(source.FosteringPositiveRelationCoworker),
+      FosteringPositiveRelationCoworkerReason = source.FosteringPositiveRelationCoworkerReason,
+    };
+  }
 
   private static ResourceApplications.FileInfo MapFileInfo(ContractApplications.FileInfo source) => new(source.Id)
   {
