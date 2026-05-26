@@ -15,7 +15,7 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
   {
     var settings = GetSettings(configurationContext.Configuration);
     var pspSettings = settings?.Psp;
-    var registrySettings = settings?.ResolveRegistrySettings();
+    var registrySettings = settings?.Registry;
 
     if (pspSettings != null)
     {
@@ -63,7 +63,7 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
   {
     var settings = GetSettings(context.Configuration);
     var pspSettings = settings?.Psp;
-    var registrySettings = settings?.ResolveRegistrySettings();
+    var registrySettings = settings?.Registry;
     
     if (pspSettings != null)
     {
