@@ -3,10 +3,12 @@
     :rounded="true"
     :border="true"
     flat
-    class="pa-6 border-primary border-opacity-100 w-100"
+    class="pa-6 w-100"
     :class="[
       {
+        'border-primary border-opacity-100': !hasTopBorder,
         'card-top-border-large': hasTopBorder && topBorderSize === 'large',
+        'card-top-border-medium': hasTopBorder && topBorderSize === 'medium',
         'card-top-border-small': hasTopBorder && topBorderSize === 'small',
       },
     ]"
@@ -29,7 +31,7 @@ export default defineComponent({
     topBorderSize: {
       type: String,
       default: "large",
-      validator: (v: string) => ["large", "small"].includes(v),
+      validator: (v: string) => ["large", "medium", "small"].includes(v),
     },
   },
 });
@@ -38,6 +40,10 @@ export default defineComponent({
 <style scoped>
 .card-top-border-large {
   border-top: 16px solid rgba(var(--v-theme-primary, #013366));
+}
+
+.card-top-border-medium {
+  border-top: 5px solid rgba(var(--v-theme-primary, #013366));
 }
 
 .card-top-border-small {
