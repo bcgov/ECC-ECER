@@ -4,7 +4,7 @@
     <AssemblyName>ECER.Tests</AssemblyName>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <NoWarn>CA1001;1701;1702;CA1707</NoWarn>
+    <NoWarn>CA1001;1701;1702;CA1515;CA1707</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

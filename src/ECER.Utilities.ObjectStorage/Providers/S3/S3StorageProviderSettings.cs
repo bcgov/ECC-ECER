@@ -9,6 +9,6 @@ internal record S3StorageProviderSettings
 
 internal record ObjectStorageSettings
 {
-  public S3StorageProviderSettings Psp { get; set; } = null!;
-  public S3StorageProviderSettings Registry { get; set; } = null!;
+  public S3StorageProviderSettings? Psp { get; set; }
+  public S3StorageProviderSettings? Registry { get; set; }
 }

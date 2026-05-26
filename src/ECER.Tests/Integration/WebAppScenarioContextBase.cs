@@ -1,6 +1,8 @@
 ﻿using Alba;
 using Alba.Security;
 using Bogus;
+using ECER.Utilities.FileScanner;
+using ECER.Utilities.ObjectStorage.Providers;
 using MartinCostello.Logging.XUnit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -40,9 +42,15 @@ public abstract class WebAppScenarioBase : IAsyncLifetime
 
 public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAccessor
 {
-  public string TestRunId { get; } = $"autotest_{Guid.NewGuid().ToString().Substring(0, 4)}_";
+  public string TestOwnerScope { get; } = BuildTestOwnerScope();
+  public string TestRunId { get; }
   public IAlbaHost Host { get; protected set; } = null!;
   public ITestOutputHelper? OutputHelper { get; set; }
+
+  protected WebAppFixtureBase()
+  {
+    TestRunId = $"{TestOwnerScope}_{Guid.NewGuid().ToString("N")[..4]}_";
+  }
 
   protected virtual async Task<IAlbaHost> CreateHost<TProgram>(KeyValuePair<string, string?>[]? configurationSettings = null, IEnumerable<IAlbaExtension>? extensions = null)
       where TProgram : class
@@ -68,6 +76,8 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
                           opts.Audience = "test_client";
                         });
 
+                    services.AddTransient<IFileScannerProvider, TestFileScannerProvider>();
+                    services.AddSingleton<IObjectStorageProviderResolver, TestObjectStorageProviderResolver>();
                     services.AddAuthorization(AddAuthorizationOptions);
                   });
           var configOverrides = new Dictionary<string, string?>(configurationSettings ?? Enumerable.Empty<KeyValuePair<string, string?>>());
@@ -78,6 +88,13 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
                     if (secretsFile != null && File.Exists(secretsFile))
                     {
                       configBuilder.AddJsonFile(secretsFile, false);
+                    }
+                    else
+                    {
+                      configBuilder
+                        .AddUserSecrets<Clients.Api.Program>(optional: true)
+                        .AddUserSecrets<Clients.RegistryPortal.Server.Program>(optional: true)
+                        .AddUserSecrets<Clients.PSPPortal.Server.Program>(optional: true);
                     }
                     configBuilder.AddInMemoryCollection(configOverrides);
                   });
@@ -92,4 +109,13 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
   public abstract Task InitializeAsync();
 
   public abstract Task DisposeAsync();
+
+  private static string BuildTestOwnerScope()
+  {
+    static string Normalize(string value) => new string(value.Where(char.IsLetterOrDigit).Select(char.ToLowerInvariant).ToArray());
+
+    var userName = Normalize(Environment.UserName);
+    var machineName = Normalize(Environment.MachineName);
+    return $"autotest_{userName}_{machineName}";
+  }
 }

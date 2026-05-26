@@ -30,6 +30,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   public Contact AuthenticatedBcscUser2 { get; set; } = null!;
   public Contact AuthenticatedBcscUser3 { get; set; } = null!;
+  public Contact AuthenticatedBcscUser4 { get; set; } = null!;
   public ecer_Province Province { get; set; } = null!;
   public ecer_Country Country { get; set; } = null!;
   public ecer_PostSecondaryInstitute PostSecondaryInstitution { get; set; } = null!;
@@ -47,6 +48,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_Certificate testActiveCertification = null!;
   private ecer_Certificate testActiveCertification2 = null!;
+  private ecer_Certificate testActiveCertification3 = null!;
   private ecer_Certificate testInactiveCertification = null!;
 
   private ecer_PortalInvitation testPortalInvitationOne = null!;
@@ -61,6 +63,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_PreviousName previousName = null!;
 
+  private string PortalInvitationOwnerPrefix(string shortName) => $"{shortName}_{TestOwnerScope}_";
+
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedBcscUserIdentity => AuthenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => AuthenticatedBcscUser.Id.ToString();
@@ -74,6 +78,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   public string activeCertificationOneId => testActiveCertification.Id.ToString();
   public string activeCertificationTwoId => testActiveCertification2.Id.ToString();
+  public string activeCertificationThreeId => testActiveCertification3.Id.ToString();
   public string inactiveCertificationId => testInactiveCertification.Id.ToString();
 
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
@@ -88,7 +93,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationICRAWorkExperienceReferenceIdOptout => testPortalInvitationICRAWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
   public UserIdentity AuthenticatedBcscUserIdentity2 => AuthenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public UserIdentity AuthenticatedBcscUserIdentity3 => AuthenticatedBcscUser3.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
+  public UserIdentity AuthenticatedBcscUserIdentity4 => AuthenticatedBcscUser4.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => AuthenticatedBcscUser2.Id.ToString();
+  public string AuthenticatedBcscUserId4 => AuthenticatedBcscUser4.Id.ToString();
   private ecer_Application inProgressTestApplication2 = null!;
   private ecer_Application draftTestApplication2 = null!;
   private ecer_Application draftTestApplication3 = null!;
@@ -199,6 +206,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     //load user 3
     AuthenticatedBcscUser3 = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user3");
+    AuthenticatedBcscUser4 = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user4");
+    testActiveCertification3 = GetOrAddCertification(context, AuthenticatedBcscUser4);
 
     context.SaveChanges();
 
@@ -207,6 +216,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     context.LoadProperty(AuthenticatedBcscUser2, Contact.Fields.ecer_contact_ecer_authentication_455);
     context.Attach(AuthenticatedBcscUser3);
     context.LoadProperty(AuthenticatedBcscUser3, Contact.Fields.ecer_contact_ecer_authentication_455);
+    context.Attach(AuthenticatedBcscUser4);
+    context.LoadProperty(AuthenticatedBcscUser4, Contact.Fields.ecer_contact_ecer_authentication_455);
   }
 
   private bcgov_DocumentUrl GetOrAddDocument(EcerContext context, Contact registrant, string url)
@@ -261,6 +272,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     {
       contact = new Contact
       {
+        Id = Guid.NewGuid(),
         FirstName = "test1",
         LastName = "test1",
         MiddleName = "test1",
@@ -270,6 +282,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         StatusCode = Contact_StatusCode.Verified,
         BirthDate = DateTime.Parse("2000-03-15", CultureInfo.InvariantCulture),
       };
+      contact.ContactId = contact.Id;
 
       var authentication = new ecer_Authentication
       {
@@ -538,12 +551,12 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     if (portalInvitation == null)
     {
-      foreach (var inv in context.ecer_PortalInvitationSet.Where(p => p.ecer_Name.StartsWith($"{shortName}_autotest_") && p.ecer_Type == ecer_PortalInvitationTypes.CharacterReference).ToList())
+      foreach (var inv in context.ecer_PortalInvitationSet.Where(p => p.ecer_Name.StartsWith(PortalInvitationOwnerPrefix(shortName)) && p.ecer_Type == ecer_PortalInvitationTypes.CharacterReference).ToList())
       {
         context.DeleteObject(inv);
       }
 
-      foreach (var cr in context.ecer_CharacterReferenceSet.Where(c => c.ecer_Name.StartsWith($"{shortName}_autotest_")).ToList())
+      foreach (var cr in context.ecer_CharacterReferenceSet.Where(c => c.ecer_Name.StartsWith(PortalInvitationOwnerPrefix(shortName))).ToList())
       {
         context.DeleteObject(cr);
       }
@@ -620,12 +633,12 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     if (portalInvitation == null)
     {
       foreach (var inv in context.ecer_PortalInvitationSet.Where(p =>
-                 p.ecer_Name.StartsWith($"{shortName}_autotest_") && p.ecer_Type == ecer_PortalInvitationTypes.WorkExperienceReferenceforApplication).ToList())
+                 p.ecer_Name.StartsWith(PortalInvitationOwnerPrefix(shortName)) && p.ecer_Type == ecer_PortalInvitationTypes.WorkExperienceReferenceforApplication).ToList())
       {
         context.DeleteObject(inv);
       }
 
-      foreach (var wr in context.ecer_WorkExperienceRefSet.Where(w => w.ecer_Name.StartsWith($"{shortName}_autotest_")).ToList())
+      foreach (var wr in context.ecer_WorkExperienceRefSet.Where(w => w.ecer_Name.StartsWith(PortalInvitationOwnerPrefix(shortName))).ToList())
       {
         context.DeleteObject(wr);
       }
@@ -689,12 +702,12 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     if (portalInvitation == null)
     {
       foreach (var inv in context.ecer_PortalInvitationSet.Where(p =>
-                 p.ecer_Name.StartsWith($"{shortName}_autotest_") && p.ecer_Type == ecer_PortalInvitationTypes.WorkExperienceReferenceforApplication).ToList())
+                 p.ecer_Name.StartsWith(PortalInvitationOwnerPrefix(shortName)) && p.ecer_Type == ecer_PortalInvitationTypes.WorkExperienceReferenceforApplication).ToList())
       {
         context.DeleteObject(inv);
       }
 
-      foreach (var wr in context.ecer_WorkExperienceRefSet.Where(w => w.ecer_Name.StartsWith($"400_workref_{shortName}_autotest_")).ToList())
+      foreach (var wr in context.ecer_WorkExperienceRefSet.Where(w => w.ecer_Name.StartsWith($"400_workref_{PortalInvitationOwnerPrefix(shortName)}")).ToList())
       {
         context.DeleteObject(wr);
       }

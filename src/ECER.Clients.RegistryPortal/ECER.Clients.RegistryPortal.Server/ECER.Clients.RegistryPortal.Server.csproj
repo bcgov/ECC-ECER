@@ -5,6 +5,7 @@
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:5121</SpaProxyServerUrl>
     <UserSecretsId>13084760-08a4-4c89-8c7c-01b8bf6d0cf7</UserSecretsId>
+    <NoWarn>$(NoWarn);CA1515</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

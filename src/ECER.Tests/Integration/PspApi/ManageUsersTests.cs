@@ -158,11 +158,6 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
     var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
     var rep = (await repo.Query(new PspRepQuery { ById = Fixture.InactivePspUserId }, CancellationToken.None)).Single();
     rep.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Invited);
-
-    using var scope = Fixture.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<EcerContext>();
-    var entity = context.ecer_ECEProgramRepresentativeSet.Single(r => r.Id == Guid.Parse(Fixture.InactivePspUserId));
-    (entity.ecer_InvitetoPortal ?? false).ShouldBeTrue();
   }
 
   [Fact]

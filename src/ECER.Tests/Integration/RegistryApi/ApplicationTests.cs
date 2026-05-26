@@ -497,107 +497,115 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   [Category("Internal")]
   public async Task AddProfessionalDevelopmentAndFiles_ToSubmittedApplication()
   {
-    // Create Renewal Draft Application
-    var application = Create400HoursTypeRenewalDraftApplication();
-    application.FromCertificate = this.Fixture.activeCertificationOneId;
+    string? applicationId = null;
 
-    // Save Renewal Draft Application
-    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    try
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
-      _.StatusCodeShouldBeOk();
-    });
+      // Use a dedicated test user so renewal submission is isolated from shared fixture applications.
+      var application = Create400HoursTypeRenewalDraftApplication();
+      application.Id = null;
+      application.FromCertificate = this.Fixture.activeCertificationThreeId;
 
-    var draftApplicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
+      var newDraftApplicationResponse = await Host.Scenario(_ =>
+      {
+        _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity4, this.Fixture.AuthenticatedBcscUser4);
+        _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
+        _.StatusCodeShouldBeOk();
+      });
 
-    // Submit Renewal Application
-    var applicationResponse = await Host.Scenario(_ =>
+      var draftApplicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
+      applicationId = draftApplicationId;
+
+      var applicationResponse = await Host.Scenario(_ =>
+      {
+        _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity4, this.Fixture.AuthenticatedBcscUser4);
+        _.Post.Json(new ApplicationSubmissionRequest(draftApplicationId)).ToUrl($"/api/applications");
+        _.StatusCodeShouldBeOk();
+      });
+
+      applicationId = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().Application.Id;
+
+      var submittedApplicationByIdResponse = await Host.Scenario(_ =>
+      {
+        _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity4, this.Fixture.AuthenticatedBcscUser4);
+        _.Get.Url($"/api/applications/{applicationId}");
+        _.StatusCodeShouldBeOk();
+      });
+
+      var submittedApplicationsById = await submittedApplicationByIdResponse.ReadAsJsonAsync<Application[]>();
+      submittedApplicationsById.ShouldHaveSingleItem();
+      var submittedApplicationFromServer = submittedApplicationsById[0];
+      submittedApplicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
+      var existingProfessionalDevIds = submittedApplicationFromServer.ProfessionalDevelopments
+                       .Select(pd => pd.Id)
+                       .ToList();
+
+      var fileLength = 1041;
+      var testFile = await faker.GenerateTestFile(fileLength);
+      var testFileId = Guid.NewGuid().ToString();
+      var testFolder = "tempfolder";
+      var testTags = "tag1=1,tag2=2";
+      var testClassification = "test-classification";
+      var testApplication = "Registry";
+      using var content = new StreamContent(testFile.Content);
+      content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
+
+      using var formData = new MultipartFormDataContent
+      {
+        { content, "file", testFile.FileName }
+      };
+
+      var fileResponse = await Host.Scenario(_ =>
+      {
+        _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity4, this.Fixture.AuthenticatedBcscUser4);
+        _.WithRequestHeader("file-classification", testClassification);
+        _.WithRequestHeader("file-tag", testTags);
+        _.WithRequestHeader("file-folder", testFolder);
+        _.WithRequestHeader("application", testApplication);
+        _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
+        _.StatusCodeShouldBeOk();
+      });
+
+      var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
+
+      var professionalDevelopment = CreateProfessionalDevelopment();
+      professionalDevelopment.NewFiles = [uploadedFileResponse.fileId];
+
+      var response = await Host.Scenario(_ =>
+      {
+        _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity4, this.Fixture.AuthenticatedBcscUser4);
+        _.Post.Json(professionalDevelopment).ToUrl($"/api/applications/{applicationId}/professionaldevelopment/add");
+        _.StatusCodeShouldBeOk();
+      });
+
+      var addedProfessionalDevelopment = (await response.ReadAsJsonAsync<AddProfessionalDevelopmentResponse>()).ShouldNotBeNull();
+      addedProfessionalDevelopment.ApplicationId.ShouldNotBeEmpty();
+      addedProfessionalDevelopment.ApplicationId.ShouldBe(applicationId);
+
+      var applicationByIdResponse = await Host.Scenario(_ =>
+      {
+        _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity4, this.Fixture.AuthenticatedBcscUser4);
+        _.Get.Url($"/api/applications/{applicationId}");
+        _.StatusCodeShouldBeOk();
+      });
+
+      var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<Application[]>();
+      applicationsById.ShouldHaveSingleItem();
+      var applicationFromServer = applicationsById[0];
+      applicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
+      var newProfessionalDev = applicationFromServer.ProfessionalDevelopments.FirstOrDefault(pd => !existingProfessionalDevIds.Contains(pd.Id));
+      newProfessionalDev.ShouldNotBeNull();
+      newProfessionalDev.Files.ShouldHaveSingleItem();
+      newProfessionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
+      newProfessionalDev.Status.ShouldBe(ProfessionalDevelopmentStatusCode.Submitted); //for an already submitted application, the professional development should be submitted
+    }
+    finally
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Post.Json(new ApplicationSubmissionRequest(draftApplicationId)).ToUrl($"/api/applications");
-      _.StatusCodeShouldBeOk();
-    });
-
-    var applicationId = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().Application.Id;
-
-    var submittedApplicationByIdResponse = await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Get.Url($"/api/applications/{applicationId}");
-      _.StatusCodeShouldBeOk();
-    });
-
-    var submittedApplicationsById = await submittedApplicationByIdResponse.ReadAsJsonAsync<Application[]>();
-
-    submittedApplicationsById.ShouldHaveSingleItem();
-    var submittedApplicationFromServer = submittedApplicationsById[0];
-    submittedApplicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
-    var existingProfessionalDevIds = submittedApplicationFromServer.ProfessionalDevelopments
-                     .Select(pd => pd.Id)
-                     .ToList();
-
-    // Add test File
-    var fileLength = 1041;
-    var testFile = await faker.GenerateTestFile(fileLength);
-    var testFileId = Guid.NewGuid().ToString();
-    var testFolder = "tempfolder";
-    var testTags = "tag1=1,tag2=2";
-    var testClassification = "test-classification";
-    var testApplication = "Registry";
-    using var content = new StreamContent(testFile.Content);
-    content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
-
-    using var formData = new MultipartFormDataContent
-        {
-          { content, "file", testFile.FileName }
-        };
-
-    var fileResponse = await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.WithRequestHeader("file-classification", testClassification);
-      _.WithRequestHeader("file-tag", testTags);
-      _.WithRequestHeader("file-folder", testFolder);
-      _.WithRequestHeader("application", testApplication);
-      _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
-      _.StatusCodeShouldBeOk();
-    });
-
-    var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
-
-    // Create Professional development
-    var professionalDevelopment = CreateProfessionalDevelopment();
-    professionalDevelopment.NewFiles = [uploadedFileResponse.fileId];
-
-    // Add professional development to submitted Renewal Application
-    var response = await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Post.Json(professionalDevelopment).ToUrl($"/api/applications/{applicationId}/professionaldevelopment/add");
-      _.StatusCodeShouldBeOk();
-    });
-
-    var addedProfessionalDevelopment = (await response.ReadAsJsonAsync<AddProfessionalDevelopmentResponse>()).ShouldNotBeNull();
-    addedProfessionalDevelopment.ApplicationId.ShouldNotBeEmpty();
-    addedProfessionalDevelopment.ApplicationId.ShouldBe(applicationId);
-
-    var applicationByIdResponse = await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Get.Url($"/api/applications/{applicationId}");
-      _.StatusCodeShouldBeOk();
-    });
-
-    var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<Application[]>();
-    applicationsById.ShouldHaveSingleItem();
-    var applicationFromServer = applicationsById[0];
-    applicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
-    var newProfessionalDev = applicationFromServer.ProfessionalDevelopments.FirstOrDefault(pd => !existingProfessionalDevIds.Contains(pd.Id));
-    newProfessionalDev.ShouldNotBeNull();
-    newProfessionalDev.Files.ShouldHaveSingleItem();
-    newProfessionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
-    newProfessionalDev.Status.ShouldBe(ProfessionalDevelopmentStatusCode.Submitted); //for an already submitted application, the professional development should be submitted
+      if (!string.IsNullOrWhiteSpace(applicationId))
+      {
+        await unitTestRepository.CancelApplication(applicationId, CancellationToken.None);
+      }
+    }
   }
 
   [Fact]

@@ -52,7 +52,7 @@ public class ApiWebAppFixture : WebAppFixtureBase
   private async Task InitializeDataverseTestData(EcerContext context)
   {
     await Task.CompletedTask;
-    testPortalInvitationForLinkGeneration = GetOrAddPortalInvitation_No_Links(context, "autotest_for_api_unit_testing_1");
+    testPortalInvitationForLinkGeneration = GetOrAddPortalInvitation_No_Links(context, $"api_no_links_{TestOwnerScope}");
     context.SaveChanges();
   }
 
