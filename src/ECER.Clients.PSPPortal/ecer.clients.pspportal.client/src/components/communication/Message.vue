@@ -187,10 +187,11 @@ import { useDisplay } from "vuetify";
 import { useMessageStore } from "@/store/message";
 import { formatDate } from "@/utils/format";
 import { useLoadingStore } from "@/store/loading";
-import type { Communication } from "@/types/openapi";
+import type { Communication, PspUserListItem } from "@/types/openapi";
 import { useRouter } from "vue-router";
 import DownloadFileLink from "../common/DownloadFileLink.vue";
 import { getCommunicationFile } from "@/api/message";
+import { getUsers } from "@/api/manage-users";
 import { getCommunicationCategoryLabel } from "@/utils/communicationCategory";
 
 export default defineComponent({
@@ -211,6 +212,14 @@ export default defineComponent({
       getCommunicationFile,
     };
   },
+  data() {
+    return {
+      users: [] as PspUserListItem[],
+    };
+  },
+  async mounted() {
+    this.users = (await getUsers()) ?? [];
+  },
   computed: {
     messageDate(): string {
       let message = this.messageStore.currentMessage;
@@ -226,6 +235,15 @@ export default defineComponent({
   },
   methods: {
     formatDate,
+    getPspRepresentativeName(userId: string): string {
+      const user = this.users.find((user) => user.id === userId);
+      if (user) {
+        const firstName = user.profile?.firstName || "";
+        const lastName = user.profile?.lastName || "";
+        return `${firstName} ${lastName}`.trim();
+      }
+      return "Unknown program representative";
+    },
     handleMessageReply() {
       this.router.push({
         name: "replyToMessage",
@@ -246,12 +264,12 @@ export default defineComponent({
       switch (message.from) {
         case "Registry":
           return "ECE Registry";
-        case "PortalUser":
-          return message.educationInstituteName !== null &&
-            message.educationInstituteName !== undefined
-            ? message.educationInstituteName
-            : "";
+        case "ProgramRepresentative":
+          return this.getPspRepresentativeName(
+            message?.programRepresentativeId || "",
+          );
         default:
+          console.warn(`Unknown message sender type: ${message.from}`);
           return "";
       }
     },
@@ -261,9 +279,10 @@ export default defineComponent({
           message.educationInstituteName !== undefined
           ? message.educationInstituteName
           : "";
-      } else if (message.from === "PortalUser") {
+      } else if (message.from === "ProgramRepresentative") {
         return "ECE Registry";
       }
+      console.warn(`Unknown message sender type: ${message.from}`);
       return "";
     },
   },
