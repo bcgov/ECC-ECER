@@ -17,7 +17,11 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
     var clamAvSettings = GetSettings(configurationContext.Configuration);
     if (clamAvSettings != null && !string.IsNullOrWhiteSpace(clamAvSettings.Url))
     {
-      configurationContext.logger.LogInformation("Configuring file scanning using {Url}:{Port}", clamAvSettings.Url, clamAvSettings.Port);
+      if (configurationContext.logger.IsEnabled(LogLevel.Information))
+      {
+        configurationContext.logger.LogInformation("Configuring file scanning using {Url}:{Port}", clamAvSettings.Url, clamAvSettings.Port);
+      }
+
       configurationContext.Services.AddSingleton<IClamClient>(_ =>
         new ClamClient(
           clamAvSettings.Url,

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace ECER.Clients.E2ETestData.Authentication
 {
-    public class ApiKeyAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+    internal class ApiKeyAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         public const string ApiKeyHeaderName = "X-API-KEY";
 

@@ -24,7 +24,6 @@ public class EducationInstitutionEndpoints : IRegisterEndpoints
         var educationInstitution = mapper.MapEducationInstitution(institution);
         return TypedResults.Ok(educationInstitution);
       }).WithOpenApi("Get users education institution", string.Empty, "education_institution_get")
-        .WithOpenApi()
         .RequireAuthorization("psp_user");
 
     endpointRouteBuilder.MapPut("/api/education-institution",

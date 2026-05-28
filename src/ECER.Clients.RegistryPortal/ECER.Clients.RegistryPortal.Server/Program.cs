@@ -4,7 +4,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Serilog;
 using System.Reflection;
 using System.Security.Claims;
@@ -50,14 +50,11 @@ internal class Program
           BearerFormat = "JWT",
           Description = "JWT Authorization header using the Bearer scheme."
         });
-        opts.AddSecurityRequirement(new OpenApiSecurityRequirement
+        opts.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
         {
             {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
-                },
-                []
+                new OpenApiSecuritySchemeReference("bearerAuth"),
+                new List<string>()
             }
         });
         opts.UseOneOfForPolymorphism();
