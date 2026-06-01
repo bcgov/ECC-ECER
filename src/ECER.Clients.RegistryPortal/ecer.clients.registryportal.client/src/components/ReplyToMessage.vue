@@ -54,12 +54,14 @@
     </v-row>
   </PageContainer>
   <ConfirmationDialog
-    :cancel-button-text="'Continue editing'"
-    :accept-button-text="'Delete message'"
-    :title="'Delete Message?'"
+    cancel-button-text="Continue editing"
+    accept-button-text="Delete message"
+    title="Delete Message?"
     :show="showCloseDialog"
     @cancel="showCloseDialog = false"
     @accept="router.push('/messages')"
+    @click-outside="showCloseDialog = false"
+    @exit="showCloseDialog = false"
   >
     <template #confirmation-text>
       <p>Your message will be deleted. It will not be sent.</p>
