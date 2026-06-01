@@ -64,14 +64,14 @@
   </v-footer>
 
   <ConfirmationDialog
-    :title="'Version Information'"
+    title="Version Information"
     :show="showVersionDialog"
     @cancel="showVersionDialog = false"
     @accept="showVersionDialog = false"
     @click-outside="showVersionDialog = false"
     @exit="showVersionDialog = false"
     :has-cancel-button="false"
-    :accept-button-text="'Close'"
+    accept-button-text="Close"
   >
     <template #confirmation-text>
       <div class="d-flex flex-column ga-3 my-6">

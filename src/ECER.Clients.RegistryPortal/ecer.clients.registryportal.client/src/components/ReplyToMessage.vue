@@ -54,9 +54,9 @@
     </v-row>
   </PageContainer>
   <ConfirmationDialog
-    :cancel-button-text="'Continue editing'"
-    :accept-button-text="'Delete message'"
-    :title="'Delete Message?'"
+    cancel-button-text="Continue editing"
+    accept-button-text="Delete message"
+    title="Delete Message?"
     :show="showCloseDialog"
     @cancel="showCloseDialog = false"
     @accept="router.push('/messages')"

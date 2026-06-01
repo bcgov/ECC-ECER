@@ -302,9 +302,9 @@
   </PageContainer>
 
   <ConfirmationDialog
-    :cancel-button-text="'Keep application'"
-    :accept-button-text="'Cancel application'"
-    :title="'Cancel application'"
+    cancel-button-text="Keep application"
+    accept-button-text="Cancel application"
+    title="Cancel application"
     :show="showCancelDialog"
     :loading="cancelApplicationLoading"
     @cancel="() => (showCancelDialog = false)"
@@ -322,9 +322,9 @@
   </ConfirmationDialog>
   <ConfirmationDialog
     ref="confirmCancelIcraDialogRef"
-    :cancel-button-text="'Keep submission'"
-    :accept-button-text="'Cancel submission'"
-    :title="'Cancel submission'"
+    cancel-button-text="Keep submission"
+    accept-button-text="Cancel submission"
+    title="Cancel submission"
     :loading="cancelIcraEligibilityLoading"
   >
     <template #confirmation-text>
