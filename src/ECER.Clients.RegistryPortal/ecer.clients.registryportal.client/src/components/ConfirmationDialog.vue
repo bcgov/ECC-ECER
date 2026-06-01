@@ -1,9 +1,9 @@
 <template>
   <v-dialog
-    :model-value="show"
+    :model-value="visible"
     width="650"
     :disabled="disabled"
-    @click:outside="cancel"
+    @click:outside="clickOutside"
   >
     <template #default>
       <v-container>
@@ -64,6 +64,13 @@ import { defineComponent, type PropType } from "vue";
 import { VBtn } from "vuetify/components";
 type TVariant = VBtn["$props"]["variant"];
 
+export type ConfirmationDialogResult =
+  | "accept"
+  | "cancel"
+  | "exit"
+  | "close"
+  | "clickOutside";
+
 export default defineComponent({
   name: "ConfirmationDialog",
   props: {
@@ -104,17 +111,62 @@ export default defineComponent({
       default: false,
     },
   },
+  data() {
+    return {
+      internalShow: false,
+      resolvePromise: null as
+        | ((value: ConfirmationDialogResult) => void)
+        | null,
+    };
+  },
   emits: {
     accept: () => true,
     cancel: () => true,
+    exit: () => true,
+    clickOutside: () => true,
   },
-
   methods: {
     cancel() {
       this.$emit("cancel");
+      if (this.resolvePromise) {
+        this.resolvePromise("cancel");
+      }
     },
     accept() {
       this.$emit("accept");
+      if (this.resolvePromise) {
+        this.resolvePromise("accept");
+      }
+    },
+    clickOutside() {
+      this.$emit("clickOutside");
+      if (this.resolvePromise) {
+        this.resolvePromise("clickOutside");
+      }
+    },
+    // user clicks the "x" button to close dialog
+    exit() {
+      this.$emit("exit");
+      if (this.resolvePromise) {
+        this.resolvePromise("exit");
+      }
+    },
+    open() {
+      this.internalShow = true;
+      return new Promise<ConfirmationDialogResult>((resolve) => {
+        this.resolvePromise = resolve;
+      });
+    },
+    close() {
+      this.internalShow = false;
+      if (this.resolvePromise) {
+        this.resolvePromise = null;
+      }
+    },
+  },
+  computed: {
+    visible() {
+      return this.show || this.internalShow;
     },
   },
 });

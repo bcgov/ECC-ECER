@@ -1,4 +1,5 @@
 using ECER.Infrastructure.Common;
+using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Registry.Contract.ICRA;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -90,6 +91,24 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
         .WithOpenApi("Submit an ICRA Eligibility", string.Empty, "icra_post")
         .RequireAuthorization()
         .WithParameterValidation();
+
+    endpointRouteBuilder.MapPut("/api/icra/cancel/{id}", async Task<Results<Ok<CancelDraftIcraEligibilityResponse>, BadRequest<ProblemDetails>>> (string id, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+
+      var result = await messageBus.Send(new CanceDraftlIcraEligibilityCommand(id, userId!), ct);
+
+      if (!result.IsSuccess)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Detail = result.ErrorMessage });
+      }
+
+      return TypedResults.Ok(new CancelDraftIcraEligibilityResponse(result.IcraEligibilityId));
+    })
+    .WithOpenApi("Cancel a draft icra eligibility application for the current user", "Changes status to inactive", "cancel_draft_icra_eligibility")
+    .AddGuidValidation("id")
+    .RequireAuthorization()
+    .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/icra/{id}/status", async Task<Results<Ok<ICRAEligibilityStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IICRAEligibilityMapper icraEligibilityMapper, CancellationToken ct) =>
         {
@@ -313,6 +332,7 @@ public enum InternationalCertificationStatus
   UnderReview,
   WaitingforResponse,
 }
+
 public enum IcraEligibilityOrigin
 {
   Manual,
@@ -323,6 +343,7 @@ public enum IcraEligibilityOrigin
 public record ICRAEligibilitySubmissionRequest(string Id);
 public record SubmitICRAEligibilityResponse(ICRAEligibility Eligibility);
 public record ResendIcraReferenceInviteResponse(string referenceId);
+public record CancelDraftIcraEligibilityResponse(string IcraEligibilityApplicationId);
 
 public record ICRAEligibilityStatus(string Id, DateTime? CreatedOn, DateTime? SignedDate, ICRAStatus Status)
 {

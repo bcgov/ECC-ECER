@@ -126,7 +126,9 @@
               cols="12"
               :sm="showTransferCard ? 6 : 12"
             >
-              <IcraEligibilityCard />
+              <IcraEligibilityCard
+                @cancel-icra-eligibility="waitForConfirmation"
+              />
             </v-col>
           </v-row>
         </v-col>
@@ -307,12 +309,30 @@
     :loading="cancelApplicationLoading"
     @cancel="() => (showCancelDialog = false)"
     @accept="cancelApplication"
+    @click-outside="showCancelDialog = false"
+    @exit="showCancelDialog = false"
   >
     <template #confirmation-text>
       <p>
         By cancelling your application, it will be removed from the system. You
         cannot undo this.
       </p>
+      <p><b>Are you sure you want to proceed?</b></p>
+    </template>
+  </ConfirmationDialog>
+  <ConfirmationDialog
+    ref="confirmCancelIcraDialogRef"
+    :cancel-button-text="'Keep submission'"
+    :accept-button-text="'Cancel submission'"
+    :title="'Cancel submission'"
+    :loading="cancelIcraEligibilityLoading"
+  >
+    <template #confirmation-text>
+      <p>
+        By cancelling your submission, it will be removed from the system. You
+        cannot undo this.
+      </p>
+      <br />
       <p><b>Are you sure you want to proceed?</b></p>
     </template>
   </ConfirmationDialog>
@@ -323,6 +343,7 @@ import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { cancelDraftApplication } from "@/api/application";
+import { cancelDraftIcraEligibility } from "@/api/icra";
 import { getUserInfo } from "@/api/user";
 import Loading from "@/components/Loading.vue";
 import { getProfile } from "@/api/profile";
@@ -581,6 +602,12 @@ export default defineComponent({
         this.loadingStore.isLoading("application_get")
       );
     },
+    cancelIcraEligibilityLoading(): boolean {
+      return (
+        this.loadingStore.isLoading("cancel_draft_icra_eligibility") ||
+        this.loadingStore.isLoading("icra_get")
+      );
+    },
   },
 
   methods: {
@@ -608,6 +635,43 @@ export default defineComponent({
     },
     handleTransfer() {
       this.router.push({ name: "application-transfer" });
+    },
+    async cancelDraftIcraEligibility() {
+      let dialogRef = this.$refs.confirmCancelIcraDialogRef as InstanceType<
+        typeof ConfirmationDialog
+      >;
+      if (!this.icraStore?.draftIcraEligibility?.id) {
+        console.warn("No draft ICRA eligibility to cancel");
+        return;
+      }
+      const response = (
+        await cancelDraftIcraEligibility(this.icraStore.draftIcraEligibility.id)
+      )?.data;
+
+      if (response) {
+        await this.icraStore.fetchIcraEligibilities();
+        this.alertStore.setSuccessAlert("Submission successfully cancelled");
+        dialogRef.close();
+      } else {
+        this.alertStore.setFailureAlert(
+          "Unable to cancel submission please try again later.",
+        );
+      }
+    },
+    async waitForConfirmation() {
+      let dialogRef = this.$refs.confirmCancelIcraDialogRef as InstanceType<
+        typeof ConfirmationDialog
+      >;
+      const response = await dialogRef.open();
+      if (response === "accept") {
+        await this.cancelDraftIcraEligibility();
+      } else if (
+        response === "cancel" ||
+        response === "exit" ||
+        response === "clickOutside"
+      ) {
+        dialogRef.close();
+      }
     },
   },
 });

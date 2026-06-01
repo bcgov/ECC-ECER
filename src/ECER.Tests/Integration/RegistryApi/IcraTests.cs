@@ -782,6 +782,51 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
     await SetEligibilityToIneligible(saved.Id!);
   }
 
+  [Fact]
+  public async Task SaveDraftIcraEligibility_AndCancelReturnsId_CancelAgain_ShouldReturnBadRequest()
+  {
+    var eligibility = new Clients.RegistryPortal.Server.ICRA.ICRAEligibility
+    {
+      ApplicantId = this.Fixture.AuthenticatedBcscUser.Id.ToString(),
+      Status = Clients.RegistryPortal.Server.ICRA.ICRAStatus.Draft
+    };
+
+    var saveResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var savedEligibility = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+    savedEligibility.Id.ShouldNotBeNull();
+    savedEligibility.Status.ShouldBe(Clients.RegistryPortal.Server.ICRA.ICRAStatus.Draft);
+
+    var cancelDraftIcraEligibility = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Url($"/api/icra/cancel/{savedEligibility.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+    var cancelledEligibilityId = (await cancelDraftIcraEligibility.ReadAsJsonAsync<CancelDraftIcraEligibilityResponse>()).ShouldNotBeNull().IcraEligibilityApplicationId;
+    cancelledEligibilityId.ShouldBe(savedEligibility.Id);
+
+    //trying to cancel an icra eligiblity not in draft status should fail
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Url($"/api/icra/cancel/{savedEligibility.Id}");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+    //trying to cancel an icra eligibility that does not exist should fail
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Url($"/api/icra/cancel/{Guid.NewGuid()}");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
+
   //private method to set eligibilty application to ineligible so multiple tests do not conflict for one another with the same user
   private async Task SetEligibilityToIneligible(string eligibilityId)
   {

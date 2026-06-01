@@ -20,7 +20,8 @@ public class ICRAEligibilityHandlers(
     IRequestHandler<ResendIcraWorkExperienceReferenceInviteCommand, string>,
     IRequestHandler<AddIcraWorkExperienceReferenceCommand, AddOrReplaceIcraWorkExperienceReferenceResult>,
     IRequestHandler<ReplaceIcraWorkExperienceReferenceCommand, AddOrReplaceIcraWorkExperienceReferenceResult>,
-    IRequestHandler<GetIcraWorkExperienceReferenceByIdCommand, Contract.ICRA.EmploymentReference>
+    IRequestHandler<GetIcraWorkExperienceReferenceByIdCommand, Contract.ICRA.EmploymentReference>,
+    IRequestHandler<CanceDraftlIcraEligibilityCommand, CancelDraftIcraEligibilityResult>
 {
   public async ValueTask<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
   {
@@ -239,5 +240,25 @@ public class ICRAEligibilityHandlers(
     {
       return null!;
     }
+  }
+
+  public async ValueTask<CancelDraftIcraEligibilityResult> Handle(CanceDraftlIcraEligibilityCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var icraEligibility = await iCRARepository.Query(new ICRAQuery() { ById = request.IcraEligibilityId, ByApplicantId = request.ApplicantId }, cancellationToken);
+
+    if (!icraEligibility.Any())
+    {
+      return new CancelDraftIcraEligibilityResult() { IsSuccess = false, ErrorMessage = $"icra eligibility id {request.IcraEligibilityId} not found" };
+    }
+    if (icraEligibility.First().Status != ICRAStatus.Draft)
+    {
+      return new CancelDraftIcraEligibilityResult() { IsSuccess = false, ErrorMessage = $"icra eligibility id {request.IcraEligibilityId} not in draft status" };
+    }
+
+    var result = await iCRARepository.Cancel(request.IcraEligibilityId, cancellationToken);
+
+    return new CancelDraftIcraEligibilityResult() { IsSuccess = true, IcraEligibilityId = result };
   }
 }

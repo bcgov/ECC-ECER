@@ -164,6 +164,27 @@ const resendIcraEligibilityWorkExperienceReferenceInvite = async (
   });
 };
 
+const cancelDraftIcraEligibility = async (
+  icraEligibilityId: string,
+): Promise<
+  ApiResponse<
+    Components.Schemas.CancelDraftIcraEligibilityResponse | null | undefined
+  >
+> => {
+  const client = await getClient();
+  const pathParameters: Paths.CancelDraftIcraEligibility.PathParameters = {
+    id: icraEligibilityId || "",
+  };
+
+  return apiResultHandler.execute<
+    Components.Schemas.CancelDraftIcraEligibilityResponse | null | undefined
+  >({
+    request: client.cancel_draft_icra_eligibility(pathParameters),
+    key: "cancel_draft_icra_eligibility",
+    suppressErrorToast: true,
+  });
+};
+
 export {
   addIcraEligibilityWorkExperienceReference,
   createOrUpdateDraftIcraEligibility,
@@ -173,4 +194,5 @@ export {
   replaceIcraEligibilityWorkExperienceReference,
   submitIcraEligibilityApplication,
   resendIcraEligibilityWorkExperienceReferenceInvite,
+  cancelDraftIcraEligibility,
 };

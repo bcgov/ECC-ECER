@@ -68,6 +68,8 @@
     :show="showVersionDialog"
     @cancel="showVersionDialog = false"
     @accept="showVersionDialog = false"
+    @click-outside="showVersionDialog = false"
+    @exit="showVersionDialog = false"
     :has-cancel-button="false"
     :accept-button-text="'Close'"
   >
