@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS net-builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS net-builder
 
 # install diagnostics tools
 RUN mkdir /tools && \
