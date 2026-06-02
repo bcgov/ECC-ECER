@@ -1,6 +1,5 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
 namespace ECER.Utilities.ObjectStorage.Providers.S3;
@@ -22,13 +21,17 @@ internal class S3Provider(IAmazonS3 s3Client, string bucketName) : IObjecStorage
     activity?.SetTag(nameof(s3destination.Name), s3destination.Name);
     activity?.SetTag(nameof(obj.Content.Length), obj.Content.Length);
 
+    List<Tag>? awsTags = obj.Tags?.Any() == true
+    ? obj.Tags.Select(t => new Tag { Key = t.Key, Value = t.Value }).ToList()
+    : null;
+
     var request = new PutObjectRequest
     {
       Key = s3destination.Key,
       BucketName = s3destination.BucketName,
       ContentType = obj.ContentType,
       InputStream = obj.Content,
-      TagSet = obj.Tags?.Select(t => new Tag { Key = t.Key, Value = t.Value }).ToList()
+      TagSet = awsTags
     };
     request.Metadata.Add("filename", obj.FileName);
 
@@ -61,7 +64,7 @@ internal class S3Provider(IAmazonS3 s3Client, string bucketName) : IObjecStorage
 
       activity?.SetTag(nameof(objectResponse.ContentLength), objectResponse.ContentLength);
 
-      return new FileObject(objectResponse.Metadata["filename"], objectResponse.Headers.ContentType, objectResponse.ResponseStream, tagResponse.Tagging.ToDictionary(t => t.Key, t => t.Value));
+      return new FileObject(objectResponse.Metadata["filename"], objectResponse.Headers.ContentType, objectResponse.ResponseStream, tagResponse.Tagging?.ToDictionary(t => t.Key, t => t.Value) ?? new Dictionary<string, string>());
     }
     catch (AmazonS3Exception e) when (e.Message.Equals("The specified key does not exist."))
     {
