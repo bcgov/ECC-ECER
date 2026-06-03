@@ -61,6 +61,8 @@
       accept-button-text="Change type"
       @accept="changeCertification"
       @cancel="toggleChangeCertificationConfirmation"
+      @click-outside="toggleChangeCertificationConfirmation"
+      @exit="toggleChangeCertificationConfirmation"
     >
       <template #confirmation-text>
         <div class="pb-3">
@@ -85,6 +87,8 @@
       cancel-button-text="Continue editing"
       @accept="goToDashboard"
       @cancel="toggleSaveExitConfirmation"
+      @click-outside="toggleSaveExitConfirmation"
+      @exit="toggleSaveExitConfirmation"
     >
       <template #confirmation-text>
         <p class="pb-3">

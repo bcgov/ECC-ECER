@@ -108,6 +108,9 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export interface CancelDraftIcraEligibilityResponse {
+      icraEligibilityApplicationId?: string | null;
+    }
     export interface CertificateCondition {
       id?: string | null;
       name?: string | null;
@@ -1059,6 +1062,18 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace CancelDraftIcraEligibility {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.CancelDraftIcraEligibilityResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
   namespace CaptchaSiteKeyGet {
     namespace Responses {
       export type $200 = string;
@@ -1698,6 +1713,16 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.IcraPost.Responses.$200>;
   /**
+   * cancel_draft_icra_eligibility - Cancel a draft icra eligibility application for the current user
+   *
+   * Changes status to inactive
+   */
+  "cancel_draft_icra_eligibility"(
+    parameters?: Parameters<Paths.CancelDraftIcraEligibility.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CancelDraftIcraEligibility.Responses.$200>;
+  /**
    * icra_status_get - Handles icra eligibility status queries
    */
   "icra_status_get"(
@@ -2157,6 +2182,18 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.IcraPost.Responses.$200>;
   };
+  ["/api/icra/cancel/{id}"]: {
+    /**
+     * cancel_draft_icra_eligibility - Cancel a draft icra eligibility application for the current user
+     *
+     * Changes status to inactive
+     */
+    "put"(
+      parameters?: Parameters<Paths.CancelDraftIcraEligibility.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CancelDraftIcraEligibility.Responses.$200>;
+  };
   ["/api/icra/{id}/status"]: {
     /**
      * icra_status_get - Handles icra eligibility status queries
@@ -2455,6 +2492,8 @@ export type ApplicationSubmissionRequest =
 export type ApplicationTypes = Components.Schemas.ApplicationTypes;
 export type CancelDraftApplicationResponse =
   Components.Schemas.CancelDraftApplicationResponse;
+export type CancelDraftIcraEligibilityResponse =
+  Components.Schemas.CancelDraftIcraEligibilityResponse;
 export type CertificateCondition = Components.Schemas.CertificateCondition;
 export type CertificateInformation = Components.Schemas.CertificateInformation;
 export type CertificatePDFGeneration =

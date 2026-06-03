@@ -30,6 +30,14 @@ public record AddIcraWorkExperienceReferenceCommand(EmploymentReference Employme
 
 public record ReplaceIcraWorkExperienceReferenceCommand(EmploymentReference EmploymentReference, string IcraEligibilityId, string ReferenceId, string UserId) : IRequest<AddOrReplaceIcraWorkExperienceReferenceResult>;
 public record GetIcraWorkExperienceReferenceByIdCommand(string ReferenceId, string ApplicantId) : IRequest<EmploymentReference>;
+public record CanceDraftlIcraEligibilityCommand(string IcraEligibilityId, string ApplicantId) : IRequest<CancelDraftIcraEligibilityResult>;
+
+public record CancelDraftIcraEligibilityResult()
+{
+  public string IcraEligibilityId { get; set; } = string.Empty;
+  public bool IsSuccess { get; set; }
+  public string ErrorMessage { get; set; } = string.Empty;
+}
 public record AddOrReplaceIcraWorkExperienceReferenceResult()
 {
   public EmploymentReference EmploymentReference { get; set; } = new EmploymentReference();

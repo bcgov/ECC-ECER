@@ -19,7 +19,10 @@ public interface IICRARepository
   Task<EmploymentReference> ReplaceIcraWorkExperienceReference(ReplaceIcraWorkExperienceReferenceRequest request, CancellationToken cancellationToken);
 
   Task<EmploymentReference> GetIcraWorkExperienceReferenceById(string referenceId, string applicantId, CancellationToken cancellationToken);
+
   Task LinkIcraEligibilityToIcraApplication(string applicationId, string icraEligibilityId, CancellationToken cancellationToken);
+
+  Task<string> Cancel(string icraEligibilityId, CancellationToken cancellationToken);
 }
 
 public record ICRAQuery
