@@ -35,10 +35,11 @@ Cypress.Commands.add("login", (username?: string, password?: string) => {
       cy.get('input[name="password"]').type(pass, { force: true, log: false });
       // 4. Click the submit button.
       cy.get("#submit-btn").click({ force: true });
-      // 5. Check "I agree to the BC Login Service Terms of Use"
-      cy.get('input[id="accept"]').click({ force: true });
-      // 6. Click the "Continue" button.
-      cy.get('button[id="btnSubmit"').click({ force: true });
+      // Note: agree to terms of use page was removed from the login flow. If it comes back you can uncomment this below to get the tets to pass again.
+      // // 5. Check "I agree to the BC Login Service Terms of Use"
+      // cy.get('input[id="accept"]').click({ force: true });
+      // // 6. Click the "Continue" button.
+      // cy.get('button[id="btnSubmit"').click({ force: true });
     },
   );
 
