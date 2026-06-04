@@ -177,7 +177,7 @@ export default defineComponent({
   },
   computed: {
     emptyFiles() {
-      return this.selectedFiles.some((file) => file.file.size === 0);
+      return this.selectedFiles.some((file) => file.fileSize === 0);
     },
     fileErrors() {
       return this.selectedFiles.some((file) => file.fileErrors.length !== 0);
