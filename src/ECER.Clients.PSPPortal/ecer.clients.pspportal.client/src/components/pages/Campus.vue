@@ -30,6 +30,16 @@
           <ECEHeader title="Programs offered" />
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <!-- prettier-ignore -->
+          <p>
+            Please reach out to the ECE Registry for details on program type and
+            delivery methods at each campus by
+            <router-link :to="{name: 'new-message', params: {initialCategory: 'ProgramProfileInquiry' as Components.Schemas.CommunicationCategory}}">sending a message</router-link>.
+          </p>
+        </v-col>
+      </v-row>
 
       <ProgramProfilesList v-if="programs.length > 0" :programs="programs" />
 

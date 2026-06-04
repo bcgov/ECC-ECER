@@ -12,11 +12,7 @@
           <v-select
             id="certificateCountrySelect"
             class="pt-2"
-            :items="
-              configStore.countryList.filter(
-                (country) => country.isICRA === true,
-              )
-            "
+            :items="configStore.countryList"
             variant="outlined"
             label=""
             @update:model-value="updateField('countryId', $event)"
