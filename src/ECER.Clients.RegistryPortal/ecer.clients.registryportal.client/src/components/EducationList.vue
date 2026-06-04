@@ -86,17 +86,22 @@
     </v-col>
 
     <!-- EceAssistant -->
-    <v-col v-if="applicationStore.draftApplicationFlow === 'Assistant'">
+    <v-col
+      v-if="
+        applicationStore.draftApplicationFlow === 'Assistant' ||
+        applicationStore.draftApplicationFlow === 'AssistantRegistrant'
+      "
+    >
       <p class="mb-3">
-        You must have completed a basic early childhood education course in at
-        least one of the following:
+        You must have completed a basic early childhood education course in
+        either:
       </p>
       <ul class="ml-10 mb-3">
         <li>Child guidance</li>
         <li>Child health, safety, and nutrition</li>
         <li>Child development</li>
       </ul>
-      <p>It must have been completed in the last 5 years</p>
+      <p>It must have been completed in the last 5 years.</p>
     </v-col>
 
     <!-- renewal flows -->
