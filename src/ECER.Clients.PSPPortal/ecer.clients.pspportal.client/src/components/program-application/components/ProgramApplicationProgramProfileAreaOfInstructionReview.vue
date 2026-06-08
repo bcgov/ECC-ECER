@@ -53,7 +53,7 @@
       <v-card-text class="text-grey-dark">
         <v-row class="mb-4" no-gutters>
           <v-col cols="4">Area of instruction</v-col>
-          <v-col cols="6">Course number and name</v-col>
+          <v-col cols="6">Course code and name</v-col>
           <v-col cols="2">Hours</v-col>
         </v-row>
         <v-row

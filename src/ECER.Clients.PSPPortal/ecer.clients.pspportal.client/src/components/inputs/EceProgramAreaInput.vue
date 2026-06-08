@@ -106,7 +106,7 @@
           <p>
             Edit any courses as required to ensure that this program profile
             reflects the correct course information. The following information
-            is editable: course number, course name, course hours allocated to
+            is editable: course code, course name, course hours allocated to
             each area of instruction. In some cases, a course may be applicable
             to more than one area of instruction.
           </p>

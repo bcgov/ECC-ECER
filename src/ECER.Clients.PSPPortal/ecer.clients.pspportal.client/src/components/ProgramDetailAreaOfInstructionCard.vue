@@ -23,7 +23,7 @@
       <template v-if="program?.offeredProgramTypes?.includes(programType)">
         <v-row class="mb-4" no-gutters>
           <v-col cols="4">Area of Instruction</v-col>
-          <v-col cols="4">Course number and name</v-col>
+          <v-col cols="4">Course code and name</v-col>
           <v-col cols="4">hours</v-col>
         </v-row>
         <v-row
