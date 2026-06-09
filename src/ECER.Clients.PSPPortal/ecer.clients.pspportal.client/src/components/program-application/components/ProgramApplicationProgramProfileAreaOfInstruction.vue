@@ -17,7 +17,7 @@
     <p>To add a course to your program profile:</p>
     <ul class="ml-10">
       <li>Select "Add course"</li>
-      <li>Input the course number and course name</li>
+      <li>Input the course code and course name</li>
       <li>
         For each course, input the number of hours the course satisfies towards
         each area of instruction (in some cases, one course may be applicable to
