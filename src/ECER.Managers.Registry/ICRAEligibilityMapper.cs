@@ -11,10 +11,15 @@ namespace ECER.Managers.Registry;
 public interface IICRAEligibilityMapper
 {
   ResourceICRA.ICRAEligibility MapEligibility(ContractICRA.ICRAEligibility source);
+
   ContractICRA.ICRAEligibility? MapEligibility(ResourceICRA.ICRAEligibility? source);
+
   IEnumerable<ContractICRA.ICRAEligibility> MapEligibilities(IEnumerable<ResourceICRA.ICRAEligibility> source);
+
   ResourceICRA.EmploymentReference MapEmploymentReference(ContractICRA.EmploymentReference source);
+
   ContractICRA.EmploymentReference MapEmploymentReference(ResourceICRA.EmploymentReference source);
+
   ResourceICRA.ICRAWorkExperienceReferenceSubmissionRequest MapIcraWorkExperienceReferenceSubmissionRequest(ContractICRA.ICRAWorkExperienceReferenceSubmissionRequest source);
 }
 
@@ -160,29 +165,11 @@ internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
     Size = source.Size,
   };
 
-  private static ContractApplications.WorkExperienceRefStage MapWorkExperienceReferenceStage(ResourceApplications.WorkExperienceRefStage source)
-  {
-    if (Enum.TryParse<ContractApplications.WorkExperienceRefStage>(source.ToString(), out var mapped))
-    {
-      return mapped;
-    }
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ResourceApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ContractApplications.WorkExperienceRefStage? source);
 
-    return (ContractApplications.WorkExperienceRefStage)(int)source;
-  }
-
-  private static ResourceApplications.WorkExperienceRefStage MapWorkExperienceReferenceStage(ContractApplications.WorkExperienceRefStage source)
-  {
-    if (Enum.TryParse<ResourceApplications.WorkExperienceRefStage>(source.ToString(), out var mapped))
-    {
-      return mapped;
-    }
-
-    return (ResourceApplications.WorkExperienceRefStage)(int)source;
-  }
-
-  private static ResourceApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
-
-  private static ContractApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ResourceApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceReferenceStage(source.Value) : null;
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ContractApplications.WorkExperienceRefStage? MapWorkExperienceReferenceStage(ResourceApplications.WorkExperienceRefStage? source);
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ResourceICRA.ICRAStatus MapIcraStatus(ContractICRA.ICRAStatus source);
