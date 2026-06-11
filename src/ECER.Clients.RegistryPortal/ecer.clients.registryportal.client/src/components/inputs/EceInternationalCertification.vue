@@ -102,7 +102,7 @@
             id="txtRegulatoryAuthorityWebsite"
             v-model="websiteOfRegulatoryAuthority"
             label="Website of regulatory authority (optional)"
-            :rules="[Rules.website(), Rules.maxLength(100)]"
+            :rules="[Rules.website(), Rules.maxLength(250)]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -112,7 +112,7 @@
             id="txtRegulatoryAuthorityValidation"
             v-model="onlineCertificateValidationToolOfRegulatoryAuthority"
             label="Online certificate validation tool of regulatory authority (optional)"
-            :rules="[Rules.website(), Rules.maxLength(100)]"
+            :rules="[Rules.website(), Rules.maxLength(250)]"
           ></EceTextField>
         </v-col>
       </v-row>

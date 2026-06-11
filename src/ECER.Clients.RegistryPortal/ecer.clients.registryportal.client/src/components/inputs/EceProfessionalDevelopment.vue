@@ -80,8 +80,7 @@ They should be able to confirm you completed the course or workshop."
             id="txtCourseOrWorkshopLink"
             v-model="courseorWorkshopLink"
             label="Website with description of course or workshop (optional)"
-            maxlength="500"
-            :rules="[Rules.website()]"
+            :rules="[Rules.website(), Rules.maxLength(500)]"
           ></EceTextField>
         </v-col>
       </v-row>
