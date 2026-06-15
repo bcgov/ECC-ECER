@@ -63,7 +63,7 @@
             <p class="small">Website of regulatory authority (optional)</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">
+            <p class="small font-weight-bold text-break">
               <a
                 v-if="internationalCertificate?.websiteOfRegulatoryAuthority"
                 :href="internationalCertificate.websiteOfRegulatoryAuthority"
@@ -83,7 +83,7 @@
             </p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">
+            <p class="small font-weight-bold text-break">
               <a
                 v-if="
                   internationalCertificate?.onlineCertificateValidationToolOfRegulatoryAuthority

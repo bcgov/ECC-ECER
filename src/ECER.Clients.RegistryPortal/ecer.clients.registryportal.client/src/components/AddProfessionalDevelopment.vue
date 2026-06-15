@@ -69,8 +69,7 @@ They should be able to confirm you completed the course or workshop."
               v-model="professionalDevelopment.courseorWorkshopLink"
               variant="outlined"
               label="Website with description of course or workshop (optional)"
-              maxlength="500"
-              :rules="[Rules.website()]"
+              :rules="[Rules.website(), Rules.maxLength(500)]"
             ></EceTextField>
           </v-col>
         </v-row>
