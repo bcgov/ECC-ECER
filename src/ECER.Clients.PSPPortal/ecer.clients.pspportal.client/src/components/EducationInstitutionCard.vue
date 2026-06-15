@@ -65,7 +65,7 @@
           v-if="educationInstitution.websiteUrl"
           :href="educationInstitution.websiteUrl"
           target="_blank"
-          class="text-links font-weight-bold"
+          class="text-links font-weight-bold text-break"
         >
           {{ educationInstitution.websiteUrl }}
         </a>
