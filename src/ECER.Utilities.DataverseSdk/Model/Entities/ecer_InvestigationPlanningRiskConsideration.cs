@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Investigation Planning Risk or Consideration
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public enum ecer_investigationplanningriskconsideration_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Investigation Planning Risk or Consideration
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public enum ecer_InvestigationPlanningRiskConsideration_StatusCode
 	{
 		
@@ -47,12 +47,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_investigationplanningriskconsideration")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class ecer_InvestigationPlanningRiskConsideration : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_investigationplanningriskconsideration entity
+		/// Available fields, at the time of codegen, for the ecer_investigationplanningriskconsideration entity
 		/// </summary>
 		public partial class Fields
 		{

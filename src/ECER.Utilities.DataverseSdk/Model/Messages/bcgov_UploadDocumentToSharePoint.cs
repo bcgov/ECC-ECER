@@ -14,9 +14,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("bcgov_UploadDocumentToSharePoint")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_UploadDocumentToSharePointRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
+		
+		public string Body
+		{
+			get
+			{
+				if (this.Parameters.Contains("Body"))
+				{
+					return ((string)(this.Parameters["Body"]));
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+			set
+			{
+				this.Parameters["Body"] = value;
+			}
+		}
 		
 		public string DocumentId
 		{
@@ -56,22 +75,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		public string Body
+		public Microsoft.Xrm.Sdk.OptionSetValue Origin
 		{
 			get
 			{
-				if (this.Parameters.Contains("Body"))
+				if (this.Parameters.Contains("Origin"))
 				{
-					return ((string)(this.Parameters["Body"]));
+					return ((Microsoft.Xrm.Sdk.OptionSetValue)(this.Parameters["Origin"]));
 				}
 				else
 				{
-					return default(string);
+					return default(Microsoft.Xrm.Sdk.OptionSetValue);
 				}
 			}
 			set
 			{
-				this.Parameters["Body"] = value;
+				this.Parameters["Origin"] = value;
 			}
 		}
 		
@@ -170,30 +189,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		public Microsoft.Xrm.Sdk.OptionSetValue Origin
-		{
-			get
-			{
-				if (this.Parameters.Contains("Origin"))
-				{
-					return ((Microsoft.Xrm.Sdk.OptionSetValue)(this.Parameters["Origin"]));
-				}
-				else
-				{
-					return default(Microsoft.Xrm.Sdk.OptionSetValue);
-				}
-			}
-			set
-			{
-				this.Parameters["Origin"] = value;
-			}
-		}
-		
 		public bcgov_UploadDocumentToSharePointRequest()
 		{
 			this.RequestName = "bcgov_UploadDocumentToSharePoint";
-			this.FileName = default(string);
 			this.Body = default(string);
+			this.FileName = default(string);
 			this.RegardingObjectId = default(string);
 			this.RegardingObjectName = default(string);
 		}
@@ -201,7 +201,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("bcgov_UploadDocumentToSharePoint")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_UploadDocumentToSharePointResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
@@ -222,6 +222,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 					return default(bool);
 				}
 			}
+			set
+			{
+				this.Results["IsSuccess"] = value;
+			}
 		}
 		
 		public string Result
@@ -236,6 +240,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+			set
+			{
+				this.Results["Result"] = value;
 			}
 		}
 	}

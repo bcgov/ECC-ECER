@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Program Application
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public enum ecer_postsecondaryinstituteprogramapplicaiton_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Program Application
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public enum ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode
 	{
 		
@@ -74,12 +74,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class ecer_PostSecondaryInstituteProgramApplicaiton : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_postsecondaryinstituteprogramapplicaiton entity
+		/// Available fields, at the time of codegen, for the ecer_postsecondaryinstituteprogramapplicaiton entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -119,6 +119,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_articulationagreements = "ecer_articulationagreements";
 			public const string ecer_BasicEntryProgress = "ecer_basicentryprogress";
 			public const string ecer_basicentryprogressName = "ecer_basicentryprogressname";
+			public const string ecer_basicprogramlengthmonths = "ecer_basicprogramlengthmonths";
 			public const string ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_CampusId = "ecer_campusid";
 			public const string ecer_CampusIdName = "ecer_campusidname";
@@ -209,6 +210,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_interimrecognizedName = "ecer_interimrecognizedname";
 			public const string ecer_ITEEntryProgress = "ecer_iteentryprogress";
 			public const string ecer_iteentryprogressName = "ecer_iteentryprogressname";
+			public const string ecer_ITEprogramlengthmonths = "ecer_iteprogramlengthmonths";
 			public const string ecer_jobdescriptions = "ecer_jobdescriptions";
 			public const string ecer_MaximumStudentEnrollmentperCourse = "ecer_maximumstudentenrollmentpercourse";
 			public const string ecer_minimumqualifications = "ecer_minimumqualifications";
@@ -419,6 +421,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_sitevisitscheduledongoingName = "ecer_sitevisitscheduledongoingname";
 			public const string ecer_SNEEntryProgress = "ecer_sneentryprogress";
 			public const string ecer_sneentryprogressName = "ecer_sneentryprogressname";
+			public const string ecer_SNEprogramlengthmonths = "ecer_sneprogramlengthmonths";
 			public const string ecer_standardsforplanning = "ecer_standardsforplanning";
 			public const string ecer_statementofpurposedescription = "ecer_statementofpurposedescription";
 			public const string ecer_statementofqualifications = "ecer_statementofqualifications";
@@ -1070,6 +1073,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_basicprogramlengthmonths")]
+		public System.Nullable<decimal> ecer_basicprogramlengthmonths
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_basicprogramlengthmonths");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_basicprogramlengthmonths", value);
 			}
 		}
 		
@@ -2439,6 +2457,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iteprogramlengthmonths")]
+		public System.Nullable<decimal> ecer_ITEprogramlengthmonths
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_iteprogramlengthmonths");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_iteprogramlengthmonths", value);
 			}
 		}
 		
@@ -5395,6 +5428,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sneprogramlengthmonths")]
+		public System.Nullable<decimal> ecer_SNEprogramlengthmonths
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_sneprogramlengthmonths");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_sneprogramlengthmonths", value);
 			}
 		}
 		
