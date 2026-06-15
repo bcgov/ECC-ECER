@@ -48,7 +48,7 @@
             </p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">
+            <p class="small font-weight-bold text-break">
               {{ professionalDevelopment.courseorWorkshopLink || "—" }}
             </p>
           </v-col>

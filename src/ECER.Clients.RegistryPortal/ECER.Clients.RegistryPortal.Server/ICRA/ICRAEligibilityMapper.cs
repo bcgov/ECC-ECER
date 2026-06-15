@@ -9,10 +9,15 @@ namespace ECER.Clients.RegistryPortal.Server.ICRA;
 internal interface IICRAEligibilityMapper
 {
   ContractICRA.ICRAEligibility MapEligibility(ICRAEligibility source);
+
   ICRAEligibility MapEligibility(ContractICRA.ICRAEligibility source);
+
   IEnumerable<ICRAEligibility> MapEligibilities(IEnumerable<ContractICRA.ICRAEligibility> source);
+
   ICRAEligibilityStatus MapEligibilityStatus(ContractICRA.ICRAEligibility source);
+
   ContractICRA.EmploymentReference MapEmploymentReference(EmploymentReference source);
+
   EmploymentReference MapEmploymentReference(ContractICRA.EmploymentReference source);
 }
 
@@ -188,19 +193,7 @@ internal partial class ICRAEligibilityMapper : IICRAEligibilityMapper
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractICRA.InternationalCertificationStatus MapInternationalCertificationStatus(InternationalCertificationStatus source);
 
-  private static Applications.WorkExperienceRefStage MapWorkExperienceRefStage(ContractApplications.WorkExperienceRefStage source) => source switch
-  {
-    ContractApplications.WorkExperienceRefStage.ApplicationSubmitted => Applications.WorkExperienceRefStage.ApplicationSubmitted,
-    ContractApplications.WorkExperienceRefStage.Approved => Applications.WorkExperienceRefStage.Approved,
-    ContractApplications.WorkExperienceRefStage.Draft => Applications.WorkExperienceRefStage.Draft,
-    ContractApplications.WorkExperienceRefStage.InProgress => Applications.WorkExperienceRefStage.InProgress,
-    ContractApplications.WorkExperienceRefStage.Rejected => Applications.WorkExperienceRefStage.Rejected,
-    ContractApplications.WorkExperienceRefStage.Submitted => Applications.WorkExperienceRefStage.Submitted,
-    ContractApplications.WorkExperienceRefStage.UnderReview => Applications.WorkExperienceRefStage.UnderReview,
-    ContractApplications.WorkExperienceRefStage.WaitingforResponse => Applications.WorkExperienceRefStage.WaitingforResponse,
-    ContractApplications.WorkExperienceRefStage.ICRAEligibilitySubmitted => Applications.WorkExperienceRefStage.ICRAEligibilitySubmitted,
-    _ => throw new ArgumentOutOfRangeException(nameof(source), source, null)
-  };
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial Applications.WorkExperienceRefStage? MapWorkExperienceRefStage(ContractApplications.WorkExperienceRefStage? source);
 
-  private static Applications.WorkExperienceRefStage? MapWorkExperienceRefStage(ContractApplications.WorkExperienceRefStage? source) => source.HasValue ? MapWorkExperienceRefStage(source.Value) : null;
 }
