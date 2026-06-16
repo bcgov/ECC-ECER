@@ -42,7 +42,7 @@ public static class ReflectionExtensions
     ArgumentNullException.ThrowIfNull(assembly);
     try
     {
-      return assembly.DefinedTypes.Where(t => t.IsClass && !t.IsAbstract && t.IsPublic && (type.IsAssignableFrom(t) || t.IsAssignableToGenericType(type))).ToArray();
+      return assembly.DefinedTypes.Where(t => t.IsClass && !t.IsAbstract && !t.ContainsGenericParameters && (type.IsAssignableFrom(t) || t.IsAssignableToGenericType(type))).ToArray();
     }
     catch (ReflectionTypeLoadException)
     {
@@ -59,7 +59,7 @@ public static class ReflectionExtensions
   public static T[] CreateInstancesOf<T>(this Assembly assembly) where T : class
   {
     ArgumentNullException.ThrowIfNull(assembly);
-    return assembly.GetTypesImplementing<T>().Select(t => (T?)Activator.CreateInstance(t)).Where(i => i != null).Select(i => i!).ToArray();
+    return assembly.GetTypesImplementing<T>().Select(t => (T?)Activator.CreateInstance(t, nonPublic: true)).Where(i => i != null).Select(i => i!).ToArray();
   }
 
   /// <summary>

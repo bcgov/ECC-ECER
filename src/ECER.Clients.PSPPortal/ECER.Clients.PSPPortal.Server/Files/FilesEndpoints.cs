@@ -66,7 +66,7 @@ public class FilesEndpoints : IRegisterEndpoints
     .DisableAntiforgery();
 
     endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, BadRequest<ProblemDetails>, NotFound>> (string fileId,
-        [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IOptions<UploaderSettings> uploaderOptions) =>
+        IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IOptions<UploaderSettings> uploaderOptions) =>
     {
       if (!Guid.TryParse(fileId, out _))
       {
@@ -99,6 +99,7 @@ public class FilesEndpoints : IRegisterEndpoints
       }
       return TypedResults.Ok(new FileResponse(fileId) { Url = saveResult.FileData.FileLocation.Folder + "/" + fileId });
     })
+      .Accepts<IFormFile>("multipart/form-data")
       .WithOpenApi("Handles upload file request", string.Empty, "upload_file")
       .RequireAuthorization("psp_user")
       .DisableAntiforgery();

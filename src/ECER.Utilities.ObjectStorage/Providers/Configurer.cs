@@ -1,6 +1,6 @@
-﻿using Amazon.S3;
+﻿using Amazon.Runtime;
+using Amazon.S3;
 using ECER.Infrastructure.Common;
-using ECER.Utilities.ObjectStorage.Providers.Dataverse;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +28,7 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
           {
             ServiceURL = pspSettings.Url,
             ForcePathStyle = true,
+            RequestChecksumCalculation = RequestChecksumCalculation.WHEN_REQUIRED
           }));
       configurationContext.Services.AddKeyedSingleton<IObjecStorageProvider, S3Provider>(EcerWebApplicationType.PSP, (sp, key) =>
       {
@@ -47,6 +48,7 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
           {
             ServiceURL = registrySettings.Url,
             ForcePathStyle = true,
+            RequestChecksumCalculation = RequestChecksumCalculation.WHEN_REQUIRED
           }));
       configurationContext.Services.AddKeyedSingleton<IObjecStorageProvider, S3Provider>(EcerWebApplicationType.Registry, (sp, key) =>
       {
@@ -64,7 +66,7 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
     var settings = GetSettings(context.Configuration);
     var pspSettings = settings?.Psp;
     var registrySettings = settings?.Registry;
-    
+
     if (pspSettings != null)
     {
       var pspClient = context.Services.GetRequiredKeyedService<IAmazonS3>(EcerWebApplicationType.PSP);

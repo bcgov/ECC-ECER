@@ -3,7 +3,7 @@ using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -47,14 +47,11 @@ internal class Program
           Type = SecuritySchemeType.ApiKey,
           Description = "API Key needed to access the endpoints."
         });
-        opts.AddSecurityRequirement(new OpenApiSecurityRequirement
+        opts.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
                 {
                     {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "ApiKey" }
-                        },
-                        Array.Empty<string>()
+                        new OpenApiSecuritySchemeReference("ApiKey"),
+                        new List<string>()
                     }
                 });
         opts.UseOneOfForPolymorphism();

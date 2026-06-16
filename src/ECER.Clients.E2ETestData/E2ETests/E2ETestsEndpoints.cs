@@ -10,7 +10,7 @@ using Bogus;
 
 namespace ECER.Clients.E2ETestData.E2ETests;
 
-public class E2ETestsEndpoints : IRegisterEndpoints
+internal class E2ETestsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
