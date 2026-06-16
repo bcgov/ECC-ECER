@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using ECER.Clients.PSPPortal.Server.Shared;
 using ECER.Infrastructure.Common;
 using ECER.Infrastructure.Common.Validators;
@@ -6,16 +5,17 @@ using ECER.Managers.Registry.Contract.ProgramApplications;
 using ECER.Managers.Registry.Contract.Programs;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.Security;
 using Mediator;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations;
 using ContractApplicationStatus = ECER.Managers.Registry.Contract.ProgramApplications.ApplicationStatus;
-using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 using ContractProgramApplicationQuery = ECER.Managers.Registry.Contract.ProgramApplications.ProgramApplicationQuery;
 using ContractSubmitProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.SubmitProgramApplicationCommand;
-using ECER.Utilities.ObjectStorage.Providers;
+using CreateProgramApplicationCommand = ECER.Managers.Registry.Contract.ProgramApplications.CreateProgramApplicationCommand;
 
 namespace ECER.Clients.PSPPortal.Server.ProgramApplications;
 
@@ -249,7 +249,6 @@ public class ProgramApplicationsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest($"Application status {application.Status} cannot be submitted");
       }
 
-
       var command = new ContractSubmitProgramApplicationCommand(
         ProgramApplication: application,
         ProgramRepresentativeId: programRep.Id,
@@ -284,7 +283,9 @@ public record ProgramApplication
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
   public string? ProgramRepresentativeId { get; set; }
-  public string? ProgramLength { get; set; }
+  public float? BasicProgramLength { get; set; }
+  public float? IteProgramLength { get; set; }
+  public float? SneProgramLength { get; set; }
   public IEnumerable<MethodofInstruction>? OnlineMethodOfInstruction { get; set; }
   public IEnumerable<DeliveryMethodforInstructor>? DeliveryMethod { get; set; }
   public IEnumerable<WorkHoursType>? EnrollmentOptions { get; set; }
@@ -328,6 +329,7 @@ public enum DeliveryMethodforInstructor
   Inpersonsitevisits,
   Virtualsitevisits,
 }
+
 public enum AdmissionOptions
 {
   Allcoursesrestrictedtoearlychildhoodeducationstudents,
@@ -336,11 +338,13 @@ public enum AdmissionOptions
   Oneormorecoursesopentoanystudentsintheinstitution,
   Other,
 }
+
 public enum WorkHoursType
 {
   FullTime,
   PartTime,
 }
+
 public record GetProgramApplicationResponse
 {
   public IEnumerable<ProgramApplication>? Applications { get; set; }

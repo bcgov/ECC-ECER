@@ -7,13 +7,21 @@ namespace ECER.Managers.Registry;
 public interface IProgramApplicationMapper
 {
   ResourceProgramApplications.ProgramApplication MapProgramApplication(ContractProgramApplications.ProgramApplication source);
+
   ContractProgramApplications.ProgramApplication? MapProgramApplication(ResourceProgramApplications.ProgramApplication? source);
+
   IEnumerable<ContractProgramApplications.ProgramApplication> MapProgramApplications(IEnumerable<ResourceProgramApplications.ProgramApplication> source);
+
   IEnumerable<ResourceProgramApplications.ApplicationStatus> MapApplicationStatuses(IEnumerable<ContractProgramApplications.ApplicationStatus> source);
+
   IEnumerable<ContractProgramApplications.NavigationMetadata> MapNavigationMetadata(IEnumerable<ResourceProgramApplications.NavigationMetadata> source);
+
   IEnumerable<ContractProgramApplications.ComponentGroupWithComponents> MapComponentGroupsWithComponents(IEnumerable<ResourceProgramApplications.ComponentGroupWithComponents> source);
+
   ResourceProgramApplications.ComponentGroupWithComponents MapComponentGroupWithComponents(ContractProgramApplications.ComponentGroupWithComponents source);
+
   ContractProgramApplications.ApplicationFileInfo MapApplicationFileInfo(ResourceProgramApplications.ApplicationFileInfo source);
+
   IEnumerable<ContractProgramApplications.ApplicationFileInfo> MapApplicationFiles(IEnumerable<ResourceProgramApplications.ApplicationFileInfo> source);
 }
 
@@ -30,7 +38,9 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
     DeliveryType = MapDeliveryType(source.DeliveryType),
     ComponentsGenerationCompleted = source.ComponentsGenerationCompleted,
     ProgramRepresentativeId = source.ProgramRepresentativeId,
-    ProgramLength = MapNumber(source.ProgramLength),
+    BasicProgramLength = source.BasicProgramLength,
+    IteProgramLength = source.IteProgramLength,
+    SneProgramLength = source.SneProgramLength,
     OnlineMethodOfInstruction = source.OnlineMethodOfInstruction?.Select(MapMethodOfInstruction).ToList(),
     DeliveryMethod = source.DeliveryMethod?.Select(MapDeliveryMethod).ToList(),
     EnrollmentOptions = source.EnrollmentOptions?.Select(MapWorkHoursType).ToList(),
@@ -66,7 +76,9 @@ internal partial class ProgramApplicationMapper : IProgramApplicationMapper
       DeliveryType = MapDeliveryType(source.DeliveryType),
       ComponentsGenerationCompleted = source.ComponentsGenerationCompleted,
       ProgramRepresentativeId = source.ProgramRepresentativeId,
-      ProgramLength = MapNumber(source.ProgramLength),
+      BasicProgramLength = source.BasicProgramLength,
+      IteProgramLength = source.IteProgramLength,
+      SneProgramLength = source.SneProgramLength,
       OnlineMethodOfInstruction = source.OnlineMethodOfInstruction?.Select(MapMethodOfInstruction).ToList(),
       DeliveryMethod = source.DeliveryMethod?.Select(MapDeliveryMethod).ToList(),
       EnrollmentOptions = source.EnrollmentOptions?.Select(MapWorkHoursType).ToList(),
