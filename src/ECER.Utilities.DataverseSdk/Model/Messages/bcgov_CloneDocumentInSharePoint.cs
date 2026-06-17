@@ -14,7 +14,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("bcgov_CloneDocumentInSharePoint")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_CloneDocumentInSharePointRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
 		
@@ -66,7 +66,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("bcgov_CloneDocumentInSharePoint")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_CloneDocumentInSharePointResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
@@ -87,6 +87,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 					return default(bool);
 				}
 			}
+			set
+			{
+				this.Results["IsSuccess"] = value;
+			}
 		}
 		
 		public string Result
@@ -101,6 +105,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+			set
+			{
+				this.Results["Result"] = value;
 			}
 		}
 	}

@@ -212,13 +212,45 @@
 
       <template v-if="showSection('program-length-field')">
         <slot name="program-length-field">
-          <v-row>
+          <v-row
+            v-if="programApplicationObject?.programTypes?.includes('Basic')"
+          >
             <v-col cols="3">
               <div class="d-flex flex-column ga-3">
                 <EceTextField
-                  v-model="programLength"
-                  label="Program length"
-                  :rules="[validateHours]"
+                  v-model="basicProgramLength"
+                  label="Basic program length"
+                  :rules="[Rules.validNumber(), Rules.numberToDecimalPlaces(2)]"
+                  :readonly="isRfai"
+                ></EceTextField>
+              </div>
+            </v-col>
+            <v-col cols="1" class="mt-6 align-content-center">
+              <div class="d-flex flex-column">Months</div>
+            </v-col>
+          </v-row>
+          <v-row v-if="programApplicationObject?.programTypes?.includes('ITE')">
+            <v-col cols="3">
+              <div class="d-flex flex-column ga-3">
+                <EceTextField
+                  v-model="iteProgramLength"
+                  label="ITE program length"
+                  :rules="[Rules.validNumber(), Rules.numberToDecimalPlaces(2)]"
+                  :readonly="isRfai"
+                ></EceTextField>
+              </div>
+            </v-col>
+            <v-col cols="1" class="mt-6 align-content-center">
+              <div class="d-flex flex-column">Months</div>
+            </v-col>
+          </v-row>
+          <v-row v-if="programApplicationObject?.programTypes?.includes('SNE')">
+            <v-col cols="3">
+              <div class="d-flex flex-column ga-3">
+                <EceTextField
+                  v-model="sneProgramLength"
+                  label="SNE program length"
+                  :rules="[Rules.validNumber(), Rules.numberToDecimalPlaces(2)]"
                   :readonly="isRfai"
                 ></EceTextField>
               </div>
@@ -451,7 +483,7 @@
             <EceTextField
               v-model="minimumEnrollment"
               label="Minimum enrollment per course"
-              :rules="[validateHours]"
+              :rules="[Rules.validNumber(), Rules.numberToDecimalPlaces(2)]"
               :readonly="isRfai"
             ></EceTextField>
           </div>
@@ -461,7 +493,7 @@
             <EceTextField
               v-model="maximumEnrollment"
               label="Maximum enrollment per course"
-              :rules="[validateHours]"
+              :rules="[Rules.validNumber(), Rules.numberToDecimalPlaces(2)]"
               :readonly="isRfai"
             ></EceTextField>
           </div>
@@ -576,19 +608,6 @@ export default defineComponent({
         this.originalProgramApplicationObject,
       );
     },
-    validateHours() {
-      return (v: string) => {
-        if (!v) return true;
-        const numValue = Number.parseFloat(v);
-        if (Number.isNaN(numValue)) {
-          return "Enter a valid number";
-        }
-        if (numValue < 0) {
-          return "Must be positive";
-        }
-        return Rules.numberToDecimalPlaces(2)(v);
-      };
-    },
     programRepresentativeId: {
       get() {
         return this.programApplicationObject?.programRepresentativeId ?? null;
@@ -620,13 +639,35 @@ export default defineComponent({
         }
       },
     },
-    programLength: {
+    basicProgramLength: {
       get() {
-        return this.programApplicationObject?.programLength ?? null;
+        return this.programApplicationObject?.basicProgramLength ?? null;
       },
-      set(value: string | null) {
+      set(value: any | null) {
         if (this.programApplicationObject) {
-          this.programApplicationObject.programLength =
+          this.programApplicationObject.basicProgramLength =
+            value === "" ? null : value;
+        }
+      },
+    },
+    iteProgramLength: {
+      get() {
+        return this.programApplicationObject?.iteProgramLength ?? null;
+      },
+      set(value: any | null) {
+        if (this.programApplicationObject) {
+          this.programApplicationObject.iteProgramLength =
+            value === "" ? null : value;
+        }
+      },
+    },
+    sneProgramLength: {
+      get() {
+        return this.programApplicationObject?.sneProgramLength ?? null;
+      },
+      set(value: any | null) {
+        if (this.programApplicationObject) {
+          this.programApplicationObject.sneProgramLength =
             value === "" ? null : value;
         }
       },

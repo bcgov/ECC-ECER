@@ -14,7 +14,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
 	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("ecer_CLEANUPDeleteApplicationAction")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class ecer_CLEANUPDeleteApplicationActionRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
 		
@@ -65,7 +65,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
 	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("ecer_CLEANUPDeleteApplicationAction")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class ecer_CLEANUPDeleteApplicationActionResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
@@ -85,6 +85,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(bool);
 				}
+			}
+			set
+			{
+				this.Results["Completed"] = value;
 			}
 		}
 	}

@@ -14,7 +14,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("bcgov_GetDocumentUrlFromSharePoint")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_GetDocumentUrlFromSharePointRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
 		
@@ -46,7 +46,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("bcgov_GetDocumentUrlFromSharePoint")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_GetDocumentUrlFromSharePointResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
@@ -66,6 +66,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+			set
+			{
+				this.Results["FileUrl"] = value;
 			}
 		}
 	}

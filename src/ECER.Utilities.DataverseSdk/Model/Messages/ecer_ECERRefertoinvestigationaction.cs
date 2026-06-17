@@ -14,28 +14,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
 	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("ecer_ECERRefertoinvestigationaction")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class ecer_ECERRefertoinvestigationactionRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
-		
-		public string ReferrerGUID
-		{
-			get
-			{
-				if (this.Parameters.Contains("ReferrerGUID"))
-				{
-					return ((string)(this.Parameters["ReferrerGUID"]));
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-			set
-			{
-				this.Parameters["ReferrerGUID"] = value;
-			}
-		}
 		
 		public string Description
 		{
@@ -53,6 +34,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.Parameters["Description"] = value;
+			}
+		}
+		
+		public string ReferrerGUID
+		{
+			get
+			{
+				if (this.Parameters.Contains("ReferrerGUID"))
+				{
+					return ((string)(this.Parameters["ReferrerGUID"]));
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+			set
+			{
+				this.Parameters["ReferrerGUID"] = value;
 			}
 		}
 		
@@ -84,7 +84,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
 	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("ecer_ECERRefertoinvestigationaction")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class ecer_ECERRefertoinvestigationactionResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		

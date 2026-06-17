@@ -132,7 +132,6 @@ VoiceMail</TokenCapitalizationOverrides>
     <UseDisplayNameForBpfName>true</UseDisplayNameForBpfName>
     <UseEnumForStateCodes>false</UseEnumForStateCodes>
     <UseLogicalNames>false</UseLogicalNames>
-    <UseTfsToCheckoutFiles>false</UseTfsToCheckoutFiles>
     <WaitForAttachedDebugger>false</WaitForAttachedDebugger>
   </ExtensionConfig>
   <GenerateMessages>true</GenerateMessages>
@@ -147,5 +146,5 @@ VoiceMail</TokenCapitalizationOverrides>
   <SuppressGeneratedCodeAttribute>false</SuppressGeneratedCodeAttribute>
   <SettingsVersion>2.2025.11.14</SettingsVersion>
   <UpdateBuilderSettingsJson>true</UpdateBuilderSettingsJson>
-  <Version>2.2025.11.14</Version>
+  <Version>2.2026.5.12</Version>
 </Config>

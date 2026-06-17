@@ -69,13 +69,42 @@
       </p>
     </v-col>
   </v-row>
-  <v-row class="mb-n5">
+  <v-row
+    v-if="programApplicationObject?.programTypes?.includes('Basic')"
+    class="mb-n5"
+  >
     <v-col cols="4">
-      <p class="small">Program length</p>
+      <p class="small">Basic program length</p>
     </v-col>
     <v-col>
       <p class="small font-weight-bold">
-        {{ programApplicationObject?.programLength }}
+        {{ programApplicationObject?.basicProgramLength }}
+      </p>
+    </v-col>
+  </v-row>
+  <v-row
+    v-if="programApplicationObject?.programTypes?.includes('ITE')"
+    class="mb-n5"
+  >
+    <v-col cols="4">
+      <p class="small">ITE program length</p>
+    </v-col>
+    <v-col>
+      <p class="small font-weight-bold">
+        {{ programApplicationObject?.iteProgramLength }}
+      </p>
+    </v-col>
+  </v-row>
+  <v-row
+    v-if="programApplicationObject?.programTypes?.includes('SNE')"
+    class="mb-n5"
+  >
+    <v-col cols="4">
+      <p class="small">SNE program length</p>
+    </v-col>
+    <v-col>
+      <p class="small font-weight-bold">
+        {{ programApplicationObject?.sneProgramLength }}
       </p>
     </v-col>
   </v-row>

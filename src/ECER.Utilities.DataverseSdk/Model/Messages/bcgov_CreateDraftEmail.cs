@@ -14,17 +14,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("bcgov_CreateDraftEmail")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_CreateDraftEmailRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
 		
-		public string Subject
+		public string DocumentIds
 		{
 			get
 			{
-				if (this.Parameters.Contains("Subject"))
+				if (this.Parameters.Contains("DocumentIds"))
 				{
-					return ((string)(this.Parameters["Subject"]));
+					return ((string)(this.Parameters["DocumentIds"]));
 				}
 				else
 				{
@@ -33,26 +33,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 			set
 			{
-				this.Parameters["Subject"] = value;
-			}
-		}
-		
-		public string RegardingObjectTypeName
-		{
-			get
-			{
-				if (this.Parameters.Contains("RegardingObjectTypeName"))
-				{
-					return ((string)(this.Parameters["RegardingObjectTypeName"]));
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-			set
-			{
-				this.Parameters["RegardingObjectTypeName"] = value;
+				this.Parameters["DocumentIds"] = value;
 			}
 		}
 		
@@ -75,13 +56,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		public string DocumentIds
+		public string RegardingObjectTypeName
 		{
 			get
 			{
-				if (this.Parameters.Contains("DocumentIds"))
+				if (this.Parameters.Contains("RegardingObjectTypeName"))
 				{
-					return ((string)(this.Parameters["DocumentIds"]));
+					return ((string)(this.Parameters["RegardingObjectTypeName"]));
 				}
 				else
 				{
@@ -90,22 +71,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 			set
 			{
-				this.Parameters["DocumentIds"] = value;
+				this.Parameters["RegardingObjectTypeName"] = value;
+			}
+		}
+		
+		public string Subject
+		{
+			get
+			{
+				if (this.Parameters.Contains("Subject"))
+				{
+					return ((string)(this.Parameters["Subject"]));
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+			set
+			{
+				this.Parameters["Subject"] = value;
 			}
 		}
 		
 		public bcgov_CreateDraftEmailRequest()
 		{
 			this.RequestName = "bcgov_CreateDraftEmail";
-			this.Subject = default(string);
-			this.RegardingObjectTypeName = default(string);
 			this.RegardingObjectId = default(string);
+			this.RegardingObjectTypeName = default(string);
+			this.Subject = default(string);
 		}
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("bcgov_CreateDraftEmail")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_CreateDraftEmailResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
@@ -126,6 +126,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 					return default(string);
 				}
 			}
+			set
+			{
+				this.Results["EmailId"] = value;
+			}
 		}
 		
 		public string UserMessage
@@ -140,6 +144,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+			set
+			{
+				this.Results["UserMessage"] = value;
 			}
 		}
 	}

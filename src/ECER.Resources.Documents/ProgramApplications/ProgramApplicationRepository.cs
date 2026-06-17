@@ -222,18 +222,19 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         return HasRepresentative(application)
           && application.ecer_Onlinemethodsofinstruction.Any()
           && application.ecer_Deliverymethodforpracticuminstructor.Any()
-          && ValidateCampus(incomingApplication, institute);
+          && ValidateCampus(incomingApplication, institute)
+          && ValidateProgramLengthEntries(incomingApplication);
       }
 
       if (incomingApplication.DeliveryType == DeliveryType.Inperson)
       {
-        return HasRepresentative(application) && ValidateCampus(incomingApplication, institute);
+        return HasRepresentative(application) && ValidateCampus(incomingApplication, institute) && ValidateProgramLengthEntries(incomingApplication);
       }
     }
 
     if (incomingApplication.ProgramApplicationType == ApplicationType.NewCampusatRecognizedPrivateInstitution)
     {
-      return HasRepresentative(application);
+      return HasRepresentative(application) && ValidateProgramLengthEntries(incomingApplication);
     }
 
     if (incomingApplication.ProgramApplicationType == ApplicationType.SatelliteProgram)
@@ -252,6 +253,10 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
       {
         return false;
       }
+      if (!ValidateProgramLengthEntries(incomingApplication))
+      {
+        return false;
+      }
 
       if (incomingApplication.ProgramCampuses == null || !incomingApplication.ProgramCampuses.Any())
       {
@@ -264,7 +269,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         return false;
       }
 
-      if (string.IsNullOrEmpty(application.ecer_Name) || application.ecer_ProjectedLength == null)
+      if (string.IsNullOrEmpty(application.ecer_Name))
       {
         return false;
       }
@@ -296,8 +301,28 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
 
     return true;
   }
+  private static bool ValidateProgramLengthEntries(ProgramApplication incomingApplication)
+  {
+    if (incomingApplication.ProgramTypes == null)
+    {
+      return false;
+    }
+    if (incomingApplication.ProgramTypes.Contains(ProgramCertificationType.Basic) && incomingApplication.BasicProgramLength == null)
+    {
+      return false;
+    }
+    if (incomingApplication.ProgramTypes.Contains(ProgramCertificationType.ITE) && incomingApplication.IteProgramLength == null)
+    {
+      return false;
+    }
+    if (incomingApplication.ProgramTypes.Contains(ProgramCertificationType.SNE) && incomingApplication.SneProgramLength == null)
+    {
+      return false;
+    }
+    return true;
+  }
 
-  public async Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken)
+public async Task<ProgramApplicationQueryResults> Query(ProgramApplicationQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var applications = context.ecer_PostSecondaryInstituteProgramApplicaitonSet.AsQueryable();
