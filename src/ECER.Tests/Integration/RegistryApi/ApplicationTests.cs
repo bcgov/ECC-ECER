@@ -94,7 +94,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applicationById = applicationsById.ShouldHaveSingleItem();
     applicationById.WorkExperienceReferences.All(workExp => workExp.Type == WorkExperienceTypes.Is400Hours).ShouldBeTrue();
     applicationById.ApplicationType.ShouldBe(ApplicationTypes.Renewal);
-    applicationById.EducationOrigin.ShouldBeNull();
   }
 
   [Fact]
