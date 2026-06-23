@@ -130,7 +130,7 @@ export default defineComponent({
           this.certificationStore
             .countMultipleEceOneYearCertificationsSinceLatest5YearIfExist === 0
         ) {
-          return "You cannot renew your ECE One Year certification. Since you have moved to an ECE Five year certification pathway.";
+          return "You cannot renew your ECE One Year certification. You can renew your ECE Five Year certificate or complete an application for a new ECE One Year certification.";
         } else if (this.expiredOverFiveYears) {
           return "You cannot renew your ECE One Year certification because it's been expired for over 5 years.";
         }
