@@ -98,13 +98,13 @@ public class ApplicationHandlers(
     {
       ById = request.TranscriptDocuments.ApplicationId,
       ByApplicantId = request.TranscriptDocuments.RegistrantId,
-      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Submitted]
+      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Submitted, Resources.Documents.Applications.ApplicationStatus.Pending]
     }, cancellationToken);
 
     var applicationResults = new ApplicationsQueryResults(applicationMapper.MapApplications(applications));
     if (!applicationResults.Items.Any())
     {
-      throw new InvalidOperationException($"Registrant {request.TranscriptDocuments.RegistrantId} does not have a submitted application");
+      throw new InvalidOperationException($"Registrant {request.TranscriptDocuments.RegistrantId} does not have a submitted or pending application");
     }
 
     var applicationId = await applicationRepository.SaveApplicationTranscript(applicationMapper.MapTranscriptDocuments(request.TranscriptDocuments), cancellationToken);
