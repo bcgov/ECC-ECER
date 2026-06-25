@@ -1,5 +1,5 @@
-using Riok.Mapperly.Abstractions;
 using ECER.Clients.RegistryPortal.Server.Applications;
+using Riok.Mapperly.Abstractions;
 using ContractApplications = ECER.Managers.Registry.Contract.Applications;
 using ContractICRA = ECER.Managers.Registry.Contract.ICRA;
 
@@ -8,8 +8,11 @@ namespace ECER.Clients.RegistryPortal.Server.References;
 internal interface IReferencesMapper
 {
   ContractApplications.CharacterReferenceSubmissionRequest MapCharacterReferenceSubmissionRequest(CharacterReferenceSubmissionRequest source);
+
   ContractApplications.WorkExperienceReferenceSubmissionRequest MapWorkExperienceReferenceSubmissionRequest(WorkExperienceReferenceSubmissionRequest source);
+
   ContractApplications.OptOutReferenceRequest MapOptOutReferenceRequest(OptOutReferenceRequest source);
+
   ContractICRA.ICRAWorkExperienceReferenceSubmissionRequest MapIcraWorkExperienceReferenceSubmissionRequest(ICRAWorkExperienceReferenceSubmissionRequest source);
 }
 
@@ -27,7 +30,7 @@ internal partial class ReferencesMapper : IReferencesMapper
     source.Token,
     source.WillProvideReference,
     MapReferenceContactInformation(source.ReferenceContactInformation),
-    MapWorkExperienceReferenceDetails(source.WorkExperienceReferenceDetails),
+    source.WorkExperienceReferenceDetails == null ? null! : MapWorkExperienceReferenceDetails(source.WorkExperienceReferenceDetails),
     source.WorkExperienceReferenceCompetenciesAssessment == null ? null! : MapWorkExperienceReferenceCompetenciesAssessment(source.WorkExperienceReferenceCompetenciesAssessment),
     source.ConfirmProvidedInformationIsRight);
 
