@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using System.Diagnostics;
 using System.Reflection;
 using System.Security.Claims;
@@ -51,14 +51,11 @@ internal class Program
           BearerFormat = "JWT",
           Description = "JWT Authorization header using the Bearer scheme."
         });
-        opts.AddSecurityRequirement(new OpenApiSecurityRequirement
+        opts.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
         {
             {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
-                },
-                []
+                new OpenApiSecuritySchemeReference("bearerAuth"),
+                new List<string>()
             }
         }); opts.UseOneOfForPolymorphism();
       });

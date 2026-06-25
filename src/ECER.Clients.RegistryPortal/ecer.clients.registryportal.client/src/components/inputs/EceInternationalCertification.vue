@@ -19,11 +19,7 @@
           <v-select
             id="certificateCountrySelect"
             class="pt-2"
-            :items="
-              configStore.countryList.filter(
-                (country) => country.isICRA === true,
-              )
-            "
+            :items="configStore.countryList"
             variant="outlined"
             label=""
             v-model="countryId"
@@ -34,10 +30,34 @@
                 'Select your country of certification',
                 'countryId',
               ),
+              () =>
+                countryIsIcra ||
+                'Certification from this country is not eligible for international credentials recognition.',
             ]"
           ></v-select>
         </v-col>
       </v-row>
+      <Callout v-if="countryId && !countryIsIcra" class="my-2" type="error">
+        <p>
+          If you hold valid certification in another country, change your
+          selection above.
+          <a
+            target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator"
+          >
+            Contact us
+          </a>
+          if you have any questions about applying with international
+          certification.
+        </p>
+        <br />
+        <p>You can apply for an ECE Assistant or ECE One Year Certificate.</p>
+        <br />
+        <p>
+          Return to the home screen and cancel your eligibility submission then
+          select Apply now.
+        </p>
+      </Callout>
       <v-row>
         <v-col md="8" lg="6" xl="4">
           <EceTextField
@@ -82,7 +102,7 @@
             id="txtRegulatoryAuthorityWebsite"
             v-model="websiteOfRegulatoryAuthority"
             label="Website of regulatory authority (optional)"
-            :rules="[Rules.website(), Rules.maxLength(100)]"
+            :rules="[Rules.website(), Rules.maxLength(250)]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -92,7 +112,7 @@
             id="txtRegulatoryAuthorityValidation"
             v-model="onlineCertificateValidationToolOfRegulatoryAuthority"
             label="Online certificate validation tool of regulatory authority (optional)"
-            :rules="[Rules.website(), Rules.maxLength(100)]"
+            :rules="[Rules.website(), Rules.maxLength(250)]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -581,6 +601,12 @@ export default defineComponent({
           (certificate) => certificate.certificateStatus === "Valid",
         )
       );
+    },
+    countryIsIcra(): boolean {
+      const country = this.configStore.countryList.find(
+        (country) => country.countryId === this.countryId,
+      );
+      return country?.isICRA ?? false;
     },
   },
 

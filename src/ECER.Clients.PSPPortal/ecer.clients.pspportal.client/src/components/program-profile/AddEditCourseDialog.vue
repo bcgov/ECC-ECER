@@ -15,7 +15,7 @@
               <EceTextField
                 id="txtCourseNumber"
                 v-model="courseNumber"
-                label="Course number"
+                label="Course code"
                 :rules="[Rules.required(), generateSameCourseNumberRule()]"
                 :disabled="saving"
               ></EceTextField>
@@ -230,7 +230,7 @@ export default defineComponent({
           );
         });
         return duplicateCourseNumber
-          ? "This course number already exists in this program profile"
+          ? "This course code already exists in this program profile"
           : true;
       };
     },

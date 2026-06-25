@@ -108,7 +108,9 @@ public record ProgramApplication(string? Id, string PostSecondaryInstituteId)
   public DeliveryType? DeliveryType { get; set; }
   public bool? ComponentsGenerationCompleted { get; set; }
   public string? ProgramRepresentativeId { get; set; }
-  public string? ProgramLength { get; set; }
+  public float? BasicProgramLength { get; set; }
+  public float? IteProgramLength { get; set; }
+  public float? SneProgramLength { get; set; }
   public IEnumerable<MethodofInstruction>? OnlineMethodOfInstruction { get; set; }
   public IEnumerable<DeliveryMethodforInstructor>? DeliveryMethod { get; set; }
   public IEnumerable<WorkHoursType>? EnrollmentOptions { get; set; }
@@ -140,6 +142,7 @@ public record ProgramCampus
   public DateTime? StartDate { get; set; }
   public DateTime? EndDate { get; set; }
 }
+
 public enum AdmissionOptions
 {
   Allcoursesrestrictedtoearlychildhoodeducationstudents,

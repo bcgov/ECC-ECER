@@ -363,7 +363,9 @@ declare namespace Components {
       deliveryType?: DeliveryType;
       componentsGenerationCompleted?: boolean | null;
       programRepresentativeId?: string | null;
-      programLength?: string | null;
+      basicProgramLength?: number | null; // float
+      iteProgramLength?: number | null; // float
+      sneProgramLength?: number | null; // float
       onlineMethodOfInstruction?: MethodofInstruction[] | null;
       deliveryMethod?: DeliveryMethodforInstructor[] | null;
       enrollmentOptions?: WorkHoursType[] | null;

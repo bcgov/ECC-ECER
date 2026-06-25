@@ -14,7 +14,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("bcgov_DownloadDocumentFromSharePoint")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_DownloadDocumentFromSharePointRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
 		
@@ -46,7 +46,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/bcgov/")]
 	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("bcgov_DownloadDocumentFromSharePoint")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.16")]
 	public partial class bcgov_DownloadDocumentFromSharePointResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
@@ -67,6 +67,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 					return default(string);
 				}
 			}
+			set
+			{
+				this.Results["Body"] = value;
+			}
 		}
 		
 		public string FileName
@@ -81,6 +85,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+			set
+			{
+				this.Results["FileName"] = value;
 			}
 		}
 		
@@ -97,6 +105,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 					return default(string);
 				}
 			}
+			set
+			{
+				this.Results["FileSize"] = value;
+			}
 		}
 		
 		public bool IsSuccess
@@ -111,6 +123,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(bool);
 				}
+			}
+			set
+			{
+				this.Results["IsSuccess"] = value;
 			}
 		}
 		
@@ -127,6 +143,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 					return default(string);
 				}
 			}
+			set
+			{
+				this.Results["MimeType"] = value;
+			}
 		}
 		
 		public System.DateTime ReceivedDate
@@ -142,6 +162,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 					return default(System.DateTime);
 				}
 			}
+			set
+			{
+				this.Results["ReceivedDate"] = value;
+			}
 		}
 		
 		public string Result
@@ -156,6 +180,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+			set
+			{
+				this.Results["Result"] = value;
 			}
 		}
 	}

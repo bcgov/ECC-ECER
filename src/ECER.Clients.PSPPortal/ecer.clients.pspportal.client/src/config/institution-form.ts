@@ -110,7 +110,7 @@ const institutionForm: Form = {
       component: EceTextField,
       props: {
         label: "Website",
-        maxLength: 100,
+        rules: [Rules.website(), Rules.maxLength(250)],
       },
       cols: {
         md: 8,

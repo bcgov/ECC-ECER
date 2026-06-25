@@ -106,6 +106,8 @@ internal sealed partial class ApplicationRepository
         transcript.ecer_iwishtoapplyforafeewaiver = false;
         transcript.ecer_ihavesubmittedanapplicationtobcits = false;
         transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = true;
+
+        transcript.ecer_ComprehensiveEvaluationReportReceived = true;
       }
     }
 

@@ -74,7 +74,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         string componentGroupId,
         string componentId,
         string fileId,
-        [FromForm(Name = "file")] IFormFile file,
+        IFormFile file,
         HttpContext httpContext,
         IMediator messageBus,
         IProgramApplicationsMapper mapper,
@@ -129,6 +129,7 @@ public class ProgramApplicationFilesEndpoints : IRegisterEndpoints
         var result = await messageBus.Send(command, ct);
         return TypedResults.Ok(mapper.MapApplicationFileInfo(result));
       })
+      .Accepts<IFormFile>("multipart/form-data")
       .WithOpenApi("Upload a file immediately for a program application component", string.Empty, "program_application_file_upload")
       .RequireAuthorization(policyName)
       .DisableAntiforgery()

@@ -7,10 +7,15 @@ namespace ECER.Resources.Documents.ProgramApplications;
 internal interface IProgramApplicationRepositoryMapper
 {
   ecer_PostSecondaryInstituteProgramApplicaiton MapProgramApplication(ProgramApplication source);
+
   List<ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode> MapApplicationStatuses(IEnumerable<ApplicationStatus> source);
+
   List<ProgramApplication> MapProgramApplications(IEnumerable<ecer_PostSecondaryInstituteProgramApplicaiton> source);
+
   List<NavigationMetadata> MapNavigationMetadata(IEnumerable<ecer_ProgramApplicationComponentGroup> source);
+
   List<ComponentGroupWithComponents> MapComponentGroupsWithComponents(IEnumerable<ecer_ProgramApplicationComponentGroup> source);
+
   ecer_ProgramApplicationComponent MapProgramApplicationComponent(ProgramApplicationComponent source);
 }
 
@@ -24,7 +29,9 @@ internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationR
     ecer_statusreasondetail = MapStatusReasonDetail(source.StatusReasonDetail),
     ecer_Name = source.ProgramApplicationName,
     ecer_ApplicationType = MapApplicationType(source.ProgramApplicationType),
-    ecer_ProjectedLength = MapDecimal(source.ProgramLength),
+    ecer_basicprogramlengthmonths = MapDecimal(source.BasicProgramLength),
+    ecer_ITEprogramlengthmonths = MapDecimal(source.IteProgramLength),
+    ecer_SNEprogramlengthmonths = MapDecimal(source.SneProgramLength),
     ecer_Onlinemethodsofinstruction = source.OnlineMethodOfInstruction?.Select(MapMethodOfInstruction).ToList(),
     ecer_Deliverymethodforpracticuminstructor = source.DeliveryMethod?.Select(MapDeliveryMethod).ToList(),
     ecer_ProgramEnrollment = source.EnrollmentOptions?.Select(MapWorkHoursType).ToList(),
@@ -62,7 +69,9 @@ internal partial class ProgramApplicationRepositoryMapper : IProgramApplicationR
     ProgramApplicationType = MapApplicationType(source.ecer_ApplicationType),
     ComponentsGenerationCompleted = source.ecer_ComponentsGenerationCompleted,
     ProgramRepresentativeId = source.ecer_PSIProgramRepresentative?.Id.ToString(),
-    ProgramLength = MapFloat(source.ecer_ProjectedLength),
+    BasicProgramLength = MapFloat(source.ecer_basicprogramlengthmonths),
+    IteProgramLength = MapFloat(source.ecer_ITEprogramlengthmonths),
+    SneProgramLength = MapFloat(source.ecer_SNEprogramlengthmonths),
     OnlineMethodOfInstruction = source.ecer_Onlinemethodsofinstruction?.Select(MapMethodOfInstruction).ToList(),
     DeliveryMethod = source.ecer_Deliverymethodforpracticuminstructor?.Select(MapDeliveryMethod).ToList(),
     EnrollmentOptions = source.ecer_ProgramEnrollment?.Select(MapWorkHoursType).ToList(),

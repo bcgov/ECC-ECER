@@ -1,11 +1,13 @@
 <template>
   <ConfirmationDialog
     :show="showTimeoutDialog"
-    :cancel-button-text="'Continue'"
-    :accept-button-text="'Logout'"
-    :title="'You will be logged out soon'"
+    cancel-button-text="Continue"
+    accept-button-text="Logout"
+    title="You will be logged out soon"
     @accept="oidcStore.logout"
     @cancel="showTimeoutDialog = false"
+    @click-outside="showTimeoutDialog = false"
+    @exit="showTimeoutDialog = false"
   >
     <template #confirmation-text>
       <p>

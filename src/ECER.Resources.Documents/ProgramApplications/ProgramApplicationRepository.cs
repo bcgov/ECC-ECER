@@ -189,7 +189,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
         context.AddLink(entity, ecer_PostSecondaryInstituteProgramApplicaiton.Fields.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ, user!);
       }
 
-      entity.ecer_InstitutionProgramInformationEntryProgress = ValidateInstituteInfo(entity, institute, application)
+      entity.ecer_InstitutionProgramInformationEntryProgress = ValidateInstituteInfo(entity, application)
         ? ecer_PSPComponentProgress.Completed
         : ecer_PSPComponentProgress.InProgress;
       context.UpdateObject(entity);
@@ -213,69 +213,125 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     context.UpdateObject(existingCampus);
   }
 
-  private static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ecer_PostSecondaryInstitute institute, ProgramApplication incomingApplication)
+  internal static bool ValidateInstituteInfo(ecer_PostSecondaryInstituteProgramApplicaiton application, ProgramApplication incomingApplication)
   {
-    if (incomingApplication.ProgramApplicationType == ApplicationType.NewBasicECEPostBasicProgram)
+    return incomingApplication.ProgramApplicationType switch
     {
-      if (incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online)
-      {
-        return HasRepresentative(application)
-          && application.ecer_Onlinemethodsofinstruction.Any()
-          && application.ecer_Deliverymethodforpracticuminstructor.Any()
-          && ValidateCampus(incomingApplication, institute);
-      }
+      ApplicationType.NewBasicECEPostBasicProgram =>
+          ValidateNewBasicECEPostBasic(application, incomingApplication),
+      ApplicationType.NewCampusatRecognizedPrivateInstitution =>
+          ValidateNewCampusPrivateInstitution(application, incomingApplication),
+      ApplicationType.SatelliteProgram =>
+          ValidateSatelliteProgram(application, incomingApplication),
+      ApplicationType.AddOnlineorHybridDeliveryMethod =>
+          ValidateAddOnlineOrHybrid(application, incomingApplication),
+      _ => throw new ArgumentOutOfRangeException(
+            nameof(incomingApplication),
+            incomingApplication.ProgramApplicationType,
+            $"Validation logic has not been implemented for program application type: {incomingApplication.ProgramApplicationType}")
+    };
+  }
 
-      if (incomingApplication.DeliveryType == DeliveryType.Inperson)
-      {
-        return HasRepresentative(application) && ValidateCampus(incomingApplication, institute);
-      }
+  private static bool ValidateNewBasicECEPostBasic(ecer_PostSecondaryInstituteProgramApplicaiton application, ProgramApplication incomingApplication)
+  {
+    //common fields between post basic and online/hybrid for post basic programs
+    if (!ValidateCommonFields(application) ||
+      !ValidateCampus(incomingApplication) ||
+      !ValidateProgramLengthEntries(incomingApplication) ||
+      !application.ecer_ProgramEnrollment.Any() ||
+      !ValidateAdmissionOptions(application))
+    {
+      return false;
+    }
+    //common fields between online/hybrid for post basic programs
+    if ((incomingApplication.DeliveryType == DeliveryType.Hybrid || incomingApplication.DeliveryType == DeliveryType.Online) &&
+      (!application.ecer_Onlinemethodsofinstruction.Any() || !application.ecer_Deliverymethodforpracticuminstructor.Any()))
+    {
+      return false;
+    }
+    //specific field for hybrid delivery method
+    if (incomingApplication.DeliveryType == DeliveryType.Hybrid &&
+      (application.ecer_OnlineDeliveryHoursPercentage == null || application.ecer_InpersonHoursPercentage == null))
+    {
+      return false;
     }
 
-    if (incomingApplication.ProgramApplicationType == ApplicationType.NewCampusatRecognizedPrivateInstitution)
+    return true;
+  }
+
+  private static bool ValidateNewCampusPrivateInstitution(ecer_PostSecondaryInstituteProgramApplicaiton application, ProgramApplication incomingApplication)
+  {
+    if (!ValidateCommonFields(application) ||
+        !ValidateProgramLengthEntries(incomingApplication) ||
+        !application.ecer_ProgramEnrollment.Any() ||
+        !ValidateAdmissionOptions(application) ||
+        !application.ecer_Onlinemethodsofinstruction.Any() ||
+        !application.ecer_Deliverymethodforpracticuminstructor.Any())
     {
-      return HasRepresentative(application);
+      return false;
+    }
+    return true;
+  }
+
+  private static bool ValidateSatelliteProgram(ecer_PostSecondaryInstituteProgramApplicaiton application, ProgramApplication incomingApplication)
+  {
+    if (!ValidateCommonFields(application))
+    {
+      return false;
     }
 
-    if (incomingApplication.ProgramApplicationType == ApplicationType.SatelliteProgram)
+    var campus = incomingApplication.ProgramCampuses?.FirstOrDefault(c => c.Id != null);
+    if (campus == null || campus.StartDate == null || campus.EndDate == null)
     {
-      var campus = incomingApplication.ProgramCampuses?.FirstOrDefault(c => c.Id != null);
-      return HasRepresentative(application)
-        && campus != null
-        && campus.StartDate != null
-        && campus.EndDate != null;
+      return false;
     }
 
-    if (incomingApplication.ProgramApplicationType == ApplicationType.AddOnlineorHybridDeliveryMethod)
+    return true;
+  }
+
+  private static bool ValidateAddOnlineOrHybrid(ecer_PostSecondaryInstituteProgramApplicaiton application, ProgramApplication incomingApplication)
+  {
+    if (!ValidateCommonFields(application)
+        || !ValidateCampus(incomingApplication)
+        || !ValidateProgramLengthEntries(incomingApplication)
+        || !application.ecer_Onlinemethodsofinstruction.Any()
+        || !application.ecer_Deliverymethodforpracticuminstructor.Any()
+        || !application.ecer_ProgramEnrollment.Any()
+        || !ValidateAdmissionOptions(application))
     {
-      if (incomingApplication.DeliveryType == DeliveryType.Hybrid
-          && (incomingApplication.InPersonHoursPercentage == null || incomingApplication.OnlineDeliveryHoursPercentage == null))
-      {
-        return false;
-      }
+      return false;
+    }
+    if (incomingApplication.DeliveryType == DeliveryType.Hybrid &&
+    (application.ecer_OnlineDeliveryHoursPercentage == null || application.ecer_InpersonHoursPercentage == null))
+    {
+      return false;
+    }
+    return true;
+  }
 
-      if (incomingApplication.ProgramCampuses == null || !incomingApplication.ProgramCampuses.Any())
-      {
-        return false;
-      }
+  // Validations for fields common across all application types
+  private static bool ValidateCommonFields(ecer_PostSecondaryInstituteProgramApplicaiton application)
+  {
+    if (!HasRepresentative(application) || //contact person
+    string.IsNullOrEmpty(application.ecer_Name) || //program name
+    application.ecer_MinimumStudentEnrollmentperCourse == null || //minimum enrollment
+    application.ecer_MaximumStudentEnrollmentperCourse == null) //maximum enrollment
+    {
+      return false;
+    }
+    return true;
+  }
 
-      if (application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ == null
-          || application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id == Guid.Empty)
-      {
-        return false;
-      }
+  private static bool ValidateAdmissionOptions(ecer_PostSecondaryInstituteProgramApplicaiton application)
+  {
+    if (!application.ecer_AdmissionOptions.Any())
+    {
+      return false;
+    }
 
-      if (string.IsNullOrEmpty(application.ecer_Name) || application.ecer_ProjectedLength == null)
-      {
-        return false;
-      }
-
-      if (!application.ecer_Onlinemethodsofinstruction.Any()
-          || !application.ecer_Deliverymethodforpracticuminstructor.Any()
-          || !application.ecer_ProgramEnrollment.Any()
-          || !application.ecer_AdmissionOptions.Any())
-      {
-        return false;
-      }
+    if (application.ecer_AdmissionOptions.Contains(ecer_PSPAdmissionOptions.Other) && string.IsNullOrEmpty(application.ecer_OtherAdmissionOptions))
+    {
+      return false;
     }
 
     return true;
@@ -287,13 +343,29 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
            && application.ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ.Id != Guid.Empty;
   }
 
-  private static bool ValidateCampus(ProgramApplication incomingApplication, ecer_PostSecondaryInstitute institute)
+  private static bool ValidateCampus(ProgramApplication incomingApplication)
   {
-    if (institute.ecer_PSIInstitutionType == ecer_psiinstitutiontype.Private)
-    {
-      return incomingApplication.ProgramCampuses != null && incomingApplication.ProgramCampuses.Any();
-    }
+    return incomingApplication.ProgramCampuses != null && incomingApplication.ProgramCampuses.Any();
+  }
 
+  private static bool ValidateProgramLengthEntries(ProgramApplication incomingApplication)
+  {
+    if (incomingApplication.ProgramTypes == null)
+    {
+      return false;
+    }
+    if (incomingApplication.ProgramTypes.Contains(ProgramCertificationType.Basic) && incomingApplication.BasicProgramLength == null)
+    {
+      return false;
+    }
+    if (incomingApplication.ProgramTypes.Contains(ProgramCertificationType.ITE) && incomingApplication.IteProgramLength == null)
+    {
+      return false;
+    }
+    if (incomingApplication.ProgramTypes.Contains(ProgramCertificationType.SNE) && incomingApplication.SneProgramLength == null)
+    {
+      return false;
+    }
     return true;
   }
 

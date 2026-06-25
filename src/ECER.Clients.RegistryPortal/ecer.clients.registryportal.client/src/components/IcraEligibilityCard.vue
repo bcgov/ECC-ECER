@@ -41,6 +41,15 @@
           <v-icon size="large" icon="mdi-arrow-right" />
           Continue submission
         </v-btn>
+
+        <v-btn
+          size="large"
+          variant="outlined"
+          color="white"
+          @click="$emit('cancel-icra-eligibility')"
+        >
+          Cancel submission
+        </v-btn>
       </v-card-actions>
 
       <!-- ICRA Eligibility status Submitted, Ready, In Progress, Pending Queue -->
@@ -84,7 +93,7 @@ export default defineComponent({
       default: true,
     },
   },
-  // emits: ["cancel-application"],
+  emits: ["cancel-icra-eligibility"],
   setup() {
     const icraStore = useIcraStore();
     const router = useRouter();
