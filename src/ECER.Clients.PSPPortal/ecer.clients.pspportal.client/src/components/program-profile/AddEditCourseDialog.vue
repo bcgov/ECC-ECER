@@ -337,7 +337,7 @@ export default defineComponent({
     },
     getAreaNameById(id: string) {
       const area = this.areas.find((area) => area.id === id);
-      if (!this.areas.find((area) => area.id === id)) {
+      if (!area) {
         console.warn(`areaId not found for area id: ${id}`);
         return "area name not found";
       }
