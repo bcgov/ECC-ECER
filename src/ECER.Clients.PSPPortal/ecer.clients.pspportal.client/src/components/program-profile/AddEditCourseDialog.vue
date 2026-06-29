@@ -47,7 +47,22 @@
               align="center"
               class="px-4 mb-2 bg-white rounded-lg border"
             >
-              <v-col cols="12" sm="">{{ area.name }}</v-col>
+              <v-col cols="12" sm="">
+                <div class="d-flex flex-column justify-center">
+                  <div class="font-weight-bold">{{ area.name }}</div>
+                  <!-- just for subtitles for areas with a parentAreaOfInstruction -->
+                  <div
+                    v-if="area.parentAreaOfInstructionId"
+                    class="small font-italic"
+                  >
+                    {{ `${area.name} course hours are satisfied under ` }}
+                    <strong>
+                      {{ getAreaNameById(area.parentAreaOfInstructionId) }}
+                    </strong>
+                    and not calculated separately in this formula.
+                  </div>
+                </div>
+              </v-col>
               <v-spacer></v-spacer>
               <v-col cols="auto" md="2" lg="1" class="d-flex justify-end">
                 <v-text-field
@@ -319,6 +334,14 @@ export default defineComponent({
           "You must enter all required fields in the valid format.",
         );
       }
+    },
+    getAreaNameById(id: string) {
+      const area = this.areas.find((area) => area.id === id);
+      if (!area) {
+        console.warn(`areaId not found for area id: ${id}`);
+        return "area name not found";
+      }
+      return area?.name || "area name not found";
     },
     handleCancel() {
       this.localCourse = null;
