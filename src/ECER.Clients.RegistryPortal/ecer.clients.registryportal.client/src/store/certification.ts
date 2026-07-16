@@ -42,6 +42,18 @@ export const useCertificationStore = defineStore("certification", {
         ) ?? null
       );
     },
+    activeEceOneYearCertification(
+      state,
+    ): Components.Schemas.Certification | null {
+      return (
+        state.certifications?.find(
+          (cert) =>
+            cert.levels?.some(
+              (level) => level.type === ("ECE 1 YR" as CertificationLevelType),
+            ) && cert.statusCode === "Active",
+        ) ?? null
+      );
+    },
     holdsAllCertifications(state): boolean {
       if (!state.certifications || state.certifications.length === 0)
         return false;
@@ -194,6 +206,28 @@ export const useCertificationStore = defineStore("certification", {
       return (
         this.certifications.filter((cert) => cert.id !== certificateId).length >
         0
+      );
+    },
+    hasExpiredCertificationsOfType(
+      certificateLevelType: CertificationLevelType,
+    ): boolean {
+      if (!this.certifications) return false;
+      return (
+        this.certifications.filter(
+          (cert) =>
+            cert.statusCode === "Expired" &&
+            cert.levels?.some((level) => level.type === certificateLevelType),
+        ).length > 0
+      );
+    },
+    hasCertificationsOfType(
+      certificateLevelType: CertificationLevelType,
+    ): boolean {
+      if (!this.certifications) return false;
+      return (
+        this.certifications.filter((cert) =>
+          cert.levels?.some((level) => level.type === certificateLevelType),
+        ).length > 0
       );
     },
     getMostRecentCertificationByExpiryDate(

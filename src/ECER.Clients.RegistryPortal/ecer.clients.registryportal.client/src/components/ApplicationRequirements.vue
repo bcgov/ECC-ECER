@@ -40,6 +40,19 @@
         ref="ECEFiveYearLaborMobilityRequirements"
         :is-post-basic="isPostBasic"
       />
+
+      <ECESneAndIteLaborMobilityRequirements
+        v-if="
+          applicationStore.isDraftCertificateTypeSne &&
+          applicationStore.isDraftCertificateTypeIte
+        "
+      />
+      <ECESneLaborMobilityRequirements
+        v-if="applicationStore.isDraftCertificateTypeSne"
+      />
+      <ECEIteLaborMobilityRequirements
+        v-if="applicationStore.isDraftCertificateTypeIte"
+      />
     </template>
 
     <!-- Registrant -->
@@ -104,6 +117,9 @@ import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequire
 import ECEAssistantLaborMobilityRequirements from "./ECEAssistantLaborMobilityRequirements.vue";
 import ECEOneYearLaborMobilityRequirements from "./ECEOneYearLaborMobilityRequirements.vue";
 import ECEFiveYearLaborMobilityRequirements from "./ECEFiveYearLaborMobilityRequirements.vue";
+import ECESneLaborMobilityRequirements from "./ECESneLaborMobilityRequirements.vue";
+import ECEIteLaborMobilityRequirements from "./ECEIteLaborMobilityRequirements.vue";
+import ECESneAndIteLaborMobilityRequirements from "./ECESneAndIteLaborMobilityRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
@@ -125,6 +141,9 @@ export default defineComponent({
     ECEAssistantLaborMobilityRequirements,
     ECEOneYearLaborMobilityRequirements,
     ECEFiveYearLaborMobilityRequirements,
+    ECESneLaborMobilityRequirements,
+    ECEIteLaborMobilityRequirements,
+    ECESneAndIteLaborMobilityRequirements,
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
