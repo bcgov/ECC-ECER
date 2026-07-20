@@ -1,8 +1,6 @@
-using AngleSharp.Dom;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Resources.Documents.Certifications;
 using Mediator;
-using System.Collections.Generic;
 using CertificateStatusCode = ECER.Resources.Documents.Certifications.CertificateStatusCode;
 
 namespace ECER.Managers.Registry;
@@ -49,7 +47,6 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
           .ThenBy(c => c.BaseCertificateTypeId)
           .ToList();
       results.AddRange(certs);
-
     }
 
     // map and return results
