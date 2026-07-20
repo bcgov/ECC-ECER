@@ -185,11 +185,11 @@ export const TransferUserHasOneYear: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - yes
-// One Year - yes
+// upgrade choice - no
+// One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
-export const TransferUserHasFiveYearShouldBeAbleToUpgrade: Story = {
+export const TransferUserHasFiveYearShouldBeAbleToUpgradeNoOneYear: Story = {
   decorators: [
     (story) => {
       const certificationStore = useCertificationStore();
@@ -203,8 +203,8 @@ export const TransferUserHasFiveYearShouldBeAbleToUpgrade: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - yes
-// One Year - yes
+// upgrade choice - no
+// One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
 export const TransferUserHasFiveYearIteShouldBeAbleToUpgrade: Story = {
@@ -221,8 +221,8 @@ export const TransferUserHasFiveYearIteShouldBeAbleToUpgrade: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - yes
-// One Year - yes
+// upgrade choice - no
+// One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
 export const TransferUserHasFiveYearSne: Story = {
@@ -240,7 +240,7 @@ export const TransferUserHasFiveYearSne: Story = {
 // Assistant - yes
 // work experience question - no
 // upgrade choice - no
-// One Year - yes
+// One Year - no
 // Five Year - no
 // Five year ite + sne - no
 export const TransferUserHasFiveYearIteSne: Story = {
@@ -281,8 +281,8 @@ export const TransferUserHasFiveYearAndOneYearShouldBeAbleToAutoUpgradeToIteSne:
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - yes
-// One Year - yes
+// upgrade choice - no
+// One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
 export const TransferUserHasFiveYearIteAndOneYearShouldBeAbleToAutoUpgradeToSne: Story =
@@ -331,7 +331,31 @@ export const TransferUserHasExpiredFiveYearShouldGetOptionForOneYear: Story = {
 // One Year - yes
 // Five Year - no
 // Five year ite + sne - no
-export const TransferUserHasFiveYearAndExpiredOneYearEdgeCaseCanApplyForOneYear: Story =
+export const TransferUserHasExpiredFiveYearAndExpiredOneYearEdgeCaseCanApplyForOneYear: Story =
+  {
+    decorators: [
+      (story) => {
+        const certificationStore = useCertificationStore();
+        certificationStore.certifications = [
+          generateCertificate(
+            ["ECE 5 YR", "SNE", "ITE"],
+            getTodayDate(),
+            "Expired",
+          ),
+          generateCertificate(["ECE 1 YR"], getDateMinusYears(1), "Expired"),
+        ];
+        return story();
+      },
+    ],
+  };
+
+// Assistant - yes
+// work experience question - no
+// upgrade choice - no
+// One Year - no
+// Five Year - no
+// Five year ite + sne - no
+export const TransferUserHasActiveFiveYearAndExpiredOneYearEdgeCaseCannotApplyForOneYear: Story =
   {
     decorators: [
       (story) => {
@@ -355,7 +379,7 @@ export const TransferUserHasFiveYearAndExpiredOneYearEdgeCaseCanApplyForOneYear:
 // One Year - no
 // Five Year - no
 // Five year ite + sne - no
-export const TransferUserHasFiveYearAndOneYearAfterShouldNotBeAbleToApplyForOneYear: Story =
+export const TransferUserHasExpiredFiveYearAndOneYearAfterShouldNotBeAbleToApplyForOneYear: Story =
   {
     decorators: [
       (story) => {
@@ -364,7 +388,7 @@ export const TransferUserHasFiveYearAndOneYearAfterShouldNotBeAbleToApplyForOneY
           generateCertificate(
             ["ECE 5 YR", "SNE", "ITE"],
             getDateMinusYears(1),
-            "Active",
+            "Expired",
           ),
           generateCertificate(["ECE 1 YR"], getTodayDate(), "Expired"),
         ];

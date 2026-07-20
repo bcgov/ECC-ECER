@@ -489,6 +489,13 @@ export default {
                 return false;
               }
 
+              if (
+                this.certificationStore.activeEceFiveYearCertification &&
+                option.bcCertificate === CertificationType.OneYear
+              ) {
+                return false;
+              }
+
               //assistant rules
               if (
                 this.certificationStore.hasCertificationsOfType("Assistant") &&
