@@ -42,16 +42,16 @@
       />
 
       <ECESneAndIteLabourMobilityRequirements
-        v-if="
+        v-else-if="
           applicationStore.isDraftCertificateTypeSne &&
           applicationStore.isDraftCertificateTypeIte
         "
       />
       <ECESneLabourMobilityRequirements
-        v-if="applicationStore.isDraftCertificateTypeSne"
+        v-else-if="applicationStore.isDraftCertificateTypeSne"
       />
       <ECEIteLabourMobilityRequirements
-        v-if="applicationStore.isDraftCertificateTypeIte"
+        v-else-if="applicationStore.isDraftCertificateTypeIte"
       />
     </template>
 
