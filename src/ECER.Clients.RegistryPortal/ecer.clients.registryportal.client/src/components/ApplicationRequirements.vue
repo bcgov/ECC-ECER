@@ -41,16 +41,16 @@
         :is-post-basic="isPostBasic"
       />
 
-      <ECESneAndIteLaborMobilityRequirements
+      <ECESneAndIteLabourMobilityRequirements
         v-if="
           applicationStore.isDraftCertificateTypeSne &&
           applicationStore.isDraftCertificateTypeIte
         "
       />
-      <ECESneLaborMobilityRequirements
+      <ECESneLabourMobilityRequirements
         v-if="applicationStore.isDraftCertificateTypeSne"
       />
-      <ECEIteLaborMobilityRequirements
+      <ECEIteLabourMobilityRequirements
         v-if="applicationStore.isDraftCertificateTypeIte"
       />
     </template>
@@ -117,9 +117,9 @@ import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequire
 import ECEAssistantLaborMobilityRequirements from "./ECEAssistantLaborMobilityRequirements.vue";
 import ECEOneYearLaborMobilityRequirements from "./ECEOneYearLaborMobilityRequirements.vue";
 import ECEFiveYearLaborMobilityRequirements from "./ECEFiveYearLaborMobilityRequirements.vue";
-import ECESneLaborMobilityRequirements from "./ECESneLaborMobilityRequirements.vue";
-import ECEIteLaborMobilityRequirements from "./ECEIteLaborMobilityRequirements.vue";
-import ECESneAndIteLaborMobilityRequirements from "./ECESneAndIteLaborMobilityRequirements.vue";
+import ECESneLabourMobilityRequirements from "./ECESneLabourMobilityRequirements.vue";
+import ECEIteLabourMobilityRequirements from "./ECEIteLabourMobilityRequirements.vue";
+import ECESneAndIteLabourMobilityRequirements from "./ECESneAndIteLabourMobilityRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
@@ -141,9 +141,9 @@ export default defineComponent({
     ECEAssistantLaborMobilityRequirements,
     ECEOneYearLaborMobilityRequirements,
     ECEFiveYearLaborMobilityRequirements,
-    ECESneLaborMobilityRequirements,
-    ECEIteLaborMobilityRequirements,
-    ECESneAndIteLaborMobilityRequirements,
+    ECESneLabourMobilityRequirements,
+    ECEIteLabourMobilityRequirements,
+    ECESneAndIteLabourMobilityRequirements,
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
