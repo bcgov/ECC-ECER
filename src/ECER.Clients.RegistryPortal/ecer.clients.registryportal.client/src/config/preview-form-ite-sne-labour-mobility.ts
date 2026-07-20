@@ -1,7 +1,7 @@
 import EceCertificateInformationPreview from "@/components/inputs/EceCertificateInformationPreview.vue";
 import EceCharacterReferencePreview from "@/components/inputs/EceCharacterReferencePreview.vue";
 import EceContactInformationPreview from "@/components/inputs/EceContactInformationPreview.vue";
-import EceWorkExperienceReferencePreview from "@/components/inputs/EceWorkExperienceReferencePreview.vue";
+
 import type { Form } from "@/types/form";
 
 const previewForm: Form = {

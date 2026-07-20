@@ -212,12 +212,10 @@ export const useCertificationStore = defineStore("certification", {
       certificateLevelType: CertificationLevelType,
     ): boolean {
       if (!this.certifications) return false;
-      return (
-        this.certifications.filter(
-          (cert) =>
-            cert.statusCode === "Expired" &&
-            cert.levels?.some((level) => level.type === certificateLevelType),
-        ).length > 0
+      return this.certifications.some(
+        (cert) =>
+          cert.statusCode === "Expired" &&
+          cert.levels?.some((level) => level.type === certificateLevelType),
       );
     },
     hasCertificationsOfType(
