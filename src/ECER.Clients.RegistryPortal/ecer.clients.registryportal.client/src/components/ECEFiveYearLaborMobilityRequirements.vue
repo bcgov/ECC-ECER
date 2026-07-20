@@ -1,14 +1,17 @@
 <template>
   <v-row>
     <v-col cols>
-      <h1 class="title-header">Transfer to ECE Five Year certification</h1>
+      <h1 class="title-header">
+        Transfer to ECE Five Year certification
+        {{ isPostBasic ? "with ITE and SNE certification" : "" }}
+      </h1>
     </v-col>
   </v-row>
   <v-row>
     <v-col>
       <p>
         You need the following information to apply to transfer your
-        certification to B.C.
+        certification to British Columbia.
       </p>
     </v-col>
   </v-row>
@@ -97,26 +100,16 @@
       </p>
     </v-col>
   </v-row>
-  <v-row v-if="isPostBasic">
-    <v-col cols="12">
-      <SpecializedCertificationOptions
-        ref="SpecializedCertificationOptions"
-        :pre-selected="['Ite', 'Sne']"
-        :is-labor-mobility="true"
-      />
-    </v-col>
-  </v-row>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
 import ECEHeader from "@/components/ECEHeader.vue";
-import SpecializedCertificationOptions from "@/components/SpecializedCertificationOptions.vue";
 
 export default defineComponent({
   name: "ECEFiveYearLaborMobilityRequirements",
-  components: { ECEHeader, SpecializedCertificationOptions },
+  components: { ECEHeader },
   props: {
     isPostBasic: {
       type: Boolean,

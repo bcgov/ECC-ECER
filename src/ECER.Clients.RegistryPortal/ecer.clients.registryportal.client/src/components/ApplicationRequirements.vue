@@ -37,7 +37,6 @@
       />
       <ECEFiveYearLaborMobilityRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
-        ref="ECEFiveYearLaborMobilityRequirements"
         :is-post-basic="isPostBasic"
       />
 
@@ -219,21 +218,6 @@ export default defineComponent({
           this.router.push({ name: "declaration" });
         }
       } else if (this.applicationStore.isDraftApplicationLaborMobility) {
-        // handle case where user chooses 5 year specializations
-        if (
-          this.applicationStore.isDraftCertificateTypeFiveYears &&
-          this.applicationStore.isDraftCertificateTypeIte &&
-          this.applicationStore.isDraftCertificateTypeSne
-        ) {
-          this.applicationStore.$patch({
-            draftApplication: {
-              certificationTypes: [
-                "FiveYears",
-                ...this.specializationSelection,
-              ],
-            },
-          });
-        }
         this.router.push({ name: "declaration" });
       } else if (this.applicationStore.isDraftApplicationRenewal) {
         //for renewal applications we do not need to perform any additional checks. The certification types should be correctly set in the draft application store.
