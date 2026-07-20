@@ -4,11 +4,7 @@ import { getCertificationComparisonList } from "@/api/configuration";
 
 import Transfer from "./Transfer.vue";
 
-import {
-  getDateMinusYears,
-  getTodayDate,
-  getDatePlusYears,
-} from "@/utils/dateHelpers";
+import { getDateMinusYears, getTodayDate } from "@/utils/dateHelpers";
 import { useConfigStore } from "@/store/config";
 import { useCertificationStore } from "@/store/certification.ts";
 import type { Components } from "@/types/openapi.js";
