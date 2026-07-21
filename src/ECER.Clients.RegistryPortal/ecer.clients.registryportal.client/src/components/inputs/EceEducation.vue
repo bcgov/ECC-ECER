@@ -568,8 +568,7 @@ interface EceEducationData {
   startYear: string;
   endYear: string;
   transcriptStatusOption:
-    | Components.Schemas.TranscriptStatusOptions
-    | undefined;
+    Components.Schemas.TranscriptStatusOptions | undefined;
   previousNameRadio: any;
   Rules: typeof Rules;
   studentFirstName: string | null;
@@ -722,8 +721,7 @@ export default defineComponent({
         : true;
     },
     recognizedPostSecondaryInstitution():
-      | Components.Schemas.EducationRecognition
-      | undefined {
+      Components.Schemas.EducationRecognition | undefined {
       if (
         this.postSecondaryInstitution &&
         this.configStore.postSecondaryInstitutionList.some(
