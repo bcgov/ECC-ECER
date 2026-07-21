@@ -5,6 +5,7 @@ import { setup } from "@storybook/vue3-vite"; // ✅ Use the setup function from
 import { createVuetify } from "vuetify";
 import "vuetify/styles"; // Import Vuetify base styles
 import "@mdi/font/css/materialdesignicons.css"; // Optional: MDI icons
+import { sb } from "storybook/test";
 
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
@@ -15,6 +16,8 @@ import ecerTheme from "../src/styles/ecer-theme"; // Your custom theme file
 import { createPinia } from "pinia";
 
 import "../src/styles/main.scss";
+
+sb.mock(import("../src/api/configuration.ts"), { spy: true }); // Used to mock api calls
 
 // ✅ Global setup: Register Vuetify and Pinia
 setup((app) => {

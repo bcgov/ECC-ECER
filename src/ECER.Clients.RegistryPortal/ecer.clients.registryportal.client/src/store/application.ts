@@ -18,7 +18,9 @@ import applicationWizardRenewOneYearActive from "@/config/application-wizard-ren
 import applicationWizardRenewOneYearExpired from "@/config/application-wizard-renew-one-year-expired";
 import applicationWizardLaborMobilityAssistantAndOneYear from "@/config/application-wizard-labor-mobility-assistant-and-one-year";
 import applicationWizardLaborMobilityFiveYear from "@/config/application-wizard-labor-mobility-five-year";
+import applicationWizardLabourMobilityIteSne from "@/config/application-wizard-labour-mobility-ite-sne";
 import applicationWizardIcraFiveYear from "@/config/icra-eligibility/application-wizard-icra-five-year";
+
 import type { Components } from "@/types/openapi";
 import type { ApplicationStage, Wizard } from "@/types/wizard";
 import { expiredMoreThan5Years, humanFileSize } from "@/utils/functions";
@@ -43,6 +45,9 @@ export type ApplicationFlow =
   | "AssistantLaborMobility"
   | "OneYearLaborMobility"
   | "FiveYearLaborMobility"
+  | "SneLabourMobility"
+  | "IteLabourMobility"
+  | "IteAndSneLabourMobility"
   | "AssistantRenewal"
   | "OneYearActiveRenewal"
   | "OneYearExpiredRenewal"
@@ -187,6 +192,10 @@ export const useApplicationStore = defineStore("application", {
         case "SneRegistrant":
         case "IteAndSneRegistrant":
           return applicationWizardIteSne;
+        case "IteLabourMobility":
+        case "SneLabourMobility":
+        case "IteAndSneLabourMobility":
+          return applicationWizardLabourMobilityIteSne;
         case "AssistantRenewal":
           return applicationWizardRenewAssistant;
         case "OneYearActiveRenewal":
@@ -260,6 +269,10 @@ export const useApplicationStore = defineStore("application", {
       if (state.draftApplication.applicationType === "LabourMobility") {
         if (this.isDraftCertificateTypeFiveYears)
           return "FiveYearLaborMobility";
+        if (this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne)
+          return "IteAndSneLabourMobility";
+        if (this.isDraftCertificateTypeIte) return "IteLabourMobility";
+        if (this.isDraftCertificateTypeSne) return "SneLabourMobility";
         if (this.isDraftCertificateTypeOneYear) return "OneYearLaborMobility";
         if (this.isDraftCertificateTypeEceAssistant)
           return "AssistantLaborMobility";

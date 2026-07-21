@@ -554,6 +554,16 @@ export default defineComponent({
             },
           ];
 
+        case "application-transfer":
+          return [
+            ...this.baseItems,
+            {
+              title: "Check your transfer eligibility",
+              disabled: true,
+              href: "/application/transfer",
+            },
+          ];
+
         case "icra-eligibility":
           return [
             ...this.baseItems,
@@ -690,7 +700,6 @@ export default defineComponent({
     isApplicationRoute(routeName: string): boolean {
       return [
         "application-certification",
-        "application-transfer",
         "application-requirements",
         "consent-required",
         "declaration",
