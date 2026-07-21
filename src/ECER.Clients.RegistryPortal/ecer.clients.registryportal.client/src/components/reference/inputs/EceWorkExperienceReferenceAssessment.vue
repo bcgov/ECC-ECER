@@ -292,7 +292,9 @@ export default defineComponent({
 
   methods: {
     updateFields(value: {
-      [key in keyof Components.Schemas.WorkExperienceReferenceCompetenciesAssessment]: any;
+      [
+        key in keyof Components.Schemas.WorkExperienceReferenceCompetenciesAssessment
+      ]: any;
     }) {
       this.$emit("update:model-value", { ...this.modelValue, ...value });
     },

@@ -484,9 +484,7 @@ export default defineComponent({
     },
     allowEdit(
       components:
-        | Components.Schemas.ProgramApplicationComponent[]
-        | null
-        | undefined,
+        Components.Schemas.ProgramApplicationComponent[] | null | undefined,
     ) {
       const hasRfaiComponents = components?.filter((c) => c.rfaiRequired);
       return hasRfaiComponents && hasRfaiComponents.length > 0

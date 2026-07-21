@@ -95,10 +95,7 @@ declare namespace Components {
       id?: string | null;
     }
     export type ApplicationTypes =
-      | "New"
-      | "Renewal"
-      | "LabourMobility"
-      | "ICRA";
+      "New" | "Renewal" | "LabourMobility" | "ICRA";
     /**
      * delete draft application response
      */
@@ -193,11 +190,7 @@ declare namespace Components {
       certificateConditions?: CertificateCondition[] | null;
     }
     export type CertificationType =
-      | "EceAssistant"
-      | "OneYear"
-      | "FiveYears"
-      | "Ite"
-      | "Sne";
+      "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
     export interface CharacterReference {
       lastName?: string | null;
       phoneNumber?: string | null;
@@ -291,10 +284,7 @@ declare namespace Components {
       communicationId?: string | null;
     }
     export type CommunicationStatus =
-      | "Draft"
-      | "NotifiedRecipient"
-      | "Acknowledged"
-      | "Inactive";
+      "Draft" | "NotifiedRecipient" | "Acknowledged" | "Inactive";
     export interface CommunicationsStatus {
       count?: number; // int32
       hasUnread?: boolean;
@@ -479,10 +469,7 @@ declare namespace Components {
       ecerWebApplicationType?: EcerWebApplicationType;
     }
     export type InitiatedFrom =
-      | "Investigation"
-      | "PortalUser"
-      | "Registry"
-      | "ProgramRepresentative";
+      "Investigation" | "PortalUser" | "Registry" | "ProgramRepresentative";
     export interface InternationalCertification {
       id?: string | null;
       otherFirstName?: string | null;
@@ -562,20 +549,14 @@ declare namespace Components {
       portalInvitation?: PortalInvitation;
     }
     export type PortalTags =
-      | "LOGIN"
-      | "LOOKUP"
-      | "REFERENCES"
-      | "PSPPortal"
-      | "CertificationsPortal";
+      "LOGIN" | "LOOKUP" | "REFERENCES" | "PSPPortal" | "CertificationsPortal";
     export interface PostSecondaryInstitution {
       id?: string | null;
       name?: string | null;
       provinceId?: string | null;
     }
     export type PostSecondaryInstitutionStatus =
-      | "Active"
-      | "Draft"
-      | "Inactive";
+      "Active" | "Draft" | "Inactive";
     /**
      * Previous Name
      */
@@ -590,10 +571,7 @@ declare namespace Components {
       documents?: IdentityDocument[] | null;
     }
     export type PreviousNameSources =
-      | "NameLog"
-      | "Profile"
-      | "Transcript"
-      | "OutofProvinceCertificate";
+      "NameLog" | "Profile" | "Transcript" | "OutofProvinceCertificate";
     export type PreviousNameStage =
       | "Archived"
       | "PendingforDocuments"
@@ -1524,7 +1502,7 @@ export interface OperationMethods {
   /**
    * configuration_get - Returns the UI initial configuration
    */
-  "configuration_get"(
+  configuration_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1532,7 +1510,7 @@ export interface OperationMethods {
   /**
    * province_get - Handles province queries
    */
-  "province_get"(
+  province_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1540,7 +1518,7 @@ export interface OperationMethods {
   /**
    * defaultContent_get - Handles default contents
    */
-  "defaultContent_get"(
+  defaultContent_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1548,7 +1526,7 @@ export interface OperationMethods {
   /**
    * country_get - Handles country queries
    */
-  "country_get"(
+  country_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1556,7 +1534,7 @@ export interface OperationMethods {
   /**
    * certificationComparison_get - Handles certification comparison queries
    */
-  "certificationComparison_get"(
+  certificationComparison_get(
     parameters?: Parameters<
       Paths.CertificationComparisonGet.QueryParameters &
         Paths.CertificationComparisonGet.PathParameters
@@ -1567,7 +1545,7 @@ export interface OperationMethods {
   /**
    * psi_get - Handles psi queries
    */
-  "psi_get"(
+  psi_get(
     parameters?: Parameters<
       Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters
     > | null,
@@ -1577,7 +1555,7 @@ export interface OperationMethods {
   /**
    * systemMessage_get - Handles system messages queries
    */
-  "systemMessage_get"(
+  systemMessage_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1585,7 +1563,7 @@ export interface OperationMethods {
   /**
    * identificationTypes_get - Handles identification types queries
    */
-  "identificationTypes_get"(
+  identificationTypes_get(
     parameters?: Parameters<Paths.IdentificationTypesGet.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1593,7 +1571,7 @@ export interface OperationMethods {
   /**
    * captcha_site_key_get - Obtains site key for captcha
    */
-  "captcha_site_key_get"(
+  captcha_site_key_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1601,7 +1579,7 @@ export interface OperationMethods {
   /**
    * version_get - Returns the version information
    */
-  "version_get"(
+  version_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1609,7 +1587,7 @@ export interface OperationMethods {
   /**
    * profile_get - Gets the current user profile
    */
-  "profile_get"(
+  profile_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1617,7 +1595,7 @@ export interface OperationMethods {
   /**
    * profile_put - Gets the current user profile
    */
-  "profile_put"(
+  profile_put(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ProfilePut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1625,7 +1603,7 @@ export interface OperationMethods {
   /**
    * profileVerification_post - Sets user verification Ids
    */
-  "profileVerification_post"(
+  profileVerification_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ProfileVerificationPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1633,7 +1611,7 @@ export interface OperationMethods {
   /**
    * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
    */
-  "userinfo_get"(
+  userinfo_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1641,7 +1619,7 @@ export interface OperationMethods {
   /**
    * userinfo_post - Creates or updates the currently logged on user's profile
    */
-  "userinfo_post"(
+  userinfo_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UserinfoPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1649,7 +1627,7 @@ export interface OperationMethods {
   /**
    * references_get - Handles references queries
    */
-  "references_get"(
+  references_get(
     parameters?: Parameters<Paths.ReferencesGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1657,7 +1635,7 @@ export interface OperationMethods {
   /**
    * character_reference_post - Handles character reference submission
    */
-  "character_reference_post"(
+  character_reference_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CharacterReferencePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1665,7 +1643,7 @@ export interface OperationMethods {
   /**
    * workExperience_reference_post - Handles work experience reference submission
    */
-  "workExperience_reference_post"(
+  workExperience_reference_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.WorkExperienceReferencePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1673,7 +1651,7 @@ export interface OperationMethods {
   /**
    * reference_optout - Handles reference optout
    */
-  "reference_optout"(
+  reference_optout(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ReferenceOptout.RequestBody,
     config?: AxiosRequestConfig,
@@ -1681,7 +1659,7 @@ export interface OperationMethods {
   /**
    * icra_workExperience_reference_post - Handles ICRA work experience reference submission
    */
-  "icra_workExperience_reference_post"(
+  icra_workExperience_reference_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.IcraWorkExperienceReferencePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1689,7 +1667,7 @@ export interface OperationMethods {
   /**
    * icra_get - Handles icra queries
    */
-  "icra_get"(
+  icra_get(
     parameters?: Parameters<
       Paths.IcraGet.QueryParameters & Paths.IcraGet.PathParameters
     > | null,
@@ -1699,7 +1677,7 @@ export interface OperationMethods {
   /**
    * icra_put - Save a draft icra eligibility for the current user
    */
-  "icra_put"(
+  icra_put(
     parameters?: Parameters<Paths.IcraPut.PathParameters> | null,
     data?: Paths.IcraPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1707,7 +1685,7 @@ export interface OperationMethods {
   /**
    * icra_post - Submit an ICRA Eligibility
    */
-  "icra_post"(
+  icra_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.IcraPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1717,7 +1695,7 @@ export interface OperationMethods {
    *
    * Changes status to inactive
    */
-  "cancel_draft_icra_eligibility"(
+  cancel_draft_icra_eligibility(
     parameters?: Parameters<Paths.CancelDraftIcraEligibility.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1725,7 +1703,7 @@ export interface OperationMethods {
   /**
    * icra_status_get - Handles icra eligibility status queries
    */
-  "icra_status_get"(
+  icra_status_get(
     parameters?: Parameters<Paths.IcraStatusGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1735,7 +1713,7 @@ export interface OperationMethods {
    *
    * Changes work reference invite again status to true
    */
-  "icra_work_reference_resend_invite_post"(
+  icra_work_reference_resend_invite_post(
     parameters?: Parameters<Paths.IcraWorkReferenceResendInvitePost.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1743,7 +1721,7 @@ export interface OperationMethods {
   /**
    * icra_work_reference_add_post - Update work experience reference
    */
-  "icra_work_reference_add_post"(
+  icra_work_reference_add_post(
     parameters?: Parameters<Paths.IcraWorkReferenceAddPost.PathParameters> | null,
     data?: Paths.IcraWorkReferenceAddPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1751,7 +1729,7 @@ export interface OperationMethods {
   /**
    * icra_work_reference_replace_post - Replace work experience reference
    */
-  "icra_work_reference_replace_post"(
+  icra_work_reference_replace_post(
     parameters?: Parameters<Paths.IcraWorkReferenceReplacePost.PathParameters> | null,
     data?: Paths.IcraWorkReferenceReplacePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1759,7 +1737,7 @@ export interface OperationMethods {
   /**
    * icra_work_reference_by_id_get - Get work experience reference by id
    */
-  "icra_work_reference_by_id_get"(
+  icra_work_reference_by_id_get(
     parameters?: Parameters<Paths.IcraWorkReferenceByIdGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1767,7 +1745,7 @@ export interface OperationMethods {
   /**
    * files_certificate_get - Handles fetching certificate PDF's
    */
-  "files_certificate_get"(
+  files_certificate_get(
     parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1775,7 +1753,7 @@ export interface OperationMethods {
   /**
    * files_communication_get - Handles fetching files
    */
-  "files_communication_get"(
+  files_communication_get(
     parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1783,7 +1761,7 @@ export interface OperationMethods {
   /**
    * upload_file - Handles upload file request
    */
-  "upload_file"(
+  upload_file(
     parameters?: Parameters<Paths.UploadFile.PathParameters> | null,
     data?: Paths.UploadFile.RequestBody,
     config?: AxiosRequestConfig,
@@ -1791,7 +1769,7 @@ export interface OperationMethods {
   /**
    * delete_file - Handles delete uploaded file request
    */
-  "delete_file"(
+  delete_file(
     parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1799,7 +1777,7 @@ export interface OperationMethods {
   /**
    * message_get - Handles messages queries
    */
-  "message_get"(
+  message_get(
     parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1807,7 +1785,7 @@ export interface OperationMethods {
   /**
    * message_post - Handles message send request
    */
-  "message_post"(
+  message_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.MessagePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1815,7 +1793,7 @@ export interface OperationMethods {
   /**
    * communication_put - Marks a communication as seen
    */
-  "communication_put"(
+  communication_put(
     parameters?: Parameters<Paths.CommunicationPut.PathParameters> | null,
     data?: Paths.CommunicationPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1823,7 +1801,7 @@ export interface OperationMethods {
   /**
    * message_status_get - Handles messages status
    */
-  "message_status_get"(
+  message_status_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1831,7 +1809,7 @@ export interface OperationMethods {
   /**
    * certification_get - Handles certification queries
    */
-  "certification_get"(
+  certification_get(
     parameters?: Parameters<Paths.CertificationGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1839,7 +1817,7 @@ export interface OperationMethods {
   /**
    * certification_requestpdf_put - Handles certification queries
    */
-  "certification_requestpdf_put"(
+  certification_requestpdf_put(
     parameters?: Parameters<Paths.CertificationRequestpdfPut.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1847,7 +1825,7 @@ export interface OperationMethods {
   /**
    * certifications_lookup_post - Handles certifications lookup queries
    */
-  "certifications_lookup_post"(
+  certifications_lookup_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CertificationsLookupPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1855,7 +1833,7 @@ export interface OperationMethods {
   /**
    * draftapplication_put - Save a draft application for the current user
    */
-  "draftapplication_put"(
+  draftapplication_put(
     parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
     data?: Paths.DraftapplicationPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1863,7 +1841,7 @@ export interface OperationMethods {
   /**
    * application_post - Submit an application
    */
-  "application_post"(
+  application_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ApplicationPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1871,7 +1849,7 @@ export interface OperationMethods {
   /**
    * application_get - Handles application queries
    */
-  "application_get"(
+  application_get(
     parameters?: Parameters<
       Paths.ApplicationGet.QueryParameters & Paths.ApplicationGet.PathParameters
     > | null,
@@ -1881,7 +1859,7 @@ export interface OperationMethods {
   /**
    * application_status_get - Handles application status queries
    */
-  "application_status_get"(
+  application_status_get(
     parameters?: Parameters<Paths.ApplicationStatusGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1891,7 +1869,7 @@ export interface OperationMethods {
    *
    * Changes status to cancelled
    */
-  "draftapplication_delete"(
+  draftapplication_delete(
     parameters?: Parameters<Paths.DraftapplicationDelete.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1899,7 +1877,7 @@ export interface OperationMethods {
   /**
    * application_workexperiencereference_update_post - Update work experience reference
    */
-  "application_workexperiencereference_update_post"(
+  application_workexperiencereference_update_post(
     parameters?: Parameters<Paths.ApplicationWorkexperiencereferenceUpdatePost.PathParameters> | null,
     data?: Paths.ApplicationWorkexperiencereferenceUpdatePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1907,7 +1885,7 @@ export interface OperationMethods {
   /**
    * application_characterreference_update_post - Update character reference
    */
-  "application_characterreference_update_post"(
+  application_characterreference_update_post(
     parameters?: Parameters<Paths.ApplicationCharacterreferenceUpdatePost.PathParameters> | null,
     data?: Paths.ApplicationCharacterreferenceUpdatePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1917,7 +1895,7 @@ export interface OperationMethods {
    *
    * Changes character reference invite again status to true
    */
-  "application_character_reference_resend_invite_post"(
+  application_character_reference_resend_invite_post(
     parameters?: Parameters<Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1927,7 +1905,7 @@ export interface OperationMethods {
    *
    * Changes work experience reference invite again status to true
    */
-  "application_work_experience_reference_resend_invite_post"(
+  application_work_experience_reference_resend_invite_post(
     parameters?: Parameters<Paths.ApplicationWorkExperienceReferenceResendInvitePost.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1935,7 +1913,7 @@ export interface OperationMethods {
   /**
    * application_professionaldevelopment_add_post - Add Professional Development
    */
-  "application_professionaldevelopment_add_post"(
+  application_professionaldevelopment_add_post(
     parameters?: Parameters<Paths.ApplicationProfessionaldevelopmentAddPost.PathParameters> | null,
     data?: Paths.ApplicationProfessionaldevelopmentAddPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1943,7 +1921,7 @@ export interface OperationMethods {
   /**
    * application_update_transcript_post - Save application transcript documents and options
    */
-  "application_update_transcript_post"(
+  application_update_transcript_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ApplicationUpdateTranscriptPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1955,7 +1933,7 @@ export interface PathsDictionary {
     /**
      * configuration_get - Returns the UI initial configuration
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1965,7 +1943,7 @@ export interface PathsDictionary {
     /**
      * province_get - Handles province queries
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1975,7 +1953,7 @@ export interface PathsDictionary {
     /**
      * defaultContent_get - Handles default contents
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1985,7 +1963,7 @@ export interface PathsDictionary {
     /**
      * country_get - Handles country queries
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1995,7 +1973,7 @@ export interface PathsDictionary {
     /**
      * certificationComparison_get - Handles certification comparison queries
      */
-    "get"(
+    get(
       parameters?: Parameters<
         Paths.CertificationComparisonGet.QueryParameters &
           Paths.CertificationComparisonGet.PathParameters
@@ -2008,7 +1986,7 @@ export interface PathsDictionary {
     /**
      * psi_get - Handles psi queries
      */
-    "get"(
+    get(
       parameters?: Parameters<
         Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters
       > | null,
@@ -2020,7 +1998,7 @@ export interface PathsDictionary {
     /**
      * systemMessage_get - Handles system messages queries
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2030,7 +2008,7 @@ export interface PathsDictionary {
     /**
      * identificationTypes_get - Handles identification types queries
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.IdentificationTypesGet.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2040,7 +2018,7 @@ export interface PathsDictionary {
     /**
      * captcha_site_key_get - Obtains site key for captcha
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2050,7 +2028,7 @@ export interface PathsDictionary {
     /**
      * version_get - Returns the version information
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2060,7 +2038,7 @@ export interface PathsDictionary {
     /**
      * profile_get - Gets the current user profile
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2068,7 +2046,7 @@ export interface PathsDictionary {
     /**
      * profile_put - Gets the current user profile
      */
-    "put"(
+    put(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ProfilePut.RequestBody,
       config?: AxiosRequestConfig,
@@ -2078,7 +2056,7 @@ export interface PathsDictionary {
     /**
      * profileVerification_post - Sets user verification Ids
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ProfileVerificationPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2088,7 +2066,7 @@ export interface PathsDictionary {
     /**
      * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2096,7 +2074,7 @@ export interface PathsDictionary {
     /**
      * userinfo_post - Creates or updates the currently logged on user's profile
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UserinfoPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2106,7 +2084,7 @@ export interface PathsDictionary {
     /**
      * references_get - Handles references queries
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.ReferencesGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2116,7 +2094,7 @@ export interface PathsDictionary {
     /**
      * character_reference_post - Handles character reference submission
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CharacterReferencePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2126,7 +2104,7 @@ export interface PathsDictionary {
     /**
      * workExperience_reference_post - Handles work experience reference submission
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.WorkExperienceReferencePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2136,7 +2114,7 @@ export interface PathsDictionary {
     /**
      * reference_optout - Handles reference optout
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ReferenceOptout.RequestBody,
       config?: AxiosRequestConfig,
@@ -2146,7 +2124,7 @@ export interface PathsDictionary {
     /**
      * icra_workExperience_reference_post - Handles ICRA work experience reference submission
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.IcraWorkExperienceReferencePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2156,7 +2134,7 @@ export interface PathsDictionary {
     /**
      * icra_put - Save a draft icra eligibility for the current user
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.IcraPut.PathParameters> | null,
       data?: Paths.IcraPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -2164,7 +2142,7 @@ export interface PathsDictionary {
     /**
      * icra_get - Handles icra queries
      */
-    "get"(
+    get(
       parameters?: Parameters<
         Paths.IcraGet.QueryParameters & Paths.IcraGet.PathParameters
       > | null,
@@ -2176,7 +2154,7 @@ export interface PathsDictionary {
     /**
      * icra_post - Submit an ICRA Eligibility
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.IcraPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2188,7 +2166,7 @@ export interface PathsDictionary {
      *
      * Changes status to inactive
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.CancelDraftIcraEligibility.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2198,7 +2176,7 @@ export interface PathsDictionary {
     /**
      * icra_status_get - Handles icra eligibility status queries
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.IcraStatusGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2210,7 +2188,7 @@ export interface PathsDictionary {
      *
      * Changes work reference invite again status to true
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.IcraWorkReferenceResendInvitePost.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2220,7 +2198,7 @@ export interface PathsDictionary {
     /**
      * icra_work_reference_add_post - Update work experience reference
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.IcraWorkReferenceAddPost.PathParameters> | null,
       data?: Paths.IcraWorkReferenceAddPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2230,7 +2208,7 @@ export interface PathsDictionary {
     /**
      * icra_work_reference_replace_post - Replace work experience reference
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.IcraWorkReferenceReplacePost.PathParameters> | null,
       data?: Paths.IcraWorkReferenceReplacePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2240,7 +2218,7 @@ export interface PathsDictionary {
     /**
      * icra_work_reference_by_id_get - Get work experience reference by id
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.IcraWorkReferenceByIdGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2250,7 +2228,7 @@ export interface PathsDictionary {
     /**
      * files_certificate_get - Handles fetching certificate PDF's
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2260,7 +2238,7 @@ export interface PathsDictionary {
     /**
      * files_communication_get - Handles fetching files
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2270,7 +2248,7 @@ export interface PathsDictionary {
     /**
      * delete_file - Handles delete uploaded file request
      */
-    "delete"(
+    delete(
       parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2278,7 +2256,7 @@ export interface PathsDictionary {
     /**
      * upload_file - Handles upload file request
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.UploadFile.PathParameters> | null,
       data?: Paths.UploadFile.RequestBody,
       config?: AxiosRequestConfig,
@@ -2288,7 +2266,7 @@ export interface PathsDictionary {
     /**
      * message_get - Handles messages queries
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2298,7 +2276,7 @@ export interface PathsDictionary {
     /**
      * message_post - Handles message send request
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.MessagePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2308,7 +2286,7 @@ export interface PathsDictionary {
     /**
      * communication_put - Marks a communication as seen
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.CommunicationPut.PathParameters> | null,
       data?: Paths.CommunicationPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -2318,7 +2296,7 @@ export interface PathsDictionary {
     /**
      * message_status_get - Handles messages status
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2328,7 +2306,7 @@ export interface PathsDictionary {
     /**
      * certification_get - Handles certification queries
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.CertificationGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2338,7 +2316,7 @@ export interface PathsDictionary {
     /**
      * certification_requestpdf_put - Handles certification queries
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.CertificationRequestpdfPut.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2348,7 +2326,7 @@ export interface PathsDictionary {
     /**
      * certifications_lookup_post - Handles certifications lookup queries
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CertificationsLookupPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2358,7 +2336,7 @@ export interface PathsDictionary {
     /**
      * draftapplication_put - Save a draft application for the current user
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
       data?: Paths.DraftapplicationPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -2368,7 +2346,7 @@ export interface PathsDictionary {
     /**
      * application_post - Submit an application
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ApplicationPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2378,7 +2356,7 @@ export interface PathsDictionary {
     /**
      * application_get - Handles application queries
      */
-    "get"(
+    get(
       parameters?: Parameters<
         Paths.ApplicationGet.QueryParameters &
           Paths.ApplicationGet.PathParameters
@@ -2391,7 +2369,7 @@ export interface PathsDictionary {
     /**
      * application_status_get - Handles application status queries
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.ApplicationStatusGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2403,7 +2381,7 @@ export interface PathsDictionary {
      *
      * Changes status to cancelled
      */
-    "delete"(
+    delete(
       parameters?: Parameters<Paths.DraftapplicationDelete.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2413,7 +2391,7 @@ export interface PathsDictionary {
     /**
      * application_workexperiencereference_update_post - Update work experience reference
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.ApplicationWorkexperiencereferenceUpdatePost.PathParameters> | null,
       data?: Paths.ApplicationWorkexperiencereferenceUpdatePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2423,7 +2401,7 @@ export interface PathsDictionary {
     /**
      * application_characterreference_update_post - Update character reference
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.ApplicationCharacterreferenceUpdatePost.PathParameters> | null,
       data?: Paths.ApplicationCharacterreferenceUpdatePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2435,7 +2413,7 @@ export interface PathsDictionary {
      *
      * Changes character reference invite again status to true
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2447,7 +2425,7 @@ export interface PathsDictionary {
      *
      * Changes work experience reference invite again status to true
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.ApplicationWorkExperienceReferenceResendInvitePost.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -2457,7 +2435,7 @@ export interface PathsDictionary {
     /**
      * application_professionaldevelopment_add_post - Add Professional Development
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.ApplicationProfessionaldevelopmentAddPost.PathParameters> | null,
       data?: Paths.ApplicationProfessionaldevelopmentAddPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -2467,7 +2445,7 @@ export interface PathsDictionary {
     /**
      * application_update_transcript_post - Save application transcript documents and options
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ApplicationUpdateTranscriptPost.RequestBody,
       config?: AxiosRequestConfig,

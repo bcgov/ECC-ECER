@@ -65,11 +65,7 @@ import { VBtn } from "vuetify/components";
 type TVariant = VBtn["$props"]["variant"];
 
 export type ConfirmationDialogResult =
-  | "accept"
-  | "cancel"
-  | "exit"
-  | "close"
-  | "clickOutside";
+  "accept" | "cancel" | "exit" | "close" | "clickOutside";
 
 export default defineComponent({
   name: "ConfirmationDialog",
@@ -115,8 +111,7 @@ export default defineComponent({
     return {
       internalShow: false,
       resolvePromise: null as
-        | ((value: ConfirmationDialogResult) => void)
-        | null,
+        ((value: ConfirmationDialogResult) => void) | null,
     };
   },
   emits: {

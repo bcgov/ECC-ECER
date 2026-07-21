@@ -145,8 +145,7 @@ export default defineComponent({
     },
     // this method will return a Map that looks like this {Key = AreaOfInstructionId, Values = Array of courses with name and hours}
     getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction():
-      | AreaOfInstructionWithCourseHoursMap
-      | undefined {
+      AreaOfInstructionWithCourseHoursMap | undefined {
       return getCoursesBasedOnProgramTypeGroupedByAreaOfInstruction(
         this.program?.courses,
         this.programType,
