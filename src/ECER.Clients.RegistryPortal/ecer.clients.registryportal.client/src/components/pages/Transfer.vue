@@ -94,21 +94,13 @@
             </Callout>
           </v-col>
         </v-row>
-        <v-row v-if="highestCertificationType === CertificationType.Assistant">
-          <v-col class="ml-1" cols="12">
-            <Callout
-              type="warning"
-              title="You can apply to transfer your certification to ECE Assistant certification in B.C."
-            >
-              <p>
-                You will be able to work alongside ECEs and/or Infant and
-                Toddler Educators in licensed child care programs for children
-                birth to 5 years of age.
-              </p>
-            </Callout>
-          </v-col>
-        </v-row>
-        <v-row v-else-if="highestCertificationType">
+        <v-row
+          v-if="
+            highestCertificationType &&
+            (filteredCertificationOptions?.length ?? 0) > 1 &&
+            !certificationStore.holdsEceFiveYearCertification
+          "
+        >
           <v-col class="ml-1" cols="12">
             <h2 class="mt-5">Work experience</h2>
             <p class="mt-5">
@@ -141,8 +133,80 @@
               <v-radio label="Yes" value="true"></v-radio>
               <v-radio label="No" value="false"></v-radio>
             </v-radio-group>
+          </v-col>
+        </v-row>
+        <!-- User has an active five year certificate we show different options to see if they can upgrade -->
+        <v-row
+          v-else-if="
+            highestCertificationType &&
+            activeFiveYearCertification &&
+            filteredCertificationOptions?.length !== 1
+          "
+        >
+          <v-col class="ml-1" cols="12">
+            <h2 class="mt-5">Certification level</h2>
+            <p class="mt-5">
+              Your certification can apply to transfer to either an ECE One Year
+              or to add {{ textForUpgradeOptionsWithActiveFiveYear }} to your
+              ECE Five Year certification in B.C.
+            </p>
+            <p class="mt-5">
+              Which certification would you like to transfer with this
+              application?
+            </p>
+            <v-radio-group
+              class="mt-3"
+              id="upgradeOptionsRadio"
+              v-model="upgradeMyFiveYearCertification"
+              :rules="[Rules.requiredRadio()]"
+              color="primary"
+            >
+              <v-radio
+                :label="labelForUpgradeOptionRadioFiveYearOptions"
+                :value="true"
+              ></v-radio>
+              <v-radio
+                label="Apply for ECE One Year certification"
+                :value="false"
+              ></v-radio>
+            </v-radio-group>
+          </v-col>
+        </v-row>
+        <!-- Section for callouts once we have enough information to make a pathway decision -->
+        <v-row>
+          <v-col>
             <Callout
-              v-if="has500HoursWorkExperience === 'false'"
+              v-if="filteredCertificationOptions?.length === 0"
+              type="warning"
+              title="You are not eligible to transfer this certification"
+            >
+              <p class="mt-3">
+                Your certification from another province transfers to a
+                certification level you have already held in B.C. You can renew
+                or
+                <router-link to="/application/certification">
+                  apply for certification
+                </router-link>
+                on your dashboard through a different pathway.
+              </p>
+            </Callout>
+            <Callout
+              v-if="highestCertificationType === CertificationType.Assistant"
+              type="warning"
+              title="You can apply to transfer your certification to ECE Assistant certification in B.C."
+            >
+              <p>
+                You will be able to work alongside ECEs and/or Infant and
+                Toddler Educators in licensed child care programs for children
+                birth to 5 years of age.
+              </p>
+            </Callout>
+            <Callout
+              v-if="
+                highestCertificationType === CertificationType.OneYear ||
+                has500HoursWorkExperience === 'false' ||
+                upgradeMyFiveYearCertification === false
+              "
               type="warning"
               title="You can apply to transfer your certification to ECE One Year certification in B.C."
             >
@@ -164,9 +228,12 @@
                 Educator (SNE).
               </p>
             </Callout>
+            <!-- Five year variations -->
             <Callout
-              v-else-if="
-                has500HoursWorkExperience === 'true' &&
+              v-if="
+                (has500HoursWorkExperience === 'true' ||
+                  upgradeMyFiveYearCertification === true ||
+                  filteredCertificationOptions?.length === 1) &&
                 highestCertificationType ===
                   CertificationType.FiveYearCertificate
               "
@@ -187,9 +254,11 @@
             </Callout>
             <Callout
               v-else-if="
-                has500HoursWorkExperience === 'true' &&
+                (has500HoursWorkExperience === 'true' ||
+                  filteredCertificationOptions?.length === 1) &&
                 highestCertificationType ===
-                  CertificationType.FiveYearCertificateITE_SNE
+                  CertificationType.FiveYearCertificateITE_SNE &&
+                !certificationStore.holdsEceFiveYearCertification
               "
               type="warning"
               title="You can apply to transfer your certification to ECE Five Year certification with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE) in B.C."
@@ -213,6 +282,65 @@
                 care programs:
               </p>
               <ul class="mt-2 ml-8">
+                <li>
+                  alone and/or as the primary educator with children birth to 5
+                  years (ITE)
+                </li>
+                <li>
+                  alone and/or as the primary educator in inclusive settings
+                  with children 3-5 years of age (SNE)
+                </li>
+              </ul>
+            </Callout>
+            <Callout
+              v-if="
+                (upgradeMyFiveYearCertification === true ||
+                  filteredCertificationOptions?.length === 1) &&
+                highestCertificationType ===
+                  CertificationType.FiveYearCertificateITE_SNE &&
+                remainingPostBasic === 'ITE'
+              "
+              type="warning"
+              title="You can apply to transfer your certification to B.C. to add Infant and Toddler Educator (ITE)"
+            >
+              This certification allows you to to work alone and/or as the
+              primary educator in licensed child care programs for children
+              birth to 5 years of age. It will also renew your ECE Five Year
+              certificate. It is valid for 5 years.
+            </Callout>
+            <Callout
+              v-if="
+                (upgradeMyFiveYearCertification === true ||
+                  filteredCertificationOptions?.length === 1) &&
+                highestCertificationType ===
+                  CertificationType.FiveYearCertificateITE_SNE &&
+                remainingPostBasic === 'SNE'
+              "
+              type="warning"
+              title="You can apply to transfer your certification to B.C. to add Special Needs Educator (SNE)"
+            >
+              This certification allows you to to work alone and/or as the
+              primary educator in licensed child care programs for children
+              birth to 5 years of age. It will also renew your ECE Five Year
+              certificate. It is valid for 5 years.
+            </Callout>
+            <Callout
+              v-if="
+                (upgradeMyFiveYearCertification === true ||
+                  filteredCertificationOptions?.length === 1) &&
+                highestCertificationType ===
+                  CertificationType.FiveYearCertificateITE_SNE &&
+                remainingPostBasic === 'ITE_AND_SNE'
+              "
+              type="warning"
+              title="You can apply to transfer your certification to B.C. to add Infant and Toddler Educator (ITE) and Special Needs Educator (SNE)"
+            >
+              <strong>
+                Specialized certifications allow you to work in licensed child
+                care programs:
+              </strong>
+              <br />
+              <ul class="ml-10">
                 <li>
                   alone and/or as the primary educator with children birth to 5
                   years (ITE)
@@ -247,35 +375,39 @@
 import { getCertificationComparisonList } from "@/api/configuration";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import PageContainer from "@/components/PageContainer.vue";
-import ProfileForm from "@/components/ProfileForm.vue";
 import {
   getHighestCertificationType,
   CertificationType,
 } from "@/utils/functions";
 import { useConfigStore } from "@/store/config";
 import { useApplicationStore } from "@/store/application";
+import { useCertificationStore } from "@/store/certification";
 import { useRouter } from "vue-router";
 import * as Rules from "@/utils/formRules";
 import type { Components, Province, ComparisonRecord } from "@/types/openapi";
 import Callout from "@/components/Callout.vue";
 import { useUserStore } from "@/store/user";
+import { sortBy } from "lodash";
+
 interface EceTransferData {
   province: Province | undefined;
   outOfProvinceCertification: ComparisonRecord | undefined;
 }
 export default {
   name: "Transfer",
-  components: { ProfileForm, Breadcrumb, PageContainer, Callout },
+  components: { Breadcrumb, PageContainer, Callout },
   setup() {
     const configStore = useConfigStore();
     const router = useRouter();
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
+    const certificationStore = useCertificationStore();
     return {
       configStore,
       router,
       applicationStore,
       userStore,
+      certificationStore,
     };
   },
   methods: {
@@ -283,12 +415,17 @@ export default {
       this.outOfProvinceCertificationTypesLoading = true;
       this.outOfProvinceCertification = undefined;
       this.has500HoursWorkExperience = undefined;
+      this.upgradeMyFiveYearCertification = undefined;
       this.highestCertificationType = undefined;
+      this.filteredCertificationOptions = undefined;
       if (this.transferData.province?.provinceId) {
         this.outOfProvinceCertificationTypes =
-          (await getCertificationComparisonList(
-            this.transferData.province?.provinceId,
-          )) || [];
+          sortBy(
+            await getCertificationComparisonList(
+              this.transferData.province?.provinceId,
+            ),
+            ["transferringCertificate.certificationType"],
+          ) || [];
         this.outOfProvinceCertificationTypesLoading = false;
       } else {
         this.outOfProvinceCertificationTypes = [];
@@ -298,9 +435,81 @@ export default {
     async onCertificationChange() {
       this.highestCertificationType = undefined;
       this.has500HoursWorkExperience = undefined;
+      this.upgradeMyFiveYearCertification = undefined;
+
       if (this.transferData.outOfProvinceCertification?.options) {
+        //start filtering based on a user's existing certifications
+        this.filteredCertificationOptions =
+          this.transferData.outOfProvinceCertification?.options.filter(
+            (option) => {
+              // Five year certification level restrictions
+              if (
+                this.activeFiveYearCertification &&
+                option.bcCertificate === CertificationType.FiveYearCertificate
+              ) {
+                return false;
+              }
+
+              if (
+                this.activeFullyCertifiedFiveYearCertification &&
+                option.bcCertificate ===
+                  CertificationType.FiveYearCertificateITE_SNE
+              ) {
+                return false;
+              }
+
+              if (
+                this.certificationStore.hasExpiredCertificationsOfType(
+                  "ECE 5 YR",
+                ) &&
+                (option.bcCertificate ===
+                  CertificationType.FiveYearCertificate ||
+                  option.bcCertificate ===
+                    CertificationType.FiveYearCertificateITE_SNE)
+              ) {
+                return false;
+              }
+
+              //one year rules
+              //active one year certification should renew instead
+              if (
+                this.certificationStore.activeEceOneYearCertification &&
+                option.bcCertificate === CertificationType.OneYear
+              ) {
+                return false;
+              }
+
+              //not allowed to apply for a new one year certificate without a 5 year cert reset
+              if (
+                this.certificationStore
+                  .countMultipleEceOneYearCertificationsSinceLatest5YearIfExist >
+                  0 &&
+                option.bcCertificate === CertificationType.OneYear
+              ) {
+                return false;
+              }
+
+              if (
+                this.certificationStore.activeEceFiveYearCertification &&
+                option.bcCertificate === CertificationType.OneYear
+              ) {
+                return false;
+              }
+
+              //assistant rules
+              if (
+                this.certificationStore.hasCertificationsOfType("Assistant") &&
+                option.bcCertificate === CertificationType.Assistant
+              ) {
+                return false;
+              }
+
+              return true;
+            },
+          );
+
         this.highestCertificationType = getHighestCertificationType(
-          this.transferData.outOfProvinceCertification?.options,
+          this.filteredCertificationOptions,
         );
       }
     },
@@ -343,6 +552,11 @@ export default {
         this.selfAssessmentOutcome.includes("Sne")
       ) {
         certificationType = CertificationType.FiveYearCertificateITE_SNE;
+      } else if (
+        this.selfAssessmentOutcome.includes("Ite") ||
+        this.selfAssessmentOutcome.includes("Sne")
+      ) {
+        certificationType = CertificationType.FiveYearCertificateITE_SNE;
       } else if (this.selfAssessmentOutcome.includes("FiveYears")) {
         certificationType = CertificationType.FiveYearCertificate;
       } else if (this.selfAssessmentOutcome.includes("OneYear")) {
@@ -363,6 +577,61 @@ export default {
     },
   },
   computed: {
+    activeFiveYearCertification(): Components.Schemas.Certification | null {
+      return this.certificationStore.activeEceFiveYearCertification;
+    },
+    activeFullyCertifiedFiveYearCertification(): boolean | undefined {
+      if (!this.activeFiveYearCertification) {
+        return false;
+      }
+
+      return (
+        this.activeFiveYearCertification.levels?.some(
+          (level) => level.type === "ITE",
+        ) &&
+        this.activeFiveYearCertification.levels?.some(
+          (level) => level.type === "SNE",
+        )
+      );
+    },
+    remainingPostBasic(): "ITE" | "SNE" | "ITE_AND_SNE" | undefined {
+      if (!this.activeFiveYearCertification) {
+        return undefined;
+      }
+
+      if (
+        this.activeFiveYearCertification.levels?.some(
+          (level) => level.type === "ITE",
+        ) &&
+        this.activeFiveYearCertification.levels?.some(
+          (level) => level.type === "SNE",
+        )
+      ) {
+        console.warn("user is fully certified why do they need to do LM?");
+        return undefined;
+      } else if (
+        !this.activeFiveYearCertification.levels?.some(
+          (level) => level.type === "ITE",
+        ) &&
+        !this.activeFiveYearCertification.levels?.some(
+          (level) => level.type === "SNE",
+        )
+      ) {
+        return "ITE_AND_SNE";
+      } else if (
+        !this.activeFiveYearCertification.levels?.some(
+          (level) => level.type === "ITE",
+        )
+      ) {
+        return "ITE";
+      } else if (
+        !this.activeFiveYearCertification.levels?.some(
+          (level) => level.type === "SNE",
+        )
+      ) {
+        return "SNE";
+      }
+    },
     transferData(): EceTransferData {
       return {
         province: this.province,
@@ -377,40 +646,108 @@ export default {
         this.highestCertificationType === CertificationType.OneYear ||
         (this.highestCertificationType ===
           CertificationType.FiveYearCertificate &&
-          this.has500HoursWorkExperience === "false") ||
+          (this.has500HoursWorkExperience === "false" ||
+            this.upgradeMyFiveYearCertification === false)) ||
         (this.highestCertificationType ===
           CertificationType.FiveYearCertificateITE_SNE &&
-          this.has500HoursWorkExperience === "false")
+          (this.has500HoursWorkExperience === "false" ||
+            this.upgradeMyFiveYearCertification === false))
       ) {
         return ["OneYear"];
       }
       if (
         this.highestCertificationType ===
           CertificationType.FiveYearCertificate &&
-        this.has500HoursWorkExperience === "true"
+        (this.has500HoursWorkExperience === "true" ||
+          (this.filteredCertificationOptions?.length === 1 &&
+            !this.certificationStore.holdsEceFiveYearCertification))
       ) {
         return ["FiveYears"];
       }
       if (
         this.highestCertificationType ===
           CertificationType.FiveYearCertificateITE_SNE &&
-        this.has500HoursWorkExperience === "true"
+        (this.has500HoursWorkExperience === "true" ||
+          (this.filteredCertificationOptions?.length === 1 &&
+            !this.certificationStore.holdsEceFiveYearCertification))
       ) {
         return ["FiveYears", "Ite", "Sne"];
       }
+      //flow for those that have an active 5 year certificate and want to upgrade
+      if (
+        this.highestCertificationType ===
+          CertificationType.FiveYearCertificateITE_SNE &&
+        this.remainingPostBasic
+      ) {
+        if (this.remainingPostBasic === "ITE") {
+          return ["Ite"];
+        }
+        if (this.remainingPostBasic === "SNE") {
+          return ["Sne"];
+        }
+        if (this.remainingPostBasic === "ITE_AND_SNE") {
+          return ["Ite", "Sne"];
+        }
+      }
+      console.warn(
+        "Unable to assign specific certificate type. This should not happen.",
+      );
       return [];
     },
     showRequirementsButton() {
       return (
         this.highestCertificationType === CertificationType.Assistant ||
-        this.has500HoursWorkExperience
+        this.highestCertificationType === CertificationType.OneYear ||
+        this.has500HoursWorkExperience ||
+        this.upgradeMyFiveYearCertification !== undefined ||
+        this.filteredCertificationOptions?.length === 1
       );
+    },
+    labelForUpgradeOptionRadioFiveYearOptions(): string {
+      switch (this.remainingPostBasic) {
+        case "ITE":
+          return "Apply to add Infant and Toddler Educator certification";
+
+        case "SNE":
+          return "Apply to add Special Needs Educator certification";
+
+        case "ITE_AND_SNE":
+          return "Apply to add Infant and Toddler Educator and Special Needs Educator certifications";
+        default:
+          console.warn(
+            "Unexpected remainingPostBasic value:",
+            this.remainingPostBasic,
+          );
+          return "unhandled value";
+      }
+    },
+    textForUpgradeOptionsWithActiveFiveYear(): string {
+      switch (this.remainingPostBasic) {
+        case "ITE":
+          return "Infant and Toddler Educator certification";
+
+        case "SNE":
+          return "Special Needs Educator certification";
+
+        case "ITE_AND_SNE":
+          return "Infant and Toddler Educator and Special Needs Educator certifications";
+        default:
+          console.warn(
+            "Unexpected remainingPostBasic value:",
+            this.remainingPostBasic,
+          );
+          return "unhandled value";
+      }
     },
   },
   data: () => ({
     outOfProvinceCertificationTypesLoading: false,
     has500HoursWorkExperience: undefined,
     highestCertificationType: undefined as CertificationType | undefined,
+    filteredCertificationOptions: undefined as
+      | Components.Schemas.CertificationComparison[]
+      | undefined,
+    upgradeMyFiveYearCertification: undefined as boolean | undefined,
     outOfProvinceCertificationTypes:
       [] as Components.Schemas.ComparisonRecord[],
     Rules,
