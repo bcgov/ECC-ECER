@@ -135,43 +135,6 @@
             </v-radio-group>
           </v-col>
         </v-row>
-        <!-- User has an active five year certificate we show different options to see if they can upgrade -->
-        <v-row
-          v-else-if="
-            highestCertificationType &&
-            activeFiveYearCertification &&
-            filteredCertificationOptions?.length !== 1
-          "
-        >
-          <v-col class="ml-1" cols="12">
-            <h2 class="mt-5">Certification level</h2>
-            <p class="mt-5">
-              Your certification can apply to transfer to either an ECE One Year
-              or to add {{ textForUpgradeOptionsWithActiveFiveYear }} to your
-              ECE Five Year certification in B.C.
-            </p>
-            <p class="mt-5">
-              Which certification would you like to transfer with this
-              application?
-            </p>
-            <v-radio-group
-              class="mt-3"
-              id="upgradeOptionsRadio"
-              v-model="upgradeMyFiveYearCertification"
-              :rules="[Rules.requiredRadio()]"
-              color="primary"
-            >
-              <v-radio
-                :label="labelForUpgradeOptionRadioFiveYearOptions"
-                :value="true"
-              ></v-radio>
-              <v-radio
-                label="Apply for ECE One Year certification"
-                :value="false"
-              ></v-radio>
-            </v-radio-group>
-          </v-col>
-        </v-row>
         <!-- Section for callouts once we have enough information to make a pathway decision -->
         <v-row>
           <v-col>
@@ -204,8 +167,7 @@
             <Callout
               v-if="
                 highestCertificationType === CertificationType.OneYear ||
-                has500HoursWorkExperience === 'false' ||
-                upgradeMyFiveYearCertification === false
+                has500HoursWorkExperience === 'false'
               "
               type="warning"
               title="You can apply to transfer your certification to ECE One Year certification in B.C."
@@ -232,7 +194,6 @@
             <Callout
               v-if="
                 (has500HoursWorkExperience === 'true' ||
-                  upgradeMyFiveYearCertification === true ||
                   filteredCertificationOptions?.length === 1) &&
                 highestCertificationType ===
                   CertificationType.FiveYearCertificate
@@ -294,8 +255,7 @@
             </Callout>
             <Callout
               v-if="
-                (upgradeMyFiveYearCertification === true ||
-                  filteredCertificationOptions?.length === 1) &&
+                filteredCertificationOptions?.length === 1 &&
                 highestCertificationType ===
                   CertificationType.FiveYearCertificateITE_SNE &&
                 remainingPostBasic === 'ITE'
@@ -310,8 +270,7 @@
             </Callout>
             <Callout
               v-if="
-                (upgradeMyFiveYearCertification === true ||
-                  filteredCertificationOptions?.length === 1) &&
+                filteredCertificationOptions?.length === 1 &&
                 highestCertificationType ===
                   CertificationType.FiveYearCertificateITE_SNE &&
                 remainingPostBasic === 'SNE'
@@ -326,8 +285,7 @@
             </Callout>
             <Callout
               v-if="
-                (upgradeMyFiveYearCertification === true ||
-                  filteredCertificationOptions?.length === 1) &&
+                filteredCertificationOptions?.length === 1 &&
                 highestCertificationType ===
                   CertificationType.FiveYearCertificateITE_SNE &&
                 remainingPostBasic === 'ITE_AND_SNE'
@@ -415,7 +373,6 @@ export default {
       this.outOfProvinceCertificationTypesLoading = true;
       this.outOfProvinceCertification = undefined;
       this.has500HoursWorkExperience = undefined;
-      this.upgradeMyFiveYearCertification = undefined;
       this.highestCertificationType = undefined;
       this.filteredCertificationOptions = undefined;
       if (this.transferData.province?.provinceId) {
@@ -435,7 +392,6 @@ export default {
     async onCertificationChange() {
       this.highestCertificationType = undefined;
       this.has500HoursWorkExperience = undefined;
-      this.upgradeMyFiveYearCertification = undefined;
 
       if (this.transferData.outOfProvinceCertification?.options) {
         //start filtering based on a user's existing certifications
@@ -644,12 +600,10 @@ export default {
         this.highestCertificationType === CertificationType.OneYear ||
         (this.highestCertificationType ===
           CertificationType.FiveYearCertificate &&
-          (this.has500HoursWorkExperience === "false" ||
-            this.upgradeMyFiveYearCertification === false)) ||
+          this.has500HoursWorkExperience === "false") ||
         (this.highestCertificationType ===
           CertificationType.FiveYearCertificateITE_SNE &&
-          (this.has500HoursWorkExperience === "false" ||
-            this.upgradeMyFiveYearCertification === false))
+          this.has500HoursWorkExperience === "false")
       ) {
         return ["OneYear"];
       }
@@ -697,45 +651,8 @@ export default {
         this.highestCertificationType === CertificationType.Assistant ||
         this.highestCertificationType === CertificationType.OneYear ||
         this.has500HoursWorkExperience ||
-        this.upgradeMyFiveYearCertification !== undefined ||
         this.filteredCertificationOptions?.length === 1
       );
-    },
-    labelForUpgradeOptionRadioFiveYearOptions(): string {
-      switch (this.remainingPostBasic) {
-        case "ITE":
-          return "Apply to add Infant and Toddler Educator certification";
-
-        case "SNE":
-          return "Apply to add Special Needs Educator certification";
-
-        case "ITE_AND_SNE":
-          return "Apply to add Infant and Toddler Educator and Special Needs Educator certifications";
-        default:
-          console.warn(
-            "Unexpected remainingPostBasic value:",
-            this.remainingPostBasic,
-          );
-          return "unhandled value";
-      }
-    },
-    textForUpgradeOptionsWithActiveFiveYear(): string {
-      switch (this.remainingPostBasic) {
-        case "ITE":
-          return "Infant and Toddler Educator certification";
-
-        case "SNE":
-          return "Special Needs Educator certification";
-
-        case "ITE_AND_SNE":
-          return "Infant and Toddler Educator and Special Needs Educator certifications";
-        default:
-          console.warn(
-            "Unexpected remainingPostBasic value:",
-            this.remainingPostBasic,
-          );
-          return "unhandled value";
-      }
     },
   },
   data: () => ({
@@ -743,9 +660,7 @@ export default {
     has500HoursWorkExperience: undefined,
     highestCertificationType: undefined as CertificationType | undefined,
     filteredCertificationOptions: undefined as
-      | Components.Schemas.CertificationComparison[]
-      | undefined,
-    upgradeMyFiveYearCertification: undefined as boolean | undefined,
+      Components.Schemas.CertificationComparison[] | undefined,
     outOfProvinceCertificationTypes:
       [] as Components.Schemas.ComparisonRecord[],
     Rules,

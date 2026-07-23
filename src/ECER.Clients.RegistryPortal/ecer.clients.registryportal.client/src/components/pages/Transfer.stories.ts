@@ -100,7 +100,6 @@ type Story = StoryObj<typeof meta>;
 
 // Assistant - no
 // work experience question - yes
-// upgrade choice - no
 // One Year - yes
 // Five Year - yes
 // Five year ite + sne - yes
@@ -120,7 +119,6 @@ export const TransferUserHasAssistant: Story = {
 
 // Assistant - no
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - yes
 // Five year ite + sne - yes
@@ -139,7 +137,6 @@ export const TransferUserHasAssistantAndOneYear: Story = {
 
 // Assistant - no
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - no
@@ -163,7 +160,6 @@ export const TransferUserFullyCertified: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - yes
 // Five year ite + sne - yes
@@ -181,7 +177,6 @@ export const TransferUserHasOneYear: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
@@ -199,7 +194,6 @@ export const TransferUserHasFiveYearShouldBeAbleToUpgradeNoOneYear: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
@@ -217,7 +211,6 @@ export const TransferUserHasFiveYearIteShouldBeAbleToUpgrade: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
@@ -235,7 +228,6 @@ export const TransferUserHasFiveYearSne: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - no
@@ -257,7 +249,6 @@ export const TransferUserHasFiveYearIteSne: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
@@ -277,7 +268,6 @@ export const TransferUserHasFiveYearAndOneYearShouldBeAbleToAutoUpgradeToIteSne:
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - upgradable
@@ -301,7 +291,6 @@ export const TransferUserHasFiveYearIteAndOneYearShouldBeAbleToAutoUpgradeToSne:
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - yes
 // Five Year - no
 // Five year ite + sne - no
@@ -323,7 +312,6 @@ export const TransferUserHasExpiredFiveYearShouldGetOptionForOneYear: Story = {
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - yes
 // Five Year - no
 // Five year ite + sne - no
@@ -347,7 +335,6 @@ export const TransferUserHasExpiredFiveYearAndExpiredOneYearEdgeCaseCanApplyForO
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - no
@@ -371,7 +358,6 @@ export const TransferUserHasActiveFiveYearAndExpiredOneYearEdgeCaseCannotApplyFo
 
 // Assistant - yes
 // work experience question - no
-// upgrade choice - no
 // One Year - no
 // Five Year - no
 // Five year ite + sne - no
