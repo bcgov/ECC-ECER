@@ -8,8 +8,11 @@ namespace ECER.Resources.Accounts.Communications;
 internal interface ICommunicationRepositoryMapper
 {
   List<ecer_Communication_StatusCode> MapCommunicationStatuses(IEnumerable<CommunicationStatus> source);
+
   List<Communication> MapCommunications(IEnumerable<ecer_Communication> source);
+
   Communication MapCommunication(ecer_Communication source);
+
   ecer_Communication MapCommunication(Communication source);
 }
 

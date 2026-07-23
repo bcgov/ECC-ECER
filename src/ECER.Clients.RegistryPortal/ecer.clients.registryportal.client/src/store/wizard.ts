@@ -57,10 +57,7 @@ export const useWizardStore = defineStore("wizard", {
     hasStep() {
       return (
         step:
-          | ApplicationStage
-          | ReferenceStage
-          | RenewStage
-          | IcraEligibilityStage,
+          ApplicationStage | ReferenceStage | RenewStage | IcraEligibilityStage,
       ) => {
         return this.steps.some((s) => s.stage === step);
       };

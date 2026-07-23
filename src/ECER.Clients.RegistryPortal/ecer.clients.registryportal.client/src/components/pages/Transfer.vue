@@ -326,9 +326,7 @@ export default {
         : this.router.push({ name: "application-requirements" });
     },
     getCertificationComparisonIdBasedOnSelfAssessmentOutcome():
-      | string
-      | undefined
-      | null {
+      string | undefined | null {
       //this function will leverage the logic from the selfAssessmentOutcome to generate the certificateComparisonId based on the options provided to registrant
       if (this.selfAssessmentOutcome.length === 0) {
         console.warn("No self-assessment outcome available.");

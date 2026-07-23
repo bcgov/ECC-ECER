@@ -228,22 +228,18 @@ export default defineComponent({
         );
 
         let component = this.$refs.subjectField as
-          | ComponentPublicInstance<{ $el: HTMLElement }>
-          | undefined;
+          ComponentPublicInstance<{ $el: HTMLElement }> | undefined;
 
         if (this.subject.trim()) {
           if (!this.selectedCategory) {
             component = this.$refs.categorySelect as
-              | ComponentPublicInstance<{ $el: HTMLElement }>
-              | undefined;
+              ComponentPublicInstance<{ $el: HTMLElement }> | undefined;
           } else if (!this.text.trim()) {
             component = this.$refs.textarea as
-              | ComponentPublicInstance<{ $el: HTMLElement }>
-              | undefined;
+              ComponentPublicInstance<{ $el: HTMLElement }> | undefined;
           } else {
             component = this.$refs.FileUploader as
-              | ComponentPublicInstance<{ $el: HTMLElement }>
-              | undefined;
+              ComponentPublicInstance<{ $el: HTMLElement }> | undefined;
           }
         }
 

@@ -86,8 +86,7 @@ export default defineComponent({
         programTypes:
           createApplicationObject.provincialCertificationTypeValues as Components.Schemas.ProgramCertificationType[],
         deliveryType: createApplicationObject.deliveryType as
-          | Components.Schemas.DeliveryType
-          | undefined,
+          Components.Schemas.DeliveryType | undefined,
         programApplicationType: createApplicationObject.applicationType,
         programProfileId: createApplicationObject.programProfileId,
         campusId: createApplicationObject.campusId,

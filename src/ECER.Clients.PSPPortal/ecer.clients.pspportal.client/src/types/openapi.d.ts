@@ -139,10 +139,7 @@ declare namespace Components {
       communicationId?: string | null;
     }
     export type CommunicationStatus =
-      | "Draft"
-      | "NotifiedRecipient"
-      | "Acknowledged"
-      | "Inactive";
+      "Draft" | "NotifiedRecipient" | "Acknowledged" | "Inactive";
     export interface CommunicationsStatus {
       count?: number; // int32
       hasUnread?: boolean;
@@ -205,8 +202,7 @@ declare namespace Components {
       programApplication?: ProgramApplication;
     }
     export type DeliveryMethodforInstructor =
-      | "Inpersonsitevisits"
-      | "Virtualsitevisits";
+      "Inpersonsitevisits" | "Virtualsitevisits";
     export type DeliveryType = "Hybrid" | "Inperson" | "Online";
     export interface DraftProgramResponse {
       program?: Program;
@@ -272,10 +268,7 @@ declare namespace Components {
       } | null;
     }
     export type InitiatedFrom =
-      | "Investigation"
-      | "PortalUser"
-      | "Registry"
-      | "ProgramRepresentative";
+      "Investigation" | "PortalUser" | "Registry" | "ProgramRepresentative";
     export type InviteType = "PSIProgramRepresentative";
     export type MethodofInstruction = "Asynchronous" | "Synchronous";
     export interface NavigationMetadata {
@@ -310,11 +303,7 @@ declare namespace Components {
       portalInvitation?: PortalInvitation;
     }
     export type PortalTags =
-      | "LOGIN"
-      | "LOOKUP"
-      | "REFERENCES"
-      | "PSPPortal"
-      | "CertificationsPortal";
+      "LOGIN" | "LOOKUP" | "REFERENCES" | "PSPPortal" | "CertificationsPortal";
     export type PrivateAuspiceType =
       | "Theologicalinstitution"
       | "FirstNationsmandatedpostsecondaryinstitute"
@@ -423,15 +412,9 @@ declare namespace Components {
       provinceCode?: string | null;
     }
     export type ProvincialCertificationTypeOffered =
-      | "ECEBasic"
-      | "ITE"
-      | "ITESNE"
-      | "SNE";
+      "ECEBasic" | "ITE" | "ITESNE" | "SNE";
     export type PsiInstitutionType =
-      | "Private"
-      | "Public"
-      | "ContinuingEducation"
-      | "PublicOOP";
+      "Private" | "Public" | "ContinuingEducation" | "PublicOOP";
     /**
      * Error codes for PSP user registration failures
      */
@@ -1139,7 +1122,7 @@ export interface OperationMethods {
   /**
    * configuration_get - Returns the UI initial configuration
    */
-  "configuration_get"(
+  configuration_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1147,7 +1130,7 @@ export interface OperationMethods {
   /**
    * province_get - Handles province queries
    */
-  "province_get"(
+  province_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1155,7 +1138,7 @@ export interface OperationMethods {
   /**
    * country_get - Handles country queries
    */
-  "country_get"(
+  country_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1163,7 +1146,7 @@ export interface OperationMethods {
   /**
    * area_of_instruction_get - Handles area of instruction queries
    */
-  "area_of_instruction_get"(
+  area_of_instruction_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1171,7 +1154,7 @@ export interface OperationMethods {
   /**
    * systemMessage_get - Handles system messages queries
    */
-  "systemMessage_get"(
+  systemMessage_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1179,7 +1162,7 @@ export interface OperationMethods {
   /**
    * version_get - Returns the version information
    */
-  "version_get"(
+  version_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1187,7 +1170,7 @@ export interface OperationMethods {
   /**
    * psp_user_manage_get - Gets PSP representatives for the current user's institution
    */
-  "psp_user_manage_get"(
+  psp_user_manage_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1195,7 +1178,7 @@ export interface OperationMethods {
   /**
    * psp_user_manage_deactivate_post - Deactivates a PSP representative for the current user's institution
    */
-  "psp_user_manage_deactivate_post"(
+  psp_user_manage_deactivate_post(
     parameters?: Parameters<Paths.PspUserManageDeactivatePost.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1203,7 +1186,7 @@ export interface OperationMethods {
   /**
    * psp_user_manage_reactivate_post - Reactivates a PSP representative for the current user's institution
    */
-  "psp_user_manage_reactivate_post"(
+  psp_user_manage_reactivate_post(
     parameters?: Parameters<Paths.PspUserManageReactivatePost.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1211,7 +1194,7 @@ export interface OperationMethods {
   /**
    * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
    */
-  "psp_user_manage_set_primary_post"(
+  psp_user_manage_set_primary_post(
     parameters?: Parameters<Paths.PspUserManageSetPrimaryPost.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1219,7 +1202,7 @@ export interface OperationMethods {
   /**
    * psp_user_add - Adds a new psp user to an institution
    */
-  "psp_user_add"(
+  psp_user_add(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.PspUserAdd.RequestBody,
     config?: AxiosRequestConfig,
@@ -1227,7 +1210,7 @@ export interface OperationMethods {
   /**
    * psp_user_manage_resend_invitation_put - Resends a portal invitation for PSP representative within the current user's institution
    */
-  "psp_user_manage_resend_invitation_put"(
+  psp_user_manage_resend_invitation_put(
     parameters?: Parameters<Paths.PspUserManageResendInvitationPut.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1235,7 +1218,7 @@ export interface OperationMethods {
   /**
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
-  "psp_user_profile_get"(
+  psp_user_profile_get(
     parameters?: Parameters<Paths.PspUserProfileGet.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1243,7 +1226,7 @@ export interface OperationMethods {
   /**
    * psp_user_profile_put - Updates the currently logged in users profile
    */
-  "psp_user_profile_put"(
+  psp_user_profile_put(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.PspUserProfilePut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1251,7 +1234,7 @@ export interface OperationMethods {
   /**
    * psp_user_register_post - Update a psp user profile
    */
-  "psp_user_register_post"(
+  psp_user_register_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.PspUserRegisterPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1259,7 +1242,7 @@ export interface OperationMethods {
   /**
    * draftprogram_put - Save a draft program for the current user
    */
-  "draftprogram_put"(
+  draftprogram_put(
     parameters?: Parameters<Paths.DraftprogramPut.PathParameters> | null,
     data?: Paths.DraftprogramPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1267,7 +1250,7 @@ export interface OperationMethods {
   /**
    * program_get - Handles program queries
    */
-  "program_get"(
+  program_get(
     parameters?: Parameters<
       Paths.ProgramGet.QueryParameters & Paths.ProgramGet.PathParameters
     > | null,
@@ -1277,7 +1260,7 @@ export interface OperationMethods {
   /**
    * program_put - Update program profile
    */
-  "program_put"(
+  program_put(
     parameters?: Parameters<Paths.ProgramPut.PathParameters> | null,
     data?: Paths.ProgramPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1285,7 +1268,7 @@ export interface OperationMethods {
   /**
    * program_post - Submit a draft program profile
    */
-  "program_post"(
+  program_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ProgramPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1293,7 +1276,7 @@ export interface OperationMethods {
   /**
    * changeprogram_put - Initiate program profile change
    */
-  "changeprogram_put"(
+  changeprogram_put(
     parameters?: Parameters<Paths.ChangeprogramPut.PathParameters> | null,
     data?: Paths.ChangeprogramPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1301,7 +1284,7 @@ export interface OperationMethods {
   /**
    * program_application_files_get - Get all document files for a program application
    */
-  "program_application_files_get"(
+  program_application_files_get(
     parameters?: Parameters<Paths.ProgramApplicationFilesGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1309,7 +1292,7 @@ export interface OperationMethods {
   /**
    * program_application_document_urls_get - Get all document URLs for a program application
    */
-  "program_application_document_urls_get"(
+  program_application_document_urls_get(
     parameters?: Parameters<Paths.ProgramApplicationDocumentUrlsGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1317,7 +1300,7 @@ export interface OperationMethods {
   /**
    * program_application_file_upload - Upload a file immediately for a program application component
    */
-  "program_application_file_upload"(
+  program_application_file_upload(
     parameters?: Parameters<Paths.ProgramApplicationFileUpload.PathParameters> | null,
     data?: Paths.ProgramApplicationFileUpload.RequestBody,
     config?: AxiosRequestConfig,
@@ -1325,7 +1308,7 @@ export interface OperationMethods {
   /**
    * program_application_file_share - Share an existing document URL to a program application component
    */
-  "program_application_file_share"(
+  program_application_file_share(
     parameters?: Parameters<Paths.ProgramApplicationFileShare.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1333,7 +1316,7 @@ export interface OperationMethods {
   /**
    * program_application_file_delete - Delete a shared document URL (and conditionally the underlying file)
    */
-  "program_application_file_delete"(
+  program_application_file_delete(
     parameters?: Parameters<Paths.ProgramApplicationFileDelete.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1341,7 +1324,7 @@ export interface OperationMethods {
   /**
    * program_application_post - Create a draft program application
    */
-  "program_application_post"(
+  program_application_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ProgramApplicationPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1349,7 +1332,7 @@ export interface OperationMethods {
   /**
    * program_application_get - Handles program application queries
    */
-  "program_application_get"(
+  program_application_get(
     parameters?: Parameters<
       Paths.ProgramApplicationGet.QueryParameters &
         Paths.ProgramApplicationGet.PathParameters
@@ -1360,7 +1343,7 @@ export interface OperationMethods {
   /**
    * program_application_put - Update program application
    */
-  "program_application_put"(
+  program_application_put(
     parameters?: Parameters<Paths.ProgramApplicationPut.PathParameters> | null,
     data?: Paths.ProgramApplicationPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1368,7 +1351,7 @@ export interface OperationMethods {
   /**
    * program_application_components_get - Gets component groups
    */
-  "program_application_components_get"(
+  program_application_components_get(
     parameters?: Parameters<Paths.ProgramApplicationComponentsGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1376,7 +1359,7 @@ export interface OperationMethods {
   /**
    * program_application_component_group_components_get - Gets program application components by component group id
    */
-  "program_application_component_group_components_get"(
+  program_application_component_group_components_get(
     parameters?: Parameters<Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1384,7 +1367,7 @@ export interface OperationMethods {
   /**
    * program_application_component_group_put - Update program application component group
    */
-  "program_application_component_group_put"(
+  program_application_component_group_put(
     parameters?: Parameters<Paths.ProgramApplicationComponentGroupPut.PathParameters> | null,
     data?: Paths.ProgramApplicationComponentGroupPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1392,7 +1375,7 @@ export interface OperationMethods {
   /**
    * program_application_submit_post - Submit a program application
    */
-  "program_application_submit_post"(
+  program_application_submit_post(
     parameters?: Parameters<Paths.ProgramApplicationSubmitPost.PathParameters> | null,
     data?: Paths.ProgramApplicationSubmitPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1400,7 +1383,7 @@ export interface OperationMethods {
   /**
    * portal_invitation_get - Handles portal invitation queries
    */
-  "portal_invitation_get"(
+  portal_invitation_get(
     parameters?: Parameters<Paths.PortalInvitationGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1408,7 +1391,7 @@ export interface OperationMethods {
   /**
    * files_communication_get - Handles fetching files
    */
-  "files_communication_get"(
+  files_communication_get(
     parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1416,7 +1399,7 @@ export interface OperationMethods {
   /**
    * upload_file - Handles upload file request
    */
-  "upload_file"(
+  upload_file(
     parameters?: Parameters<Paths.UploadFile.PathParameters> | null,
     data?: Paths.UploadFile.RequestBody,
     config?: AxiosRequestConfig,
@@ -1424,7 +1407,7 @@ export interface OperationMethods {
   /**
    * delete_file - Handles delete uploaded file request
    */
-  "delete_file"(
+  delete_file(
     parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1432,7 +1415,7 @@ export interface OperationMethods {
   /**
    * education_institution_get - Get users education institution
    */
-  "education_institution_get"(
+  education_institution_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1440,7 +1423,7 @@ export interface OperationMethods {
   /**
    * education_institution_put - Updates the education institution
    */
-  "education_institution_put"(
+  education_institution_put(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.EducationInstitutionPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1448,7 +1431,7 @@ export interface OperationMethods {
   /**
    * campus_post - Creates a new campus or satellite location for the user's institution
    */
-  "campus_post"(
+  campus_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CampusPost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1456,7 +1439,7 @@ export interface OperationMethods {
   /**
    * campus_put - Updates an existing campus
    */
-  "campus_put"(
+  campus_put(
     parameters?: Parameters<Paths.CampusPut.PathParameters> | null,
     data?: Paths.CampusPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1464,7 +1447,7 @@ export interface OperationMethods {
   /**
    * course_put - Update a course for a program profile
    */
-  "course_put"(
+  course_put(
     parameters?: Parameters<Paths.CoursePut.PathParameters> | null,
     data?: Paths.CoursePut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1474,7 +1457,7 @@ export interface OperationMethods {
    *
    * string.Empty
    */
-  "course_delete"(
+  course_delete(
     parameters?: Parameters<
       Paths.CourseDelete.QueryParameters & Paths.CourseDelete.PathParameters
     > | null,
@@ -1486,7 +1469,7 @@ export interface OperationMethods {
    *
    * string.Empty
    */
-  "courses_get"(
+  courses_get(
     parameters?: Parameters<Paths.CoursesGet.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1494,7 +1477,7 @@ export interface OperationMethods {
   /**
    * course_post - Add a course for a program application
    */
-  "course_post"(
+  course_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CoursePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1502,7 +1485,7 @@ export interface OperationMethods {
   /**
    * message_get - Paginated endpoint to get all user messages
    */
-  "message_get"(
+  message_get(
     parameters?: Parameters<
       Paths.MessageGet.QueryParameters & Paths.MessageGet.PathParameters
     > | null,
@@ -1512,7 +1495,7 @@ export interface OperationMethods {
   /**
    * message_post - Endpoint to reply to an existing message
    */
-  "message_post"(
+  message_post(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.MessagePost.RequestBody,
     config?: AxiosRequestConfig,
@@ -1520,7 +1503,7 @@ export interface OperationMethods {
   /**
    * communication_put - Marks a communication as seen
    */
-  "communication_put"(
+  communication_put(
     parameters?: Parameters<Paths.CommunicationPut.PathParameters> | null,
     data?: Paths.CommunicationPut.RequestBody,
     config?: AxiosRequestConfig,
@@ -1528,7 +1511,7 @@ export interface OperationMethods {
   /**
    * message_status_get - Handles messages status
    */
-  "message_status_get"(
+  message_status_get(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
@@ -1540,7 +1523,7 @@ export interface PathsDictionary {
     /**
      * configuration_get - Returns the UI initial configuration
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1550,7 +1533,7 @@ export interface PathsDictionary {
     /**
      * province_get - Handles province queries
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1560,7 +1543,7 @@ export interface PathsDictionary {
     /**
      * country_get - Handles country queries
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1570,7 +1553,7 @@ export interface PathsDictionary {
     /**
      * area_of_instruction_get - Handles area of instruction queries
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1580,7 +1563,7 @@ export interface PathsDictionary {
     /**
      * systemMessage_get - Handles system messages queries
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1590,7 +1573,7 @@ export interface PathsDictionary {
     /**
      * version_get - Returns the version information
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1600,7 +1583,7 @@ export interface PathsDictionary {
     /**
      * psp_user_manage_get - Gets PSP representatives for the current user's institution
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1610,7 +1593,7 @@ export interface PathsDictionary {
     /**
      * psp_user_manage_deactivate_post - Deactivates a PSP representative for the current user's institution
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.PspUserManageDeactivatePost.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1620,7 +1603,7 @@ export interface PathsDictionary {
     /**
      * psp_user_manage_reactivate_post - Reactivates a PSP representative for the current user's institution
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.PspUserManageReactivatePost.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1630,7 +1613,7 @@ export interface PathsDictionary {
     /**
      * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.PspUserManageSetPrimaryPost.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1640,7 +1623,7 @@ export interface PathsDictionary {
     /**
      * psp_user_add - Adds a new psp user to an institution
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.PspUserAdd.RequestBody,
       config?: AxiosRequestConfig,
@@ -1650,7 +1633,7 @@ export interface PathsDictionary {
     /**
      * psp_user_manage_resend_invitation_put - Resends a portal invitation for PSP representative within the current user's institution
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.PspUserManageResendInvitationPut.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1660,7 +1643,7 @@ export interface PathsDictionary {
     /**
      * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.PspUserProfileGet.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1668,7 +1651,7 @@ export interface PathsDictionary {
     /**
      * psp_user_profile_put - Updates the currently logged in users profile
      */
-    "put"(
+    put(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.PspUserProfilePut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1678,7 +1661,7 @@ export interface PathsDictionary {
     /**
      * psp_user_register_post - Update a psp user profile
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.PspUserRegisterPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -1688,7 +1671,7 @@ export interface PathsDictionary {
     /**
      * draftprogram_put - Save a draft program for the current user
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.DraftprogramPut.PathParameters> | null,
       data?: Paths.DraftprogramPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1698,7 +1681,7 @@ export interface PathsDictionary {
     /**
      * program_get - Handles program queries
      */
-    "get"(
+    get(
       parameters?: Parameters<
         Paths.ProgramGet.QueryParameters & Paths.ProgramGet.PathParameters
       > | null,
@@ -1710,7 +1693,7 @@ export interface PathsDictionary {
     /**
      * program_put - Update program profile
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.ProgramPut.PathParameters> | null,
       data?: Paths.ProgramPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1720,7 +1703,7 @@ export interface PathsDictionary {
     /**
      * program_post - Submit a draft program profile
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ProgramPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -1730,7 +1713,7 @@ export interface PathsDictionary {
     /**
      * changeprogram_put - Initiate program profile change
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.ChangeprogramPut.PathParameters> | null,
       data?: Paths.ChangeprogramPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1740,7 +1723,7 @@ export interface PathsDictionary {
     /**
      * program_application_files_get - Get all document files for a program application
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.ProgramApplicationFilesGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1750,7 +1733,7 @@ export interface PathsDictionary {
     /**
      * program_application_document_urls_get - Get all document URLs for a program application
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.ProgramApplicationDocumentUrlsGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1760,7 +1743,7 @@ export interface PathsDictionary {
     /**
      * program_application_file_upload - Upload a file immediately for a program application component
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.ProgramApplicationFileUpload.PathParameters> | null,
       data?: Paths.ProgramApplicationFileUpload.RequestBody,
       config?: AxiosRequestConfig,
@@ -1770,7 +1753,7 @@ export interface PathsDictionary {
     /**
      * program_application_file_share - Share an existing document URL to a program application component
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.ProgramApplicationFileShare.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1780,7 +1763,7 @@ export interface PathsDictionary {
     /**
      * program_application_file_delete - Delete a shared document URL (and conditionally the underlying file)
      */
-    "delete"(
+    delete(
       parameters?: Parameters<Paths.ProgramApplicationFileDelete.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1790,7 +1773,7 @@ export interface PathsDictionary {
     /**
      * program_application_post - Create a draft program application
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ProgramApplicationPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -1800,7 +1783,7 @@ export interface PathsDictionary {
     /**
      * program_application_get - Handles program application queries
      */
-    "get"(
+    get(
       parameters?: Parameters<
         Paths.ProgramApplicationGet.QueryParameters &
           Paths.ProgramApplicationGet.PathParameters
@@ -1811,7 +1794,7 @@ export interface PathsDictionary {
     /**
      * program_application_put - Update program application
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.ProgramApplicationPut.PathParameters> | null,
       data?: Paths.ProgramApplicationPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1821,7 +1804,7 @@ export interface PathsDictionary {
     /**
      * program_application_components_get - Gets component groups
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.ProgramApplicationComponentsGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1831,7 +1814,7 @@ export interface PathsDictionary {
     /**
      * program_application_component_group_components_get - Gets program application components by component group id
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.ProgramApplicationComponentGroupComponentsGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1839,7 +1822,7 @@ export interface PathsDictionary {
     /**
      * program_application_component_group_put - Update program application component group
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.ProgramApplicationComponentGroupPut.PathParameters> | null,
       data?: Paths.ProgramApplicationComponentGroupPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1849,7 +1832,7 @@ export interface PathsDictionary {
     /**
      * program_application_submit_post - Submit a program application
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.ProgramApplicationSubmitPost.PathParameters> | null,
       data?: Paths.ProgramApplicationSubmitPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -1859,7 +1842,7 @@ export interface PathsDictionary {
     /**
      * portal_invitation_get - Handles portal invitation queries
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.PortalInvitationGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1869,7 +1852,7 @@ export interface PathsDictionary {
     /**
      * files_communication_get - Handles fetching files
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1879,7 +1862,7 @@ export interface PathsDictionary {
     /**
      * delete_file - Handles delete uploaded file request
      */
-    "delete"(
+    delete(
       parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1887,7 +1870,7 @@ export interface PathsDictionary {
     /**
      * upload_file - Handles upload file request
      */
-    "post"(
+    post(
       parameters?: Parameters<Paths.UploadFile.PathParameters> | null,
       data?: Paths.UploadFile.RequestBody,
       config?: AxiosRequestConfig,
@@ -1897,7 +1880,7 @@ export interface PathsDictionary {
     /**
      * education_institution_get - Get users education institution
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1905,7 +1888,7 @@ export interface PathsDictionary {
     /**
      * education_institution_put - Updates the education institution
      */
-    "put"(
+    put(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.EducationInstitutionPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1915,7 +1898,7 @@ export interface PathsDictionary {
     /**
      * campus_post - Creates a new campus or satellite location for the user's institution
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CampusPost.RequestBody,
       config?: AxiosRequestConfig,
@@ -1925,7 +1908,7 @@ export interface PathsDictionary {
     /**
      * campus_put - Updates an existing campus
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.CampusPut.PathParameters> | null,
       data?: Paths.CampusPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1935,7 +1918,7 @@ export interface PathsDictionary {
     /**
      * course_put - Update a course for a program profile
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.CoursePut.PathParameters> | null,
       data?: Paths.CoursePut.RequestBody,
       config?: AxiosRequestConfig,
@@ -1945,7 +1928,7 @@ export interface PathsDictionary {
      *
      * string.Empty
      */
-    "delete"(
+    delete(
       parameters?: Parameters<
         Paths.CourseDelete.QueryParameters & Paths.CourseDelete.PathParameters
       > | null,
@@ -1957,7 +1940,7 @@ export interface PathsDictionary {
     /**
      * course_post - Add a course for a program application
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CoursePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -1967,7 +1950,7 @@ export interface PathsDictionary {
      *
      * string.Empty
      */
-    "get"(
+    get(
       parameters?: Parameters<Paths.CoursesGet.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
@@ -1977,7 +1960,7 @@ export interface PathsDictionary {
     /**
      * message_get - Paginated endpoint to get all user messages
      */
-    "get"(
+    get(
       parameters?: Parameters<
         Paths.MessageGet.QueryParameters & Paths.MessageGet.PathParameters
       > | null,
@@ -1989,7 +1972,7 @@ export interface PathsDictionary {
     /**
      * message_post - Endpoint to reply to an existing message
      */
-    "post"(
+    post(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.MessagePost.RequestBody,
       config?: AxiosRequestConfig,
@@ -1999,7 +1982,7 @@ export interface PathsDictionary {
     /**
      * communication_put - Marks a communication as seen
      */
-    "put"(
+    put(
       parameters?: Parameters<Paths.CommunicationPut.PathParameters> | null,
       data?: Paths.CommunicationPut.RequestBody,
       config?: AxiosRequestConfig,
@@ -2009,7 +1992,7 @@ export interface PathsDictionary {
     /**
      * message_status_get - Handles messages status
      */
-    "get"(
+    get(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,

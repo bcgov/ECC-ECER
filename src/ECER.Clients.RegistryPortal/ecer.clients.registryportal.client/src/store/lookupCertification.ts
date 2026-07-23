@@ -3,11 +3,9 @@ import type { Components } from "@/types/openapi";
 
 export interface CertificationLookupState {
   certificationSearchResults:
-    | Components.Schemas.CertificationLookupResponse[]
-    | undefined;
+    Components.Schemas.CertificationLookupResponse[] | undefined;
   certificationRecord:
-    | Components.Schemas.CertificationLookupResponse
-    | undefined;
+    Components.Schemas.CertificationLookupResponse | undefined;
   firstName: string;
   lastName: string;
   registrationNumber: string;
