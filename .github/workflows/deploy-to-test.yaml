@@ -28,7 +28,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
       - name: Install oc
-        uses: redhat-actions/openshift-tools-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v2
         with:
           oc: 4
 
