@@ -51,20 +51,20 @@ public class ConfigurationEndpoints : IRegisterEndpoints
 
     endpointRouteBuilder.MapGet("/api/certificationComparison/{id?}", async (string? id, string? provinceId, HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
+      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
       var results = await messageBus.Send(new CertificationComparisonQuery() { ById = id, ByProvinceId = provinceId }, ct);
       return TypedResults.Ok(configurationMapper.MapComparisonRecords(results.Items));
     })
     .AddGuidValidationQueryParams(["provinceId"], false)
-    .AddGuidValidation("id", false)
     .WithOpenApi("Handles certification comparison queries", string.Empty, "certificationComparison_get");
 
     endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, PostSecondaryInstitutionStatus? status, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
+      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
       var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId, ByStatus = status }, ct);
       return TypedResults.Ok(configurationMapper.MapPostSecondaryInstitutions(results.Items));
     })
     .AddGuidValidationQueryParams(["provinceId"], false)
-    .AddGuidValidation("id", false)
     .WithOpenApi("Handles psi queries", string.Empty, "psi_get");
 
     endpointRouteBuilder.MapGet("/api/systemMessages", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
