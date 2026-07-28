@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col>
-      <h1>Transfer Infant and Toddler Educator certification</h1>
+      <h1>Transfer to Infant and Toddler Educator certification</h1>
       <p class="mt-6">
         This certification allows you to to work alone and/or as the primary
         educator in licensed child care programs for children birth to 5 years

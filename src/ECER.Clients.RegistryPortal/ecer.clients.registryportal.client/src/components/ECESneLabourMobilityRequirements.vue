@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col>
-      <h1>Transfer Special Needs Educator certification</h1>
+      <h1>Transfer to Special Needs Educator certification</h1>
       <p class="mt-6">
         This certificate allows you to work alone and/or as the primary educator
         in inclusive, licensed child care programs for children 3 to 5 years of
