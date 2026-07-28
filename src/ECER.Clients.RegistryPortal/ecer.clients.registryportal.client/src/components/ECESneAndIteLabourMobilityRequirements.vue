@@ -2,7 +2,7 @@
   <v-row>
     <v-col>
       <h1>
-        Transfer Special Needs Educator and Infant and Toddler Educator
+        Transfer to Special Needs Educator and Infant and Toddler Educator
         certification
       </h1>
       <p class="mt-6">
