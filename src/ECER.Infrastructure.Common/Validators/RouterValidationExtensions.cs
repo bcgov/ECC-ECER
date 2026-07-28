@@ -34,13 +34,14 @@ public static class RouterValidationExtensions
       foreach (var queryParameter in parameterNames)
       {
         var value = context.HttpContext.Request.Query[queryParameter].ToString();
+        bool valueProvided = context.HttpContext.Request.Query.TryGetValue(queryParameter, out var _);
 
-        if (string.IsNullOrWhiteSpace(value) && isRequired)
+        if (!valueProvided && isRequired)
         {
-          errors.Add($"{queryParameter} is required cannot be null or whitespace");
+          errors.Add($"{queryParameter} is required");
         }
 
-        if (!string.IsNullOrEmpty(value) && !Guid.TryParse(value, out _))
+        if (valueProvided && !Guid.TryParse(value, out _))
         {
           errors.Add($"{queryParameter} must be a valid GUID");
         }

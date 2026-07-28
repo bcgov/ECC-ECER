@@ -1,4 +1,5 @@
 using ECER.Clients.RegistryPortal.Server.Shared;
+using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
 using Mediator;
@@ -54,6 +55,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       var results = await messageBus.Send(new CertificationComparisonQuery() { ById = id, ByProvinceId = provinceId }, ct);
       return TypedResults.Ok(configurationMapper.MapComparisonRecords(results.Items));
     })
+    .AddGuidValidationQueryParams(["provinceId"], false)
     .WithOpenApi("Handles certification comparison queries", string.Empty, "certificationComparison_get");
 
     endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, PostSecondaryInstitutionStatus? status, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
@@ -62,6 +64,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId, ByStatus = status }, ct);
       return TypedResults.Ok(configurationMapper.MapPostSecondaryInstitutions(results.Items));
     })
+    .AddGuidValidationQueryParams(["provinceId"], false)
     .WithOpenApi("Handles psi queries", string.Empty, "psi_get");
 
     endpointRouteBuilder.MapGet("/api/systemMessages", async (HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
@@ -74,11 +77,12 @@ public class ConfigurationEndpoints : IRegisterEndpoints
 
     endpointRouteBuilder.MapGet("/api/identificationTypes", async ([AsParameters] IdentificationTypesQuery request, HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
-      var query = new Managers.Admin.Contract.Metadatas.IdentificationTypesQuery() { ById = request.ById, ForPrimary = request.ForPrimary, ForSecondary = request.ForSecondary };
+      var query = new Managers.Admin.Contract.Metadatas.IdentificationTypesQuery() { ById = string.IsNullOrWhiteSpace(request.ById) ? null : request.ById, ForPrimary = request.ForPrimary, ForSecondary = request.ForSecondary };
       var results = await messageBus.Send(query, ct);
       return TypedResults.Ok(configurationMapper.MapIdentificationTypes(results.Items));
     })
      .WithOpenApi("Handles identification types queries", string.Empty, "identificationTypes_get")
+     .AddGuidValidationQueryParams(["ById"], false)
      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
     endpointRouteBuilder.MapGet("/api/captchaSiteKey", async (IOptions<CaptchaSettings> captchaSettings, CancellationToken ct) =>

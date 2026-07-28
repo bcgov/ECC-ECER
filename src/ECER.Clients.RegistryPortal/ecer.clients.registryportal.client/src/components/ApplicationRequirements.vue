@@ -37,8 +37,20 @@
       />
       <ECEFiveYearLaborMobilityRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
-        ref="ECEFiveYearLaborMobilityRequirements"
         :is-post-basic="isPostBasic"
+      />
+
+      <ECESneAndIteLabourMobilityRequirements
+        v-else-if="
+          applicationStore.isDraftCertificateTypeSne &&
+          applicationStore.isDraftCertificateTypeIte
+        "
+      />
+      <ECESneLabourMobilityRequirements
+        v-else-if="applicationStore.isDraftCertificateTypeSne"
+      />
+      <ECEIteLabourMobilityRequirements
+        v-else-if="applicationStore.isDraftCertificateTypeIte"
       />
     </template>
 
@@ -104,6 +116,9 @@ import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequire
 import ECEAssistantLaborMobilityRequirements from "./ECEAssistantLaborMobilityRequirements.vue";
 import ECEOneYearLaborMobilityRequirements from "./ECEOneYearLaborMobilityRequirements.vue";
 import ECEFiveYearLaborMobilityRequirements from "./ECEFiveYearLaborMobilityRequirements.vue";
+import ECESneLabourMobilityRequirements from "./ECESneLabourMobilityRequirements.vue";
+import ECEIteLabourMobilityRequirements from "./ECEIteLabourMobilityRequirements.vue";
+import ECESneAndIteLabourMobilityRequirements from "./ECESneAndIteLabourMobilityRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
@@ -125,6 +140,9 @@ export default defineComponent({
     ECEAssistantLaborMobilityRequirements,
     ECEOneYearLaborMobilityRequirements,
     ECEFiveYearLaborMobilityRequirements,
+    ECESneLabourMobilityRequirements,
+    ECEIteLabourMobilityRequirements,
+    ECESneAndIteLabourMobilityRequirements,
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
@@ -200,21 +218,6 @@ export default defineComponent({
           this.router.push({ name: "declaration" });
         }
       } else if (this.applicationStore.isDraftApplicationLaborMobility) {
-        // handle case where user chooses 5 year specializations
-        if (
-          this.applicationStore.isDraftCertificateTypeFiveYears &&
-          this.applicationStore.isDraftCertificateTypeIte &&
-          this.applicationStore.isDraftCertificateTypeSne
-        ) {
-          this.applicationStore.$patch({
-            draftApplication: {
-              certificationTypes: [
-                "FiveYears",
-                ...this.specializationSelection,
-              ],
-            },
-          });
-        }
         this.router.push({ name: "declaration" });
       } else if (this.applicationStore.isDraftApplicationRenewal) {
         //for renewal applications we do not need to perform any additional checks. The certification types should be correctly set in the draft application store.

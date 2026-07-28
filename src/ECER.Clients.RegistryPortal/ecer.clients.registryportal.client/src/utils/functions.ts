@@ -282,8 +282,7 @@ export function parseCertificationType(input: string): CertificationType {
  * Returns the highest certification name from a list of options.
  *
  * @param {CertificationComparison[]} options - An array of certification comparison objects.
- * @returns {string} - The highest certification name based on the defined weights.
- * @throws {Error} - If no valid certification type is found in the options.
+ * @returns {string | undefined} - The highest certification name based on the defined weights.
  */
 export function getHighestCertificationType(
   options: CertificationComparison[],
@@ -293,7 +292,7 @@ export function getHighestCertificationType(
     .filter((c): c is CertificationType => !!c); // drop unrecognized
 
   if (parsed.length === 0) {
-    throw new Error("No valid certification found in options");
+    return undefined;
   }
 
   return parsed.reduce(
