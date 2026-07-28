@@ -62,8 +62,8 @@ export const EceAssistantPathway: Story = {
         id: "f403a278-8020-f011-998a-6045bdf9b81b",
         name: "KARISSA CAULKINS",
         number: "016359",
-        expiryDate: getDatePlusYears(2),
-        effectiveDate: getDateMinusYears(2),
+        expiryDate: getDatePlusYears(3),
+        effectiveDate: getDateMinusYears(3),
         date: getTodayDate(),
         printDate: null,
         hasConditions: false,
@@ -119,6 +119,215 @@ export const EceOneYearPathway: Story = {
         ],
         certificateConditions: [],
       },
+    ],
+  },
+};
+
+export const EceOneYearExpiredMoreThan5YearsShouldNotShowOneYearPathway: Story =
+  {
+    args: {
+      certifications: [
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDatePlusYears(6),
+          effectiveDate: getDateMinusYears(6),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE One Year",
+          statusCode: "Expired",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDatePlusYears(2),
+          effectiveDate: getDateMinusYears(2),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE Assistant",
+          statusCode: "Active",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDateMinusYears(7),
+          effectiveDate: getDateMinusYears(7),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE Five Year + ITE + SNE",
+          statusCode: "Expired",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 5 YR" },
+            { id: "656b387e-8020-f011-998a-7c1e52871876", type: "ITE" },
+            { id: "756b387e-8020-f011-998a-7c1e52871876", type: "SNE" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+      ],
+    },
+  };
+
+export const EceOneYearExpiredMoreThan5YearsWithSubsequent5YearShouldShowOneYearPathway: Story =
+  {
+    args: {
+      certifications: [
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDatePlusYears(6),
+          effectiveDate: getDateMinusYears(6),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE One Year",
+          statusCode: "Expired",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDatePlusYears(2),
+          effectiveDate: getDateMinusYears(2),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE Assistant",
+          statusCode: "Active",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDateMinusYears(5),
+          effectiveDate: getDateMinusYears(5),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE Five Year + ITE + SNE",
+          statusCode: "Expired",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 5 YR" },
+            { id: "656b387e-8020-f011-998a-7c1e52871876", type: "ITE" },
+            { id: "756b387e-8020-f011-998a-7c1e52871876", type: "SNE" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+      ],
+    },
+  };
+
+export const EceOneYearExpiredAfter5YearShouldNotShowOneYearPathway: Story = {
+  args: {
+    certifications: [
+      {
+        id: "f403a278-8020-f011-998a-6045bdf9b81b",
+        name: "KARISSA CAULKINS",
+        number: "016359",
+        expiryDate: getDatePlusYears(4),
+        effectiveDate: getDateMinusYears(4),
+        date: getTodayDate(),
+        printDate: null,
+        hasConditions: false,
+        levelName: "ECE One Year",
+        statusCode: "Expired",
+        certificatePDFGeneration: "Yes",
+        levels: [
+          { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" },
+        ],
+        files: [
+          {
+            id: "3979ff88-f262-4747-b294-c289caa2402a",
+            url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+            extention: ".pdf",
+            size: "322.00 KB",
+            name: "Cover Letter-016359.pdf",
+          },
+        ],
+        certificateConditions: [],
+      },
       {
         id: "f403a278-8020-f011-998a-6045bdf9b81b",
         name: "KARISSA CAULKINS",
@@ -128,8 +337,34 @@ export const EceOneYearPathway: Story = {
         date: getTodayDate(),
         printDate: null,
         hasConditions: false,
-        levelName: "ECE Five Year + ITE + SNE",
+        levelName: "ECE Assistant",
         statusCode: "Active",
+        certificatePDFGeneration: "Yes",
+        levels: [
+          { id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" },
+        ],
+        files: [
+          {
+            id: "3979ff88-f262-4747-b294-c289caa2402a",
+            url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+            extention: ".pdf",
+            size: "322.00 KB",
+            name: "Cover Letter-016359.pdf",
+          },
+        ],
+        certificateConditions: [],
+      },
+      {
+        id: "f403a278-8020-f011-998a-6045bdf9b81b",
+        name: "KARISSA CAULKINS",
+        number: "016359",
+        expiryDate: getDateMinusYears(6),
+        effectiveDate: getDateMinusYears(6),
+        date: getTodayDate(),
+        printDate: null,
+        hasConditions: false,
+        levelName: "ECE Five Year + ITE + SNE",
+        statusCode: "Expired",
         certificatePDFGeneration: "Yes",
         levels: [
           { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 5 YR" },
@@ -212,92 +447,93 @@ export const EceOneYearEdgeCasePathway: Story = {
   },
 };
 
-export const EceOneYearEdgeCaseWithActiveOneYearPathway: Story = {
-  args: {
-    certifications: [
-      {
-        id: "f403a278-8020-f011-998a-6045bdf9b81b",
-        name: "KARISSA CAULKINS",
-        number: "016359",
-        expiryDate: getDatePlusYears(2),
-        effectiveDate: getDateMinusYears(2),
-        date: getTodayDate(),
-        printDate: null,
-        hasConditions: false,
-        levelName: "ECE Assistant",
-        statusCode: "Active",
-        certificatePDFGeneration: "Yes",
-        levels: [
-          { id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" },
-        ],
-        files: [
-          {
-            id: "3979ff88-f262-4747-b294-c289caa2402a",
-            url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
-            extention: ".pdf",
-            size: "322.00 KB",
-            name: "Cover Letter-016359.pdf",
-          },
-        ],
-        certificateConditions: [],
-      },
-      {
-        id: "f403a278-8020-f011-998a-6045bdf9b81b",
-        name: "KARISSA CAULKINS",
-        number: "016359",
-        expiryDate: getDatePlusYears(2),
-        effectiveDate: getDateMinusYears(2),
-        date: getTodayDate(),
-        printDate: null,
-        hasConditions: false,
-        levelName: "ECE One Year",
-        statusCode: "Active",
-        certificatePDFGeneration: "Yes",
-        levels: [
-          { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" },
-        ],
-        files: [
-          {
-            id: "3979ff88-f262-4747-b294-c289caa2402a",
-            url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
-            extention: ".pdf",
-            size: "322.00 KB",
-            name: "Cover Letter-016359.pdf",
-          },
-        ],
-        certificateConditions: [],
-      },
-      {
-        id: "f403a278-8020-f011-998a-6045bdf9b81b",
-        name: "KARISSA CAULKINS",
-        number: "016359",
-        expiryDate: getDateMinusYears(2),
-        effectiveDate: getDateMinusYears(2),
-        date: getTodayDate(),
-        printDate: null,
-        hasConditions: false,
-        levelName: "ECE Five Year + ITE + SNE",
-        statusCode: "Expired",
-        certificatePDFGeneration: "Yes",
-        levels: [
-          { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 5 YR" },
-          { id: "656b387e-8020-f011-998a-7c1e52871876", type: "ITE" },
-          { id: "756b387e-8020-f011-998a-7c1e52871876", type: "SNE" },
-        ],
-        files: [
-          {
-            id: "3979ff88-f262-4747-b294-c289caa2402a",
-            url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
-            extention: ".pdf",
-            size: "322.00 KB",
-            name: "Cover Letter-016359.pdf",
-          },
-        ],
-        certificateConditions: [],
-      },
-    ],
-  },
-};
+export const EceOneYearEdgeCaseWithActiveOneYearShouldNotShowOneYearPathway: Story =
+  {
+    args: {
+      certifications: [
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDatePlusYears(2),
+          effectiveDate: getDateMinusYears(2),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE Assistant",
+          statusCode: "Active",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDatePlusYears(2),
+          effectiveDate: getDateMinusYears(2),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE One Year",
+          statusCode: "Active",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+        {
+          id: "f403a278-8020-f011-998a-6045bdf9b81b",
+          name: "KARISSA CAULKINS",
+          number: "016359",
+          expiryDate: getDateMinusYears(2),
+          effectiveDate: getDateMinusYears(2),
+          date: getTodayDate(),
+          printDate: null,
+          hasConditions: false,
+          levelName: "ECE Five Year + ITE + SNE",
+          statusCode: "Expired",
+          certificatePDFGeneration: "Yes",
+          levels: [
+            { id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 5 YR" },
+            { id: "656b387e-8020-f011-998a-7c1e52871876", type: "ITE" },
+            { id: "756b387e-8020-f011-998a-7c1e52871876", type: "SNE" },
+          ],
+          files: [
+            {
+              id: "3979ff88-f262-4747-b294-c289caa2402a",
+              url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+              extention: ".pdf",
+              size: "322.00 KB",
+              name: "Cover Letter-016359.pdf",
+            },
+          ],
+          certificateConditions: [],
+        },
+      ],
+    },
+  };
 
 export const EceFiveYearPathway: Story = {
   args: {

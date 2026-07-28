@@ -87,10 +87,20 @@ export default defineComponent({
       return this.todaysDate >= this.latestRenewalDate;
     },
     canRenew() {
+      //specific to one year certification. If they have a five year certification and no later one year applications, they cannot renew
+      if (
+        this.certificationStore.holdsEceFiveYearCertification &&
+        this.certificationStore
+          .countMultipleEceOneYearCertificationsSinceLatest5YearIfExist === 0 &&
+        isEceOneYear(this.certification)
+      ) {
+        return false;
+      }
       return (
         !(
-          this.certificationStore.hasMultipleEceOneYearCertifications &&
-          isEceOneYear(this.certification)
+          this.certificationStore
+            .countMultipleEceOneYearCertificationsSinceLatest5YearIfExist >=
+            2 && isEceOneYear(this.certification)
         ) && !(isEceOneYear(this.certification) && this.expiredOverFiveYears)
       );
     },
@@ -110,11 +120,21 @@ export default defineComponent({
 
       // One Year
       if (isEceOneYear(this.certification)) {
-        if (this.certificationStore.hasMultipleEceOneYearCertifications) {
+        if (
+          this.certificationStore
+            .countMultipleEceOneYearCertificationsSinceLatest5YearIfExist >= 2
+        ) {
           return "You cannot renew your ECE One Year certification again. It can only be renewed once.";
+        } else if (
+          this.certificationStore.holdsEceFiveYearCertification &&
+          this.certificationStore
+            .countMultipleEceOneYearCertificationsSinceLatest5YearIfExist === 0
+        ) {
+          return "You cannot renew your ECE One Year certification. You can renew your ECE Five Year certificate or complete an application for a new ECE One Year certification.";
         } else if (this.expiredOverFiveYears) {
           return "You cannot renew your ECE One Year certification because it's been expired for over 5 years.";
         }
+
         return "You can renew your ECE One Year certification.";
       }
 

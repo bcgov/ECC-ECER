@@ -1,4 +1,5 @@
 import type { Components } from "@/types/openapi";
+import { orderBy, findLastIndex } from "lodash";
 
 /**
  * Check if a certification is an ECE Assistant certification
@@ -76,4 +77,32 @@ export function getCertificationTypes(
   }
 
   return certificationTypes;
+}
+
+/**
+ *
+ * @param certifications
+ * @returns number of one year certifications that occurred after the latest five year certificate
+ */
+export function countEceOneYearCertificationsSinceLatest5YearIfExists(
+  certifications: Components.Schemas.Certification[],
+): number {
+  //latest certifications will be at the end of the array
+  let orderedCertifications = orderBy(certifications, [
+    "effectiveDate",
+    ["asc"],
+  ]);
+
+  let indexOfLatestFiveYearCertification = findLastIndex(
+    orderedCertifications,
+    (cert) => cert.levels?.some((level) => level.type === "ECE 5 YR") ?? false,
+  );
+
+  let filteredSortedCertifications = orderedCertifications.slice(
+    indexOfLatestFiveYearCertification + 1,
+  );
+
+  return filteredSortedCertifications.filter((cert) =>
+    cert.levels?.some((level) => level.type === "ECE 1 YR"),
+  ).length;
 }

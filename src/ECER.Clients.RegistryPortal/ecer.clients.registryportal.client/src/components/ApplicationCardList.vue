@@ -196,7 +196,6 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import { DateTime } from "luxon";
 import Card from "@/components/Card.vue";
 import type { Components } from "@/types/openapi";
 import { useCertificationStore } from "@/store/certification";
@@ -206,8 +205,8 @@ import {
   isEceAssistant,
   isEceFiveYear,
   isEceOneYear,
+  countEceOneYearCertificationsSinceLatest5YearIfExists,
 } from "@/utils/certification";
-import { expiredMoreThan5Years } from "@/utils/functions";
 
 export default defineComponent({
   name: "ApplicationCardList",
@@ -264,17 +263,16 @@ export default defineComponent({
       return eceAssistantCertifications.length === 0;
     },
     showEceOneYearPathway() {
-      // If the user does not have ECE one year, or all the ECE one year certifications have been expired for more than 5 years, show the ECE one year pathway
+      // If the user does not have ECE one year, show the ECE one year pathway
       const eceOneYearCertifications = this.certifications.filter(
         (certification) => isEceOneYear(certification),
       );
-
+      const eceFiveYearCertifications = this.certifications.filter(
+        (certification) => isEceFiveYear(certification),
+      );
       return (
-        !this.showEceOneYearEdgeCasePathway &&
-        (eceOneYearCertifications.length === 0 ||
-          eceOneYearCertifications.every((certification) =>
-            expiredMoreThan5Years(certification),
-          ))
+        eceOneYearCertifications.length === 0 &&
+        eceFiveYearCertifications.length === 0
       );
     },
     showEceOneYearEdgeCasePathway() {
@@ -286,32 +284,18 @@ export default defineComponent({
         (certification) => isEceOneYear(certification),
       );
 
-      const mostRecentFiveYearCertificate =
-        this.certificationStore.getMostRecentCertificationByExpiryDate(
-          "ECE 5 YR",
-        );
-
-      //this will flag whether user has received an ECE 1 yr certification after their five year expired. If yes, we should not show the edge case pathway
-      const oneYearCertificateIssuedAfterMostRecentFiveYear =
-        eceOneYearCertifications.filter(
-          (oneYearCert) =>
-            DateTime.fromISO(oneYearCert.effectiveDate || "") >
-            DateTime.fromISO(mostRecentFiveYearCertificate?.expiryDate || ""),
-        ).length !== 0;
-
       return (
         eceFiveYearCertifications.length > 0 &&
-        eceFiveYearCertifications.every(
-          (certification) => certification.statusCode === "Expired",
-        ) &&
         eceOneYearCertifications.every(
-          (certification) => certification.statusCode === "Expired",
+          (certification) =>
+            certification.statusCode === "Expired" ||
+            certification.statusCode === "Suspended" ||
+            certification.statusCode === "Cancelled" ||
+            certification.statusCode === "Inactive",
         ) &&
-        (eceOneYearCertifications.length === 0 ||
-          eceOneYearCertifications.every((certification) =>
-            expiredMoreThan5Years(certification),
-          ) ||
-          !oneYearCertificateIssuedAfterMostRecentFiveYear)
+        countEceOneYearCertificationsSinceLatest5YearIfExists(
+          this.certifications,
+        ) === 0
       );
     },
     showEceFiveYearPathway() {

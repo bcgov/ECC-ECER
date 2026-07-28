@@ -217,16 +217,12 @@ export default defineComponent({
     },
     applicationStatus: {
       type: String as () =>
-        | Components.Schemas.ApplicationStatus
-        | null
-        | undefined,
+        Components.Schemas.ApplicationStatus | null | undefined,
       required: true,
     },
     applicationType: {
       type: String as () =>
-        | Components.Schemas.ApplicationType
-        | null
-        | undefined,
+        Components.Schemas.ApplicationType | null | undefined,
       required: true,
     },
     componentGroups: {

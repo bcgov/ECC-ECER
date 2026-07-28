@@ -4,6 +4,7 @@ import { orderBy } from "lodash";
 import { getCertifications } from "@/api/certification";
 import type { Components } from "@/types/openapi";
 import { expiredMoreThan5Years } from "@/utils/functions";
+import { countEceOneYearCertificationsSinceLatest5YearIfExists } from "@/utils/certification";
 import type { CertificationLevelType } from "@/types/certificationLevelType";
 
 export interface CertificationState {
@@ -45,9 +46,28 @@ export const useCertificationStore = defineStore("certification", {
       if (!state.certifications || state.certifications.length === 0)
         return false;
 
+      const oneYearCertifications = state.certifications.filter((cert) =>
+        cert.levels?.some((level) => level.type === "ECE 1 YR"),
+      );
+
+      const allOneYearCertificationsExpired = oneYearCertifications.every(
+        (cert) =>
+          cert.statusCode === "Expired" || cert.statusCode === "Suspended",
+      );
+
       const isRenewable = (
         certification: Components.Schemas.Certification,
       ): boolean => {
+        //edge case for one year certifications
+        if (
+          certification.levels?.some((level) => level.type === "ECE 1 YR") &&
+          this.holdsEceFiveYearCertification &&
+          this.countMultipleEceOneYearCertificationsSinceLatest5YearIfExist ===
+            0 &&
+          allOneYearCertificationsExpired
+        ) {
+          return false;
+        }
         return (
           certification.statusCode === "Active" ||
           ((certification.statusCode === "Expired" ||
@@ -93,16 +113,12 @@ export const useCertificationStore = defineStore("certification", {
         )
       );
     },
-    hasMultipleEceOneYearCertifications(state): boolean {
-      let count = 0;
-      if (!state.certifications || state.certifications?.length < 2)
-        return false;
-      for (const cert of state.certifications) {
-        if (cert.levels?.some((level) => level.type === "ECE 1 YR")) {
-          count++;
-        }
-      }
-      return count >= 2;
+    countMultipleEceOneYearCertificationsSinceLatest5YearIfExist(
+      state,
+    ): number {
+      return countEceOneYearCertificationsSinceLatest5YearIfExists(
+        state.certifications ?? [],
+      );
     },
     currentCertification(state): Components.Schemas.Certification | undefined {
       if (!state.certifications || state.certifications.length === 0) {
