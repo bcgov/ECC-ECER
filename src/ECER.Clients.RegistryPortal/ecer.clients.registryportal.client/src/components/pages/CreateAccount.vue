@@ -94,7 +94,7 @@
                 <p>
                   You will be asked to provide 2 pieces of
                   <a
-                    href="https://www2.gov.bc.ca/gov/content/governments/government-id/bcservicescardapp/id"
+                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/identification-requirements"
                     target="_blank"
                   >
                     accepted government-issued ID
