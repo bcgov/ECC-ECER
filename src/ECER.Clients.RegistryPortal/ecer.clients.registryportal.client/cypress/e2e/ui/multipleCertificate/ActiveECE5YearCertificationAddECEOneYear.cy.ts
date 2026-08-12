@@ -10,7 +10,9 @@ describe("Active ECE 5 Year Certificate Application and ADD One year ECE ", () =
     cy.get(selectors.dashboard.multiApplyButton).first().click();
 
     /** Application Requirements */
-    cy.get(selectors.certificationType.applyNowEceOneYearButton).click();
+    cy.get(
+      selectors.certificationType.applyNowEceOneYearEdgeCaseButton,
+    ).click();
     cy.get(selectors.applicationRequirements.applyNowButton).click();
 
     /** Declaration */
