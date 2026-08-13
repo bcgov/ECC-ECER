@@ -1,9 +1,9 @@
 import selectors from "../../../../support/selectors";
 const provinceName = "Yukon";
-const certificationName = "Child Care Worker III";
+const certificationName = "ECE Level 3";
 
-describe("Labour Mobility - Child Care Worker III Certification Transfer Application for Yukon", () => {
-  it("should sucessfully create a Child Care Worker III LM Certification Transfer Application for Yukon", () => {
+describe("Labour Mobility - ECE Level 3 Certification Transfer Application for Yukon", () => {
+  it("should successfully create a ECE Level 3 LM Certification Transfer Application for Yukon", () => {
     /** Dashboard */
     cy.get(selectors.dashboard.transferButton).click();
 
