@@ -6,9 +6,10 @@ import "cypress-file-upload";
 beforeEach(() => {
   // Set the viewport (pull width/height from Cypress.env)
   const width =
-    Cypress.env("DEVICE_VIEWPORT")?.WIDTH ?? Cypress.config("viewportWidth");
+    Cypress.expose("VIEWPORT_WIDTH")?.WIDTH ?? Cypress.config("viewportWidth");
   const height =
-    Cypress.env("DEVICE_VIEWPORT")?.HEIGHT ?? Cypress.config("viewportHeight");
+    Cypress.expose("VIEWPORT_HEIGHT")?.HEIGHT ??
+    Cypress.config("viewportHeight");
 
   cy.viewport(width, height);
 

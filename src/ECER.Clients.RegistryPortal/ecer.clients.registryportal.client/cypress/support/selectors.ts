@@ -20,6 +20,8 @@ export default {
     sneCheckBox: 'input[value="Sne"]',
     applyNowEceAssistantButton: 'button[id="btnApplyNowEceAssistant"]',
     applyNowEceOneYearButton: 'button[id="btnApplyNowEceOneYear"]',
+    applyNowEceOneYearEdgeCaseButton:
+      'button[id="btnApplyNowEceOneYearEdgeCase"]',
     applyNowEceFiveYearButton: 'button[id="btnApplyNowEceFiveYear"]',
   },
   transferEligibility: {
