@@ -20,6 +20,7 @@ export default defineConfig({
   },
   defaultCommandTimeout: 20000,
   scrollBehavior: "center", // or 'nearest'
+  allowCypressEnv: false,
   retries: {
     runMode: 1, // retry once when we do `cypress run`
     openMode: 0, // no retries when we’re developing with `cypress open`
