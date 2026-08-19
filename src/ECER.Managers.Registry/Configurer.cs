@@ -26,6 +26,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<IProgramMapper, ProgramMapper>();
     configurationContext.Services.AddTransient<IPspUserMapper, PspUserMapper>();
     configurationContext.Services.AddTransient<IRegistrantMapper, RegistrantMapper>();
+    configurationContext.Services.AddTransient<IReconsiderationMapper, ReconsiderationMapper>();
     configurationContext.Services.AddTransient<RegistrantHandlers>();
     configurationContext.Services.AddTransient<ProgramHandlers>();
     configurationContext.Services.AddTransient<CoursesHandler>();
@@ -33,6 +34,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<ProgramApplicationHandler>();
     configurationContext.Services.AddTransient<PspUserHandlers>();
     configurationContext.Services.AddTransient<PortalInvitationHandlers>();
+    configurationContext.Services.AddTransient<ReconsiderationHandlers>();
     configurationContext.Services.AddTransient<IPortalInvitationMapper, PortalInvitationMapper>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, ReferencePortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, IcraReferencePortalInvitationVerificationHandler>();

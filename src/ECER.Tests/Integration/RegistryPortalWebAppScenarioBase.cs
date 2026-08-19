@@ -61,6 +61,14 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_PortalInvitation testPortalInvitationICRAWorkExperienceReferenceSubmit = null!;
   private ecer_PortalInvitation testPortalInvitationICRAWorkExperienceReferenceOptout = null!;
 
+  // reconsideration test data for repository tests
+  public ecer_ReconsiderationRequest testReconsiderationRequest { get; set; } = null!;
+
+  public ecer_ReconsiderationRequest testReconsiderationRequestEdit { get; set; } = null!;
+
+  //reconsideration test data fro e2e testing
+  public ecer_ReconsiderationRequest testReconsiderationRequestToSubmit { get; set; } = null!;
+
   private ecer_PreviousName previousName = null!;
 
   private string PortalInvitationOwnerPrefix(string shortName) => $"{shortName}_{TestOwnerScope}_";
@@ -190,6 +198,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_400HoursTypeWorkExperienceReference(context, AuthenticatedBcscUser, "name7");
     testPortalInvitationICRAWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_ICRAWorkExperienceReference(context, AuthenticatedBcscUser, "icra_name1");
     testPortalInvitationICRAWorkExperienceReferenceOptout = GetOrAddPortalInvitation_ICRAWorkExperienceReference(context, AuthenticatedBcscUser, "icra_name2");
+
+    testReconsiderationRequest = GetOrAddReconsiderationRequest(context, AuthenticatedBcscUser, "test_reconsideration_request");
+    testReconsiderationRequestEdit = GetOrAddReconsiderationRequest(context, AuthenticatedBcscUser, "test_reconsideration_request_edit");
+    testReconsiderationRequestToSubmit = GetOrAddReconsiderationRequest(context, AuthenticatedBcscUser, "test_reconsideration_request_to_submit");
 
     context.SaveChanges();
     MarkCertificateAsInactive(context, testInactiveCertification.Id);
@@ -801,5 +813,50 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId, workexperienceReference);
     }
     return portalInvitation;
+  }
+
+  private ecer_ReconsiderationRequest GetOrAddReconsiderationRequest(EcerContext context, Contact registrant, string name)
+  {
+    //clean up old data reconsideration and application
+    var reconsiderationRequests = context.ecer_ReconsiderationRequestSet.Where(r => r.ecer_Name == name).ToList();
+
+    foreach (var request in reconsiderationRequests)
+    {
+      context.DeleteObject(request);
+    }
+
+    var applicationForReconsideration = context.ecer_ApplicationSet.Where(r => r.ecer_Name == name).ToList();
+    foreach (var applicationToDelete in applicationForReconsideration)
+    {
+      context.DeleteObject(applicationToDelete);
+    }
+    context.SaveChanges();
+
+    var trackedRegistrant = context.ContactSet.First(c => c.ContactId == registrant.ContactId);
+
+    var application = new ecer_Application
+    {
+      Id = Guid.NewGuid(),
+      ecer_isECE5YR = true,
+      StatusCode = ecer_Application_StatusCode.Decision,
+      StateCode = ecer_application_statecode.Active,
+      ecer_CertificateType = "ECE 5 YR",
+      ecer_Name = name,
+    };
+    context.AddObject(application);
+    context.AddLink(application, ecer_Application.Fields.ecer_application_Applicantid_contact, trackedRegistrant);
+
+    var reconsiderationRequest = new ecer_ReconsiderationRequest()
+    {
+      ecer_Name = name,
+      Id = Guid.NewGuid(),
+      StatusCode = ecer_ReconsiderationRequest_StatusCode.New,
+      ecer_ExplanationandEvidence = "testing reconsideration request"
+    };
+    context.AddObject(reconsiderationRequest);
+    context.AddLink(reconsiderationRequest, ecer_ReconsiderationRequest.Fields.ecer_reconsiderationrequest_ApplicantId, trackedRegistrant);
+    context.AddLink(reconsiderationRequest, ecer_ReconsiderationRequest.Fields.ecer_reconsiderationrequest_ApplicationId, application);
+
+    return reconsiderationRequest;
   }
 }
