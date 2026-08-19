@@ -630,6 +630,19 @@ declare namespace Components {
       provinceName?: string | null;
       provinceCode?: string | null;
     }
+    /**
+     * Represents a reconsideration request submitted by an applicant.
+     */
+    export interface Reconsideration {
+      id?: string | null;
+      reconsiderationDetails?: string | null;
+      explanationAndEvidence?: string | null;
+      status?: ReconsiderationStatusCode;
+      files?: FileInfo[] | null;
+      reconsiderationEndDate?: string | null; // date-time
+      applicationId?: string | null;
+    }
+    export type ReconsiderationStatusCode = "Complete" | "InReview" | "New";
     export interface ReferenceContactInformation {
       lastName?: string | null;
       email?: string | null;
@@ -936,7 +949,7 @@ declare namespace Paths {
     }
     export interface PathParameters {
       application_id: Parameters.ApplicationId;
-      reference_id?: Parameters.ReferenceId;
+      reference_id: Parameters.ReferenceId;
     }
     export type RequestBody = Components.Schemas.CharacterReference;
     namespace Responses {
@@ -951,7 +964,7 @@ declare namespace Paths {
       export type Id = string;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     export interface QueryParameters {
       byStatus?: Parameters.ByStatus;
@@ -1031,7 +1044,7 @@ declare namespace Paths {
     }
     export interface PathParameters {
       application_id: Parameters.ApplicationId;
-      reference_id?: Parameters.ReferenceId;
+      reference_id: Parameters.ReferenceId;
     }
     export type RequestBody = Components.Schemas.WorkExperienceReference;
     namespace Responses {
@@ -1063,7 +1076,7 @@ declare namespace Paths {
       export type ProvinceId = string;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     export interface QueryParameters {
       provinceId?: Parameters.ProvinceId;
@@ -1077,7 +1090,7 @@ declare namespace Paths {
       export type Id = string;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     namespace Responses {
       export type $200 = Components.Schemas.Certification[];
@@ -1089,7 +1102,7 @@ declare namespace Paths {
       export type Id = string;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     namespace Responses {
       export type $200 = string;
@@ -1119,7 +1132,7 @@ declare namespace Paths {
       export type Id = string;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     export type RequestBody =
       /* Communication seen request */ Components.Schemas.CommunicationSeenRequest;
@@ -1175,7 +1188,7 @@ declare namespace Paths {
       export type Id = string;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     export type RequestBody =
       /* Save draft application request */ Components.Schemas.SaveDraftApplicationRequest;
@@ -1218,7 +1231,7 @@ declare namespace Paths {
       export type Id = string;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     export interface QueryParameters {
       byStatus?: Parameters.ByStatus;
@@ -1244,7 +1257,7 @@ declare namespace Paths {
       export type Id = string;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     export type RequestBody =
       Components.Schemas.SaveDraftICRAEligibilityRequest;
@@ -1354,7 +1367,7 @@ declare namespace Paths {
       export type ParentId = string;
     }
     export interface PathParameters {
-      parentId?: Parameters.ParentId;
+      parentId: Parameters.ParentId;
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetMessagesResponse;
@@ -1417,7 +1430,7 @@ declare namespace Paths {
       export type Status = Components.Schemas.PostSecondaryInstitutionStatus;
     }
     export interface PathParameters {
-      id?: Parameters.Id;
+      id: Parameters.Id;
     }
     export interface QueryParameters {
       name?: Parameters.Name;
@@ -1426,6 +1439,39 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.PostSecondaryInstitution[];
+    }
+  }
+  namespace ReconsiderationsGet {
+    namespace Parameters {
+      export type ByApplicationId = string;
+      export type ById = string;
+      export type ByStatusCodes =
+        Components.Schemas.ReconsiderationStatusCode[];
+    }
+    export interface QueryParameters {
+      ByStatusCodes?: Parameters.ByStatusCodes;
+      ById?: Parameters.ById;
+      ByApplicationId?: Parameters.ByApplicationId;
+    }
+    namespace Responses {
+      export type $200 =
+        /* Represents a reconsideration request submitted by an applicant. */ Components.Schemas.Reconsideration[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ReconsiderationsSubmitPut {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody =
+      /* Represents a reconsideration request submitted by an applicant. */ Components.Schemas.Reconsideration;
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace ReferenceOptout {
@@ -1440,7 +1486,7 @@ declare namespace Paths {
       export type Token = string;
     }
     export interface PathParameters {
-      token?: Parameters.Token;
+      token: Parameters.Token;
     }
     namespace Responses {
       export type $200 = Components.Schemas.PortalInvitationQueryResult;
@@ -1624,6 +1670,22 @@ export interface OperationMethods {
     data?: Paths.UserinfoPost.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
+  /**
+   * reconsiderations_get - Handles reconsiderations queries
+   */
+  reconsiderations_get(
+    parameters?: Parameters<Paths.ReconsiderationsGet.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ReconsiderationsGet.Responses.$200>;
+  /**
+   * reconsiderations_submit_put - Handles reconsiderations queries
+   */
+  reconsiderations_submit_put(
+    parameters?: Parameters<Paths.ReconsiderationsSubmitPut.PathParameters> | null,
+    data?: Paths.ReconsiderationsSubmitPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ReconsiderationsSubmitPut.Responses.$200>;
   /**
    * references_get - Handles references queries
    */
@@ -2079,6 +2141,26 @@ export interface PathsDictionary {
       data?: Paths.UserinfoPost.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
+  };
+  ["/api/reconsiderations"]: {
+    /**
+     * reconsiderations_get - Handles reconsiderations queries
+     */
+    get(
+      parameters?: Parameters<Paths.ReconsiderationsGet.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ReconsiderationsGet.Responses.$200>;
+  };
+  ["/api/reconsiderations/submit/{id}"]: {
+    /**
+     * reconsiderations_submit_put - Handles reconsiderations queries
+     */
+    put(
+      parameters?: Parameters<Paths.ReconsiderationsSubmitPut.PathParameters> | null,
+      data?: Paths.ReconsiderationsSubmitPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ReconsiderationsSubmitPut.Responses.$200>;
   };
   ["/api/PortalInvitations/{token}"]: {
     /**
@@ -2578,6 +2660,9 @@ export type ProfileIdentification = Components.Schemas.ProfileIdentification;
 export type ProgramConfirmationOptions =
   Components.Schemas.ProgramConfirmationOptions;
 export type Province = Components.Schemas.Province;
+export type Reconsideration = Components.Schemas.Reconsideration;
+export type ReconsiderationStatusCode =
+  Components.Schemas.ReconsiderationStatusCode;
 export type ReferenceContactInformation =
   Components.Schemas.ReferenceContactInformation;
 export type ReferenceKnownTime = Components.Schemas.ReferenceKnownTime;

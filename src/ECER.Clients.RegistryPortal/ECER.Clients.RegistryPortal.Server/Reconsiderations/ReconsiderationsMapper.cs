@@ -51,16 +51,15 @@ internal partial class ReconsiderationsMapper : IReconsiderationsMapper
 
   public IEnumerable<ReconsiderationStatusCode> MapReconsiderationStatusCodes(IEnumerable<ContractReconsiderations.ReconsiderationStatusCode> source) => source.Select(MapReconsiderationStatus).ToList();
 
-  private static FileInfo MapFileInfo(ContractReconsiderations.FileInfo source) => new(source.Id)
+  private static Applications.FileInfo MapFileInfo(ContractReconsiderations.FileInfo source) => new(source.Id)
   {
     Url = source.Url,
     Extention = source.Extention,
     Name = source.Name,
     Size = source.Size,
-    EcerWebApplicationType = EcerWebApplicationType.Registry
   };
 
-  private static ContractReconsiderations.FileInfo MapFileInfo(FileInfo source) => new(source.Id)
+  private static ContractReconsiderations.FileInfo MapFileInfo(Applications.FileInfo source) => new(source.Id)
   {
     Url = source.Url,
     Extention = source.Extention,
