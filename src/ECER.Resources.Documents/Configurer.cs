@@ -10,6 +10,7 @@ using ECER.Resources.Documents.ICRA;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
 using ECER.Resources.Documents.ProgramApplications;
 using ECER.Resources.Documents.Programs;
+using ECER.Resources.Documents.Reconsiderations;
 
 namespace ECER.Resources.Documents;
 
@@ -26,6 +27,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<IPostSecondaryInstituteRepositoryMapper, PostSecondaryInstituteRepositoryMapper>();
     configurationContext.Services.AddTransient<IProgramApplicationRepositoryMapper, ProgramApplicationRepositoryMapper>();
     configurationContext.Services.AddTransient<IProgramRepositoryMapper, ProgramRepositoryMapper>();
+    configurationContext.Services.AddTransient<IReconsiderationRepositoryMapper, ReconsiderationRepositoryMapper>();
     configurationContext.Services.AddTransient<ICertificationRepository, CertificationRepository>();
     configurationContext.Services.AddTransient<IApplicationRepository, ApplicationRepository>();
     configurationContext.Services.AddTransient<IPortalInvitationRepository, PortalInvitationRepository>();
@@ -35,5 +37,6 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<IProgramRepository, ProgramRepository>();
     configurationContext.Services.AddTransient<IProgramApplicationRepository, ProgramApplicationRepository>();
     configurationContext.Services.AddTransient<ICourseRepository, CourseRepository>();
+    configurationContext.Services.AddTransient<IReconsiderationRepository, ReconsiderationRepository>();
   }
 }
