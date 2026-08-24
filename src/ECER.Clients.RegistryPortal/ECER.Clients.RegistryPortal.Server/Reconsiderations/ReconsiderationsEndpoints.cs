@@ -6,6 +6,7 @@ using ECER.Utilities.Security;
 using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace ECER.Clients.RegistryPortal.Server.Reconsiderations;
 
@@ -13,7 +14,7 @@ public class ReconsiderationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/reconsiderations", async Task<Results<Ok<IEnumerable<Reconsideration>>, NotFound>> (ReconsiderationStatusCode[]? ByStatusCodes, [FromQuery] string? ById, [FromQuery] string? ByApplicationId, HttpContext ctx, IMediator messagebus, IReconsiderationsMapper reconsiderationsMapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/reconsiderations", async Task<Results<Ok<IEnumerable<Reconsideration>>, NotFound>> ([FromQuery(Name = "ByStatusCodes[]")]ReconsiderationStatusCode[]? ByStatusCodes, [FromQuery] string? ById, [FromQuery] string? ByApplicationId, HttpContext ctx, IMediator messagebus, IReconsiderationsMapper reconsiderationsMapper, CancellationToken ct) =>
     {
       var userContext = ctx.User.GetUserContext();
 
