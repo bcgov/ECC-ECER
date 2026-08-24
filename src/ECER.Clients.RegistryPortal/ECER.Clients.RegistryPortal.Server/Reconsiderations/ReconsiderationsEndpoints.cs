@@ -82,19 +82,10 @@ public record Reconsideration()
   public string? ReconsiderationDetails { get; set; }
   public string? ExplanationAndEvidence { get; set; }
   public ReconsiderationStatusCode Status { get; set; }
-  public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<Applications.FileInfo>();
   public DateTime? ReconsiderationEndDate { get; set; }
   [ValidGuid]
   public string? ApplicationId { get; set; }
-}
-
-public record FileInfo(string Id)
-{
-  public string? Url { get; set; } = string.Empty;
-  public string? Extention { get; set; } = string.Empty;
-  public string? Name { get; set; } = string.Empty;
-  public string? Size { get; set; } = string.Empty;
-  public EcerWebApplicationType EcerWebApplicationType { get; set; }
 }
 
 public enum ReconsiderationStatusCode

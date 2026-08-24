@@ -36,7 +36,8 @@ const getPostSecondaryInstitutionList = async (
   Components.Schemas.PostSecondaryInstitution[] | null | undefined
 > => {
   const client = await getClient(false);
-  const parameters: Paths.PsiGet.QueryParameters = { status };
+  const parameters: Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters =
+    { status, id: "" };
   return (await client.psi_get(parameters)).data;
 };
 
@@ -44,8 +45,10 @@ const getCertificationComparisonList = async (
   provinceId?: string,
 ): Promise<Components.Schemas.ComparisonRecord[] | null | undefined> => {
   const client = await getClient(false);
-  const parameters: Paths.CertificationComparisonGet.QueryParameters = {
+  const parameters: Paths.CertificationComparisonGet.QueryParameters &
+    Paths.CertificationComparisonGet.PathParameters = {
     provinceId: provinceId || "",
+    id: "",
   };
   return (await client.certificationComparison_get(parameters)).data;
 };

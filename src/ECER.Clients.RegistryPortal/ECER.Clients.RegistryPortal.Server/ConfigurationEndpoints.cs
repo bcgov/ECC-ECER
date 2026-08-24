@@ -3,6 +3,7 @@ using ECER.Infrastructure.Common.Validators;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
 using Mediator;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace ECER.Clients.RegistryPortal.Server;
@@ -49,7 +50,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     .WithOpenApi("Handles country queries", string.Empty, "country_get")
     .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/certificationComparison/{id?}", async (string? id, string? provinceId, HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/certificationComparison/{id?}", async ([FromRoute]string? id, string? provinceId, HttpContext ctx, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
       var results = await messageBus.Send(new CertificationComparisonQuery() { ById = id, ByProvinceId = provinceId }, ct);
@@ -58,7 +59,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     .AddGuidValidationQueryParams(["provinceId"], false)
     .WithOpenApi("Handles certification comparison queries", string.Empty, "certificationComparison_get");
 
-    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, PostSecondaryInstitutionStatus? status, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async ([FromRoute]string? id, string? name, string? provinceId, PostSecondaryInstitutionStatus? status, IMediator messageBus, IConfigurationMapper configurationMapper, CancellationToken ct) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
       var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId, ByStatus = status }, ct);
