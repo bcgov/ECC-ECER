@@ -58,7 +58,7 @@ public class ReconsiderationTests : RegistryPortalWebAppScenarioBase
     var existingReconsideration = (await queryResponse.ReadAsJsonAsync<IEnumerable<Reconsideration>>()).FirstOrDefault().ShouldNotBeNull();
 
     existingReconsideration.ExplanationAndEvidence = "updated explanation and evidence for reconsideration submission";
-    existingReconsideration.Files = [new Clients.RegistryPortal.Server.Reconsiderations.FileInfo(uploadedFileResponse.fileId) { }];
+    existingReconsideration.Files = [new Clients.RegistryPortal.Server.Applications.FileInfo(uploadedFileResponse.fileId) { }];
 
     await Host.Scenario(_ =>
     {
