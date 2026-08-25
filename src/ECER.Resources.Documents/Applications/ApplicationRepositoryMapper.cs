@@ -8,21 +8,37 @@ namespace ECER.Resources.Documents.Applications;
 internal interface IApplicationRepositoryMapper
 {
   List<Application> MapApplications(IEnumerable<ecer_Application> source);
+
   List<ecer_Application_StatusCode> MapApplicationStatuses(IEnumerable<ApplicationStatus> source);
+
   ecer_Application MapApplication(Application source);
+
   ecer_Origin? MapOrigin(ApplicationOrigin? source);
+
   List<ecer_Transcript> MapTranscripts(IEnumerable<Transcript> source);
+
   ecer_ProfessionalDevelopment MapProfessionalDevelopment(ProfessionalDevelopment source);
+
   List<ecer_WorkExperienceRef> MapWorkExperienceReferences(IEnumerable<WorkExperienceReference> source);
+
   WorkExperienceReference? MapWorkExperienceReference(ecer_WorkExperienceRef? source);
+
   ecer_WorkExperienceRef MapWorkExperienceReference(WorkExperienceReference source);
+
   List<ecer_CharacterReference> MapCharacterReferences(IEnumerable<CharacterReference> source);
+
   ecer_CharacterReference MapCharacterReference(CharacterReference source);
+
   void ApplyCharacterReferenceSubmission(CharacterReferenceSubmissionRequest source, ecer_CharacterReference destination);
+
   void ApplyWorkExperienceReferenceSubmission(WorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination);
+
   void ApplyIcraWorkExperienceReferenceSubmission(IcraWorkExperienceReferenceSubmissionRequest source, ecer_WorkExperienceRef destination);
+
   void ApplyOptOutReference(OptOutReferenceRequest source, ecer_CharacterReference destination);
+
   void ApplyOptOutReference(OptOutReferenceRequest source, ecer_WorkExperienceRef destination);
+
   void ApplyResendCharacterReferenceInvite(ResendReferenceInviteRequest source, ecer_CharacterReference destination);
 }
 
@@ -381,6 +397,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     OneYearRenewalExplanationChoice = source.ecer_1YRExplanationChoice.HasValue ? MapOneYearRenewalExplanation(source.ecer_1YRExplanationChoice.Value) : null,
     FiveYearRenewalExplanationChoice = source.ecer_5YRExplanationChoice.HasValue ? MapFiveYearRenewalExplanation(source.ecer_5YRExplanationChoice.Value) : null,
     RenewalExplanationOther = source.ecer_RenewalExplanationOther,
+    ReconsiderationPeriodEndDate = source.ecer_ReconsiderationPeriodEndDate
   };
 
   private static List<CertificationType> GetCertificationTypes(ecer_Application source)
@@ -713,7 +730,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     ApplicationStatus.Submitted => ecer_Application_StatusCode.Submitted,
     ApplicationStatus.Complete => ecer_Application_StatusCode.Complete,
     ApplicationStatus.Closed => ecer_Application_StatusCode.Closed,
-    ApplicationStatus.Reconsideration => ecer_Application_StatusCode.Reconsideration,
+    ApplicationStatus.Dispute => ecer_Application_StatusCode.Dispute,
     ApplicationStatus.Escalated => ecer_Application_StatusCode.Escalated,
     ApplicationStatus.Decision => ecer_Application_StatusCode.Decision,
     ApplicationStatus.Cancelled => ecer_Application_StatusCode.Withdrawn,
@@ -722,7 +739,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     ApplicationStatus.InProgress => ecer_Application_StatusCode.InProgress,
     ApplicationStatus.PendingQueue => ecer_Application_StatusCode.PendingQueue,
     ApplicationStatus.PendingPSPConsultationNeeded => ecer_Application_StatusCode.PendingPSPConsultationNeeded,
-    ApplicationStatus.ReconsiderationDecision => ecer_Application_StatusCode.ReconsiderationDecision,
+    ApplicationStatus.DisputeDecision => ecer_Application_StatusCode.DisputeDecision,
     ApplicationStatus.AppealDecision => ecer_Application_StatusCode.AppealDecision,
     ApplicationStatus.NotSubmitted => ecer_Application_StatusCode.NotSubmitted,
     _ => ecer_Application_StatusCode.Draft,
@@ -734,7 +751,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     ecer_Application_StatusCode.Submitted => ApplicationStatus.Submitted,
     ecer_Application_StatusCode.Complete => ApplicationStatus.Complete,
     ecer_Application_StatusCode.Closed => ApplicationStatus.Closed,
-    ecer_Application_StatusCode.Reconsideration => ApplicationStatus.Reconsideration,
+    ecer_Application_StatusCode.Dispute => ApplicationStatus.Dispute,
     ecer_Application_StatusCode.Escalated => ApplicationStatus.Escalated,
     ecer_Application_StatusCode.Decision => ApplicationStatus.Decision,
     ecer_Application_StatusCode.Withdrawn => ApplicationStatus.Cancelled,
@@ -743,7 +760,7 @@ internal partial class ApplicationRepositoryMapper : IApplicationRepositoryMappe
     ecer_Application_StatusCode.InProgress => ApplicationStatus.InProgress,
     ecer_Application_StatusCode.PendingQueue => ApplicationStatus.PendingQueue,
     ecer_Application_StatusCode.PendingPSPConsultationNeeded => ApplicationStatus.PendingPSPConsultationNeeded,
-    ecer_Application_StatusCode.ReconsiderationDecision => ApplicationStatus.ReconsiderationDecision,
+    ecer_Application_StatusCode.DisputeDecision => ApplicationStatus.DisputeDecision,
     ecer_Application_StatusCode.AppealDecision => ApplicationStatus.AppealDecision,
     ecer_Application_StatusCode.NotSubmitted => ApplicationStatus.NotSubmitted,
     _ => ApplicationStatus.Draft,

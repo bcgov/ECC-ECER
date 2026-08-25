@@ -501,7 +501,11 @@ export default defineComponent({
       return (
         this.applicationStore.applicationStatus === undefined ||
         this.applicationStore.applicationStatus === "Draft" ||
-        this.applicationStore.hasSubmittedApplication
+        this.applicationStore.hasSubmittedApplication ||
+        this.applicationStore.hasAnyApplicationsInStatusStatusDetail([
+          { status: "Dispute" },
+          { status: "Decision", statusDetail: "IntenttoDeny" },
+        ])
       );
     },
     showTransferCard(): boolean {

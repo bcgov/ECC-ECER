@@ -55,6 +55,7 @@ internal partial class ApplicationMapper : IApplicationMapper
     CharacterReferences = source.CharacterReferences.Select(MapCharacterReference).ToList(),
     ProfessionalDevelopments = source.ProfessionalDevelopments.Select(MapProfessionalDevelopment).ToList(),
     Status = MapApplicationStatus(source.Status),
+    SubStatus = MapApplicationStatusReasonDetail(source.SubStatus),
     Stage = source.Stage,
     ApplicationType = MapApplicationType(source.ApplicationType),
     EducationOrigin = MapEducationOrigin(source.EducationOrigin),
@@ -65,6 +66,7 @@ internal partial class ApplicationMapper : IApplicationMapper
     FromCertificate = source.FromCertificate,
     Origin = MapApplicationOrigin(source.Origin),
     LabourMobilityCertificateInformation = MapCertificateInformation(source.LabourMobilityCertificateInformation),
+    ReconsiderationPeriodEndDate = source.ReconsiderationPeriodEndDate
   };
 
   public SubmittedApplicationStatus MapSubmittedApplicationStatus(ContractApplications.Application source) => new(

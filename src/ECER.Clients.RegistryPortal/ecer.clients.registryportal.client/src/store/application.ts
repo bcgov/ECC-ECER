@@ -68,6 +68,11 @@ export type ApplicationFlow =
   | "IcraFiveYearWithIte"
   | "IcraFiveYearWithSne";
 
+export type ApplicationStatusCheck = {
+  status?: Components.Schemas.ApplicationStatus;
+  statusDetail?: Components.Schemas.ApplicationStatusReasonDetail;
+};
+
 export const useApplicationStore = defineStore("application", {
   state: (): ApplicationState => ({
     applications: [],
@@ -93,6 +98,26 @@ export const useApplicationStore = defineStore("application", {
     pick: ["draftApplication", "application"],
   },
   getters: {
+    hasAnyApplicationsInStatusStatusDetail(): (
+      statuses: ApplicationStatusCheck[],
+    ) => boolean {
+      return (statuses: ApplicationStatusCheck[]): boolean => {
+        let result = this.applications?.some((application) =>
+          // check for status and statusDetail match if provided.
+          statuses.some((status) => {
+            const statusMatch =
+              status.status === undefined ||
+              application.status === status.status;
+            const statusDetailMatch =
+              status.statusDetail === undefined ||
+              application.subStatus === status.statusDetail;
+            return statusMatch && statusDetailMatch;
+          }),
+        );
+
+        return result ?? false;
+      };
+    },
     hasDraftApplication(state): boolean {
       return state.draftApplication.id !== undefined;
     },
@@ -374,7 +399,8 @@ export const useApplicationStore = defineStore("application", {
 
       const filteredApplications = applications?.filter(
         (application) =>
-          application.status !== "Decision" &&
+          (application.status !== "Decision" ||
+            application.subStatus === "IntenttoDeny") &&
           application.status !== "Complete",
       );
       this.applications = applications;

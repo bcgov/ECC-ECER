@@ -33,6 +33,7 @@ declare namespace Components {
       characterReferences?: CharacterReference[] | null;
       professionalDevelopments?: ProfessionalDevelopment[] | null;
       status?: ApplicationStatus;
+      subStatus?: ApplicationStatusReasonDetail;
       stage?: string | null;
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
@@ -43,6 +44,7 @@ declare namespace Components {
       fromCertificate?: string | null;
       origin?: ApplicationOrigin;
       labourMobilityCertificateInformation?: CertificateInformation;
+      reconsiderationPeriodEndDate?: string | null; // date-time
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -55,7 +57,7 @@ declare namespace Components {
       | "Draft"
       | "Submitted"
       | "Complete"
-      | "Reconsideration"
+      | "Dispute"
       | "Cancelled"
       | "Closed"
       | "Escalated"
@@ -66,7 +68,7 @@ declare namespace Components {
       | "InProgress"
       | "PendingQueue"
       | "PendingPSPConsultationNeeded"
-      | "ReconsiderationDecision"
+      | "DisputeDecision"
       | "AppealDecision"
       | "NotSubmitted";
     export type ApplicationStatusReasonDetail =
@@ -84,7 +86,8 @@ declare namespace Components {
       | "ReceivedPending"
       | "ReceivePhysicalTranscripts"
       | "SupervisorConsultationNeeded"
-      | "ValidatingIDs";
+      | "ValidatingIDs"
+      | "IntenttoDeny";
     /**
      * Submit application request
      */
@@ -1449,7 +1452,7 @@ declare namespace Paths {
         Components.Schemas.ReconsiderationStatusCode[];
     }
     export interface QueryParameters {
-      ByStatusCodes?: Parameters.ByStatusCodes;
+      "ByStatusCodes[]"?: Parameters.ByStatusCodes;
       ById?: Parameters.ById;
       ByApplicationId?: Parameters.ByApplicationId;
     }
