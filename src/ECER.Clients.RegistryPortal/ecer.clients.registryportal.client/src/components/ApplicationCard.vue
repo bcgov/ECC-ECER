@@ -102,7 +102,7 @@
           variant="flat"
           size="large"
           color="warning"
-          id="btnMoreInfoIntentToDeny"
+          id="btnMoreInfoDisputeInProgress"
           @click="
             router.push({
               name: 'dispute-application-in-progress-more-information',
