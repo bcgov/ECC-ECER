@@ -235,6 +235,22 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
+      path: "/dispute/application/intent-to-deny/more-information/:applicationId",
+      component: () =>
+        import("./components/dispute/application/DisputeIntentToDenyMoreInformation.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "dispute-application-intent-to-deny-more-information",
+      props: true,
+    },
+    {
+      path: "/dispute/application/in-progress/more-information/:applicationId",
+      component: () =>
+        import("./components/dispute/application/DisputeInProgressMoreInformation.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "dispute-application-in-progress-more-information",
+      props: true,
+    },
+    {
       path: "/new-user",
       component: () => import("./components/pages/NewUser.vue"),
       meta: { requiresAuth: true },

@@ -345,6 +345,7 @@ import { useRouter } from "vue-router";
 import { cancelDraftApplication } from "@/api/application";
 import { cancelDraftIcraEligibility } from "@/api/icra";
 import { getUserInfo } from "@/api/user";
+import { getReconsiderationsQuery } from "@/api/reconsideration";
 import Loading from "@/components/Loading.vue";
 import { getProfile } from "@/api/profile";
 import ActionCard from "@/components/ActionCard.vue";
@@ -441,6 +442,7 @@ export default defineComponent({
         this.certificationStore.fetchCertifications(),
         getUserInfo(),
         getProfile(),
+        getReconsiderationsQuery(),
       ]);
 
     // Fetch ICRA eligibilities if the feature is enabled
@@ -499,7 +501,11 @@ export default defineComponent({
       return (
         this.applicationStore.applicationStatus === undefined ||
         this.applicationStore.applicationStatus === "Draft" ||
-        this.applicationStore.hasSubmittedApplication
+        this.applicationStore.hasSubmittedApplication ||
+        this.applicationStore.hasAnyApplicationsInStatusStatusDetail([
+          { status: "Dispute" },
+          { status: "Decision", statusDetail: "IntenttoDeny" },
+        ])
       );
     },
     showTransferCard(): boolean {

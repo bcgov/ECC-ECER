@@ -71,6 +71,49 @@
           Apply now
         </v-btn>
       </v-card-actions>
+
+      <!-- Intent to deny -->
+      <v-card-actions
+        v-if="
+          applicationStore.applicationStatus === 'Decision' &&
+          applicationStore.application?.subStatus === 'IntenttoDeny'
+        "
+      >
+        <v-btn
+          variant="flat"
+          size="large"
+          color="warning"
+          id="btnMoreInfoIntentToDeny"
+          @click="
+            router.push({
+              name: 'dispute-application-intent-to-deny-more-information',
+              params: { applicationId: applicationStore.application?.id },
+            })
+          "
+        >
+          <v-icon size="large" icon="mdi-arrow-right" />
+          More information
+        </v-btn>
+      </v-card-actions>
+
+      <!-- Dispute in progress -->
+      <v-card-actions v-if="applicationStore.applicationStatus === 'Dispute'">
+        <v-btn
+          variant="flat"
+          size="large"
+          color="warning"
+          id="btnMoreInfoDisputeInProgress"
+          @click="
+            router.push({
+              name: 'dispute-application-in-progress-more-information',
+              params: { applicationId: applicationStore.application?.id },
+            })
+          "
+        >
+          <v-icon size="large" icon="mdi-arrow-right" />
+          More information
+        </v-btn>
+      </v-card-actions>
     </div>
   </v-card>
 </template>
@@ -81,6 +124,7 @@ import { defineComponent } from "vue";
 import { useApplicationStore } from "@/store/application";
 import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
+import { getCertificationName } from "@/utils/certification";
 
 export default defineComponent({
   name: "ApplicationCard",
@@ -111,6 +155,9 @@ export default defineComponent({
         case "Ready":
         case "Pending":
           return "Application in progress";
+        case "Decision":
+        case "Dispute":
+          return `Application for ${getCertificationName(this.applicationStore.application?.certificationTypes || [])} certification assessed`;
         default:
           return "Apply for ECE Certification";
       }
@@ -126,6 +173,11 @@ export default defineComponent({
         case "Ready":
         case "Pending":
           return `Submitted ${formatDate(this.applicationStore.application?.submittedOn || "", "LLLL d, yyyy")}`;
+        case "Decision":
+          //application should have statusDetail IntentToDeny
+          return `Decision: intent to deny`;
+        case "Dispute":
+          return `Dispute in progress`;
         default:
           return "There are different types of certifications you can apply for. Visit the B.C. government website to learn about the types of Early Childhood Educator (ECE) certificates and which one you may qualify for.";
       }
