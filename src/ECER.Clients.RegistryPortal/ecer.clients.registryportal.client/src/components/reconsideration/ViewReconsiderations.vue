@@ -11,7 +11,10 @@
           <h2>My disputes</h2>
         </v-col>
       </v-row>
-      <v-row v-for="reconsideration in reconsiderations">
+      <v-row
+        v-for="(reconsideration, index) in reconsiderations"
+        :key="reconsideration.id || index"
+      >
         <v-col>
           <v-card class="card-border" flat>
             <v-card-item>

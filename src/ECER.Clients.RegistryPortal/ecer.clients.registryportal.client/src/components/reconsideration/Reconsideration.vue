@@ -96,7 +96,7 @@ export default defineComponent({
   async setup() {
     const route = useRoute();
     const router = useRouter();
-    const { data, error } = await getReconsiderationsQuery(
+    const { data } = await getReconsiderationsQuery(
       route.params.reconsiderationId as string,
     );
     let wizardConfigSetup: WizardType | undefined = undefined;
@@ -116,6 +116,9 @@ export default defineComponent({
         );
         wizardConfigSetup = reconsiderationWizard;
         break;
+      case "investigation":
+        // TODO implement later
+        console.warn("Not implemented");
       default:
         console.error(
           `Unhandled reconsideration type ${route.params.reconsiderationType}`,
