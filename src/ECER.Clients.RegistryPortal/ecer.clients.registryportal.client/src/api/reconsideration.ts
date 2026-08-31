@@ -6,11 +6,11 @@ const apiResultHandler = new ApiResultHandler();
 
 const getReconsiderationsQuery = async (
   id?: string,
-  status?: Components.Schemas.ReconsiderationStatusCode[],
+  statuses?: Components.Schemas.ReconsiderationStatusCode[],
 ): Promise<ApiResponse<Components.Schemas.Reconsideration[]>> => {
   const queryParameters: Paths.ReconsiderationsGet.QueryParameters = {
     ById: id,
-    "ByStatusCodes[]": status,
+    "ByStatusCodes[]": statuses,
   };
   const client = await getClient();
 

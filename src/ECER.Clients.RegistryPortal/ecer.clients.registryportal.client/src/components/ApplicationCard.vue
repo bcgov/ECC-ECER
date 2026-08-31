@@ -95,25 +95,6 @@
           More information
         </v-btn>
       </v-card-actions>
-
-      <!-- Dispute in progress -->
-      <v-card-actions v-if="applicationStore.applicationStatus === 'Dispute'">
-        <v-btn
-          variant="flat"
-          size="large"
-          color="warning"
-          id="btnMoreInfoDisputeInProgress"
-          @click="
-            router.push({
-              name: 'dispute-application-in-progress-more-information',
-              params: { applicationId: applicationStore.application?.id },
-            })
-          "
-        >
-          <v-icon size="large" icon="mdi-arrow-right" />
-          More information
-        </v-btn>
-      </v-card-actions>
     </div>
   </v-card>
 </template>

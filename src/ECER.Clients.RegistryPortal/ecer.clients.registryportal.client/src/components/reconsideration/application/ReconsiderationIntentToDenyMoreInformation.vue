@@ -55,7 +55,7 @@ import ECEHeader from "@/components/ECEHeader.vue";
 import Loading from "@/components/Loading.vue";
 
 export default defineComponent({
-  name: "DisputeIntentToDenyMoreInformation",
+  name: "ReconsiderationIntentToDenyMoreInformation",
   components: { PageContainer, Breadcrumb, ECEHeader, Loading },
   setup() {
     const route = useRoute();

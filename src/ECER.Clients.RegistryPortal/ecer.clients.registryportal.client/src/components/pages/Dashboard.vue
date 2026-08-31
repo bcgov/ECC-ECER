@@ -144,6 +144,36 @@
         </v-col>
       </v-row>
 
+      <!-- Disputes and Reconsiderations -->
+      <template v-if="showReconsiderationCard">
+        <v-row>
+          <v-col cols="12">
+            <ECEHeader title="My disputes" />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <Card class="d-flex flex-column">
+              <h2>Dispute</h2>
+              <p class="mt-4">
+                Dispute an application decision or investigation outcome.
+              </p>
+              <div class="mt-auto">
+                <v-btn
+                  size="large"
+                  class="mt-4"
+                  color="primary"
+                  id="btnViewDisputes"
+                  @click="router.push({ name: 'view-reconsiderations' })"
+                >
+                  Submit dispute
+                </v-btn>
+              </div>
+            </Card>
+          </v-col>
+        </v-row>
+      </template>
+
       <!-- My current certification -->
       <template v-if="userStore.isVerified">
         <v-row justify="center" class="mt-6">
@@ -373,6 +403,7 @@ import type {
   Certification,
   UserInfo,
   UserProfile,
+  Reconsideration,
 } from "@/types/openapi";
 import Card from "@/components/Card.vue";
 
@@ -436,14 +467,19 @@ export default defineComponent({
       return; //stops the rest of the component from loading. Prevents 401 calls for the methods below
     }
 
-    [this.applications, this.certifications, this.userInfo, this.userProfile] =
-      await Promise.all([
-        this.applicationStore.fetchApplications(),
-        this.certificationStore.fetchCertifications(),
-        getUserInfo(),
-        getProfile(),
-        getReconsiderationsQuery(),
-      ]);
+    [
+      this.applications,
+      this.certifications,
+      this.userInfo,
+      this.userProfile,
+      this.reconsiderations,
+    ] = await Promise.all([
+      this.applicationStore.fetchApplications(),
+      this.certificationStore.fetchCertifications(),
+      getUserInfo(),
+      getProfile(),
+      (await getReconsiderationsQuery(undefined, ["New"]))?.data,
+    ]);
 
     // Fetch ICRA eligibilities if the feature is enabled
     if (this.configurationStore.applicationConfiguration.icraFeatureEnabled) {
@@ -466,6 +502,7 @@ export default defineComponent({
     certifications: null as Certification[] | null | undefined,
     userInfo: null as UserInfo | null,
     userProfile: null as UserProfile | null,
+    reconsiderations: undefined as Reconsideration[] | undefined,
   }),
   computed: {
     heading(): string {
@@ -592,6 +629,9 @@ export default defineComponent({
         !this.certificationStore.holdsAllCertifications &&
         !this.showIcraEligibilityStep2StartCard
       );
+    },
+    showReconsiderationCard(): boolean {
+      return (this.reconsiderations?.length || 0) > 0;
     },
     hideRenewOptionCertificationCard(): boolean {
       return (

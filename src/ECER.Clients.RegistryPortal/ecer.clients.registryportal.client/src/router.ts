@@ -237,17 +237,33 @@ const router = createRouter({
     {
       path: "/dispute/application/intent-to-deny/more-information/:applicationId",
       component: () =>
-        import("./components/dispute/application/DisputeIntentToDenyMoreInformation.vue"),
+        import("./components/reconsideration/application/ReconsiderationIntentToDenyMoreInformation.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       name: "dispute-application-intent-to-deny-more-information",
       props: true,
     },
     {
-      path: "/dispute/application/in-progress/more-information/:applicationId",
+      path: "/dispute/list",
       component: () =>
-        import("./components/dispute/application/DisputeInProgressMoreInformation.vue"),
+        import("./components/reconsideration/ViewReconsiderations.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
-      name: "dispute-application-in-progress-more-information",
+      name: "view-reconsiderations",
+      props: true,
+    },
+    {
+      path: "/reconsideration/:reconsiderationType/start/:reconsiderationId",
+      component: () =>
+        import("./components/reconsideration/StartReconsideration.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "start-reconsideration",
+      props: true,
+    },
+    {
+      path: "/reconsideration/:reconsiderationType/:reconsiderationId",
+      component: () =>
+        import("./components/reconsideration/Reconsideration.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "reconsideration",
       props: true,
     },
     {
