@@ -119,6 +119,7 @@ export default defineComponent({
       case "investigation":
         // TODO implement later
         console.warn("Not implemented");
+        break;
       default:
         console.error(
           `Unhandled reconsideration type ${route.params.reconsiderationType}`,
@@ -145,11 +146,6 @@ export default defineComponent({
       return (
         this.wizardStore.steps.findIndex((step) => step.stage === "Review") + 1
       );
-    },
-  },
-  watch: {
-    "wizardStore.step"(step) {
-      // TODO do we need this still?
     },
   },
   methods: {
