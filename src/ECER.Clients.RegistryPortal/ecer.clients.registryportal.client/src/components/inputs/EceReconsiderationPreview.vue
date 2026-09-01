@@ -37,7 +37,11 @@
           </p>
         </v-col>
         <v-col>
-          <p class="font-weight-bold small" v-for="file in files">
+          <p
+            class="font-weight-bold small"
+            v-for="(file, index) in files"
+            :key="index"
+          >
             {{ file.name }}
           </p>
         </v-col>

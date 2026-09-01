@@ -63,7 +63,7 @@ internal sealed class ReconsiderationRepository : IReconsiderationRepository
     }
 
     var existingReconsideration = context.ecer_ReconsiderationRequestSet
-      .Where(r => r.Id == reconsiderationId && r.ecer_ApplicantId.Id == parsedApplicantId).FirstOrDefault();
+      .FirstOrDefault(r => r.Id == reconsiderationId && r.ecer_ApplicantId.Id == parsedApplicantId);
 
     if (existingReconsideration == null)
     {
@@ -75,7 +75,7 @@ internal sealed class ReconsiderationRepository : IReconsiderationRepository
       throw new InvalidOperationException($"Reconsideration request id: {reconsideration.Id} status is not in status code New for submission it is {reconsideration.Status}");
     }
 
-    var existingApplication = context.ecer_ApplicationSet.Where(r => r.Id == existingReconsideration.ecer_ApplicationId.Id).FirstOrDefault();
+    var existingApplication = context.ecer_ApplicationSet.FirstOrDefault(r => r.Id == existingReconsideration.ecer_ApplicationId.Id);
     if (existingApplication == null)
     {
       throw new InvalidOperationException($"Reconsideration request id: {reconsideration.Id} is not associated to an application");
