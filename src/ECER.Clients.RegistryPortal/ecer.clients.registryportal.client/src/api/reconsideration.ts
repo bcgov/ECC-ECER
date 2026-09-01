@@ -20,4 +20,20 @@ const getReconsiderationsQuery = async (
   });
 };
 
-export { getReconsiderationsQuery };
+const submitReconsideration = async (
+  reconsideration: Components.Schemas.Reconsideration,
+): Promise<ApiResponse<string>> => {
+  const client = await getClient();
+
+  return apiResultHandler.execute<string>({
+    request: client.reconsiderations_submit_put(
+      {
+        id: reconsideration.id ?? "",
+      },
+      reconsideration,
+    ),
+    key: "reconsiderations_submit_put",
+  });
+};
+
+export { getReconsiderationsQuery, submitReconsideration };

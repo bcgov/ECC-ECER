@@ -6,7 +6,7 @@ import reviewReconsiderationForm from "./review-reconsideration-form";
 const disputeWizard: Wizard = {
   id: "form-1",
   steps: {
-    dispute: {
+    reconsideration: {
       stage: "Reconsideration",
       title: "Dispute details",
       form: disputeForm,
