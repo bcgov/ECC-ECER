@@ -696,7 +696,17 @@ export default defineComponent({
             ...this.baseItems,
             { title: "More information", disabled: true, href: "#" },
           ];
-
+        case "view-reconsiderations":
+          return [
+            ...this.baseItems,
+            { title: "My disputes", disabled: true, href: "#" },
+          ];
+        case "start-reconsideration":
+        case "reconsideration":
+          return [
+            ...this.baseItems,
+            { title: "Dispute", disabled: true, href: "#" },
+          ];
         default:
           return this.baseItems;
       }
