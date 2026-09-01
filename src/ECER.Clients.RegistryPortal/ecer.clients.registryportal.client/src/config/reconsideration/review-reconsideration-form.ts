@@ -34,6 +34,9 @@ const reviewReconsiderationForm: Form = {
         lg: 12,
         xl: 12,
       },
+      getValue: () => {
+        return false;
+      },
     },
   },
 };
