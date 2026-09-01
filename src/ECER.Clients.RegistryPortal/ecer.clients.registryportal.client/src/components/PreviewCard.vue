@@ -86,7 +86,9 @@ export default defineComponent({
     },
   },
   methods: {
-    setWizard(stage: ApplicationStage | IcraEligibilityStage) {
+    setWizard(
+      stage: ApplicationStage | IcraEligibilityStage | ReconsiderationStage,
+    ) {
       this.wizardStore.setCurrentStep(stage);
       this.applicationStore.draftApplication.stage = stage;
     },

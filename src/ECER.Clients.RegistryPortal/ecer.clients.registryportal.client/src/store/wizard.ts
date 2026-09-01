@@ -523,7 +523,11 @@ export const useWizardStore = defineStore("wizard", {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
     setCurrentStep(
-      stage: ApplicationStage | ReferenceStage | IcraEligibilityStage,
+      stage:
+        | ApplicationStage
+        | ReferenceStage
+        | IcraEligibilityStage
+        | ReconsiderationStage,
     ): void {
       const item =
         Object.values(this.wizardConfig.steps).findIndex(
