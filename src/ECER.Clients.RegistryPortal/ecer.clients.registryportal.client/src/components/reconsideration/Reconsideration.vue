@@ -76,9 +76,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import type { PropType } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
+import type { Components } from "@/types/openapi";
 
-import { getReconsiderationsQuery } from "@/api/reconsideration";
+import {
+  getReconsiderationsQuery,
+  submitReconsideration,
+} from "@/api/reconsideration";
 import reconsiderationWizard from "@/config/reconsideration/reconsideration-wizard.ts";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
@@ -93,22 +97,16 @@ import Breadcrumb from "../Breadcrumb.vue";
 export default defineComponent({
   name: "Reconsideration",
   components: { Wizard, Loading, Breadcrumb },
-  async setup() {
-    const route = useRoute();
+  async setup(props) {
     const router = useRouter();
-    const { data } = await getReconsiderationsQuery(
-      route.params.reconsiderationId as string,
-    );
+    const { data } = await getReconsiderationsQuery(props.reconsiderationId);
     let wizardConfigSetup: WizardType | undefined = undefined;
 
     const wizardStore = useWizardStore();
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
 
-    const reconsiderationType = route.params
-      .reconsiderationType as ReconsiderationType;
-
-    switch (reconsiderationType) {
+    switch (props.reconsiderationType) {
       case "application":
         wizardStore.initializeWizardForReconsideration(
           reconsiderationWizard,
@@ -122,7 +120,7 @@ export default defineComponent({
         break;
       default:
         console.error(
-          `Unhandled reconsideration type ${route.params.reconsiderationType}`,
+          `Unhandled reconsideration type ${props.reconsiderationType}`,
         );
     }
     return {
@@ -131,7 +129,6 @@ export default defineComponent({
       loadingStore,
       wizardConfigSetup,
       router,
-      route,
     };
   },
   props: {
@@ -180,8 +177,56 @@ export default defineComponent({
         );
         return;
       }
-    },
 
+      switch (this.reconsiderationType) {
+        case "application":
+          await this.handleSubmitForApplicationReconsideration();
+          break;
+        case "investigation":
+          this.alertStore.setWarningAlert(
+            "Investigation reconsideration submission is not yet implemented",
+          );
+          break;
+        default:
+          console.error(
+            `unhandled reconsideration type ${this.reconsiderationType}`,
+          );
+          this.alertStore.setFailureAlert(
+            `unhandled reconsideration type ${this.reconsiderationType}`,
+          );
+      }
+    },
+    async handleSubmitForApplicationReconsideration() {
+      const reconsiderationWizardId =
+        this.wizardStore?.wizardConfig?.steps?.reconsideration?.form?.inputs
+          ?.reconsideration?.id;
+      const reconsiderationToSubmit = {
+        id: this.reconsiderationId,
+        explanationAndEvidence:
+          this.wizardStore.wizardData[reconsiderationWizardId]
+            .explanationAndEvidence,
+        files: this.wizardStore.wizardData[reconsiderationWizardId].files,
+      } as Components.Schemas.Reconsideration;
+
+      const { data, error } = await submitReconsideration(
+        reconsiderationToSubmit,
+      );
+      if (error) {
+        this.alertStore.setFailureAlert(
+          "There was an error submitting your dispute request. Please try again later.",
+        );
+
+        return;
+      }
+
+      this.router.push({
+        name: "reconsideration-submitted",
+        params: {
+          reconsiderationId: data,
+          reconsiderationType: this.reconsiderationType,
+        },
+      });
+    },
     async printPage() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
       const formRef = (this.$refs.wizard as typeof Wizard).$refs[

@@ -62,6 +62,11 @@ public class ReconsiderationsEndpoints : IRegisterEndpoints
             {
               Detail = "reconsideration is in the wrong status"
             });
+          case ReconsiderationSubmitErrorCode.ApplicationNotFound:
+            return TypedResults.BadRequest(new ProblemDetails()
+            {
+              Detail = "application not found for associated reconsideration"
+            });
         }
       }
 

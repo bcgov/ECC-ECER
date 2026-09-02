@@ -28,6 +28,7 @@ public enum ReconsiderationSubmitErrorCode
 {
   ReconsiderationNotFound,
   ReconsiderationWrongStatus,
+  ApplicationNotFound,
 }
 
 public record Reconsideration()

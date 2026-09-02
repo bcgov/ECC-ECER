@@ -251,7 +251,7 @@ const router = createRouter({
       props: true,
     },
     {
-      path: "/reconsideration/:reconsiderationType/start/:reconsiderationId",
+      path: "/dispute/:reconsiderationType/start/:reconsiderationId",
       component: () =>
         import("./components/reconsideration/StartReconsideration.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
@@ -259,11 +259,19 @@ const router = createRouter({
       props: true,
     },
     {
-      path: "/reconsideration/:reconsiderationType/:reconsiderationId",
+      path: "/dispute/:reconsiderationType/:reconsiderationId",
       component: () =>
         import("./components/reconsideration/Reconsideration.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       name: "reconsideration",
+      props: true,
+    },
+    {
+      path: "/dispute/:reconsiderationType/submitted/:reconsiderationId",
+      component: () =>
+        import("./components/reconsideration/ReconsiderationSubmitted.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "reconsideration-submitted",
       props: true,
     },
     {
