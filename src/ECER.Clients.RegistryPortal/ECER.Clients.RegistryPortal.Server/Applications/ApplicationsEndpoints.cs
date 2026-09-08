@@ -392,6 +392,7 @@ public record Application
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public ApplicationStatus Status { get; set; }
+  public ApplicationStatusReasonDetail SubStatus { get; set; }
   public string? Stage { get; set; }
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
@@ -402,6 +403,7 @@ public record Application
   public string? FromCertificate { get; set; }
   public ApplicationOrigin? Origin { get; set; }
   public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
+  public DateTime? ReconsiderationPeriodEndDate { get; set; }
 }
 public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] double NumberOfHours)
 {
@@ -477,7 +479,7 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
-  Reconsideration,
+  Dispute,
   Cancelled,
   Closed,
   Escalated,
@@ -488,7 +490,7 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   PendingPSPConsultationNeeded,
-  ReconsiderationDecision,
+  DisputeDecision,
   AppealDecision,
   NotSubmitted,
 }
@@ -517,6 +519,7 @@ public enum ApplicationStatusReasonDetail
   ReceivePhysicalTranscripts,
   SupervisorConsultationNeeded,
   ValidatingIDs,
+  IntenttoDeny,
 }
 
 public enum ApplicationTypes

@@ -11,6 +11,7 @@ import type EceEducationPreview from "@/components/inputs/EceEducationPreview.vu
 import type EceRadio from "@/components/inputs/EceRadio.vue";
 import type EceTextField from "@/components/inputs/EceTextField.vue";
 import type EceWorkExperienceReferencePreview from "@/components/inputs/EceWorkExperienceReferencePreview.vue";
+import type { Components } from "./openapi";
 
 interface EceTextFieldProps {
   rules: readonly ValidationRule$1[];
@@ -116,4 +117,7 @@ interface Input {
     lg: number;
     xl: number;
   };
+  getValue?: (dataSources: {
+    reconsideration?: Components.Schemas.Reconsideration;
+  }) => any | Promise<any>;
 }

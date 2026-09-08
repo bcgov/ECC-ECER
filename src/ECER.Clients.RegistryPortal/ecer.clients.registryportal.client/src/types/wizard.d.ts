@@ -2,7 +2,12 @@ import type { Form } from "@/types/form";
 
 interface Step {
   // Shimmed types to be removed once the types are updated
-  stage: ApplicationStage | ReferenceStage | RenewStage | IcraEligibilityStage;
+  stage:
+    | ApplicationStage
+    | ReferenceStage
+    | RenewStage
+    | IcraEligibilityStage
+    | ReconsiderationStage;
   title: string;
   subtitle?: string;
   form: Form;
@@ -46,3 +51,4 @@ type RenewStage =
   | "CharacterReferences"
   | "WorkReferences"
   | "Review";
+type ReconsiderationStage = "Reconsideration" | "Review";

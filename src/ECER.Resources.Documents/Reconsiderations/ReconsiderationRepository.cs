@@ -63,7 +63,7 @@ internal sealed class ReconsiderationRepository : IReconsiderationRepository
     }
 
     var existingReconsideration = context.ecer_ReconsiderationRequestSet
-      .Where(r => r.Id == reconsiderationId && r.ecer_ApplicantId.Id == parsedApplicantId).FirstOrDefault();
+      .FirstOrDefault(r => r.Id == reconsiderationId && r.ecer_ApplicantId.Id == parsedApplicantId);
 
     if (existingReconsideration == null)
     {
@@ -75,15 +75,27 @@ internal sealed class ReconsiderationRepository : IReconsiderationRepository
       throw new InvalidOperationException($"Reconsideration request id: {reconsideration.Id} status is not in status code New for submission it is {reconsideration.Status}");
     }
 
+    var existingApplication = context.ecer_ApplicationSet.FirstOrDefault(r => r.Id == existingReconsideration.ecer_ApplicationId.Id);
+    if (existingApplication == null)
+    {
+      throw new InvalidOperationException($"Reconsideration request id: {reconsideration.Id} is not associated to an application");
+    }
+    context.BeginTransaction();
+
     var updatedReconsideration = mapper.MapReconsiderationRequest(reconsideration);
     updatedReconsideration.StatusCode = ecer_ReconsiderationRequest_StatusCode.InReview;
+    updatedReconsideration.ecer_DeclarationandSubmitteddate = DateTime.Now;
+
+    existingApplication.StatusCode = ecer_Application_StatusCode.Dispute;
+    context.UpdateObject(existingApplication);
 
     context.Detach(existingReconsideration);
     context.Attach(updatedReconsideration);
     context.UpdateObject(updatedReconsideration);
 
     await HandleAddReconsiderationFiles(updatedReconsideration, reconsideration, reconsideration.Files, existingReconsideration.ecer_ApplicationId?.Id.ToString() ?? string.Empty, applicantId, cancellationToken);
-    context.SaveChanges();
+
+    context.CommitTransaction();
     return reconsiderationId.ToString();
   }
 

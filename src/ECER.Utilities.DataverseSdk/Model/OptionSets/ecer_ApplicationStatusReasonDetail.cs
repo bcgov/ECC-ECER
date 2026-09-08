@@ -33,6 +33,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		ForReview = 621870014,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		IntenttoDeny = 621870015,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		InvestigationsConsultationNeeded = 621870008,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

@@ -48,6 +48,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Decision = 290700003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Dispute = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DisputeDecision = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -70,12 +76,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Ready = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Reconsideration = 621870005,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ReconsiderationDecision = 621870006,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Submitted = 621870001,

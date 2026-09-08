@@ -85,6 +85,7 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public string? RenewalExplanationOther { get; set; }
   public ApplicationOrigin? Origin { get; set; }
   public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
+  public DateTime? ReconsiderationPeriodEndDate { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
@@ -196,7 +197,7 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
-  Reconsideration,
+  Dispute,
   Cancelled,
   Closed,
   Escalated,
@@ -207,7 +208,7 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   PendingPSPConsultationNeeded,
-  ReconsiderationDecision,
+  DisputeDecision,
   AppealDecision,
   NotSubmitted,
 }
@@ -236,6 +237,7 @@ public enum ApplicationStatusReasonDetail
   ReceivePhysicalTranscripts,
   SupervisorConsultationNeeded,
   ValidatingIDs,
+  IntenttoDeny
 }
 
 public enum ApplicationTypes

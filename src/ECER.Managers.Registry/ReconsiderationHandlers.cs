@@ -1,10 +1,11 @@
 ﻿using ECER.Managers.Registry.Contract.Reconsiderations;
+using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.Reconsiderations;
 using Mediator;
 
 namespace ECER.Managers.Registry;
 
-public class ReconsiderationHandlers(IReconsiderationMapper reconsiderationMapper, IReconsiderationRepository reconsiderationRepository)
+public class ReconsiderationHandlers(IReconsiderationMapper reconsiderationMapper, IReconsiderationRepository reconsiderationRepository, IApplicationRepository applicationRepository)
   : IRequestHandler<ReconsiderationQueryCommand, ReconsiderationQueryResults>,
     IRequestHandler<ReconsiderationSubmitCommand, ReconsiderationSubmitResult>
 {
@@ -43,6 +44,19 @@ public class ReconsiderationHandlers(IReconsiderationMapper reconsiderationMappe
     if (reconsideration.Status != Resources.Documents.Reconsiderations.ReconsiderationStatusCode.New)
     {
       return new ReconsiderationSubmitResult() { IsSuccess = false, Id = request.Reconsideration.Id, ErrorCode = ReconsiderationSubmitErrorCode.ReconsiderationWrongStatus };
+    }
+
+    var applicationQuery = new ApplicationQuery
+    {
+      ById = reconsideration.ApplicationId,
+      ByApplicantId = request.ApplicantId,
+    };
+    var applications = await applicationRepository.Query(applicationQuery, cancellationToken);
+    var application = applications.FirstOrDefault();
+
+    if (application == null)
+    {
+      return new ReconsiderationSubmitResult() { IsSuccess = false, Id = request.Reconsideration.Id, ErrorCode = ReconsiderationSubmitErrorCode.ApplicationNotFound };
     }
 
     var submittedReconsiderationId = await reconsiderationRepository.Submit(reconsiderationMapper.MapReconsiderationRequest(request.Reconsideration), request.ApplicantId, cancellationToken);

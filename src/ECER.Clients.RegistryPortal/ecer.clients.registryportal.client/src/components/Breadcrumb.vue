@@ -690,7 +690,23 @@ export default defineComponent({
               href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-reference/${params.referenceId}/edit`,
             },
           ];
-
+        case "dispute-application-in-progress-more-information":
+        case "dispute-application-intent-to-deny-more-information":
+          return [
+            ...this.baseItems,
+            { title: "More information", disabled: true, href: "#" },
+          ];
+        case "view-reconsiderations":
+          return [
+            ...this.baseItems,
+            { title: "My disputes", disabled: true, href: "#" },
+          ];
+        case "start-reconsideration":
+        case "reconsideration":
+          return [
+            ...this.baseItems,
+            { title: "Dispute", disabled: true, href: "#" },
+          ];
         default:
           return this.baseItems;
       }

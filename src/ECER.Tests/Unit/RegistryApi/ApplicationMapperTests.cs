@@ -104,8 +104,8 @@ public class ApplicationMapperTests
 
     mapper.MapApplication(new ResourceApplications.Application("2", "user", [])
     {
-      Status = ResourceApplications.ApplicationStatus.Reconsideration
-    })!.Status.ShouldBe(ContractApplications.ApplicationStatus.Reconsideration);
+      Status = ResourceApplications.ApplicationStatus.Dispute
+    })!.Status.ShouldBe(ContractApplications.ApplicationStatus.Dispute);
 
     mapper.MapApplication(new ResourceApplications.Application("3", "user", [])
     {

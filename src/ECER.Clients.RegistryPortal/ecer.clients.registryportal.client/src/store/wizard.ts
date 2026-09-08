@@ -4,6 +4,7 @@ import type { Components } from "@/types/openapi";
 import type {
   ApplicationStage,
   IcraEligibilityStage,
+  ReconsiderationStage,
   ReferenceStage,
   RenewStage,
   Step,
@@ -49,7 +50,12 @@ export const useWizardStore = defineStore("wizard", {
     },
     currentStepStage(
       state,
-    ): ApplicationStage | ReferenceStage | RenewStage | IcraEligibilityStage {
+    ):
+      | ApplicationStage
+      | ReferenceStage
+      | RenewStage
+      | IcraEligibilityStage
+      | ReconsiderationStage {
       const stage = this.steps[state.step - 1]?.stage;
       if (!stage) throw new Error("No current step stage found");
       return stage;
@@ -483,11 +489,45 @@ export const useWizardStore = defineStore("wizard", {
         }),
       });
     },
+    async initializeWizardForReconsideration(
+      wizard: Wizard,
+      reconsideration?: Components.Schemas.Reconsideration,
+    ) {
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      // Build wizardData by iterating through all inputs in all steps
+      const wizardData: WizardData = {};
+
+      const dataSources = {
+        reconsideration: reconsideration,
+      };
+
+      for (const step of Object.values(wizard.steps)) {
+        for (const component of Object.values(step.form?.inputs)) {
+          // If input has a getValue function, use it to populate wizardData
+          if (component.getValue) {
+            const value = await Promise.resolve(
+              component.getValue(dataSources),
+            );
+            if (value !== undefined) {
+              wizardData[component.id] = value;
+            }
+          }
+        }
+      }
+
+      this.wizardData = wizardData;
+    },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
     setCurrentStep(
-      stage: ApplicationStage | ReferenceStage | IcraEligibilityStage,
+      stage:
+        | ApplicationStage
+        | ReferenceStage
+        | IcraEligibilityStage
+        | ReconsiderationStage,
     ): void {
       const item =
         Object.values(this.wizardConfig.steps).findIndex(

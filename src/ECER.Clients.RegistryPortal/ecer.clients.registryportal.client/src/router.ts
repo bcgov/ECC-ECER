@@ -235,6 +235,46 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
+      path: "/dispute/application/intent-to-deny/more-information/:applicationId",
+      component: () =>
+        import("./components/reconsideration/application/ReconsiderationIntentToDenyMoreInformation.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "dispute-application-intent-to-deny-more-information",
+      props: true,
+    },
+    {
+      path: "/dispute/list",
+      component: () =>
+        import("./components/reconsideration/ViewReconsiderations.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "view-reconsiderations",
+      props: true,
+    },
+    {
+      path: "/dispute/:reconsiderationType/start/:reconsiderationId",
+      component: () =>
+        import("./components/reconsideration/StartReconsideration.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "start-reconsideration",
+      props: true,
+    },
+    {
+      path: "/dispute/:reconsiderationType/:reconsiderationId",
+      component: () =>
+        import("./components/reconsideration/Reconsideration.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "reconsideration",
+      props: true,
+    },
+    {
+      path: "/dispute/:reconsiderationType/submitted/:reconsiderationId",
+      component: () =>
+        import("./components/reconsideration/ReconsiderationSubmitted.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "reconsideration-submitted",
+      props: true,
+    },
+    {
       path: "/new-user",
       component: () => import("./components/pages/NewUser.vue"),
       meta: { requiresAuth: true },

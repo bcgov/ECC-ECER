@@ -79,6 +79,7 @@ internal partial class ApplicationMapper : IApplicationMapper
       RenewalExplanationOther = source.RenewalExplanationOther,
       Origin = MapApplicationOrigin(source.Origin),
       LabourMobilityCertificateInformation = MapCertificateInformation(source.LabourMobilityCertificateInformation),
+      ReconsiderationPeriodEndDate = source.ReconsiderationPeriodEndDate
     };
 
   public IEnumerable<ContractApplications.Application> MapApplications(IEnumerable<ResourceApplications.Application> source) => source.Select(application => MapApplication(application)!).ToList();
