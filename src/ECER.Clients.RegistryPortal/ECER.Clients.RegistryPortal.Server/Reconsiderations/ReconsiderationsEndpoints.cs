@@ -84,7 +84,6 @@ public record Reconsideration()
 {
   [ValidGuid]
   public string? Id { get; set; }
-  public string? ReconsiderationDetails { get; set; }
   public string? ExplanationAndEvidence { get; set; }
   public ReconsiderationStatusCode Status { get; set; }
   public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<Applications.FileInfo>();
