@@ -71,6 +71,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   //reconsideration test data for e2e testing
   public ecer_ReconsiderationRequest testReconsiderationRequestToSubmit { get; set; } = null!;
 
+  public ecer_ReconsiderationInvestigationOutcome testInvestigationReconsiderationE2ESubmit { get; set; } = null!;
+
   private ecer_PreviousName previousName = null!;
 
   private string PortalInvitationOwnerPrefix(string shortName) => $"{shortName}_{TestOwnerScope}_";
@@ -206,6 +208,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testReconsiderationRequestToSubmit = GetOrAddReconsiderationRequest(context, AuthenticatedBcscUser, "test_reconsideration_request_to_submit");
     testInvestigationReconsiderationRequest = GetInvestigationReconsiderationRequest(context, AuthenticatedBcscUser, "test_investigation_reconsideration_request");
     testInvestigationReconsiderationSubmit = GetInvestigationReconsiderationRequest(context, AuthenticatedBcscUser, "test_investigation_reconsideration_request_submit");
+    testInvestigationReconsiderationE2ESubmit = GetInvestigationReconsiderationRequest(context, AuthenticatedBcscUser, "test_investigation_reconsideration_request_e2e_submit");
 
     context.SaveChanges();
     MarkCertificateAsInactive(context, testInactiveCertification.Id);
