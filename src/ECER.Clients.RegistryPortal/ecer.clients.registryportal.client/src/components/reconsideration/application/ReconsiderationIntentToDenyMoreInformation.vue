@@ -21,7 +21,7 @@
         Your application
         {{ getCertificationName(application?.certificationTypes || []) }} was
         denied. Check your messages for more information about the decision. You
-        can dispute hte decision by contacting the registry requesting
+        can dispute the decision by contacting the registry requesting
         <a
           target="_blank"
           href="https://www2.gov.bc.ca/gov/content?id=E0F8FD783E114B22AAAB5CF8BC715B54"
