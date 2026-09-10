@@ -401,7 +401,9 @@ export const useApplicationStore = defineStore("application", {
         (application) =>
           (application.status !== "Decision" ||
             application.subStatus === "IntenttoDeny") &&
-          application.status !== "Complete",
+          application.status !== "Complete" &&
+          application.status !== "DisputeDecision" &&
+          application.status !== "AppealDecision",
       );
       this.applications = applications;
       // Load the first application as the current draft application
