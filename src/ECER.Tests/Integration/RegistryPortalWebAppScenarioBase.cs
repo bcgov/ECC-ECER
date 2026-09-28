@@ -65,9 +65,13 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public ecer_ReconsiderationRequest testReconsiderationRequest { get; set; } = null!;
 
   public ecer_ReconsiderationRequest testReconsiderationRequestEdit { get; set; } = null!;
+  public ecer_ReconsiderationInvestigationOutcome testInvestigationReconsiderationRequest { get; set; } = null!;
+  public ecer_ReconsiderationInvestigationOutcome testInvestigationReconsiderationSubmit { get; set; } = null!;
 
-  //reconsideration test data fro e2e testing
+  //reconsideration test data for e2e testing
   public ecer_ReconsiderationRequest testReconsiderationRequestToSubmit { get; set; } = null!;
+
+  public ecer_ReconsiderationInvestigationOutcome testInvestigationReconsiderationE2ESubmit { get; set; } = null!;
 
   private ecer_PreviousName previousName = null!;
 
@@ -202,6 +206,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testReconsiderationRequest = GetOrAddReconsiderationRequest(context, AuthenticatedBcscUser, "test_reconsideration_request");
     testReconsiderationRequestEdit = GetOrAddReconsiderationRequest(context, AuthenticatedBcscUser, "test_reconsideration_request_edit");
     testReconsiderationRequestToSubmit = GetOrAddReconsiderationRequest(context, AuthenticatedBcscUser, "test_reconsideration_request_to_submit");
+    testInvestigationReconsiderationRequest = GetInvestigationReconsiderationRequest(context, AuthenticatedBcscUser, "test_investigation_reconsideration_request");
+    testInvestigationReconsiderationSubmit = GetInvestigationReconsiderationRequest(context, AuthenticatedBcscUser, "test_investigation_reconsideration_request_submit");
+    testInvestigationReconsiderationE2ESubmit = GetInvestigationReconsiderationRequest(context, AuthenticatedBcscUser, "test_investigation_reconsideration_request_e2e_submit");
 
     context.SaveChanges();
     MarkCertificateAsInactive(context, testInactiveCertification.Id);
@@ -858,5 +865,49 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     context.AddLink(reconsiderationRequest, ecer_ReconsiderationRequest.Fields.ecer_reconsiderationrequest_ApplicationId, application);
 
     return reconsiderationRequest;
+  }
+
+  private ecer_ReconsiderationInvestigationOutcome GetInvestigationReconsiderationRequest(EcerContext context, Contact registrant, string name)
+  {
+    //clean up old data
+    var investigationReconsiderationRequests = context.ecer_ReconsiderationInvestigationOutcomeSet.Where(r => r.ecer_Name == name).ToList();
+
+    foreach (var request in investigationReconsiderationRequests)
+    {
+      context.DeleteObject(request);
+    }
+
+    var investigationForReconsideration = context.ecer_InvestigationSet.Where(r => r.ecer_Name == name).ToList();
+    foreach (var investigationToDelete in investigationForReconsideration)
+    {
+      context.DeleteObject(investigationToDelete);
+    }
+    context.SaveChanges();
+
+    var trackedRegistrant = context.ContactSet.First(c => c.ContactId == registrant.ContactId);
+
+    var investigation = new ecer_Investigation
+    {
+      Id = Guid.NewGuid(),
+      StatusCode = ecer_Investigation_StatusCode.New,
+      StateCode = ecer_investigation_statecode.Active,
+      ecer_Name = name,
+    };
+    context.AddObject(investigation);
+    context.AddLink(investigation, ecer_Investigation.Fields.ecer_contact_ecer_investigation_Applicant, trackedRegistrant);
+
+    var investigationReconsiderationRequest = new ecer_ReconsiderationInvestigationOutcome()
+    {
+      ecer_Name = name,
+      Id = Guid.NewGuid(),
+      StatusCode = ecer_ReconsiderationInvestigationOutcome_StatusCode.New,
+      ecer_ExplanationandEvidence = "testing reconsideration request",
+      ecer_Type = ecer_ReconsiderationInvestigationType.InvestigationOutcome
+    };
+    context.AddObject(investigationReconsiderationRequest);
+    context.AddLink(investigationReconsiderationRequest, ecer_ReconsiderationInvestigationOutcome.Fields.ecer_reconsiderationinvestigationoutcome_RegistrantId, trackedRegistrant);
+    context.AddLink(investigationReconsiderationRequest, ecer_ReconsiderationInvestigationOutcome.Fields.ecer_reconsiderationinvestigationoutcome_InvestigationId, investigation);
+
+    return investigationReconsiderationRequest;
   }
 }

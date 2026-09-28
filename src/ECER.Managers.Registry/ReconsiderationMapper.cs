@@ -21,7 +21,6 @@ internal partial class ReconsiderationMapper : IReconsiderationMapper
   public ResourceReconsiderations.Reconsideration MapReconsiderationRequest(ContractReconsiderations.Reconsideration source) => new ResourceReconsiderations.Reconsideration()
   {
     Id = source.Id,
-    ReconsiderationDetails = source.ReconsiderationDetails,
     ExplanationAndEvidence = source.ExplanationAndEvidence,
     Files = source.Files.Select(MapFileInfo).ToList(),
   };
@@ -30,7 +29,6 @@ internal partial class ReconsiderationMapper : IReconsiderationMapper
   {
     Id = source.Id,
     Status = MapReconsiderationStatus(source.Status),
-    ReconsiderationDetails = source.ReconsiderationDetails,
     ExplanationAndEvidence = source.ExplanationAndEvidence,
     Files = source.Files.Select(MapFileInfo).ToList(),
     ReconsiderationEndDate = source.ReconsiderationEndDate,

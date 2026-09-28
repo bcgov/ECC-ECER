@@ -20,7 +20,6 @@ internal partial class ReconsiderationRepositoryMapper : IReconsiderationReposit
   public ecer_ReconsiderationRequest MapReconsiderationRequest(Reconsideration source) => new ecer_ReconsiderationRequest
   {
     ecer_ReconsiderationRequestId = string.IsNullOrWhiteSpace(source.Id) ? null : Guid.Parse(source.Id),
-    ecer_ReconsiderationDetails = source.ReconsiderationDetails,
     ecer_ExplanationandEvidence = source.ExplanationAndEvidence,
   };
 
@@ -28,7 +27,6 @@ internal partial class ReconsiderationRepositoryMapper : IReconsiderationReposit
   {
     Id = source.ecer_ReconsiderationRequestId?.ToString(),
     Status = source.StatusCode.HasValue ? MapReconsiderationStatus(source.StatusCode.Value) : default,
-    ReconsiderationDetails = source.ecer_ReconsiderationDetails,
     ExplanationAndEvidence = source.ecer_ExplanationandEvidence,
     Files = (source.ecer_bcgov_documenturl_ReconsiderationRequestId ?? Array.Empty<bcgov_DocumentUrl>()).Select(MapFileInfo).ToList(),
     ReconsiderationEndDate = source.ecer_reconsiderationrequest_ApplicationId?.ecer_ReconsiderationPeriodEndDate,

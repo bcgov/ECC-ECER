@@ -1,16 +1,17 @@
 ﻿using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.Certifications;
-using ECER.Resources.Documents.MetadataResources;
-using ECER.Resources.Documents.PortalInvitations;
-using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics.CodeAnalysis;
 using ECER.Resources.Documents.Courses;
 using ECER.Resources.Documents.ICRA;
+using ECER.Resources.Documents.InvestigationReconsiderations;
+using ECER.Resources.Documents.MetadataResources;
+using ECER.Resources.Documents.PortalInvitations;
 using ECER.Resources.Documents.PostSecondaryInstitutes;
 using ECER.Resources.Documents.ProgramApplications;
 using ECER.Resources.Documents.Programs;
 using ECER.Resources.Documents.Reconsiderations;
+using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Resources.Documents;
 
@@ -28,6 +29,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<IProgramApplicationRepositoryMapper, ProgramApplicationRepositoryMapper>();
     configurationContext.Services.AddTransient<IProgramRepositoryMapper, ProgramRepositoryMapper>();
     configurationContext.Services.AddTransient<IReconsiderationRepositoryMapper, ReconsiderationRepositoryMapper>();
+    configurationContext.Services.AddTransient<IInvestigationReconsiderationRepositoryMapper, InvestigationReconsiderationRepositoryMapper>();
     configurationContext.Services.AddTransient<ICertificationRepository, CertificationRepository>();
     configurationContext.Services.AddTransient<IApplicationRepository, ApplicationRepository>();
     configurationContext.Services.AddTransient<IPortalInvitationRepository, PortalInvitationRepository>();
@@ -38,5 +40,6 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<IProgramApplicationRepository, ProgramApplicationRepository>();
     configurationContext.Services.AddTransient<ICourseRepository, CourseRepository>();
     configurationContext.Services.AddTransient<IReconsiderationRepository, ReconsiderationRepository>();
+    configurationContext.Services.AddTransient<IInvestigationReconsiderationRepository, InvestigationReconsiderationRepository>();
   }
 }

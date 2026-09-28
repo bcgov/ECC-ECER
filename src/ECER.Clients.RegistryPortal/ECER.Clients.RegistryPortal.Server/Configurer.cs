@@ -2,6 +2,7 @@ using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.Certifications;
 using ECER.Clients.RegistryPortal.Server.Communications;
 using ECER.Clients.RegistryPortal.Server.ICRA;
+using ECER.Clients.RegistryPortal.Server.InvestigationReconsiderations;
 using ECER.Clients.RegistryPortal.Server.Reconsiderations;
 using ECER.Clients.RegistryPortal.Server.References;
 using ECER.Clients.RegistryPortal.Server.Users;
@@ -23,5 +24,6 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<IReferencesMapper, ReferencesMapper>();
     configurationContext.Services.AddTransient<IUserMapper, UserMapper>();
     configurationContext.Services.AddTransient<IReconsiderationsMapper, ReconsiderationsMapper>();
+    configurationContext.Services.AddTransient<IInvestigationReconsiderationsMapper, InvestigationReconsiderationsMapper>();
   }
 }
