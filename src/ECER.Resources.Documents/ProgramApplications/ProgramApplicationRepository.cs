@@ -264,9 +264,7 @@ internal sealed partial class ProgramApplicationRepository : IProgramApplication
     if (!ValidateCommonFields(application) ||
         !ValidateProgramLengthEntries(incomingApplication) ||
         !application.ecer_ProgramEnrollment.Any() ||
-        !ValidateAdmissionOptions(application) ||
-        !application.ecer_Onlinemethodsofinstruction.Any() ||
-        !application.ecer_Deliverymethodforpracticuminstructor.Any())
+        !ValidateAdmissionOptions(application))
     {
       return false;
     }
