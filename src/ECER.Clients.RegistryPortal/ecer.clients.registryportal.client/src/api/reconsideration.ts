@@ -36,4 +36,29 @@ const submitReconsideration = async (
   });
 };
 
-export { getReconsiderationsQuery, submitReconsideration };
+const mapReconsiderationTypeToTypeOfDecision = (
+  reconsideration:
+    | Components.Schemas.Reconsideration
+    | Components.Schemas.InvestigationReconsideration,
+) => {
+  const reconsiderationType = reconsideration.type;
+  switch (reconsiderationType) {
+    case "ICRA":
+    case "LabourMobility":
+    case "New":
+      return "Intent to deny application";
+    case "Renewal":
+      return "Intent to reject renewal application";
+    default:
+      console.warn(
+        `mapReconsiderationTypeToTypeOfDecision: unhandled reconsideration type: ${reconsiderationType}`,
+      );
+      return reconsiderationType;
+  }
+};
+
+export {
+  getReconsiderationsQuery,
+  submitReconsideration,
+  mapReconsiderationTypeToTypeOfDecision,
+};

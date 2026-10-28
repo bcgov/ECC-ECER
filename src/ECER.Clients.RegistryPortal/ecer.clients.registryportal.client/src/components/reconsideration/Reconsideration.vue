@@ -1,5 +1,10 @@
 <template>
-  <Loading v-if="loadingStore.isLoading('reconsiderations_get')" />
+  <Loading
+    v-if="
+      loadingStore.isLoading('reconsiderations_get') ||
+      loadingStore.isLoading('investigation_reconsiderations_get')
+    "
+  />
   <Wizard
     v-else
     :ref="'wizard'"
@@ -12,7 +17,7 @@
           <v-row>
             <v-col>
               <h1 class="white">
-                Dispute application for certification decision
+                {{ disputeTitle }}
               </h1>
             </v-col>
           </v-row>
@@ -49,7 +54,12 @@
           <v-col>
             <v-btn
               v-if="wizardStore.step === userReviewStep"
-              :loading="loadingStore.isLoading('reconsiderations_submit_put')"
+              :loading="
+                loadingStore.isLoading('reconsiderations_submit_put') ||
+                loadingStore.isLoading(
+                  'investigation_reconsiderations_submit_put',
+                )
+              "
               rounded="lg"
               variant="flat"
               color="primary"
@@ -83,6 +93,10 @@ import {
   getReconsiderationsQuery,
   submitReconsideration,
 } from "@/api/reconsideration";
+import {
+  getInvestigationReconsiderationsQuery,
+  submitInvestigationReconsideration,
+} from "@/api/investigationReconsideration";
 import reconsiderationWizard from "@/config/reconsideration/reconsideration-wizard.ts";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
@@ -99,25 +113,41 @@ export default defineComponent({
   components: { Wizard, Loading, Breadcrumb },
   async setup(props) {
     const router = useRouter();
-    const { data } = await getReconsiderationsQuery(props.reconsiderationId);
     let wizardConfigSetup: WizardType | undefined = undefined;
+    let reconsideration: Components.Schemas.Reconsideration | undefined =
+      undefined;
+    let investigationReconsideration:
+      Components.Schemas.InvestigationReconsideration | undefined = undefined;
 
     const wizardStore = useWizardStore();
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
 
     switch (props.reconsiderationType) {
-      case "application":
+      case "application": {
+        const { data } = await getReconsiderationsQuery(
+          props.reconsiderationId,
+        );
         wizardStore.initializeWizardForReconsideration(
           reconsiderationWizard,
           data?.[0],
         );
         wizardConfigSetup = reconsiderationWizard;
+        reconsideration = data?.[0];
         break;
-      case "investigation":
-        // TODO implement later
-        console.warn("Not implemented");
+      }
+      case "investigation": {
+        const { data } = await getInvestigationReconsiderationsQuery(
+          props.reconsiderationId,
+        );
+        wizardStore.initializeWizardForReconsideration(
+          reconsiderationWizard,
+          data?.[0],
+        );
+        wizardConfigSetup = reconsiderationWizard;
+        investigationReconsideration = data?.[0];
         break;
+      }
       default:
         console.error(
           `Unhandled reconsideration type ${props.reconsiderationType}`,
@@ -129,6 +159,8 @@ export default defineComponent({
       loadingStore,
       wizardConfigSetup,
       router,
+      reconsideration,
+      investigationReconsideration,
     };
   },
   props: {
@@ -143,6 +175,22 @@ export default defineComponent({
       return (
         this.wizardStore.steps.findIndex((step) => step.stage === "Review") + 1
       );
+    },
+    disputeTitle(): string {
+      if (this.reconsiderationType === "application") {
+        return "Dispute application for certification decision";
+      } else if (this.reconsiderationType === "investigation") {
+        switch (this.investigationReconsideration?.type) {
+          case "ImmediateAction":
+            return "Dispute immediate action(s) on your certificate";
+          case "InvestigationOutcome":
+            return "Dispute intended action(s) on your certificate";
+        }
+      }
+      console.warn(
+        `unhandled reconsideration type: ${this.reconsiderationType}`,
+      );
+      return "unknown";
     },
   },
   methods: {
@@ -183,9 +231,7 @@ export default defineComponent({
           await this.handleSubmitForApplicationReconsideration();
           break;
         case "investigation":
-          this.alertStore.setWarningAlert(
-            "Investigation reconsideration submission is not yet implemented",
-          );
+          await this.handleSubmitForInvestigationReconsideration();
           break;
         default:
           console.error(
@@ -209,6 +255,37 @@ export default defineComponent({
       } as Components.Schemas.Reconsideration;
 
       const { data, error } = await submitReconsideration(
+        reconsiderationToSubmit,
+      );
+      if (error) {
+        this.alertStore.setFailureAlert(
+          "There was an error submitting your dispute request. Please try again later.",
+        );
+
+        return;
+      }
+
+      this.router.push({
+        name: "reconsideration-submitted",
+        params: {
+          reconsiderationId: data,
+          reconsiderationType: this.reconsiderationType,
+        },
+      });
+    },
+    async handleSubmitForInvestigationReconsideration() {
+      const reconsiderationWizardId =
+        this.wizardStore?.wizardConfig?.steps?.reconsideration?.form?.inputs
+          ?.reconsideration?.id;
+      const reconsiderationToSubmit = {
+        id: this.reconsiderationId,
+        explanationAndEvidence:
+          this.wizardStore.wizardData[reconsiderationWizardId]
+            .explanationAndEvidence,
+        files: this.wizardStore.wizardData[reconsiderationWizardId].files,
+      } as Components.Schemas.InvestigationReconsideration;
+
+      const { data, error } = await submitInvestigationReconsideration(
         reconsiderationToSubmit,
       );
       if (error) {

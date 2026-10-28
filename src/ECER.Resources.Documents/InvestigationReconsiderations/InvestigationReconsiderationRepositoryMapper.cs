@@ -37,6 +37,8 @@ internal partial class InvestigationReconsiderationRepositoryMapper : IInvestiga
     },
     ExplanationAndEvidence = source.ecer_ExplanationandEvidence,
     Files = (source.ecer_bcgov_documenturl_ReconsiderationInvestigationOutcomeId ?? Array.Empty<bcgov_DocumentUrl>()).Select(MapFileInfo).ToList(),
+    InvestigationOutcome = source.ecer_Type == ecer_ReconsiderationInvestigationType.InvestigationOutcome ? MapInvestigationOutcome(source.ecer_reconsiderationinvestigationoutcome_InvestigationId?.ecer_InvestigationOutcome) : null,
+    ImmediateActionType = source.ecer_Type == ecer_ReconsiderationInvestigationType.ImmediateAction ? MapImmediateActionType(source.ecer_reconsiderationinvestigationoutcome_ImmediateActionId?.ecer_ImmediateActionType) : null,
   };
 
   public List<InvestigationReconsideration> MapInvestigationReconsiderationRequests(IEnumerable<ecer_ReconsiderationInvestigationOutcome> source) => source.Select(MapInvestigationReconsiderationRequest).ToList();
@@ -56,6 +58,12 @@ internal partial class InvestigationReconsiderationRepositoryMapper : IInvestiga
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ReconsiderationInvestigationType MapInvestigationReconsiderationType(InvestigationReconsiderationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial InvestigationOutcomeType? MapInvestigationOutcome(ecer_InvestigationOutcome? source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ImmediateActionType? MapImmediateActionType(ecer_immediateaction? source);
 
   private static FileInfo MapFileInfo(bcgov_DocumentUrl source) => new(source.bcgov_DocumentUrlId?.ToString() ?? string.Empty)
   {

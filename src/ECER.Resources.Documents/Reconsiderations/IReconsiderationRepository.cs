@@ -25,6 +25,8 @@ public record Reconsideration()
   public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
   public DateTime? ReconsiderationEndDate { get; set; }
   public string? ApplicationId { get; set; }
+  public ApplicationType Type { get; set; }
+
 }
 public record FileInfo(string Id)
 {
@@ -40,4 +42,12 @@ public enum ReconsiderationStatusCode
   Complete,
   InReview,
   New,
+}
+
+public enum ApplicationType
+{
+  New,
+  Renewal,
+  LabourMobility,
+  ICRA
 }

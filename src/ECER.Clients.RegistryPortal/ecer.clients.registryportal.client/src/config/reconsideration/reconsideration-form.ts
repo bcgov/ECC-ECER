@@ -14,12 +14,42 @@ const reconsiderationForm: Form = {
         lg: 12,
         xl: 12,
       },
-      getValue: (dataSource): Components.Schemas.Reconsideration => {
+      getValue: (
+        dataSource,
+      ):
+        | Components.Schemas.Reconsideration
+        | Components.Schemas.InvestigationReconsideration => {
+        // since we can accept both types we need this function to help determine what we have.
+        // only InvestigationReconsideration has immediateActionType and investigationOutcome fields.
+        function isInvestigationReconsideration(
+          value:
+            | Components.Schemas.Reconsideration
+            | Components.Schemas.InvestigationReconsideration
+            | undefined,
+        ): value is Components.Schemas.InvestigationReconsideration {
+          return (
+            value?.type === "ImmediateAction" ||
+            value?.type === "InvestigationOutcome"
+          );
+        }
+
+        const reconsideration = dataSource.reconsideration;
+        const investigationReconsideration = isInvestigationReconsideration(
+          reconsideration,
+        )
+          ? reconsideration
+          : undefined;
+
         return {
           explanationAndEvidence: undefined,
           files: [],
           reconsiderationEndDate:
             dataSource.reconsideration?.reconsiderationEndDate,
+          type: dataSource.reconsideration?.type,
+          immediateActionType:
+            investigationReconsideration?.immediateActionType,
+          investigationOutcome:
+            investigationReconsideration?.investigationOutcome,
         };
       },
     },

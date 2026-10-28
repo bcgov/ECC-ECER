@@ -23,15 +23,21 @@ internal partial class ReconsiderationRepositoryMapper : IReconsiderationReposit
     ecer_ExplanationandEvidence = source.ExplanationAndEvidence,
   };
 
-  public Reconsideration MapReconsiderationRequest(ecer_ReconsiderationRequest source) => new Reconsideration()
+  public Reconsideration MapReconsiderationRequest(ecer_ReconsiderationRequest source)
   {
-    Id = source.ecer_ReconsiderationRequestId?.ToString(),
-    Status = source.StatusCode.HasValue ? MapReconsiderationStatus(source.StatusCode.Value) : default,
-    ExplanationAndEvidence = source.ecer_ExplanationandEvidence,
-    Files = (source.ecer_bcgov_documenturl_ReconsiderationRequestId ?? Array.Empty<bcgov_DocumentUrl>()).Select(MapFileInfo).ToList(),
-    ReconsiderationEndDate = source.ecer_reconsiderationrequest_ApplicationId?.ecer_ReconsiderationPeriodEndDate,
-    ApplicationId = source.ecer_reconsiderationrequest_ApplicationId?.Id.ToString(),
-  };
+    var appType = source.ecer_reconsiderationrequest_ApplicationId?.ecer_Type;
+
+    return new Reconsideration()
+    {
+      Id = source.ecer_ReconsiderationRequestId?.ToString(),
+      Status = source.StatusCode.HasValue ? MapReconsiderationStatus(source.StatusCode.Value) : default,
+      ExplanationAndEvidence = source.ecer_ExplanationandEvidence,
+      Files = (source.ecer_bcgov_documenturl_ReconsiderationRequestId ?? Array.Empty<bcgov_DocumentUrl>()).Select(MapFileInfo).ToList(),
+      ReconsiderationEndDate = source.ecer_reconsiderationrequest_ApplicationId?.ecer_ReconsiderationPeriodEndDate,
+      ApplicationId = source.ecer_reconsiderationrequest_ApplicationId?.Id.ToString(),
+      Type = appType.HasValue ? MapApplicationType(appType.Value) : default
+    };
+  }
 
   public List<Reconsideration> MapReconsiderationRequests(IEnumerable<ecer_ReconsiderationRequest> source) => source.Select(MapReconsiderationRequest).ToList();
 
@@ -42,6 +48,9 @@ internal partial class ReconsiderationRepositoryMapper : IReconsiderationReposit
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ecer_ReconsiderationRequest_StatusCode MapReconsiderationStatus(ReconsiderationStatusCode source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ApplicationType MapApplicationType(ecer_ApplicationTypes source);
 
   private static FileInfo MapFileInfo(bcgov_DocumentUrl source) => new(source.bcgov_DocumentUrlId?.ToString() ?? string.Empty)
   {

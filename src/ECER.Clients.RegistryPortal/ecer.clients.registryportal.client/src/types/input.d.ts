@@ -118,6 +118,8 @@ interface Input {
     xl: number;
   };
   getValue?: (dataSources: {
-    reconsideration?: Components.Schemas.Reconsideration;
+    reconsideration?:
+      | Components.Schemas.Reconsideration
+      | Components.Schemas.InvestigationReconsideration;
   }) => any | Promise<any>;
 }

@@ -35,6 +35,8 @@ internal partial class InvestigationReconsiderationsMapper : IInvestigationRecon
     ExplanationAndEvidence = source.ExplanationAndEvidence,
     Files = source.Files.Select(MapFileInfo).ToList(),
     ReconsiderationEndDate = source.ReconsiderationEndDate,
+    InvestigationOutcome = MapInvestigationOutcome(source.InvestigationOutcome),
+    ImmediateActionType = MapImmediateActionType(source.ImmediateActionType),
   };
 
   public IEnumerable<InvestigationReconsideration> MapInvestigationReconsiderationRequests(IEnumerable<ContractInvestigationReconsiderations.InvestigationReconsideration> source) => source.Select(MapInvestigationReconsiderationRequest).ToList();
@@ -68,4 +70,10 @@ internal partial class InvestigationReconsiderationsMapper : IInvestigationRecon
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial InvestigationReconsiderationType MapInvestigationReconsiderationType(ContractInvestigationReconsiderations.InvestigationReconsiderationType source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial InvestigationOutcomeType? MapInvestigationOutcome(ContractInvestigationReconsiderations.InvestigationOutcomeType? source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial ImmediateActionType? MapImmediateActionType(ContractInvestigationReconsiderations.ImmediateActionType? source);
 }
