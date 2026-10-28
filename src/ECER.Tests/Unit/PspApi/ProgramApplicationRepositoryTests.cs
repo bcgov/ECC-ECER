@@ -109,8 +109,8 @@ namespace ECER.Tests.Unit.PspApi
     [InlineData("MissingProgramLengthEntry", ApplicationType.NewCampusatRecognizedPrivateInstitution, DeliveryType.Hybrid, false)]
     [InlineData("MissingProgramEnrollment", ApplicationType.NewCampusatRecognizedPrivateInstitution, DeliveryType.Hybrid, false)]
     [InlineData("MissingAdmissionOption", ApplicationType.NewCampusatRecognizedPrivateInstitution, DeliveryType.Hybrid, false)]
-    [InlineData("MissingOnlineMethodOfInstruction", ApplicationType.NewCampusatRecognizedPrivateInstitution, DeliveryType.Hybrid, false)]
-    [InlineData("MissingDeliveryMethodForPracticumInstructor", ApplicationType.NewCampusatRecognizedPrivateInstitution, DeliveryType.Hybrid, false)]
+    [InlineData("MissingOnlineMethodOfInstruction", ApplicationType.NewCampusatRecognizedPrivateInstitution, DeliveryType.Hybrid, true)]
+    [InlineData("MissingDeliveryMethodForPracticumInstructor", ApplicationType.NewCampusatRecognizedPrivateInstitution, DeliveryType.Hybrid, true)]
     //SatelliteProgram
     [InlineData("Valid", ApplicationType.SatelliteProgram, DeliveryType.Hybrid, true)]
     [InlineData("NameEmpty", ApplicationType.SatelliteProgram, DeliveryType.Hybrid, false)]
