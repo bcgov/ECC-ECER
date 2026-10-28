@@ -40,7 +40,7 @@ public class InvestigationReconsiderationRepositoryTests : RegistryPortalWebAppS
       new InvestigationReconsiderationQuery
       {
         ById = investigationReconsiderationRequestId,
-        ByStatusCodes = [InvestigationReconsiderationStatusCode.InReview],
+        ByStatusCodes = [InvestigationReconsiderationStatusCode.Submitted],
         ByApplicantId = investigationReconsiderationRequestApplicantId
       }, CancellationToken.None)).FirstOrDefault().ShouldNotBeNull();
 

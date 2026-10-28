@@ -95,7 +95,11 @@ public record Reconsideration()
 
 public enum ReconsiderationStatusCode
 {
+  Closed,
   Complete,
   InReview,
   New,
+  NotSubmitted,
+  Submitted,
+  Withdrawn,
 }

@@ -36,6 +36,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Closed = 290700003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Complete = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,6 +46,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		New = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NotSubmitted = 290700002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Submitted = 290700001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Withdrawn = 621870002,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
@@ -75,6 +87,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_InvestigationId = "ecer_investigationid";
 			public const string ecer_InvestigationIdName = "ecer_investigationidname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_origin = "ecer_origin";
+			public const string ecer_originName = "ecer_originname";
 			public const string ecer_OtherReason = "ecer_otherreason";
 			public const string ecer_Reason = "ecer_reason";
 			public const string ecer_reasonName = "ecer_reasonname";
@@ -423,6 +437,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_origin")]
+		public virtual ecer_DisputeOrigin? ecer_origin
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_DisputeOrigin?)(EntityOptionSetEnum.GetEnum(this, "ecer_origin")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_origin", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_originname")]
+		public string ecer_originName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_origin"))
+				{
+					return this.FormattedValues["ecer_origin"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

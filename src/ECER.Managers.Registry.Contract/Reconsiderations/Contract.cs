@@ -53,9 +53,13 @@ public record FileInfo(string Id)
 
 public enum ReconsiderationStatusCode
 {
+  Closed,
   Complete,
   InReview,
   New,
+  NotSubmitted,
+  Submitted,
+  Withdrawn,
 }
 
 public enum ApplicationType

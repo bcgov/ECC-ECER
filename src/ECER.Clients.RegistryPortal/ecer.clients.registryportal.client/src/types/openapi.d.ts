@@ -527,7 +527,13 @@ declare namespace Components {
       immediateActionType?: ImmediateActionType;
     }
     export type InvestigationReconsiderationStatusCode =
-      "Complete" | "InReview" | "New";
+      | "Closed"
+      | "Complete"
+      | "InReview"
+      | "New"
+      | "NotSubmitted"
+      | "Submitted"
+      | "Withdrawn";
     export type InvestigationReconsiderationType =
       "InvestigationOutcome" | "ImmediateAction";
     export type InviteType =
@@ -671,7 +677,14 @@ declare namespace Components {
       applicationId?: string | null;
       type?: ApplicationTypes;
     }
-    export type ReconsiderationStatusCode = "Complete" | "InReview" | "New";
+    export type ReconsiderationStatusCode =
+      | "Closed"
+      | "Complete"
+      | "InReview"
+      | "New"
+      | "NotSubmitted"
+      | "Submitted"
+      | "Withdrawn";
     export interface ReferenceContactInformation {
       lastName?: string | null;
       email?: string | null;

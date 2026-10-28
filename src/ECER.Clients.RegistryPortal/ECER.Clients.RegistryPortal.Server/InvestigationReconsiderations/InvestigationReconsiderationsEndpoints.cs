@@ -89,9 +89,13 @@ public record InvestigationReconsideration()
 
 public enum InvestigationReconsiderationStatusCode
 {
+  Closed,
   Complete,
   InReview,
   New,
+  NotSubmitted,
+  Submitted,
+  Withdrawn,
 }
 
 public enum InvestigationReconsiderationType

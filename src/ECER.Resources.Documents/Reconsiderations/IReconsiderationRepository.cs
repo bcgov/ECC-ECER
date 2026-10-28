@@ -26,7 +26,6 @@ public record Reconsideration()
   public DateTime? ReconsiderationEndDate { get; set; }
   public string? ApplicationId { get; set; }
   public ApplicationType Type { get; set; }
-
 }
 public record FileInfo(string Id)
 {
@@ -39,9 +38,13 @@ public record FileInfo(string Id)
 
 public enum ReconsiderationStatusCode
 {
+  Closed,
   Complete,
   InReview,
   New,
+  NotSubmitted,
+  Submitted,
+  Withdrawn,
 }
 
 public enum ApplicationType
