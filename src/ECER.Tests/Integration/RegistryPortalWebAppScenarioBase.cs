@@ -849,6 +849,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       StateCode = ecer_application_statecode.Active,
       ecer_CertificateType = "ECE 5 YR",
       ecer_Name = name,
+      ecer_Type = ecer_ApplicationTypes.New
     };
     context.AddObject(application);
     context.AddLink(application, ecer_Application.Fields.ecer_application_Applicantid_contact, trackedRegistrant);
@@ -892,6 +893,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       StatusCode = ecer_Investigation_StatusCode.New,
       StateCode = ecer_investigation_statecode.Active,
       ecer_Name = name,
+      ecer_InvestigationOutcome = ecer_InvestigationOutcome.ActionCancellation
     };
     context.AddObject(investigation);
     context.AddLink(investigation, ecer_Investigation.Fields.ecer_contact_ecer_investigation_Applicant, trackedRegistrant);

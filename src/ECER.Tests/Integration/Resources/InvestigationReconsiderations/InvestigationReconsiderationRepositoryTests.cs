@@ -45,5 +45,8 @@ public class InvestigationReconsiderationRepositoryTests : RegistryPortalWebAppS
       }, CancellationToken.None)).FirstOrDefault().ShouldNotBeNull();
 
     investigationReconsideration.ExplanationAndEvidence.ShouldBe("updated evidence");
+    investigationReconsideration.Type.ShouldBe(InvestigationReconsiderationType.InvestigationOutcome);
+    investigationReconsideration.ImmediateActionType.ShouldBeNull(); //should be null since it is not an immediate action type
+    investigationReconsideration.InvestigationOutcome.ShouldBe(InvestigationOutcomeType.ActionCancellation);
   }
 }

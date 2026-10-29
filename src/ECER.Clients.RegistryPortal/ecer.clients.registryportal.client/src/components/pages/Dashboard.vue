@@ -481,8 +481,10 @@ export default defineComponent({
       this.certificationStore.fetchCertifications(),
       getUserInfo(),
       getProfile(),
-      (await getReconsiderationsQuery(undefined, ["New"]))?.data,
-      (await getInvestigationReconsiderationsQuery(undefined, ["New"]))?.data,
+      getReconsiderationsQuery(undefined, ["New"]).then((res) => res?.data),
+      getInvestigationReconsiderationsQuery(undefined, ["New"]).then(
+        (res) => res?.data,
+      ),
     ]);
 
     // Fetch ICRA eligibilities if the feature is enabled

@@ -45,5 +45,6 @@ public class ReconsiderationRepositoryTests : RegistryPortalWebAppScenarioBase
       }, CancellationToken.None)).FirstOrDefault().ShouldNotBeNull();
 
     reconsideration.ExplanationAndEvidence.ShouldBe("updated evidence");
+    reconsideration.Type.ShouldBe(ApplicationType.New);
   }
 }

@@ -131,12 +131,14 @@ export default defineComponent({
     return { router, loadingStore };
   },
   async mounted() {
-    this.reconsiderations = (await getReconsiderationsQuery(undefined, ["New"]))
-      ?.data;
-
-    this.investigationReconsiderations = (
-      await getInvestigationReconsiderationsQuery(undefined, ["New"])
-    )?.data;
+    const [reconsiderations, investigationReconsiderations] = await Promise.all(
+      [
+        getReconsiderationsQuery(undefined, ["New"]),
+        getInvestigationReconsiderationsQuery(undefined, ["New"]),
+      ],
+    );
+    this.reconsiderations = reconsiderations?.data;
+    this.investigationReconsiderations = investigationReconsiderations?.data;
   },
   data() {
     return {
