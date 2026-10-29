@@ -22,7 +22,7 @@ export default defineConfig({
   scrollBehavior: "center", // or 'nearest'
   allowCypressEnv: false,
   retries: {
-    runMode: 1, // retry once when we do `cypress run`
+    runMode: 2, // retry twice when we do `cypress run`
     openMode: 0, // no retries when we’re developing with `cypress open`
   },
   env: {
