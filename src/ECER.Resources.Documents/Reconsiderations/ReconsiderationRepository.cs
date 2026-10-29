@@ -83,7 +83,7 @@ internal sealed class ReconsiderationRepository : IReconsiderationRepository
     context.BeginTransaction();
 
     var updatedReconsideration = mapper.MapReconsiderationRequest(reconsideration);
-    updatedReconsideration.StatusCode = ecer_ReconsiderationRequest_StatusCode.InReview;
+    updatedReconsideration.StatusCode = ecer_ReconsiderationRequest_StatusCode.Submitted;
     updatedReconsideration.ecer_DeclarationandSubmitteddate = DateTime.Now;
 
     existingApplication.StatusCode = ecer_Application_StatusCode.Dispute;

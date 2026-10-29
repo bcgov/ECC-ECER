@@ -40,10 +40,13 @@ public class InvestigationReconsiderationRepositoryTests : RegistryPortalWebAppS
       new InvestigationReconsiderationQuery
       {
         ById = investigationReconsiderationRequestId,
-        ByStatusCodes = [InvestigationReconsiderationStatusCode.InReview],
+        ByStatusCodes = [InvestigationReconsiderationStatusCode.Submitted],
         ByApplicantId = investigationReconsiderationRequestApplicantId
       }, CancellationToken.None)).FirstOrDefault().ShouldNotBeNull();
 
     investigationReconsideration.ExplanationAndEvidence.ShouldBe("updated evidence");
+    investigationReconsideration.Type.ShouldBe(InvestigationReconsiderationType.InvestigationOutcome);
+    investigationReconsideration.ImmediateActionType.ShouldBeNull(); //should be null since it is not an immediate action type
+    investigationReconsideration.InvestigationOutcome.ShouldBe(InvestigationOutcomeType.ActionCancellation);
   }
 }

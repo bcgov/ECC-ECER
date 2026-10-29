@@ -34,7 +34,8 @@ internal partial class ReconsiderationsMapper : IReconsiderationsMapper
     ExplanationAndEvidence = source.ExplanationAndEvidence,
     Files = source.Files.Select(MapFileInfo).ToList(),
     ReconsiderationEndDate = source.ReconsiderationEndDate,
-    ApplicationId = source.ApplicationId
+    ApplicationId = source.ApplicationId,
+    Type = MapApplicationType(source.Type)
   };
 
   public IEnumerable<Reconsideration> MapReconsiderationRequests(IEnumerable<ContractReconsiderations.Reconsideration> source) => source.Select(MapReconsiderationRequest).ToList();
@@ -44,6 +45,9 @@ internal partial class ReconsiderationsMapper : IReconsiderationsMapper
 
   [MapEnum(EnumMappingStrategy.ByName)]
   private partial ContractReconsiderations.ReconsiderationStatusCode MapReconsiderationStatus(ReconsiderationStatusCode source);
+
+  [MapEnum(EnumMappingStrategy.ByName)]
+  private partial Applications.ApplicationTypes MapApplicationType(ContractReconsiderations.ApplicationType source);
 
   public IEnumerable<ContractReconsiderations.ReconsiderationStatusCode> MapReconsiderationStatusCodes(IEnumerable<ReconsiderationStatusCode> source) => source.Select(MapReconsiderationStatus).ToList();
 

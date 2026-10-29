@@ -90,11 +90,16 @@ public record Reconsideration()
   public DateTime? ReconsiderationEndDate { get; set; }
   [ValidGuid]
   public string? ApplicationId { get; set; }
+  public Applications.ApplicationTypes Type { get; set; }
 }
 
 public enum ReconsiderationStatusCode
 {
+  Closed,
   Complete,
   InReview,
   New,
+  NotSubmitted,
+  Submitted,
+  Withdrawn,
 }

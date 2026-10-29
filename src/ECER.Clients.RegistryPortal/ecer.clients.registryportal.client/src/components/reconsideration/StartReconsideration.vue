@@ -1,12 +1,17 @@
 <template>
-  <Loading v-if="loadingStore.isLoading('reconsiderations_get')"></Loading>
+  <Loading
+    v-if="
+      loadingStore.isLoading('reconsiderations_get') ||
+      loadingStore.isLoading('investigation_reconsiderations_get')
+    "
+  ></Loading>
   <template v-else>
     <v-container fluid class="bg-primary">
       <v-container>
         <v-row>
           <v-col>
             <h2 class="text-white">
-              Dispute application for certification decision
+              {{ disputeTitle }}
             </h2>
           </v-col>
         </v-row>
@@ -104,6 +109,7 @@ import type { Components } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import { formatDate } from "@/utils/format";
 import { getReconsiderationsQuery } from "@/api/reconsideration";
+import { getInvestigationReconsiderationsQuery } from "@/api/investigationReconsideration";
 
 import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
@@ -131,12 +137,18 @@ export default defineComponent({
       this.reconsideration = (
         await getReconsiderationsQuery(this.reconsiderationId)
       )?.data?.[0];
+    } else if (this.reconsiderationType === "investigation") {
+      this.investigationReconsideration = (
+        await getInvestigationReconsiderationsQuery(this.reconsiderationId)
+      )?.data?.[0];
     }
   },
   data() {
     return {
       reconsideration: undefined as
         Components.Schemas.Reconsideration | undefined,
+      investigationReconsideration: undefined as
+        Components.Schemas.InvestigationReconsideration | undefined,
     };
   },
   methods: {
@@ -158,12 +170,24 @@ export default defineComponent({
           "LLLL d, yyyy",
         );
       } else if (this.reconsiderationType === "investigation") {
-        // TODO implement with investigations
-        return "not implemented";
+        return formatDate(
+          this.investigationReconsideration?.reconsiderationEndDate || "",
+          "LLLL d, yyyy",
+        );
       }
-      console.warn(
-        `unhandled reconsideration type: ${this.reconsiderationType}`,
-      );
+      return "unknown";
+    },
+    disputeTitle(): string {
+      if (this.reconsiderationType === "application") {
+        return "Dispute application for certification decision";
+      } else if (this.reconsiderationType === "investigation") {
+        switch (this.investigationReconsideration?.type) {
+          case "ImmediateAction":
+            return "Dispute immediate action(s) on your certificate";
+          case "InvestigationOutcome":
+            return "Dispute intended action(s) on your certificate";
+        }
+      }
       return "unknown";
     },
   },

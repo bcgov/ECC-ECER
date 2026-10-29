@@ -18,7 +18,7 @@
           <p class="small">Type of decision</p>
         </v-col>
         <v-col>
-          <strong>Intent to deny application</strong>
+          <strong>{{ mapReconsiderationToTypeOfDecision() }}</strong>
         </v-col>
       </v-row>
       <v-row>
@@ -57,6 +57,8 @@ import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 import { formatDate } from "@/utils/format";
 import type { Components } from "@/types/openapi";
+import { mapReconsiderationTypeToTypeOfDecision } from "@/api/reconsideration";
+import { mapInvestigationReconsiderationTypeToTypeOfDecision } from "@/api/investigationReconsideration.ts";
 export default defineComponent({
   name: "EceReconsiderationPreview",
   components: {
@@ -67,6 +69,34 @@ export default defineComponent({
     return {
       wizardStore,
     };
+  },
+  methods: {
+    mapReconsiderationToTypeOfDecision() {
+      const reconsideration = this.wizardStore.wizardData[
+        this.wizardStore?.wizardConfig?.steps?.reconsideration?.form?.inputs
+          ?.reconsideration?.id || ""
+      ] as
+        | Components.Schemas.Reconsideration
+        | Components.Schemas.InvestigationReconsideration;
+
+      if (!reconsideration) {
+        console.warn(
+          "reconsideration not found check the wizard configuration",
+        );
+        return "";
+      }
+
+      if (
+        reconsideration.type === "ImmediateAction" ||
+        reconsideration.type === "InvestigationOutcome"
+      ) {
+        return mapInvestigationReconsiderationTypeToTypeOfDecision(
+          reconsideration,
+        );
+      }
+      //it's a regular reconsideration request just use reconsideration mappings
+      return mapReconsiderationTypeToTypeOfDecision(reconsideration);
+    },
   },
   computed: {
     disputeExplanation() {

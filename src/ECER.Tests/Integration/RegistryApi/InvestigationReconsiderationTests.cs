@@ -75,7 +75,7 @@ public class InvestigationReconsiderationTests : RegistryPortalWebAppScenarioBas
     });
 
     var submittedReconsideration = (await submittedReconsiderationResponse.ReadAsJsonAsync<IEnumerable<InvestigationReconsideration>>()).FirstOrDefault().ShouldNotBeNull();
-    submittedReconsideration.Status.ShouldBe(InvestigationReconsiderationStatusCode.InReview);
+    submittedReconsideration.Status.ShouldBe(InvestigationReconsiderationStatusCode.Submitted);
     submittedReconsideration.ExplanationAndEvidence.ShouldBe("updated explanation and evidence for investigation reconsideration submission");
     submittedReconsideration.Files.Select(f => f.Id).ShouldContain(uploadedFileResponse.fileId);
 

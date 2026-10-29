@@ -14,7 +14,7 @@
   <v-row>
     <v-col cols="3">Type of decision</v-col>
     <v-col>
-      <strong>Intent to deny application</strong>
+      <strong>{{ mapReconsiderationToTypeOfDecision() }}</strong>
     </v-col>
   </v-row>
   <br />
@@ -55,6 +55,8 @@ import * as Rules from "@/utils/formRules";
 import type { Components } from "@/types/openapi";
 import { humanFileSize } from "@/utils/functions";
 import { formatDate } from "@/utils/format";
+import { mapReconsiderationTypeToTypeOfDecision } from "@/api/reconsideration";
+import { mapInvestigationReconsiderationTypeToTypeOfDecision } from "@/api/investigationReconsideration.ts";
 
 import FileUploader from "../../FileUploader.vue";
 
@@ -70,13 +72,19 @@ export default defineComponent({
   },
   props: {
     modelValue: {
-      type: Object as PropType<Components.Schemas.Reconsideration>,
+      type: Object as PropType<
+        | Components.Schemas.Reconsideration
+        | Components.Schemas.InvestigationReconsideration
+      >,
       required: true,
     },
   },
   emits: {
-    "update:model-value": (_disputeData: Components.Schemas.Reconsideration) =>
-      true,
+    "update:model-value": (
+      _disputeData:
+        | Components.Schemas.Reconsideration
+        | Components.Schemas.InvestigationReconsideration,
+    ) => true,
   },
   data() {
     return {};
@@ -113,6 +121,18 @@ export default defineComponent({
         }
         this.$emit("update:model-value", { ...this.modelValue, files: files });
       }
+    },
+    mapReconsiderationToTypeOfDecision() {
+      if (
+        this.modelValue.type === "ImmediateAction" ||
+        this.modelValue.type === "InvestigationOutcome"
+      ) {
+        return mapInvestigationReconsiderationTypeToTypeOfDecision(
+          this.modelValue,
+        );
+      }
+      // If it's not an InvestigationReconsideration, use the regular reconsideration mapping
+      return mapReconsiderationTypeToTypeOfDecision(this.modelValue);
     },
   },
 });

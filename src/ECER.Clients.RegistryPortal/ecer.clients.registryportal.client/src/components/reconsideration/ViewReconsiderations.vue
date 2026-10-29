@@ -1,6 +1,16 @@
 <template>
-  <Loading v-if="loadingStore.isLoading('reconsiderations_get')"></Loading>
-  <p v-else-if="(reconsiderations?.length || 0) <= 0">
+  <Loading
+    v-if="
+      loadingStore.isLoading('reconsiderations_get') ||
+      loadingStore.isLoading('investigation_reconsiderations_get')
+    "
+  ></Loading>
+  <p
+    v-else-if="
+      (reconsiderations?.length || 0) <= 0 &&
+      (investigationReconsiderations?.length || 0) <= 0
+    "
+  >
     There are no active disputes available
   </p>
   <template v-else>
@@ -49,6 +59,51 @@
           </v-card>
         </v-col>
       </v-row>
+      <!-- Investigation Reconsiderations -->
+      <v-row
+        v-for="(
+          investigationReconsideration, index
+        ) in investigationReconsiderations"
+        :key="investigationReconsideration.id || index"
+      >
+        <v-col>
+          <v-card class="card-border" flat>
+            <v-card-item>
+              <v-row no-gutters>
+                <v-col>
+                  <strong>
+                    {{
+                      generateInvestigationReconsiderationTitle(
+                        investigationReconsideration,
+                      )
+                    }}
+                  </strong>
+                </v-col>
+              </v-row>
+              <v-row no-gutters>
+                <v-col>
+                  <v-btn
+                    class="mt-4"
+                    color="primary"
+                    @click="
+                      router.push({
+                        name: 'start-reconsideration',
+                        params: {
+                          reconsiderationId: investigationReconsideration.id,
+                          reconsiderationType:
+                            'investigation' as ReconsiderationType,
+                        },
+                      })
+                    "
+                  >
+                    Start dispute
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-item>
+          </v-card>
+        </v-col>
+      </v-row>
     </PageContainer>
   </template>
 </template>
@@ -58,6 +113,7 @@ import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
 import { getReconsiderationsQuery } from "@/api/reconsideration";
+import { getInvestigationReconsiderationsQuery } from "@/api/investigationReconsideration";
 
 import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
@@ -75,15 +131,39 @@ export default defineComponent({
     return { router, loadingStore };
   },
   async mounted() {
-    this.reconsiderations = (await getReconsiderationsQuery(undefined, ["New"]))
-      ?.data;
+    const [reconsiderations, investigationReconsiderations] = await Promise.all(
+      [
+        getReconsiderationsQuery(undefined, ["New"]),
+        getInvestigationReconsiderationsQuery(undefined, ["New"]),
+      ],
+    );
+    this.reconsiderations = reconsiderations?.data;
+    this.investigationReconsiderations = investigationReconsiderations?.data;
   },
   data() {
     return {
       reconsiderations: [] as Components.Schemas.Reconsideration[] | undefined,
+      investigationReconsiderations: [] as
+        Components.Schemas.InvestigationReconsideration[] | undefined,
     };
   },
-  methods: {},
+  methods: {
+    generateInvestigationReconsiderationTitle(
+      investigationReconsideration: Components.Schemas.InvestigationReconsideration,
+    ): string {
+      const type = investigationReconsideration.type;
+
+      switch (type) {
+        case "InvestigationOutcome":
+          return "Dispute investigation outcome taken for your certificate(s)";
+        case "ImmediateAction":
+          return "Dispute immediate action taken for your certificate(s)";
+        default:
+          console.warn(`Unknown investigation reconsideration type: ${type}`);
+          return `unknown dispute type`;
+      }
+    },
+  },
 });
 </script>
 <style lang="scss">

@@ -40,10 +40,11 @@ public class ReconsiderationRepositoryTests : RegistryPortalWebAppScenarioBase
       new ReconsiderationQuery
       {
         ById = reconsiderationRequestId,
-        ByStatusCodes = [ReconsiderationStatusCode.InReview],
+        ByStatusCodes = [ReconsiderationStatusCode.Submitted],
         ByApplicantId = reconsiderationRequestApplicantId
       }, CancellationToken.None)).FirstOrDefault().ShouldNotBeNull();
 
     reconsideration.ExplanationAndEvidence.ShouldBe("updated evidence");
+    reconsideration.Type.ShouldBe(ApplicationType.New);
   }
 }

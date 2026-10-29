@@ -24,6 +24,8 @@ public record InvestigationReconsideration()
   public InvestigationReconsiderationStatusCode Status { get; set; }
   public InvestigationReconsiderationType Type { get; set; }
   public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
+  public InvestigationOutcomeType? InvestigationOutcome { get; set; }
+  public ImmediateActionType? ImmediateActionType { get; set; }
 }
 public record FileInfo(string Id)
 {
@@ -36,13 +38,35 @@ public record FileInfo(string Id)
 
 public enum InvestigationReconsiderationStatusCode
 {
+  Closed,
   Complete,
   InReview,
   New,
+  NotSubmitted,
+  Submitted,
+  Withdrawn,
 }
 
 public enum InvestigationReconsiderationType
 {
   InvestigationOutcome,
   ImmediateAction,
+}
+
+public enum InvestigationOutcomeType
+{
+  ActionApplicationDenied,
+  ActionCancellation,
+  ActionSuspension,
+  ActionTermsandConditions,
+  NoActionGapsAddressed,
+  NoActionNoGaps,
+  Other,
+}
+
+public enum ImmediateActionType
+{
+  No,
+  YesSuspended,
+  YesTC,
 }

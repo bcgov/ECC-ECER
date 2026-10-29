@@ -471,6 +471,7 @@ declare namespace Components {
       size?: string | null;
       ecerWebApplicationType?: EcerWebApplicationType;
     }
+    export type ImmediateActionType = "No" | "YesSuspended" | "YesTC";
     export type InitiatedFrom =
       "Investigation" | "PortalUser" | "Registry" | "ProgramRepresentative";
     export interface InternationalCertification {
@@ -504,6 +505,37 @@ declare namespace Components {
       | "Rejected"
       | "UnderReview"
       | "WaitingforResponse";
+    export type InvestigationOutcomeType =
+      | "ActionApplicationDenied"
+      | "ActionCancellation"
+      | "ActionSuspension"
+      | "ActionTermsandConditions"
+      | "NoActionGapsAddressed"
+      | "NoActionNoGaps"
+      | "Other";
+    /**
+     * Represents a reconsideration request submitted by an applicant.
+     */
+    export interface InvestigationReconsideration {
+      id?: string | null;
+      explanationAndEvidence?: string | null;
+      status?: InvestigationReconsiderationStatusCode;
+      type?: InvestigationReconsiderationType;
+      files?: FileInfo[] | null;
+      reconsiderationEndDate?: string | null; // date-time
+      investigationOutcome?: InvestigationOutcomeType;
+      immediateActionType?: ImmediateActionType;
+    }
+    export type InvestigationReconsiderationStatusCode =
+      | "Closed"
+      | "Complete"
+      | "InReview"
+      | "New"
+      | "NotSubmitted"
+      | "Submitted"
+      | "Withdrawn";
+    export type InvestigationReconsiderationType =
+      "InvestigationOutcome" | "ImmediateAction";
     export type InviteType =
       | "CharacterReference"
       | "WorkExperienceReferenceforApplication"
@@ -638,14 +670,21 @@ declare namespace Components {
      */
     export interface Reconsideration {
       id?: string | null;
-      reconsiderationDetails?: string | null;
       explanationAndEvidence?: string | null;
       status?: ReconsiderationStatusCode;
       files?: FileInfo[] | null;
       reconsiderationEndDate?: string | null; // date-time
       applicationId?: string | null;
+      type?: ApplicationTypes;
     }
-    export type ReconsiderationStatusCode = "Complete" | "InReview" | "New";
+    export type ReconsiderationStatusCode =
+      | "Closed"
+      | "Complete"
+      | "InReview"
+      | "New"
+      | "NotSubmitted"
+      | "Submitted"
+      | "Withdrawn";
     export interface ReferenceContactInformation {
       lastName?: string | null;
       email?: string | null;
@@ -1365,6 +1404,39 @@ declare namespace Paths {
       export type $200 = Components.Schemas.IdentificationType[];
     }
   }
+  namespace InvestigationReconsiderationsGet {
+    namespace Parameters {
+      export type ByApplicationId = string;
+      export type ById = string;
+      export type ByStatusCodes =
+        Components.Schemas.InvestigationReconsiderationStatusCode[];
+    }
+    export interface QueryParameters {
+      "ByStatusCodes[]"?: Parameters.ByStatusCodes;
+      ById?: Parameters.ById;
+      ByApplicationId?: Parameters.ByApplicationId;
+    }
+    namespace Responses {
+      export type $200 =
+        /* Represents a reconsideration request submitted by an applicant. */ Components.Schemas.InvestigationReconsideration[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace InvestigationReconsiderationsSubmitPut {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody =
+      /* Represents a reconsideration request submitted by an applicant. */ Components.Schemas.InvestigationReconsideration;
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
   namespace MessageGet {
     namespace Parameters {
       export type ParentId = string;
@@ -1682,7 +1754,7 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ReconsiderationsGet.Responses.$200>;
   /**
-   * reconsiderations_submit_put - Handles reconsiderations queries
+   * reconsiderations_submit_put - Handles reconsiderations submission
    */
   reconsiderations_submit_put(
     parameters?: Parameters<Paths.ReconsiderationsSubmitPut.PathParameters> | null,
@@ -1729,6 +1801,22 @@ export interface OperationMethods {
     data?: Paths.IcraWorkExperienceReferencePost.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.IcraWorkExperienceReferencePost.Responses.$200>;
+  /**
+   * investigation_reconsiderations_get - Handles investigation reconsiderations queries
+   */
+  investigation_reconsiderations_get(
+    parameters?: Parameters<Paths.InvestigationReconsiderationsGet.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.InvestigationReconsiderationsGet.Responses.$200>;
+  /**
+   * investigation_reconsiderations_submit_put - Handles investigation reconsiderations submissions
+   */
+  investigation_reconsiderations_submit_put(
+    parameters?: Parameters<Paths.InvestigationReconsiderationsSubmitPut.PathParameters> | null,
+    data?: Paths.InvestigationReconsiderationsSubmitPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.InvestigationReconsiderationsSubmitPut.Responses.$200>;
   /**
    * icra_get - Handles icra queries
    */
@@ -2157,7 +2245,7 @@ export interface PathsDictionary {
   };
   ["/api/reconsiderations/submit/{id}"]: {
     /**
-     * reconsiderations_submit_put - Handles reconsiderations queries
+     * reconsiderations_submit_put - Handles reconsiderations submission
      */
     put(
       parameters?: Parameters<Paths.ReconsiderationsSubmitPut.PathParameters> | null,
@@ -2214,6 +2302,26 @@ export interface PathsDictionary {
       data?: Paths.IcraWorkExperienceReferencePost.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.IcraWorkExperienceReferencePost.Responses.$200>;
+  };
+  ["/api/investigation/reconsiderations"]: {
+    /**
+     * investigation_reconsiderations_get - Handles investigation reconsiderations queries
+     */
+    get(
+      parameters?: Parameters<Paths.InvestigationReconsiderationsGet.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.InvestigationReconsiderationsGet.Responses.$200>;
+  };
+  ["/api/investigation/reconsiderations/submit/{id}"]: {
+    /**
+     * investigation_reconsiderations_submit_put - Handles investigation reconsiderations submissions
+     */
+    put(
+      parameters?: Parameters<Paths.InvestigationReconsiderationsSubmitPut.PathParameters> | null,
+      data?: Paths.InvestigationReconsiderationsSubmitPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.InvestigationReconsiderationsSubmitPut.Responses.$200>;
   };
   ["/api/icra/{id}"]: {
     /**
@@ -2627,11 +2735,20 @@ export type ICRAWorkExperienceReferenceSubmissionRequest =
 export type IcraEligibilityOrigin = Components.Schemas.IcraEligibilityOrigin;
 export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
+export type ImmediateActionType = Components.Schemas.ImmediateActionType;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
 export type InternationalCertification =
   Components.Schemas.InternationalCertification;
 export type InternationalCertificationStatus =
   Components.Schemas.InternationalCertificationStatus;
+export type InvestigationOutcomeType =
+  Components.Schemas.InvestigationOutcomeType;
+export type InvestigationReconsideration =
+  Components.Schemas.InvestigationReconsideration;
+export type InvestigationReconsiderationStatusCode =
+  Components.Schemas.InvestigationReconsiderationStatusCode;
+export type InvestigationReconsiderationType =
+  Components.Schemas.InvestigationReconsiderationType;
 export type InviteType = Components.Schemas.InviteType;
 export type LikertScale = Components.Schemas.LikertScale;
 export type OidcAuthenticationSettings =

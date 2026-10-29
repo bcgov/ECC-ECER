@@ -491,7 +491,9 @@ export const useWizardStore = defineStore("wizard", {
     },
     async initializeWizardForReconsideration(
       wizard: Wizard,
-      reconsideration?: Components.Schemas.Reconsideration,
+      reconsideration?:
+        | Components.Schemas.Reconsideration
+        | Components.Schemas.InvestigationReconsideration,
     ) {
       this.$reset();
       this.wizardConfig = wizard;

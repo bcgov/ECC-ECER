@@ -376,6 +376,7 @@ import { cancelDraftApplication } from "@/api/application";
 import { cancelDraftIcraEligibility } from "@/api/icra";
 import { getUserInfo } from "@/api/user";
 import { getReconsiderationsQuery } from "@/api/reconsideration";
+import { getInvestigationReconsiderationsQuery } from "@/api/investigationReconsideration";
 import Loading from "@/components/Loading.vue";
 import { getProfile } from "@/api/profile";
 import ActionCard from "@/components/ActionCard.vue";
@@ -404,6 +405,7 @@ import type {
   UserInfo,
   UserProfile,
   Reconsideration,
+  InvestigationReconsideration,
 } from "@/types/openapi";
 import Card from "@/components/Card.vue";
 
@@ -473,12 +475,16 @@ export default defineComponent({
       this.userInfo,
       this.userProfile,
       this.reconsiderations,
+      this.investigationReconsiderations,
     ] = await Promise.all([
       this.applicationStore.fetchApplications(),
       this.certificationStore.fetchCertifications(),
       getUserInfo(),
       getProfile(),
-      (await getReconsiderationsQuery(undefined, ["New"]))?.data,
+      getReconsiderationsQuery(undefined, ["New"]).then((res) => res?.data),
+      getInvestigationReconsiderationsQuery(undefined, ["New"]).then(
+        (res) => res?.data,
+      ),
     ]);
 
     // Fetch ICRA eligibilities if the feature is enabled
@@ -503,6 +509,8 @@ export default defineComponent({
     userInfo: null as UserInfo | null,
     userProfile: null as UserProfile | null,
     reconsiderations: undefined as Reconsideration[] | undefined,
+    investigationReconsiderations: undefined as
+      InvestigationReconsideration[] | undefined,
   }),
   computed: {
     heading(): string {
@@ -631,7 +639,10 @@ export default defineComponent({
       );
     },
     showReconsiderationCard(): boolean {
-      return (this.reconsiderations?.length || 0) > 0;
+      return (
+        (this.reconsiderations?.length || 0) > 0 ||
+        (this.investigationReconsiderations?.length || 0) > 0
+      );
     },
     hideRenewOptionCertificationCard(): boolean {
       return (

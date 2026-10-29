@@ -228,6 +228,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		DirectorReview = 621870022,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Dispute = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ERConclusionReview = 621870025,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -268,9 +271,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		OutofMandate_Inactive = 621870015,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Reconsideration = 621870005,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		SummaryReportSenttoRegistrant = 621870006,

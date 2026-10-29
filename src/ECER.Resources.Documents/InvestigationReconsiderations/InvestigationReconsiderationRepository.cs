@@ -77,7 +77,7 @@ internal sealed class InvestigationReconsiderationRepository : IInvestigationRec
     }
 
     var updatedInvestigationReconsideration = mapper.MapInvestigationReconsiderationRequest(investigationReconsideration);
-    updatedInvestigationReconsideration.StatusCode = ecer_ReconsiderationInvestigationOutcome_StatusCode.InReview;
+    updatedInvestigationReconsideration.StatusCode = ecer_ReconsiderationInvestigationOutcome_StatusCode.Submitted;
     updatedInvestigationReconsideration.ecer_SubmittedDate = DateTime.Now;
 
     context.Detach(existingReconsideration);
