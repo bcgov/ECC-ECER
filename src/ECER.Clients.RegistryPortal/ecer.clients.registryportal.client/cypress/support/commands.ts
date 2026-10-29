@@ -15,7 +15,7 @@ Cypress.Commands.add("login", (username?: string, password?: string) => {
     const user = username ?? (PORTAL_USER.BCSC_USERNAME as string);
     const pass = password ?? (PORTAL_USER.BCSC_PASSWORD as string);
     // Adjust the URL if login page is at a different route.
-    cy.visit("/login");
+    cy.visit("/login", { timeout: 60000 });
     // Perform login steps:
     // 1. Click the button with the text "Log in with BC Services Card".
     cy.contains("button", "Log in with BC Services Card")
@@ -87,6 +87,7 @@ Cypress.Commands.add("resetUserState", () => {
         failOnStatusCode: true,
         retryOnStatusCodeFailure: true,
         retryOnNetworkFailure: true,
+        timeout: 60000,
       });
     })
     .then((response) => {

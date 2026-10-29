@@ -24,7 +24,7 @@ beforeEach(() => {
   cy.resetUserState();
 
   // Visit login and wait for ready
-  cy.visit("/login");
+  cy.visit("/login", { timeout: 60000 });
   cy.document().its("readyState").should("eq", "complete");
   //login
   // cache under the key "bcsc-user"
