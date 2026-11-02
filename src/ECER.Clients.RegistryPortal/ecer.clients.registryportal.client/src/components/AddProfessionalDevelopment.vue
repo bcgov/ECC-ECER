@@ -53,7 +53,7 @@
               label="Name of the organization who offered this training"
               tooltip-text="Provide the name of the school, organization, or instructor that offered the training or issued the certificate. 
 They should be able to confirm you completed the course or workshop."
-              maxlength="300"
+              maxlength="100"
               :rules="[
                 Rules.required(
                   'Enter the name of the organization that offered this training',
