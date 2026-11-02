@@ -50,6 +50,8 @@ const mapInvestigationReconsiderationTypeToTypeOfDecision = (
           return "Suspend certificate";
         case "YesTC":
           return "Attach or vary terms and conditions";
+        case "No":
+          return "Suspend, cancel, attach and/or vary terms and conditions";
         default:
           console.warn(
             `mapInvestigationReconsiderationTypeToTypeOfDecision: unhandled immediate action type: ${reconsideration.immediateActionType}`,
@@ -66,6 +68,10 @@ const mapInvestigationReconsiderationTypeToTypeOfDecision = (
           return "Intent to suspend certificate";
         case "ActionTermsandConditions":
           return "Intent to attach or vary terms and conditions";
+        case "NoActionNoGaps":
+        case "NoActionGapsAddressed":
+        case "Other":
+          return "Intent to suspend, cancel, attach and/or vary terms and conditions";
         default:
           console.warn(
             `mapInvestigationReconsiderationTypeToTypeOfDecision: unhandled investigation outcome type: ${reconsideration.investigationOutcome}`,

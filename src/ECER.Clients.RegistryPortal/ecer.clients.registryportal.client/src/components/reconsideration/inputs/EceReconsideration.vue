@@ -46,14 +46,16 @@
     ref="fileUploader"
     :max-number-of-files="maxNumberOfFiles"
     @update:files="handleFileUpdate"
+    @delete:file="handleFileDelete"
   />
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
 import type { PropType } from "vue";
+import type { FileItem } from "@/components/UploadFileItem.vue";
 import * as Rules from "@/utils/formRules";
 import type { Components } from "@/types/openapi";
-import { humanFileSize } from "@/utils/functions";
+import { humanFileSize, removeElementByIndex } from "@/utils/functions";
 import { formatDate } from "@/utils/format";
 import { mapReconsiderationTypeToTypeOfDecision } from "@/api/reconsideration";
 import { mapInvestigationReconsiderationTypeToTypeOfDecision } from "@/api/investigationReconsideration.ts";
@@ -120,6 +122,21 @@ export default defineComponent({
           }
         }
         this.$emit("update:model-value", { ...this.modelValue, files: files });
+      }
+    },
+    handleFileDelete(fileItem: FileItem) {
+      let index = this.modelValue.files?.findIndex(
+        (file) => file.id === fileItem.fileId,
+      );
+      if (index !== undefined && index !== -1) {
+        let updatedFiles = removeElementByIndex(
+          this.modelValue.files || [],
+          index,
+        );
+        this.$emit("update:model-value", {
+          ...this.modelValue,
+          files: updatedFiles,
+        });
       }
     },
     mapReconsiderationToTypeOfDecision() {
