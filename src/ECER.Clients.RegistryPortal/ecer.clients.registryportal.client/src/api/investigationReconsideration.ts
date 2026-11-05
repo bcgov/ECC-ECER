@@ -51,6 +51,7 @@ const mapInvestigationReconsiderationTypeToTypeOfDecision = (
         case "YesTC":
           return "Attach or vary terms and conditions";
         case "No":
+        case null:
           return "Suspend, cancel, attach and/or vary terms and conditions";
         default:
           console.warn(
@@ -71,6 +72,7 @@ const mapInvestigationReconsiderationTypeToTypeOfDecision = (
         case "NoActionNoGaps":
         case "NoActionGapsAddressed":
         case "Other":
+        case null:
           return "Intent to suspend, cancel, attach and/or vary terms and conditions";
         default:
           console.warn(
