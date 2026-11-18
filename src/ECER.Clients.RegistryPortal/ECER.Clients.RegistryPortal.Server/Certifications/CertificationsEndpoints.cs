@@ -1,3 +1,4 @@
+using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -71,18 +72,8 @@ public class CertificationsEndpoints : IRegisterEndpoints
 
     endpointRouteBuilder.MapPost("/api/certifications/lookup", async Task<Results<Ok<IEnumerable<CertificationLookupResponse>>, BadRequest<ProblemDetails>, NotFound>> (CertificationLookupRequest request, HttpContext httpContext, CancellationToken ct, IMediator messageBus, ICertificationMapper certificationMapper) =>
     {
-      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.captchaToken), ct);
-
-      if (!captchaResult.Success)
-      {
-        var problemDetails = new ProblemDetails
-        {
-          Status = StatusCodes.Status400BadRequest,
-          Detail = "Invalid captcha token",
-          Extensions = { ["errors"] = captchaResult.ErrorCodes }
-        };
-        return TypedResults.BadRequest(problemDetails);
-      }
+      var captchaProblem = await messageBus.VerifyCaptchaAsync(httpContext, request.captchaToken, CaptchaActions.CertificationLookup, ct);
+      if (captchaProblem != null) return TypedResults.BadRequest(captchaProblem);
 
       var query = new UserCertificationQueryLookup
       {
@@ -95,6 +86,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
       var results = await messageBus.Send(query, ct);
       return TypedResults.Ok(certificationMapper.MapLookupResponses(results.Items));
     })
+     .RequireRateLimiting(RateLimitPolicies.PublicCaptcha)
      .WithOpenApi("Handles certifications lookup queries", string.Empty, "certifications_lookup_post")
      .WithParameterValidation();
   }

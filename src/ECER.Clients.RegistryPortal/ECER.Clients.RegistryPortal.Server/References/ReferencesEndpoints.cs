@@ -1,4 +1,5 @@
 using ECER.Clients.RegistryPortal.Server.Applications;
+using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Utilities.Hosting;
 using Mediator;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -9,26 +10,14 @@ namespace ECER.Clients.RegistryPortal.Server.References;
 
 public class ReferencesEndpoints : IRegisterEndpoints
 {
-  private const string InvalidCaptchaTokenDetail = "Invalid captcha token";
-
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     endpointRouteBuilder.MapPost("/api/References/Character", async Task<Results<Ok, BadRequest<ProblemDetails>>> (CharacterReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails() { Detail = "Token is required" });
 
-      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.CaptchaToken), ct);
-
-      if (!captchaResult.Success)
-      {
-        var problemDetails = new ProblemDetails
-        {
-          Status = StatusCodes.Status400BadRequest,
-          Detail = InvalidCaptchaTokenDetail,
-          Extensions = { ["errors"] = captchaResult.ErrorCodes }
-        };
-        return TypedResults.BadRequest(problemDetails);
-      }
+      var captchaProblem = await messageBus.VerifyCaptchaAsync(httpContext, request.CaptchaToken, CaptchaActions.ReferenceSubmission, ct);
+      if (captchaProblem != null) return TypedResults.BadRequest(captchaProblem);
 
       var mappedCharacterReferenceRequest = referencesMapper.MapCharacterReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
@@ -41,24 +30,14 @@ public class ReferencesEndpoints : IRegisterEndpoints
       }
 
       return TypedResults.Ok();
-    }).WithOpenApi("Handles character reference submission", string.Empty, "character_reference_post").WithParameterValidation();
+    }).RequireRateLimiting(RateLimitPolicies.PublicCaptcha).WithOpenApi("Handles character reference submission", string.Empty, "character_reference_post").WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/References/WorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (WorkExperienceReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
-      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.CaptchaToken), ct);
-
-      if (!captchaResult.Success)
-      {
-        var problemDetails = new ProblemDetails
-        {
-          Status = StatusCodes.Status400BadRequest,
-          Detail = InvalidCaptchaTokenDetail,
-          Extensions = { ["errors"] = captchaResult.ErrorCodes }
-        };
-        return TypedResults.BadRequest(problemDetails);
-      }
+      var captchaProblem = await messageBus.VerifyCaptchaAsync(httpContext, request.CaptchaToken, CaptchaActions.ReferenceSubmission, ct);
+      if (captchaProblem != null) return TypedResults.BadRequest(captchaProblem);
 
       var mappedWorkExperienceRequest = referencesMapper.MapWorkExperienceReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
@@ -71,24 +50,14 @@ public class ReferencesEndpoints : IRegisterEndpoints
       }
 
       return TypedResults.Ok();
-    }).WithOpenApi("Handles work experience reference submission", string.Empty, "workExperience_reference_post").WithParameterValidation();
+    }).RequireRateLimiting(RateLimitPolicies.PublicCaptcha).WithOpenApi("Handles work experience reference submission", string.Empty, "workExperience_reference_post").WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/References/OptOut", async Task<Results<Ok, BadRequest<ProblemDetails>>> (OptOutReferenceRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
-      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.CaptchaToken), ct);
-
-      if (!captchaResult.Success)
-      {
-        var problemDetails = new ProblemDetails
-        {
-          Status = StatusCodes.Status400BadRequest,
-          Detail = InvalidCaptchaTokenDetail,
-          Extensions = { ["errors"] = captchaResult.ErrorCodes }
-        };
-        return TypedResults.BadRequest(problemDetails);
-      }
+      var captchaProblem = await messageBus.VerifyCaptchaAsync(httpContext, request.CaptchaToken, CaptchaActions.ReferenceSubmission, ct);
+      if (captchaProblem != null) return TypedResults.BadRequest(captchaProblem);
 
       var result = await messageBus.Send(referencesMapper.MapOptOutReferenceRequest(request), ct);
       if (!result.IsSuccess)
@@ -97,23 +66,14 @@ public class ReferencesEndpoints : IRegisterEndpoints
       }
 
       return TypedResults.Ok();
-    }).WithOpenApi("Handles reference optout", string.Empty, "reference_optout").WithParameterValidation();
+    }).RequireRateLimiting(RateLimitPolicies.PublicCaptcha).WithOpenApi("Handles reference optout", string.Empty, "reference_optout").WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/References/ICRAWorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ICRAWorkExperienceReferenceSubmissionRequest request, IMediator messageBus, IReferencesMapper referencesMapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapPost("/api/References/ICRAWorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ICRAWorkExperienceReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IReferencesMapper referencesMapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
 
-      var captchaResult = await messageBus.Send(new Managers.Registry.Contract.Captcha.VerifyCaptchaCommand(request.CaptchaToken), ct);
-      if (!captchaResult.Success)
-      {
-        var problemDetails = new ProblemDetails
-        {
-          Status = StatusCodes.Status400BadRequest,
-          Detail = InvalidCaptchaTokenDetail,
-          Extensions = { ["errors"] = captchaResult.ErrorCodes }
-        };
-        return TypedResults.BadRequest(problemDetails);
-      }
+      var captchaProblem = await messageBus.VerifyCaptchaAsync(httpContext, request.CaptchaToken, CaptchaActions.ReferenceSubmission, ct);
+      if (captchaProblem != null) return TypedResults.BadRequest(captchaProblem);
 
       var mapped = referencesMapper.MapIcraWorkExperienceReferenceSubmissionRequest(request);
       var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
@@ -126,7 +86,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
       }
 
       return TypedResults.Ok();
-    }).WithOpenApi("Handles ICRA work experience reference submission", string.Empty, "icra_workExperience_reference_post").WithParameterValidation();
+    }).RequireRateLimiting(RateLimitPolicies.PublicCaptcha).WithOpenApi("Handles ICRA work experience reference submission", string.Empty, "icra_workExperience_reference_post").WithParameterValidation();
   }
 }
 

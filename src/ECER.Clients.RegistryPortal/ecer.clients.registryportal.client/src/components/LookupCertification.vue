@@ -56,6 +56,7 @@
             :model-value="captchaToken"
             :rules="[Rules.required('Check to confirm you are not a robot')]"
             captchaElementId="captchaTurnstile"
+            action="certification-lookup"
             @update:model-value="(value: string) => (captchaToken = value)"
           ></EceCaptchaTurnstile>
         </v-col>
