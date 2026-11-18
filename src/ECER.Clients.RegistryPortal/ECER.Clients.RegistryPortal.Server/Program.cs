@@ -137,6 +137,9 @@ internal class Program
         .AddProblemDetails()
         .AddCorsPolicy(builder.Configuration.GetSection("cors").Get<CorsSettings>());
 
+      builder.Services.AddForwardedHeadersSupport(builder.Configuration);
+      builder.Services.AddPublicRateLimiting(builder.Configuration);
+
       builder.ConfigureComponents(logger);
 
       var app = builder.Build();
@@ -146,6 +149,7 @@ internal class Program
         app.UseSwaggerUI();
       }
 
+      app.UseForwardedHeaders();
       app.UseHealthChecks();
       app.UseObservabilityMiddleware();
       app.UseRequestDecompression();
@@ -159,6 +163,7 @@ internal class Program
       app.MapFallbackToFile("index.html");
       app.UseOutputCache();
       app.UseResponseCaching();
+      app.UseRateLimiter();
       app.UseAuthentication();
       app.UseAuthorization();
       app.UseSwagger();

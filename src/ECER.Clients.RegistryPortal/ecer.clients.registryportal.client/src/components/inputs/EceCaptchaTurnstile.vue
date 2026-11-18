@@ -30,6 +30,10 @@ export default defineComponent({
       type: Array as () => EceCaptchaTurnstileProps["rules"],
       required: true,
     },
+    action: {
+      type: String,
+      default: "reference-submission",
+    },
   },
   emits: {
     "update:model-value": (_captchaToken: string) => true,
@@ -38,6 +42,7 @@ export default defineComponent({
     if (globalThis.turnstile) {
       this.widgetId = globalThis.turnstile.render(`#${this.captchaElementId}`, {
         sitekey: this.siteKey,
+        action: this.action,
         theme: "light",
         size: "flexible",
         callback: (data: string) => {
@@ -62,6 +67,7 @@ export default defineComponent({
           `#${props.captchaElementId}`,
           {
             sitekey: siteKey,
+            action: props.action,
             theme: "light",
             size: "flexible",
             callback: (data: string) => {

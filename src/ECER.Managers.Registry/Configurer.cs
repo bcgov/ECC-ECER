@@ -54,5 +54,6 @@ public record CaptchaAppSettings : IOptions<CaptchaAppSettings>
 {
   public string Url { get; set; } = string.Empty;
   public string Secret { get; set; } = string.Empty;
+  public IList<string> ExpectedHostnames { get; } = new List<string>();
   public CaptchaAppSettings Value => this;
 }
