@@ -9,7 +9,7 @@
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.4.1" />
     <PackageVersion Include="AWSSDK.S3" Version="4.0.23.4" />
-    <PackageVersion Include="HtmlSanitizer" Version="9.1.949-beta" />
+    <PackageVersion Include="HtmlSanitizer" Version="9.1.968-beta" />
     <PackageVersion Include="IdentityModel" Version="7.0.0" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.7.1" />
     <PackageVersion Include="Mediator.Abstractions" Version="3.0.2" />
@@ -19,6 +19,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="2.3.14" />
     <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
     <PackageVersion Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.SpaProxy" Version="10.0.8" />
