@@ -63,6 +63,7 @@ interface EceCheckboxProps {
 interface EceCaptchaTurnstileProps {
   rules?: readonly ValidationRule$1[];
   captchaElementId: string;
+  action?: string;
 }
 
 interface CheckboxMultipleDropdownItems {
