@@ -5,6 +5,8 @@ jobs:
   keycloak-infrastructure-as-code:
     runs-on: ubuntu-latest
     environment: dev
+    permissions:
+      contents: read
     steps:
       - name: check out repository
         uses: actions/checkout@v7
