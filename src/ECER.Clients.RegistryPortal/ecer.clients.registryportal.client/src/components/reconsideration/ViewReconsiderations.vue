@@ -133,8 +133,8 @@ export default defineComponent({
   async mounted() {
     const [reconsiderations, investigationReconsiderations] = await Promise.all(
       [
-        getReconsiderationsQuery(undefined, ["New"]),
-        getInvestigationReconsiderationsQuery(undefined, ["New"]),
+        getReconsiderationsQuery(undefined, ["Draft"]),
+        getInvestigationReconsiderationsQuery(undefined, ["Draft"]),
       ],
     );
     this.reconsiderations = reconsiderations?.data;

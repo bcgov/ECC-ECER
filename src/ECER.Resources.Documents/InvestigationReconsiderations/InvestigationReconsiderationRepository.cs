@@ -71,7 +71,7 @@ internal sealed class InvestigationReconsiderationRepository : IInvestigationRec
       throw new InvalidOperationException($"Investigation reconsideration request id: {investigationReconsideration.Id} for applicant id: {applicantId} not found");
     }
 
-    if (existingReconsideration.StatusCode != ecer_ReconsiderationInvestigationOutcome_StatusCode.New)
+    if (existingReconsideration.StatusCode != ecer_ReconsiderationInvestigationOutcome_StatusCode.Draft)
     {
       throw new InvalidOperationException($"Investigation reconsideration request id: {investigationReconsideration.Id} status is not in status code New for submission it is {investigationReconsideration.Status}");
     }

@@ -481,8 +481,8 @@ export default defineComponent({
       this.certificationStore.fetchCertifications(),
       getUserInfo(),
       getProfile(),
-      getReconsiderationsQuery(undefined, ["New"]).then((res) => res?.data),
-      getInvestigationReconsiderationsQuery(undefined, ["New"]).then(
+      getReconsiderationsQuery(undefined, ["Draft"]).then((res) => res?.data),
+      getInvestigationReconsiderationsQuery(undefined, ["Draft"]).then(
         (res) => res?.data,
       ),
     ]);

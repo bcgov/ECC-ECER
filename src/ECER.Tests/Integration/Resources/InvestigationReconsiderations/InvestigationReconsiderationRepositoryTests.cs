@@ -21,7 +21,7 @@ public class InvestigationReconsiderationRepositoryTests : RegistryPortalWebAppS
   {
     var investigationReconsiderationRequestId = this.Fixture.testInvestigationReconsiderationRequest.Id.ToString();
     var investigationReconsiderationRequestApplicantId = this.Fixture.testInvestigationReconsiderationRequest.ecer_reconsiderationinvestigationoutcome_RegistrantId.Id.ToString();
-    var investigationReconsiderations = (await repository.Query(new InvestigationReconsiderationQuery { ById = investigationReconsiderationRequestId, ByStatusCodes = [InvestigationReconsiderationStatusCode.New], ByApplicantId = investigationReconsiderationRequestApplicantId }, CancellationToken.None));
+    var investigationReconsiderations = (await repository.Query(new InvestigationReconsiderationQuery { ById = investigationReconsiderationRequestId, ByStatusCodes = [InvestigationReconsiderationStatusCode.Draft], ByApplicantId = investigationReconsiderationRequestApplicantId }, CancellationToken.None));
 
     investigationReconsiderations.Count().ShouldBe(1);
   }

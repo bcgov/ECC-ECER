@@ -56,7 +56,7 @@ public enum ReconsiderationStatusCode
   Closed,
   Complete,
   InReview,
-  New,
+  Draft,
   NotSubmitted,
   Submitted,
   Withdrawn,

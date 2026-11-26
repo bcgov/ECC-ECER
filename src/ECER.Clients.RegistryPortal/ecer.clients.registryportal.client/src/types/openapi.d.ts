@@ -530,7 +530,7 @@ declare namespace Components {
       | "Closed"
       | "Complete"
       | "InReview"
-      | "New"
+      | "Draft"
       | "NotSubmitted"
       | "Submitted"
       | "Withdrawn";
@@ -681,7 +681,7 @@ declare namespace Components {
       | "Closed"
       | "Complete"
       | "InReview"
-      | "New"
+      | "Draft"
       | "NotSubmitted"
       | "Submitted"
       | "Withdrawn";
