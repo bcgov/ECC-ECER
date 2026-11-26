@@ -858,7 +858,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     {
       ecer_Name = name,
       Id = Guid.NewGuid(),
-      StatusCode = ecer_ReconsiderationRequest_StatusCode.New,
+      StatusCode = ecer_ReconsiderationRequest_StatusCode.Draft,
       ecer_ExplanationandEvidence = "testing reconsideration request"
     };
     context.AddObject(reconsiderationRequest);
@@ -890,7 +890,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     var investigation = new ecer_Investigation
     {
       Id = Guid.NewGuid(),
-      StatusCode = ecer_Investigation_StatusCode.New,
+      StatusCode = ecer_Investigation_StatusCode.Draft,
       StateCode = ecer_investigation_statecode.Active,
       ecer_Name = name,
       ecer_InvestigationOutcome = ecer_InvestigationOutcome.ActionCancellation
@@ -902,7 +902,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     {
       ecer_Name = name,
       Id = Guid.NewGuid(),
-      StatusCode = ecer_ReconsiderationInvestigationOutcome_StatusCode.New,
+      StatusCode = ecer_ReconsiderationInvestigationOutcome_StatusCode.Draft,
       ecer_ExplanationandEvidence = "testing reconsideration request",
       ecer_Type = ecer_ReconsiderationInvestigationType.InvestigationOutcome
     };

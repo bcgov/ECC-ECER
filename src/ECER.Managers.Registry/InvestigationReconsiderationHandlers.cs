@@ -39,7 +39,7 @@ public class InvestigationReconsiderationHandlers(IInvestigationReconsiderationM
       return new InvestigationReconsiderationSubmitResult() { IsSuccess = false, Id = request.InvestigationReconsideration.Id, ErrorCode = InvestigationReconsiderationSubmitErrorCode.InvestigationReconsiderationNotFound };
     }
 
-    if (investigationReconsideration.Status != Resources.Documents.InvestigationReconsiderations.InvestigationReconsiderationStatusCode.New)
+    if (investigationReconsideration.Status != Resources.Documents.InvestigationReconsiderations.InvestigationReconsiderationStatusCode.Draft)
     {
       return new InvestigationReconsiderationSubmitResult() { IsSuccess = false, Id = request.InvestigationReconsideration.Id, ErrorCode = InvestigationReconsiderationSubmitErrorCode.InvestigationReconsiderationWrongStatus };
     }

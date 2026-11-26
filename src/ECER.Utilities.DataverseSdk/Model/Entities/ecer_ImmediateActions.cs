@@ -63,6 +63,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_appealperiodendDate = "ecer_appealperiodenddate";
 			public const string ecer_appealrequest = "ecer_appealrequest";
 			public const string ecer_appealrequestName = "ecer_appealrequestname";
+			public const string ecer_immediateactiondecisiondate = "ecer_immediateactiondecisiondate";
 			public const string ecer_ImmediateActionReason = "ecer_immediateactionreason";
 			public const string ecer_immediateactions_Investigation = "ecer_immediateactions_Investigation";
 			public const string ecer_ImmediateActionsId = "ecer_immediateactionsid";
@@ -296,6 +297,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactiondecisiondate")]
+		public System.Nullable<System.DateTime> ecer_immediateactiondecisiondate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_immediateactiondecisiondate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_immediateactiondecisiondate", value);
 			}
 		}
 		

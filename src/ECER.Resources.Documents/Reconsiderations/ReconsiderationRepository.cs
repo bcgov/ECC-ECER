@@ -70,9 +70,9 @@ internal sealed class ReconsiderationRepository : IReconsiderationRepository
       throw new InvalidOperationException($"Reconsideration request id: {reconsideration.Id} for applicant id: {applicantId} not found");
     }
 
-    if (existingReconsideration.StatusCode != ecer_ReconsiderationRequest_StatusCode.New)
+    if (existingReconsideration.StatusCode != ecer_ReconsiderationRequest_StatusCode.Draft)
     {
-      throw new InvalidOperationException($"Reconsideration request id: {reconsideration.Id} status is not in status code New for submission it is {reconsideration.Status}");
+      throw new InvalidOperationException($"Reconsideration request id: {reconsideration.Id} status is not in status code Draft for submission it is {reconsideration.Status}");
     }
 
     var existingApplication = context.ecer_ApplicationSet.FirstOrDefault(r => r.Id == existingReconsideration.ecer_ApplicationId.Id);

@@ -41,7 +41,7 @@ public class ReconsiderationHandlers(IReconsiderationMapper reconsiderationMappe
       return new ReconsiderationSubmitResult() { IsSuccess = false, Id = request.Reconsideration.Id, ErrorCode = ReconsiderationSubmitErrorCode.ReconsiderationNotFound };
     }
 
-    if (reconsideration.Status != Resources.Documents.Reconsiderations.ReconsiderationStatusCode.New)
+    if (reconsideration.Status != Resources.Documents.Reconsiderations.ReconsiderationStatusCode.Draft)
     {
       return new ReconsiderationSubmitResult() { IsSuccess = false, Id = request.Reconsideration.Id, ErrorCode = ReconsiderationSubmitErrorCode.ReconsiderationWrongStatus };
     }

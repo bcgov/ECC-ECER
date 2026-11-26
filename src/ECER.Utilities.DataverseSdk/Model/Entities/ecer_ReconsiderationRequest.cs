@@ -42,10 +42,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Complete = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InReview = 621870001,
+		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		New = 1,
+		InReview = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		NotSubmitted = 290700002,

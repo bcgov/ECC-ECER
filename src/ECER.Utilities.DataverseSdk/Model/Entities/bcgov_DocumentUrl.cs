@@ -1714,7 +1714,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reconsideration Request for Certification
+		/// Dispute Request for Certification
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_ReconsiderationRequestId

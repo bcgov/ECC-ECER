@@ -92,7 +92,7 @@ public enum InvestigationReconsiderationStatusCode
   Closed,
   Complete,
   InReview,
-  New,
+  Draft,
   NotSubmitted,
   Submitted,
   Withdrawn,

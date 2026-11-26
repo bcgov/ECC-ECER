@@ -21,7 +21,7 @@ public class ReconsiderationRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var reconsiderationRequestId = this.Fixture.testReconsiderationRequest.Id.ToString();
     var reconsiderationRequestApplicantId = this.Fixture.testReconsiderationRequest.ecer_reconsiderationrequest_ApplicantId.Id.ToString();
-    var reconsiderations = (await repository.Query(new ReconsiderationQuery { ById = reconsiderationRequestId, ByStatusCodes = [ReconsiderationStatusCode.New], ByApplicantId = reconsiderationRequestApplicantId }, CancellationToken.None));
+    var reconsiderations = (await repository.Query(new ReconsiderationQuery { ById = reconsiderationRequestId, ByStatusCodes = [ReconsiderationStatusCode.Draft], ByApplicantId = reconsiderationRequestApplicantId }, CancellationToken.None));
 
     reconsiderations.Count().ShouldBe(1);
   }
