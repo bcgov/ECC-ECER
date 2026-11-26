@@ -231,6 +231,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Dispute = 621870005,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Draft = 621870010,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ERConclusionReview = 621870025,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -259,9 +262,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		MonitoringReview = 621870024,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		New = 621870010,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		NotificationProcess = 621870020,
