@@ -19,6 +19,8 @@ jobs:
     name: Promote Image
     runs-on: ubuntu-22.04
     environment: efxtest
+    permissions:
+      contents: read
 
     outputs:
       ROUTE: ${{ steps.deploy-and-expose.outputs.route }}

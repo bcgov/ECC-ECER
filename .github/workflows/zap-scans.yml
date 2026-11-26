@@ -9,6 +9,9 @@ on:
 jobs:
   registry-portal-ui-zap-scan:
       runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        issues: write
       steps:
       - name: UI
         uses: zaproxy/action-full-scan@v0.13.0
@@ -20,6 +23,9 @@ jobs:
 
   registry-portal-api-zap-scan:
       runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        issues: write
       steps:
       - name: API
         uses: zaproxy/action-api-scan@v0.10.0
@@ -31,6 +37,9 @@ jobs:
 
   api-zap-scan:
       runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        issues: write
       steps:
       - name: API
         uses: zaproxy/action-api-scan@v0.10.0

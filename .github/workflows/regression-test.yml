@@ -10,6 +10,8 @@ jobs:
     strategy:
       fail-fast: false
     environment: dev
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
         name: Checkout

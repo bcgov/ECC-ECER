@@ -22,6 +22,8 @@ jobs:
   validate-input:
     name: Validate Input
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
     steps:
       # this step will check the user input and branch name. Then set the IMAGETAG variable to be used to tag image in openshift. Ex. release/master => release-master
       - name: Check user input and branch
@@ -48,10 +50,8 @@ jobs:
   build-api:
     needs: validate-input
     permissions:
-      contents: read
       packages: write
-      id-token: write
-      security-events: write
+      contents: read
     uses: ./.github/workflows/build-template.yml
     with:
       IMAGE_CONTEXT: src
@@ -65,10 +65,8 @@ jobs:
   build-registry-portal:
     needs: validate-input
     permissions:
-      contents: read
       packages: write
-      id-token: write
-      security-events: write
+      contents: read
     uses: ./.github/workflows/build-template.yml
     with:
       IMAGE_CONTEXT: src
@@ -82,10 +80,8 @@ jobs:
   build-e2e-test-data:
     needs: validate-input
     permissions:
-      contents: read
       packages: write
-      id-token: write
-      security-events: write
+      contents: read
     uses: ./.github/workflows/build-template.yml
     with:
       IMAGE_CONTEXT: src
@@ -99,10 +95,8 @@ jobs:
   build-psp-portal:
     needs: validate-input
     permissions:
-      contents: read
       packages: write
-      id-token: write
-      security-events: write
+      contents: read
     uses: ./.github/workflows/build-template.yml
     with:
       IMAGE_CONTEXT: src
@@ -125,6 +119,8 @@ jobs:
         build-psp-portal,
       ]
     environment: dev
+    permissions:
+      contents: write
 
     steps:
       - name: Check out repository
